@@ -1,7 +1,7 @@
-import {CedarTemplate} from "../model/CedarTemplate";
+import { CedarTemplate } from '../model/CedarTemplate';
 
 export class JSONTemplateReader {
-  static readFromString(templateSourceString: String): CedarTemplate {
+  static readFromString(templateSourceString: string): CedarTemplate {
     const template = new CedarTemplate();
     console.log('JSONTemplateReader.readFromString');
     return template;
@@ -12,5 +12,4 @@ export class JSONTemplateReader {
     console.log('JSONTemplateReader.readFromObject');
     return template;
   }
-
 }

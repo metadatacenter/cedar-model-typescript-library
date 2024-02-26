@@ -1,2 +1,1 @@
-export class CedarTemplate {
-}
+export class CedarTemplate {}

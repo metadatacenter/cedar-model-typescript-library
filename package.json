@@ -1,0 +1,28 @@
+{
+  "name": "cedar-model-typescript-library",
+  "version": "1.0.0",
+  "description": "CEDAR Model Typescript Library - a library to work with fields, elements, templates and instances implemented in TypeScript",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "build:watch": "tsc --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/metadatacenter/cedar-model-typescript-library.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/metadatacenter/cedar-model-typescript-library/issues"
+  },
+  "homepage": "https://github.com/metadatacenter/cedar-model-typescript-library#readme",
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  },
+  "files": [
+    "dist"
+  ]
+}

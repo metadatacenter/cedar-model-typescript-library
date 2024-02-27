@@ -1,7 +1,6 @@
 // Template with one text field, after first save
-
 export const templateObjectSource02 = {
-  '@id': 'https://repo.metadatacenter.org/templates/6d9bf850-d04f-41c7-8725-20aa8d5e596c',
+  '@id': 'https://repo.metadatacenter.org/templates/bc8c543f-ed3f-4420-9b52-1cdbcc55f983',
   '@type': 'https://schema.metadatacenter.org/core/Template',
   '@context': {
     xsd: 'http://www.w3.org/2001/XMLSchema#',
@@ -166,7 +165,7 @@ export const templateObjectSource02 = {
           },
         },
         Textfield: {
-          enum: ['https://schema.metadatacenter.org/properties/f38da0a6-2983-498c-93c2-3ee3cd2f07bf'],
+          enum: ['https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde'],
         },
       },
       required: [
@@ -307,13 +306,13 @@ export const templateObjectSource02 = {
       required: ['@value'],
       'schema:name': 'Textfield',
       'schema:description': 'Help Text',
-      'pav:createdOn': '2024-02-26T11:20:26-08:00',
+      'pav:createdOn': '2024-02-26T17:56:13-08:00',
       'pav:createdBy': 'https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95',
-      'pav:lastUpdatedOn': '2024-02-26T11:20:26-08:00',
+      'pav:lastUpdatedOn': '2024-02-26T17:56:13-08:00',
       'oslc:modifiedBy': 'https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95',
       'schema:schemaVersion': '1.6.0',
       additionalProperties: false,
-      '@id': 'https://repo.metadatacenter.org/template-fields/aea58a7e-8f8a-4600-b39c-5098d3f9e0a3',
+      '@id': 'https://repo.metadatacenter.org/template-fields/9efde92f-63b9-427f-b071-36ea57de1b7e',
       $schema: 'http://json-schema.org/draft-04/schema#',
     },
   },
@@ -331,9 +330,9 @@ export const templateObjectSource02 = {
   ],
   'schema:name': 'Untitled',
   'schema:description': '',
-  'pav:createdOn': '2024-02-26T11:20:26-08:00',
+  'pav:createdOn': '2024-02-26T17:56:13-08:00',
   'pav:createdBy': 'https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95',
-  'pav:lastUpdatedOn': '2024-02-26T11:20:26-08:00',
+  'pav:lastUpdatedOn': '2024-02-26T17:56:13-08:00',
   'oslc:modifiedBy': 'https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95',
   'schema:schemaVersion': '1.6.0',
   additionalProperties: false,

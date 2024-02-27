@@ -166,7 +166,7 @@ export const templateObjectSource01 = {
           },
         },
         Textfield: {
-          enum: ['https://schema.metadatacenter.org/properties/f38da0a6-2983-498c-93c2-3ee3cd2f07bf'],
+          enum: ['https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde'],
         },
       },
       required: [
@@ -238,7 +238,7 @@ export const templateObjectSource01 = {
     },
     Textfield: {
       $schema: 'http://json-schema.org/draft-04/schema#',
-      '@id': 'tmp-1708975060417-27548',
+      '@id': 'tmp-1708998934299-6744386',
       '@type': 'https://schema.metadatacenter.org/core/TemplateField',
       '@context': {
         xsd: 'http://www.w3.org/2001/XMLSchema#',
@@ -340,4 +340,5 @@ export const templateObjectSource01 = {
   'pav:version': '0.0.1',
   'bibo:status': 'bibo:draft',
 };
+
 export const templateStringSource01 = JSON.stringify(templateObjectSource01);

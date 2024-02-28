@@ -5,6 +5,7 @@ export class JsonSchema {
   static reservedDefaultAttributeName = 'Attribute Value Field';
 
   static properties = 'properties';
+  static required = 'required';
 
   static atContext = '@context';
   static atId = '@id';

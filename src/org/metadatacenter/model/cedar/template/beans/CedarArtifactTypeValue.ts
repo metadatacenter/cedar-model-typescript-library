@@ -22,7 +22,7 @@ export class CedarArtifactType {
   public static TEMPLATE_ELEMENT = new CedarArtifactType(CedarArtifactTypeValues.TEMPLATE_ELEMENT);
   public static TEMPLATE_FIELD = new CedarArtifactType(CedarArtifactTypeValues.TEMPLATE_FIELD);
   public static STATIC_TEMPLATE_FIELD = new CedarArtifactType(CedarArtifactTypeValues.STATIC_TEMPLATE_FIELD);
-  public static UNKNOWN = new CedarArtifactType(null);
+  public static NULL = new CedarArtifactType(null);
 
   public static values(): CedarArtifactType[] {
     return [
@@ -39,7 +39,7 @@ export class CedarArtifactType {
         return status;
       }
     }
-    return this.UNKNOWN;
+    return this.NULL;
   }
 
   toJSON() {

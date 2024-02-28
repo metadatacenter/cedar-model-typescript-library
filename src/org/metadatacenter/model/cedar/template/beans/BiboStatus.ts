@@ -18,7 +18,7 @@ export class BiboStatus {
 
   public static DRAFT = new BiboStatus(BiboStatusValues.DRAFT);
   public static PUBLISHED = new BiboStatus(BiboStatusValues.PUBLISHED);
-  public static UNKNOWN = new BiboStatus(null);
+  public static NULL = new BiboStatus(null);
 
   public static values(): BiboStatus[] {
     return [BiboStatus.DRAFT, BiboStatus.PUBLISHED];
@@ -30,7 +30,7 @@ export class BiboStatus {
         return status;
       }
     }
-    return this.UNKNOWN;
+    return this.NULL;
   }
 
   toJSON() {

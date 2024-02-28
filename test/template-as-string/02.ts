@@ -329,7 +329,7 @@ export const templateObjectSource02 = {
     'Textfield',
   ],
   'schema:name': 'Untitled',
-  'schema:description': '',
+  'schema:description': 'Untitled description',
   'pav:createdOn': '2024-02-26T17:56:13-08:00',
   'pav:createdBy': 'https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95',
   'pav:lastUpdatedOn': '2024-02-26T17:56:13-08:00',

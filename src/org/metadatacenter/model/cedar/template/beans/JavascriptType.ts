@@ -20,7 +20,7 @@ export class JavascriptType {
   public static ARRAY = new JavascriptType(JavascriptTypeValues.ARRAY);
   public static OBJECT = new JavascriptType(JavascriptTypeValues.OBJECT);
   public static STRING = new JavascriptType(JavascriptTypeValues.STRING);
-  public static UNKNOWN = new JavascriptType(null);
+  public static NULL = new JavascriptType(null);
 
   public static values(): JavascriptType[] {
     return [JavascriptType.ARRAY, JavascriptType.OBJECT, JavascriptType.STRING];
@@ -32,7 +32,7 @@ export class JavascriptType {
         return status;
       }
     }
-    return this.UNKNOWN;
+    return this.NULL;
   }
 
   toJSON() {

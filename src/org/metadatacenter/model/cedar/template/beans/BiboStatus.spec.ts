@@ -21,7 +21,7 @@ test('creates published status', () => {
 });
 
 test('creates unknown status', () => {
-  const unknownByReference = BiboStatus.UNKNOWN;
+  const unknownByReference = BiboStatus.NULL;
   expect(unknownByReference).not.toBeNull();
   expect(unknownByReference.getValue()).toBeNull();
 

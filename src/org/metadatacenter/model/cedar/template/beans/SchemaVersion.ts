@@ -3,24 +3,30 @@ export const SchemaVersionValues = {
 } as const;
 
 export class SchemaVersion {
-  private readonly value: string;
+  private readonly value: string | null;
 
-  private constructor(version: string) {
+  private constructor(version: string | null) {
     this.value = version;
   }
 
-  public getValue(): string {
+  public getValue(): string | null {
     return this.value;
   }
 
   public static CURRENT = new SchemaVersion(SchemaVersionValues.CURRENT);
+  public static NULL = new SchemaVersion(null);
+
+  public static values(): SchemaVersion[] {
+    return [SchemaVersion.CURRENT];
+  }
 
   public static forValue(value: string | null): SchemaVersion {
-    if (value === null) {
-      return new SchemaVersion(SchemaVersionValues.CURRENT);
-    } else {
-      return new SchemaVersion(value);
+    for (const version of SchemaVersion.values()) {
+      if (version.getValue() === value) {
+        return version;
+      }
     }
+    return this.NULL;
   }
 
   toJSON() {

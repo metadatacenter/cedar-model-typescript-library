@@ -3,17 +3,18 @@ export const CedarSchemaValues = {
 } as const;
 
 export class CedarSchema {
-  private readonly value: string;
+  private readonly value: string | null;
 
-  private constructor(schema: string) {
+  private constructor(schema: string | null) {
     this.value = schema;
   }
 
-  public getValue(): string {
+  public getValue(): string | null {
     return this.value;
   }
 
   public static CURRENT = new CedarSchema(CedarSchemaValues.CURRENT);
+  public static NULL = new CedarSchema(null);
 
   public static forValue(value: string | null): CedarSchema {
     if (value === null) {

@@ -12,7 +12,7 @@ export class ObjectComparator {
     blueprintObject: ComparableObject,
     realObject: ComparableObject,
     path: CedarJsonPath,
-  ): ParsingResult {
+  ): void {
     function recurse(currentPath: CedarJsonPath, obj1: ComparableObject, obj2: ComparableObject) {
       const allKeys = new Set([...Object.keys(obj1), ...Object.keys(obj2)]);
 
@@ -33,7 +33,6 @@ export class ObjectComparator {
     }
 
     recurse(path, blueprintObject, realObject);
-    return comparisonResult;
   }
 
   static comparePrimitive(comparisonResult: ParsingResult, blue: Primitive, actual: Primitive, path: CedarJsonPath): ParsingResult {

@@ -1,17 +1,17 @@
-import { JavascriptType } from './beans/JavascriptType';
-import { BiboStatus } from './beans/BiboStatus';
-import { SchemaVersion } from './beans/SchemaVersion';
+import { JavascriptType } from '../beans/JavascriptType';
+import { BiboStatus } from '../beans/BiboStatus';
+import { SchemaVersion } from '../beans/SchemaVersion';
 import { JsonSchema } from '../constants/JsonSchema';
 import { TemplateProperty } from '../constants/TemplateProperty';
-import { CedarUser } from './beans/CedarUser';
-import { CedarDate } from './beans/CedarDate';
-import { CedarArtifactType } from './beans/CedarArtifactTypeValue';
+import { CedarUser } from '../beans/CedarUser';
+import { CedarDate } from '../beans/CedarDate';
+import { CedarArtifactType } from '../beans/CedarArtifactTypeValue';
 import { CedarModel } from '../CedarModel';
-import { CedarSchema } from './beans/CedarSchema';
-import { PavVersion } from './beans/PavVersion';
-import { CedarArtifactId } from './beans/CedarArtifactId';
+import { CedarSchema } from '../beans/CedarSchema';
+import { PavVersion } from '../beans/PavVersion';
+import { CedarArtifactId } from '../beans/CedarArtifactId';
 import { CedarTemplateContent } from '../serialization/CedarTemplateContent';
-import { CedarContainerChildrenInfo } from './beans/CedarContainerChildrenInfo';
+import { CedarContainerChildrenInfo } from '../beans/CedarContainerChildrenInfo';
 import { ReaderUtil } from '../../../reader/ReaderUtil';
 
 export class CedarTemplate {

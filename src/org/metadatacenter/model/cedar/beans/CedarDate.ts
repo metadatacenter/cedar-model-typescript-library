@@ -9,12 +9,12 @@ export class CedarDate {
 
   // Returns the date as an ISO string with the original time zone offset without partial seconds.
   public getValue(): string {
-    const year = this.date.getUTCFullYear();
-    const month = this.date.getUTCMonth() + 1;
-    const day = this.date.getUTCDate();
-    const hour = this.date.getUTCHours();
-    const minute = this.date.getUTCMinutes();
-    const second = this.date.getUTCSeconds();
+    const year = this.date.getFullYear();
+    const month = this.date.getMonth() + 1;
+    const day = this.date.getDate();
+    const hour = this.date.getHours();
+    const minute = this.date.getMinutes();
+    const second = this.date.getSeconds();
 
     const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}T${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:${second.toString().padStart(2, '0')}`;
 

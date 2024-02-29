@@ -1,25 +1,25 @@
 import { CedarTemplate } from '../model/cedar/template/CedarTemplate';
-import { CedarSchema } from '../model/cedar/template/beans/CedarSchema';
+import { CedarSchema } from '../model/cedar/beans/CedarSchema';
 import { CedarModel } from '../model/cedar/CedarModel';
 import { JsonSchema } from '../model/cedar/constants/JsonSchema';
-import { CedarArtifactType } from '../model/cedar/template/beans/CedarArtifactTypeValue';
-import { JavascriptType } from '../model/cedar/template/beans/JavascriptType';
+import { CedarArtifactType } from '../model/cedar/beans/CedarArtifactTypeValue';
+import { JavascriptType } from '../model/cedar/beans/JavascriptType';
 import { TemplateProperty } from '../model/cedar/constants/TemplateProperty';
-import { CedarUser } from '../model/cedar/template/beans/CedarUser';
-import { CedarDate } from '../model/cedar/template/beans/CedarDate';
-import { SchemaVersion } from '../model/cedar/template/beans/SchemaVersion';
-import { BiboStatus } from '../model/cedar/template/beans/BiboStatus';
+import { CedarUser } from '../model/cedar/beans/CedarUser';
+import { CedarDate } from '../model/cedar/beans/CedarDate';
+import { SchemaVersion } from '../model/cedar/beans/SchemaVersion';
+import { BiboStatus } from '../model/cedar/beans/BiboStatus';
 import { ReaderUtil } from './ReaderUtil';
 import { Node } from '../model/cedar/types/Node';
-import { PavVersion } from '../model/cedar/template/beans/PavVersion';
-import { CedarArtifactId } from '../model/cedar/template/beans/CedarArtifactId';
+import { PavVersion } from '../model/cedar/beans/PavVersion';
+import { CedarArtifactId } from '../model/cedar/beans/CedarArtifactId';
 import { CedarTemplateContent } from '../model/cedar/serialization/CedarTemplateContent';
 import { ObjectComparator } from '../model/cedar/compare/ObjectComparator';
 import { ParsingResult } from '../model/cedar/compare/ParsingResult';
 import { JSONTemplateReaderResult } from './JSONTemplateReaderResult';
 import { ComparisonError } from '../model/cedar/compare/ComparisonError';
-import { CedarContainerChildInfo } from '../model/cedar/template/beans/CedarContainerChildInfo';
-import { CedarContainerChildrenInfo } from '../model/cedar/template/beans/CedarContainerChildrenInfo';
+import { CedarContainerChildInfo } from '../model/cedar/beans/CedarContainerChildInfo';
+import { CedarContainerChildrenInfo } from '../model/cedar/beans/CedarContainerChildrenInfo';
 import { CedarJsonPath } from '../model/cedar/path/CedarJsonPath';
 
 export class JSONTemplateReader {

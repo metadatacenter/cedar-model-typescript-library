@@ -234,4 +234,19 @@ export class CedarTemplateContent {
       format: 'uri',
     },
   };
+
+  public static REQUIRED_PARTIAL_KEY_MAP: Map<string, boolean>;
+  public static PROPERTIES_PARTIAL_KEY_LIST: Array<string> = [];
+  public static PROPERTIES_PARTIAL_KEY_MAP: Map<string, boolean> = new Map();
+
+  static {
+    Object.keys(CedarTemplateContent.PROPERTIES_PARTIAL).forEach((key) => {
+      this.PROPERTIES_PARTIAL_KEY_LIST.push(key);
+      this.PROPERTIES_PARTIAL_KEY_MAP.set(key, true);
+    });
+    this.REQUIRED_PARTIAL_KEY_MAP = this.REQUIRED_PARTIAL.reduce((acc, current) => {
+      acc.set(current, true);
+      return acc;
+    }, new Map<string, boolean>());
+  }
 }

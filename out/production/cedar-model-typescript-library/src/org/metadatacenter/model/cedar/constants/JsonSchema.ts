@@ -24,7 +24,6 @@ export class JsonSchema {
   static biboStatus = 'bibo:status';
   static rdfsLabel = 'rdfs:label';
   static termUri = 'termUri';
-  static enum = 'enum';
 
   static builtInProperties: Map<string, boolean> = new Map([
     [JsonSchema.atId, true],

@@ -18,4 +18,8 @@ export class ParsingResult {
   public getBlueprintComparisonErrors(): Array<ComparisonError> {
     return this.blueprintComparisonErrors;
   }
+
+  getBlueprintComparisonErrorCount() {
+    return this.blueprintComparisonErrors.length;
+  }
 }

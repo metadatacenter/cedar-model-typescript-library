@@ -36,7 +36,7 @@ export class CedarTemplateFieldContent {
   };
 
   // This is a verbatim representation for regular fields
-  public static PROPERTIES_VALUE_FULL = {
+  public static PROPERTIES_VERBATIM_LITERAL = {
     '@type': {
       oneOf: [
         {
@@ -63,7 +63,7 @@ export class CedarTemplateFieldContent {
   };
 
   // This is a verbatim representation for link and controlled fields
-  public static PROPERTIES_ID_FULL = {
+  public static PROPERTIES_VERBATIM_IRI = {
     '@type': {
       oneOf: [
         {

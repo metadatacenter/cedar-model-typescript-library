@@ -21,6 +21,7 @@ import { ComparisonError } from '../model/cedar/compare/ComparisonError';
 import { CedarContainerChildInfo } from '../model/cedar/beans/CedarContainerChildInfo';
 import { CedarContainerChildrenInfo } from '../model/cedar/beans/CedarContainerChildrenInfo';
 import { CedarJsonPath } from '../model/cedar/path/CedarJsonPath';
+import { ComparisonErrorType } from '../model/cedar/compare/ComparisonErrorType';
 
 export class JSONTemplateReader {
   static readFromString(templateSourceString: string): JSONTemplateReaderResult {
@@ -113,7 +114,7 @@ export class JSONTemplateReader {
     for (const key of CedarTemplateContent.REQUIRED_PARTIAL) {
       if (!templateRequiredMap.has(key)) {
         parsingResult.addBlueprintComparisonError(
-          new ComparisonError('missingKeyInRealObject', new CedarJsonPath(JsonSchema.required), key),
+          new ComparisonError(ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, new CedarJsonPath(JsonSchema.required), key),
         );
       }
     }
@@ -130,7 +131,7 @@ export class JSONTemplateReader {
         } else {
           parsingResult.addBlueprintComparisonError(
             new ComparisonError(
-              'missingKeyInRealObject',
+              ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
               new CedarJsonPath(JsonSchema.properties, JsonSchema.required, key, JsonSchema.atType),
             ),
           );
@@ -143,7 +144,7 @@ export class JSONTemplateReader {
       if (childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD) {
         if (!templateRequiredMap.has(childInfo.name)) {
           parsingResult.addBlueprintComparisonError(
-            new ComparisonError('missingKeyInRealObject', new CedarJsonPath(JsonSchema.required), childInfo.name),
+            new ComparisonError(ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, new CedarJsonPath(JsonSchema.required), childInfo.name),
           );
         }
       }
@@ -153,7 +154,7 @@ export class JSONTemplateReader {
     for (const key of templateRequired) {
       if (!CedarTemplateContent.REQUIRED_PARTIAL_KEY_MAP.has(key) && !candidateChildrenInfo.has(key)) {
         parsingResult.addBlueprintComparisonError(
-          new ComparisonError('unexpectedKeyInRealObject', new CedarJsonPath(JsonSchema.required), key),
+          new ComparisonError(ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT, new CedarJsonPath(JsonSchema.required), key),
         );
       }
     }
@@ -164,7 +165,11 @@ export class JSONTemplateReader {
     for (const childInfo of candidateChildrenInfo.children) {
       if (templateUIPLabels === null || !templateUIPLabels.has(childInfo.name)) {
         parsingResult.addBlueprintComparisonError(
-          new ComparisonError('missingKeyInRealObject', new CedarJsonPath(CedarModel.ui, CedarModel.propertyLabels), childInfo.name),
+          new ComparisonError(
+            ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
+            new CedarJsonPath(CedarModel.ui, CedarModel.propertyLabels),
+            childInfo.name,
+          ),
         );
       } else {
         childInfo.label = templateUIPLabels.get(childInfo.name) ?? null;
@@ -176,7 +181,11 @@ export class JSONTemplateReader {
     for (const childInfo of candidateChildrenInfo.children) {
       if (templateUIPDescriptions === null || !templateUIPDescriptions.has(childInfo.name)) {
         parsingResult.addBlueprintComparisonError(
-          new ComparisonError('missingKeyInRealObject', new CedarJsonPath(CedarModel.ui, CedarModel.propertyDescriptions), childInfo.name),
+          new ComparisonError(
+            ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
+            new CedarJsonPath(CedarModel.ui, CedarModel.propertyDescriptions),
+            childInfo.name,
+          ),
         );
       } else {
         childInfo.description = templateUIPDescriptions.get(childInfo.name) ?? null;
@@ -195,7 +204,7 @@ export class JSONTemplateReader {
         if (iriList === null || iriList.length != 1) {
           parsingResult.addBlueprintComparisonError(
             new ComparisonError(
-              'missingKeyInRealObject',
+              ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
               new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.properties, childInfo.name, JsonSchema.enum, 0),
             ),
           );
@@ -211,8 +220,7 @@ export class JSONTemplateReader {
     // 'properties/context/properties' should have extra entry for Fields/Elements as IRI mappings
     // all other content should match verbatim
 
-    // Generate final child info, based on the order and content of _ui/order. Disregard candidates not present in _ui/order
-    // Children present in the "order" but not as real child will be disregarded with a validation error
+    // Generate final child info, based on the order and content of _ui/order. Disregard candidates not present in _ui/order with an error
     const templateUIOrder = ReaderUtil.getStringList(templateUI, CedarModel.order);
     const finalChildrenInfo = new CedarContainerChildrenInfo();
     for (const key of templateUIOrder) {
@@ -221,7 +229,25 @@ export class JSONTemplateReader {
         finalChildrenInfo.add(candidate);
       } else {
         parsingResult.addBlueprintComparisonError(
-          new ComparisonError('unexpectedKeyInRealObject', new CedarJsonPath(CedarModel.ui, CedarModel.order), null, key),
+          new ComparisonError(
+            ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
+            new CedarJsonPath(CedarModel.ui, CedarModel.order),
+            null,
+            key,
+          ),
+        );
+      }
+    }
+    // Children present in the 'properties' but not in the 'order' will also result in error
+    for (const childInfo of candidateChildrenInfo.children) {
+      if (!templateUIOrder.includes(childInfo.name)) {
+        parsingResult.addBlueprintComparisonError(
+          new ComparisonError(
+            ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
+            new CedarJsonPath(CedarModel.ui, CedarModel.order),
+            childInfo.name,
+            null,
+          ),
         );
       }
     }

@@ -2,6 +2,7 @@ import { Node } from '../types/Node';
 import { ParsingResult } from './ParsingResult';
 import { ComparisonError } from './ComparisonError';
 import { Primitive } from '../types/Primitive';
+import { CedarJsonPath } from '../path/CedarJsonPath';
 
 type ComparableObject = Node;
 
@@ -10,13 +11,13 @@ export class ObjectComparator {
     comparisonResult: ParsingResult,
     blueprintObject: ComparableObject,
     realObject: ComparableObject,
-    path: string,
+    path: CedarJsonPath,
   ): ParsingResult {
-    function recurse(currentPath: string, obj1: ComparableObject, obj2: ComparableObject) {
+    function recurse(currentPath: CedarJsonPath, obj1: ComparableObject, obj2: ComparableObject) {
       const allKeys = new Set([...Object.keys(obj1), ...Object.keys(obj2)]);
 
       allKeys.forEach((key) => {
-        const newPath = currentPath ? `${currentPath}.${key}` : key;
+        const newPath = currentPath.add(key); // Use the add method to append the key to the path
         if (!(key in obj1)) {
           comparisonResult.addBlueprintComparisonError(new ComparisonError('unexpectedKeyInRealObject', newPath));
         } else if (!(key in obj2)) {
@@ -35,7 +36,7 @@ export class ObjectComparator {
     return comparisonResult;
   }
 
-  static comparePrimitive(comparisonResult: ParsingResult, blue: Primitive, actual: Primitive, path: string): ParsingResult {
+  static comparePrimitive(comparisonResult: ParsingResult, blue: Primitive, actual: Primitive, path: CedarJsonPath): ParsingResult {
     if (blue !== actual) {
       comparisonResult.addBlueprintComparisonError(new ComparisonError('valueMismatch', path, blue, actual));
     }

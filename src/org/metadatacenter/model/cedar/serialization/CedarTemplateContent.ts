@@ -1,3 +1,5 @@
+import { ReaderUtil } from '../../../reader/ReaderUtil';
+
 export class CedarTemplateContent {
   // This will have the names of elements and fields as well
   public static REQUIRED_PARTIAL = [
@@ -248,5 +250,12 @@ export class CedarTemplateContent {
       acc.set(current, true);
       return acc;
     }, new Map<string, boolean>());
+
+    ReaderUtil.deepFreeze(this.REQUIRED_PARTIAL);
+    ReaderUtil.deepFreeze(this.CONTEXT_VERBATIM);
+    ReaderUtil.deepFreeze(this.PROPERTIES_PARTIAL);
+    ReaderUtil.deepFreeze(this.REQUIRED_PARTIAL_KEY_MAP);
+    ReaderUtil.deepFreeze(this.PROPERTIES_PARTIAL_KEY_LIST);
+    ReaderUtil.deepFreeze(this.PROPERTIES_PARTIAL_KEY_MAP);
   }
 }

@@ -1,8 +1,7 @@
 import { CedarArtifactType } from './CedarArtifactTypeValue';
-import { name } from 'ts-jest/dist/transformers/hoist-jest';
 
 export class CedarContainerChildInfo {
-  private _name: string;
+  private readonly _name: string;
   private _label: string | null = null;
   private _description: string | null = null;
   private _iri: string | null = null;

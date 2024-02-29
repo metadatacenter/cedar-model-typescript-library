@@ -9,8 +9,6 @@ import { CedarUser } from '../model/cedar/template/beans/CedarUser';
 import { CedarDate } from '../model/cedar/template/beans/CedarDate';
 import { SchemaVersion } from '../model/cedar/template/beans/SchemaVersion';
 import { BiboStatus } from '../model/cedar/template/beans/BiboStatus';
-import { CedarTemplateRequiredList } from '../model/cedar/template/beans/CedarTemplateRequiredList';
-import { CedarTemplateUI } from '../model/cedar/template/beans/CedarTemplateUI';
 import { ReaderUtil } from './ReaderUtil';
 import { Node } from '../model/cedar/types/Node';
 import { PavVersion } from '../model/cedar/template/beans/PavVersion';
@@ -22,6 +20,7 @@ import { JSONTemplateReaderResult } from './JSONTemplateReaderResult';
 import { ComparisonError } from '../model/cedar/compare/ComparisonError';
 import { CedarContainerChildInfo } from '../model/cedar/template/beans/CedarContainerChildInfo';
 import { CedarContainerChildrenInfo } from '../model/cedar/template/beans/CedarContainerChildrenInfo';
+import { CedarJsonPath } from '../model/cedar/path/CedarJsonPath';
 
 export class JSONTemplateReader {
   static readFromString(templateSourceString: string): JSONTemplateReaderResult {
@@ -40,11 +39,7 @@ export class JSONTemplateReader {
 
     this.readNonReportableAttributes(template, templateSourceObject);
     this.readReportableAttributes(template, templateSourceObject, parsingResult);
-    this.readAndValidateChildrenInfo(templateSourceObject, parsingResult);
-
-    if (!parsingResult.wasSuccessful()) {
-      console.log('PARSING RESULT', parsingResult);
-    }
+    this.readAndValidateChildrenInfo(template, templateSourceObject, parsingResult);
 
     return new JSONTemplateReaderResult(template, parsingResult);
   }
@@ -54,11 +49,6 @@ export class JSONTemplateReader {
     template.at_id = CedarArtifactId.forValue(ReaderUtil.getString(templateSourceObject, JsonSchema.atId));
     template.title = ReaderUtil.getString(templateSourceObject, TemplateProperty.title);
     template.description = ReaderUtil.getString(templateSourceObject, TemplateProperty.description);
-
-    template.ui = CedarTemplateUI.fromNode(ReaderUtil.getNode(templateSourceObject, CedarModel.ui));
-
-    template.required = CedarTemplateRequiredList.fromList(ReaderUtil.getStringList(templateSourceObject, JsonSchema.required));
-
     template.schema_name = ReaderUtil.getString(templateSourceObject, JsonSchema.schemaName);
     template.schema_description = ReaderUtil.getString(templateSourceObject, JsonSchema.schemaDescription);
     template.pav_createdBy = CedarUser.forValue(ReaderUtil.getString(templateSourceObject, JsonSchema.pavCreatedBy));
@@ -66,7 +56,6 @@ export class JSONTemplateReader {
     template.oslc_modifiedBy = CedarUser.forValue(ReaderUtil.getString(templateSourceObject, JsonSchema.oslcModifiedBy));
     template.pav_lastUpdatedOn = CedarDate.forValue(ReaderUtil.getString(templateSourceObject, JsonSchema.pavLastUpdatedOn));
     template.schema_schemaVersion = SchemaVersion.forValue(ReaderUtil.getString(templateSourceObject, JsonSchema.schemaVersion));
-
     template.pav_version = PavVersion.forValue(ReaderUtil.getString(templateSourceObject, JsonSchema.pavVersion));
     template.bibo_status = BiboStatus.forValue(ReaderUtil.getString(templateSourceObject, JsonSchema.biboStatus));
   }
@@ -77,20 +66,20 @@ export class JSONTemplateReader {
       parsingResult,
       CedarArtifactType.TEMPLATE.getValue(),
       ReaderUtil.getString(templateSourceObject, JsonSchema.atType),
-      JsonSchema.atType,
+      new CedarJsonPath(JsonSchema.atType),
     );
 
     // Read and validate, but do not store top level @context
     const topContextNode: Node = ReaderUtil.getNode(templateSourceObject, JsonSchema.atContext);
     const blueprint = CedarTemplateContent.CONTEXT_VERBATIM;
-    ObjectComparator.compare(parsingResult, blueprint, topContextNode, JsonSchema.atContext);
+    ObjectComparator.compare(parsingResult, blueprint, topContextNode, new CedarJsonPath(JsonSchema.atContext));
 
     // Read and validate, but do not store top level type
     ObjectComparator.comparePrimitive(
       parsingResult,
       JavascriptType.OBJECT.getValue(),
       ReaderUtil.getString(templateSourceObject, CedarModel.type),
-      CedarModel.type,
+      new CedarJsonPath(CedarModel.type),
     );
 
     // Read and validate, but do not store top level additionalProperties
@@ -98,7 +87,7 @@ export class JSONTemplateReader {
       parsingResult,
       false,
       ReaderUtil.getBoolean(templateSourceObject, TemplateProperty.additionalProperties),
-      TemplateProperty.additionalProperties,
+      new CedarJsonPath(TemplateProperty.additionalProperties),
     );
 
     // Read and validate, but do not store top level $schema
@@ -106,11 +95,11 @@ export class JSONTemplateReader {
       parsingResult,
       CedarSchema.CURRENT.getValue(),
       ReaderUtil.getString(templateSourceObject, CedarModel.schema),
-      CedarModel.schema,
+      new CedarJsonPath(CedarModel.schema),
     );
   }
 
-  private static readAndValidateChildrenInfo(templateSourceObject: Node, parsingResult: ParsingResult) {
+  private static readAndValidateChildrenInfo(template: CedarTemplate, templateSourceObject: Node, parsingResult: ParsingResult) {
     const templateRequired: Array<string> = ReaderUtil.getStringList(templateSourceObject, JsonSchema.required);
     const templateProperties: Node = ReaderUtil.getNode(templateSourceObject, JsonSchema.properties);
 
@@ -123,7 +112,9 @@ export class JSONTemplateReader {
     // Check if all the keys of the "required" blueprint are present in the template's "required"
     for (const key of CedarTemplateContent.REQUIRED_PARTIAL) {
       if (!templateRequiredMap.has(key)) {
-        parsingResult.addBlueprintComparisonError(new ComparisonError('missingKeyInRealObject', JsonSchema.required, key));
+        parsingResult.addBlueprintComparisonError(
+          new ComparisonError('missingKeyInRealObject', new CedarJsonPath(JsonSchema.required), key),
+        );
       }
     }
 
@@ -140,7 +131,7 @@ export class JSONTemplateReader {
           parsingResult.addBlueprintComparisonError(
             new ComparisonError(
               'missingKeyInRealObject',
-              JsonSchema.properties + '.' + JsonSchema.required + '.' + key + '.' + JsonSchema.atType,
+              new CedarJsonPath(JsonSchema.properties, JsonSchema.required, key, JsonSchema.atType),
             ),
           );
         }
@@ -151,7 +142,9 @@ export class JSONTemplateReader {
     for (const childInfo of candidateChildrenInfo.children) {
       if (childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD) {
         if (!templateRequiredMap.has(childInfo.name)) {
-          parsingResult.addBlueprintComparisonError(new ComparisonError('missingKeyInRealObject', JsonSchema.required, childInfo.name));
+          parsingResult.addBlueprintComparisonError(
+            new ComparisonError('missingKeyInRealObject', new CedarJsonPath(JsonSchema.required), childInfo.name),
+          );
         }
       }
     }
@@ -159,7 +152,9 @@ export class JSONTemplateReader {
     // Check if "required" contains extra nodes (not in blueprint, not in children name list)
     for (const key of templateRequired) {
       if (!CedarTemplateContent.REQUIRED_PARTIAL_KEY_MAP.has(key) && !candidateChildrenInfo.has(key)) {
-        parsingResult.addBlueprintComparisonError(new ComparisonError('unexpectedKeyInRealObject', JsonSchema.required, key));
+        parsingResult.addBlueprintComparisonError(
+          new ComparisonError('unexpectedKeyInRealObject', new CedarJsonPath(JsonSchema.required), key),
+        );
       }
     }
 
@@ -169,7 +164,7 @@ export class JSONTemplateReader {
     for (const childInfo of candidateChildrenInfo.children) {
       if (templateUIPLabels === null || !templateUIPLabels.has(childInfo.name)) {
         parsingResult.addBlueprintComparisonError(
-          new ComparisonError('missingKeyInRealObject', CedarModel.ui + '.' + CedarModel.propertyLabels, childInfo.name),
+          new ComparisonError('missingKeyInRealObject', new CedarJsonPath(CedarModel.ui, CedarModel.propertyLabels), childInfo.name),
         );
       } else {
         childInfo.label = templateUIPLabels.get(childInfo.name) ?? null;
@@ -181,7 +176,7 @@ export class JSONTemplateReader {
     for (const childInfo of candidateChildrenInfo.children) {
       if (templateUIPDescriptions === null || !templateUIPDescriptions.has(childInfo.name)) {
         parsingResult.addBlueprintComparisonError(
-          new ComparisonError('missingKeyInRealObject', CedarModel.ui + '.' + CedarModel.propertyDescriptions, childInfo.name),
+          new ComparisonError('missingKeyInRealObject', new CedarJsonPath(CedarModel.ui, CedarModel.propertyDescriptions), childInfo.name),
         );
       } else {
         childInfo.description = templateUIPDescriptions.get(childInfo.name) ?? null;
@@ -201,18 +196,7 @@ export class JSONTemplateReader {
           parsingResult.addBlueprintComparisonError(
             new ComparisonError(
               'missingKeyInRealObject',
-              JsonSchema.properties +
-                '.' +
-                JsonSchema.atContext +
-                '.' +
-                JsonSchema.properties +
-                '.' +
-                childInfo.name +
-                '.' +
-                JsonSchema.enum +
-                '.' +
-                [0],
-              childInfo.name,
+              new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.properties, childInfo.name, JsonSchema.enum, 0),
             ),
           );
         } else {
@@ -221,14 +205,29 @@ export class JSONTemplateReader {
       }
     }
 
+    // TODO : validate some more
     // Validate properties
-    // properties should have extra entry for Fields/Elements as definition
-    // properties/context/properties should have extra entry for Fields/Elements as IRI mappings
-    // all other countent should match verbatim
+    // 'properties' should have extra entry for Fields/Elements as definition
+    // 'properties/context/properties' should have extra entry for Fields/Elements as IRI mappings
+    // all other content should match verbatim
 
-    // Generate child info, based on the order and content of _ui/order. Disregard candidates not present in _ui/order
+    // Generate final child info, based on the order and content of _ui/order. Disregard candidates not present in _ui/order
     // Children present in the "order" but not as real child will be disregarded with a validation error
+    const templateUIOrder = ReaderUtil.getStringList(templateUI, CedarModel.order);
+    const finalChildrenInfo = new CedarContainerChildrenInfo();
+    for (const key of templateUIOrder) {
+      const candidate = candidateChildrenInfo.get(key);
+      if (candidate !== null && candidate !== undefined) {
+        finalChildrenInfo.add(candidate);
+      } else {
+        parsingResult.addBlueprintComparisonError(
+          new ComparisonError('unexpectedKeyInRealObject', new CedarJsonPath(CedarModel.ui, CedarModel.order), null, key),
+        );
+      }
+    }
 
-    console.log('childrenInfo', JSON.stringify(candidateChildrenInfo, null, 2));
+    template.childrenInfo = finalChildrenInfo;
+
+    // TODO: parse children
   }
 }

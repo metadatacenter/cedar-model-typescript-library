@@ -32,8 +32,8 @@
   "_ui": {
     "pages": [],
     "order": [
-      "TextfieldOrder",
-      "TextFieldNonExistent"
+      "TextfieldChild",
+      "TextfieldOrder"
     ],
     "propertyLabels": {
       "TextfieldLabel": "Textfield"

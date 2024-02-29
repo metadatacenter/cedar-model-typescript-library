@@ -1,6 +1,6 @@
 import { SchemaVersion, SchemaVersionValues } from './SchemaVersion';
 
-test('creates cyrrent version', () => {
+test('creates current version', () => {
   const unknown = SchemaVersion.forValue(SchemaVersionValues.CURRENT);
   expect(unknown).not.toBeNull();
   expect(unknown.getValue()).toBe('1.6.0');

@@ -39,13 +39,28 @@ export class ReaderUtil {
       const entries: [string, string][] = Object.entries(obj as Record<string, string>);
       const map: Map<string, string> = new Map<string, string>();
       for (const [k, v] of entries) {
-        if (typeof v === 'string') {
-          map.set(k, v);
-        }
+        map.set(k, v);
       }
       return map;
     } else {
       return new Map();
     }
+  }
+
+  public static deepClone(obj: object) {
+    return JSON.parse(JSON.stringify(obj));
+  }
+
+  public static deepFreeze(object: any) {
+    Object.freeze(object);
+    Object.getOwnPropertyNames(object).forEach((prop) => {
+      if (
+        object[prop] !== null &&
+        (typeof object[prop] === 'object' || typeof object[prop] === 'function') &&
+        !Object.isFrozen(object[prop])
+      ) {
+        this.deepFreeze(object[prop]);
+      }
+    });
   }
 }

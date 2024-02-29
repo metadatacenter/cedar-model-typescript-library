@@ -29,4 +29,7 @@ export class CedarJsonPath {
     });
     return result + '/';
   }
+  toJSON() {
+    return this.toString();
+  }
 }

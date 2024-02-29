@@ -238,6 +238,7 @@ export class JSONTemplateReader {
         );
       }
     }
+
     // Children present in the 'properties' but not in the 'order' will also result in error
     for (const childInfo of candidateChildrenInfo.children) {
       if (!templateUIOrder.includes(childInfo.name)) {

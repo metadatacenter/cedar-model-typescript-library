@@ -57,7 +57,35 @@ export class CedarTemplateFieldContent {
     '@value': {
       type: ['string', 'null'],
     },
+    '@language': { type: ['string', 'null'], minLength: 1 },
+  };
+
+  // This is a verbatim representation for regular fields
+  public static PROPERTIES_VERBATIM_CONTROLLED = {
+    '@type': {
+      oneOf: [
+        {
+          type: 'string',
+          format: 'uri',
+        },
+        {
+          type: 'array',
+          minItems: 1,
+          items: {
+            type: 'string',
+            format: 'uri',
+          },
+          uniqueItems: true,
+        },
+      ],
+    },
+    '@value': {
+      type: ['string', 'null'],
+    },
     'rdfs:label': {
+      type: ['string', 'null'],
+    },
+    'skos:notation': {
       type: ['string', 'null'],
     },
   };
@@ -87,6 +115,9 @@ export class CedarTemplateFieldContent {
     '@id': {
       type: 'string',
       format: 'uri',
+    },
+    'skos:notation': {
+      type: ['string', 'null'],
     },
   };
 

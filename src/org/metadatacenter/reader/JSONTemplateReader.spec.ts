@@ -37,6 +37,16 @@ describe('JSONTemplateReader', () => {
     expect(jsonTemplateReaderResult).not.toBeNull();
     const parsingResult = jsonTemplateReaderResult.parsingResult;
     expect(parsingResult.wasSuccessful()).toBe(true);
+    // console.log(jsonTemplateReaderResult.template);
+    // console.log(jsonTemplateReaderResult.template.asCedarTemplateString());
+    // const pr = new ParsingResult();
+    // ObjectComparator.compare(
+    //   pr,
+    //   (global as any).templateObject002,
+    //   jsonTemplateReaderResult.template.asCedarTemplateObject() as Node,
+    //   new CedarJsonPath(),
+    // );
+    // console.log(JSON.stringify(pr, null, 2));
   });
 
   test('reads very simple template as object, with various mismatches', () => {
@@ -96,6 +106,7 @@ describe('JSONTemplateReader', () => {
       null,
     );
     expect(parsingResult.getBlueprintComparisonErrors()).toContainEqual(uiOrderMissing);
+    //console.log(JSON.stringify(parsingResult, null, 2));
   });
 
   test('reads template with static fields', () => {

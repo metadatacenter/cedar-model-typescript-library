@@ -8,5 +8,6 @@ npm test
 
 ## Run executable
 ```typescript
+npx ts-node src/compare002.ts
 npx ts-node src/read004.ts
 ```

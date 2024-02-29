@@ -12,4 +12,4 @@ console.log(templateSource004);
 const jsonTemplateReaderResult = JSONTemplateReader.readFromString(templateSource004);
 
 console.log('--------------------- parsed JSON string:');
-console.log(jsonTemplateReaderResult.template.asCedarTemplateString());
+console.log(jsonTemplateReaderResult.template.asCedarTemplateJSONString());

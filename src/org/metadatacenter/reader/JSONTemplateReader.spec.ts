@@ -4,6 +4,9 @@ import { CedarJsonPath } from '../model/cedar/path/CedarJsonPath';
 import { JsonSchema } from '../model/cedar/constants/JsonSchema';
 import { ComparisonErrorType } from '../model/cedar/compare/ComparisonErrorType';
 import { CedarModel } from '../model/cedar/CedarModel';
+import { ParsingResult } from '../model/cedar/compare/ParsingResult';
+import { ObjectComparator } from '../model/cedar/compare/ObjectComparator';
+import { Node } from '../model/cedar/types/Node';
 
 describe('JSONTemplateReader', () => {
   test('reads empty template as string, should be not null', () => {
@@ -38,15 +41,16 @@ describe('JSONTemplateReader', () => {
     const parsingResult = jsonTemplateReaderResult.parsingResult;
     expect(parsingResult.wasSuccessful()).toBe(true);
     // console.log(jsonTemplateReaderResult.template);
-    // console.log(jsonTemplateReaderResult.template.asCedarTemplateString());
+    // console.log(jsonTemplateReaderResult.template.asCedarTemplateJSONString());
     // const pr = new ParsingResult();
     // ObjectComparator.compare(
     //   pr,
     //   (global as any).templateObject002,
-    //   jsonTemplateReaderResult.template.asCedarTemplateObject() as Node,
+    //   jsonTemplateReaderResult.template.asCedarTemplateJSONObject() as Node,
     //   new CedarJsonPath(),
     // );
     // console.log(JSON.stringify(pr, null, 2));
+    // console.log(JSON.stringify(parsingResult.getBlueprintComparisonErrors()));
   });
 
   test('reads very simple template as object, with various mismatches', () => {
@@ -55,7 +59,7 @@ describe('JSONTemplateReader', () => {
     const parsingResult = jsonTemplateReaderResult.parsingResult;
 
     expect(parsingResult.wasSuccessful()).toBe(false);
-    expect(parsingResult.getBlueprintComparisonErrorCount()).toBe(7);
+    expect(parsingResult.getBlueprintComparisonErrorCount()).toBe(9);
 
     const requiredTextfieldChild = new ComparisonError(
       ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
@@ -106,7 +110,21 @@ describe('JSONTemplateReader', () => {
       null,
     );
     expect(parsingResult.getBlueprintComparisonErrors()).toContainEqual(uiOrderMissing);
-    //console.log(JSON.stringify(parsingResult, null, 2));
+
+    const propertiesRdfsMissing = new ComparisonError(
+      ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
+      new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.properties, 'rdfs'),
+    );
+    expect(parsingResult.getBlueprintComparisonErrors()).toContainEqual(propertiesRdfsMissing);
+
+    const propertiesXsdTypeValueMismatch = new ComparisonError(
+      ComparisonErrorType.VALUE_MISMATCH,
+      new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.properties, 'xsd', 'type'),
+      'string',
+      'string--',
+    );
+    expect(parsingResult.getBlueprintComparisonErrors()).toContainEqual(propertiesXsdTypeValueMismatch);
+    // console.log(JSON.stringify(parsingResult.getBlueprintComparisonErrors(), null, 2));
   });
 
   test('reads template with static fields', () => {

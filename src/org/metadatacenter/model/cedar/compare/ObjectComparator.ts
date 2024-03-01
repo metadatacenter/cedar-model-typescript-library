@@ -8,7 +8,7 @@ import { ComparisonErrorType } from './ComparisonErrorType';
 type ComparableObject = Node;
 
 export class ObjectComparator {
-  static compare(
+  static compareBothWays(
     comparisonResult: ParsingResult,
     blueprintObject: ComparableObject,
     realObject: ComparableObject,
@@ -22,6 +22,30 @@ export class ObjectComparator {
         if (!(key in obj1)) {
           comparisonResult.addBlueprintComparisonError(new ComparisonError(ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT, newPath));
         } else if (!(key in obj2)) {
+          comparisonResult.addBlueprintComparisonError(new ComparisonError(ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, newPath));
+        } else if (typeof obj1[key] === 'object' && obj1[key] !== null && typeof obj2[key] === 'object' && obj2[key] !== null) {
+          recurse(newPath, obj1[key] as ComparableObject, obj2[key] as ComparableObject);
+        } else if (obj1[key] !== obj2[key]) {
+          comparisonResult.addBlueprintComparisonError(
+            new ComparisonError(ComparisonErrorType.VALUE_MISMATCH, newPath, obj1[key] as Primitive, obj2[key] as Primitive),
+          );
+        }
+      });
+    }
+
+    recurse(path, blueprintObject, realObject);
+  }
+
+  static compareToLeft(
+    comparisonResult: ParsingResult,
+    blueprintObject: ComparableObject,
+    realObject: ComparableObject,
+    path: CedarJsonPath,
+  ): void {
+    function recurse(currentPath: CedarJsonPath, obj1: ComparableObject, obj2: ComparableObject) {
+      Object.keys(obj1).forEach((key) => {
+        const newPath = currentPath.add(key);
+        if (!(key in obj2)) {
           comparisonResult.addBlueprintComparisonError(new ComparisonError(ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, newPath));
         } else if (typeof obj1[key] === 'object' && obj1[key] !== null && typeof obj2[key] === 'object' && obj2[key] !== null) {
           recurse(newPath, obj1[key] as ComparableObject, obj2[key] as ComparableObject);

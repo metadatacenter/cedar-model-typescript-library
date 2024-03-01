@@ -73,7 +73,7 @@ export class JSONTemplateReader {
     // Read and validate, but do not store top level @context
     const topContextNode: Node = ReaderUtil.getNode(templateSourceObject, JsonSchema.atContext);
     const blueprint = CedarTemplateContent.CONTEXT_VERBATIM;
-    ObjectComparator.compare(parsingResult, blueprint, topContextNode, new CedarJsonPath(JsonSchema.atContext));
+    ObjectComparator.compareBothWays(parsingResult, blueprint, topContextNode, new CedarJsonPath(JsonSchema.atContext));
 
     // Read and validate, but do not store top level type
     ObjectComparator.comparePrimitive(
@@ -103,6 +103,10 @@ export class JSONTemplateReader {
   private static readAndValidateChildrenInfo(template: CedarTemplate, templateSourceObject: Node, parsingResult: ParsingResult) {
     const templateRequired: Array<string> = ReaderUtil.getStringList(templateSourceObject, JsonSchema.required);
     const templateProperties: Node = ReaderUtil.getNode(templateSourceObject, JsonSchema.properties);
+
+    // Validate properties
+    const blueprint = CedarTemplateContent.PROPERTIES_PARTIAL;
+    ObjectComparator.compareToLeft(parsingResult, blueprint, templateProperties, new CedarJsonPath(JsonSchema.properties));
 
     // Generate a map of the "required" list for caching reasons
     const templateRequiredMap: Map<string, boolean> = templateRequired.reduce((acc, current) => {

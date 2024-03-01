@@ -16,5 +16,5 @@ const jsonTemplateReaderResult = JSONTemplateReader.readFromObject(templateObjec
 const parsed = jsonTemplateReaderResult.template.asCedarTemplateJSONObject();
 
 const parsingResult = new ParsingResult();
-ObjectComparator.compare(parsingResult, templateObject002, parsed as Node, new CedarJsonPath());
+ObjectComparator.compareBothWays(parsingResult, templateObject002, parsed as Node, new CedarJsonPath());
 console.log(JSON.stringify(parsingResult, null, 2));

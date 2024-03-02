@@ -1,7 +1,7 @@
 import { JSONTemplateReader } from './org/metadatacenter/reader/JSONTemplateReader';
 import * as fs from 'fs';
 import * as path from 'path';
-import { SimpleYamlSerializer } from './org/metadatacenter/model/cedar/yaml/SimpleYamlSerializer';
+import { SimpleYamlSerializer } from './org/metadatacenter/model/cedar/util/yaml/SimpleYamlSerializer';
 
 const filePath04 = path.join(__dirname, '../test/templates/template-004.json');
 

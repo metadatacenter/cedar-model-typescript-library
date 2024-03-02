@@ -10,12 +10,11 @@ import { CedarModel } from '../CedarModel';
 import { CedarSchema } from '../beans/CedarSchema';
 import { PavVersion } from '../beans/PavVersion';
 import { CedarArtifactId } from '../beans/CedarArtifactId';
-import { CedarTemplateContent } from '../util/serialization/CedarTemplateContent';
-import { CedarContainerChildrenInfo } from '../beans/CedarContainerChildrenInfo';
-import { ReaderUtil } from '../../../reader/ReaderUtil';
-import { CedarTemplateChild } from '../util/types/CedarTemplateChild';
+import { CedarTemplateFieldContent } from '../util/serialization/CedarTemplateFieldContent';
+import { ValueConstraints } from './ValueConstraints';
+import { CedarFieldType } from '../beans/CedarFieldType';
 
-export class CedarTemplate {
+export abstract class CedarField {
   public at_id: CedarArtifactId = CedarArtifactId.NULL;
   public title: string | null = null;
   public description: string | null = null;
@@ -28,64 +27,46 @@ export class CedarTemplate {
   public schema_schemaVersion: SchemaVersion = SchemaVersion.NULL;
   public pav_version: PavVersion = PavVersion.NULL;
   public bibo_status: BiboStatus = BiboStatus.NULL;
-  public childrenInfo: CedarContainerChildrenInfo = new CedarContainerChildrenInfo();
-  public children: Array<CedarTemplateChild> = [];
+  public skos_altLabel: Array<string> | null = null;
+  public skos_prefLabel: string | null = null;
 
-  private constructor() {}
+  public uiInputType: string | null = null;
+  public valueConstraints: ValueConstraints = new ValueConstraints();
+  public cedarFieldType: CedarFieldType = CedarFieldType.NULL;
 
-  public static buildEmptyWithNullValues(): CedarTemplate {
-    return new CedarTemplate();
-  }
+  constructor() {}
 
-  public static buildEmptyWithDefaultValues(): CedarTemplate {
-    const r = new CedarTemplate();
-    r.schema_schemaVersion = SchemaVersion.CURRENT;
-    r.bibo_status = BiboStatus.DRAFT;
-    r.pav_version = PavVersion.DEFAULT;
-    return r;
-  }
+  abstract getValueRecommendationEnabled(): boolean;
 
   /**
    * Do not use directly, it will not produce the expected result
-   * Use asCedarTemplateString(indent) or asCedarTemplateObject() instead
+   * Use asCedarFieldString(indent) or asCedarFieldObject() instead
    * Will be used by JSON.stringify
    */
   private toJSON() {
-    // clone, because we will need to modify deep content
-    const properties = ReaderUtil.deepClone(CedarTemplateContent.PROPERTIES_PARTIAL);
+    // TODO: include properties based on uiInputType
+    const typeSpecificProperties = CedarTemplateFieldContent.PROPERTIES_VERBATIM_LITERAL;
 
-    // Include the IRI mapping
-    properties[JsonSchema.atContext][JsonSchema.properties] = {
-      ...properties[JsonSchema.atContext][JsonSchema.properties],
-      ...this.childrenInfo.getNonStaticIRIMap(),
+    const uiObject: { [key: string]: string | boolean | null | any[] } = {
+      [CedarModel.inputType]: this.uiInputType,
     };
 
-    properties[JsonSchema.atContext][JsonSchema.required] = [
-      ...properties[JsonSchema.atContext][JsonSchema.required],
-      ...this.childrenInfo.getChildrenNames(),
-    ];
-
-    // include the field/element definitions
-    const extendedProperties = {
-      ...properties,
-      ...this.getChildMap(),
-    };
+    if (this.getValueRecommendationEnabled()) {
+      uiObject[CedarModel.valueRecommendationEnabled] = this.getValueRecommendationEnabled();
+    }
 
     // build the final object
     return {
       [JsonSchema.atId]: this.at_id,
-      [JsonSchema.atType]: CedarArtifactType.TEMPLATE,
-      [JsonSchema.atContext]: CedarTemplateContent.CONTEXT_VERBATIM,
+      [JsonSchema.atType]: CedarArtifactType.TEMPLATE_FIELD,
+      [JsonSchema.atContext]: CedarTemplateFieldContent.CONTEXT_VERBATIM,
       [CedarModel.type]: JavascriptType.OBJECT,
       [TemplateProperty.title]: this.title,
       [TemplateProperty.description]: this.description,
-      [CedarModel.ui]: {
-        [CedarModel.order]: this.childrenInfo.getChildrenNames(),
-        [CedarModel.propertyLabels]: this.childrenInfo.getPropertyLabelMap(),
-        [CedarModel.propertyDescriptions]: this.childrenInfo.getPropertyDescriptionMap(),
-      },
-      [JsonSchema.properties]: extendedProperties,
-      [JsonSchema.required]: [...CedarTemplateContent.REQUIRED_PARTIAL, ...this.childrenInfo.getNonStaticChildrenNames()],
+      [CedarModel.ui]: uiObject,
+      [CedarModel.valueConstraints]: this.valueConstraints,
+      [JsonSchema.properties]: typeSpecificProperties,
+      [JsonSchema.required]: [JsonSchema.atValue], // TODO: this might be dependent on uiInputType
       [JsonSchema.schemaName]: this.schema_name,
       [JsonSchema.schemaDescription]: this.schema_description,
       [JsonSchema.pavCreatedOn]: this.pav_createdOn,
@@ -97,24 +78,28 @@ export class CedarTemplate {
       [JsonSchema.pavVersion]: this.pav_version,
       [JsonSchema.biboStatus]: this.bibo_status,
       [CedarModel.schema]: CedarSchema.CURRENT,
+      [CedarModel.skosAltLabel]: this.skos_altLabel,
+      [CedarModel.skosPrefLabel]: this.skos_prefLabel,
     };
   }
 
-  public asCedarTemplateJSONObject(): object {
+  public asCedarTemplateFieldJSONObject(): object {
     return JSON.parse(JSON.stringify(this));
   }
 
-  public asCedarTemplateJSONString(indent: number = 2): string {
+  public asCedarTemplateFieldJSONString(indent: number = 2): string {
     return JSON.stringify(this, null, indent);
   }
 
-  public asCedarTemplateYamlObject(): object {
+  public asCedarTemplateFieldYamlObject(): object {
     // build the final object
     return {
       id: this.at_id.toJSON(),
-      type: CedarArtifactType.TEMPLATE.toJSON(),
+      type: CedarArtifactType.TEMPLATE_FIELD.toJSON(),
       [TemplateProperty.title]: this.title,
       [TemplateProperty.description]: this.description,
+      [CedarModel.inputType]: this.uiInputType,
+      [CedarModel.valueConstraints]: this.valueConstraints,
       [JsonSchema.schemaName]: this.schema_name,
       [JsonSchema.schemaDescription]: this.schema_description,
       [JsonSchema.pavCreatedOn]: this.pav_createdOn?.toJSON(),
@@ -124,25 +109,8 @@ export class CedarTemplate {
       [JsonSchema.schemaVersion]: this.schema_schemaVersion.toJSON(),
       [JsonSchema.pavVersion]: this.pav_version.toJSON(),
       [JsonSchema.biboStatus]: this.bibo_status.toJSON(),
-      [CedarModel.propertyLabels]: this.childrenInfo.getPropertyLabelMap(),
-      [CedarModel.propertyDescriptions]: this.childrenInfo.getPropertyDescriptionMap(),
-      children: this.childrenInfo.getChildrenDefinitions(),
+      [CedarModel.skosAltLabel]: this.skos_altLabel,
+      [CedarModel.skosPrefLabel]: this.skos_prefLabel,
     };
-  }
-
-  addChild(templateChild: CedarTemplateChild): void {
-    this.children.push(templateChild);
-  }
-
-  private getChildMap(): { [key: string]: CedarTemplateChild } {
-    const childMap: { [key: string]: CedarTemplateChild } = {};
-
-    this.children.forEach((child) => {
-      if (child.schema_name) {
-        childMap[child.schema_name] = child;
-      }
-    });
-
-    return childMap;
   }
 }

@@ -1,5 +1,5 @@
 import { CedarContainerChildInfo } from './CedarContainerChildInfo';
-import { CedarArtifactType } from './CedarArtifactTypeValue';
+import { CedarArtifactType } from './CedarArtifactType';
 import { JsonSchema } from '../constants/JsonSchema';
 
 export class CedarContainerChildrenInfo {

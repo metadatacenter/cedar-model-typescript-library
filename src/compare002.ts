@@ -1,10 +1,10 @@
 import { JSONTemplateReader } from './org/metadatacenter/reader/JSONTemplateReader';
 import * as fs from 'fs';
 import * as path from 'path';
-import { ObjectComparator } from './org/metadatacenter/model/cedar/compare/ObjectComparator';
-import { ParsingResult } from './org/metadatacenter/model/cedar/compare/ParsingResult';
-import { CedarJsonPath } from './org/metadatacenter/model/cedar/path/CedarJsonPath';
-import { Node } from './org/metadatacenter/model/cedar/types/Node';
+import { ObjectComparator } from './org/metadatacenter/model/cedar/util/compare/ObjectComparator';
+import { ParsingResult } from './org/metadatacenter/model/cedar/util/compare/ParsingResult';
+import { CedarJsonPath } from './org/metadatacenter/model/cedar/util/path/CedarJsonPath';
+import { Node } from './org/metadatacenter/model/cedar/util/types/Node';
 
 const filePath02 = path.join(__dirname, '../test/templates/template-002.json');
 

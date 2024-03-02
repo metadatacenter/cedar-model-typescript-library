@@ -2,7 +2,7 @@ import { CedarTemplate } from '../model/cedar/template/CedarTemplate';
 import { CedarSchema } from '../model/cedar/beans/CedarSchema';
 import { CedarModel } from '../model/cedar/CedarModel';
 import { JsonSchema } from '../model/cedar/constants/JsonSchema';
-import { CedarArtifactType } from '../model/cedar/beans/CedarArtifactTypeValue';
+import { CedarArtifactType } from '../model/cedar/beans/CedarArtifactType';
 import { JavascriptType } from '../model/cedar/beans/JavascriptType';
 import { TemplateProperty } from '../model/cedar/constants/TemplateProperty';
 import { CedarUser } from '../model/cedar/beans/CedarUser';
@@ -10,18 +10,19 @@ import { CedarDate } from '../model/cedar/beans/CedarDate';
 import { SchemaVersion } from '../model/cedar/beans/SchemaVersion';
 import { BiboStatus } from '../model/cedar/beans/BiboStatus';
 import { ReaderUtil } from './ReaderUtil';
-import { Node } from '../model/cedar/types/Node';
+import { Node } from '../model/cedar/util/types/Node';
 import { PavVersion } from '../model/cedar/beans/PavVersion';
 import { CedarArtifactId } from '../model/cedar/beans/CedarArtifactId';
-import { CedarTemplateContent } from '../model/cedar/serialization/CedarTemplateContent';
-import { ObjectComparator } from '../model/cedar/compare/ObjectComparator';
-import { ParsingResult } from '../model/cedar/compare/ParsingResult';
+import { CedarTemplateContent } from '../model/cedar/util/serialization/CedarTemplateContent';
+import { ObjectComparator } from '../model/cedar/util/compare/ObjectComparator';
+import { ParsingResult } from '../model/cedar/util/compare/ParsingResult';
 import { JSONTemplateReaderResult } from './JSONTemplateReaderResult';
-import { ComparisonError } from '../model/cedar/compare/ComparisonError';
+import { ComparisonError } from '../model/cedar/util/compare/ComparisonError';
 import { CedarContainerChildInfo } from '../model/cedar/beans/CedarContainerChildInfo';
 import { CedarContainerChildrenInfo } from '../model/cedar/beans/CedarContainerChildrenInfo';
-import { CedarJsonPath } from '../model/cedar/path/CedarJsonPath';
-import { ComparisonErrorType } from '../model/cedar/compare/ComparisonErrorType';
+import { CedarJsonPath } from '../model/cedar/util/path/CedarJsonPath';
+import { ComparisonErrorType } from '../model/cedar/util/compare/ComparisonErrorType';
+import { JSONFieldReader } from './JSONFieldReader';
 
 export class JSONTemplateReader {
   static readFromString(templateSourceString: string): JSONTemplateReaderResult {
@@ -105,6 +106,9 @@ export class JSONTemplateReader {
     const templateProperties: Node = ReaderUtil.getNode(templateSourceObject, JsonSchema.properties);
 
     // Validate properties
+    // 'properties' should have extra entry for Fields/Elements as definition
+    // 'properties/context/properties' should have extra entry for Fields/Elements as IRI mappings
+    // all other content should match verbatim
     const blueprint = CedarTemplateContent.PROPERTIES_PARTIAL;
     ObjectComparator.compareToLeft(parsingResult, blueprint, templateProperties, new CedarJsonPath(JsonSchema.properties));
 
@@ -196,8 +200,6 @@ export class JSONTemplateReader {
       }
     }
 
-    // Check if _ui/order, _ui/propertyLabels, _ui/propertyDescriptions matches the candidate children list
-
     // Get the IRI mappings
     const templatePropertiesContext: Node = ReaderUtil.getNode(templateProperties, JsonSchema.atContext);
     const templateIRIMap: Node = ReaderUtil.getNode(templatePropertiesContext, JsonSchema.properties);
@@ -217,12 +219,6 @@ export class JSONTemplateReader {
         }
       }
     }
-
-    // TODO : validate some more
-    // Validate properties
-    // 'properties' should have extra entry for Fields/Elements as definition
-    // 'properties/context/properties' should have extra entry for Fields/Elements as IRI mappings
-    // all other content should match verbatim
 
     // Generate final child info, based on the order and content of _ui/order. Disregard candidates not present in _ui/order with an error
     const templateUIOrder = ReaderUtil.getStringList(templateUI, CedarModel.order);
@@ -256,9 +252,18 @@ export class JSONTemplateReader {
         );
       }
     }
-
     template.childrenInfo = finalChildrenInfo;
 
-    // TODO: parse children
+    // Parse children
+    // TODO: handle elements, generalize this code, since it will be used in templates and elements as well
+    for (const childInfo of finalChildrenInfo.children) {
+      const childDefinition: Node = ReaderUtil.getNode(templateProperties, childInfo.name);
+      const cedarField = JSONFieldReader.readFromObject(
+        childDefinition,
+        parsingResult,
+        new CedarJsonPath(JsonSchema.properties, childInfo.name),
+      );
+      template.addChild(cedarField);
+    }
   }
 }

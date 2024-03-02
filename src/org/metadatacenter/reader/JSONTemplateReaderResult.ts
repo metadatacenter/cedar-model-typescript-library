@@ -1,5 +1,5 @@
 import { CedarTemplate } from '../model/cedar/template/CedarTemplate';
-import { ParsingResult } from '../model/cedar/compare/ParsingResult';
+import { ParsingResult } from '../model/cedar/util/compare/ParsingResult';
 
 export class JSONTemplateReaderResult {
   private readonly _template: CedarTemplate;

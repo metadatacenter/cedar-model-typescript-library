@@ -1,12 +1,13 @@
 import { JSONTemplateReader } from './JSONTemplateReader';
-import { ComparisonError } from '../model/cedar/compare/ComparisonError';
-import { CedarJsonPath } from '../model/cedar/path/CedarJsonPath';
+import { ComparisonError } from '../model/cedar/util/compare/ComparisonError';
+import { CedarJsonPath } from '../model/cedar/util/path/CedarJsonPath';
 import { JsonSchema } from '../model/cedar/constants/JsonSchema';
-import { ComparisonErrorType } from '../model/cedar/compare/ComparisonErrorType';
+import { ComparisonErrorType } from '../model/cedar/util/compare/ComparisonErrorType';
 import { CedarModel } from '../model/cedar/CedarModel';
-import { ParsingResult } from '../model/cedar/compare/ParsingResult';
-import { ObjectComparator } from '../model/cedar/compare/ObjectComparator';
-import { Node } from '../model/cedar/types/Node';
+import { ParsingResult } from '../model/cedar/util/compare/ParsingResult';
+import { ObjectComparator } from '../model/cedar/util/compare/ObjectComparator';
+import { Node } from '../model/cedar/util/types/Node';
+import { Util } from '../model/cedar/util/Util';
 
 describe('JSONTemplateReader', () => {
   test('reads empty template as string, should be not null', () => {
@@ -42,13 +43,14 @@ describe('JSONTemplateReader', () => {
     expect(parsingResult.wasSuccessful()).toBe(true);
     // console.log(jsonTemplateReaderResult.template);
     // console.log(jsonTemplateReaderResult.template.asCedarTemplateJSONString());
-    // const pr = new ParsingResult();
-    // ObjectComparator.compare(
-    //   pr,
-    //   (global as any).templateObject002,
-    //   jsonTemplateReaderResult.template.asCedarTemplateJSONObject() as Node,
-    //   new CedarJsonPath(),
-    // );
+    // console.log(jsonTemplateReaderResult.template.asCedarTemplateJSONString());
+    const pr = new ParsingResult();
+    ObjectComparator.compareBothWays(
+      pr,
+      (global as any).templateObject002,
+      jsonTemplateReaderResult.template.asCedarTemplateJSONObject() as Node,
+      new CedarJsonPath(),
+    );
     // console.log(JSON.stringify(pr, null, 2));
     // console.log(JSON.stringify(parsingResult.getBlueprintComparisonErrors()));
   });
@@ -131,6 +133,27 @@ describe('JSONTemplateReader', () => {
     const jsonTemplateReaderResult = JSONTemplateReader.readFromObject((global as any).templateObject004);
     expect(jsonTemplateReaderResult).not.toBeNull();
     const parsingResult = jsonTemplateReaderResult.parsingResult;
+    Util.p(parsingResult);
     expect(parsingResult.wasSuccessful()).toBe(true);
+  });
+
+  test('reads template with field with all things set, after save', () => {
+    const jsonTemplateReaderResult = JSONTemplateReader.readFromObject((global as any).templateObject008);
+    expect(jsonTemplateReaderResult).not.toBeNull();
+    const parsingResult = jsonTemplateReaderResult.parsingResult;
+    expect(parsingResult.wasSuccessful()).toBe(true);
+    // console.log(jsonTemplateReaderResult.template);
+    // console.log(jsonTemplateReaderResult.template.asCedarTemplateJSONString());
+    // console.log(jsonTemplateReaderResult.template.asCedarTemplateJSONString());
+    const pr = new ParsingResult();
+    ObjectComparator.compareBothWays(
+      pr,
+      (global as any).templateObject008,
+      jsonTemplateReaderResult.template.asCedarTemplateJSONObject() as Node,
+      new CedarJsonPath(),
+    );
+    // console.log(JSON.stringify(pr, null, 2));
+    // console.log(JSON.stringify(parsingResult.getBlueprintComparisonErrors(), null, 2));
+    // console.log(JSON.stringify(parsingResult.getBlueprintComparisonErrors()));
   });
 });

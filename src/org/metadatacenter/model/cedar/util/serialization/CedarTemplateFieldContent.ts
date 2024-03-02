@@ -1,4 +1,4 @@
-import { ReaderUtil } from '../../../reader/ReaderUtil';
+import { ReaderUtil } from '../../../../reader/ReaderUtil';
 
 export class CedarTemplateFieldContent {
   // This is a verbatim representation
@@ -58,6 +58,9 @@ export class CedarTemplateFieldContent {
       type: ['string', 'null'],
     },
     '@language': { type: ['string', 'null'], minLength: 1 },
+    'rdfs:label': {
+      type: ['string', 'null'],
+    },
   };
 
   // This is a verbatim representation for regular fields
@@ -109,12 +112,12 @@ export class CedarTemplateFieldContent {
         },
       ],
     },
-    'rdfs:label': {
-      type: ['string', 'null'],
-    },
     '@id': {
       type: 'string',
       format: 'uri',
+    },
+    'rdfs:label': {
+      type: ['string', 'null'],
     },
     'skos:notation': {
       type: ['string', 'null'],

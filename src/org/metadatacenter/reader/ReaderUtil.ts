@@ -1,4 +1,4 @@
-import { Node } from '../model/cedar/types/Node';
+import { Node } from '../model/cedar/util/types/Node';
 
 export class ReaderUtil {
   public static getString(node: Node, key: string): string | null {
@@ -14,6 +14,14 @@ export class ReaderUtil {
       return node[key] as boolean;
     } else {
       return false;
+    }
+  }
+
+  static getNumber(node: Node, key: string): number | null {
+    if (Object.hasOwn(node, key)) {
+      return node[key] as number;
+    } else {
+      return null;
     }
   }
 

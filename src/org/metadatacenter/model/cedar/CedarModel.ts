@@ -22,6 +22,7 @@ export class CedarModel {
   static maxValue = 'maxValue';
   static decimalPlace = 'decimalPlace';
   static content = '_content';
+  static regex = 'regex';
 
   static ontologies = 'ontologies';
   static valueSets = 'valueSets';
@@ -33,9 +34,13 @@ export class CedarModel {
   static label = 'label';
   static selectedByDefault = 'selectedByDefault';
 
-  static skosPrefLabel = 'skos:prefLabel';
   static propertyDescriptions = 'propertyDescriptions';
   static propertyLabels = 'propertyLabels';
+
+  static skosPrefLabel = 'skos:prefLabel';
+  static skosAltLabel = 'skos:altLabel';
+
+  static valueRecommendationEnabled = 'valueRecommendationEnabled';
 
   static format = 'format';
   static enum = 'enum';

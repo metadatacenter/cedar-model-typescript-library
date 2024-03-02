@@ -1,4 +1,4 @@
-import { CedarArtifactType } from './CedarArtifactTypeValue';
+import { CedarArtifactType } from './CedarArtifactType';
 
 export class CedarContainerChildInfo {
   private readonly _name: string;

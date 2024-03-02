@@ -10,12 +10,9 @@ import { CedarModel } from '../CedarModel';
 import { CedarSchema } from '../beans/CedarSchema';
 import { PavVersion } from '../beans/PavVersion';
 import { CedarArtifactId } from '../beans/CedarArtifactId';
-import { CedarTemplateContent } from '../util/serialization/CedarTemplateContent';
-import { CedarContainerChildrenInfo } from '../beans/CedarContainerChildrenInfo';
-import { ReaderUtil } from '../../../reader/ReaderUtil';
-import { CedarTemplateChild } from '../util/types/CedarTemplateChild';
+import { CedarTemplateFieldContent } from '../util/serialization/CedarTemplateFieldContent';
 
-export class CedarTemplate {
+export class CedarElement {
   public at_id: CedarArtifactId = CedarArtifactId.NULL;
   public title: string | null = null;
   public description: string | null = null;
@@ -28,17 +25,15 @@ export class CedarTemplate {
   public schema_schemaVersion: SchemaVersion = SchemaVersion.NULL;
   public pav_version: PavVersion = PavVersion.NULL;
   public bibo_status: BiboStatus = BiboStatus.NULL;
-  public childrenInfo: CedarContainerChildrenInfo = new CedarContainerChildrenInfo();
-  public children: Array<CedarTemplateChild> = [];
 
   private constructor() {}
 
-  public static buildEmptyWithNullValues(): CedarTemplate {
-    return new CedarTemplate();
+  public static buildEmptyWithNullValues(): CedarElement {
+    return new CedarElement();
   }
 
-  public static buildEmptyWithDefaultValues(): CedarTemplate {
-    const r = new CedarTemplate();
+  public static buildEmptyWithDefaultValues(): CedarElement {
+    const r = new CedarElement();
     r.schema_schemaVersion = SchemaVersion.CURRENT;
     r.bibo_status = BiboStatus.DRAFT;
     r.pav_version = PavVersion.DEFAULT;
@@ -47,45 +42,29 @@ export class CedarTemplate {
 
   /**
    * Do not use directly, it will not produce the expected result
-   * Use asCedarTemplateString(indent) or asCedarTemplateObject() instead
+   * Use asCedarFieldString(indent) or asCedarFieldObject() instead
    * Will be used by JSON.stringify
    */
   private toJSON() {
-    // clone, because we will need to modify deep content
-    const properties = ReaderUtil.deepClone(CedarTemplateContent.PROPERTIES_PARTIAL);
-
-    // Include the IRI mapping
-    properties[JsonSchema.atContext][JsonSchema.properties] = {
-      ...properties[JsonSchema.atContext][JsonSchema.properties],
-      ...this.childrenInfo.getNonStaticIRIMap(),
-    };
-
-    properties[JsonSchema.atContext][JsonSchema.required] = [
-      ...properties[JsonSchema.atContext][JsonSchema.required],
-      ...this.childrenInfo.getChildrenNames(),
-    ];
-
-    // include the field/element definitions
-    const extendedProperties = {
-      ...properties,
-      ...this.getChildMap(),
-    };
+    // TODO: include properties based on field type
+    const typeSpecificProperties = CedarTemplateFieldContent.PROPERTIES_VERBATIM_LITERAL;
 
     // build the final object
     return {
       [JsonSchema.atId]: this.at_id,
-      [JsonSchema.atType]: CedarArtifactType.TEMPLATE,
-      [JsonSchema.atContext]: CedarTemplateContent.CONTEXT_VERBATIM,
+      [JsonSchema.atType]: CedarArtifactType.TEMPLATE_ELEMENT,
+      [JsonSchema.atContext]: CedarTemplateFieldContent.CONTEXT_VERBATIM,
       [CedarModel.type]: JavascriptType.OBJECT,
       [TemplateProperty.title]: this.title,
       [TemplateProperty.description]: this.description,
       [CedarModel.ui]: {
-        [CedarModel.order]: this.childrenInfo.getChildrenNames(),
-        [CedarModel.propertyLabels]: this.childrenInfo.getPropertyLabelMap(),
-        [CedarModel.propertyDescriptions]: this.childrenInfo.getPropertyDescriptionMap(),
+        [CedarModel.inputType]: 'INPUT TYPE COMES HERE', // TODO: this is be dependent on type
       },
-      [JsonSchema.properties]: extendedProperties,
-      [JsonSchema.required]: [...CedarTemplateContent.REQUIRED_PARTIAL, ...this.childrenInfo.getNonStaticChildrenNames()],
+      [CedarModel.valueConstraints]: {
+        keys: 'VALUE CONSTRAINTS COME HERE', // TODO: this is be dependent on type
+      },
+      [JsonSchema.properties]: typeSpecificProperties,
+      [JsonSchema.required]: [JsonSchema.atValue], // TODO: this might be dependent on type
       [JsonSchema.schemaName]: this.schema_name,
       [JsonSchema.schemaDescription]: this.schema_description,
       [JsonSchema.pavCreatedOn]: this.pav_createdOn,
@@ -100,19 +79,19 @@ export class CedarTemplate {
     };
   }
 
-  public asCedarTemplateJSONObject(): object {
+  public asCedarTemplateElementJSONObject(): object {
     return JSON.parse(JSON.stringify(this));
   }
 
-  public asCedarTemplateJSONString(indent: number = 2): string {
+  public asCedarTemplateElementJSONString(indent: number = 2): string {
     return JSON.stringify(this, null, indent);
   }
 
-  public asCedarTemplateYamlObject(): object {
+  public asCedarElementFieldYamlObject(): object {
     // build the final object
     return {
       id: this.at_id.toJSON(),
-      type: CedarArtifactType.TEMPLATE.toJSON(),
+      type: CedarArtifactType.TEMPLATE_ELEMENT.toJSON(),
       [TemplateProperty.title]: this.title,
       [TemplateProperty.description]: this.description,
       [JsonSchema.schemaName]: this.schema_name,
@@ -124,25 +103,6 @@ export class CedarTemplate {
       [JsonSchema.schemaVersion]: this.schema_schemaVersion.toJSON(),
       [JsonSchema.pavVersion]: this.pav_version.toJSON(),
       [JsonSchema.biboStatus]: this.bibo_status.toJSON(),
-      [CedarModel.propertyLabels]: this.childrenInfo.getPropertyLabelMap(),
-      [CedarModel.propertyDescriptions]: this.childrenInfo.getPropertyDescriptionMap(),
-      children: this.childrenInfo.getChildrenDefinitions(),
     };
-  }
-
-  addChild(templateChild: CedarTemplateChild): void {
-    this.children.push(templateChild);
-  }
-
-  private getChildMap(): { [key: string]: CedarTemplateChild } {
-    const childMap: { [key: string]: CedarTemplateChild } = {};
-
-    this.children.forEach((child) => {
-      if (child.schema_name) {
-        childMap[child.schema_name] = child;
-      }
-    });
-
-    return childMap;
   }
 }

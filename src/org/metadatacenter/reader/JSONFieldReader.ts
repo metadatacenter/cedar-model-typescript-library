@@ -17,15 +17,21 @@ import { JavascriptType } from '../model/cedar/beans/JavascriptType';
 import { CedarModel } from '../model/cedar/CedarModel';
 import { CedarSchema } from '../model/cedar/beans/CedarSchema';
 import { CedarTemplateFieldContent } from '../model/cedar/util/serialization/CedarTemplateFieldContent';
-import { ValueConstraintsTextField } from '../model/cedar/field/ValueConstraintsTextField';
-import { CedarTextField } from '../model/cedar/field/CedarTextField';
+import { InputType } from '../model/cedar/constants/InputType';
+import { JSONFieldReaderTextField } from './field/JSONFieldReaderTextField';
+import { JSONFieldReaderPageBreak } from './field/JSONFieldReaderPageBreak';
+import { JSONFieldReaderSectionBreak } from './field/JSONFieldReaderSectionBreak';
+import { JSONFieldReaderImage } from './field/JSONFieldReaderImage';
+import { JSONFieldReaderRichText } from './field/JSONFieldReaderRichText';
+import { JSONFieldReaderYoutube } from './field/JSONFieldReaderYoutube';
 
 export class JSONFieldReader {
-  static readFromObject(fieldSourceObject: Node, parsingResult: ParsingResult, path: CedarJsonPath): CedarField {
-    const field: CedarField = this.readFieldSpecificAttributes(fieldSourceObject, parsingResult, path);
-
-    this.readNonReportableAttributes(field, fieldSourceObject);
-    this.readReportableAttributes(field, fieldSourceObject, parsingResult, path);
+  static readFromObject(fieldSourceObject: Node, parsingResult: ParsingResult, path: CedarJsonPath): CedarField | null {
+    const field: CedarField | null = this.readFieldSpecificAttributes(fieldSourceObject, parsingResult, path);
+    if (field != null) {
+      this.readNonReportableAttributes(field, fieldSourceObject);
+      this.readReportableAttributes(field, fieldSourceObject, parsingResult, path);
+    }
 
     return field;
   }
@@ -44,16 +50,11 @@ export class JSONFieldReader {
     field.schema_schemaVersion = SchemaVersion.forValue(ReaderUtil.getString(fieldSourceObject, JsonSchema.schemaVersion));
     field.pav_version = PavVersion.forValue(ReaderUtil.getString(fieldSourceObject, JsonSchema.pavVersion));
     field.bibo_status = BiboStatus.forValue(ReaderUtil.getString(fieldSourceObject, JsonSchema.biboStatus));
+    field.skos_prefLabel = ReaderUtil.getString(fieldSourceObject, CedarModel.skosPrefLabel);
   }
 
   private static readReportableAttributes(field: CedarField, fieldSourceObject: Node, parsingResult: ParsingResult, path: CedarJsonPath) {
     // Read and validate, but do not store top level @type
-    ObjectComparator.comparePrimitive(
-      parsingResult,
-      CedarArtifactType.TEMPLATE_FIELD.getValue(),
-      ReaderUtil.getString(fieldSourceObject, JsonSchema.atType),
-      path.add(JsonSchema.atType),
-    );
 
     // Read and validate, but do not store top level @context
     const topContextNode: Node = ReaderUtil.getNode(fieldSourceObject, JsonSchema.atContext);
@@ -85,27 +86,31 @@ export class JSONFieldReader {
     );
   }
 
-  private static readFieldSpecificAttributes(fieldSourceObject: Node, parsingResult: ParsingResult, path: CedarJsonPath): CedarField {
-    const field = CedarTextField.buildEmptyWithNullValues();
+  private static readFieldSpecificAttributes(
+    fieldSourceObject: Node,
+    parsingResult: ParsingResult,
+    path: CedarJsonPath,
+  ): CedarField | null {
+    const artifactType: CedarArtifactType = CedarArtifactType.forValue(ReaderUtil.getString(fieldSourceObject, JsonSchema.atType));
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
-    field.uiInputType = ReaderUtil.getString(uiNode, CedarModel.inputType);
-    if (field instanceof CedarTextField) {
-      field.valueRecommendationEnabled = ReaderUtil.getBoolean(uiNode, CedarModel.valueRecommendationEnabled);
+    const uiInputType: string | null = ReaderUtil.getString(uiNode, CedarModel.inputType);
+    if (artifactType == CedarArtifactType.STATIC_TEMPLATE_FIELD) {
+      if (uiInputType == InputType.pageBreak) {
+        return JSONFieldReaderPageBreak.read(fieldSourceObject, parsingResult, path);
+      } else if (uiInputType == InputType.sectionBreak) {
+        return JSONFieldReaderSectionBreak.read(fieldSourceObject, parsingResult, path);
+      } else if (uiInputType == InputType.image) {
+        return JSONFieldReaderImage.read(fieldSourceObject, parsingResult, path);
+      } else if (uiInputType == InputType.richText) {
+        return JSONFieldReaderRichText.read(fieldSourceObject, parsingResult, path);
+      } else if (uiInputType == InputType.youtube) {
+        return JSONFieldReaderYoutube.read(fieldSourceObject, parsingResult, path);
+      }
+    } else if (artifactType == CedarArtifactType.TEMPLATE_FIELD) {
+      if (uiInputType == InputType.text) {
+        return JSONFieldReaderTextField.read(fieldSourceObject, parsingResult, path);
+      }
     }
-
-    field.skos_altLabel = ReaderUtil.getStringList(fieldSourceObject, CedarModel.skosAltLabel);
-    field.skos_prefLabel = ReaderUtil.getString(fieldSourceObject, CedarModel.skosPrefLabel);
-
-    const vcTF = new ValueConstraintsTextField();
-    field.valueConstraints = vcTF;
-    const valueConstraints: Node = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
-    if (valueConstraints != null) {
-      vcTF.requiredValue = ReaderUtil.getBoolean(valueConstraints, CedarModel.requiredValue);
-      vcTF.defaultValue = ReaderUtil.getString(valueConstraints, CedarModel.defaultValue);
-      vcTF.minLength = ReaderUtil.getNumber(valueConstraints, CedarModel.minLength);
-      vcTF.maxLength = ReaderUtil.getNumber(valueConstraints, CedarModel.maxLength);
-      vcTF.regex = ReaderUtil.getString(valueConstraints, CedarModel.regex);
-    }
-    return field;
+    return null;
   }
 }

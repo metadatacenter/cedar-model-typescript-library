@@ -22,6 +22,9 @@ export class CedarModel {
   static maxValue = 'maxValue';
   static decimalPlace = 'decimalPlace';
   static content = '_content';
+  static size = '_size';
+  static width = 'width';
+  static height = 'height';
   static regex = 'regex';
 
   static ontologies = 'ontologies';

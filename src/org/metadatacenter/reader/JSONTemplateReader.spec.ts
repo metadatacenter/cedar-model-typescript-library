@@ -135,6 +135,7 @@ describe('JSONTemplateReader', () => {
     const parsingResult = jsonTemplateReaderResult.parsingResult;
     Util.p(parsingResult);
     expect(parsingResult.wasSuccessful()).toBe(true);
+    console.log(jsonTemplateReaderResult.template.asCedarTemplateJSONString());
   });
 
   test('reads template with field with all things set, after save', () => {

@@ -30,7 +30,7 @@ export abstract class CedarField {
   public skos_altLabel: Array<string> | null = null;
   public skos_prefLabel: string | null = null;
 
-  public uiInputType: string | null = null;
+  public uiInputType: CedarFieldType | null = null;
   public valueConstraints: ValueConstraints = new ValueConstraints();
   public cedarFieldType: CedarFieldType = CedarFieldType.NULL;
 
@@ -43,11 +43,11 @@ export abstract class CedarField {
    * Use asCedarFieldString(indent) or asCedarFieldObject() instead
    * Will be used by JSON.stringify
    */
-  private toJSON() {
+  public toJSON(): Record<string, any> {
     // TODO: include properties based on uiInputType
     const typeSpecificProperties = CedarTemplateFieldContent.PROPERTIES_VERBATIM_LITERAL;
 
-    const uiObject: { [key: string]: string | boolean | null | any[] } = {
+    const uiObject: { [key: string]: string | boolean | null | CedarFieldType | any[] } = {
       [CedarModel.inputType]: this.uiInputType,
     };
 

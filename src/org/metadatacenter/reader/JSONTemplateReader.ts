@@ -263,7 +263,9 @@ export class JSONTemplateReader {
         parsingResult,
         new CedarJsonPath(JsonSchema.properties, childInfo.name),
       );
-      template.addChild(cedarField);
+      if (cedarField != null) {
+        template.addChild(cedarField);
+      }
     }
   }
 }

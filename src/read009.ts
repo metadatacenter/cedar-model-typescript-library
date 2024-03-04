@@ -2,7 +2,7 @@ import { JSONTemplateReader } from './org/metadatacenter/reader/JSONTemplateRead
 import * as fs from 'fs';
 import * as path from 'path';
 
-const filePath04 = path.join(__dirname, '../test/templates/template-004.json');
+const filePath04 = path.join(__dirname, '../test/templates/template-009.json');
 
 const templateSource004 = fs.readFileSync(filePath04, 'utf8');
 

@@ -187,6 +187,8 @@ export class JSONTemplateReader {
               path.add(JsonSchema.properties, key, JsonSchema.items),
             );
             if (childInfo !== null) {
+              // TODO: elevate this parsing to a separate class
+              // Also handle maxItems inconsistencies.
               childInfo.multiInstance = true;
               childInfo.minItems = ReaderUtil.getNumber(propertiesChildNode, CedarModel.minItems);
               childInfo.maxItems = ReaderUtil.getNumber(propertiesChildNode, CedarModel.maxItems);

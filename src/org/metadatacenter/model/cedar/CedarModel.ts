@@ -27,6 +27,8 @@ export class CedarModel {
   static height = 'height';
   static regex = 'regex';
   static pages = 'pages';
+  static header = 'header';
+  static footer = 'footer';
 
   static ontologies = 'ontologies';
   static valueSets = 'valueSets';

@@ -11,6 +11,7 @@ export class JsonSchema {
   static schemaName: string = 'schema:name';
   static schemaDescription: string = 'schema:description';
   static schemaVersion: string = 'schema:schemaVersion';
+  static schemaIdentifier: string = 'schema:identifier';
   static pavDerivedFrom: string = 'pav:derivedFrom';
   static pavCreatedOn: string = 'pav:createdOn';
   static pavCreatedBy: string = 'pav:createdBy';
@@ -21,6 +22,9 @@ export class JsonSchema {
   static rdfsLabel: string = 'rdfs:label';
   static termUri: string = 'termUri';
   static enum: string = 'enum';
+  static oneOf: string = 'oneOf';
+  static type: string = 'type';
+  static items: string = 'items';
 
   // special properties used to add attribute-value fields to the model
   static reservedAttributeName: string = '__reserved__attribute_name';

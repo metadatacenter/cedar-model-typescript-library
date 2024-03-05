@@ -20,6 +20,11 @@ export class CedarTemplate extends CedarAbstractArtifact {
   public title: string | null = null;
   public description: string | null = null;
   public schema_schemaVersion: SchemaVersion = SchemaVersion.NULL;
+  public header: string | null = null;
+  public footer: string | null = null;
+  public schema_identifier: string | null = null;
+  public instanceTypeSpecification: string | null = null;
+  // Children
   public childrenInfo: CedarContainerChildrenInfo = new CedarContainerChildrenInfo();
   public children: Array<CedarTemplateChild> = [];
 
@@ -65,6 +70,37 @@ export class CedarTemplate extends CedarAbstractArtifact {
       ...this.getChildMap(),
     };
 
+    // Inject instance type specification, if present
+    if (this.instanceTypeSpecification !== null) {
+      const oneOfNode: Array<Node> = extendedProperties[JsonSchema.atType][JsonSchema.oneOf];
+      oneOfNode.forEach((item: Node) => {
+        const itemType = ReaderUtil.getString(item, JsonSchema.type);
+        if (itemType == 'string') {
+          item[JsonSchema.enum] = [this.instanceTypeSpecification];
+        } else if (itemType == 'array') {
+          const items: Node = ReaderUtil.getNode(item, JsonSchema.items);
+          items[JsonSchema.enum] = [this.instanceTypeSpecification];
+        }
+      });
+    }
+
+    const templateUI: Node = {
+      [CedarModel.order]: this.childrenInfo.getChildrenNames(),
+      [CedarModel.propertyLabels]: this.childrenInfo.getPropertyLabelMap(),
+      [CedarModel.propertyDescriptions]: this.childrenInfo.getPropertyDescriptionMap(),
+    };
+    if (this.header !== null) {
+      templateUI[CedarModel.header] = this.header;
+    }
+    if (this.footer !== null) {
+      templateUI[CedarModel.footer] = this.footer;
+    }
+
+    const schemaIdentifier: Node = {};
+    if (this.schema_identifier !== null) {
+      schemaIdentifier[JsonSchema.schemaIdentifier] = this.schema_identifier;
+    }
+
     // build the final object
     return {
       [JsonSchema.atId]: this.at_id,
@@ -73,11 +109,7 @@ export class CedarTemplate extends CedarAbstractArtifact {
       [CedarModel.type]: JavascriptType.OBJECT,
       [TemplateProperty.title]: this.title,
       [TemplateProperty.description]: this.description,
-      [CedarModel.ui]: {
-        [CedarModel.order]: this.childrenInfo.getChildrenNames(),
-        [CedarModel.propertyLabels]: this.childrenInfo.getPropertyLabelMap(),
-        [CedarModel.propertyDescriptions]: this.childrenInfo.getPropertyDescriptionMap(),
-      },
+      [CedarModel.ui]: templateUI,
       [JsonSchema.properties]: extendedProperties,
       [JsonSchema.required]: [...CedarTemplateContent.REQUIRED_PARTIAL, ...this.childrenInfo.getNonStaticChildrenNames()],
       ...this.macroSchemaNameAndDescription(),
@@ -86,6 +118,7 @@ export class CedarTemplate extends CedarAbstractArtifact {
       [TemplateProperty.additionalProperties]: false,
       ...this.macroStatusAndVersion(),
       [CedarModel.schema]: CedarSchema.CURRENT,
+      ...schemaIdentifier,
     };
   }
 

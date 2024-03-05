@@ -2,6 +2,10 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 export class TestUtil {
+  public static raw(obj: object | string) {
+    console.log(obj);
+  }
+
   public static p(obj: object | string) {
     console.log(TestUtil.d(obj));
   }

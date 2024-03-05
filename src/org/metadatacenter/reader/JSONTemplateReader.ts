@@ -41,6 +41,7 @@ export class JSONTemplateReader {
 
     this.readNonReportableAttributes(template, templateSourceObject);
     this.readReportableAttributes(template, templateSourceObject, parsingResult);
+    this.readInstanceTypeSpecification(template, templateSourceObject, parsingResult);
     this.readAndValidateChildrenInfo(template, templateSourceObject, parsingResult);
 
     return new JSONTemplateReaderResult(template, parsingResult, templateSourceObject);
@@ -60,6 +61,12 @@ export class JSONTemplateReader {
     template.schema_schemaVersion = SchemaVersion.forValue(ReaderUtil.getString(templateSourceObject, JsonSchema.schemaVersion));
     template.pav_version = PavVersion.forValue(ReaderUtil.getString(templateSourceObject, JsonSchema.pavVersion));
     template.bibo_status = BiboStatus.forValue(ReaderUtil.getString(templateSourceObject, JsonSchema.biboStatus));
+    template.schema_identifier = ReaderUtil.getString(templateSourceObject, JsonSchema.schemaIdentifier);
+    const templateUI: Node = ReaderUtil.getNode(templateSourceObject, CedarModel.ui);
+    if (templateUI !== null) {
+      template.header = ReaderUtil.getString(templateUI, CedarModel.header);
+      template.footer = ReaderUtil.getString(templateUI, CedarModel.footer);
+    }
   }
 
   private static readReportableAttributes(template: CedarTemplate, templateSourceObject: Node, parsingResult: ParsingResult) {
@@ -99,6 +106,24 @@ export class JSONTemplateReader {
       ReaderUtil.getString(templateSourceObject, CedarModel.schema),
       new CedarJsonPath(CedarModel.schema),
     );
+  }
+
+  private static readInstanceTypeSpecification(template: CedarTemplate, templateSourceObject: Node, parsingResult: ParsingResult) {
+    const properties: Node = ReaderUtil.getNode(templateSourceObject, JsonSchema.properties);
+    if (properties !== null) {
+      const atType: Node = ReaderUtil.getNode(properties, JsonSchema.atType);
+      if (atType !== null) {
+        const oneOf: Array<Node> = ReaderUtil.getNodeList(atType, JsonSchema.oneOf);
+        if (oneOf !== null) {
+          oneOf.forEach((item) => {
+            const oneOfEnum = ReaderUtil.getStringList(item, JsonSchema.enum);
+            if (oneOfEnum != null && oneOfEnum.length > 0) {
+              template.instanceTypeSpecification = oneOfEnum[0];
+            }
+          });
+        }
+      }
+    }
   }
 
   private static readAndValidateChildrenInfo(template: CedarTemplate, templateSourceObject: Node, parsingResult: ParsingResult) {

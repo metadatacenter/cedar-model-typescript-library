@@ -2,5 +2,5 @@ Template with all static files:
   Page break
   Section break
   Image
-  Youtube vide
+  Youtube video
   Rich text

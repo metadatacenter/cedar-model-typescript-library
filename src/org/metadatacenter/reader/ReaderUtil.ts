@@ -71,4 +71,12 @@ export class ReaderUtil {
       }
     });
   }
+
+  public static getNodeList(node: Node, key: string): Array<Node> {
+    if (Object.hasOwn(node, key) && Array.isArray(node[key])) {
+      return node[key] as Array<Node>;
+    } else {
+      return [];
+    }
+  }
 }

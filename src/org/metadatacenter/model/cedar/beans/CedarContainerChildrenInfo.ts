@@ -19,8 +19,8 @@ export class CedarContainerChildrenInfo {
     return this.nameMap.has(name);
   }
 
-  get(name: string) {
-    return this.nameMap.get(name);
+  get(name: string): CedarContainerChildInfo | null {
+    return this.nameMap.get(name) ?? null;
   }
 
   public getChildrenNames(): Array<string> {

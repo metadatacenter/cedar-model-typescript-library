@@ -13,7 +13,8 @@ import { CedarContainerChildrenInfo } from '../beans/CedarContainerChildrenInfo'
 import { ReaderUtil } from '../../../reader/ReaderUtil';
 import { CedarTemplateChild } from '../util/types/CedarTemplateChild';
 import { CedarAbstractArtifact } from '../CedarAbstractArtifact';
-import { Node } from '../util/types/Node';
+import { Node, NodeClass } from '../util/types/Node';
+import { CedarContainerChildInfo } from '../beans/CedarContainerChildInfo';
 
 export class CedarTemplate extends CedarAbstractArtifact {
   public at_id: CedarArtifactId = CedarArtifactId.NULL;
@@ -134,38 +135,51 @@ export class CedarTemplate extends CedarAbstractArtifact {
     return JSON.stringify(this, null, indent);
   }
 
-  public asCedarTemplateYamlObject(): object {
-    // build the final object
-    return {
-      id: this.at_id.toJSON(),
-      type: CedarArtifactType.TEMPLATE.toJSON(),
-      [TemplateProperty.title]: this.title,
-      [TemplateProperty.description]: this.description,
-      [JsonSchema.schemaName]: this.schema_name,
-      [JsonSchema.schemaDescription]: this.schema_description,
-      [JsonSchema.pavCreatedOn]: this.pav_createdOn?.toJSON(),
-      [JsonSchema.pavCreatedBy]: this.pav_createdBy.toJSON(),
-      [JsonSchema.pavLastUpdatedOn]: this.pav_lastUpdatedOn?.toJSON(),
-      [JsonSchema.oslcModifiedBy]: this.oslc_modifiedBy.toJSON(),
-      [JsonSchema.schemaVersion]: this.schema_schemaVersion.toJSON(),
-      [JsonSchema.pavVersion]: this.pav_version.toJSON(),
-      [JsonSchema.biboStatus]: this.bibo_status.toJSON(),
-      [CedarModel.propertyLabels]: this.childrenInfo.getPropertyLabelMap(),
-      [CedarModel.propertyDescriptions]: this.childrenInfo.getPropertyDescriptionMap(),
-      children: this.childrenInfo.getChildrenDefinitions(),
-    };
-  }
+  // public asCedarTemplateYamlObject(): object {
+  //   // build the final object
+  //   return {
+  //     id: this.at_id.toJSON(),
+  //     type: CedarArtifactType.TEMPLATE.toJSON(),
+  //     [TemplateProperty.title]: this.title,
+  //     [TemplateProperty.description]: this.description,
+  //     [JsonSchema.schemaName]: this.schema_name,
+  //     [JsonSchema.schemaDescription]: this.schema_description,
+  //     [JsonSchema.pavCreatedOn]: this.pav_createdOn?.toJSON(),
+  //     [JsonSchema.pavCreatedBy]: this.pav_createdBy.toJSON(),
+  //     [JsonSchema.pavLastUpdatedOn]: this.pav_lastUpdatedOn?.toJSON(),
+  //     [JsonSchema.oslcModifiedBy]: this.oslc_modifiedBy.toJSON(),
+  //     [JsonSchema.schemaVersion]: this.schema_schemaVersion.toJSON(),
+  //     [JsonSchema.pavVersion]: this.pav_version.toJSON(),
+  //     [JsonSchema.biboStatus]: this.bibo_status.toJSON(),
+  //     [CedarModel.propertyLabels]: this.childrenInfo.getPropertyLabelMap(),
+  //     [CedarModel.propertyDescriptions]: this.childrenInfo.getPropertyDescriptionMap(),
+  //     children: this.childrenInfo.getChildrenDefinitions(),
+  //   };
+  // }
 
   addChild(templateChild: CedarTemplateChild): void {
     this.children.push(templateChild);
   }
 
-  private getChildMap(): { [key: string]: CedarTemplateChild } {
-    const childMap: { [key: string]: CedarTemplateChild } = {};
+  private getChildMap(): Node {
+    const childMap: Node = NodeClass.EMPTY;
 
     this.children.forEach((child) => {
-      if (child.schema_name) {
-        childMap[child.schema_name] = child;
+      const childName = child.schema_name;
+      if (childName !== null) {
+        const childMeta: CedarContainerChildInfo | null = this.childrenInfo.get(childName);
+        if (childMeta !== null) {
+          if (childMeta.multiInstance) {
+            childMap[childName] = {
+              [JsonSchema.type]: 'array',
+              [CedarModel.minItems]: childMeta.minItems,
+              [CedarModel.maxItems]: childMeta.maxItems,
+              [JsonSchema.items]: child,
+            };
+          } else {
+            childMap[childName] = child;
+          }
+        }
       }
     });
 

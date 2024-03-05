@@ -2,15 +2,15 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 export class TestUtil {
-  public static raw(obj: object | string) {
+  public static raw(obj: object | string | undefined) {
     console.log(obj);
   }
 
-  public static p(obj: object | string) {
+  public static p(obj: object | string | undefined) {
     console.log(TestUtil.d(obj));
   }
 
-  public static d(obj: object | string): string {
+  public static d(obj: object | string | undefined): string {
     return JSON.stringify(obj, null, 2);
   }
 

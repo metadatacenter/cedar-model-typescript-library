@@ -36,13 +36,14 @@ export class JSONTemplateReader {
   }
 
   static readFromObject(templateSourceObject: Node): JSONTemplateReaderResult {
+    const topPath: CedarJsonPath = new CedarJsonPath();
     const parsingResult: ParsingResult = new ParsingResult();
     const template = CedarTemplate.buildEmptyWithNullValues();
 
     this.readNonReportableAttributes(template, templateSourceObject);
     this.readReportableAttributes(template, templateSourceObject, parsingResult);
     this.readInstanceTypeSpecification(template, templateSourceObject, parsingResult);
-    this.readAndValidateChildrenInfo(template, templateSourceObject, parsingResult);
+    this.readAndValidateChildrenInfo(template, templateSourceObject, parsingResult, topPath);
 
     return new JSONTemplateReaderResult(template, parsingResult, templateSourceObject);
   }
@@ -126,7 +127,12 @@ export class JSONTemplateReader {
     }
   }
 
-  private static readAndValidateChildrenInfo(template: CedarTemplate, templateSourceObject: Node, parsingResult: ParsingResult) {
+  private static readAndValidateChildrenInfo(
+    template: CedarTemplate,
+    templateSourceObject: Node,
+    parsingResult: ParsingResult,
+    path: CedarJsonPath,
+  ) {
     const templateRequired: Array<string> = ReaderUtil.getStringList(templateSourceObject, JsonSchema.required);
     const templateProperties: Node = ReaderUtil.getNode(templateSourceObject, JsonSchema.properties);
 
@@ -156,18 +162,36 @@ export class JSONTemplateReader {
     const candidateChildrenInfo: CedarContainerChildrenInfo = new CedarContainerChildrenInfo();
     Object.keys(templateProperties).forEach((key) => {
       if (!CedarTemplateContent.PROPERTIES_PARTIAL_KEY_MAP.has(key)) {
-        const propertyValue = templateProperties[key];
-        if (typeof propertyValue === 'object' && propertyValue !== null && JsonSchema.atType in propertyValue) {
-          const childInfo: CedarContainerChildInfo = new CedarContainerChildInfo(key);
-          childInfo.atType = CedarArtifactType.forValue((propertyValue as any)['@type']);
-          candidateChildrenInfo.add(childInfo);
-        } else {
-          parsingResult.addBlueprintComparisonError(
-            new ComparisonError(
-              ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-              new CedarJsonPath(JsonSchema.properties, JsonSchema.required, key, JsonSchema.atType),
-            ),
-          );
+        const propertiesChildNode: Node = ReaderUtil.getNode(templateProperties, key);
+
+        if (typeof propertiesChildNode === 'object' && propertiesChildNode !== null) {
+          let childDefinitionNode = propertiesChildNode;
+          const typeOfItems = ReaderUtil.getString(propertiesChildNode, JsonSchema.type);
+          if (typeOfItems == 'object') {
+            // Single instance, parse forward
+            this.readAndStoreCandidateChildInfo(
+              childDefinitionNode,
+              key,
+              parsingResult,
+              candidateChildrenInfo,
+              path.add(JsonSchema.properties, key),
+            );
+          } else if (typeOfItems == 'array') {
+            // Multiple instance, parse multi-info, then process 'items'
+            childDefinitionNode = ReaderUtil.getNode(propertiesChildNode, JsonSchema.items);
+            const childInfo: CedarContainerChildInfo | null = this.readAndStoreCandidateChildInfo(
+              childDefinitionNode,
+              key,
+              parsingResult,
+              candidateChildrenInfo,
+              path.add(JsonSchema.properties, key, JsonSchema.items),
+            );
+            if (childInfo !== null) {
+              childInfo.multiInstance = true;
+              childInfo.minItems = ReaderUtil.getNumber(propertiesChildNode, CedarModel.minItems);
+              childInfo.maxItems = ReaderUtil.getNumber(propertiesChildNode, CedarModel.maxItems);
+            }
+          }
         }
       }
     });
@@ -282,12 +306,13 @@ export class JSONTemplateReader {
     // Parse children
     // TODO: handle elements, generalize this code, since it will be used in templates and elements as well
     for (const childInfo of finalChildrenInfo.children) {
-      const childDefinition: Node = ReaderUtil.getNode(templateProperties, childInfo.name);
-      const cedarField = JSONFieldReader.readFromObject(
-        childDefinition,
-        parsingResult,
-        new CedarJsonPath(JsonSchema.properties, childInfo.name),
-      );
+      let childDefinition: Node = ReaderUtil.getNode(templateProperties, childInfo.name);
+      let childPath: CedarJsonPath = new CedarJsonPath(JsonSchema.properties, childInfo.name);
+      if (childInfo.multiInstance) {
+        childDefinition = ReaderUtil.getNode(childDefinition, JsonSchema.items);
+        childPath = childPath.add(JsonSchema.items);
+      }
+      const cedarField = JSONFieldReader.readFromObject(childDefinition, parsingResult, childPath);
       if (cedarField != null) {
         template.addChild(cedarField);
       }
@@ -303,5 +328,26 @@ export class JSONTemplateReader {
       new CedarJsonPath(),
     );
     return compareResult;
+  }
+
+  private static readAndStoreCandidateChildInfo(
+    childDefinitionNode: Node,
+    childCandidateName: string,
+    parsingResult: ParsingResult,
+    candidateChildrenInfo: CedarContainerChildrenInfo,
+    path: CedarJsonPath,
+  ): CedarContainerChildInfo | null {
+    const atType: CedarArtifactType = CedarArtifactType.forValue(ReaderUtil.getString(childDefinitionNode, JsonSchema.atType));
+    if (atType !== CedarArtifactType.NULL) {
+      const childInfo: CedarContainerChildInfo = new CedarContainerChildInfo(childCandidateName);
+      childInfo.atType = atType;
+      candidateChildrenInfo.add(childInfo);
+      return childInfo;
+    } else {
+      parsingResult.addBlueprintComparisonError(
+        new ComparisonError(ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, path.add(childCandidateName, JsonSchema.atType)),
+      );
+      return null;
+    }
   }
 }

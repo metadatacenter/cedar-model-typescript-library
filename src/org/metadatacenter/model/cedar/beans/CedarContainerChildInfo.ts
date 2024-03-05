@@ -7,6 +7,10 @@ export class CedarContainerChildInfo {
   private _iri: string | null = null;
   private _atType: CedarArtifactType = CedarArtifactType.NULL;
 
+  private _multiInstance: boolean = false;
+  private _minItems: number | null = null;
+  private _maxItems: number | null = null;
+
   constructor(name: string) {
     this._name = name;
   }
@@ -45,5 +49,29 @@ export class CedarContainerChildInfo {
 
   set iri(value: string | null) {
     this._iri = value;
+  }
+
+  get multiInstance(): boolean {
+    return this._multiInstance;
+  }
+
+  set multiInstance(value: boolean) {
+    this._multiInstance = value;
+  }
+
+  get minItems(): number | null {
+    return this._minItems;
+  }
+
+  set minItems(value: number | null) {
+    this._minItems = value;
+  }
+
+  get maxItems(): number | null {
+    return this._maxItems;
+  }
+
+  set maxItems(value: number | null) {
+    this._maxItems = value;
   }
 }

@@ -3,7 +3,7 @@ import { ParsingResult } from '../../model/cedar/util/compare/ParsingResult';
 import { CedarJsonPath } from '../../model/cedar/util/path/CedarJsonPath';
 import { ReaderUtil } from '../ReaderUtil';
 import { CedarModel } from '../../model/cedar/CedarModel';
-import { CedarStaticImageField } from '../../model/cedar/field/CedarStaticImageField';
+import { CedarStaticImageField } from '../../model/cedar/field/static-image/CedarStaticImageField';
 
 export class JSONFieldReaderImage {
   static read(fieldSourceObject: Node, parsingResult: ParsingResult, path: CedarJsonPath): CedarStaticImageField {

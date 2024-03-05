@@ -1,8 +1,9 @@
+import { InputType } from '../constants/InputType';
+
 export const CedarFieldTypeValues = {
   TEXT: 'DYNAMIC-text',
   CONTROLLED_TERM: 'DYNAMIC-controlled-term',
   LINK: 'DYNAMIC-link',
-  STATIC_TEXT: 'STATIC-text',
   STATIC_PAGE_BREAK: 'STATIC-page-break',
   STATIC_SECTION_BREAK: 'STATIC-section-break',
   STATIC_IMAGE: 'STATIC-image',
@@ -14,38 +15,30 @@ export type CedarFieldTypeValue = (typeof CedarFieldTypeValues)[keyof typeof Ced
 
 export class CedarFieldType {
   private readonly value: CedarFieldTypeValue | null;
+  private readonly _uiInputType: string | null;
 
-  private constructor(value: CedarFieldTypeValue) {
+  private constructor(value: CedarFieldTypeValue, uiInputType: string | null) {
     this.value = value;
+    this._uiInputType = uiInputType;
   }
 
   public getValue(): CedarFieldTypeValue {
     return this.value;
   }
 
-  public static TEXT = new CedarFieldType(CedarFieldTypeValues.TEXT);
-  public static CONTROLLED_TERM = new CedarFieldType(CedarFieldTypeValues.CONTROLLED_TERM);
-  public static LINK = new CedarFieldType(CedarFieldTypeValues.LINK);
-  public static STATIC_TEXT = new CedarFieldType(CedarFieldTypeValues.STATIC_TEXT);
-  public static STATIC_PAGE_BREAK = new CedarFieldType(CedarFieldTypeValues.STATIC_PAGE_BREAK);
-  public static STATIC_SECTION_BREAK = new CedarFieldType(CedarFieldTypeValues.STATIC_SECTION_BREAK);
-  public static STATIC_IMAGE = new CedarFieldType(CedarFieldTypeValues.STATIC_IMAGE);
-  public static STATIC_RICH_TEXT = new CedarFieldType(CedarFieldTypeValues.STATIC_RICH_TEXT);
-  public static STATIC_YOUTUBE = new CedarFieldType(CedarFieldTypeValues.STATIC_YOUTUBE);
-  public static NULL = new CedarFieldType(null);
-
-  public static values(): CedarFieldType[] {
-    return [CedarFieldType.TEXT, CedarFieldType.CONTROLLED_TERM, CedarFieldType.LINK, CedarFieldType.STATIC_TEXT];
+  public getUiInputType(): string | null {
+    return this._uiInputType;
   }
 
-  public static forValue(value: string | null): CedarFieldType {
-    for (const status of CedarFieldType.values()) {
-      if (status.getValue() === value) {
-        return status;
-      }
-    }
-    return this.NULL;
-  }
+  public static TEXT = new CedarFieldType(CedarFieldTypeValues.TEXT, InputType.text);
+  public static CONTROLLED_TERM = new CedarFieldType(CedarFieldTypeValues.CONTROLLED_TERM, InputType.text);
+  public static LINK = new CedarFieldType(CedarFieldTypeValues.LINK, InputType.link);
+  public static STATIC_PAGE_BREAK = new CedarFieldType(CedarFieldTypeValues.STATIC_PAGE_BREAK, InputType.pageBreak);
+  public static STATIC_SECTION_BREAK = new CedarFieldType(CedarFieldTypeValues.STATIC_SECTION_BREAK, InputType.sectionBreak);
+  public static STATIC_IMAGE = new CedarFieldType(CedarFieldTypeValues.STATIC_IMAGE, InputType.image);
+  public static STATIC_RICH_TEXT = new CedarFieldType(CedarFieldTypeValues.STATIC_RICH_TEXT, InputType.richText);
+  public static STATIC_YOUTUBE = new CedarFieldType(CedarFieldTypeValues.STATIC_YOUTUBE, InputType.youtube);
+  public static NULL = new CedarFieldType(null, null);
 
   toJSON() {
     return this.value;

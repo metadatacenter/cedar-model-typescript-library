@@ -22,7 +22,15 @@ export class PavVersion {
     return this.value;
   }
 
-  static forValue(value: string | null): PavVersion {
+  public static values(): PavVersion[] {
+    return [PavVersion.DEFAULT, PavVersion.NULL];
+  }
+  public static forValue(value: string | null): PavVersion {
+    for (const status of PavVersion.values()) {
+      if (status.getValue() === value) {
+        return status;
+      }
+    }
     return new PavVersion(value);
   }
 }

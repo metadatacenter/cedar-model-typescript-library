@@ -1,42 +1,38 @@
 import { JavascriptType } from '../beans/JavascriptType';
-import { BiboStatus } from '../beans/BiboStatus';
 import { SchemaVersion } from '../beans/SchemaVersion';
 import { JsonSchema } from '../constants/JsonSchema';
 import { TemplateProperty } from '../constants/TemplateProperty';
-import { CedarUser } from '../beans/CedarUser';
-import { CedarDate } from '../beans/CedarDate';
 import { CedarArtifactType } from '../beans/CedarArtifactType';
 import { CedarModel } from '../CedarModel';
 import { CedarSchema } from '../beans/CedarSchema';
-import { PavVersion } from '../beans/PavVersion';
 import { CedarArtifactId } from '../beans/CedarArtifactId';
 import { CedarTemplateFieldContent } from '../util/serialization/CedarTemplateFieldContent';
 import { ValueConstraints } from './ValueConstraints';
 import { CedarFieldType } from '../beans/CedarFieldType';
+import { CedarTextField } from './textfield/CedarTextField';
+import { CedarAbstractArtifact } from '../CedarAbstractArtifact';
 
-export abstract class CedarField {
+export abstract class CedarField extends CedarAbstractArtifact {
   public at_id: CedarArtifactId = CedarArtifactId.NULL;
   public title: string | null = null;
   public description: string | null = null;
-  public schema_name: string | null = null;
-  public schema_description: string | null = null;
-  public pav_createdOn: CedarDate | null = CedarDate.forValue(null);
-  public pav_createdBy: CedarUser = CedarUser.forValue(null);
-  public pav_lastUpdatedOn: CedarDate | null = CedarDate.forValue(null);
-  public oslc_modifiedBy: CedarUser = CedarUser.forValue(null);
   public schema_schemaVersion: SchemaVersion = SchemaVersion.NULL;
-  public pav_version: PavVersion = PavVersion.NULL;
-  public bibo_status: BiboStatus = BiboStatus.NULL;
   public skos_altLabel: Array<string> | null = null;
   public skos_prefLabel: string | null = null;
 
-  public uiInputType: CedarFieldType | null = null;
   public valueConstraints: ValueConstraints = new ValueConstraints();
   public cedarFieldType: CedarFieldType = CedarFieldType.NULL;
 
-  constructor() {}
-
-  abstract getValueRecommendationEnabled(): boolean;
+  protected macroSkos(): Record<string, any> {
+    const skosObject: Record<string, any> = {};
+    if (this.skos_altLabel !== null && this.skos_altLabel.length > 0) {
+      skosObject[CedarModel.skosAltLabel] = this.skos_altLabel;
+    }
+    if (this.skos_prefLabel !== null) {
+      skosObject[CedarModel.skosPrefLabel] = this.skos_prefLabel;
+    }
+    return skosObject;
+  }
 
   /**
    * Do not use directly, it will not produce the expected result
@@ -44,15 +40,28 @@ export abstract class CedarField {
    * Will be used by JSON.stringify
    */
   public toJSON(): Record<string, any> {
-    // TODO: include properties based on uiInputType
-    const typeSpecificProperties = CedarTemplateFieldContent.PROPERTIES_VERBATIM_LITERAL;
-
-    const uiObject: { [key: string]: string | boolean | null | CedarFieldType | any[] } = {
-      [CedarModel.inputType]: this.uiInputType,
+    let propertiesObject: Record<string, any> = {
+      [JsonSchema.properties]: CedarTemplateFieldContent.PROPERTIES_VERBATIM_LITERAL,
+    };
+    let requiredObject: Record<string, any> = {
+      [JsonSchema.required]: [JsonSchema.atValue],
+    };
+    const uiObject: Record<string, any> = {
+      [CedarModel.ui]: {
+        [CedarModel.inputType]: this.cedarFieldType.getUiInputType(),
+      },
     };
 
-    if (this.getValueRecommendationEnabled()) {
-      uiObject[CedarModel.valueRecommendationEnabled] = this.getValueRecommendationEnabled();
+    if (this.cedarFieldType == CedarFieldType.LINK) {
+      propertiesObject = {
+        [JsonSchema.properties]: CedarTemplateFieldContent.PROPERTIES_VERBATIM_IRI,
+      };
+      // TODO: Should the @id be required in case of a link?
+      requiredObject = {};
+    } else if (this.cedarFieldType == CedarFieldType.TEXT && this instanceof CedarTextField) {
+      if (this.valueRecommendationEnabled) {
+        uiObject[CedarModel.ui][CedarModel.valueRecommendationEnabled] = this.valueRecommendationEnabled;
+      }
     }
 
     // build the final object
@@ -63,23 +72,17 @@ export abstract class CedarField {
       [CedarModel.type]: JavascriptType.OBJECT,
       [TemplateProperty.title]: this.title,
       [TemplateProperty.description]: this.description,
-      [CedarModel.ui]: uiObject,
+      ...uiObject,
       [CedarModel.valueConstraints]: this.valueConstraints,
-      [JsonSchema.properties]: typeSpecificProperties,
-      [JsonSchema.required]: [JsonSchema.atValue], // TODO: this might be dependent on uiInputType
-      [JsonSchema.schemaName]: this.schema_name,
-      [JsonSchema.schemaDescription]: this.schema_description,
-      [JsonSchema.pavCreatedOn]: this.pav_createdOn,
-      [JsonSchema.pavCreatedBy]: this.pav_createdBy,
-      [JsonSchema.pavLastUpdatedOn]: this.pav_lastUpdatedOn,
-      [JsonSchema.oslcModifiedBy]: this.oslc_modifiedBy,
+      ...propertiesObject,
+      ...requiredObject,
+      ...this.macroSchemaNameAndDescription(),
+      ...this.macroProvenance(),
       [JsonSchema.schemaVersion]: this.schema_schemaVersion,
       [TemplateProperty.additionalProperties]: false,
-      [JsonSchema.pavVersion]: this.pav_version,
-      [JsonSchema.biboStatus]: this.bibo_status,
+      ...this.macroStatusAndVersion(),
       [CedarModel.schema]: CedarSchema.CURRENT,
-      [CedarModel.skosAltLabel]: this.skos_altLabel,
-      [CedarModel.skosPrefLabel]: this.skos_prefLabel,
+      ...this.macroSkos(),
     };
   }
 
@@ -91,26 +94,26 @@ export abstract class CedarField {
     return JSON.stringify(this, null, indent);
   }
 
-  public asCedarTemplateFieldYamlObject(): object {
-    // build the final object
-    return {
-      id: this.at_id.toJSON(),
-      type: CedarArtifactType.TEMPLATE_FIELD.toJSON(),
-      [TemplateProperty.title]: this.title,
-      [TemplateProperty.description]: this.description,
-      [CedarModel.inputType]: this.uiInputType,
-      [CedarModel.valueConstraints]: this.valueConstraints,
-      [JsonSchema.schemaName]: this.schema_name,
-      [JsonSchema.schemaDescription]: this.schema_description,
-      [JsonSchema.pavCreatedOn]: this.pav_createdOn?.toJSON(),
-      [JsonSchema.pavCreatedBy]: this.pav_createdBy.toJSON(),
-      [JsonSchema.pavLastUpdatedOn]: this.pav_lastUpdatedOn?.toJSON(),
-      [JsonSchema.oslcModifiedBy]: this.oslc_modifiedBy.toJSON(),
-      [JsonSchema.schemaVersion]: this.schema_schemaVersion.toJSON(),
-      [JsonSchema.pavVersion]: this.pav_version.toJSON(),
-      [JsonSchema.biboStatus]: this.bibo_status.toJSON(),
-      [CedarModel.skosAltLabel]: this.skos_altLabel,
-      [CedarModel.skosPrefLabel]: this.skos_prefLabel,
-    };
-  }
+  // public asCedarTemplateFieldYamlObject(): object {
+  //   // build the final object
+  //   return {
+  //     id: this.at_id.toJSON(),
+  //     type: CedarArtifactType.TEMPLATE_FIELD.toJSON(),
+  //     [TemplateProperty.title]: this.title,
+  //     [TemplateProperty.description]: this.description,
+  //     [CedarModel.inputType]: this.cedarFieldType.getUiInputType(),
+  //     [CedarModel.valueConstraints]: this.valueConstraints?.toJSON(),
+  //     [JsonSchema.schemaName]: this.schema_name,
+  //     [JsonSchema.schemaDescription]: this.schema_description,
+  //     [JsonSchema.pavCreatedOn]: this.pav_createdOn?.toJSON(),
+  //     [JsonSchema.pavCreatedBy]: this.pav_createdBy.toJSON(),
+  //     [JsonSchema.pavLastUpdatedOn]: this.pav_lastUpdatedOn?.toJSON(),
+  //     [JsonSchema.oslcModifiedBy]: this.oslc_modifiedBy.toJSON(),
+  //     [JsonSchema.schemaVersion]: this.schema_schemaVersion.toJSON(),
+  //     [JsonSchema.pavVersion]: this.pav_version.toJSON(),
+  //     [JsonSchema.biboStatus]: this.bibo_status.toJSON(),
+  //     [CedarModel.skosAltLabel]: this.skos_altLabel,
+  //     [CedarModel.skosPrefLabel]: this.skos_prefLabel,
+  //   };
+  // }
 }

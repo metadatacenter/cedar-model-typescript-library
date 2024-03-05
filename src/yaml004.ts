@@ -3,9 +3,9 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { SimpleYamlSerializer } from './org/metadatacenter/model/cedar/util/yaml/SimpleYamlSerializer';
 
-const filePath04 = path.join(__dirname, '../test/templates/template-004.json');
+const filePath004 = path.join(__dirname, '../test/templates/template-004.json');
 
-const templateSource004 = fs.readFileSync(filePath04, 'utf8');
+const templateSource004 = fs.readFileSync(filePath004, 'utf8');
 
 // console.log('--------------------- original JSON file content:');
 // console.log(templateSource004);

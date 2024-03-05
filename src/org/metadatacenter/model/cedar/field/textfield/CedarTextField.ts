@@ -1,7 +1,7 @@
-import { SchemaVersion } from '../beans/SchemaVersion';
-import { CedarField } from './CedarField';
+import { SchemaVersion } from '../../beans/SchemaVersion';
+import { CedarField } from '../CedarField';
 import { ValueConstraintsTextField } from './ValueConstraintsTextField';
-import { CedarFieldType } from '../beans/CedarFieldType';
+import { CedarFieldType } from '../../beans/CedarFieldType';
 
 export class CedarTextField extends CedarField {
   public valueRecommendationEnabled: boolean = false;
@@ -20,9 +20,5 @@ export class CedarTextField extends CedarField {
     const r = new CedarTextField();
     r.schema_schemaVersion = SchemaVersion.CURRENT;
     return r;
-  }
-
-  getValueRecommendationEnabled(): boolean {
-    return this.valueRecommendationEnabled;
   }
 }

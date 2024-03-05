@@ -33,7 +33,7 @@ export class CedarContainerChildrenInfo {
       .map(([name, _]) => name);
   }
 
-  public getPropertyLabelMap(): { [key: string]: string | null } {
+  public getPropertyLabelMap(): Record<string, any> {
     const labelMap: { [key: string]: string | null } = {};
     this.childList.forEach((childInfo) => {
       labelMap[childInfo.name] = childInfo.label;
@@ -41,7 +41,7 @@ export class CedarContainerChildrenInfo {
     return labelMap;
   }
 
-  public getPropertyDescriptionMap(): { [key: string]: string | null } {
+  public getPropertyDescriptionMap(): Record<string, any> {
     const descriptionMap: { [key: string]: string | null } = {};
     this.childList.forEach((childInfo) => {
       descriptionMap[childInfo.name] = childInfo.description;
@@ -58,7 +58,7 @@ export class CedarContainerChildrenInfo {
     return iriMap;
   }
 
-  public getChildrenDefinitions(): { [key: string]: any } {
+  public getChildrenDefinitions(): Record<string, any> {
     const childrenMap: { [key: string]: any } = {};
     this.childList.forEach((childInfo) => {
       childrenMap[childInfo.name] = { 'Child definition': 'here' };

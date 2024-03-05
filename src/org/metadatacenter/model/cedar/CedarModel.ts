@@ -26,6 +26,7 @@ export class CedarModel {
   static width = 'width';
   static height = 'height';
   static regex = 'regex';
+  static pages = 'pages';
 
   static ontologies = 'ontologies';
   static valueSets = 'valueSets';
@@ -42,6 +43,7 @@ export class CedarModel {
 
   static skosPrefLabel = 'skos:prefLabel';
   static skosAltLabel = 'skos:altLabel';
+  static skosNotation = 'skos:notation';
 
   static valueRecommendationEnabled = 'valueRecommendationEnabled';
 

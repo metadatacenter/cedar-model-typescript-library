@@ -1,42 +1,29 @@
 export class JsonSchema {
+  static properties: string = 'properties';
+  static required: string = 'required';
+
+  static atContext: string = '@context';
+  static atId: string = '@id';
+  static atType: string = '@type';
+  static atValue: string = '@value';
+  static atLanguage: string = '@language';
+  static schemaIsBasedOn: string = 'schema:isBasedOn';
+  static schemaName: string = 'schema:name';
+  static schemaDescription: string = 'schema:description';
+  static schemaVersion: string = 'schema:schemaVersion';
+  static pavDerivedFrom: string = 'pav:derivedFrom';
+  static pavCreatedOn: string = 'pav:createdOn';
+  static pavCreatedBy: string = 'pav:createdBy';
+  static pavLastUpdatedOn: string = 'pav:lastUpdatedOn';
+  static oslcModifiedBy: string = 'oslc:modifiedBy';
+  static pavVersion: string = 'pav:version';
+  static biboStatus: string = 'bibo:status';
+  static rdfsLabel: string = 'rdfs:label';
+  static termUri: string = 'termUri';
+  static enum: string = 'enum';
+
   // special properties used to add attribute-value fields to the model
-  static reservedAttributeName = '__reserved__attribute_name';
-  static reservedAttributeValue = '__reserved__attribute_value';
-  static reservedDefaultAttributeName = 'Attribute Value Field';
-
-  static properties = 'properties';
-  static required = 'required';
-
-  static atContext = '@context';
-  static atId = '@id';
-  static atType = '@type';
-  static atValue = '@value';
-  static schemaIsBasedOn = 'schema:isBasedOn';
-  static schemaName = 'schema:name';
-  static schemaDescription = 'schema:description';
-  static schemaVersion = 'schema:schemaVersion';
-  static pavDerivedFrom = 'pav:derivedFrom';
-  static pavCreatedOn = 'pav:createdOn';
-  static pavCreatedBy = 'pav:createdBy';
-  static pavLastUpdatedOn = 'pav:lastUpdatedOn';
-  static oslcModifiedBy = 'oslc:modifiedBy';
-  static pavVersion = 'pav:version';
-  static biboStatus = 'bibo:status';
-  static rdfsLabel = 'rdfs:label';
-  static termUri = 'termUri';
-  static enum = 'enum';
-
-  static builtInProperties: Map<string, boolean> = new Map([
-    [JsonSchema.atId, true],
-    [JsonSchema.atContext, true],
-    [JsonSchema.atType, true],
-    [JsonSchema.schemaIsBasedOn, true],
-    [JsonSchema.schemaName, true],
-    [JsonSchema.schemaDescription, true],
-    [JsonSchema.pavDerivedFrom, true],
-    [JsonSchema.pavCreatedOn, true],
-    [JsonSchema.pavCreatedBy, true],
-    [JsonSchema.pavLastUpdatedOn, true],
-    [JsonSchema.oslcModifiedBy, true],
-  ]);
+  static reservedAttributeName: string = '__reserved__attribute_name';
+  static reservedAttributeValue: string = '__reserved__attribute_value';
+  static reservedDefaultAttributeName: string = 'Attribute Value Field';
 }

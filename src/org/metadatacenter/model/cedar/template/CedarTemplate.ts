@@ -13,6 +13,7 @@ import { CedarContainerChildrenInfo } from '../beans/CedarContainerChildrenInfo'
 import { ReaderUtil } from '../../../reader/ReaderUtil';
 import { CedarTemplateChild } from '../util/types/CedarTemplateChild';
 import { CedarAbstractArtifact } from '../CedarAbstractArtifact';
+import { Node } from '../util/types/Node';
 
 export class CedarTemplate extends CedarAbstractArtifact {
   public at_id: CedarArtifactId = CedarArtifactId.NULL;
@@ -90,6 +91,10 @@ export class CedarTemplate extends CedarAbstractArtifact {
 
   public asCedarTemplateJSONObject(): object {
     return JSON.parse(JSON.stringify(this));
+  }
+
+  public asCedarNode(): Node {
+    return this.asCedarTemplateJSONObject() as Node;
   }
 
   public asCedarTemplateJSONString(indent: number = 2): string {

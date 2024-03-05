@@ -43,7 +43,7 @@ export class JSONTemplateReader {
     this.readReportableAttributes(template, templateSourceObject, parsingResult);
     this.readAndValidateChildrenInfo(template, templateSourceObject, parsingResult);
 
-    return new JSONTemplateReaderResult(template, parsingResult);
+    return new JSONTemplateReaderResult(template, parsingResult, templateSourceObject);
   }
 
   private static readNonReportableAttributes(template: CedarTemplate, templateSourceObject: Node) {
@@ -267,5 +267,16 @@ export class JSONTemplateReader {
         template.addChild(cedarField);
       }
     }
+  }
+
+  static getRoundTripComparisonResult(jsonTemplateReaderResult: JSONTemplateReaderResult): ParsingResult {
+    const compareResult = new ParsingResult();
+    ObjectComparator.compareBothWays(
+      compareResult,
+      jsonTemplateReaderResult.templateSourceObject,
+      jsonTemplateReaderResult.template.asCedarNode(),
+      new CedarJsonPath(),
+    );
+    return compareResult;
   }
 }

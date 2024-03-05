@@ -1,4 +1,4 @@
-import { BiboStatus, BiboStatusValues } from './BiboStatus';
+import { BiboStatus, BiboStatusValues } from '../../../../../../src/org/metadatacenter/model/cedar/beans/BiboStatus';
 
 describe('BiboStatus', () => {
   test('creates draft status', () => {

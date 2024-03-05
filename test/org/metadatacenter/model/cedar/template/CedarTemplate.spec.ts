@@ -1,4 +1,4 @@
-import { CedarTemplate } from './CedarTemplate';
+import { CedarTemplate } from '../../../../../../src/org/metadatacenter/model/cedar/template/CedarTemplate';
 
 describe('CedarTemplate', () => {
   test('creates empty with null values', () => {
@@ -28,8 +28,8 @@ describe('CedarTemplate', () => {
     expect(backparsed['schema:schemaVersion']).toBeNull();
     expect(backparsed['additionalProperties']).toBe(false);
 
-    expect(backparsed['pav:version']).toBeNull();
-    expect(backparsed['bibo:status']).toBeNull();
+    expect(backparsed['pav:version']).toBeUndefined();
+    expect(backparsed['bibo:status']).toBeUndefined();
     expect(backparsed['$schema']).toBe('http://json-schema.org/draft-04/schema#');
   });
 

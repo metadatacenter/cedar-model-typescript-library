@@ -1,4 +1,4 @@
-import { Node } from '../model/cedar/util/types/Node';
+import { Node, NodeClass } from '../model/cedar/util/types/Node';
 import { ParsingResult } from '../model/cedar/util/compare/ParsingResult';
 import { CedarJsonPath } from '../model/cedar/util/path/CedarJsonPath';
 import { CedarField } from '../model/cedar/field/CedarField';
@@ -25,6 +25,7 @@ import { JSONFieldReaderImage } from './field/JSONFieldReaderImage';
 import { JSONFieldReaderRichText } from './field/JSONFieldReaderRichText';
 import { JSONFieldReaderYoutube } from './field/JSONFieldReaderYoutube';
 import { JSONFieldReaderLink } from './field/JSONFieldReaderLink';
+import { CedarStaticTemplateFieldContent } from '../model/cedar/util/serialization/CedarStaticTemplateFieldContent';
 
 export class JSONFieldReader {
   static readFromObject(fieldSourceObject: Node, parsingResult: ParsingResult, path: CedarJsonPath): CedarField | null {
@@ -59,8 +60,13 @@ export class JSONFieldReader {
 
     // Read and validate, but do not store top level @context
     const topContextNode: Node = ReaderUtil.getNode(fieldSourceObject, JsonSchema.atContext);
-    const blueprint = CedarTemplateFieldContent.CONTEXT_VERBATIM;
-    ObjectComparator.compareBothWays(parsingResult, blueprint, topContextNode, path.add(JsonSchema.atContext));
+    let blueprintAtContext: Node = NodeClass.EMPTY;
+    if (field.cedarArtifactType == CedarArtifactType.TEMPLATE_FIELD) {
+      blueprintAtContext = CedarTemplateFieldContent.CONTEXT_VERBATIM;
+    } else if (field.cedarArtifactType == CedarArtifactType.STATIC_TEMPLATE_FIELD) {
+      blueprintAtContext = CedarStaticTemplateFieldContent.CONTEXT_VERBATIM;
+    }
+    ObjectComparator.compareBothWays(parsingResult, blueprintAtContext, topContextNode, path.add(JsonSchema.atContext));
 
     // Read and validate, but do not store top level type
     ObjectComparator.comparePrimitive(

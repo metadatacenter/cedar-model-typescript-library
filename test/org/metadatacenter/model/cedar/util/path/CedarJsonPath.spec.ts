@@ -1,4 +1,4 @@
-import { CedarJsonPath } from './CedarJsonPath';
+import { CedarJsonPath } from '../../../../../../../src/org/metadatacenter/model/cedar/util/path/CedarJsonPath';
 
 describe('CedarJsonPath', () => {
   test('toString returns correct path format', () => {

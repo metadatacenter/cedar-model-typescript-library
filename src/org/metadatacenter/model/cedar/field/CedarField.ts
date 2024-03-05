@@ -22,6 +22,7 @@ export abstract class CedarField extends CedarAbstractArtifact {
 
   public valueConstraints: ValueConstraints = new ValueConstraints();
   public cedarFieldType: CedarFieldType = CedarFieldType.NULL;
+  public cedarArtifactType: CedarArtifactType = CedarArtifactType.NULL;
 
   protected macroSkos(): Record<string, any> {
     const skosObject: Record<string, any> = {};
@@ -67,7 +68,7 @@ export abstract class CedarField extends CedarAbstractArtifact {
     // build the final object
     return {
       [JsonSchema.atId]: this.at_id,
-      [JsonSchema.atType]: CedarArtifactType.TEMPLATE_FIELD,
+      [JsonSchema.atType]: this.cedarArtifactType,
       [JsonSchema.atContext]: CedarTemplateFieldContent.CONTEXT_VERBATIM,
       [CedarModel.type]: JavascriptType.OBJECT,
       [TemplateProperty.title]: this.title,

@@ -17,6 +17,7 @@ export class CedarStaticYoutubeField extends CedarField {
   private constructor() {
     super();
     this.cedarFieldType = CedarFieldType.STATIC_YOUTUBE;
+    this.cedarArtifactType = CedarArtifactType.STATIC_TEMPLATE_FIELD;
   }
 
   public static buildEmptyWithNullValues(): CedarStaticYoutubeField {
@@ -32,7 +33,7 @@ export class CedarStaticYoutubeField extends CedarField {
   public toJSON(): Record<string, any> {
     return {
       [JsonSchema.atId]: this.at_id,
-      [JsonSchema.atType]: CedarArtifactType.STATIC_TEMPLATE_FIELD,
+      [JsonSchema.atType]: this.cedarArtifactType,
       [JsonSchema.atContext]: CedarStaticTemplateFieldContent.CONTEXT_VERBATIM,
       [CedarModel.type]: JavascriptType.OBJECT,
       [TemplateProperty.title]: this.title,

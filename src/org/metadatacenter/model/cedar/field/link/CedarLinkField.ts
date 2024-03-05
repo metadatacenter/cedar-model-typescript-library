@@ -2,11 +2,13 @@ import { SchemaVersion } from '../../beans/SchemaVersion';
 import { CedarField } from '../CedarField';
 import { CedarFieldType } from '../../beans/CedarFieldType';
 import { ValueConstraintsLinkField } from './ValueConstraintsLinkField';
+import { CedarArtifactType } from '../../beans/CedarArtifactType';
 
 export class CedarLinkField extends CedarField {
   private constructor() {
     super();
     this.cedarFieldType = CedarFieldType.LINK;
+    this.cedarArtifactType = CedarArtifactType.TEMPLATE_FIELD;
     this.valueConstraints = new ValueConstraintsLinkField();
   }
 

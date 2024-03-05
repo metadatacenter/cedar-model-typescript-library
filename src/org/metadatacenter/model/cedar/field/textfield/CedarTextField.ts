@@ -2,6 +2,7 @@ import { SchemaVersion } from '../../beans/SchemaVersion';
 import { CedarField } from '../CedarField';
 import { ValueConstraintsTextField } from './ValueConstraintsTextField';
 import { CedarFieldType } from '../../beans/CedarFieldType';
+import { CedarArtifactType } from '../../beans/CedarArtifactType';
 
 export class CedarTextField extends CedarField {
   public valueRecommendationEnabled: boolean = false;
@@ -10,6 +11,7 @@ export class CedarTextField extends CedarField {
     super();
     this.cedarFieldType = CedarFieldType.TEXT;
     this.valueConstraints = new ValueConstraintsTextField();
+    this.cedarArtifactType = CedarArtifactType.TEMPLATE_FIELD;
   }
 
   public static buildEmptyWithNullValues(): CedarTextField {

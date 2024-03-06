@@ -1,5 +1,6 @@
 import { ValueConstraints } from '../ValueConstraints';
 import { CedarModel } from '../../CedarModel';
+import { Node } from '../../util/types/Node';
 
 export class ValueConstraintsTextField extends ValueConstraints {
   public defaultValue: string | null = null;
@@ -11,8 +12,8 @@ export class ValueConstraintsTextField extends ValueConstraints {
     super();
   }
 
-  public toJSON(): Record<string, any> {
-    const obj: Record<string, any> = {
+  public toJSON(): Node {
+    const obj: Node = {
       [CedarModel.requiredValue]: this.requiredValue,
     };
     if (this.defaultValue != null) {

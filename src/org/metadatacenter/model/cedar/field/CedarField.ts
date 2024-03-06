@@ -9,8 +9,8 @@ import { CedarArtifactId } from '../beans/CedarArtifactId';
 import { CedarTemplateFieldContent } from '../util/serialization/CedarTemplateFieldContent';
 import { ValueConstraints } from './ValueConstraints';
 import { CedarFieldType } from '../beans/CedarFieldType';
-import { CedarTextField } from './textfield/CedarTextField';
 import { CedarAbstractArtifact } from '../CedarAbstractArtifact';
+import { Node } from '../util/types/Node';
 
 export abstract class CedarField extends CedarAbstractArtifact {
   public at_id: CedarArtifactId = CedarArtifactId.NULL;
@@ -24,8 +24,11 @@ export abstract class CedarField extends CedarAbstractArtifact {
   public cedarFieldType: CedarFieldType = CedarFieldType.NULL;
   public cedarArtifactType: CedarArtifactType = CedarArtifactType.NULL;
 
-  protected macroSkos(): Record<string, any> {
-    const skosObject: Record<string, any> = {};
+  // Do nothing. overwrite this if extra values need to be added to the _ui
+  protected expandUINodeForJSON(uiNode: Node): void {}
+
+  protected macroSkos(): Node {
+    const skosObject: Node = {};
     if (this.skos_altLabel !== null && this.skos_altLabel.length > 0) {
       skosObject[CedarModel.skosAltLabel] = this.skos_altLabel;
     }
@@ -40,30 +43,32 @@ export abstract class CedarField extends CedarAbstractArtifact {
    * Use asCedarFieldString(indent) or asCedarFieldObject() instead
    * Will be used by JSON.stringify
    */
-  public toJSON(): Record<string, any> {
-    let propertiesObject: Record<string, any> = {
+  public toJSON(): Node {
+    // Build properties wrapper
+    let propertiesObject: Node = {
       [JsonSchema.properties]: CedarTemplateFieldContent.PROPERTIES_VERBATIM_LITERAL,
     };
-    let requiredObject: Record<string, any> = {
-      [JsonSchema.required]: [JsonSchema.atValue],
-    };
-    const uiObject: Record<string, any> = {
-      [CedarModel.ui]: {
-        [CedarModel.inputType]: this.cedarFieldType.getUiInputType(),
-      },
-    };
-
     if (this.cedarFieldType == CedarFieldType.LINK) {
       propertiesObject = {
         [JsonSchema.properties]: CedarTemplateFieldContent.PROPERTIES_VERBATIM_IRI,
       };
+    }
+    // Build required wrapper
+    let requiredObject: Node = {
+      [JsonSchema.required]: [JsonSchema.atValue],
+    };
+    if (this.cedarFieldType == CedarFieldType.LINK) {
       // TODO: Should the @id be required in case of a link?
       requiredObject = {};
-    } else if (this.cedarFieldType == CedarFieldType.TEXT && this instanceof CedarTextField) {
-      if (this.valueRecommendationEnabled) {
-        uiObject[CedarModel.ui][CedarModel.valueRecommendationEnabled] = this.valueRecommendationEnabled;
-      }
     }
+    // Build ui wrapper
+    const uiNode: Node = {
+      [CedarModel.inputType]: this.cedarFieldType.getUiInputType(),
+    };
+    const uiObject: Node = {
+      [CedarModel.ui]: uiNode,
+    };
+    this.expandUINodeForJSON(uiNode);
 
     // build the final object
     return {

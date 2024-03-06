@@ -8,9 +8,9 @@ import { CedarModel } from '../../../../src/org/metadatacenter/model/cedar/Cedar
 import { JsonSchema } from '../../../../src/org/metadatacenter/model/cedar/constants/JsonSchema';
 import { JSONTemplateReaderResult } from '../../../../src/org/metadatacenter/reader/JSONTemplateReaderResult';
 
-describe('JSONTemplateReader - template-007', () => {
-  test('reads template with type specs for the instance', () => {
-    const templateSource = TestUtil.readTestResourceAsString('templates', 'template-007.json');
+describe('JSONTemplateReader - template-008', () => {
+  test('reads template with field with all things set, after save', () => {
+    const templateSource = TestUtil.readTestResourceAsString('templates/008', 'template-008.json');
     const jsonTemplateReaderResult: JSONTemplateReaderResult = JSONTemplateReader.readFromString(templateSource);
     expect(jsonTemplateReaderResult).not.toBeNull();
     const parsingResult: ParsingResult = jsonTemplateReaderResult.parsingResult;
@@ -18,13 +18,11 @@ describe('JSONTemplateReader - template-007', () => {
 
     const compareResult: ParsingResult = JSONTemplateReader.getRoundTripComparisonResult(jsonTemplateReaderResult);
 
+    // TestUtil.p(jsonTemplateReaderResult.template.asCedarTemplateJSONObject());
     // TestUtil.p(compareResult);
 
-    // TestUtil.p(jsonTemplateReaderResult.template.asCedarNode());
-    // TestUtil.raw(jsonTemplateReaderResult.template);
-
     expect(compareResult.wasSuccessful()).toBe(false);
-    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(3);
+    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(2);
 
     const uiPagesMissing = new ComparisonError(
       ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
@@ -32,18 +30,10 @@ describe('JSONTemplateReader - template-007', () => {
     );
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
 
-    const requiredTextfieldUnexpected = new ComparisonError(
-      ComparisonErrorType.UNEXPECTED_INDEX_IN_REAL_OBJECT,
-      new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 11),
-      undefined,
-      'Text field',
-    );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredTextfieldUnexpected);
-
-    const languageTextfieldUnexpected = new ComparisonError(
+    const languageTextField1Unexpected = new ComparisonError(
       ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
-      new CedarJsonPath(JsonSchema.properties, 'Text field', JsonSchema.properties, JsonSchema.atLanguage),
+      new CedarJsonPath(JsonSchema.properties, 'Text Field 1', JsonSchema.properties, JsonSchema.atLanguage),
     );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageTextfieldUnexpected);
+    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageTextField1Unexpected);
   });
 });

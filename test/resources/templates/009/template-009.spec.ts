@@ -5,12 +5,11 @@ import { TestUtil } from '../../../TestUtil';
 import { ComparisonError } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonError';
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
 import { CedarModel } from '../../../../src/org/metadatacenter/model/cedar/CedarModel';
-import { JsonSchema } from '../../../../src/org/metadatacenter/model/cedar/constants/JsonSchema';
 import { JSONTemplateReaderResult } from '../../../../src/org/metadatacenter/reader/JSONTemplateReaderResult';
 
 describe('JSONTemplateReader - template-009', () => {
   test('reads template with static fields', () => {
-    const templateSource = TestUtil.readTestResourceAsString('templates', 'template-009.json');
+    const templateSource = TestUtil.readTestResourceAsString('templates/009', 'template-009.json');
     const jsonTemplateReaderResult: JSONTemplateReaderResult = JSONTemplateReader.readFromString(templateSource);
     expect(jsonTemplateReaderResult).not.toBeNull();
     const parsingResult: ParsingResult = jsonTemplateReaderResult.parsingResult;

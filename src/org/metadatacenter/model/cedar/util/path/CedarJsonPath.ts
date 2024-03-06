@@ -29,7 +29,16 @@ export class CedarJsonPath {
     });
     return result + '/';
   }
+
   toJSON() {
     return this.toString();
+  }
+
+  // Add this method to get the last component of the path
+  getLastComponent(): string | number | null {
+    if (this.path.length === 0) {
+      return null;
+    }
+    return this.path[this.path.length - 1];
   }
 }

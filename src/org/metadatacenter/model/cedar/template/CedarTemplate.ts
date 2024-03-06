@@ -171,12 +171,15 @@ export class CedarTemplate extends CedarAbstractArtifact {
         if (childMeta !== null) {
           if (childMeta.multiInstance) {
             // TODO: handle maxItems, minItems inconsistencies
-            childMap[childName] = {
+            const childNode: Node = {
               [JsonSchema.type]: 'array',
               [CedarModel.minItems]: childMeta.minItems,
-              [CedarModel.maxItems]: childMeta.maxItems,
               [JsonSchema.items]: child,
             };
+            if (childMeta.maxItems !== null) {
+              childNode[CedarModel.maxItems] = childMeta.maxItems;
+            }
+            childMap[childName] = childNode;
           } else {
             childMap[childName] = child;
           }

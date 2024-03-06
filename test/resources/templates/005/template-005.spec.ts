@@ -9,7 +9,7 @@ import { CedarModel } from '../../../../src/org/metadatacenter/model/cedar/Cedar
 
 describe('JSONTemplateReader - template-005', () => {
   test('reads multi-instance text fields', () => {
-    const templateSource = TestUtil.readTestResourceAsString('templates', 'template-005.json');
+    const templateSource = TestUtil.readTestResourceAsString('templates/005', 'template-005.json');
     const jsonTemplateReaderResult = JSONTemplateReader.readFromString(templateSource);
     expect(jsonTemplateReaderResult).not.toBeNull();
     const parsingResult = jsonTemplateReaderResult.parsingResult;
@@ -33,7 +33,7 @@ describe('JSONTemplateReader - template-005', () => {
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
 
     const requiredTextfieldUnexpected = new ComparisonError(
-      ComparisonErrorType.UNEXPECTED_INDEX_IN_REAL_OBJECT,
+      ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
       new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 11),
       undefined,
       'Textfield',

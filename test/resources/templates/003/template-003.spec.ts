@@ -8,7 +8,7 @@ import { TestUtil } from '../../../TestUtil';
 
 describe('JSONTemplateReader - template-003', () => {
   test('reads very simple template as object, with various mismatches', () => {
-    const templateSource = TestUtil.readTestResourceAsString('templates', 'template-003.json');
+    const templateSource = TestUtil.readTestResourceAsString('templates/003', 'template-003.json');
     const jsonTemplateReaderResult = JSONTemplateReader.readFromString(templateSource);
     expect(jsonTemplateReaderResult).not.toBeNull();
     const parsingResult = jsonTemplateReaderResult.parsingResult;

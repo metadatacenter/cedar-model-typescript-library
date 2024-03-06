@@ -4,6 +4,8 @@ export const ComparisonErrorTypeValues = {
   VALUE_MISMATCH: 'valueMismatch',
   MISSING_INDEX_IN_REAL_OBJECT: 'missingIndexInRealObject',
   UNEXPECTED_INDEX_IN_REAL_OBJECT: 'unexpectedIndexInRealObject',
+  MISSING_VALUE_IN_REAL_OBJECT: 'missingValueInRealObject',
+  UNEXPECTED_VALUE_IN_REAL_OBJECT: 'unexpectedValueInRealObject',
 } as const;
 
 export type ComparisonErrorTypeValue = (typeof ComparisonErrorTypeValues)[keyof typeof ComparisonErrorTypeValues] | null;
@@ -24,6 +26,8 @@ export class ComparisonErrorType {
   public static VALUE_MISMATCH = new ComparisonErrorType(ComparisonErrorTypeValues.VALUE_MISMATCH);
   public static MISSING_INDEX_IN_REAL_OBJECT = new ComparisonErrorType(ComparisonErrorTypeValues.MISSING_INDEX_IN_REAL_OBJECT);
   public static UNEXPECTED_INDEX_IN_REAL_OBJECT = new ComparisonErrorType(ComparisonErrorTypeValues.UNEXPECTED_INDEX_IN_REAL_OBJECT);
+  public static MISSING_VALUE_IN_REAL_OBJECT = new ComparisonErrorType(ComparisonErrorTypeValues.MISSING_VALUE_IN_REAL_OBJECT);
+  public static UNEXPECTED_VALUE_IN_REAL_OBJECT = new ComparisonErrorType(ComparisonErrorTypeValues.UNEXPECTED_VALUE_IN_REAL_OBJECT);
   public static NULL = new ComparisonErrorType(null);
 
   public static values(): ComparisonErrorType[] {
@@ -33,6 +37,8 @@ export class ComparisonErrorType {
       ComparisonErrorType.VALUE_MISMATCH,
       ComparisonErrorType.MISSING_INDEX_IN_REAL_OBJECT,
       ComparisonErrorType.UNEXPECTED_INDEX_IN_REAL_OBJECT,
+      ComparisonErrorType.MISSING_VALUE_IN_REAL_OBJECT,
+      ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
     ];
   }
 

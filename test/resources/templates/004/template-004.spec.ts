@@ -9,7 +9,7 @@ import { CedarModel } from '../../../../src/org/metadatacenter/model/cedar/Cedar
 
 describe('JSONTemplateReader - template-004', () => {
   test('reads template with static fields', () => {
-    const templateSource = TestUtil.readTestResourceAsString('templates', 'template-004.json');
+    const templateSource = TestUtil.readTestResourceAsString('templates/004', 'template-004.json');
     const jsonTemplateReaderResult = JSONTemplateReader.readFromString(templateSource);
     expect(jsonTemplateReaderResult).not.toBeNull();
     const parsingResult = jsonTemplateReaderResult.parsingResult;
@@ -29,7 +29,7 @@ describe('JSONTemplateReader - template-004', () => {
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
 
     const requiredField1Unexpected = new ComparisonError(
-      ComparisonErrorType.UNEXPECTED_INDEX_IN_REAL_OBJECT,
+      ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
       new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 11),
       undefined,
       'Field 1',
@@ -37,7 +37,7 @@ describe('JSONTemplateReader - template-004', () => {
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredField1Unexpected);
 
     const requiredField2Unexpected = new ComparisonError(
-      ComparisonErrorType.UNEXPECTED_INDEX_IN_REAL_OBJECT,
+      ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
       new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 12),
       undefined,
       'Field 2',
@@ -45,7 +45,7 @@ describe('JSONTemplateReader - template-004', () => {
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredField2Unexpected);
 
     const requiredField3Unexpected = new ComparisonError(
-      ComparisonErrorType.UNEXPECTED_INDEX_IN_REAL_OBJECT,
+      ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
       new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 13),
       undefined,
       'Field 3',

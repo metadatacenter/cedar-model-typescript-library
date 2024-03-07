@@ -13,6 +13,7 @@ import { JSONFieldWriterStaticSectionsBreak } from '../../model/cedar/field/stat
 import { JSONFieldWriterStaticRichText } from '../../model/cedar/field/static/rich-text/JSONFieldWriterStaticRichText';
 import { JSONFieldWriterStaticYoutube } from '../../model/cedar/field/static/youtube/JSONFieldWriterStaticYoutube';
 import { YAMLTemplateWriter } from '../../model/cedar/template/YAMLTemplateWriter';
+import { JSONFieldWriterRadio } from '../../model/cedar/field/dynamic/radio/JSONFieldWriterRadio';
 
 export class CedarWriters {
   private behavior: JSONWriterBehavior;
@@ -26,6 +27,7 @@ export class CedarWriters {
   private readonly jsonFieldWriterLink: JSONFieldWriterLink;
   private readonly jsonFieldWriterNumeric: JSONFieldWriterNumeric;
   private readonly jsonFieldWriterTemporal: JSONFieldWriterTemporal;
+  private readonly jsonFieldWriterRadio: JSONFieldWriterRadio;
   private readonly jsonFieldWriterStaticPageBreak: JSONFieldWriterStaticPageBreak;
   private readonly jsonFieldWriterStaticSectionBreak: JSONFieldWriterStaticSectionsBreak;
   private readonly jsonFieldWriterStaticImage: JSONFieldWriterStaticImage;
@@ -40,6 +42,7 @@ export class CedarWriters {
     this.jsonFieldWriterLink = new JSONFieldWriterLink(behavior, this);
     this.jsonFieldWriterNumeric = new JSONFieldWriterNumeric(behavior, this);
     this.jsonFieldWriterTemporal = new JSONFieldWriterTemporal(behavior, this);
+    this.jsonFieldWriterRadio = new JSONFieldWriterRadio(behavior, this);
     this.jsonFieldWriterStaticPageBreak = new JSONFieldWriterStaticPageBreak(behavior, this);
     this.jsonFieldWriterStaticSectionBreak = new JSONFieldWriterStaticSectionsBreak(behavior, this);
     this.jsonFieldWriterStaticImage = new JSONFieldWriterStaticImage(behavior, this);
@@ -75,6 +78,8 @@ export class CedarWriters {
       return this.jsonFieldWriterNumeric;
     } else if (cedarFieldType == CedarFieldType.TEMPORAL) {
       return this.jsonFieldWriterTemporal;
+    } else if (cedarFieldType == CedarFieldType.RADIO) {
+      return this.jsonFieldWriterRadio;
     } else if (cedarFieldType == CedarFieldType.STATIC_PAGE_BREAK) {
       return this.jsonFieldWriterStaticPageBreak;
     } else if (cedarFieldType == CedarFieldType.STATIC_SECTION_BREAK) {

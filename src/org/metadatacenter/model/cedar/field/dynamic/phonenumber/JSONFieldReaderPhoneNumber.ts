@@ -10,11 +10,11 @@ export class JSONFieldReaderPhoneNumber {
   static read(fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath): CedarPhoneNumberField {
     const field = CedarPhoneNumberField.buildEmptyWithNullValues();
 
-    const vcTF = new ValueConstraints();
-    field.valueConstraints = vcTF;
+    const vc = new ValueConstraints();
+    field.valueConstraints = vc;
     const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
     if (valueConstraints != null) {
-      vcTF.requiredValue = ReaderUtil.getBoolean(valueConstraints, CedarModel.requiredValue);
+      vc.requiredValue = ReaderUtil.getBoolean(valueConstraints, CedarModel.requiredValue);
     }
     return field;
   }

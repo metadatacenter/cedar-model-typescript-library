@@ -9,6 +9,7 @@ export const CedarFieldTypeValues = {
   EMAIL: 'DYNAMIC-email',
   NUMERIC: 'DYNAMIC-numeric',
   PHONE_NUMBER: 'DYNAMIC-phone-number',
+  RADIO: 'DYNAMIC-radio',
   STATIC_PAGE_BREAK: 'STATIC-page-break',
   STATIC_SECTION_BREAK: 'STATIC-section-break',
   STATIC_IMAGE: 'STATIC-image',
@@ -43,6 +44,7 @@ export class CedarFieldType {
   public static EMAIL = new CedarFieldType(CedarFieldTypeValues.EMAIL, InputType.email);
   public static NUMERIC = new CedarFieldType(CedarFieldTypeValues.NUMERIC, InputType.numeric);
   public static PHONE_NUMBER = new CedarFieldType(CedarFieldTypeValues.PHONE_NUMBER, InputType.phoneNumber);
+  public static RADIO = new CedarFieldType(CedarFieldTypeValues.RADIO, InputType.radio);
   public static STATIC_PAGE_BREAK = new CedarFieldType(CedarFieldTypeValues.STATIC_PAGE_BREAK, InputType.pageBreak);
   public static STATIC_SECTION_BREAK = new CedarFieldType(CedarFieldTypeValues.STATIC_SECTION_BREAK, InputType.sectionBreak);
   public static STATIC_IMAGE = new CedarFieldType(CedarFieldTypeValues.STATIC_IMAGE, InputType.image);

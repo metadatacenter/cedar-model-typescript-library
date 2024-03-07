@@ -10,11 +10,11 @@ export class JSONFieldReaderEmail {
   static read(fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath): CedarEmailField {
     const field = CedarEmailField.buildEmptyWithNullValues();
 
-    const vcTF = new ValueConstraintsEmailField();
-    field.valueConstraints = vcTF;
+    const vcEF = new ValueConstraintsEmailField();
+    field.valueConstraints = vcEF;
     const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
     if (valueConstraints != null) {
-      vcTF.requiredValue = ReaderUtil.getBoolean(valueConstraints, CedarModel.requiredValue);
+      vcEF.requiredValue = ReaderUtil.getBoolean(valueConstraints, CedarModel.requiredValue);
     }
     return field;
   }

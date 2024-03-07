@@ -13,16 +13,16 @@ export class JSONFieldReaderNumeric {
 
     field.skos_altLabel = ReaderUtil.getStringList(fieldSourceObject, CedarModel.skosAltLabel);
 
-    const vcTF = new ValueConstraintsNumericField();
-    field.valueConstraints = vcTF;
+    const vcNF = new ValueConstraintsNumericField();
+    field.valueConstraints = vcNF;
     const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
     if (valueConstraints != null) {
-      vcTF.requiredValue = ReaderUtil.getBoolean(valueConstraints, CedarModel.requiredValue);
-      vcTF.numberType = NumberType.forValue(ReaderUtil.getString(valueConstraints, CedarModel.numberType));
-      vcTF.minValue = ReaderUtil.getNumber(valueConstraints, CedarModel.minValue);
-      vcTF.maxValue = ReaderUtil.getNumber(valueConstraints, CedarModel.maxValue);
-      vcTF.decimalPlace = ReaderUtil.getNumber(valueConstraints, CedarModel.decimalPlace);
-      vcTF.unitOfMeasure = ReaderUtil.getString(valueConstraints, CedarModel.unitOfMeasure);
+      vcNF.requiredValue = ReaderUtil.getBoolean(valueConstraints, CedarModel.requiredValue);
+      vcNF.numberType = NumberType.forValue(ReaderUtil.getString(valueConstraints, CedarModel.numberType));
+      vcNF.minValue = ReaderUtil.getNumber(valueConstraints, CedarModel.minValue);
+      vcNF.maxValue = ReaderUtil.getNumber(valueConstraints, CedarModel.maxValue);
+      vcNF.decimalPlace = ReaderUtil.getNumber(valueConstraints, CedarModel.decimalPlace);
+      vcNF.unitOfMeasure = ReaderUtil.getString(valueConstraints, CedarModel.unitOfMeasure);
     }
     return field;
   }

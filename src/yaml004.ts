@@ -1,18 +1,35 @@
-import { JSONTemplateReader } from './org/metadatacenter/reader/JSONTemplateReader';
+import { JSONTemplateReader } from './org/metadatacenter/io/reader/JSONTemplateReader';
 import * as fs from 'fs';
 import * as path from 'path';
-import { SimpleYamlSerializer } from './org/metadatacenter/model/cedar/util/yaml/SimpleYamlSerializer';
+import { CedarWriters } from './org/metadatacenter/io/writer/CedarWriters';
+import { JSONTemplateWriter } from './org/metadatacenter/model/cedar/template/JSONTemplateWriter';
+import { YAMLTemplateWriter } from './org/metadatacenter/model/cedar/template/YAMLTemplateWriter';
 
-const filePath004 = path.join(__dirname, '../test/templates/template-004.json');
+const filePath004 = path.join(__dirname, '../test/resources/templates/004/template-004.json');
 
 const templateSource004 = fs.readFileSync(filePath004, 'utf8');
 
 // console.log('--------------------- original JSON file content:');
 // console.log(templateSource004);
 
-const jsonTemplateReaderResult = JSONTemplateReader.readFromString(templateSource004);
+const reader: JSONTemplateReader = JSONTemplateReader.getStrict();
+const jsonTemplateReaderResult = reader.readFromString(templateSource004);
 
-// console.log('--------------------- parsed JSON string:');
-// console.log(jsonTemplateReaderResult.template.asCedarTemplateJSONString());
-console.log('--------------------- serialized YAML string:');
-console.log(SimpleYamlSerializer.serialize(jsonTemplateReaderResult.template.asCedarTemplateYamlObject()));
+const writers: CedarWriters = CedarWriters.getStrict();
+const jsonWriter: JSONTemplateWriter = writers.getJSONTemplateWriter();
+const yamlWriter: YAMLTemplateWriter = writers.getYAMLTemplateWriter();
+
+console.log('--------------------- parsed object:');
+console.log(jsonTemplateReaderResult.template);
+
+console.log('--------------------- serialized object as JsonNode tree:');
+console.log(jsonWriter.getAsJsonNode(jsonTemplateReaderResult.template));
+
+console.log('--------------------- serialized JSON string:');
+console.log(jsonWriter.getAsJsonString(jsonTemplateReaderResult.template));
+
+console.log('--------------------- serialized YAML json:');
+console.log(yamlWriter.getAsYamlNode(jsonTemplateReaderResult.template));
+
+console.log('--------------------- serialized YAML json:');
+console.log(yamlWriter.getAsYamlString(jsonTemplateReaderResult.template));

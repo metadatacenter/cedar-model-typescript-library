@@ -3,10 +3,11 @@ import { CedarField } from '../../CedarField';
 import { ValueConstraintsTextField } from './ValueConstraintsTextField';
 import { CedarFieldType } from '../../../beans/CedarFieldType';
 import { CedarArtifactType } from '../../../beans/CedarArtifactType';
-import { JsonNode } from '../../../util/types/JsonNode';
-import { CedarModel } from '../../../CedarModel';
 
 export class CedarTextField extends CedarField {
+  // Redeclare valueConstraints with a more specific type
+  public valueConstraints: ValueConstraintsTextField;
+
   public valueRecommendationEnabled: boolean = false;
 
   private constructor() {
@@ -24,11 +25,5 @@ export class CedarTextField extends CedarField {
     const r = new CedarTextField();
     r.schema_schemaVersion = SchemaVersion.CURRENT;
     return r;
-  }
-
-  protected expandUINodeForJSON(uiNode: JsonNode): void {
-    if (this.valueRecommendationEnabled) {
-      uiNode[CedarModel.valueRecommendationEnabled] = this.valueRecommendationEnabled;
-    }
   }
 }

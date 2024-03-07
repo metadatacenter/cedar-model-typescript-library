@@ -28,8 +28,4 @@ export class SchemaVersion {
     }
     return this.NULL;
   }
-
-  toJSON() {
-    return this.value;
-  }
 }

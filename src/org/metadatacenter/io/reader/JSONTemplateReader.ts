@@ -1,31 +1,47 @@
-import { CedarTemplate } from '../model/cedar/template/CedarTemplate';
-import { CedarSchema } from '../model/cedar/beans/CedarSchema';
-import { CedarModel } from '../model/cedar/CedarModel';
-import { JsonSchema } from '../model/cedar/constants/JsonSchema';
-import { CedarArtifactType } from '../model/cedar/beans/CedarArtifactType';
-import { JavascriptType } from '../model/cedar/beans/JavascriptType';
-import { TemplateProperty } from '../model/cedar/constants/TemplateProperty';
-import { CedarUser } from '../model/cedar/beans/CedarUser';
-import { CedarDate } from '../model/cedar/beans/CedarDate';
-import { SchemaVersion } from '../model/cedar/beans/SchemaVersion';
-import { BiboStatus } from '../model/cedar/beans/BiboStatus';
+import { CedarTemplate } from '../../model/cedar/template/CedarTemplate';
+import { CedarSchema } from '../../model/cedar/beans/CedarSchema';
+import { CedarModel } from '../../model/cedar/CedarModel';
+import { JsonSchema } from '../../model/cedar/constants/JsonSchema';
+import { CedarArtifactType } from '../../model/cedar/beans/CedarArtifactType';
+import { JavascriptType } from '../../model/cedar/beans/JavascriptType';
+import { TemplateProperty } from '../../model/cedar/constants/TemplateProperty';
+import { CedarUser } from '../../model/cedar/beans/CedarUser';
+import { CedarDate } from '../../model/cedar/beans/CedarDate';
+import { SchemaVersion } from '../../model/cedar/beans/SchemaVersion';
+import { BiboStatus } from '../../model/cedar/beans/BiboStatus';
 import { ReaderUtil } from './ReaderUtil';
-import { JsonNode } from '../model/cedar/util/types/JsonNode';
-import { PavVersion } from '../model/cedar/beans/PavVersion';
-import { CedarArtifactId } from '../model/cedar/beans/CedarArtifactId';
-import { CedarTemplateContent } from '../model/cedar/util/serialization/CedarTemplateContent';
-import { ObjectComparator } from '../model/cedar/util/compare/ObjectComparator';
-import { ParsingResult } from '../model/cedar/util/compare/ParsingResult';
+import { JsonNode } from '../../model/cedar/util/types/JsonNode';
+import { PavVersion } from '../../model/cedar/beans/PavVersion';
+import { CedarArtifactId } from '../../model/cedar/beans/CedarArtifactId';
+import { CedarTemplateContent } from '../../model/cedar/util/serialization/CedarTemplateContent';
+import { ObjectComparator } from '../../model/cedar/util/compare/ObjectComparator';
+import { ParsingResult } from '../../model/cedar/util/compare/ParsingResult';
 import { JSONTemplateReaderResult } from './JSONTemplateReaderResult';
-import { ComparisonError } from '../model/cedar/util/compare/ComparisonError';
-import { CedarContainerChildInfo } from '../model/cedar/beans/CedarContainerChildInfo';
-import { CedarContainerChildrenInfo } from '../model/cedar/beans/CedarContainerChildrenInfo';
-import { CedarJsonPath } from '../model/cedar/util/path/CedarJsonPath';
-import { ComparisonErrorType } from '../model/cedar/util/compare/ComparisonErrorType';
+import { ComparisonError } from '../../model/cedar/util/compare/ComparisonError';
+import { CedarContainerChildInfo } from '../../model/cedar/beans/CedarContainerChildInfo';
+import { CedarContainerChildrenInfo } from '../../model/cedar/beans/CedarContainerChildrenInfo';
+import { CedarJsonPath } from '../../model/cedar/util/path/CedarJsonPath';
+import { ComparisonErrorType } from '../../model/cedar/util/compare/ComparisonErrorType';
 import { JSONFieldReader } from './JSONFieldReader';
+import { JSONReaderBehavior } from '../../behavior/JSONReaderBehavior';
+import { JSONTemplateWriter } from '../../model/cedar/template/JSONTemplateWriter';
 
 export class JSONTemplateReader {
-  static readFromString(templateSourceString: string): JSONTemplateReaderResult {
+  private behavior: JSONReaderBehavior;
+
+  private constructor(behavior: JSONReaderBehavior) {
+    this.behavior = behavior;
+  }
+
+  public static getStrict(): JSONTemplateReader {
+    return new JSONTemplateReader(JSONReaderBehavior.STRICT);
+  }
+
+  public static getFebruary2024(): JSONTemplateReader {
+    return new JSONTemplateReader(JSONReaderBehavior.FEBRUARY_2024);
+  }
+
+  public readFromString(templateSourceString: string): JSONTemplateReaderResult {
     let templateObject;
     try {
       templateObject = JSON.parse(templateSourceString);
@@ -35,15 +51,15 @@ export class JSONTemplateReader {
     return this.readFromObject(templateObject);
   }
 
-  static readFromObject(templateSourceObject: JsonNode): JSONTemplateReaderResult {
+  public readFromObject(templateSourceObject: JsonNode): JSONTemplateReaderResult {
     const topPath: CedarJsonPath = new CedarJsonPath();
     const parsingResult: ParsingResult = new ParsingResult();
     const template = CedarTemplate.buildEmptyWithNullValues();
 
-    this.readNonReportableAttributes(template, templateSourceObject);
-    this.readReportableAttributes(template, templateSourceObject, parsingResult);
-    this.readInstanceTypeSpecification(template, templateSourceObject, parsingResult);
-    this.readAndValidateChildrenInfo(template, templateSourceObject, parsingResult, topPath);
+    JSONTemplateReader.readNonReportableAttributes(template, templateSourceObject);
+    JSONTemplateReader.readReportableAttributes(template, templateSourceObject, parsingResult);
+    JSONTemplateReader.readInstanceTypeSpecification(template, templateSourceObject, parsingResult);
+    JSONTemplateReader.readAndValidateChildrenInfo(template, templateSourceObject, parsingResult, topPath);
 
     return new JSONTemplateReaderResult(template, parsingResult, templateSourceObject);
   }
@@ -321,12 +337,12 @@ export class JSONTemplateReader {
     }
   }
 
-  static getRoundTripComparisonResult(jsonTemplateReaderResult: JSONTemplateReaderResult): ParsingResult {
+  static getRoundTripComparisonResult(jsonTemplateReaderResult: JSONTemplateReaderResult, writer: JSONTemplateWriter): ParsingResult {
     const compareResult = new ParsingResult();
     ObjectComparator.compareBothWays(
       compareResult,
       jsonTemplateReaderResult.templateSourceObject,
-      jsonTemplateReaderResult.template.asCedarNode(),
+      writer.getAsJsonNode(jsonTemplateReaderResult.template),
       new CedarJsonPath(),
     );
     return compareResult;

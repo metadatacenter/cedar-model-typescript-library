@@ -58,11 +58,11 @@ export class CedarElement extends CedarAbstractArtifact {
       },
       [JsonSchema.properties]: typeSpecificProperties,
       [JsonSchema.required]: [JsonSchema.atValue], // TODO: this might be dependent on type
-      ...this.macroSchemaNameAndDescription(),
-      ...this.macroProvenance(),
+      // ...this.macroSchemaNameAndDescription(),
+      // ...this.macroProvenance(),
       [JsonSchema.schemaVersion]: this.schema_schemaVersion,
       [TemplateProperty.additionalProperties]: false,
-      ...this.macroStatusAndVersion(),
+      // ...this.macroStatusAndVersion(),
       [CedarModel.schema]: CedarSchema.CURRENT,
     };
   }
@@ -78,19 +78,19 @@ export class CedarElement extends CedarAbstractArtifact {
   public asCedarElementFieldYamlObject(): object {
     // build the final object
     return {
-      id: this.at_id.toJSON(),
-      type: CedarArtifactType.TEMPLATE_ELEMENT.toJSON(),
+      // id: this.at_id.toJSON(),
+      // type: CedarArtifactType.TEMPLATE_ELEMENT.toJSON(),
       [TemplateProperty.title]: this.title,
       [TemplateProperty.description]: this.description,
       [JsonSchema.schemaName]: this.schema_name,
       [JsonSchema.schemaDescription]: this.schema_description,
-      [JsonSchema.pavCreatedOn]: this.pav_createdOn?.toJSON(),
-      [JsonSchema.pavCreatedBy]: this.pav_createdBy.toJSON(),
-      [JsonSchema.pavLastUpdatedOn]: this.pav_lastUpdatedOn?.toJSON(),
-      [JsonSchema.oslcModifiedBy]: this.oslc_modifiedBy.toJSON(),
-      [JsonSchema.schemaVersion]: this.schema_schemaVersion.toJSON(),
-      [JsonSchema.pavVersion]: this.pav_version.toJSON(),
-      [JsonSchema.biboStatus]: this.bibo_status.toJSON(),
+      // [JsonSchema.pavCreatedOn]: this.pav_createdOn?.toJSON(),
+      // [JsonSchema.pavCreatedBy]: this.pav_createdBy.toJSON(),
+      // [JsonSchema.pavLastUpdatedOn]: this.pav_lastUpdatedOn?.toJSON(),
+      // [JsonSchema.oslcModifiedBy]: this.oslc_modifiedBy.toJSON(),
+      // [JsonSchema.schemaVersion]: this.schema_schemaVersion.toJSON(),
+      // [JsonSchema.pavVersion]: this.pav_version.toJSON(),
+      // [JsonSchema.biboStatus]: this.bibo_status.toJSON(),
     };
   }
 }

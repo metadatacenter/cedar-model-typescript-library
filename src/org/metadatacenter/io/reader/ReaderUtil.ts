@@ -1,4 +1,4 @@
-import { JsonNode } from '../model/cedar/util/types/JsonNode';
+import { JsonNode } from '../../model/cedar/util/types/JsonNode';
 
 export class ReaderUtil {
   public static getString(node: JsonNode, key: string): string | null {

@@ -3,9 +3,6 @@ import { CedarField } from '../../CedarField';
 import { CedarFieldType } from '../../../beans/CedarFieldType';
 import { ValueConstraintsLinkField } from './ValueConstraintsLinkField';
 import { CedarArtifactType } from '../../../beans/CedarArtifactType';
-import { JsonNode } from '../../../util/types/JsonNode';
-import { JsonSchema } from '../../../constants/JsonSchema';
-import { CedarTemplateFieldContent } from '../../../util/serialization/CedarTemplateFieldContent';
 
 export class CedarLinkField extends CedarField {
   private constructor() {
@@ -23,13 +20,5 @@ export class CedarLinkField extends CedarField {
     const r = new CedarLinkField();
     r.schema_schemaVersion = SchemaVersion.CURRENT;
     return r;
-  }
-
-  protected expandPropertiesNodeForJSON(propertiesObject: JsonNode): void {
-    propertiesObject[JsonSchema.properties] = CedarTemplateFieldContent.PROPERTIES_VERBATIM_IRI;
-  }
-
-  protected expandRequiredNodeForJSON(requiredObject: JsonNode): void {
-    // TODO: Should the @id be required in case of a link?
   }
 }

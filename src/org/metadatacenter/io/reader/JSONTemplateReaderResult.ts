@@ -1,6 +1,6 @@
-import { CedarTemplate } from '../model/cedar/template/CedarTemplate';
-import { ParsingResult } from '../model/cedar/util/compare/ParsingResult';
-import { JsonNode } from '../model/cedar/util/types/JsonNode';
+import { CedarTemplate } from '../../model/cedar/template/CedarTemplate';
+import { ParsingResult } from '../../model/cedar/util/compare/ParsingResult';
+import { JsonNode } from '../../model/cedar/util/types/JsonNode';
 
 export class JSONTemplateReaderResult {
   private readonly _template: CedarTemplate;

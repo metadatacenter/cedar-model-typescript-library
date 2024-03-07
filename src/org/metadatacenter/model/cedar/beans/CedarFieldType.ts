@@ -45,8 +45,4 @@ export class CedarFieldType {
   public static STATIC_RICH_TEXT = new CedarFieldType(CedarFieldTypeValues.STATIC_RICH_TEXT, InputType.richText);
   public static STATIC_YOUTUBE = new CedarFieldType(CedarFieldTypeValues.STATIC_YOUTUBE, InputType.youtube);
   public static NULL = new CedarFieldType(null, null);
-
-  toJSON() {
-    return this.value;
-  }
 }

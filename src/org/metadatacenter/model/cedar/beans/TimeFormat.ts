@@ -32,8 +32,4 @@ export class TimeFormat {
     }
     return this.NULL;
   }
-
-  toJSON() {
-    return this.value;
-  }
 }

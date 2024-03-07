@@ -38,8 +38,4 @@ export class NumberType {
     }
     return this.NULL;
   }
-
-  toJSON() {
-    return this.value;
-  }
 }

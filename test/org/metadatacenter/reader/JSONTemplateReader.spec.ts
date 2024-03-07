@@ -1,15 +1,17 @@
-import { JSONTemplateReader } from '../../../../src/org/metadatacenter/reader/JSONTemplateReader';
+import { JSONTemplateReader } from '../../../../src/org/metadatacenter/io/reader/JSONTemplateReader';
 
 describe('JSONTemplateReader', () => {
   test('reads empty template as string, should be not null', () => {
     const templateSourceString = '';
-    const jsonTemplateReaderResult = JSONTemplateReader.readFromString(templateSourceString);
+    const reader: JSONTemplateReader = JSONTemplateReader.getStrict();
+    const jsonTemplateReaderResult = reader.readFromString(templateSourceString);
     expect(jsonTemplateReaderResult).not.toBeNull();
   });
 
   test('reads empty template as object, should be not null', () => {
     const templateSourceObject = {};
-    const jsonTemplateReaderResult = JSONTemplateReader.readFromObject(templateSourceObject);
+    const reader: JSONTemplateReader = JSONTemplateReader.getStrict();
+    const jsonTemplateReaderResult = reader.readFromObject(templateSourceObject);
     expect(jsonTemplateReaderResult).not.toBeNull();
   });
 });

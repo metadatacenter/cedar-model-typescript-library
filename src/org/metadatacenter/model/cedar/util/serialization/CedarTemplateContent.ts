@@ -1,4 +1,4 @@
-import { ReaderUtil } from '../../../../reader/ReaderUtil';
+import { ReaderUtil } from '../../../../io/reader/ReaderUtil';
 
 export class CedarTemplateContent {
   // This will have the names of elements and fields as well

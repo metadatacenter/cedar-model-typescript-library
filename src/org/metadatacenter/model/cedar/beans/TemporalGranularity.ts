@@ -50,8 +50,4 @@ export class TemporalGranularity {
     }
     return this.NULL;
   }
-
-  toJSON() {
-    return this.value;
-  }
 }

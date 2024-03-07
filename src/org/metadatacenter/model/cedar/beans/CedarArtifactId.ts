@@ -11,10 +11,6 @@ export class CedarArtifactId {
 
   public static NULL = new CedarArtifactId(null);
 
-  toJSON() {
-    return this.value;
-  }
-
   static forValue(value: string | null): CedarArtifactId {
     return new CedarArtifactId(value);
   }

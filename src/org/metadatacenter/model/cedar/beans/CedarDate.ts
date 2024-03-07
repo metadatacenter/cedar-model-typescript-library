@@ -30,8 +30,4 @@ export class CedarDate {
     const timezoneOffset = isoDateString.match(/Z|([+-])([01]\d):?([0-5]\d)$/)?.[0] ?? 'Z';
     return new CedarDate(date, timezoneOffset);
   }
-
-  toJSON() {
-    return this.getValue();
-  }
 }

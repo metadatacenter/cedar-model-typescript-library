@@ -3,11 +3,10 @@ import { CedarField } from '../../CedarField';
 import { CedarFieldType } from '../../../beans/CedarFieldType';
 import { CedarArtifactType } from '../../../beans/CedarArtifactType';
 import { ValueConstraintsNumericField } from './ValueConstraintsNumericField';
-import { JsonNode } from '../../../util/types/JsonNode';
-import { JsonSchema } from '../../../constants/JsonSchema';
-import { CedarTemplateFieldContent } from '../../../util/serialization/CedarTemplateFieldContent';
 
 export class CedarNumericField extends CedarField {
+  // Redeclare valueConstraints with a more specific type
+  public valueConstraints: ValueConstraintsNumericField;
   private constructor() {
     super();
     this.cedarFieldType = CedarFieldType.NUMERIC;
@@ -23,11 +22,5 @@ export class CedarNumericField extends CedarField {
     const r = new CedarNumericField();
     r.schema_schemaVersion = SchemaVersion.CURRENT;
     return r;
-  }
-  protected expandPropertiesNodeForJSON(propertiesObject: JsonNode): void {
-    propertiesObject[JsonSchema.properties] = CedarTemplateFieldContent.PROPERTIES_VERBATIM_NUMERIC;
-  }
-  protected expandRequiredNodeForJSON(requiredObject: JsonNode): void {
-    requiredObject[JsonSchema.required] = [JsonSchema.atValue, JsonSchema.atType];
   }
 }

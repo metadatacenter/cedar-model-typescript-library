@@ -1,4 +1,4 @@
-import { JSONTemplateReader } from '../../../../src/org/metadatacenter/reader/JSONTemplateReader';
+import { JSONTemplateReader } from '../../../../src/org/metadatacenter/io/reader/JSONTemplateReader';
 import { CedarJsonPath } from '../../../../src/org/metadatacenter/model/cedar/util/path/CedarJsonPath';
 import { ComparisonError } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonError';
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
@@ -9,7 +9,8 @@ import { TestUtil } from '../../../TestUtil';
 describe('JSONTemplateReader - template-003', () => {
   test('reads very simple template as object, with various mismatches', () => {
     const templateSource = TestUtil.readTestResourceAsString('templates/003', 'template-003.json');
-    const jsonTemplateReaderResult = JSONTemplateReader.readFromString(templateSource);
+    const reader: JSONTemplateReader = JSONTemplateReader.getStrict();
+    const jsonTemplateReaderResult = reader.readFromString(templateSource);
     expect(jsonTemplateReaderResult).not.toBeNull();
     const parsingResult = jsonTemplateReaderResult.parsingResult;
 

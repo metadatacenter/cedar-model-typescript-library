@@ -18,10 +18,6 @@ export class PavVersion {
   public static DEFAULT = new PavVersion(PavVersionValues.DEFAULT);
   public static NULL = new PavVersion(null);
 
-  toJSON() {
-    return this.value;
-  }
-
   public static values(): PavVersion[] {
     return [PavVersion.DEFAULT, PavVersion.NULL];
   }

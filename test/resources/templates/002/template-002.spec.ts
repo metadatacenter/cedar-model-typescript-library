@@ -1,4 +1,4 @@
-import { JSONTemplateReader } from '../../../../src/org/metadatacenter/reader/JSONTemplateReader';
+import { JSONTemplateReader } from '../../../../src/org/metadatacenter/io/reader/JSONTemplateReader';
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
 import { TestUtil } from '../../../TestUtil';
 import { ComparisonError } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonError';
@@ -6,18 +6,25 @@ import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/ce
 import { CedarJsonPath } from '../../../../src/org/metadatacenter/model/cedar/util/path/CedarJsonPath';
 import { CedarModel } from '../../../../src/org/metadatacenter/model/cedar/CedarModel';
 import { JsonSchema } from '../../../../src/org/metadatacenter/model/cedar/constants/JsonSchema';
+import { CedarWriters } from '../../../../src/org/metadatacenter/io/writer/CedarWriters';
+import { JSONTemplateWriter } from '../../../../src/org/metadatacenter/model/cedar/template/JSONTemplateWriter';
 
 describe('JSONTemplateReader - template-002', () => {
   test('reads very simple template as object, after save', () => {
     const templateSource = TestUtil.readTestResourceAsString('templates/002', 'template-002.json');
-    const jsonTemplateReaderResult = JSONTemplateReader.readFromString(templateSource);
+    const reader: JSONTemplateReader = JSONTemplateReader.getStrict();
+    const jsonTemplateReaderResult = reader.readFromString(templateSource);
     expect(jsonTemplateReaderResult).not.toBeNull();
     const parsingResult = jsonTemplateReaderResult.parsingResult;
     expect(parsingResult.wasSuccessful()).toBe(true);
 
-    const compareResult: ParsingResult = JSONTemplateReader.getRoundTripComparisonResult(jsonTemplateReaderResult);
+    const writers: CedarWriters = CedarWriters.getStrict();
+    const writer: JSONTemplateWriter = writers.getJSONTemplateWriter();
+
+    const compareResult: ParsingResult = JSONTemplateReader.getRoundTripComparisonResult(jsonTemplateReaderResult, writer);
 
     // TestUtil.p(compareResult);
+    // TestUtil.p(writer.getAsJsonNode(jsonTemplateReaderResult.template));
 
     expect(compareResult.wasSuccessful()).toBe(false);
     expect(compareResult.getBlueprintComparisonErrorCount()).toBe(3);

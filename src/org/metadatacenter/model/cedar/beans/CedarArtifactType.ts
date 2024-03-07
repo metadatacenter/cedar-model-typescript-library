@@ -41,8 +41,4 @@ export class CedarArtifactType {
     }
     return this.NULL;
   }
-
-  toJSON() {
-    return this.value;
-  }
 }

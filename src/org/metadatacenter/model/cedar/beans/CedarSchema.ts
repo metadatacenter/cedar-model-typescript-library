@@ -23,8 +23,4 @@ export class CedarSchema {
       return new CedarSchema(value);
     }
   }
-
-  toJSON() {
-    return this.value;
-  }
 }

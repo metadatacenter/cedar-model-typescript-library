@@ -1,4 +1,4 @@
-import { ReaderUtil } from '../../../../reader/ReaderUtil';
+import { ReaderUtil } from '../../../../io/reader/ReaderUtil';
 
 export class CedarTemplateFieldContent {
   // This is a verbatim representation

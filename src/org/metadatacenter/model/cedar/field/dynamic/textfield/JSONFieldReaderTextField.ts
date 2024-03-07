@@ -2,7 +2,7 @@ import { JsonNode } from '../../../util/types/JsonNode';
 import { ParsingResult } from '../../../util/compare/ParsingResult';
 import { CedarJsonPath } from '../../../util/path/CedarJsonPath';
 import { CedarTextField } from './CedarTextField';
-import { ReaderUtil } from '../../../../../reader/ReaderUtil';
+import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { CedarModel } from '../../../CedarModel';
 import { ValueConstraintsTextField } from './ValueConstraintsTextField';
 

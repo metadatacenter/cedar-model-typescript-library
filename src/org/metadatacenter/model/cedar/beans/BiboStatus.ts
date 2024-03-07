@@ -32,8 +32,4 @@ export class BiboStatus {
     }
     return this.NULL;
   }
-
-  toJSON() {
-    return this.value;
-  }
 }

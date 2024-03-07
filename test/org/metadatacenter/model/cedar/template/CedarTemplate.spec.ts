@@ -1,10 +1,16 @@
 import { CedarTemplate } from '../../../../../../src/org/metadatacenter/model/cedar/template/CedarTemplate';
+import { CedarWriters } from '../../../../../../src/org/metadatacenter/io/writer/CedarWriters';
+import { JSONTemplateWriter } from '../../../../../../src/org/metadatacenter/model/cedar/template/JSONTemplateWriter';
 
 describe('CedarTemplate', () => {
   test('creates empty with null values', () => {
     const cedarTemplate = CedarTemplate.buildEmptyWithNullValues();
     expect(cedarTemplate).not.toBeNull();
-    const stringified = JSON.stringify(cedarTemplate, null, 2);
+
+    const writers: CedarWriters = CedarWriters.getStrict();
+    const writer: JSONTemplateWriter = writers.getJSONTemplateWriter();
+
+    const stringified = JSON.stringify(writer.getAsJsonNode(cedarTemplate), null, 2);
     const backparsed = JSON.parse(stringified);
 
     expect(backparsed['@id']).toBeNull();
@@ -36,7 +42,11 @@ describe('CedarTemplate', () => {
   test('creates empty with default values', () => {
     const cedarTemplate = CedarTemplate.buildEmptyWithDefaultValues();
     expect(cedarTemplate).not.toBeNull();
-    const stringified = JSON.stringify(cedarTemplate, null, 2);
+
+    const writers: CedarWriters = CedarWriters.getStrict();
+    const writer: JSONTemplateWriter = writers.getJSONTemplateWriter();
+
+    const stringified = JSON.stringify(writer.getAsJsonNode(cedarTemplate), null, 2);
     const backparsed = JSON.parse(stringified);
 
     expect(backparsed['@id']).toBeNull();

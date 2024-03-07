@@ -1,4 +1,4 @@
-import { JSONTemplateReader } from '../../../../src/org/metadatacenter/reader/JSONTemplateReader';
+import { JSONTemplateReader } from '../../../../src/org/metadatacenter/io/reader/JSONTemplateReader';
 import { TestUtil } from '../../../TestUtil';
 import { CedarJsonPath } from '../../../../src/org/metadatacenter/model/cedar/util/path/CedarJsonPath';
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
@@ -6,11 +6,14 @@ import { ComparisonError } from '../../../../src/org/metadatacenter/model/cedar/
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
 import { JsonSchema } from '../../../../src/org/metadatacenter/model/cedar/constants/JsonSchema';
 import { CedarModel } from '../../../../src/org/metadatacenter/model/cedar/CedarModel';
+import { CedarWriters } from '../../../../src/org/metadatacenter/io/writer/CedarWriters';
+import { JSONTemplateWriter } from '../../../../src/org/metadatacenter/model/cedar/template/JSONTemplateWriter';
 
 describe('JSONTemplateReader - template-005', () => {
   test('reads multi-instance text fields', () => {
     const templateSource = TestUtil.readTestResourceAsString('templates/005', 'template-005.json');
-    const jsonTemplateReaderResult = JSONTemplateReader.readFromString(templateSource);
+    const reader: JSONTemplateReader = JSONTemplateReader.getStrict();
+    const jsonTemplateReaderResult = reader.readFromString(templateSource);
     expect(jsonTemplateReaderResult).not.toBeNull();
     const parsingResult = jsonTemplateReaderResult.parsingResult;
     // TestUtil.p(parsingResult);
@@ -19,7 +22,10 @@ describe('JSONTemplateReader - template-005', () => {
     expect(parsingResult.wasSuccessful()).toBe(true);
 
     // TestUtil.p(jsonTemplateReaderResult.template.asCedarNode());
-    const compareResult: ParsingResult = JSONTemplateReader.getRoundTripComparisonResult(jsonTemplateReaderResult);
+    const writers: CedarWriters = CedarWriters.getStrict();
+    const writer: JSONTemplateWriter = writers.getJSONTemplateWriter();
+
+    const compareResult: ParsingResult = JSONTemplateReader.getRoundTripComparisonResult(jsonTemplateReaderResult, writer);
 
     // TestUtil.p(compareResult);
 

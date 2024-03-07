@@ -34,8 +34,4 @@ export class TemporalType {
     }
     return this.NULL;
   }
-
-  toJSON() {
-    return this.value;
-  }
 }

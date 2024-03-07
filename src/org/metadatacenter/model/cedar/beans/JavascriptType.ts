@@ -34,8 +34,4 @@ export class JavascriptType {
     }
     return this.NULL;
   }
-
-  toJSON() {
-    return this.value;
-  }
 }

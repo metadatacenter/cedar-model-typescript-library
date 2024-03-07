@@ -12,8 +12,4 @@ export class CedarUser {
   public static forValue(value: string | null): CedarUser {
     return new CedarUser(value);
   }
-
-  toJSON() {
-    return this.value;
-  }
 }

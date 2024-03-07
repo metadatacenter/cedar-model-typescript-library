@@ -18,25 +18,42 @@ import { CedarModel } from '../model/cedar/CedarModel';
 import { CedarSchema } from '../model/cedar/beans/CedarSchema';
 import { CedarTemplateFieldContent } from '../model/cedar/util/serialization/CedarTemplateFieldContent';
 import { InputType } from '../model/cedar/constants/InputType';
-import { JSONFieldReaderTextField } from './field/JSONFieldReaderTextField';
-import { JSONFieldReaderPageBreak } from './field/JSONFieldReaderPageBreak';
-import { JSONFieldReaderSectionBreak } from './field/JSONFieldReaderSectionBreak';
-import { JSONFieldReaderImage } from './field/JSONFieldReaderImage';
-import { JSONFieldReaderRichText } from './field/JSONFieldReaderRichText';
-import { JSONFieldReaderYoutube } from './field/JSONFieldReaderYoutube';
-import { JSONFieldReaderLink } from './field/JSONFieldReaderLink';
+import { JSONFieldReaderTextField } from '../model/cedar/field/dynamic/textfield/JSONFieldReaderTextField';
+import { JSONFieldReaderPageBreak } from '../model/cedar/field/static/page-break/JSONFieldReaderPageBreak';
+import { JSONFieldReaderSectionBreak } from '../model/cedar/field/static/section-break/JSONFieldReaderSectionBreak';
+import { JSONFieldReaderImage } from '../model/cedar/field/static/image/JSONFieldReaderImage';
+import { JSONFieldReaderRichText } from '../model/cedar/field/static/rich-text/JSONFieldReaderRichText';
+import { JSONFieldReaderYoutube } from '../model/cedar/field/static/youtube/JSONFieldReaderYoutube';
+import { JSONFieldReaderLink } from '../model/cedar/field/dynamic/link/JSONFieldReaderLink';
 import { CedarStaticTemplateFieldContent } from '../model/cedar/util/serialization/CedarStaticTemplateFieldContent';
-import { JSONFieldReaderTemporal } from '../model/cedar/field/temporal/JSONFieldReaderTemporal';
-import { JSONFieldReaderEmail } from '../model/cedar/field/email/JSONFieldReaderEmail';
+import { JSONFieldReaderTemporal } from '../model/cedar/field/dynamic/temporal/JSONFieldReaderTemporal';
+import { JSONFieldReaderEmail } from '../model/cedar/field/dynamic/email/JSONFieldReaderEmail';
+
+interface ReaderMap {
+  [key: string]: { read: (fieldSourceObject: Node, parsingResult: ParsingResult, path: CedarJsonPath) => CedarField };
+}
 
 export class JSONFieldReader {
+  static dynamicTypeReaderMap: ReaderMap = {
+    [InputType.text]: JSONFieldReaderTextField,
+    [InputType.link]: JSONFieldReaderLink,
+    [InputType.temporal]: JSONFieldReaderTemporal,
+    [InputType.email]: JSONFieldReaderEmail,
+  };
+  static staticReaderMap: ReaderMap = {
+    [InputType.pageBreak]: JSONFieldReaderPageBreak,
+    [InputType.sectionBreak]: JSONFieldReaderSectionBreak,
+    [InputType.image]: JSONFieldReaderImage,
+    [InputType.richText]: JSONFieldReaderRichText,
+    [InputType.youtube]: JSONFieldReaderYoutube,
+  };
+
   static readFromObject(fieldSourceObject: Node, parsingResult: ParsingResult, path: CedarJsonPath): CedarField | null {
     const field: CedarField | null = this.readFieldSpecificAttributes(fieldSourceObject, parsingResult, path);
     if (field != null) {
       this.readNonReportableAttributes(field, fieldSourceObject);
       this.readReportableAttributes(field, fieldSourceObject, parsingResult, path);
     }
-
     return field;
   }
 
@@ -104,26 +121,20 @@ export class JSONFieldReader {
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
     const uiInputType: string | null = ReaderUtil.getString(uiNode, CedarModel.inputType);
     if (artifactType == CedarArtifactType.STATIC_TEMPLATE_FIELD) {
-      if (uiInputType == InputType.pageBreak) {
-        return JSONFieldReaderPageBreak.read(fieldSourceObject, parsingResult, path);
-      } else if (uiInputType == InputType.sectionBreak) {
-        return JSONFieldReaderSectionBreak.read(fieldSourceObject, parsingResult, path);
-      } else if (uiInputType == InputType.image) {
-        return JSONFieldReaderImage.read(fieldSourceObject, parsingResult, path);
-      } else if (uiInputType == InputType.richText) {
-        return JSONFieldReaderRichText.read(fieldSourceObject, parsingResult, path);
-      } else if (uiInputType == InputType.youtube) {
-        return JSONFieldReaderYoutube.read(fieldSourceObject, parsingResult, path);
+      if (uiInputType != null) {
+        const reader = this.staticReaderMap[uiInputType];
+        if (!reader) {
+          throw new Error(`No reader defined for static input type "${uiInputType}"`);
+        }
+        return reader.read(fieldSourceObject, parsingResult, path);
       }
     } else if (artifactType == CedarArtifactType.TEMPLATE_FIELD) {
-      if (uiInputType == InputType.text) {
-        return JSONFieldReaderTextField.read(fieldSourceObject, parsingResult, path);
-      } else if (uiInputType == InputType.link) {
-        return JSONFieldReaderLink.read(fieldSourceObject, parsingResult, path);
-      } else if (uiInputType == InputType.temporal) {
-        return JSONFieldReaderTemporal.read(fieldSourceObject, parsingResult, path);
-      } else if (uiInputType == InputType.email) {
-        return JSONFieldReaderEmail.read(fieldSourceObject, parsingResult, path);
+      if (uiInputType != null) {
+        const reader = this.dynamicTypeReaderMap[uiInputType];
+        if (!reader) {
+          throw new Error(`No reader defined for dynamic input type "${uiInputType}"`);
+        }
+        return reader.read(fieldSourceObject, parsingResult, path);
       }
     }
     return null;

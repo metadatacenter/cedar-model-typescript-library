@@ -6,14 +6,16 @@ import { CedarModel } from '../../../CedarModel';
 import { CedarTemporalField } from './CedarTemporalField';
 import { ValueConstraintsTemporalField } from './ValueConstraintsTemporalField';
 import { TemporalType } from '../../../beans/TemporalType';
+import { TimeFormat } from '../../../beans/TimeFormat';
+import { TemporalGranularity } from '../../../beans/TemporalGranularity';
 
 export class JSONFieldReaderTemporal {
   static read(fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath): CedarTemporalField {
     const field = CedarTemporalField.buildEmptyWithNullValues();
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
     if (uiNode != null) {
-      field.temporalGranularity = ReaderUtil.getString(uiNode, CedarModel.temporalGranularity);
-      field.inputTimeFormat = ReaderUtil.getString(uiNode, CedarModel.inputTimeFormat);
+      field.temporalGranularity = TemporalGranularity.forValue(ReaderUtil.getString(uiNode, CedarModel.temporalGranularity));
+      field.inputTimeFormat = TimeFormat.forValue(ReaderUtil.getString(uiNode, CedarModel.inputTimeFormat));
       field.timezoneEnabled = ReaderUtil.getBoolean(uiNode, CedarModel.timezoneEnabled);
     }
 

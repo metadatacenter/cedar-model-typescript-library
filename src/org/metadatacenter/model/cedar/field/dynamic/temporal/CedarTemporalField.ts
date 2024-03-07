@@ -5,11 +5,13 @@ import { CedarArtifactType } from '../../../beans/CedarArtifactType';
 import { ValueConstraintsTemporalField } from './ValueConstraintsTemporalField';
 import { JsonNode } from '../../../util/types/JsonNode';
 import { CedarModel } from '../../../CedarModel';
+import { TimeFormat } from '../../../beans/TimeFormat';
+import { TemporalGranularity } from '../../../beans/TemporalGranularity';
 
 export class CedarTemporalField extends CedarField {
   public timezoneEnabled: boolean = false;
-  public inputTimeFormat: string | null = null;
-  public temporalGranularity: string | null = null;
+  public inputTimeFormat: TimeFormat = TimeFormat.NULL;
+  public temporalGranularity: TemporalGranularity = TemporalGranularity.NULL;
   private constructor() {
     super();
     this.cedarFieldType = CedarFieldType.TEMPORAL;
@@ -31,10 +33,10 @@ export class CedarTemporalField extends CedarField {
     if (this.timezoneEnabled) {
       uiNode[CedarModel.timezoneEnabled] = this.timezoneEnabled;
     }
-    if (this.inputTimeFormat !== null) {
+    if (this.inputTimeFormat !== TimeFormat.NULL) {
       uiNode[CedarModel.inputTimeFormat] = this.inputTimeFormat;
     }
-    if (this.temporalGranularity !== null) {
+    if (this.temporalGranularity !== TemporalGranularity.NULL) {
       uiNode[CedarModel.temporalGranularity] = this.temporalGranularity;
     }
   }

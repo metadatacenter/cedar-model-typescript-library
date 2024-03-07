@@ -10,7 +10,7 @@ import { CedarTemplateFieldContent } from '../util/serialization/CedarTemplateFi
 import { ValueConstraints } from './ValueConstraints';
 import { CedarFieldType } from '../beans/CedarFieldType';
 import { CedarAbstractArtifact } from '../CedarAbstractArtifact';
-import { JsonNode, JsonNodeClass } from '../util/types/JsonNode';
+import { JsonNode } from '../util/types/JsonNode';
 
 export abstract class CedarField extends CedarAbstractArtifact {
   public at_id: CedarArtifactId = CedarArtifactId.NULL;

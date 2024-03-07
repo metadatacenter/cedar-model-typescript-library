@@ -3,7 +3,7 @@ import { CedarUser } from './beans/CedarUser';
 import { JsonSchema } from './constants/JsonSchema';
 import { PavVersion } from './beans/PavVersion';
 import { BiboStatus } from './beans/BiboStatus';
-import { JsonNode } from './util/types/JsonNode';
+import { JsonNode, JsonNodeClass } from './util/types/JsonNode';
 
 export abstract class CedarAbstractArtifact {
   // provenance
@@ -37,7 +37,7 @@ export abstract class CedarAbstractArtifact {
   }
 
   protected macroStatusAndVersion() {
-    const svObject: JsonNode = {};
+    const svObject: JsonNode = JsonNodeClass.getEmpty();
     if (this.bibo_status !== BiboStatus.NULL) {
       svObject[JsonSchema.biboStatus] = this.bibo_status;
     }

@@ -97,7 +97,7 @@ export class CedarTemplate extends CedarAbstractArtifact {
       templateUI[CedarModel.footer] = this.footer;
     }
 
-    const schemaIdentifier: JsonNode = {};
+    const schemaIdentifier: JsonNode = JsonNodeClass.getEmpty();
     if (this.schema_identifier !== null) {
       schemaIdentifier[JsonSchema.schemaIdentifier] = this.schema_identifier;
     }
@@ -162,7 +162,7 @@ export class CedarTemplate extends CedarAbstractArtifact {
   }
 
   private getChildMap(): JsonNode {
-    const childMap: JsonNode = JsonNodeClass.EMPTY;
+    const childMap: JsonNode = JsonNodeClass.getEmpty();
 
     this.children.forEach((child) => {
       const childName = child.schema_name;

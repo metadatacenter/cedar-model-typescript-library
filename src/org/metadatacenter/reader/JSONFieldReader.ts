@@ -86,7 +86,7 @@ export class JSONFieldReader {
 
     // Read and validate, but do not store top level @context
     const topContextNode: JsonNode = ReaderUtil.getNode(fieldSourceObject, JsonSchema.atContext);
-    let blueprintAtContext: JsonNode = JsonNodeClass.EMPTY;
+    let blueprintAtContext: JsonNode = JsonNodeClass.getEmpty();
     if (field.cedarArtifactType == CedarArtifactType.TEMPLATE_FIELD) {
       blueprintAtContext = CedarTemplateFieldContent.CONTEXT_VERBATIM;
     } else if (field.cedarArtifactType == CedarArtifactType.STATIC_TEMPLATE_FIELD) {

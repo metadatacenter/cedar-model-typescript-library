@@ -2,8 +2,10 @@ export interface JsonNode {
   [key: string]: string | number | boolean | object | null | undefined;
 }
 
-export class JsonNodeClass {
+export abstract class JsonNodeClass {
   [key: string]: string | number | boolean | object | null | undefined;
 
-  static EMPTY: JsonNode = {};
+  static getEmpty(): JsonNode {
+    return {};
+  }
 }

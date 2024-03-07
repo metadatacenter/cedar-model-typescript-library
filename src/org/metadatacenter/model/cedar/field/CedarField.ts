@@ -10,7 +10,7 @@ import { CedarTemplateFieldContent } from '../util/serialization/CedarTemplateFi
 import { ValueConstraints } from './ValueConstraints';
 import { CedarFieldType } from '../beans/CedarFieldType';
 import { CedarAbstractArtifact } from '../CedarAbstractArtifact';
-import { JsonNode } from '../util/types/JsonNode';
+import { JsonNode, JsonNodeClass } from '../util/types/JsonNode';
 
 export abstract class CedarField extends CedarAbstractArtifact {
   public at_id: CedarArtifactId = CedarArtifactId.NULL;
@@ -37,7 +37,7 @@ export abstract class CedarField extends CedarAbstractArtifact {
   }
 
   protected macroSkos(): JsonNode {
-    const skosObject: JsonNode = {};
+    const skosObject: JsonNode = JsonNodeClass.getEmpty();
     if (this.skos_altLabel !== null && this.skos_altLabel.length > 0) {
       skosObject[CedarModel.skosAltLabel] = this.skos_altLabel;
     }
@@ -54,11 +54,11 @@ export abstract class CedarField extends CedarAbstractArtifact {
    */
   public toJSON(): JsonNode {
     // Build properties wrapper, based on type
-    const propertiesObject: JsonNode = {};
+    const propertiesObject: JsonNode = JsonNodeClass.getEmpty();
     this.expandPropertiesNodeForJSON(propertiesObject);
 
     // Build required wrapper
-    const requiredObject: JsonNode = {};
+    const requiredObject: JsonNode = JsonNodeClass.getEmpty();
     this.expandRequiredNodeForJSON(requiredObject);
 
     // Build ui wrapper

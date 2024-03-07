@@ -30,6 +30,7 @@ import { JSONFieldReaderTemporal } from '../../model/cedar/field/dynamic/tempora
 import { JSONFieldReaderEmail } from '../../model/cedar/field/dynamic/email/JSONFieldReaderEmail';
 import { JSONFieldReaderNumeric } from '../../model/cedar/field/dynamic/numeric/JSONFieldReaderNumeric';
 import { JSONFieldReaderTextArea } from '../../model/cedar/field/dynamic/textarea/JSONFieldReaderTextArea';
+import { JSONFieldReaderPhoneNumber } from '../../model/cedar/field/dynamic/phonenumber/JSONFieldReaderPhoneNumber';
 
 interface ReaderMap {
   [key: string]: { read: (fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath) => CedarField };
@@ -43,6 +44,7 @@ export class JSONFieldReader {
     [InputType.temporal]: JSONFieldReaderTemporal,
     [InputType.email]: JSONFieldReaderEmail,
     [InputType.numeric]: JSONFieldReaderNumeric,
+    [InputType.phoneNumber]: JSONFieldReaderPhoneNumber,
   };
   static staticReaderMap: ReaderMap = {
     [InputType.pageBreak]: JSONFieldReaderPageBreak,

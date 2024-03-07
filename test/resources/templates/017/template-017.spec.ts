@@ -10,9 +10,9 @@ import { JsonSchema } from '../../../../src/org/metadatacenter/model/cedar/const
 import { JSONTemplateWriter } from '../../../../src/org/metadatacenter/model/cedar/template/JSONTemplateWriter';
 import { CedarWriters } from '../../../../src/org/metadatacenter/io/writer/CedarWriters';
 
-describe('JSONTemplateReader - template-016', () => {
-  test('reads template with multi required paragraph', () => {
-    const templateSource = TestUtil.readTestResourceAsString('templates/016', 'template-016.json');
+describe('JSONTemplateReader - template-017', () => {
+  test('reads template with one phone number', () => {
+    const templateSource = TestUtil.readTestResourceAsString('templates/017', 'template-017.json');
     const reader: JSONTemplateReader = JSONTemplateReader.getStrict();
     const jsonTemplateReaderResult: JSONTemplateReaderResult = reader.readFromString(templateSource);
     expect(jsonTemplateReaderResult).not.toBeNull();
@@ -40,13 +40,13 @@ describe('JSONTemplateReader - template-016', () => {
       ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
       new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 11),
       undefined,
-      'Paragraph',
+      'Phone number',
     );
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredComplexNumberUnexpected);
 
     const languageEmailFieldUnexpected = new ComparisonError(
       ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
-      new CedarJsonPath(JsonSchema.properties, 'Paragraph', JsonSchema.items, JsonSchema.properties, JsonSchema.atLanguage),
+      new CedarJsonPath(JsonSchema.properties, 'Phone number', JsonSchema.properties, JsonSchema.atLanguage),
     );
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageEmailFieldUnexpected);
   });

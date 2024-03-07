@@ -5,6 +5,7 @@ export const CedarFieldTypeValues = {
   CONTROLLED_TERM: 'DYNAMIC-controlled-term',
   LINK: 'DYNAMIC-link',
   TEMPORAL: 'DYNAMIC-temporal',
+  EMAIL: 'DYNAMIC-email',
   STATIC_PAGE_BREAK: 'STATIC-page-break',
   STATIC_SECTION_BREAK: 'STATIC-section-break',
   STATIC_IMAGE: 'STATIC-image',
@@ -35,6 +36,7 @@ export class CedarFieldType {
   public static CONTROLLED_TERM = new CedarFieldType(CedarFieldTypeValues.CONTROLLED_TERM, InputType.text);
   public static LINK = new CedarFieldType(CedarFieldTypeValues.LINK, InputType.link);
   public static TEMPORAL = new CedarFieldType(CedarFieldTypeValues.TEMPORAL, InputType.temporal);
+  public static EMAIL = new CedarFieldType(CedarFieldTypeValues.EMAIL, InputType.email);
   public static STATIC_PAGE_BREAK = new CedarFieldType(CedarFieldTypeValues.STATIC_PAGE_BREAK, InputType.pageBreak);
   public static STATIC_SECTION_BREAK = new CedarFieldType(CedarFieldTypeValues.STATIC_SECTION_BREAK, InputType.sectionBreak);
   public static STATIC_IMAGE = new CedarFieldType(CedarFieldTypeValues.STATIC_IMAGE, InputType.image);

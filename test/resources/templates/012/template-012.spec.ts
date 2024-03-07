@@ -8,9 +8,9 @@ import { CedarModel } from '../../../../src/org/metadatacenter/model/cedar/Cedar
 import { JSONTemplateReaderResult } from '../../../../src/org/metadatacenter/reader/JSONTemplateReaderResult';
 import { JsonSchema } from '../../../../src/org/metadatacenter/model/cedar/constants/JsonSchema';
 
-describe('JSONTemplateReader - template-011', () => {
-  test('reads template with multi-field with prefLabel and altLabel', () => {
-    const templateSource = TestUtil.readTestResourceAsString('templates/011', 'template-011.json');
+describe('JSONTemplateReader - template-012', () => {
+  test('reads template with single required email field', () => {
+    const templateSource = TestUtil.readTestResourceAsString('templates/012', 'template-012.json');
     const jsonTemplateReaderResult: JSONTemplateReaderResult = JSONTemplateReader.readFromString(templateSource);
     expect(jsonTemplateReaderResult).not.toBeNull();
     const parsingResult: ParsingResult = jsonTemplateReaderResult.parsingResult;
@@ -30,18 +30,18 @@ describe('JSONTemplateReader - template-011', () => {
     );
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
 
-    const languageTextField1Unexpected = new ComparisonError(
+    const languageEmailFieldUnexpected = new ComparisonError(
       ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
-      new CedarJsonPath(JsonSchema.properties, 'TextField1', JsonSchema.items, JsonSchema.properties, JsonSchema.atLanguage),
+      new CedarJsonPath(JsonSchema.properties, 'Email field', JsonSchema.properties, JsonSchema.atLanguage),
     );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageTextField1Unexpected);
+    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageEmailFieldUnexpected);
 
-    const requiredTextField1Unexpected = new ComparisonError(
+    const requiredEmailFieldUnexpected = new ComparisonError(
       ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
       new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 11),
       undefined,
-      'TextField1',
+      'Email field',
     );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredTextField1Unexpected);
+    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredEmailFieldUnexpected);
   });
 });

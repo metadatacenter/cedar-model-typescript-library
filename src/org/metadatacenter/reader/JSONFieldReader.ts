@@ -27,6 +27,7 @@ import { JSONFieldReaderYoutube } from './field/JSONFieldReaderYoutube';
 import { JSONFieldReaderLink } from './field/JSONFieldReaderLink';
 import { CedarStaticTemplateFieldContent } from '../model/cedar/util/serialization/CedarStaticTemplateFieldContent';
 import { JSONFieldReaderTemporal } from '../model/cedar/field/temporal/JSONFieldReaderTemporal';
+import { JSONFieldReaderEmail } from '../model/cedar/field/email/JSONFieldReaderEmail';
 
 export class JSONFieldReader {
   static readFromObject(fieldSourceObject: Node, parsingResult: ParsingResult, path: CedarJsonPath): CedarField | null {
@@ -121,6 +122,8 @@ export class JSONFieldReader {
         return JSONFieldReaderLink.read(fieldSourceObject, parsingResult, path);
       } else if (uiInputType == InputType.temporal) {
         return JSONFieldReaderTemporal.read(fieldSourceObject, parsingResult, path);
+      } else if (uiInputType == InputType.email) {
+        return JSONFieldReaderEmail.read(fieldSourceObject, parsingResult, path);
       }
     }
     return null;

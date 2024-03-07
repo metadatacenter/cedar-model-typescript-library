@@ -1,7 +1,8 @@
 import { InputType } from '../constants/InputType';
 
 export const CedarFieldTypeValues = {
-  TEXT: 'DYNAMIC-text',
+  TEXTFIELD: 'DYNAMIC-textfield',
+  TEXTAREA: 'DYNAMIC-textarea',
   CONTROLLED_TERM: 'DYNAMIC-controlled-term',
   LINK: 'DYNAMIC-link',
   TEMPORAL: 'DYNAMIC-temporal',
@@ -33,8 +34,9 @@ export class CedarFieldType {
     return this._uiInputType;
   }
 
-  public static TEXT = new CedarFieldType(CedarFieldTypeValues.TEXT, InputType.text);
-  public static CONTROLLED_TERM = new CedarFieldType(CedarFieldTypeValues.CONTROLLED_TERM, InputType.text);
+  public static TEXT = new CedarFieldType(CedarFieldTypeValues.TEXTFIELD, InputType.textfield);
+  public static TEXTAREA = new CedarFieldType(CedarFieldTypeValues.TEXTAREA, InputType.textarea);
+  public static CONTROLLED_TERM = new CedarFieldType(CedarFieldTypeValues.CONTROLLED_TERM, InputType.textfield);
   public static LINK = new CedarFieldType(CedarFieldTypeValues.LINK, InputType.link);
   public static TEMPORAL = new CedarFieldType(CedarFieldTypeValues.TEMPORAL, InputType.temporal);
   public static EMAIL = new CedarFieldType(CedarFieldTypeValues.EMAIL, InputType.email);

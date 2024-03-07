@@ -10,9 +10,9 @@ import { JsonSchema } from '../../../../src/org/metadatacenter/model/cedar/const
 import { JSONTemplateWriter } from '../../../../src/org/metadatacenter/model/cedar/template/JSONTemplateWriter';
 import { CedarWriters } from '../../../../src/org/metadatacenter/io/writer/CedarWriters';
 
-describe('JSONTemplateReader - template-015', () => {
+describe('JSONTemplateReader - template-016', () => {
   test('reads template with complex numeric field', () => {
-    const templateSource = TestUtil.readTestResourceAsString('templates/015', 'template-015.json');
+    const templateSource = TestUtil.readTestResourceAsString('templates/016', 'template-016.json');
     const reader: JSONTemplateReader = JSONTemplateReader.getStrict();
     const jsonTemplateReaderResult: JSONTemplateReaderResult = reader.readFromString(templateSource);
     expect(jsonTemplateReaderResult).not.toBeNull();
@@ -24,11 +24,11 @@ describe('JSONTemplateReader - template-015', () => {
 
     const compareResult: ParsingResult = JSONTemplateReader.getRoundTripComparisonResult(jsonTemplateReaderResult, writer);
 
-    // TestUtil.p(compareResult);
-    // TestUtil.p(jsonTemplateReaderResult.template.asCedarTemplateJSONObject());
+    TestUtil.p(compareResult);
+    TestUtil.p(writer.getAsJsonNode(jsonTemplateReaderResult.template));
 
     expect(compareResult.wasSuccessful()).toBe(false);
-    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(2);
+    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(3);
 
     const uiPagesMissing = new ComparisonError(
       ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
@@ -40,28 +40,14 @@ describe('JSONTemplateReader - template-015', () => {
       ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
       new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 11),
       undefined,
-      'Complex number',
+      'Paragraph',
     );
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredComplexNumberUnexpected);
-  });
 
-  test('reads template with complex numeric field, compatible mode', () => {
-    const templateSource = TestUtil.readTestResourceAsString('templates/015', 'template-015.json');
-    const reader: JSONTemplateReader = JSONTemplateReader.getFebruary2024();
-    const jsonTemplateReaderResult: JSONTemplateReaderResult = reader.readFromString(templateSource);
-    expect(jsonTemplateReaderResult).not.toBeNull();
-    const parsingResult: ParsingResult = jsonTemplateReaderResult.parsingResult;
-    expect(parsingResult.wasSuccessful()).toBe(true);
-
-    const writers: CedarWriters = CedarWriters.getStrict();
-    const writer: JSONTemplateWriter = writers.getJSONTemplateWriter();
-
-    const compareResult: ParsingResult = JSONTemplateReader.getRoundTripComparisonResult(jsonTemplateReaderResult, writer);
-
-    // TestUtil.p(compareResult);
-    // TestUtil.p(jsonTemplateReaderResult.template.asCedarTemplateJSONObject());
-
-    expect(compareResult.wasSuccessful()).toBe(false);
-    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(2);
+    const languageEmailFieldUnexpected = new ComparisonError(
+      ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
+      new CedarJsonPath(JsonSchema.properties, 'Paragraph', JsonSchema.items, JsonSchema.properties, JsonSchema.atLanguage),
+    );
+    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageEmailFieldUnexpected);
   });
 });

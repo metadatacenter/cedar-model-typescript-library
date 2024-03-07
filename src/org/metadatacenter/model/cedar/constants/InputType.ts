@@ -1,6 +1,6 @@
 export class InputType {
   static numeric = 'numeric';
-  static text = 'textfield';
+  static textfield = 'textfield';
   static textarea = 'textarea';
   static richText = 'richtext';
   static controlled = 'controlled';

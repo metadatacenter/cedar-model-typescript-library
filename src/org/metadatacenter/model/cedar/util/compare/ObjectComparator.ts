@@ -1,4 +1,4 @@
-import { Node } from '../types/Node';
+import { JsonNode } from '../types/JsonNode';
 import { ParsingResult } from './ParsingResult';
 import { ComparisonError } from './ComparisonError';
 import { Primitive } from '../types/Primitive';
@@ -6,7 +6,7 @@ import { CedarJsonPath } from '../path/CedarJsonPath';
 import { ComparisonErrorType } from './ComparisonErrorType';
 import { JsonSchema } from '../../constants/JsonSchema';
 
-type ComparableObject = Node;
+type ComparableObject = JsonNode;
 
 export class ObjectComparator {
   static compareBothWays(

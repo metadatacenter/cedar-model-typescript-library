@@ -13,7 +13,7 @@ import { CedarContainerChildrenInfo } from '../beans/CedarContainerChildrenInfo'
 import { ReaderUtil } from '../../../reader/ReaderUtil';
 import { CedarTemplateChild } from '../util/types/CedarTemplateChild';
 import { CedarAbstractArtifact } from '../CedarAbstractArtifact';
-import { Node, NodeClass } from '../util/types/Node';
+import { JsonNode, JsonNodeClass } from '../util/types/JsonNode';
 import { CedarContainerChildInfo } from '../beans/CedarContainerChildInfo';
 
 export class CedarTemplate extends CedarAbstractArtifact {
@@ -73,19 +73,19 @@ export class CedarTemplate extends CedarAbstractArtifact {
 
     // Inject instance type specification, if present
     if (this.instanceTypeSpecification !== null) {
-      const oneOfNode: Array<Node> = extendedProperties[JsonSchema.atType][JsonSchema.oneOf];
-      oneOfNode.forEach((item: Node) => {
+      const oneOfNode: Array<JsonNode> = extendedProperties[JsonSchema.atType][JsonSchema.oneOf];
+      oneOfNode.forEach((item: JsonNode) => {
         const itemType = ReaderUtil.getString(item, JsonSchema.type);
         if (itemType == 'string') {
           item[JsonSchema.enum] = [this.instanceTypeSpecification];
         } else if (itemType == 'array') {
-          const items: Node = ReaderUtil.getNode(item, JsonSchema.items);
+          const items: JsonNode = ReaderUtil.getNode(item, JsonSchema.items);
           items[JsonSchema.enum] = [this.instanceTypeSpecification];
         }
       });
     }
 
-    const templateUI: Node = {
+    const templateUI: JsonNode = {
       [CedarModel.order]: this.childrenInfo.getChildrenNames(),
       [CedarModel.propertyLabels]: this.childrenInfo.getPropertyLabelMap(),
       [CedarModel.propertyDescriptions]: this.childrenInfo.getPropertyDescriptionMap(),
@@ -97,7 +97,7 @@ export class CedarTemplate extends CedarAbstractArtifact {
       templateUI[CedarModel.footer] = this.footer;
     }
 
-    const schemaIdentifier: Node = {};
+    const schemaIdentifier: JsonNode = {};
     if (this.schema_identifier !== null) {
       schemaIdentifier[JsonSchema.schemaIdentifier] = this.schema_identifier;
     }
@@ -127,8 +127,8 @@ export class CedarTemplate extends CedarAbstractArtifact {
     return JSON.parse(JSON.stringify(this));
   }
 
-  public asCedarNode(): Node {
-    return this.asCedarTemplateJSONObject() as Node;
+  public asCedarNode(): JsonNode {
+    return this.asCedarTemplateJSONObject() as JsonNode;
   }
 
   public asCedarTemplateJSONString(indent: number = 2): string {
@@ -161,8 +161,8 @@ export class CedarTemplate extends CedarAbstractArtifact {
     this.children.push(templateChild);
   }
 
-  private getChildMap(): Node {
-    const childMap: Node = NodeClass.EMPTY;
+  private getChildMap(): JsonNode {
+    const childMap: JsonNode = JsonNodeClass.EMPTY;
 
     this.children.forEach((child) => {
       const childName = child.schema_name;
@@ -171,7 +171,7 @@ export class CedarTemplate extends CedarAbstractArtifact {
         if (childMeta !== null) {
           if (childMeta.multiInstance) {
             // TODO: handle maxItems, minItems inconsistencies
-            const childNode: Node = {
+            const childNode: JsonNode = {
               [JsonSchema.type]: 'array',
               [CedarModel.minItems]: childMeta.minItems,
               [JsonSchema.items]: child,

@@ -1,14 +1,14 @@
 import { ValueConstraints } from '../../ValueConstraints';
 import { CedarModel } from '../../../CedarModel';
-import { Node } from '../../../util/types/Node';
+import { JsonNode } from '../../../util/types/JsonNode';
 
 export class ValueConstraintsEmailField extends ValueConstraints {
   public constructor() {
     super();
   }
 
-  public toJSON(): Node {
-    const obj: Node = {
+  public toJSON(): JsonNode {
+    const obj: JsonNode = {
       [CedarModel.requiredValue]: this.requiredValue,
     };
     return obj;

@@ -3,7 +3,7 @@ import { CedarField } from '../../CedarField';
 import { CedarFieldType } from '../../../beans/CedarFieldType';
 import { CedarArtifactType } from '../../../beans/CedarArtifactType';
 import { ValueConstraintsTemporalField } from './ValueConstraintsTemporalField';
-import { Node } from '../../../util/types/Node';
+import { JsonNode } from '../../../util/types/JsonNode';
 import { CedarModel } from '../../../CedarModel';
 
 export class CedarTemporalField extends CedarField {
@@ -27,7 +27,7 @@ export class CedarTemporalField extends CedarField {
     return r;
   }
 
-  protected expandUINodeForJSON(uiNode: Node): void {
+  protected expandUINodeForJSON(uiNode: JsonNode): void {
     if (this.timezoneEnabled) {
       uiNode[CedarModel.timezoneEnabled] = this.timezoneEnabled;
     }

@@ -1,13 +1,13 @@
 import { CedarTemplate } from '../model/cedar/template/CedarTemplate';
 import { ParsingResult } from '../model/cedar/util/compare/ParsingResult';
-import { Node } from '../model/cedar/util/types/Node';
+import { JsonNode } from '../model/cedar/util/types/JsonNode';
 
 export class JSONTemplateReaderResult {
   private readonly _template: CedarTemplate;
   private readonly _parsingResult: ParsingResult;
-  private readonly _templateSourceObject: Node;
+  private readonly _templateSourceObject: JsonNode;
 
-  constructor(template: CedarTemplate, parsingResult: ParsingResult, templateSourceObject: Node) {
+  constructor(template: CedarTemplate, parsingResult: ParsingResult, templateSourceObject: JsonNode) {
     this._template = template;
     this._parsingResult = parsingResult;
     this._templateSourceObject = templateSourceObject;
@@ -21,7 +21,7 @@ export class JSONTemplateReaderResult {
     return this._parsingResult;
   }
 
-  get templateSourceObject(): Node {
+  get templateSourceObject(): JsonNode {
     return this._templateSourceObject;
   }
 }

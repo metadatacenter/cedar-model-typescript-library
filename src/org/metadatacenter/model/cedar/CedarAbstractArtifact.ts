@@ -3,7 +3,7 @@ import { CedarUser } from './beans/CedarUser';
 import { JsonSchema } from './constants/JsonSchema';
 import { PavVersion } from './beans/PavVersion';
 import { BiboStatus } from './beans/BiboStatus';
-import { Node } from './util/types/Node';
+import { JsonNode } from './util/types/JsonNode';
 
 export abstract class CedarAbstractArtifact {
   // provenance
@@ -18,16 +18,16 @@ export abstract class CedarAbstractArtifact {
   public schema_name: string | null = null;
   public schema_description: string | null = null;
 
-  protected macroSchemaNameAndDescription(): Node {
-    const ndObject: Node = {
+  protected macroSchemaNameAndDescription(): JsonNode {
+    const ndObject: JsonNode = {
       [JsonSchema.schemaName]: this.schema_name,
       [JsonSchema.schemaDescription]: this.schema_description,
     };
     return ndObject;
   }
 
-  protected macroProvenance(): Node {
-    const provObject: Node = {
+  protected macroProvenance(): JsonNode {
+    const provObject: JsonNode = {
       [JsonSchema.pavCreatedOn]: this.pav_createdOn,
       [JsonSchema.pavCreatedBy]: this.pav_createdBy,
       [JsonSchema.pavLastUpdatedOn]: this.pav_lastUpdatedOn,
@@ -37,7 +37,7 @@ export abstract class CedarAbstractArtifact {
   }
 
   protected macroStatusAndVersion() {
-    const svObject: Node = {};
+    const svObject: JsonNode = {};
     if (this.bibo_status !== BiboStatus.NULL) {
       svObject[JsonSchema.biboStatus] = this.bibo_status;
     }

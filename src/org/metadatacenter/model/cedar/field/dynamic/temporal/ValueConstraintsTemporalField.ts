@@ -1,6 +1,6 @@
 import { ValueConstraints } from '../../ValueConstraints';
 import { CedarModel } from '../../../CedarModel';
-import { Node } from '../../../util/types/Node';
+import { JsonNode } from '../../../util/types/JsonNode';
 import { TemporalType } from '../../../beans/TemporalType';
 
 export class ValueConstraintsTemporalField extends ValueConstraints {
@@ -10,8 +10,8 @@ export class ValueConstraintsTemporalField extends ValueConstraints {
     super();
   }
 
-  public toJSON(): Node {
-    const obj: Node = {
+  public toJSON(): JsonNode {
+    const obj: JsonNode = {
       [CedarModel.requiredValue]: this.requiredValue,
       [CedarModel.temporalType]: this.temporalType,
     };

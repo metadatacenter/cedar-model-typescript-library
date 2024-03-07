@@ -1,4 +1,4 @@
-import { Node } from '../../../util/types/Node';
+import { JsonNode } from '../../../util/types/JsonNode';
 import { ParsingResult } from '../../../util/compare/ParsingResult';
 import { CedarJsonPath } from '../../../util/path/CedarJsonPath';
 import { ReaderUtil } from '../../../../../reader/ReaderUtil';
@@ -8,7 +8,7 @@ import { ValueConstraintsTemporalField } from './ValueConstraintsTemporalField';
 import { TemporalType } from '../../../beans/TemporalType';
 
 export class JSONFieldReaderTemporal {
-  static read(fieldSourceObject: Node, parsingResult: ParsingResult, path: CedarJsonPath): CedarTemporalField {
+  static read(fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath): CedarTemporalField {
     const field = CedarTemporalField.buildEmptyWithNullValues();
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
     if (uiNode != null) {
@@ -21,7 +21,7 @@ export class JSONFieldReaderTemporal {
 
     const vcTF = new ValueConstraintsTemporalField();
     field.valueConstraints = vcTF;
-    const valueConstraints: Node = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
+    const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
     if (valueConstraints != null) {
       vcTF.requiredValue = ReaderUtil.getBoolean(valueConstraints, CedarModel.requiredValue);
       vcTF.temporalType = TemporalType.forValue(ReaderUtil.getString(valueConstraints, CedarModel.temporalType));

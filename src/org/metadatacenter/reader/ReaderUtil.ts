@@ -1,7 +1,7 @@
-import { Node } from '../model/cedar/util/types/Node';
+import { JsonNode } from '../model/cedar/util/types/JsonNode';
 
 export class ReaderUtil {
-  public static getString(node: Node, key: string): string | null {
+  public static getString(node: JsonNode, key: string): string | null {
     if (Object.hasOwn(node, key)) {
       return node[key] as string;
     } else {
@@ -9,7 +9,7 @@ export class ReaderUtil {
     }
   }
 
-  public static getBoolean(node: Node, key: string): boolean {
+  public static getBoolean(node: JsonNode, key: string): boolean {
     if (Object.hasOwn(node, key)) {
       return node[key] as boolean;
     } else {
@@ -17,7 +17,7 @@ export class ReaderUtil {
     }
   }
 
-  static getNumber(node: Node, key: string): number | null {
+  static getNumber(node: JsonNode, key: string): number | null {
     if (Object.hasOwn(node, key)) {
       return node[key] as number;
     } else {
@@ -25,15 +25,15 @@ export class ReaderUtil {
     }
   }
 
-  public static getNode(node: Node, key: string): Node {
+  public static getNode(node: JsonNode, key: string): JsonNode {
     if (Object.hasOwn(node, key)) {
-      return node[key] as Node;
+      return node[key] as JsonNode;
     } else {
       return {};
     }
   }
 
-  public static getStringList(node: Node, key: string): Array<string> {
+  public static getStringList(node: JsonNode, key: string): Array<string> {
     if (Object.hasOwn(node, key) && Array.isArray(node[key])) {
       return node[key] as Array<string>;
     } else {
@@ -41,9 +41,9 @@ export class ReaderUtil {
     }
   }
 
-  static getStringMap(node: Node, key: string): Map<string, string> {
+  static getStringMap(node: JsonNode, key: string): Map<string, string> {
     if (Object.hasOwn(node, key) && typeof node[key] === 'object' && !Array.isArray(node[key]) && node[key] !== null) {
-      const obj = node[key] as Node;
+      const obj = node[key] as JsonNode;
       const entries: [string, string][] = Object.entries(obj as Record<string, string>);
       const map: Map<string, string> = new Map<string, string>();
       for (const [k, v] of entries) {
@@ -72,9 +72,9 @@ export class ReaderUtil {
     });
   }
 
-  public static getNodeList(node: Node, key: string): Array<Node> {
+  public static getNodeList(node: JsonNode, key: string): Array<JsonNode> {
     if (Object.hasOwn(node, key) && Array.isArray(node[key])) {
-      return node[key] as Array<Node>;
+      return node[key] as Array<JsonNode>;
     } else {
       return [];
     }

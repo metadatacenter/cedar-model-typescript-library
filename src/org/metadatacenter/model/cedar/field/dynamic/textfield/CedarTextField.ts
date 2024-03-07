@@ -3,7 +3,7 @@ import { CedarField } from '../../CedarField';
 import { ValueConstraintsTextField } from './ValueConstraintsTextField';
 import { CedarFieldType } from '../../../beans/CedarFieldType';
 import { CedarArtifactType } from '../../../beans/CedarArtifactType';
-import { Node } from '../../../util/types/Node';
+import { JsonNode } from '../../../util/types/JsonNode';
 import { CedarModel } from '../../../CedarModel';
 
 export class CedarTextField extends CedarField {
@@ -26,7 +26,7 @@ export class CedarTextField extends CedarField {
     return r;
   }
 
-  protected expandUINodeForJSON(uiNode: Node): void {
+  protected expandUINodeForJSON(uiNode: JsonNode): void {
     if (this.valueRecommendationEnabled) {
       uiNode[CedarModel.valueRecommendationEnabled] = this.valueRecommendationEnabled;
     }

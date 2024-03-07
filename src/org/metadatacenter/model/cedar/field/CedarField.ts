@@ -10,7 +10,7 @@ import { CedarTemplateFieldContent } from '../util/serialization/CedarTemplateFi
 import { ValueConstraints } from './ValueConstraints';
 import { CedarFieldType } from '../beans/CedarFieldType';
 import { CedarAbstractArtifact } from '../CedarAbstractArtifact';
-import { Node } from '../util/types/Node';
+import { JsonNode } from '../util/types/JsonNode';
 
 export abstract class CedarField extends CedarAbstractArtifact {
   public at_id: CedarArtifactId = CedarArtifactId.NULL;
@@ -25,10 +25,10 @@ export abstract class CedarField extends CedarAbstractArtifact {
   public cedarArtifactType: CedarArtifactType = CedarArtifactType.NULL;
 
   // Do nothing. overwrite this if extra values need to be added to the _ui
-  protected expandUINodeForJSON(uiNode: Node): void {}
+  protected expandUINodeForJSON(uiNode: JsonNode): void {}
 
-  protected macroSkos(): Node {
-    const skosObject: Node = {};
+  protected macroSkos(): JsonNode {
+    const skosObject: JsonNode = {};
     if (this.skos_altLabel !== null && this.skos_altLabel.length > 0) {
       skosObject[CedarModel.skosAltLabel] = this.skos_altLabel;
     }
@@ -43,9 +43,9 @@ export abstract class CedarField extends CedarAbstractArtifact {
    * Use asCedarFieldString(indent) or asCedarFieldObject() instead
    * Will be used by JSON.stringify
    */
-  public toJSON(): Node {
+  public toJSON(): JsonNode {
     // Build properties wrapper
-    let propertiesObject: Node = {
+    let propertiesObject: JsonNode = {
       [JsonSchema.properties]: CedarTemplateFieldContent.PROPERTIES_VERBATIM_LITERAL,
     };
     if (this.cedarFieldType == CedarFieldType.LINK) {
@@ -54,7 +54,7 @@ export abstract class CedarField extends CedarAbstractArtifact {
       };
     }
     // Build required wrapper
-    let requiredObject: Node = {
+    let requiredObject: JsonNode = {
       [JsonSchema.required]: [JsonSchema.atValue],
     };
     if (this.cedarFieldType == CedarFieldType.LINK) {
@@ -62,10 +62,10 @@ export abstract class CedarField extends CedarAbstractArtifact {
       requiredObject = {};
     }
     // Build ui wrapper
-    const uiNode: Node = {
+    const uiNode: JsonNode = {
       [CedarModel.inputType]: this.cedarFieldType.getUiInputType(),
     };
-    const uiObject: Node = {
+    const uiObject: JsonNode = {
       [CedarModel.ui]: uiNode,
     };
     this.expandUINodeForJSON(uiNode);

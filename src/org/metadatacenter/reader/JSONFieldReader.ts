@@ -1,4 +1,4 @@
-import { Node, NodeClass } from '../model/cedar/util/types/Node';
+import { JsonNode, JsonNodeClass } from '../model/cedar/util/types/JsonNode';
 import { ParsingResult } from '../model/cedar/util/compare/ParsingResult';
 import { CedarJsonPath } from '../model/cedar/util/path/CedarJsonPath';
 import { CedarField } from '../model/cedar/field/CedarField';
@@ -30,7 +30,7 @@ import { JSONFieldReaderTemporal } from '../model/cedar/field/dynamic/temporal/J
 import { JSONFieldReaderEmail } from '../model/cedar/field/dynamic/email/JSONFieldReaderEmail';
 
 interface ReaderMap {
-  [key: string]: { read: (fieldSourceObject: Node, parsingResult: ParsingResult, path: CedarJsonPath) => CedarField };
+  [key: string]: { read: (fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath) => CedarField };
 }
 
 export class JSONFieldReader {
@@ -48,7 +48,7 @@ export class JSONFieldReader {
     [InputType.youtube]: JSONFieldReaderYoutube,
   };
 
-  static readFromObject(fieldSourceObject: Node, parsingResult: ParsingResult, path: CedarJsonPath): CedarField | null {
+  static readFromObject(fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath): CedarField | null {
     const field: CedarField | null = this.readFieldSpecificAttributes(fieldSourceObject, parsingResult, path);
     if (field != null) {
       this.readNonReportableAttributes(field, fieldSourceObject);
@@ -57,7 +57,7 @@ export class JSONFieldReader {
     return field;
   }
 
-  private static readNonReportableAttributes(field: CedarField, fieldSourceObject: Node) {
+  private static readNonReportableAttributes(field: CedarField, fieldSourceObject: JsonNode) {
     // Read in non-reportable properties
     field.at_id = CedarArtifactId.forValue(ReaderUtil.getString(fieldSourceObject, JsonSchema.atId));
     field.title = ReaderUtil.getString(fieldSourceObject, TemplateProperty.title);
@@ -74,12 +74,17 @@ export class JSONFieldReader {
     field.skos_prefLabel = ReaderUtil.getString(fieldSourceObject, CedarModel.skosPrefLabel);
   }
 
-  private static readReportableAttributes(field: CedarField, fieldSourceObject: Node, parsingResult: ParsingResult, path: CedarJsonPath) {
+  private static readReportableAttributes(
+    field: CedarField,
+    fieldSourceObject: JsonNode,
+    parsingResult: ParsingResult,
+    path: CedarJsonPath,
+  ) {
     // Read and validate, but do not store top level @type
 
     // Read and validate, but do not store top level @context
-    const topContextNode: Node = ReaderUtil.getNode(fieldSourceObject, JsonSchema.atContext);
-    let blueprintAtContext: Node = NodeClass.EMPTY;
+    const topContextNode: JsonNode = ReaderUtil.getNode(fieldSourceObject, JsonSchema.atContext);
+    let blueprintAtContext: JsonNode = JsonNodeClass.EMPTY;
     if (field.cedarArtifactType == CedarArtifactType.TEMPLATE_FIELD) {
       blueprintAtContext = CedarTemplateFieldContent.CONTEXT_VERBATIM;
     } else if (field.cedarArtifactType == CedarArtifactType.STATIC_TEMPLATE_FIELD) {
@@ -113,7 +118,7 @@ export class JSONFieldReader {
   }
 
   private static readFieldSpecificAttributes(
-    fieldSourceObject: Node,
+    fieldSourceObject: JsonNode,
     parsingResult: ParsingResult,
     path: CedarJsonPath,
   ): CedarField | null {

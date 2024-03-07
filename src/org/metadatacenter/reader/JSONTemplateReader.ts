@@ -10,7 +10,7 @@ import { CedarDate } from '../model/cedar/beans/CedarDate';
 import { SchemaVersion } from '../model/cedar/beans/SchemaVersion';
 import { BiboStatus } from '../model/cedar/beans/BiboStatus';
 import { ReaderUtil } from './ReaderUtil';
-import { Node } from '../model/cedar/util/types/Node';
+import { JsonNode } from '../model/cedar/util/types/JsonNode';
 import { PavVersion } from '../model/cedar/beans/PavVersion';
 import { CedarArtifactId } from '../model/cedar/beans/CedarArtifactId';
 import { CedarTemplateContent } from '../model/cedar/util/serialization/CedarTemplateContent';
@@ -35,7 +35,7 @@ export class JSONTemplateReader {
     return this.readFromObject(templateObject);
   }
 
-  static readFromObject(templateSourceObject: Node): JSONTemplateReaderResult {
+  static readFromObject(templateSourceObject: JsonNode): JSONTemplateReaderResult {
     const topPath: CedarJsonPath = new CedarJsonPath();
     const parsingResult: ParsingResult = new ParsingResult();
     const template = CedarTemplate.buildEmptyWithNullValues();
@@ -48,7 +48,7 @@ export class JSONTemplateReader {
     return new JSONTemplateReaderResult(template, parsingResult, templateSourceObject);
   }
 
-  private static readNonReportableAttributes(template: CedarTemplate, templateSourceObject: Node) {
+  private static readNonReportableAttributes(template: CedarTemplate, templateSourceObject: JsonNode) {
     // Read in non-reportable properties
     template.at_id = CedarArtifactId.forValue(ReaderUtil.getString(templateSourceObject, JsonSchema.atId));
     template.title = ReaderUtil.getString(templateSourceObject, TemplateProperty.title);
@@ -63,14 +63,14 @@ export class JSONTemplateReader {
     template.pav_version = PavVersion.forValue(ReaderUtil.getString(templateSourceObject, JsonSchema.pavVersion));
     template.bibo_status = BiboStatus.forValue(ReaderUtil.getString(templateSourceObject, JsonSchema.biboStatus));
     template.schema_identifier = ReaderUtil.getString(templateSourceObject, JsonSchema.schemaIdentifier);
-    const templateUI: Node = ReaderUtil.getNode(templateSourceObject, CedarModel.ui);
+    const templateUI: JsonNode = ReaderUtil.getNode(templateSourceObject, CedarModel.ui);
     if (templateUI !== null) {
       template.header = ReaderUtil.getString(templateUI, CedarModel.header);
       template.footer = ReaderUtil.getString(templateUI, CedarModel.footer);
     }
   }
 
-  private static readReportableAttributes(template: CedarTemplate, templateSourceObject: Node, parsingResult: ParsingResult) {
+  private static readReportableAttributes(template: CedarTemplate, templateSourceObject: JsonNode, parsingResult: ParsingResult) {
     // Read and validate, but do not store top level @type
     ObjectComparator.comparePrimitive(
       parsingResult,
@@ -80,7 +80,7 @@ export class JSONTemplateReader {
     );
 
     // Read and validate, but do not store top level @context
-    const topContextNode: Node = ReaderUtil.getNode(templateSourceObject, JsonSchema.atContext);
+    const topContextNode: JsonNode = ReaderUtil.getNode(templateSourceObject, JsonSchema.atContext);
     const blueprint = CedarTemplateContent.CONTEXT_VERBATIM;
     ObjectComparator.compareBothWays(parsingResult, blueprint, topContextNode, new CedarJsonPath(JsonSchema.atContext));
 
@@ -109,12 +109,12 @@ export class JSONTemplateReader {
     );
   }
 
-  private static readInstanceTypeSpecification(template: CedarTemplate, templateSourceObject: Node, parsingResult: ParsingResult) {
-    const properties: Node = ReaderUtil.getNode(templateSourceObject, JsonSchema.properties);
+  private static readInstanceTypeSpecification(template: CedarTemplate, templateSourceObject: JsonNode, parsingResult: ParsingResult) {
+    const properties: JsonNode = ReaderUtil.getNode(templateSourceObject, JsonSchema.properties);
     if (properties !== null) {
-      const atType: Node = ReaderUtil.getNode(properties, JsonSchema.atType);
+      const atType: JsonNode = ReaderUtil.getNode(properties, JsonSchema.atType);
       if (atType !== null) {
-        const oneOf: Array<Node> = ReaderUtil.getNodeList(atType, JsonSchema.oneOf);
+        const oneOf: Array<JsonNode> = ReaderUtil.getNodeList(atType, JsonSchema.oneOf);
         if (oneOf !== null) {
           oneOf.forEach((item) => {
             const oneOfEnum = ReaderUtil.getStringList(item, JsonSchema.enum);
@@ -129,12 +129,12 @@ export class JSONTemplateReader {
 
   private static readAndValidateChildrenInfo(
     template: CedarTemplate,
-    templateSourceObject: Node,
+    templateSourceObject: JsonNode,
     parsingResult: ParsingResult,
     path: CedarJsonPath,
   ) {
     const templateRequired: Array<string> = ReaderUtil.getStringList(templateSourceObject, JsonSchema.required);
-    const templateProperties: Node = ReaderUtil.getNode(templateSourceObject, JsonSchema.properties);
+    const templateProperties: JsonNode = ReaderUtil.getNode(templateSourceObject, JsonSchema.properties);
 
     // Validate properties
     // 'properties' should have extra entry for Fields/Elements as definition
@@ -162,7 +162,7 @@ export class JSONTemplateReader {
     const candidateChildrenInfo: CedarContainerChildrenInfo = new CedarContainerChildrenInfo();
     Object.keys(templateProperties).forEach((key) => {
       if (!CedarTemplateContent.PROPERTIES_PARTIAL_KEY_MAP.has(key)) {
-        const propertiesChildNode: Node = ReaderUtil.getNode(templateProperties, key);
+        const propertiesChildNode: JsonNode = ReaderUtil.getNode(templateProperties, key);
 
         if (typeof propertiesChildNode === 'object' && propertiesChildNode !== null) {
           let childDefinitionNode = propertiesChildNode;
@@ -219,7 +219,7 @@ export class JSONTemplateReader {
     }
 
     // Extract _ui/propertyLabels
-    const templateUI: Node = ReaderUtil.getNode(templateSourceObject, CedarModel.ui);
+    const templateUI: JsonNode = ReaderUtil.getNode(templateSourceObject, CedarModel.ui);
     const templateUIPLabels = ReaderUtil.getStringMap(templateUI, CedarModel.propertyLabels);
     for (const childInfo of candidateChildrenInfo.children) {
       if (templateUIPLabels === null || !templateUIPLabels.has(childInfo.name)) {
@@ -252,11 +252,11 @@ export class JSONTemplateReader {
     }
 
     // Get the IRI mappings
-    const templatePropertiesContext: Node = ReaderUtil.getNode(templateProperties, JsonSchema.atContext);
-    const templateIRIMap: Node = ReaderUtil.getNode(templatePropertiesContext, JsonSchema.properties);
+    const templatePropertiesContext: JsonNode = ReaderUtil.getNode(templateProperties, JsonSchema.atContext);
+    const templateIRIMap: JsonNode = ReaderUtil.getNode(templatePropertiesContext, JsonSchema.properties);
     for (const childInfo of candidateChildrenInfo.children) {
       if (childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD) {
-        const iriEnum: Node = ReaderUtil.getNode(templateIRIMap, childInfo.name);
+        const iriEnum: JsonNode = ReaderUtil.getNode(templateIRIMap, childInfo.name);
         const iriList: Array<string> = ReaderUtil.getStringList(iriEnum, JsonSchema.enum);
         if (iriList === null || iriList.length != 1) {
           parsingResult.addBlueprintComparisonError(
@@ -308,7 +308,7 @@ export class JSONTemplateReader {
     // Parse children
     // TODO: handle elements, generalize this code, since it will be used in templates and elements as well
     for (const childInfo of finalChildrenInfo.children) {
-      let childDefinition: Node = ReaderUtil.getNode(templateProperties, childInfo.name);
+      let childDefinition: JsonNode = ReaderUtil.getNode(templateProperties, childInfo.name);
       let childPath: CedarJsonPath = new CedarJsonPath(JsonSchema.properties, childInfo.name);
       if (childInfo.multiInstance) {
         childDefinition = ReaderUtil.getNode(childDefinition, JsonSchema.items);
@@ -333,7 +333,7 @@ export class JSONTemplateReader {
   }
 
   private static readAndStoreCandidateChildInfo(
-    childDefinitionNode: Node,
+    childDefinitionNode: JsonNode,
     childCandidateName: string,
     parsingResult: ParsingResult,
     candidateChildrenInfo: CedarContainerChildrenInfo,

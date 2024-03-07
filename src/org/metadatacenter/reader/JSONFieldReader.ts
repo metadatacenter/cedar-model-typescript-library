@@ -28,6 +28,7 @@ import { JSONFieldReaderLink } from '../model/cedar/field/dynamic/link/JSONField
 import { CedarStaticTemplateFieldContent } from '../model/cedar/util/serialization/CedarStaticTemplateFieldContent';
 import { JSONFieldReaderTemporal } from '../model/cedar/field/dynamic/temporal/JSONFieldReaderTemporal';
 import { JSONFieldReaderEmail } from '../model/cedar/field/dynamic/email/JSONFieldReaderEmail';
+import { JSONFieldReaderNumeric } from '../model/cedar/field/dynamic/numeric/JSONFieldReaderNumeric';
 
 interface ReaderMap {
   [key: string]: { read: (fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath) => CedarField };
@@ -39,6 +40,7 @@ export class JSONFieldReader {
     [InputType.link]: JSONFieldReaderLink,
     [InputType.temporal]: JSONFieldReaderTemporal,
     [InputType.email]: JSONFieldReaderEmail,
+    [InputType.numeric]: JSONFieldReaderNumeric,
   };
   static staticReaderMap: ReaderMap = {
     [InputType.pageBreak]: JSONFieldReaderPageBreak,

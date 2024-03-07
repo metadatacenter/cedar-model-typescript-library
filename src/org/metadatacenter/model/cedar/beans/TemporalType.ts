@@ -27,9 +27,9 @@ export class TemporalType {
   }
 
   public static forValue(value: string | null): TemporalType {
-    for (const status of TemporalType.values()) {
-      if (status.getValue() === value) {
-        return status;
+    for (const temporalType of TemporalType.values()) {
+      if (temporalType.getValue() === value) {
+        return temporalType;
       }
     }
     return this.NULL;

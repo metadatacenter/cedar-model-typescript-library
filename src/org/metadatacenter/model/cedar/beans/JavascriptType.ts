@@ -27,9 +27,9 @@ export class JavascriptType {
   }
 
   public static forValue(value: string | null): JavascriptType {
-    for (const status of JavascriptType.values()) {
-      if (status.getValue() === value) {
-        return status;
+    for (const javascriptType of JavascriptType.values()) {
+      if (javascriptType.getValue() === value) {
+        return javascriptType;
       }
     }
     return this.NULL;

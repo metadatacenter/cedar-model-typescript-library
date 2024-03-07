@@ -124,6 +124,20 @@ export class CedarTemplateFieldContent {
     },
   };
 
+  // This is a verbatim representation for numeric fields
+  public static PROPERTIES_VERBATIM_NUMERIC = {
+    '@value': {
+      type: ['string', 'null'],
+    },
+    'rdfs:label': {
+      type: ['string', 'null'],
+    },
+    '@type': {
+      type: 'string',
+      format: 'uri',
+    },
+  };
+
   // public static PROPERTIES_FULL_KEY_LIST: Array<string> = [];
   // public static PROPERTIES_FULL_KEY_MAP: Map<string, boolean> = new Map();
 

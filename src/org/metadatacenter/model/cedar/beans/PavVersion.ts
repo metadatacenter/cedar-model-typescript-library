@@ -26,9 +26,9 @@ export class PavVersion {
     return [PavVersion.DEFAULT, PavVersion.NULL];
   }
   public static forValue(value: string | null): PavVersion {
-    for (const status of PavVersion.values()) {
-      if (status.getValue() === value) {
-        return status;
+    for (const version of PavVersion.values()) {
+      if (version.getValue() === value) {
+        return version;
       }
     }
     return new PavVersion(value);

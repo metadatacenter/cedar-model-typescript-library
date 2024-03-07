@@ -34,9 +34,9 @@ export class CedarArtifactType {
   }
 
   public static forValue(value: string | null): CedarArtifactType {
-    for (const status of CedarArtifactType.values()) {
-      if (status.getValue() === value) {
-        return status;
+    for (const artifactType of CedarArtifactType.values()) {
+      if (artifactType.getValue() === value) {
+        return artifactType;
       }
     }
     return this.NULL;

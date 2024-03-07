@@ -10,7 +10,7 @@ import { CedarTemplateFieldContent } from '../util/serialization/CedarTemplateFi
 import { ValueConstraints } from './ValueConstraints';
 import { CedarFieldType } from '../beans/CedarFieldType';
 import { CedarAbstractArtifact } from '../CedarAbstractArtifact';
-import { JsonNode } from '../util/types/JsonNode';
+import { JsonNode, JsonNodeClass } from '../util/types/JsonNode';
 
 export abstract class CedarField extends CedarAbstractArtifact {
   public at_id: CedarArtifactId = CedarArtifactId.NULL;
@@ -24,8 +24,17 @@ export abstract class CedarField extends CedarAbstractArtifact {
   public cedarFieldType: CedarFieldType = CedarFieldType.NULL;
   public cedarArtifactType: CedarArtifactType = CedarArtifactType.NULL;
 
-  // Do nothing. overwrite this if extra values need to be added to the _ui
+  // Do nothing. Override this if extra values need to be added to the _ui
   protected expandUINodeForJSON(uiNode: JsonNode): void {}
+
+  // Override this if a custom properties is needed
+  protected expandPropertiesNodeForJSON(propertiesObject: JsonNode): void {
+    propertiesObject[JsonSchema.properties] = CedarTemplateFieldContent.PROPERTIES_VERBATIM_LITERAL;
+  }
+
+  protected expandRequiredNodeForJSON(requiredObject: JsonNode): void {
+    requiredObject[JsonSchema.required] = [JsonSchema.atValue];
+  }
 
   protected macroSkos(): JsonNode {
     const skosObject: JsonNode = {};
@@ -44,23 +53,14 @@ export abstract class CedarField extends CedarAbstractArtifact {
    * Will be used by JSON.stringify
    */
   public toJSON(): JsonNode {
-    // Build properties wrapper
-    let propertiesObject: JsonNode = {
-      [JsonSchema.properties]: CedarTemplateFieldContent.PROPERTIES_VERBATIM_LITERAL,
-    };
-    if (this.cedarFieldType == CedarFieldType.LINK) {
-      propertiesObject = {
-        [JsonSchema.properties]: CedarTemplateFieldContent.PROPERTIES_VERBATIM_IRI,
-      };
-    }
+    // Build properties wrapper, based on type
+    const propertiesObject: JsonNode = {};
+    this.expandPropertiesNodeForJSON(propertiesObject);
+
     // Build required wrapper
-    let requiredObject: JsonNode = {
-      [JsonSchema.required]: [JsonSchema.atValue],
-    };
-    if (this.cedarFieldType == CedarFieldType.LINK) {
-      // TODO: Should the @id be required in case of a link?
-      requiredObject = {};
-    }
+    const requiredObject: JsonNode = {};
+    this.expandRequiredNodeForJSON(requiredObject);
+
     // Build ui wrapper
     const uiNode: JsonNode = {
       [CedarModel.inputType]: this.cedarFieldType.getUiInputType(),

@@ -1,35 +1,33 @@
 import { SchemaVersion } from '../../../beans/SchemaVersion';
 import { CedarField } from '../../CedarField';
 import { CedarFieldType } from '../../../beans/CedarFieldType';
-import { ValueConstraintsLinkField } from './ValueConstraintsLinkField';
 import { CedarArtifactType } from '../../../beans/CedarArtifactType';
+import { ValueConstraintsNumericField } from './ValueConstraintsNumericField';
 import { JsonNode } from '../../../util/types/JsonNode';
 import { JsonSchema } from '../../../constants/JsonSchema';
 import { CedarTemplateFieldContent } from '../../../util/serialization/CedarTemplateFieldContent';
 
-export class CedarLinkField extends CedarField {
+export class CedarNumericField extends CedarField {
   private constructor() {
     super();
-    this.cedarFieldType = CedarFieldType.LINK;
+    this.cedarFieldType = CedarFieldType.NUMERIC;
+    this.valueConstraints = new ValueConstraintsNumericField();
     this.cedarArtifactType = CedarArtifactType.TEMPLATE_FIELD;
-    this.valueConstraints = new ValueConstraintsLinkField();
   }
 
-  public static buildEmptyWithNullValues(): CedarLinkField {
-    return new CedarLinkField();
+  public static buildEmptyWithNullValues(): CedarNumericField {
+    return new CedarNumericField();
   }
 
-  public static buildEmptyWithDefaultValues(): CedarLinkField {
-    const r = new CedarLinkField();
+  public static buildEmptyWithDefaultValues(): CedarNumericField {
+    const r = new CedarNumericField();
     r.schema_schemaVersion = SchemaVersion.CURRENT;
     return r;
   }
-
   protected expandPropertiesNodeForJSON(propertiesObject: JsonNode): void {
-    propertiesObject[JsonSchema.properties] = CedarTemplateFieldContent.PROPERTIES_VERBATIM_IRI;
+    propertiesObject[JsonSchema.properties] = CedarTemplateFieldContent.PROPERTIES_VERBATIM_NUMERIC;
   }
-
   protected expandRequiredNodeForJSON(requiredObject: JsonNode): void {
-    // TODO: Should the @id be required in case of a link?
+    requiredObject[JsonSchema.required] = [JsonSchema.atValue, JsonSchema.atType];
   }
 }

@@ -10,7 +10,7 @@ import { JsonSchema } from '../../../../src/org/metadatacenter/model/cedar/const
 import { JSONTemplateWriter } from '../../../../src/org/metadatacenter/model/cedar/template/JSONTemplateWriter';
 import { CedarWriters } from '../../../../src/org/metadatacenter/io/writer/CedarWriters';
 
-xdescribe('JSONTemplateReader - template-019', () => {
+describe('JSONTemplateReader - template-019', () => {
   test('reads template with Pick from a list SingleSelect', () => {
     const templateSource = TestUtil.readTestResourceAsString('templates/019', 'template-019.json');
     const reader: JSONTemplateReader = JSONTemplateReader.getStrict();
@@ -36,18 +36,18 @@ xdescribe('JSONTemplateReader - template-019', () => {
     );
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
 
-    const requiredComplexNumberUnexpected = new ComparisonError(
+    const requiredPickFromUnexpected = new ComparisonError(
       ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
       new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 11),
       undefined,
-      'Phone number',
+      'Pick from',
     );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredComplexNumberUnexpected);
+    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredPickFromUnexpected);
 
-    const languageEmailFieldUnexpected = new ComparisonError(
+    const languagePickFromUnexpected = new ComparisonError(
       ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
-      new CedarJsonPath(JsonSchema.properties, 'Phone number', JsonSchema.properties, JsonSchema.atLanguage),
+      new CedarJsonPath(JsonSchema.properties, 'Pick from', JsonSchema.properties, JsonSchema.atLanguage),
     );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageEmailFieldUnexpected);
+    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languagePickFromUnexpected);
   });
 });

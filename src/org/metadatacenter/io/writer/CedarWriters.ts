@@ -15,6 +15,7 @@ import { JSONFieldWriterStaticYoutube } from '../../model/cedar/field/static/you
 import { JSONFieldWriterRadio } from '../../model/cedar/field/dynamic/radio/JSONFieldWriterRadio';
 import { JSONFieldWriterCheckbox } from '../../model/cedar/field/dynamic/checkbox/JSONFieldWriterCheckbox';
 import { YAMLTemplateWriter } from '../../model/cedar/template/YAMLTemplateWriter';
+import { JSONFieldWriterList } from '../../model/cedar/field/dynamic/list/JSONFieldWriterList';
 
 export class CedarWriters {
   private behavior: JSONWriterBehavior;
@@ -30,6 +31,7 @@ export class CedarWriters {
   private readonly jsonFieldWriterTemporal: JSONFieldWriterTemporal;
   private readonly jsonFieldWriterRadio: JSONFieldWriterRadio;
   private readonly jsonFieldWriterCheckbox: JSONFieldWriterCheckbox;
+  private readonly jsonFieldWriterList: JSONFieldWriterList;
 
   private readonly jsonFieldWriterStaticPageBreak: JSONFieldWriterStaticPageBreak;
   private readonly jsonFieldWriterStaticSectionBreak: JSONFieldWriterStaticSectionsBreak;
@@ -47,6 +49,7 @@ export class CedarWriters {
     this.jsonFieldWriterTemporal = new JSONFieldWriterTemporal(behavior, this);
     this.jsonFieldWriterRadio = new JSONFieldWriterRadio(behavior, this);
     this.jsonFieldWriterCheckbox = new JSONFieldWriterCheckbox(behavior, this);
+    this.jsonFieldWriterList = new JSONFieldWriterList(behavior, this);
 
     this.jsonFieldWriterStaticPageBreak = new JSONFieldWriterStaticPageBreak(behavior, this);
     this.jsonFieldWriterStaticSectionBreak = new JSONFieldWriterStaticSectionsBreak(behavior, this);
@@ -87,6 +90,8 @@ export class CedarWriters {
       return this.jsonFieldWriterRadio;
     } else if (cedarFieldType == CedarFieldType.CHECKBOX) {
       return this.jsonFieldWriterCheckbox;
+    } else if (cedarFieldType == CedarFieldType.LIST) {
+      return this.jsonFieldWriterList;
     } else if (cedarFieldType == CedarFieldType.STATIC_PAGE_BREAK) {
       return this.jsonFieldWriterStaticPageBreak;
     } else if (cedarFieldType == CedarFieldType.STATIC_SECTION_BREAK) {

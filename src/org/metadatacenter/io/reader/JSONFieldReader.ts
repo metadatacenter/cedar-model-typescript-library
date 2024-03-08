@@ -34,6 +34,7 @@ import { JSONFieldReaderRadio } from '../../model/cedar/field/dynamic/radio/JSON
 import { JSONFieldTypeSpecificReader } from './JSONFieldTypeSpecificReader';
 import { UiInputType } from '../../model/cedar/beans/UiInputType';
 import { JSONFieldReaderCheckbox } from '../../model/cedar/field/dynamic/checkbox/JSONFieldReaderCheckbox';
+import { JSONFieldReaderList } from '../../model/cedar/field/dynamic/list/JSONFieldReaderList';
 
 export class JSONFieldReader {
   static dynamicTypeReaderMap = new Map<UiInputType, JSONFieldTypeSpecificReader>([
@@ -46,6 +47,7 @@ export class JSONFieldReader {
     [UiInputType.PHONE_NUMBER, new JSONFieldReaderPhoneNumber()],
     [UiInputType.RADIO, new JSONFieldReaderRadio()],
     [UiInputType.CHECKBOX, new JSONFieldReaderCheckbox()],
+    [UiInputType.LIST, new JSONFieldReaderList()],
   ]);
 
   static staticReaderMap = new Map<UiInputType, JSONFieldTypeSpecificReader>([

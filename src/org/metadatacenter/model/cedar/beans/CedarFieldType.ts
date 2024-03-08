@@ -11,6 +11,7 @@ export const CedarFieldTypeValues = {
   PHONE_NUMBER: 'DYNAMIC-phone-number',
   RADIO: 'DYNAMIC-radio',
   CHECKBOX: 'DYNAMIC-checkbox',
+  LIST: 'DYNAMIC-list',
 
   STATIC_PAGE_BREAK: 'STATIC-page-break',
   STATIC_SECTION_BREAK: 'STATIC-section-break',
@@ -48,6 +49,7 @@ export class CedarFieldType {
   public static PHONE_NUMBER = new CedarFieldType(CedarFieldTypeValues.PHONE_NUMBER, UiInputType.PHONE_NUMBER);
   public static RADIO = new CedarFieldType(CedarFieldTypeValues.RADIO, UiInputType.RADIO);
   public static CHECKBOX = new CedarFieldType(CedarFieldTypeValues.CHECKBOX, UiInputType.CHECKBOX);
+  public static LIST = new CedarFieldType(CedarFieldTypeValues.LIST, UiInputType.LIST);
 
   public static STATIC_PAGE_BREAK = new CedarFieldType(CedarFieldTypeValues.STATIC_PAGE_BREAK, UiInputType.PAGE_BREAK);
   public static STATIC_SECTION_BREAK = new CedarFieldType(CedarFieldTypeValues.STATIC_SECTION_BREAK, UiInputType.SECTION_BREAK);

@@ -12,7 +12,7 @@ export class JSONFieldWriterCheckbox extends JSONFieldWriter {
 
   override expandValueConstraintsNodeForJSON(vcNode: JsonNode, field: CedarCheckboxField): void {
     super.expandValueConstraintsNodeForJSON(vcNode, field);
-    vcNode[CedarModel.multipleChoice] = field.valueConstraints.multipleChoice;
+    vcNode[CedarModel.multipleChoice] = true;
     const literals: Array<JsonNode> = [];
     field.valueConstraints.literals.forEach((option) => {
       const literal = JsonNodeClass.getEmpty();

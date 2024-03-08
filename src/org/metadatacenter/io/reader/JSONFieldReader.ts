@@ -33,6 +33,7 @@ import { JSONFieldReaderPhoneNumber } from '../../model/cedar/field/dynamic/phon
 import { JSONFieldReaderRadio } from '../../model/cedar/field/dynamic/radio/JSONFieldReaderRadio';
 import { JSONFieldTypeSpecificReader } from './JSONFieldTypeSpecificReader';
 import { UiInputType } from '../../model/cedar/beans/UiInputType';
+import { JSONFieldReaderCheckbox } from '../../model/cedar/field/dynamic/checkbox/JSONFieldReaderCheckbox';
 
 export class JSONFieldReader {
   static dynamicTypeReaderMap = new Map<UiInputType, JSONFieldTypeSpecificReader>([
@@ -44,6 +45,7 @@ export class JSONFieldReader {
     [UiInputType.NUMERIC, new JSONFieldReaderNumeric()],
     [UiInputType.PHONE_NUMBER, new JSONFieldReaderPhoneNumber()],
     [UiInputType.RADIO, new JSONFieldReaderRadio()],
+    [UiInputType.CHECKBOX, new JSONFieldReaderCheckbox()],
   ]);
 
   static staticReaderMap = new Map<UiInputType, JSONFieldTypeSpecificReader>([
@@ -135,7 +137,7 @@ export class JSONFieldReader {
       if (uiInputType != null) {
         const reader: JSONFieldTypeSpecificReader | undefined = this.staticReaderMap.get(uiInputType);
         if (!reader) {
-          throw new Error(`No reader defined for static input type "${uiInputType}"`);
+          throw new Error(`No reader defined for static input type "${uiInputType.getValue()}"`);
         }
         return reader.read(fieldSourceObject, parsingResult, path);
       }
@@ -143,7 +145,7 @@ export class JSONFieldReader {
       if (uiInputType != null) {
         const reader: JSONFieldTypeSpecificReader | undefined = this.dynamicTypeReaderMap.get(uiInputType);
         if (!reader) {
-          throw new Error(`No reader defined for dynamic input type "${uiInputType}"`);
+          throw new Error(`No reader defined for dynamic input type "${uiInputType.getValue()}"`);
         }
         return reader.read(fieldSourceObject, parsingResult, path);
       }

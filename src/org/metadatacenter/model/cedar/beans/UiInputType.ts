@@ -48,6 +48,7 @@ export class UiInputType {
   public static IMAGE = new UiInputType(UiInputTypeValues.IMAGE);
   public static RICH_TEXT = new UiInputType(UiInputTypeValues.RICH_TEXT);
   public static YOUTUBE = new UiInputType(UiInputTypeValues.YOUTUBE);
+
   public static NULL = new UiInputType(null);
 
   public static values(): UiInputType[] {
@@ -63,11 +64,13 @@ export class UiInputType {
       UiInputType.CHECKBOX,
       UiInputType.RADIO,
       UiInputType.ATTRIBUTE_VALUE,
+
       UiInputType.PAGE_BREAK,
       UiInputType.SECTION_BREAK,
       UiInputType.IMAGE,
       UiInputType.RICH_TEXT,
       UiInputType.YOUTUBE,
+
       UiInputType.NULL,
     ];
   }

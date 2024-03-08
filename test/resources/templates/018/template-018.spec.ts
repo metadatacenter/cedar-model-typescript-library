@@ -10,7 +10,7 @@ import { JsonSchema } from '../../../../src/org/metadatacenter/model/cedar/const
 import { JSONTemplateWriter } from '../../../../src/org/metadatacenter/model/cedar/template/JSONTemplateWriter';
 import { CedarWriters } from '../../../../src/org/metadatacenter/io/writer/CedarWriters';
 
-xdescribe('JSONTemplateReader - template-018', () => {
+describe('JSONTemplateReader - template-018', () => {
   test('reads template with checkbox with four values, option 2 and 3 checked', () => {
     const templateSource = TestUtil.readTestResourceAsString('templates/018', 'template-018.json');
     const reader: JSONTemplateReader = JSONTemplateReader.getStrict();
@@ -27,6 +27,8 @@ xdescribe('JSONTemplateReader - template-018', () => {
     // TestUtil.p(compareResult);
     // TestUtil.p(writer.getAsJsonNode(jsonTemplateReaderResult.template));
 
+    // TestUtil.p(jsonTemplateReaderResult.template);
+
     expect(compareResult.wasSuccessful()).toBe(false);
     expect(compareResult.getBlueprintComparisonErrorCount()).toBe(3);
 
@@ -36,18 +38,18 @@ xdescribe('JSONTemplateReader - template-018', () => {
     );
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
 
-    const requiredComplexNumberUnexpected = new ComparisonError(
+    const requiredCheckboxUnexpected = new ComparisonError(
       ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
       new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 11),
       undefined,
-      'Phone number',
+      'My checkbox',
     );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredComplexNumberUnexpected);
+    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredCheckboxUnexpected);
 
-    const languageEmailFieldUnexpected = new ComparisonError(
+    const languageCheckboxUnexpected = new ComparisonError(
       ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
-      new CedarJsonPath(JsonSchema.properties, 'Phone number', JsonSchema.properties, JsonSchema.atLanguage),
+      new CedarJsonPath(JsonSchema.properties, 'My checkbox', JsonSchema.items, JsonSchema.properties, JsonSchema.atLanguage),
     );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageEmailFieldUnexpected);
+    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageCheckboxUnexpected);
   });
 });

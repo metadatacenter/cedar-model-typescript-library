@@ -10,6 +10,8 @@ export const CedarFieldTypeValues = {
   NUMERIC: 'DYNAMIC-numeric',
   PHONE_NUMBER: 'DYNAMIC-phone-number',
   RADIO: 'DYNAMIC-radio',
+  CHECKBOX: 'DYNAMIC-checkbox',
+
   STATIC_PAGE_BREAK: 'STATIC-page-break',
   STATIC_SECTION_BREAK: 'STATIC-section-break',
   STATIC_IMAGE: 'STATIC-image',
@@ -45,10 +47,13 @@ export class CedarFieldType {
   public static NUMERIC = new CedarFieldType(CedarFieldTypeValues.NUMERIC, UiInputType.NUMERIC);
   public static PHONE_NUMBER = new CedarFieldType(CedarFieldTypeValues.PHONE_NUMBER, UiInputType.PHONE_NUMBER);
   public static RADIO = new CedarFieldType(CedarFieldTypeValues.RADIO, UiInputType.RADIO);
+  public static CHECKBOX = new CedarFieldType(CedarFieldTypeValues.CHECKBOX, UiInputType.CHECKBOX);
+
   public static STATIC_PAGE_BREAK = new CedarFieldType(CedarFieldTypeValues.STATIC_PAGE_BREAK, UiInputType.PAGE_BREAK);
   public static STATIC_SECTION_BREAK = new CedarFieldType(CedarFieldTypeValues.STATIC_SECTION_BREAK, UiInputType.SECTION_BREAK);
   public static STATIC_IMAGE = new CedarFieldType(CedarFieldTypeValues.STATIC_IMAGE, UiInputType.IMAGE);
   public static STATIC_RICH_TEXT = new CedarFieldType(CedarFieldTypeValues.STATIC_RICH_TEXT, UiInputType.RICH_TEXT);
   public static STATIC_YOUTUBE = new CedarFieldType(CedarFieldTypeValues.STATIC_YOUTUBE, UiInputType.YOUTUBE);
+
   public static NULL = new CedarFieldType(null, UiInputType.NULL);
 }

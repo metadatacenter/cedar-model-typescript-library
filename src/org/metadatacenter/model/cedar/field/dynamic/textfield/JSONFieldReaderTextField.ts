@@ -5,9 +5,10 @@ import { CedarTextField } from './CedarTextField';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { CedarModel } from '../../../CedarModel';
 import { ValueConstraintsTextField } from './ValueConstraintsTextField';
+import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
 
-export class JSONFieldReaderTextField {
-  static read(fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath): CedarTextField {
+export class JSONFieldReaderTextField extends JSONFieldTypeSpecificReader {
+  override read(fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath): CedarTextField {
     const field = CedarTextField.buildEmptyWithNullValues();
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
     field.valueRecommendationEnabled = ReaderUtil.getBoolean(uiNode, CedarModel.valueRecommendationEnabled);

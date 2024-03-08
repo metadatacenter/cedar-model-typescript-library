@@ -8,9 +8,10 @@ import { ValueConstraintsTemporalField } from './ValueConstraintsTemporalField';
 import { TemporalType } from '../../../beans/TemporalType';
 import { TimeFormat } from '../../../beans/TimeFormat';
 import { TemporalGranularity } from '../../../beans/TemporalGranularity';
+import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
 
-export class JSONFieldReaderTemporal {
-  static read(fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath): CedarTemporalField {
+export class JSONFieldReaderTemporal extends JSONFieldTypeSpecificReader {
+  override read(fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath): CedarTemporalField {
     const field = CedarTemporalField.buildEmptyWithNullValues();
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
     if (uiNode != null) {

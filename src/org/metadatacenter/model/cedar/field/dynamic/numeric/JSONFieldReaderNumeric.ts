@@ -6,9 +6,10 @@ import { CedarModel } from '../../../CedarModel';
 import { ValueConstraintsNumericField } from './ValueConstraintsNumericField';
 import { CedarNumericField } from './CedarNumericField';
 import { NumberType } from '../../../beans/NumberType';
+import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
 
-export class JSONFieldReaderNumeric {
-  static read(fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath): CedarNumericField {
+export class JSONFieldReaderNumeric extends JSONFieldTypeSpecificReader {
+  override read(fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath): CedarNumericField {
     const field = CedarNumericField.buildEmptyWithNullValues();
 
     field.skos_altLabel = ReaderUtil.getStringList(fieldSourceObject, CedarModel.skosAltLabel);

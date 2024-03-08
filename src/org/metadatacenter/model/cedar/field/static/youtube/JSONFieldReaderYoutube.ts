@@ -4,9 +4,10 @@ import { CedarJsonPath } from '../../../util/path/CedarJsonPath';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { CedarModel } from '../../../CedarModel';
 import { CedarStaticYoutubeField } from './CedarStaticYoutubeField';
+import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
 
-export class JSONFieldReaderYoutube {
-  static read(fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath): CedarStaticYoutubeField {
+export class JSONFieldReaderYoutube extends JSONFieldTypeSpecificReader {
+  override read(fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath): CedarStaticYoutubeField {
     const field = CedarStaticYoutubeField.buildEmptyWithNullValues();
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
     field.videoId = ReaderUtil.getString(uiNode, CedarModel.content);

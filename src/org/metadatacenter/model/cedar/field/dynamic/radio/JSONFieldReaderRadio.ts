@@ -6,9 +6,10 @@ import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { CedarModel } from '../../../CedarModel';
 import { ValueConstraintsRadioField } from './ValueConstraintsRadioField';
 import { CedarRadioOption } from './CedarRadioOption';
+import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
 
-export class JSONFieldReaderRadio {
-  static read(fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath): CedarRadioField {
+export class JSONFieldReaderRadio extends JSONFieldTypeSpecificReader {
+  override read(fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath): CedarRadioField {
     const field = CedarRadioField.buildEmptyWithNullValues();
 
     const vcRF = new ValueConstraintsRadioField();

@@ -5,9 +5,10 @@ import { CedarPhoneNumberField } from './CedarPhoneNumberField';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { CedarModel } from '../../../CedarModel';
 import { ValueConstraints } from '../../ValueConstraints';
+import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
 
-export class JSONFieldReaderPhoneNumber {
-  static read(fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath): CedarPhoneNumberField {
+export class JSONFieldReaderPhoneNumber extends JSONFieldTypeSpecificReader {
+  override read(fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath): CedarPhoneNumberField {
     const field = CedarPhoneNumberField.buildEmptyWithNullValues();
 
     const vc = new ValueConstraints();

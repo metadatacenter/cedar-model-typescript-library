@@ -5,9 +5,10 @@ import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { CedarModel } from '../../../CedarModel';
 import { ValueConstraintsEmailField } from './ValueConstraintsEmailField';
 import { CedarEmailField } from './CedarEmailField';
+import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
 
-export class JSONFieldReaderEmail {
-  static read(fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath): CedarEmailField {
+export class JSONFieldReaderEmail extends JSONFieldTypeSpecificReader {
+  override read(fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath): CedarEmailField {
     const field = CedarEmailField.buildEmptyWithNullValues();
 
     const vcEF = new ValueConstraintsEmailField();

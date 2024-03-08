@@ -11,7 +11,7 @@ import { TemporalGranularity } from '../../../beans/TemporalGranularity';
 import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
 
 export class JSONFieldReaderTemporal extends JSONFieldTypeSpecificReader {
-  override read(fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath): CedarTemporalField {
+  override read(fieldSourceObject: JsonNode, _parsingResult: ParsingResult, _path: CedarJsonPath): CedarTemporalField {
     const field = CedarTemporalField.buildEmptyWithNullValues();
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
     if (uiNode != null) {

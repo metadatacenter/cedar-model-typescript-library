@@ -14,7 +14,7 @@ export class JSONFieldWriterLink extends JSONFieldWriter {
     propertiesObject[JsonSchema.properties] = CedarTemplateFieldContent.PROPERTIES_VERBATIM_IRI;
   }
 
-  override expandRequiredNodeForJSON(requiredObject: JsonNode): void {
+  override expandRequiredNodeForJSON(_requiredObject: JsonNode): void {
     // TODO: Should the @id be required in case of a link?
   }
 }

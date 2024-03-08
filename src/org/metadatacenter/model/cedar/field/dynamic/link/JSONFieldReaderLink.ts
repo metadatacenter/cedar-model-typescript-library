@@ -8,7 +8,7 @@ import { ValueConstraints } from '../../ValueConstraints';
 import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
 
 export class JSONFieldReaderLink extends JSONFieldTypeSpecificReader {
-  override read(fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath): CedarLinkField {
+  override read(fieldSourceObject: JsonNode, _parsingResult: ParsingResult, _path: CedarJsonPath): CedarLinkField {
     const field = CedarLinkField.buildEmptyWithNullValues();
 
     field.skos_altLabel = ReaderUtil.getStringList(fieldSourceObject, CedarModel.skosAltLabel);

@@ -1,4 +1,4 @@
-import { InputType } from '../constants/InputType';
+import { UiInputTypeValue, UiInputTypeValues } from './UiInputType';
 
 export const CedarFieldTypeValues = {
   TEXTFIELD: 'DYNAMIC-textfield',
@@ -21,9 +21,9 @@ export type CedarFieldTypeValue = (typeof CedarFieldTypeValues)[keyof typeof Ced
 
 export class CedarFieldType {
   private readonly value: CedarFieldTypeValue | null;
-  private readonly _uiInputType: string | null;
+  private readonly _uiInputType: UiInputTypeValue | null;
 
-  private constructor(value: CedarFieldTypeValue, uiInputType: string | null) {
+  private constructor(value: CedarFieldTypeValue, uiInputType: UiInputTypeValue | null) {
     this.value = value;
     this._uiInputType = uiInputType;
   }
@@ -32,23 +32,23 @@ export class CedarFieldType {
     return this.value;
   }
 
-  public getUiInputType(): string | null {
+  public getUiInputType(): UiInputTypeValue | null {
     return this._uiInputType;
   }
 
-  public static TEXT = new CedarFieldType(CedarFieldTypeValues.TEXTFIELD, InputType.textfield);
-  public static TEXTAREA = new CedarFieldType(CedarFieldTypeValues.TEXTAREA, InputType.textarea);
-  public static CONTROLLED_TERM = new CedarFieldType(CedarFieldTypeValues.CONTROLLED_TERM, InputType.textfield);
-  public static LINK = new CedarFieldType(CedarFieldTypeValues.LINK, InputType.link);
-  public static TEMPORAL = new CedarFieldType(CedarFieldTypeValues.TEMPORAL, InputType.temporal);
-  public static EMAIL = new CedarFieldType(CedarFieldTypeValues.EMAIL, InputType.email);
-  public static NUMERIC = new CedarFieldType(CedarFieldTypeValues.NUMERIC, InputType.numeric);
-  public static PHONE_NUMBER = new CedarFieldType(CedarFieldTypeValues.PHONE_NUMBER, InputType.phoneNumber);
-  public static RADIO = new CedarFieldType(CedarFieldTypeValues.RADIO, InputType.radio);
-  public static STATIC_PAGE_BREAK = new CedarFieldType(CedarFieldTypeValues.STATIC_PAGE_BREAK, InputType.pageBreak);
-  public static STATIC_SECTION_BREAK = new CedarFieldType(CedarFieldTypeValues.STATIC_SECTION_BREAK, InputType.sectionBreak);
-  public static STATIC_IMAGE = new CedarFieldType(CedarFieldTypeValues.STATIC_IMAGE, InputType.image);
-  public static STATIC_RICH_TEXT = new CedarFieldType(CedarFieldTypeValues.STATIC_RICH_TEXT, InputType.richText);
-  public static STATIC_YOUTUBE = new CedarFieldType(CedarFieldTypeValues.STATIC_YOUTUBE, InputType.youtube);
+  public static TEXT = new CedarFieldType(CedarFieldTypeValues.TEXTFIELD, UiInputTypeValues.TEXTFIELD);
+  public static TEXTAREA = new CedarFieldType(CedarFieldTypeValues.TEXTAREA, UiInputTypeValues.TEXTAREA);
+  public static CONTROLLED_TERM = new CedarFieldType(CedarFieldTypeValues.CONTROLLED_TERM, UiInputTypeValues.TEXTFIELD);
+  public static LINK = new CedarFieldType(CedarFieldTypeValues.LINK, UiInputTypeValues.LINK);
+  public static TEMPORAL = new CedarFieldType(CedarFieldTypeValues.TEMPORAL, UiInputTypeValues.TEMPORAL);
+  public static EMAIL = new CedarFieldType(CedarFieldTypeValues.EMAIL, UiInputTypeValues.EMAIL);
+  public static NUMERIC = new CedarFieldType(CedarFieldTypeValues.NUMERIC, UiInputTypeValues.NUMERIC);
+  public static PHONE_NUMBER = new CedarFieldType(CedarFieldTypeValues.PHONE_NUMBER, UiInputTypeValues.PHONE_NUMBER);
+  public static RADIO = new CedarFieldType(CedarFieldTypeValues.RADIO, UiInputTypeValues.RADIO);
+  public static STATIC_PAGE_BREAK = new CedarFieldType(CedarFieldTypeValues.STATIC_PAGE_BREAK, UiInputTypeValues.PAGE_BREAK);
+  public static STATIC_SECTION_BREAK = new CedarFieldType(CedarFieldTypeValues.STATIC_SECTION_BREAK, UiInputTypeValues.SECTION_BREAK);
+  public static STATIC_IMAGE = new CedarFieldType(CedarFieldTypeValues.STATIC_IMAGE, UiInputTypeValues.IMAGE);
+  public static STATIC_RICH_TEXT = new CedarFieldType(CedarFieldTypeValues.STATIC_RICH_TEXT, UiInputTypeValues.RICH_TEXT);
+  public static STATIC_YOUTUBE = new CedarFieldType(CedarFieldTypeValues.STATIC_YOUTUBE, UiInputTypeValues.YOUTUBE);
   public static NULL = new CedarFieldType(null, null);
 }

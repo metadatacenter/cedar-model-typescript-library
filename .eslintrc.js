@@ -24,5 +24,6 @@ module.exports = {
   rules: {
     '@typescript-eslint/object-curly-spacing': ['error', 'always'],
     'prettier/prettier': 'error',
+    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
   },
 };

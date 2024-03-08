@@ -17,7 +17,6 @@ import { JavascriptType } from '../../model/cedar/beans/JavascriptType';
 import { CedarModel } from '../../model/cedar/CedarModel';
 import { CedarSchema } from '../../model/cedar/beans/CedarSchema';
 import { CedarTemplateFieldContent } from '../../model/cedar/util/serialization/CedarTemplateFieldContent';
-import { InputType } from '../../model/cedar/constants/InputType';
 import { JSONFieldReaderTextField } from '../../model/cedar/field/dynamic/textfield/JSONFieldReaderTextField';
 import { JSONFieldReaderPageBreak } from '../../model/cedar/field/static/page-break/JSONFieldReaderPageBreak';
 import { JSONFieldReaderSectionBreak } from '../../model/cedar/field/static/section-break/JSONFieldReaderSectionBreak';
@@ -33,29 +32,27 @@ import { JSONFieldReaderTextArea } from '../../model/cedar/field/dynamic/textare
 import { JSONFieldReaderPhoneNumber } from '../../model/cedar/field/dynamic/phonenumber/JSONFieldReaderPhoneNumber';
 import { JSONFieldReaderRadio } from '../../model/cedar/field/dynamic/radio/JSONFieldReaderRadio';
 import { JSONFieldTypeSpecificReader } from './JSONFieldTypeSpecificReader';
-
-interface ReaderMap {
-  [key: string]: JSONFieldTypeSpecificReader;
-}
+import { UiInputType } from '../../model/cedar/beans/UiInputType';
 
 export class JSONFieldReader {
-  static dynamicTypeReaderMap: ReaderMap = {
-    [InputType.textfield]: new JSONFieldReaderTextField(),
-    [InputType.textarea]: new JSONFieldReaderTextArea(),
-    [InputType.link]: new JSONFieldReaderLink(),
-    [InputType.temporal]: new JSONFieldReaderTemporal(),
-    [InputType.email]: new JSONFieldReaderEmail(),
-    [InputType.numeric]: new JSONFieldReaderNumeric(),
-    [InputType.phoneNumber]: new JSONFieldReaderPhoneNumber(),
-    [InputType.radio]: new JSONFieldReaderRadio(),
-  };
-  static staticReaderMap: ReaderMap = {
-    [InputType.pageBreak]: new JSONFieldReaderPageBreak(),
-    [InputType.sectionBreak]: new JSONFieldReaderSectionBreak(),
-    [InputType.image]: new JSONFieldReaderImage(),
-    [InputType.richText]: new JSONFieldReaderRichText(),
-    [InputType.youtube]: new JSONFieldReaderYoutube(),
-  };
+  static dynamicTypeReaderMap = new Map<UiInputType, JSONFieldTypeSpecificReader>([
+    [UiInputType.TEXTFIELD, new JSONFieldReaderTextField()],
+    [UiInputType.TEXTAREA, new JSONFieldReaderTextArea()],
+    [UiInputType.LINK, new JSONFieldReaderLink()],
+    [UiInputType.TEMPORAL, new JSONFieldReaderTemporal()],
+    [UiInputType.EMAIL, new JSONFieldReaderEmail()],
+    [UiInputType.NUMERIC, new JSONFieldReaderNumeric()],
+    [UiInputType.PHONE_NUMBER, new JSONFieldReaderPhoneNumber()],
+    [UiInputType.RADIO, new JSONFieldReaderRadio()],
+  ]);
+
+  static staticReaderMap = new Map<UiInputType, JSONFieldTypeSpecificReader>([
+    [UiInputType.PAGE_BREAK, new JSONFieldReaderPageBreak()],
+    [UiInputType.SECTION_BREAK, new JSONFieldReaderSectionBreak()],
+    [UiInputType.IMAGE, new JSONFieldReaderImage()],
+    [UiInputType.RICH_TEXT, new JSONFieldReaderRichText()],
+    [UiInputType.YOUTUBE, new JSONFieldReaderYoutube()],
+  ]);
 
   static readFromObject(fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath): CedarField | null {
     const field: CedarField | null = this.readFieldSpecificAttributes(fieldSourceObject, parsingResult, path);
@@ -133,10 +130,10 @@ export class JSONFieldReader {
   ): CedarField | null {
     const artifactType: CedarArtifactType = CedarArtifactType.forValue(ReaderUtil.getString(fieldSourceObject, JsonSchema.atType));
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
-    const uiInputType: string | null = ReaderUtil.getString(uiNode, CedarModel.inputType);
+    const uiInputType: UiInputType = UiInputType.forValue(ReaderUtil.getString(uiNode, CedarModel.inputType));
     if (artifactType == CedarArtifactType.STATIC_TEMPLATE_FIELD) {
       if (uiInputType != null) {
-        const reader: JSONFieldTypeSpecificReader = this.staticReaderMap[uiInputType];
+        const reader: JSONFieldTypeSpecificReader | undefined = this.staticReaderMap.get(uiInputType);
         if (!reader) {
           throw new Error(`No reader defined for static input type "${uiInputType}"`);
         }
@@ -144,7 +141,7 @@ export class JSONFieldReader {
       }
     } else if (artifactType == CedarArtifactType.TEMPLATE_FIELD) {
       if (uiInputType != null) {
-        const reader: JSONFieldTypeSpecificReader = this.dynamicTypeReaderMap[uiInputType];
+        const reader: JSONFieldTypeSpecificReader | undefined = this.dynamicTypeReaderMap.get(uiInputType);
         if (!reader) {
           throw new Error(`No reader defined for dynamic input type "${uiInputType}"`);
         }

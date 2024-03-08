@@ -8,7 +8,7 @@ import { ValueConstraints } from '../../ValueConstraints';
 import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
 
 export class JSONFieldReaderPhoneNumber extends JSONFieldTypeSpecificReader {
-  override read(fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath): CedarPhoneNumberField {
+  override read(fieldSourceObject: JsonNode, _parsingResult: ParsingResult, _path: CedarJsonPath): CedarPhoneNumberField {
     const field = CedarPhoneNumberField.buildEmptyWithNullValues();
 
     const vc = new ValueConstraints();

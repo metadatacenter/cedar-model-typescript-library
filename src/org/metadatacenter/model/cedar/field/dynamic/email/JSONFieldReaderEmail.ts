@@ -8,7 +8,7 @@ import { CedarEmailField } from './CedarEmailField';
 import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
 
 export class JSONFieldReaderEmail extends JSONFieldTypeSpecificReader {
-  override read(fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath): CedarEmailField {
+  override read(fieldSourceObject: JsonNode, _parsingResult: ParsingResult, _path: CedarJsonPath): CedarEmailField {
     const field = CedarEmailField.buildEmptyWithNullValues();
 
     const vcEF = new ValueConstraintsEmailField();

@@ -7,7 +7,7 @@ import { CedarStaticRichTextField } from './CedarStaticRichTextField';
 import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
 
 export class JSONFieldReaderRichText extends JSONFieldTypeSpecificReader {
-  override read(fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath): CedarStaticRichTextField {
+  override read(fieldSourceObject: JsonNode, _parsingResult: ParsingResult, _path: CedarJsonPath): CedarStaticRichTextField {
     const field = CedarStaticRichTextField.buildEmptyWithNullValues();
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
     field.content = ReaderUtil.getString(uiNode, CedarModel.content);

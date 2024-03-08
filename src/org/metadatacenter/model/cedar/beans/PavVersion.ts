@@ -2,8 +2,6 @@ export const PavVersionValues = {
   DEFAULT: '0.0.1',
 } as const;
 
-export type PavVersionValue = (typeof PavVersionValues)[keyof typeof PavVersionValues] | null;
-
 export class PavVersion {
   private readonly value: string | null;
 

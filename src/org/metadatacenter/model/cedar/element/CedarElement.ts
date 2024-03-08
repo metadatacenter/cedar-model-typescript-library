@@ -66,31 +66,4 @@ export class CedarElement extends CedarAbstractArtifact {
       [CedarModel.schema]: CedarSchema.CURRENT,
     };
   }
-
-  public asCedarTemplateElementJSONObject(): object {
-    return JSON.parse(JSON.stringify(this));
-  }
-
-  public asCedarTemplateElementJSONString(indent: number = 2): string {
-    return JSON.stringify(this, null, indent);
-  }
-
-  public asCedarElementFieldYamlObject(): object {
-    // build the final object
-    return {
-      // id: this.at_id.toJSON(),
-      // type: CedarArtifactType.TEMPLATE_ELEMENT.toJSON(),
-      [TemplateProperty.title]: this.title,
-      [TemplateProperty.description]: this.description,
-      [JsonSchema.schemaName]: this.schema_name,
-      [JsonSchema.schemaDescription]: this.schema_description,
-      // [JsonSchema.pavCreatedOn]: this.pav_createdOn?.toJSON(),
-      // [JsonSchema.pavCreatedBy]: this.pav_createdBy.toJSON(),
-      // [JsonSchema.pavLastUpdatedOn]: this.pav_lastUpdatedOn?.toJSON(),
-      // [JsonSchema.oslcModifiedBy]: this.oslc_modifiedBy.toJSON(),
-      // [JsonSchema.schemaVersion]: this.schema_schemaVersion.toJSON(),
-      // [JsonSchema.pavVersion]: this.pav_version.toJSON(),
-      // [JsonSchema.biboStatus]: this.bibo_status.toJSON(),
-    };
-  }
 }

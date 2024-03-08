@@ -16,49 +16,44 @@ import { JSONFieldWriterRadio } from '../../model/cedar/field/dynamic/radio/JSON
 import { JSONFieldWriterCheckbox } from '../../model/cedar/field/dynamic/checkbox/JSONFieldWriterCheckbox';
 import { YAMLTemplateWriter } from '../../model/cedar/template/YAMLTemplateWriter';
 import { JSONFieldWriterList } from '../../model/cedar/field/dynamic/list/JSONFieldWriterList';
+import { JSONFieldWriterTextArea } from '../../model/cedar/field/dynamic/textarea/JSONFieldWriterTextArea';
+import { JSONFieldWriterPhoneNumber } from '../../model/cedar/field/dynamic/phonenumber/JSONFieldWriterPhoneNumber';
+import { JSONFieldWriterEmail } from '../../model/cedar/field/dynamic/email/JSONFieldWriterEmail';
 
 export class CedarWriters {
-  private behavior: JSONWriterBehavior;
+  private readonly behavior: JSONWriterBehavior;
+  private readonly dynamicFieldWriters: Map<CedarFieldType, JSONFieldWriter>;
+  private readonly staticFieldWriters: Map<CedarFieldType, JSONFieldWriter>;
   private readonly jsonAtomicWriter: JSONAtomicWriter;
-  private readonly jsonFieldWriter: JSONFieldWriter;
   private readonly jsonTemplateWriter: JSONTemplateWriter;
-  //
   private readonly yamlTemplateWriter: YAMLTemplateWriter;
-  //
-  private readonly jsonFieldWriterTextField: JSONFieldWriterTextField;
-  private readonly jsonFieldWriterLink: JSONFieldWriterLink;
-  private readonly jsonFieldWriterNumeric: JSONFieldWriterNumeric;
-  private readonly jsonFieldWriterTemporal: JSONFieldWriterTemporal;
-  private readonly jsonFieldWriterRadio: JSONFieldWriterRadio;
-  private readonly jsonFieldWriterCheckbox: JSONFieldWriterCheckbox;
-  private readonly jsonFieldWriterList: JSONFieldWriterList;
-
-  private readonly jsonFieldWriterStaticPageBreak: JSONFieldWriterStaticPageBreak;
-  private readonly jsonFieldWriterStaticSectionBreak: JSONFieldWriterStaticSectionsBreak;
-  private readonly jsonFieldWriterStaticImage: JSONFieldWriterStaticImage;
-  private readonly jsonFieldWriterStaticRichText: JSONFieldWriterStaticRichText;
-  private readonly jsonFieldWriterStaticYoutube: JSONFieldWriterStaticYoutube;
 
   private constructor(behavior: JSONWriterBehavior) {
     this.behavior = behavior;
     this.jsonAtomicWriter = new JSONAtomicWriter(behavior);
-    this.jsonFieldWriter = JSONFieldWriter.getFor(behavior, this);
-    this.jsonFieldWriterTextField = new JSONFieldWriterTextField(behavior, this);
-    this.jsonFieldWriterLink = new JSONFieldWriterLink(behavior, this);
-    this.jsonFieldWriterNumeric = new JSONFieldWriterNumeric(behavior, this);
-    this.jsonFieldWriterTemporal = new JSONFieldWriterTemporal(behavior, this);
-    this.jsonFieldWriterRadio = new JSONFieldWriterRadio(behavior, this);
-    this.jsonFieldWriterCheckbox = new JSONFieldWriterCheckbox(behavior, this);
-    this.jsonFieldWriterList = new JSONFieldWriterList(behavior, this);
-
-    this.jsonFieldWriterStaticPageBreak = new JSONFieldWriterStaticPageBreak(behavior, this);
-    this.jsonFieldWriterStaticSectionBreak = new JSONFieldWriterStaticSectionsBreak(behavior, this);
-    this.jsonFieldWriterStaticImage = new JSONFieldWriterStaticImage(behavior, this);
-    this.jsonFieldWriterStaticRichText = new JSONFieldWriterStaticRichText(behavior, this);
-    this.jsonFieldWriterStaticYoutube = new JSONFieldWriterStaticYoutube(behavior, this);
     this.jsonTemplateWriter = JSONTemplateWriter.getFor(behavior, this);
-
     this.yamlTemplateWriter = YAMLTemplateWriter.getFor(behavior, this);
+
+    this.dynamicFieldWriters = new Map<CedarFieldType, JSONFieldWriter>([
+      [CedarFieldType.TEXT, new JSONFieldWriterTextField(behavior, this)],
+      [CedarFieldType.TEXTAREA, new JSONFieldWriterTextArea(behavior, this)],
+      [CedarFieldType.PHONE_NUMBER, new JSONFieldWriterPhoneNumber(behavior, this)],
+      [CedarFieldType.EMAIL, new JSONFieldWriterEmail(behavior, this)],
+      [CedarFieldType.LINK, new JSONFieldWriterLink(behavior, this)],
+      [CedarFieldType.NUMERIC, new JSONFieldWriterNumeric(behavior, this)],
+      [CedarFieldType.TEMPORAL, new JSONFieldWriterTemporal(behavior, this)],
+      [CedarFieldType.RADIO, new JSONFieldWriterRadio(behavior, this)],
+      [CedarFieldType.CHECKBOX, new JSONFieldWriterCheckbox(behavior, this)],
+      [CedarFieldType.LIST, new JSONFieldWriterList(behavior, this)],
+    ]);
+
+    this.staticFieldWriters = new Map<CedarFieldType, JSONFieldWriter>([
+      [CedarFieldType.STATIC_PAGE_BREAK, new JSONFieldWriterStaticPageBreak(behavior, this)],
+      [CedarFieldType.STATIC_SECTION_BREAK, new JSONFieldWriterStaticSectionsBreak(behavior, this)],
+      [CedarFieldType.STATIC_IMAGE, new JSONFieldWriterStaticImage(behavior, this)],
+      [CedarFieldType.STATIC_RICH_TEXT, new JSONFieldWriterStaticRichText(behavior, this)],
+      [CedarFieldType.STATIC_YOUTUBE, new JSONFieldWriterStaticYoutube(behavior, this)],
+    ]);
   }
 
   public static getStrict(): CedarWriters {
@@ -78,32 +73,17 @@ export class CedarWriters {
   }
 
   getJSONFieldWriter(cedarFieldType: CedarFieldType): JSONFieldWriter {
-    if (cedarFieldType == CedarFieldType.TEXT) {
-      return this.jsonFieldWriterTextField;
-    } else if (cedarFieldType == CedarFieldType.LINK) {
-      return this.jsonFieldWriterLink;
-    } else if (cedarFieldType == CedarFieldType.NUMERIC) {
-      return this.jsonFieldWriterNumeric;
-    } else if (cedarFieldType == CedarFieldType.TEMPORAL) {
-      return this.jsonFieldWriterTemporal;
-    } else if (cedarFieldType == CedarFieldType.RADIO) {
-      return this.jsonFieldWriterRadio;
-    } else if (cedarFieldType == CedarFieldType.CHECKBOX) {
-      return this.jsonFieldWriterCheckbox;
-    } else if (cedarFieldType == CedarFieldType.LIST) {
-      return this.jsonFieldWriterList;
-    } else if (cedarFieldType == CedarFieldType.STATIC_PAGE_BREAK) {
-      return this.jsonFieldWriterStaticPageBreak;
-    } else if (cedarFieldType == CedarFieldType.STATIC_SECTION_BREAK) {
-      return this.jsonFieldWriterStaticSectionBreak;
-    } else if (cedarFieldType == CedarFieldType.STATIC_IMAGE) {
-      return this.jsonFieldWriterStaticImage;
-    } else if (cedarFieldType == CedarFieldType.STATIC_RICH_TEXT) {
-      return this.jsonFieldWriterStaticRichText;
-    } else if (cedarFieldType == CedarFieldType.STATIC_YOUTUBE) {
-      return this.jsonFieldWriterStaticYoutube;
+    let writer = this.dynamicFieldWriters.get(cedarFieldType);
+    if (writer) {
+      return writer;
     }
-    return this.jsonFieldWriter;
+
+    writer = this.staticFieldWriters.get(cedarFieldType);
+    if (writer) {
+      return writer;
+    }
+
+    throw new Error(`No writer found for field type: ${cedarFieldType.getValue()}`);
   }
 
   getYAMLTemplateWriter(): YAMLTemplateWriter {

@@ -11,7 +11,7 @@ import { CedarSchema } from '../beans/CedarSchema';
 import { CedarWriters } from '../../../io/writer/CedarWriters';
 import { JSONAbstractArtifactWriter } from '../JSONAbstractArtifactWriter';
 
-export class JSONFieldWriter extends JSONAbstractArtifactWriter {
+export abstract class JSONFieldWriter extends JSONAbstractArtifactWriter {
   private behavior: JSONWriterBehavior;
   private writers: CedarWriters;
   protected atomicWriter: JSONAtomicWriter;
@@ -23,10 +23,6 @@ export class JSONFieldWriter extends JSONAbstractArtifactWriter {
     this.atomicWriter = writers.getJSONAtomicWriter();
   }
 
-  public static getFor(behavior: JSONWriterBehavior, writers: CedarWriters): JSONFieldWriter {
-    return new JSONFieldWriter(behavior, writers);
-  }
-
   protected expandPropertiesNodeForJSON(propertiesObject: JsonNode): void {
     propertiesObject[JsonSchema.properties] = CedarTemplateFieldContent.PROPERTIES_VERBATIM_LITERAL;
   }
@@ -35,7 +31,7 @@ export class JSONFieldWriter extends JSONAbstractArtifactWriter {
     requiredObject[JsonSchema.required] = [JsonSchema.atValue];
   }
 
-  protected expandUINodeForJSON(uiNode: JsonNode, field: CedarField): void {}
+  protected expandUINodeForJSON(_uiNode: JsonNode, _field: CedarField): void {}
 
   protected expandValueConstraintsNodeForJSON(vcNode: JsonNode, field: CedarField): void {
     vcNode[CedarModel.requiredValue] = field.valueConstraints.requiredValue;

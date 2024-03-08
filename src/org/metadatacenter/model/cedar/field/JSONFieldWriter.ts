@@ -37,6 +37,10 @@ export abstract class JSONFieldWriter extends JSONAbstractArtifactWriter {
     vcNode[CedarModel.requiredValue] = field.valueConstraints.requiredValue;
   }
 
+  getAsJsonString(field: CedarField, indent: number = 2): string {
+    return JSON.stringify(this.getAsJsonNode(field), null, indent);
+  }
+
   public getAsJsonNode(field: CedarField): JsonNode {
     // Build properties wrapper, based on type
     const propertiesObject: JsonNode = JsonNodeClass.getEmpty();

@@ -19,6 +19,7 @@ import { JSONFieldWriterList } from '../../model/cedar/field/dynamic/list/JSONFi
 import { JSONFieldWriterTextArea } from '../../model/cedar/field/dynamic/textarea/JSONFieldWriterTextArea';
 import { JSONFieldWriterPhoneNumber } from '../../model/cedar/field/dynamic/phonenumber/JSONFieldWriterPhoneNumber';
 import { JSONFieldWriterEmail } from '../../model/cedar/field/dynamic/email/JSONFieldWriterEmail';
+import { CedarField } from '../../model/cedar/field/CedarField';
 
 export class CedarWriters {
   private readonly behavior: JSONWriterBehavior;
@@ -72,17 +73,23 @@ export class CedarWriters {
     return this.jsonAtomicWriter;
   }
 
-  getJSONFieldWriter(cedarFieldType: CedarFieldType): JSONFieldWriter {
-    let writer = this.dynamicFieldWriters.get(cedarFieldType);
+  getJSONFieldWriter(cedarFieldOrType: CedarFieldType): JSONFieldWriter {
+    let cedarFieldType: CedarFieldType;
+    if (cedarFieldOrType instanceof CedarField) {
+      cedarFieldType = cedarFieldOrType.cedarFieldType;
+    } else {
+      cedarFieldType = cedarFieldOrType;
+    }
+
+    let writer: JSONFieldWriter | undefined;
+    if (cedarFieldType.isStaticField) {
+      writer = this.staticFieldWriters.get(cedarFieldType);
+    } else {
+      writer = this.dynamicFieldWriters.get(cedarFieldType);
+    }
     if (writer) {
       return writer;
     }
-
-    writer = this.staticFieldWriters.get(cedarFieldType);
-    if (writer) {
-      return writer;
-    }
-
     throw new Error(`No writer found for field type: ${cedarFieldType.getValue()}`);
   }
 

@@ -25,10 +25,12 @@ export type CedarFieldTypeValue = (typeof CedarFieldTypeValues)[keyof typeof Ced
 export class CedarFieldType {
   private readonly value: CedarFieldTypeValue | null;
   private readonly _uiInputType: UiInputType;
+  private readonly staticField;
 
-  private constructor(value: CedarFieldTypeValue, uiInputType: UiInputType) {
+  private constructor(value: CedarFieldTypeValue, uiInputType: UiInputType, staticField: boolean) {
     this.value = value;
     this._uiInputType = uiInputType;
+    this.staticField = staticField;
   }
 
   public getValue(): CedarFieldTypeValue {
@@ -39,23 +41,27 @@ export class CedarFieldType {
     return this._uiInputType;
   }
 
-  public static TEXT = new CedarFieldType(CedarFieldTypeValues.TEXTFIELD, UiInputType.TEXTFIELD);
-  public static TEXTAREA = new CedarFieldType(CedarFieldTypeValues.TEXTAREA, UiInputType.TEXTAREA);
-  public static CONTROLLED_TERM = new CedarFieldType(CedarFieldTypeValues.CONTROLLED_TERM, UiInputType.TEXTFIELD);
-  public static LINK = new CedarFieldType(CedarFieldTypeValues.LINK, UiInputType.LINK);
-  public static TEMPORAL = new CedarFieldType(CedarFieldTypeValues.TEMPORAL, UiInputType.TEMPORAL);
-  public static EMAIL = new CedarFieldType(CedarFieldTypeValues.EMAIL, UiInputType.EMAIL);
-  public static NUMERIC = new CedarFieldType(CedarFieldTypeValues.NUMERIC, UiInputType.NUMERIC);
-  public static PHONE_NUMBER = new CedarFieldType(CedarFieldTypeValues.PHONE_NUMBER, UiInputType.PHONE_NUMBER);
-  public static RADIO = new CedarFieldType(CedarFieldTypeValues.RADIO, UiInputType.RADIO);
-  public static CHECKBOX = new CedarFieldType(CedarFieldTypeValues.CHECKBOX, UiInputType.CHECKBOX);
-  public static LIST = new CedarFieldType(CedarFieldTypeValues.LIST, UiInputType.LIST);
+  get isStaticField() {
+    return this.staticField;
+  }
 
-  public static STATIC_PAGE_BREAK = new CedarFieldType(CedarFieldTypeValues.STATIC_PAGE_BREAK, UiInputType.PAGE_BREAK);
-  public static STATIC_SECTION_BREAK = new CedarFieldType(CedarFieldTypeValues.STATIC_SECTION_BREAK, UiInputType.SECTION_BREAK);
-  public static STATIC_IMAGE = new CedarFieldType(CedarFieldTypeValues.STATIC_IMAGE, UiInputType.IMAGE);
-  public static STATIC_RICH_TEXT = new CedarFieldType(CedarFieldTypeValues.STATIC_RICH_TEXT, UiInputType.RICH_TEXT);
-  public static STATIC_YOUTUBE = new CedarFieldType(CedarFieldTypeValues.STATIC_YOUTUBE, UiInputType.YOUTUBE);
+  public static TEXT = new CedarFieldType(CedarFieldTypeValues.TEXTFIELD, UiInputType.TEXTFIELD, false);
+  public static TEXTAREA = new CedarFieldType(CedarFieldTypeValues.TEXTAREA, UiInputType.TEXTAREA, false);
+  public static CONTROLLED_TERM = new CedarFieldType(CedarFieldTypeValues.CONTROLLED_TERM, UiInputType.TEXTFIELD, false);
+  public static LINK = new CedarFieldType(CedarFieldTypeValues.LINK, UiInputType.LINK, false);
+  public static TEMPORAL = new CedarFieldType(CedarFieldTypeValues.TEMPORAL, UiInputType.TEMPORAL, false);
+  public static EMAIL = new CedarFieldType(CedarFieldTypeValues.EMAIL, UiInputType.EMAIL, false);
+  public static NUMERIC = new CedarFieldType(CedarFieldTypeValues.NUMERIC, UiInputType.NUMERIC, false);
+  public static PHONE_NUMBER = new CedarFieldType(CedarFieldTypeValues.PHONE_NUMBER, UiInputType.PHONE_NUMBER, false);
+  public static RADIO = new CedarFieldType(CedarFieldTypeValues.RADIO, UiInputType.RADIO, false);
+  public static CHECKBOX = new CedarFieldType(CedarFieldTypeValues.CHECKBOX, UiInputType.CHECKBOX, false);
+  public static LIST = new CedarFieldType(CedarFieldTypeValues.LIST, UiInputType.LIST, false);
 
-  public static NULL = new CedarFieldType(null, UiInputType.NULL);
+  public static STATIC_PAGE_BREAK = new CedarFieldType(CedarFieldTypeValues.STATIC_PAGE_BREAK, UiInputType.PAGE_BREAK, true);
+  public static STATIC_SECTION_BREAK = new CedarFieldType(CedarFieldTypeValues.STATIC_SECTION_BREAK, UiInputType.SECTION_BREAK, true);
+  public static STATIC_IMAGE = new CedarFieldType(CedarFieldTypeValues.STATIC_IMAGE, UiInputType.IMAGE, true);
+  public static STATIC_RICH_TEXT = new CedarFieldType(CedarFieldTypeValues.STATIC_RICH_TEXT, UiInputType.RICH_TEXT, true);
+  public static STATIC_YOUTUBE = new CedarFieldType(CedarFieldTypeValues.STATIC_YOUTUBE, UiInputType.YOUTUBE, true);
+
+  public static NULL = new CedarFieldType(null, UiInputType.NULL, true);
 }

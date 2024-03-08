@@ -1,6 +1,7 @@
 import { CedarTemplate } from '../../../../../../src/org/metadatacenter/model/cedar/template/CedarTemplate';
 import { CedarWriters } from '../../../../../../src/org/metadatacenter/io/writer/CedarWriters';
 import { JSONTemplateWriter } from '../../../../../../src/org/metadatacenter/model/cedar/template/JSONTemplateWriter';
+import { TestUtil } from '../../../../../TestUtil';
 
 describe('CedarTemplate', () => {
   test('creates empty with null values', () => {
@@ -46,7 +47,7 @@ describe('CedarTemplate', () => {
     const writers: CedarWriters = CedarWriters.getStrict();
     const writer: JSONTemplateWriter = writers.getJSONTemplateWriter();
 
-    const stringified = JSON.stringify(writer.getAsJsonNode(cedarTemplate), null, 2);
+    const stringified = writer.getAsJsonString(cedarTemplate);
     const backparsed = JSON.parse(stringified);
 
     expect(backparsed['@id']).toBeNull();
@@ -73,5 +74,14 @@ describe('CedarTemplate', () => {
     expect(backparsed['pav:version']).toBe('0.0.1');
     expect(backparsed['bibo:status']).toBe('bibo:draft');
     expect(backparsed['$schema']).toBe('http://json-schema.org/draft-04/schema#');
+  });
+
+  test('creates empty with default values', () => {
+    const cedarTemplate = CedarTemplate.buildEmptyWithDefaultValues();
+    expect(cedarTemplate).not.toBeNull();
+
+    const writers: CedarWriters = CedarWriters.getStrict();
+    const writer: JSONTemplateWriter = writers.getJSONTemplateWriter();
+    expect(writer.getAsJsonString(cedarTemplate)).not.toBeNull();
   });
 });

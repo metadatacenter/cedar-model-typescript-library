@@ -1,8 +1,8 @@
-import { SchemaVersion } from '../../../beans/SchemaVersion';
+import { SchemaVersion } from '../../../types/beans/SchemaVersion';
 import { CedarField } from '../../CedarField';
 import { ValueConstraintsTextField } from './ValueConstraintsTextField';
-import { CedarFieldType } from '../../../beans/CedarFieldType';
-import { CedarArtifactType } from '../../../beans/CedarArtifactType';
+import { CedarFieldType } from '../../../types/beans/CedarFieldType';
+import { CedarArtifactType } from '../../../types/beans/CedarArtifactType';
 
 export class CedarTextField extends CedarField {
   // Redeclare valueConstraints with a more specific type

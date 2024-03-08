@@ -1,4 +1,4 @@
-import { Primitive } from '../types/Primitive';
+import { Primitive } from '../../types/basic-types/Primitive';
 import { CedarJsonPath } from '../path/CedarJsonPath';
 import { ComparisonErrorType } from './ComparisonErrorType';
 

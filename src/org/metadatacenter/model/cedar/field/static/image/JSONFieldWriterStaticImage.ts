@@ -1,14 +1,15 @@
-import { JsonNode } from '../../../util/types/JsonNode';
+import { JsonNode } from '../../../types/basic-types/JsonNode';
 import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
 import { CedarWriters } from '../../../../../io/writer/CedarWriters';
 import { CedarStaticImageField } from './CedarStaticImageField';
 import { JsonSchema } from '../../../constants/JsonSchema';
-import { CedarStaticTemplateFieldContent } from '../../../util/serialization/CedarStaticTemplateFieldContent';
-import { CedarModel } from '../../../CedarModel';
-import { JavascriptType } from '../../../beans/JavascriptType';
+import { CedarJSONTemplateFieldContentStatic } from '../../../util/serialization/CedarJSONTemplateFieldContentStatic';
+import { CedarModel } from '../../../constants/CedarModel';
+import { JavascriptType } from '../../../types/beans/JavascriptType';
 import { TemplateProperty } from '../../../constants/TemplateProperty';
-import { CedarSchema } from '../../../beans/CedarSchema';
-import { JSONFieldWriter } from '../../JSONFieldWriter';
+import { CedarSchema } from '../../../types/beans/CedarSchema';
+import { JSONFieldWriter } from '../../../../../io/writer/JSONFieldWriter';
+import { AdditionalProperties } from '../../../types/beans/AdditionalProperties';
 
 export class JSONFieldWriterStaticImage extends JSONFieldWriter {
   constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
@@ -19,7 +20,7 @@ export class JSONFieldWriterStaticImage extends JSONFieldWriter {
     return {
       [JsonSchema.atId]: this.atomicWriter.write(field.at_id),
       [JsonSchema.atType]: this.atomicWriter.write(field.cedarArtifactType),
-      [JsonSchema.atContext]: CedarStaticTemplateFieldContent.CONTEXT_VERBATIM,
+      [JsonSchema.atContext]: CedarJSONTemplateFieldContentStatic.CONTEXT_VERBATIM,
       [CedarModel.type]: this.atomicWriter.write(JavascriptType.OBJECT),
       [TemplateProperty.title]: field.title,
       [TemplateProperty.description]: field.description,
@@ -31,7 +32,7 @@ export class JSONFieldWriterStaticImage extends JSONFieldWriter {
       [JsonSchema.schemaVersion]: this.atomicWriter.write(field.schema_schemaVersion),
       ...this.macroStatusAndVersion(field, this.atomicWriter),
       ...this.macroProvenance(field, this.atomicWriter),
-      [TemplateProperty.additionalProperties]: false,
+      [TemplateProperty.additionalProperties]: this.atomicWriter.write(AdditionalProperties.FALSE),
       ...this.macroSkos(field),
       [CedarModel.schema]: this.atomicWriter.write(CedarSchema.CURRENT),
     };

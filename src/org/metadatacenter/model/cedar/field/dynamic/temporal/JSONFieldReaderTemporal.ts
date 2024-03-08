@@ -1,13 +1,13 @@
-import { JsonNode } from '../../../util/types/JsonNode';
+import { JsonNode } from '../../../types/basic-types/JsonNode';
 import { ParsingResult } from '../../../util/compare/ParsingResult';
 import { CedarJsonPath } from '../../../util/path/CedarJsonPath';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
-import { CedarModel } from '../../../CedarModel';
+import { CedarModel } from '../../../constants/CedarModel';
 import { CedarTemporalField } from './CedarTemporalField';
 import { ValueConstraintsTemporalField } from './ValueConstraintsTemporalField';
-import { TemporalType } from '../../../beans/TemporalType';
-import { TimeFormat } from '../../../beans/TimeFormat';
-import { TemporalGranularity } from '../../../beans/TemporalGranularity';
+import { TemporalType } from '../../../types/beans/TemporalType';
+import { TimeFormat } from '../../../types/beans/TimeFormat';
+import { TemporalGranularity } from '../../../types/beans/TemporalGranularity';
 import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
 
 export class JSONFieldReaderTemporal extends JSONFieldTypeSpecificReader {

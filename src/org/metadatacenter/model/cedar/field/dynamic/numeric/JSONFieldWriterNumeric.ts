@@ -1,10 +1,10 @@
-import { JsonNode } from '../../../util/types/JsonNode';
-import { CedarTemplateFieldContent } from '../../../util/serialization/CedarTemplateFieldContent';
+import { JsonNode } from '../../../types/basic-types/JsonNode';
+import { CedarJSONTemplateFieldContentDynamic } from '../../../util/serialization/CedarJSONTemplateFieldContentDynamic';
 import { JsonSchema } from '../../../constants/JsonSchema';
-import { JSONFieldWriter } from '../../JSONFieldWriter';
+import { JSONFieldWriter } from '../../../../../io/writer/JSONFieldWriter';
 import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
 import { CedarWriters } from '../../../../../io/writer/CedarWriters';
-import { CedarModel } from '../../../CedarModel';
+import { CedarModel } from '../../../constants/CedarModel';
 import { CedarNumericField } from './CedarNumericField';
 
 export class JSONFieldWriterNumeric extends JSONFieldWriter {
@@ -13,7 +13,7 @@ export class JSONFieldWriterNumeric extends JSONFieldWriter {
   }
 
   override expandPropertiesNodeForJSON(propertiesObject: JsonNode): void {
-    propertiesObject[JsonSchema.properties] = CedarTemplateFieldContent.PROPERTIES_VERBATIM_NUMERIC;
+    propertiesObject[JsonSchema.properties] = CedarJSONTemplateFieldContentDynamic.PROPERTIES_VERBATIM_NUMERIC;
   }
 
   override expandRequiredNodeForJSON(requiredObject: JsonNode): void {

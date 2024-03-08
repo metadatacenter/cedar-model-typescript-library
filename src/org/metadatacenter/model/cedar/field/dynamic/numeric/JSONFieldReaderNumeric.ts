@@ -1,11 +1,11 @@
-import { JsonNode } from '../../../util/types/JsonNode';
+import { JsonNode } from '../../../types/basic-types/JsonNode';
 import { ParsingResult } from '../../../util/compare/ParsingResult';
 import { CedarJsonPath } from '../../../util/path/CedarJsonPath';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
-import { CedarModel } from '../../../CedarModel';
+import { CedarModel } from '../../../constants/CedarModel';
 import { ValueConstraintsNumericField } from './ValueConstraintsNumericField';
 import { CedarNumericField } from './CedarNumericField';
-import { NumberType } from '../../../beans/NumberType';
+import { NumberType } from '../../../types/beans/NumberType';
 import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
 
 export class JSONFieldReaderNumeric extends JSONFieldTypeSpecificReader {

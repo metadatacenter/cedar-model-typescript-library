@@ -1,8 +1,8 @@
-import { SchemaVersion } from '../../../beans/SchemaVersion';
+import { SchemaVersion } from '../../../types/beans/SchemaVersion';
 import { CedarField } from '../../CedarField';
-import { CedarFieldType } from '../../../beans/CedarFieldType';
+import { CedarFieldType } from '../../../types/beans/CedarFieldType';
 import { ValueConstraintsLinkField } from './ValueConstraintsLinkField';
-import { CedarArtifactType } from '../../../beans/CedarArtifactType';
+import { CedarArtifactType } from '../../../types/beans/CedarArtifactType';
 
 export class CedarLinkField extends CedarField {
   private constructor() {

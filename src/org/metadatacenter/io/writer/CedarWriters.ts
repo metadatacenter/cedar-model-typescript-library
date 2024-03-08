@@ -1,8 +1,8 @@
 import { JSONWriterBehavior } from '../../behavior/JSONWriterBehavior';
 import { JSONAtomicWriter } from './JSONAtomicWriter';
-import { JSONFieldWriter } from '../../model/cedar/field/JSONFieldWriter';
-import { JSONTemplateWriter } from '../../model/cedar/template/JSONTemplateWriter';
-import { CedarFieldType } from '../../model/cedar/beans/CedarFieldType';
+import { JSONFieldWriter } from './JSONFieldWriter';
+import { JSONTemplateWriter } from './JSONTemplateWriter';
+import { CedarFieldType } from '../../model/cedar/types/beans/CedarFieldType';
 import { JSONFieldWriterTextField } from '../../model/cedar/field/dynamic/textfield/JSONFieldWriterTextField';
 import { JSONFieldWriterLink } from '../../model/cedar/field/dynamic/link/JSONFieldWriterLink';
 import { JSONFieldWriterNumeric } from '../../model/cedar/field/dynamic/numeric/JSONFieldWriterNumeric';
@@ -14,12 +14,13 @@ import { JSONFieldWriterStaticRichText } from '../../model/cedar/field/static/ri
 import { JSONFieldWriterStaticYoutube } from '../../model/cedar/field/static/youtube/JSONFieldWriterStaticYoutube';
 import { JSONFieldWriterRadio } from '../../model/cedar/field/dynamic/radio/JSONFieldWriterRadio';
 import { JSONFieldWriterCheckbox } from '../../model/cedar/field/dynamic/checkbox/JSONFieldWriterCheckbox';
-import { YAMLTemplateWriter } from '../../model/cedar/template/YAMLTemplateWriter';
+import { YAMLTemplateWriter } from './YAMLTemplateWriter';
 import { JSONFieldWriterList } from '../../model/cedar/field/dynamic/list/JSONFieldWriterList';
 import { JSONFieldWriterTextArea } from '../../model/cedar/field/dynamic/textarea/JSONFieldWriterTextArea';
-import { JSONFieldWriterPhoneNumber } from '../../model/cedar/field/dynamic/phonenumber/JSONFieldWriterPhoneNumber';
+import { JSONFieldWriterPhoneNumber } from '../../model/cedar/field/dynamic/phone-number/JSONFieldWriterPhoneNumber';
 import { JSONFieldWriterEmail } from '../../model/cedar/field/dynamic/email/JSONFieldWriterEmail';
 import { CedarField } from '../../model/cedar/field/CedarField';
+import { JSONFieldWriterAttributeValue } from '../../model/cedar/field/dynamic/attribute-value/JSONFieldWriterAttributeValue';
 
 export class CedarWriters {
   private readonly behavior: JSONWriterBehavior;
@@ -46,6 +47,7 @@ export class CedarWriters {
       [CedarFieldType.RADIO, new JSONFieldWriterRadio(behavior, this)],
       [CedarFieldType.CHECKBOX, new JSONFieldWriterCheckbox(behavior, this)],
       [CedarFieldType.LIST, new JSONFieldWriterList(behavior, this)],
+      [CedarFieldType.ATTRIBUTE_VALUE, new JSONFieldWriterAttributeValue(behavior, this)],
     ]);
 
     this.staticFieldWriters = new Map<CedarFieldType, JSONFieldWriter>([

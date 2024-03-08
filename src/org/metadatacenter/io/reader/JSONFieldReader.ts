@@ -1,22 +1,22 @@
-import { JsonNode, JsonNodeClass } from '../../model/cedar/util/types/JsonNode';
+import { JsonNode, JsonNodeClass } from '../../model/cedar/types/basic-types/JsonNode';
 import { ParsingResult } from '../../model/cedar/util/compare/ParsingResult';
 import { CedarJsonPath } from '../../model/cedar/util/path/CedarJsonPath';
 import { CedarField } from '../../model/cedar/field/CedarField';
-import { CedarArtifactId } from '../../model/cedar/beans/CedarArtifactId';
+import { CedarArtifactId } from '../../model/cedar/types/beans/CedarArtifactId';
 import { ReaderUtil } from './ReaderUtil';
 import { JsonSchema } from '../../model/cedar/constants/JsonSchema';
 import { TemplateProperty } from '../../model/cedar/constants/TemplateProperty';
-import { CedarUser } from '../../model/cedar/beans/CedarUser';
-import { CedarDate } from '../../model/cedar/beans/CedarDate';
-import { SchemaVersion } from '../../model/cedar/beans/SchemaVersion';
-import { PavVersion } from '../../model/cedar/beans/PavVersion';
-import { BiboStatus } from '../../model/cedar/beans/BiboStatus';
+import { CedarUser } from '../../model/cedar/types/beans/CedarUser';
+import { CedarDate } from '../../model/cedar/types/beans/CedarDate';
+import { SchemaVersion } from '../../model/cedar/types/beans/SchemaVersion';
+import { PavVersion } from '../../model/cedar/types/beans/PavVersion';
+import { BiboStatus } from '../../model/cedar/types/beans/BiboStatus';
 import { ObjectComparator } from '../../model/cedar/util/compare/ObjectComparator';
-import { CedarArtifactType } from '../../model/cedar/beans/CedarArtifactType';
-import { JavascriptType } from '../../model/cedar/beans/JavascriptType';
-import { CedarModel } from '../../model/cedar/CedarModel';
-import { CedarSchema } from '../../model/cedar/beans/CedarSchema';
-import { CedarTemplateFieldContent } from '../../model/cedar/util/serialization/CedarTemplateFieldContent';
+import { CedarArtifactType } from '../../model/cedar/types/beans/CedarArtifactType';
+import { JavascriptType } from '../../model/cedar/types/beans/JavascriptType';
+import { CedarModel } from '../../model/cedar/constants/CedarModel';
+import { CedarSchema } from '../../model/cedar/types/beans/CedarSchema';
+import { CedarJSONTemplateFieldContentDynamic } from '../../model/cedar/util/serialization/CedarJSONTemplateFieldContentDynamic';
 import { JSONFieldReaderTextField } from '../../model/cedar/field/dynamic/textfield/JSONFieldReaderTextField';
 import { JSONFieldReaderPageBreak } from '../../model/cedar/field/static/page-break/JSONFieldReaderPageBreak';
 import { JSONFieldReaderSectionBreak } from '../../model/cedar/field/static/section-break/JSONFieldReaderSectionBreak';
@@ -24,17 +24,19 @@ import { JSONFieldReaderImage } from '../../model/cedar/field/static/image/JSONF
 import { JSONFieldReaderRichText } from '../../model/cedar/field/static/rich-text/JSONFieldReaderRichText';
 import { JSONFieldReaderYoutube } from '../../model/cedar/field/static/youtube/JSONFieldReaderYoutube';
 import { JSONFieldReaderLink } from '../../model/cedar/field/dynamic/link/JSONFieldReaderLink';
-import { CedarStaticTemplateFieldContent } from '../../model/cedar/util/serialization/CedarStaticTemplateFieldContent';
+import { CedarJSONTemplateFieldContentStatic } from '../../model/cedar/util/serialization/CedarJSONTemplateFieldContentStatic';
 import { JSONFieldReaderTemporal } from '../../model/cedar/field/dynamic/temporal/JSONFieldReaderTemporal';
 import { JSONFieldReaderEmail } from '../../model/cedar/field/dynamic/email/JSONFieldReaderEmail';
 import { JSONFieldReaderNumeric } from '../../model/cedar/field/dynamic/numeric/JSONFieldReaderNumeric';
 import { JSONFieldReaderTextArea } from '../../model/cedar/field/dynamic/textarea/JSONFieldReaderTextArea';
-import { JSONFieldReaderPhoneNumber } from '../../model/cedar/field/dynamic/phonenumber/JSONFieldReaderPhoneNumber';
+import { JSONFieldReaderPhoneNumber } from '../../model/cedar/field/dynamic/phone-number/JSONFieldReaderPhoneNumber';
 import { JSONFieldReaderRadio } from '../../model/cedar/field/dynamic/radio/JSONFieldReaderRadio';
 import { JSONFieldTypeSpecificReader } from './JSONFieldTypeSpecificReader';
-import { UiInputType } from '../../model/cedar/beans/UiInputType';
+import { UiInputType } from '../../model/cedar/types/beans/UiInputType';
 import { JSONFieldReaderCheckbox } from '../../model/cedar/field/dynamic/checkbox/JSONFieldReaderCheckbox';
 import { JSONFieldReaderList } from '../../model/cedar/field/dynamic/list/JSONFieldReaderList';
+import { JSONFieldReaderAttributeValue } from '../../model/cedar/field/dynamic/attribute-value/JSONFieldReaderAttributeValue';
+import { CedarFieldType } from '../../model/cedar/types/beans/CedarFieldType';
 
 export class JSONFieldReader {
   static dynamicTypeReaderMap = new Map<UiInputType, JSONFieldTypeSpecificReader>([
@@ -48,6 +50,7 @@ export class JSONFieldReader {
     [UiInputType.RADIO, new JSONFieldReaderRadio()],
     [UiInputType.CHECKBOX, new JSONFieldReaderCheckbox()],
     [UiInputType.LIST, new JSONFieldReaderList()],
+    [UiInputType.ATTRIBUTE_VALUE, new JSONFieldReaderAttributeValue()],
   ]);
 
   static staticReaderMap = new Map<UiInputType, JSONFieldTypeSpecificReader>([
@@ -96,19 +99,29 @@ export class JSONFieldReader {
     const topContextNode: JsonNode = ReaderUtil.getNode(fieldSourceObject, JsonSchema.atContext);
     let blueprintAtContext: JsonNode = JsonNodeClass.getEmpty();
     if (field.cedarArtifactType == CedarArtifactType.TEMPLATE_FIELD) {
-      blueprintAtContext = CedarTemplateFieldContent.CONTEXT_VERBATIM;
+      blueprintAtContext = CedarJSONTemplateFieldContentDynamic.CONTEXT_VERBATIM;
     } else if (field.cedarArtifactType == CedarArtifactType.STATIC_TEMPLATE_FIELD) {
-      blueprintAtContext = CedarStaticTemplateFieldContent.CONTEXT_VERBATIM;
+      blueprintAtContext = CedarJSONTemplateFieldContentStatic.CONTEXT_VERBATIM;
     }
     ObjectComparator.compareBothWays(parsingResult, blueprintAtContext, topContextNode, path.add(JsonSchema.atContext));
 
     // Read and validate, but do not store top level type
-    ObjectComparator.comparePrimitive(
-      parsingResult,
-      JavascriptType.OBJECT.getValue(),
-      ReaderUtil.getString(fieldSourceObject, CedarModel.type),
-      path.add(CedarModel.type),
-    );
+    // Attribute value requires string, the others object
+    if (field.cedarFieldType === CedarFieldType.ATTRIBUTE_VALUE) {
+      ObjectComparator.comparePrimitive(
+        parsingResult,
+        JavascriptType.STRING.getValue(),
+        ReaderUtil.getString(fieldSourceObject, CedarModel.type),
+        path.add(CedarModel.type),
+      );
+    } else {
+      ObjectComparator.comparePrimitive(
+        parsingResult,
+        JavascriptType.OBJECT.getValue(),
+        ReaderUtil.getString(fieldSourceObject, CedarModel.type),
+        path.add(CedarModel.type),
+      );
+    }
 
     // Read and validate, but do not store top level additionalProperties
     ObjectComparator.comparePrimitive(

@@ -1,4 +1,4 @@
-import { JsonNode } from '../../model/cedar/util/types/JsonNode';
+import { JsonNode } from '../../model/cedar/types/basic-types/JsonNode';
 import { ParsingResult } from '../../model/cedar/util/compare/ParsingResult';
 import { CedarJsonPath } from '../../model/cedar/util/path/CedarJsonPath';
 import { CedarField } from '../../model/cedar/field/CedarField';

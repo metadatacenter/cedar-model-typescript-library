@@ -1,10 +1,10 @@
-import { SchemaVersion } from '../../../beans/SchemaVersion';
+import { SchemaVersion } from '../../../types/beans/SchemaVersion';
 import { CedarField } from '../../CedarField';
-import { CedarFieldType } from '../../../beans/CedarFieldType';
-import { CedarArtifactType } from '../../../beans/CedarArtifactType';
+import { CedarFieldType } from '../../../types/beans/CedarFieldType';
+import { CedarArtifactType } from '../../../types/beans/CedarArtifactType';
 import { ValueConstraintsTemporalField } from './ValueConstraintsTemporalField';
-import { TimeFormat } from '../../../beans/TimeFormat';
-import { TemporalGranularity } from '../../../beans/TemporalGranularity';
+import { TimeFormat } from '../../../types/beans/TimeFormat';
+import { TemporalGranularity } from '../../../types/beans/TemporalGranularity';
 
 export class CedarTemporalField extends CedarField {
   // Redeclare valueConstraints with a more specific type

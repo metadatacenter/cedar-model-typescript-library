@@ -1,7 +1,7 @@
-import { SchemaVersion } from '../../../beans/SchemaVersion';
+import { SchemaVersion } from '../../../types/beans/SchemaVersion';
 import { CedarField } from '../../CedarField';
-import { CedarFieldType } from '../../../beans/CedarFieldType';
-import { CedarArtifactType } from '../../../beans/CedarArtifactType';
+import { CedarFieldType } from '../../../types/beans/CedarFieldType';
+import { CedarArtifactType } from '../../../types/beans/CedarArtifactType';
 
 export class CedarStaticRichTextField extends CedarField {
   public content: string | null = null;

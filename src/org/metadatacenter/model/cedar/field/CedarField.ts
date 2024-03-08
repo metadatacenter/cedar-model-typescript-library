@@ -1,9 +1,9 @@
-import { SchemaVersion } from '../beans/SchemaVersion';
-import { CedarArtifactType } from '../beans/CedarArtifactType';
-import { CedarArtifactId } from '../beans/CedarArtifactId';
+import { SchemaVersion } from '../types/beans/SchemaVersion';
+import { CedarArtifactType } from '../types/beans/CedarArtifactType';
+import { CedarArtifactId } from '../types/beans/CedarArtifactId';
 import { ValueConstraints } from './ValueConstraints';
-import { CedarFieldType } from '../beans/CedarFieldType';
-import { CedarAbstractArtifact } from '../CedarAbstractArtifact';
+import { CedarFieldType } from '../types/beans/CedarFieldType';
+import { CedarAbstractArtifact } from '../../../io/writer/CedarAbstractArtifact';
 
 export abstract class CedarField extends CedarAbstractArtifact {
   public at_id: CedarArtifactId = CedarArtifactId.NULL;

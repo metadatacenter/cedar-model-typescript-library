@@ -1,7 +1,7 @@
-import { JsonNode } from '../types/JsonNode';
+import { JsonNode } from '../../types/basic-types/JsonNode';
 import { ParsingResult } from './ParsingResult';
 import { ComparisonError } from './ComparisonError';
-import { Primitive } from '../types/Primitive';
+import { Primitive } from '../../types/basic-types/Primitive';
 import { CedarJsonPath } from '../path/CedarJsonPath';
 import { ComparisonErrorType } from './ComparisonErrorType';
 import { JsonSchema } from '../../constants/JsonSchema';

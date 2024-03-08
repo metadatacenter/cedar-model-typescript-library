@@ -1,11 +1,11 @@
 import { CedarAbstractArtifact } from './CedarAbstractArtifact';
-import { JsonNode, JsonNodeClass } from './util/types/JsonNode';
-import { JsonSchema } from './constants/JsonSchema';
-import { JSONAtomicWriter } from '../../io/writer/JSONAtomicWriter';
-import { BiboStatus } from './beans/BiboStatus';
-import { PavVersion } from './beans/PavVersion';
-import { CedarField } from './field/CedarField';
-import { CedarModel } from './CedarModel';
+import { JsonNode, JsonNodeClass } from '../../model/cedar/types/basic-types/JsonNode';
+import { JsonSchema } from '../../model/cedar/constants/JsonSchema';
+import { JSONAtomicWriter } from './JSONAtomicWriter';
+import { BiboStatus } from '../../model/cedar/types/beans/BiboStatus';
+import { PavVersion } from '../../model/cedar/types/beans/PavVersion';
+import { CedarField } from '../../model/cedar/field/CedarField';
+import { CedarModel } from '../../model/cedar/constants/CedarModel';
 
 export abstract class AbstractArtifactWriter {
   protected macroSchemaNameAndDescription(artifact: CedarAbstractArtifact): JsonNode {

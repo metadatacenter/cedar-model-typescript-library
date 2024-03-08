@@ -1,13 +1,13 @@
-import { JSONWriterBehavior } from '../../../behavior/JSONWriterBehavior';
-import { CedarTemplate } from './CedarTemplate';
-import { JsonSchema } from '../constants/JsonSchema';
-import { JsonNode } from '../util/types/JsonNode';
-import { CedarArtifactType } from '../beans/CedarArtifactType';
-import { TemplateProperty } from '../constants/TemplateProperty';
-import { JSONAtomicWriter } from '../../../io/writer/JSONAtomicWriter';
-import { CedarWriters } from '../../../io/writer/CedarWriters';
+import { JSONWriterBehavior } from '../../behavior/JSONWriterBehavior';
+import { CedarTemplate } from '../../model/cedar/template/CedarTemplate';
+import { JsonSchema } from '../../model/cedar/constants/JsonSchema';
+import { JsonNode } from '../../model/cedar/types/basic-types/JsonNode';
+import { CedarArtifactType } from '../../model/cedar/types/beans/CedarArtifactType';
+import { TemplateProperty } from '../../model/cedar/constants/TemplateProperty';
+import { JSONAtomicWriter } from './JSONAtomicWriter';
+import { CedarWriters } from './CedarWriters';
 import { SimpleYamlSerializer } from '../util/yaml/SimpleYamlSerializer';
-import { YAMLAbstractArtifactWriter } from '../YAMLAbstractArtifactWriter';
+import { YAMLAbstractArtifactWriter } from './YAMLAbstractArtifactWriter';
 
 export class YAMLTemplateWriter extends YAMLAbstractArtifactWriter {
   private behavior: JSONWriterBehavior;

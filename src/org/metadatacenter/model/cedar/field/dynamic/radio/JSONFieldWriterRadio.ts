@@ -1,6 +1,6 @@
-import { JsonNode, JsonNodeClass } from '../../../util/types/JsonNode';
-import { CedarModel } from '../../../CedarModel';
-import { JSONFieldWriter } from '../../JSONFieldWriter';
+import { JsonNode, JsonNodeClass } from '../../../types/basic-types/JsonNode';
+import { CedarModel } from '../../../constants/CedarModel';
+import { JSONFieldWriter } from '../../../../../io/writer/JSONFieldWriter';
 import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
 import { CedarWriters } from '../../../../../io/writer/CedarWriters';
 import { CedarRadioField } from './CedarRadioField';

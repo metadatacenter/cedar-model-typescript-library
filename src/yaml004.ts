@@ -2,8 +2,8 @@ import { JSONTemplateReader } from './org/metadatacenter/io/reader/JSONTemplateR
 import * as fs from 'fs';
 import * as path from 'path';
 import { CedarWriters } from './org/metadatacenter/io/writer/CedarWriters';
-import { JSONTemplateWriter } from './org/metadatacenter/model/cedar/template/JSONTemplateWriter';
-import { YAMLTemplateWriter } from './org/metadatacenter/model/cedar/template/YAMLTemplateWriter';
+import { JSONTemplateWriter } from './org/metadatacenter/io/writer/JSONTemplateWriter';
+import { YAMLTemplateWriter } from './org/metadatacenter/io/writer/YAMLTemplateWriter';
 
 const filePath004 = path.join(__dirname, '../test/resources/templates/004/template-004.json');
 

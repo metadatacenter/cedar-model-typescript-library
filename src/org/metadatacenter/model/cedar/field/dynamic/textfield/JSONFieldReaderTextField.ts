@@ -1,9 +1,9 @@
-import { JsonNode } from '../../../util/types/JsonNode';
+import { JsonNode } from '../../../types/basic-types/JsonNode';
 import { ParsingResult } from '../../../util/compare/ParsingResult';
 import { CedarJsonPath } from '../../../util/path/CedarJsonPath';
 import { CedarTextField } from './CedarTextField';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
-import { CedarModel } from '../../../CedarModel';
+import { CedarModel } from '../../../constants/CedarModel';
 import { ValueConstraintsTextField } from './ValueConstraintsTextField';
 import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
 

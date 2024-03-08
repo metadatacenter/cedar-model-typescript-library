@@ -1,4 +1,4 @@
-import { SchemaVersion, SchemaVersionValues } from '../../../../../../src/org/metadatacenter/model/cedar/beans/SchemaVersion';
+import { SchemaVersion, SchemaVersionValues } from '../../../../../../src/org/metadatacenter/model/cedar/types/beans/SchemaVersion';
 
 describe('SchemaVersion', () => {
   test('creates current version', () => {

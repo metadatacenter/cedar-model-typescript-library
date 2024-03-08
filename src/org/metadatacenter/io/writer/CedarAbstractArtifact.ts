@@ -1,7 +1,7 @@
-import { CedarDate } from './beans/CedarDate';
-import { CedarUser } from './beans/CedarUser';
-import { PavVersion } from './beans/PavVersion';
-import { BiboStatus } from './beans/BiboStatus';
+import { CedarDate } from '../../model/cedar/types/beans/CedarDate';
+import { CedarUser } from '../../model/cedar/types/beans/CedarUser';
+import { PavVersion } from '../../model/cedar/types/beans/PavVersion';
+import { BiboStatus } from '../../model/cedar/types/beans/BiboStatus';
 
 export abstract class CedarAbstractArtifact {
   // provenance

@@ -3,7 +3,7 @@ import { CedarJsonPath } from '../../../../src/org/metadatacenter/model/cedar/ut
 import { ComparisonError } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonError';
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
 import { JsonSchema } from '../../../../src/org/metadatacenter/model/cedar/constants/JsonSchema';
-import { CedarModel } from '../../../../src/org/metadatacenter/model/cedar/CedarModel';
+import { CedarModel } from '../../../../src/org/metadatacenter/model/cedar/constants/CedarModel';
 import { TestUtil } from '../../../TestUtil';
 
 describe('JSONTemplateReader - template-003', () => {

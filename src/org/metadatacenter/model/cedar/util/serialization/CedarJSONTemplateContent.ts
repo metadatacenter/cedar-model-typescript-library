@@ -1,6 +1,7 @@
 import { ReaderUtil } from '../../../../io/reader/ReaderUtil';
+import { JsonNode } from '../../types/basic-types/JsonNode';
 
-export class CedarTemplateContent {
+export class CedarJSONTemplateContent {
   // This will have the names of elements and fields as well
   public static REQUIRED_PARTIAL = [
     '@context',
@@ -15,7 +16,7 @@ export class CedarTemplateContent {
   ];
 
   // This is a verbatim representation
-  public static CONTEXT_VERBATIM = {
+  public static CONTEXT_VERBATIM: JsonNode = {
     xsd: 'http://www.w3.org/2001/XMLSchema#',
     pav: 'http://purl.org/pav/',
     bibo: 'http://purl.org/ontology/bibo/',
@@ -43,7 +44,7 @@ export class CedarTemplateContent {
 
   // @context/properties will have the Property IRI Mappings
   // Also will contain the definitions of the included fields and elements
-  public static PROPERTIES_PARTIAL = {
+  public static PROPERTIES_PARTIAL: JsonNode = {
     '@context': {
       type: 'object',
       properties: {
@@ -242,7 +243,7 @@ export class CedarTemplateContent {
   public static PROPERTIES_PARTIAL_KEY_MAP: Map<string, boolean> = new Map();
 
   static {
-    Object.keys(CedarTemplateContent.PROPERTIES_PARTIAL).forEach((key) => {
+    Object.keys(CedarJSONTemplateContent.PROPERTIES_PARTIAL).forEach((key) => {
       this.PROPERTIES_PARTIAL_KEY_LIST.push(key);
       this.PROPERTIES_PARTIAL_KEY_MAP.set(key, true);
     });

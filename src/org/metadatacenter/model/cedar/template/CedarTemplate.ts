@@ -1,10 +1,11 @@
-import { BiboStatus } from '../beans/BiboStatus';
-import { SchemaVersion } from '../beans/SchemaVersion';
-import { PavVersion } from '../beans/PavVersion';
-import { CedarArtifactId } from '../beans/CedarArtifactId';
-import { CedarContainerChildrenInfo } from '../beans/CedarContainerChildrenInfo';
-import { CedarTemplateChild } from '../util/types/CedarTemplateChild';
-import { CedarAbstractArtifact } from '../CedarAbstractArtifact';
+import { BiboStatus } from '../types/beans/BiboStatus';
+import { SchemaVersion } from '../types/beans/SchemaVersion';
+import { PavVersion } from '../types/beans/PavVersion';
+import { CedarArtifactId } from '../types/beans/CedarArtifactId';
+import { CedarContainerChildrenInfo } from '../types/beans/CedarContainerChildrenInfo';
+import { CedarTemplateChild } from '../types/basic-types/CedarTemplateChild';
+import { CedarAbstractArtifact } from '../../../io/writer/CedarAbstractArtifact';
+import { AdditionalProperties } from '../types/beans/AdditionalProperties';
 
 export class CedarTemplate extends CedarAbstractArtifact {
   public at_id: CedarArtifactId = CedarArtifactId.NULL;
@@ -37,5 +38,13 @@ export class CedarTemplate extends CedarAbstractArtifact {
 
   addChild(templateChild: CedarTemplateChild): void {
     this.children.push(templateChild);
+  }
+
+  getAdditionalProperties(): AdditionalProperties {
+    if (this.childrenInfo.hasAttributeValue()) {
+      return AdditionalProperties.ALLOW_ATTRIBUTE_VALUE;
+    } else {
+      return AdditionalProperties.FALSE;
+    }
   }
 }

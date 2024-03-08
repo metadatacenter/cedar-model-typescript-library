@@ -1,4 +1,4 @@
-import { JSONFieldWriter } from '../../JSONFieldWriter';
+import { JSONFieldWriter } from '../../../../../io/writer/JSONFieldWriter';
 import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
 import { CedarWriters } from '../../../../../io/writer/CedarWriters';
 

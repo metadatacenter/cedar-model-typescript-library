@@ -1,9 +1,9 @@
-import { JsonNode } from '../../../util/types/JsonNode';
-import { CedarModel } from '../../../CedarModel';
-import { TimeFormat } from '../../../beans/TimeFormat';
-import { TemporalGranularity } from '../../../beans/TemporalGranularity';
+import { JsonNode } from '../../../types/basic-types/JsonNode';
+import { CedarModel } from '../../../constants/CedarModel';
+import { TimeFormat } from '../../../types/beans/TimeFormat';
+import { TemporalGranularity } from '../../../types/beans/TemporalGranularity';
 import { CedarTemporalField } from './CedarTemporalField';
-import { JSONFieldWriter } from '../../JSONFieldWriter';
+import { JSONFieldWriter } from '../../../../../io/writer/JSONFieldWriter';
 import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
 import { CedarWriters } from '../../../../../io/writer/CedarWriters';
 

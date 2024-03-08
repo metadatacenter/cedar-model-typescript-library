@@ -5,9 +5,9 @@ import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/ut
 import { ComparisonError } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonError';
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
 import { JsonSchema } from '../../../../src/org/metadatacenter/model/cedar/constants/JsonSchema';
-import { CedarModel } from '../../../../src/org/metadatacenter/model/cedar/CedarModel';
+import { CedarModel } from '../../../../src/org/metadatacenter/model/cedar/constants/CedarModel';
 import { CedarWriters } from '../../../../src/org/metadatacenter/io/writer/CedarWriters';
-import { JSONTemplateWriter } from '../../../../src/org/metadatacenter/model/cedar/template/JSONTemplateWriter';
+import { JSONTemplateWriter } from '../../../../src/org/metadatacenter/io/writer/JSONTemplateWriter';
 
 describe('JSONTemplateReader - template-005', () => {
   test('reads multi-instance text fields', () => {

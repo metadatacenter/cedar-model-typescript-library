@@ -1,15 +1,16 @@
-import { JavascriptType } from '../beans/JavascriptType';
-import { BiboStatus } from '../beans/BiboStatus';
-import { SchemaVersion } from '../beans/SchemaVersion';
+import { JavascriptType } from '../types/beans/JavascriptType';
+import { BiboStatus } from '../types/beans/BiboStatus';
+import { SchemaVersion } from '../types/beans/SchemaVersion';
 import { JsonSchema } from '../constants/JsonSchema';
 import { TemplateProperty } from '../constants/TemplateProperty';
-import { CedarArtifactType } from '../beans/CedarArtifactType';
-import { CedarModel } from '../CedarModel';
-import { CedarSchema } from '../beans/CedarSchema';
-import { PavVersion } from '../beans/PavVersion';
-import { CedarArtifactId } from '../beans/CedarArtifactId';
-import { CedarTemplateFieldContent } from '../util/serialization/CedarTemplateFieldContent';
-import { CedarAbstractArtifact } from '../CedarAbstractArtifact';
+import { CedarArtifactType } from '../types/beans/CedarArtifactType';
+import { CedarModel } from '../constants/CedarModel';
+import { CedarSchema } from '../types/beans/CedarSchema';
+import { PavVersion } from '../types/beans/PavVersion';
+import { CedarArtifactId } from '../types/beans/CedarArtifactId';
+import { CedarJSONTemplateFieldContentDynamic } from '../util/serialization/CedarJSONTemplateFieldContentDynamic';
+import { CedarAbstractArtifact } from '../../../io/writer/CedarAbstractArtifact';
+import { AdditionalProperties } from '../types/beans/AdditionalProperties';
 
 export class CedarElement extends CedarAbstractArtifact {
   public at_id: CedarArtifactId = CedarArtifactId.NULL;
@@ -40,13 +41,13 @@ export class CedarElement extends CedarAbstractArtifact {
    */
   private toJSON() {
     // TODO: include properties based on field type
-    const typeSpecificProperties = CedarTemplateFieldContent.PROPERTIES_VERBATIM_LITERAL;
+    const typeSpecificProperties = CedarJSONTemplateFieldContentDynamic.PROPERTIES_VERBATIM_LITERAL;
 
     // build the final object
     return {
       [JsonSchema.atId]: this.at_id,
       [JsonSchema.atType]: CedarArtifactType.TEMPLATE_ELEMENT,
-      [JsonSchema.atContext]: CedarTemplateFieldContent.CONTEXT_VERBATIM,
+      [JsonSchema.atContext]: CedarJSONTemplateFieldContentDynamic.CONTEXT_VERBATIM,
       [CedarModel.type]: JavascriptType.OBJECT,
       [TemplateProperty.title]: this.title,
       [TemplateProperty.description]: this.description,

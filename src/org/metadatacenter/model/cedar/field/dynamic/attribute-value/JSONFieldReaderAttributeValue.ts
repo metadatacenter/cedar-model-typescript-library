@@ -1,15 +1,15 @@
-import { JsonNode } from '../../../util/types/JsonNode';
+import { JsonNode } from '../../../types/basic-types/JsonNode';
 import { ParsingResult } from '../../../util/compare/ParsingResult';
 import { CedarJsonPath } from '../../../util/path/CedarJsonPath';
-import { CedarPhoneNumberField } from './CedarPhoneNumberField';
+import { CedarAttributeValueField } from './CedarAttributeValueField';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
-import { CedarModel } from '../../../CedarModel';
+import { CedarModel } from '../../../constants/CedarModel';
 import { ValueConstraints } from '../../ValueConstraints';
 import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
 
-export class JSONFieldReaderPhoneNumber extends JSONFieldTypeSpecificReader {
-  override read(fieldSourceObject: JsonNode, _parsingResult: ParsingResult, _path: CedarJsonPath): CedarPhoneNumberField {
-    const field = CedarPhoneNumberField.buildEmptyWithNullValues();
+export class JSONFieldReaderAttributeValue extends JSONFieldTypeSpecificReader {
+  override read(fieldSourceObject: JsonNode, _parsingResult: ParsingResult, _path: CedarJsonPath): CedarAttributeValueField {
+    const field = CedarAttributeValueField.buildEmptyWithNullValues();
 
     const vc = new ValueConstraints();
     field.valueConstraints = vc;

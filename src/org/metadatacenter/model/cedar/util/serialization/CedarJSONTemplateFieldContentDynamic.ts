@@ -1,8 +1,9 @@
 import { ReaderUtil } from '../../../../io/reader/ReaderUtil';
+import { JsonNode } from '../../types/basic-types/JsonNode';
 
-export class CedarTemplateFieldContent {
+export class CedarJSONTemplateFieldContentDynamic {
   // This is a verbatim representation
-  public static CONTEXT_VERBATIM = {
+  public static CONTEXT_VERBATIM: JsonNode = {
     xsd: 'http://www.w3.org/2001/XMLSchema#',
     pav: 'http://purl.org/pav/',
     bibo: 'http://purl.org/ontology/bibo/',
@@ -36,7 +37,7 @@ export class CedarTemplateFieldContent {
   };
 
   // This is a verbatim representation for regular fields
-  public static PROPERTIES_VERBATIM_LITERAL = {
+  public static PROPERTIES_VERBATIM_LITERAL: JsonNode = {
     '@type': {
       oneOf: [
         {
@@ -64,7 +65,7 @@ export class CedarTemplateFieldContent {
   };
 
   // This is a verbatim representation for regular fields
-  public static PROPERTIES_VERBATIM_CONTROLLED = {
+  public static PROPERTIES_VERBATIM_CONTROLLED: JsonNode = {
     '@type': {
       oneOf: [
         {
@@ -94,7 +95,7 @@ export class CedarTemplateFieldContent {
   };
 
   // This is a verbatim representation for link and controlled fields
-  public static PROPERTIES_VERBATIM_IRI = {
+  public static PROPERTIES_VERBATIM_IRI: JsonNode = {
     '@type': {
       oneOf: [
         {
@@ -125,7 +126,7 @@ export class CedarTemplateFieldContent {
   };
 
   // This is a verbatim representation for numeric fields
-  public static PROPERTIES_VERBATIM_NUMERIC = {
+  public static PROPERTIES_VERBATIM_NUMERIC: JsonNode = {
     '@value': {
       type: ['string', 'null'],
     },
@@ -138,17 +139,34 @@ export class CedarTemplateFieldContent {
     },
   };
 
-  // public static PROPERTIES_FULL_KEY_LIST: Array<string> = [];
-  // public static PROPERTIES_FULL_KEY_MAP: Map<string, boolean> = new Map();
+  // This content goes into the container additionalProperties in case of an attribute-value field
+  public static ADDITIONAL_PROPERTIES_VERBATIM_ATTRIBUTE_VALUE_OUTSIDE: JsonNode = {
+    type: 'object',
+    properties: {
+      '@value': {
+        type: ['string', 'null'],
+      },
+      '@type': {
+        type: 'string',
+        format: 'uri',
+      },
+    },
+    required: ['@value'],
+    additionalProperties: false,
+  };
+
+  public static ADDITIONAL_PROPERTIES_VERBATIM_ATTRIBUTE_VALUE_INSIDE: JsonNode = {
+    type: 'string',
+    format: 'uri',
+  };
 
   static {
-    // Object.keys(CedarTemplateFieldContent.PROPERTIES_FULL).forEach((key) => {
-    //   this.PROPERTIES_FULL_KEY_LIST.push(key);
-    //   this.PROPERTIES_FULL_KEY_MAP.set(key, true);
-    // });
-
     ReaderUtil.deepFreeze(this.CONTEXT_VERBATIM);
-    // ReaderUtil.deepFreeze(this.PROPERTIES_FULL_KEY_LIST);
-    // ReaderUtil.deepFreeze(this.PROPERTIES_FULL_KEY_MAP);
+    ReaderUtil.deepFreeze(this.PROPERTIES_VERBATIM_LITERAL);
+    ReaderUtil.deepFreeze(this.PROPERTIES_VERBATIM_CONTROLLED);
+    ReaderUtil.deepFreeze(this.PROPERTIES_VERBATIM_IRI);
+    ReaderUtil.deepFreeze(this.PROPERTIES_VERBATIM_NUMERIC);
+    ReaderUtil.deepFreeze(this.ADDITIONAL_PROPERTIES_VERBATIM_ATTRIBUTE_VALUE_OUTSIDE);
+    ReaderUtil.deepFreeze(this.ADDITIONAL_PROPERTIES_VERBATIM_ATTRIBUTE_VALUE_INSIDE);
   }
 }

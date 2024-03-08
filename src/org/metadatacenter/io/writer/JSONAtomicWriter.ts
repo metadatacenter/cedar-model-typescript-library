@@ -1,18 +1,22 @@
 import { JSONWriterBehavior } from '../../behavior/JSONWriterBehavior';
-import { CedarArtifactId } from '../../model/cedar/beans/CedarArtifactId';
-import { CedarArtifactType } from '../../model/cedar/beans/CedarArtifactType';
-import { JavascriptType } from '../../model/cedar/beans/JavascriptType';
-import { CedarDate } from '../../model/cedar/beans/CedarDate';
-import { CedarUser } from '../../model/cedar/beans/CedarUser';
-import { BiboStatus } from '../../model/cedar/beans/BiboStatus';
-import { PavVersion } from '../../model/cedar/beans/PavVersion';
-import { CedarSchema } from '../../model/cedar/beans/CedarSchema';
-import { SchemaVersion } from '../../model/cedar/beans/SchemaVersion';
-import { NumberType, NumberTypeValue } from '../../model/cedar/beans/NumberType';
-import { TemporalType, TemporalTypeValue } from '../../model/cedar/beans/TemporalType';
-import { TemporalGranularity, TemporalGranularityValue } from '../../model/cedar/beans/TemporalGranularity';
-import { TimeFormat, TimeFormatValue } from '../../model/cedar/beans/TimeFormat';
-import { UiInputType, UiInputTypeValue } from '../../model/cedar/beans/UiInputType';
+import { CedarArtifactId } from '../../model/cedar/types/beans/CedarArtifactId';
+import { CedarArtifactType } from '../../model/cedar/types/beans/CedarArtifactType';
+import { JavascriptType } from '../../model/cedar/types/beans/JavascriptType';
+import { CedarDate } from '../../model/cedar/types/beans/CedarDate';
+import { CedarUser } from '../../model/cedar/types/beans/CedarUser';
+import { BiboStatus } from '../../model/cedar/types/beans/BiboStatus';
+import { PavVersion } from '../../model/cedar/types/beans/PavVersion';
+import { CedarSchema } from '../../model/cedar/types/beans/CedarSchema';
+import { SchemaVersion } from '../../model/cedar/types/beans/SchemaVersion';
+import { NumberType, NumberTypeValue } from '../../model/cedar/types/beans/NumberType';
+import { TemporalType, TemporalTypeValue } from '../../model/cedar/types/beans/TemporalType';
+import { TemporalGranularity, TemporalGranularityValue } from '../../model/cedar/types/beans/TemporalGranularity';
+import { TimeFormat, TimeFormatValue } from '../../model/cedar/types/beans/TimeFormat';
+import { UiInputType, UiInputTypeValue } from '../../model/cedar/types/beans/UiInputType';
+import { AdditionalProperties } from '../../model/cedar/types/beans/AdditionalProperties';
+import { NullableString } from '../../model/cedar/types/basic-types/NullableString';
+import { JsonNode } from '../../model/cedar/types/basic-types/JsonNode';
+import { CedarJSONTemplateFieldContentDynamic } from '../../model/cedar/util/serialization/CedarJSONTemplateFieldContentDynamic';
 
 export class JSONAtomicWriter {
   private behavior: JSONWriterBehavior;
@@ -37,8 +41,9 @@ export class JSONAtomicWriter {
       | TemporalGranularity
       | TimeFormat
       | UiInputType
+      | AdditionalProperties
       | null,
-  ): string | number | boolean | null {
+  ): string | number | boolean | JsonNode | null {
     if (arg == null) {
       return null;
     }
@@ -70,44 +75,46 @@ export class JSONAtomicWriter {
       return this.writeTimeFormat(arg);
     } else if (arg instanceof UiInputType) {
       return this.writeUiInputType(arg);
+    } else if (arg instanceof AdditionalProperties) {
+      return this.writeAdditionalProperties(arg);
     } else {
       throw new Error('Unsupported type');
     }
   }
 
-  private writeCedarArtifactId(id: CedarArtifactId): string | null {
+  private writeCedarArtifactId(id: CedarArtifactId): NullableString {
     return id.getValue();
   }
 
-  private writeCedarArtifactType(type: CedarArtifactType): string | null {
+  private writeCedarArtifactType(type: CedarArtifactType): NullableString {
     return type.getValue();
   }
 
-  private writeJavascriptType(type: JavascriptType): string | null {
+  private writeJavascriptType(type: JavascriptType): NullableString {
     return type.getValue();
   }
 
-  private writeCedarDate(date: CedarDate): string | null {
+  private writeCedarDate(date: CedarDate): NullableString {
     return date.getValue();
   }
 
-  private writeCedarUser(user: CedarUser): string | null {
+  private writeCedarUser(user: CedarUser): NullableString {
     return user.getValue();
   }
 
-  private writeBiboStatus(status: BiboStatus): string | null {
+  private writeBiboStatus(status: BiboStatus): NullableString {
     return status.getValue();
   }
 
-  private writePavVersion(version: PavVersion): string | null {
+  private writePavVersion(version: PavVersion): NullableString {
     return version.getValue();
   }
 
-  private writeCedarSchema(schema: CedarSchema): string | null {
+  private writeCedarSchema(schema: CedarSchema): NullableString {
     return schema.getValue();
   }
 
-  private writeSchemaVersion(schemaVersion: SchemaVersion): string | null {
+  private writeSchemaVersion(schemaVersion: SchemaVersion): NullableString {
     return schemaVersion.getValue();
   }
 
@@ -129,5 +136,14 @@ export class JSONAtomicWriter {
 
   private writeUiInputType(uiInputType: UiInputType): UiInputTypeValue {
     return uiInputType.getValue();
+  }
+
+  private writeAdditionalProperties(additionalProperties: AdditionalProperties): JsonNode | boolean | null {
+    if (additionalProperties === AdditionalProperties.FALSE) {
+      return false;
+    } else if (additionalProperties === AdditionalProperties.ALLOW_ATTRIBUTE_VALUE) {
+      return CedarJSONTemplateFieldContentDynamic.ADDITIONAL_PROPERTIES_VERBATIM_ATTRIBUTE_VALUE_OUTSIDE;
+    }
+    return null;
   }
 }

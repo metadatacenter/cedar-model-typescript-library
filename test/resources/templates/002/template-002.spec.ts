@@ -4,10 +4,10 @@ import { TestUtil } from '../../../TestUtil';
 import { ComparisonError } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonError';
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
 import { CedarJsonPath } from '../../../../src/org/metadatacenter/model/cedar/util/path/CedarJsonPath';
-import { CedarModel } from '../../../../src/org/metadatacenter/model/cedar/CedarModel';
+import { CedarModel } from '../../../../src/org/metadatacenter/model/cedar/constants/CedarModel';
 import { JsonSchema } from '../../../../src/org/metadatacenter/model/cedar/constants/JsonSchema';
 import { CedarWriters } from '../../../../src/org/metadatacenter/io/writer/CedarWriters';
-import { JSONTemplateWriter } from '../../../../src/org/metadatacenter/model/cedar/template/JSONTemplateWriter';
+import { JSONTemplateWriter } from '../../../../src/org/metadatacenter/io/writer/JSONTemplateWriter';
 
 describe('JSONTemplateReader - template-002', () => {
   test('reads very simple template as object, after save', () => {

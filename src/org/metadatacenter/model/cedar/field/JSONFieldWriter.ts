@@ -52,7 +52,7 @@ export class JSONFieldWriter extends JSONAbstractArtifactWriter {
 
     // Build ui wrapper
     const uiNode: JsonNode = {
-      [CedarModel.inputType]: field.cedarFieldType.getUiInputType(),
+      [CedarModel.inputType]: this.atomicWriter.write(field.cedarFieldType.getUiInputType()),
     };
     const uiObject: JsonNode = {
       [CedarModel.ui]: uiNode,

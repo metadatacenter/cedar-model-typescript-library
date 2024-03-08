@@ -24,7 +24,7 @@ export class JSONFieldWriterStaticRichText extends JSONFieldWriter {
       [TemplateProperty.title]: field.title,
       [TemplateProperty.description]: field.description,
       [CedarModel.ui]: {
-        [CedarModel.inputType]: field.cedarFieldType.getUiInputType(),
+        [CedarModel.inputType]: this.atomicWriter.write(field.cedarFieldType.getUiInputType()),
         [CedarModel.content]: field.content,
       },
       ...this.macroSchemaNameAndDescription(field),

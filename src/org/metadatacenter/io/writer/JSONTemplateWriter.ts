@@ -131,7 +131,7 @@ export class JSONTemplateWriter extends JSONAbstractArtifactWriter {
               [CedarModel.minItems]: childMeta.minItems,
             };
             if (child instanceof CedarField) {
-              childNode[JsonSchema.items] = this.writers.getJSONFieldWriter(child.cedarFieldType).getAsJsonNode(child);
+              childNode[JsonSchema.items] = this.writers.getJSONFieldWriterForType(child.cedarFieldType).getAsJsonNode(child);
             }
             if (childMeta.maxItems !== null) {
               childNode[CedarModel.maxItems] = childMeta.maxItems;
@@ -139,7 +139,7 @@ export class JSONTemplateWriter extends JSONAbstractArtifactWriter {
             childMap[childName] = childNode;
           } else {
             if (child instanceof CedarField) {
-              childMap[childName] = this.writers.getJSONFieldWriter(child.cedarFieldType).getAsJsonNode(child);
+              childMap[childName] = this.writers.getJSONFieldWriterForType(child.cedarFieldType).getAsJsonNode(child);
             }
           }
         }

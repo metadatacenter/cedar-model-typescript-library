@@ -95,7 +95,7 @@ export class CedarWriters {
     return this.jsonAtomicWriter;
   }
 
-  getJSONFieldWriter(cedarFieldOrType: CedarFieldType): JSONFieldWriter {
+  getJSONFieldWriterForType(cedarFieldOrType: CedarFieldType): JSONFieldWriter {
     let cedarFieldType: CedarFieldType;
     if (cedarFieldOrType instanceof CedarField) {
       cedarFieldType = cedarFieldOrType.cedarFieldType;
@@ -126,5 +126,9 @@ export class CedarWriters {
       return writer;
     }
     throw new Error(`No writer found for class type: ${className}`);
+  }
+
+  getJSONFieldWriterForField(field: CedarField): JSONFieldWriter {
+    return this.getJSONFieldWriterForType(field.cedarFieldType);
   }
 }

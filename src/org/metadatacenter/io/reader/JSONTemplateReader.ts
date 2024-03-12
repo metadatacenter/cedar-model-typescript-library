@@ -30,9 +30,11 @@ import { CedarJSONTemplateFieldContentDynamic } from '../../model/cedar/util/ser
 
 export class JSONTemplateReader {
   private behavior: JSONReaderBehavior;
+  private fieldReader: JSONFieldReader;
 
   private constructor(behavior: JSONReaderBehavior) {
     this.behavior = behavior;
+    this.fieldReader = JSONFieldReader.getForBehavior(behavior);
   }
 
   public static getStrict(): JSONTemplateReader {
@@ -53,15 +55,14 @@ export class JSONTemplateReader {
     return this.readFromObject(templateObject);
   }
 
-  public readFromObject(templateSourceObject: JsonNode): JSONTemplateReaderResult {
-    const topPath: CedarJsonPath = new CedarJsonPath();
+  public readFromObject(templateSourceObject: JsonNode, topPath: CedarJsonPath = new CedarJsonPath()): JSONTemplateReaderResult {
     const parsingResult: ParsingResult = new ParsingResult();
     const template = CedarTemplate.buildEmptyWithNullValues();
 
     JSONTemplateReader.readNonReportableAttributes(template, templateSourceObject);
     JSONTemplateReader.readReportableAttributes(template, templateSourceObject, parsingResult);
     JSONTemplateReader.readInstanceTypeSpecification(template, templateSourceObject, parsingResult);
-    JSONTemplateReader.readAndValidateChildrenInfo(template, templateSourceObject, parsingResult, topPath);
+    this.readAndValidateChildrenInfo(template, templateSourceObject, parsingResult, topPath);
 
     return new JSONTemplateReaderResult(template, parsingResult, templateSourceObject);
   }
@@ -146,7 +147,7 @@ export class JSONTemplateReader {
     }
   }
 
-  private static readAndValidateChildrenInfo(
+  private readAndValidateChildrenInfo(
     template: CedarTemplate,
     templateSourceObject: JsonNode,
     parsingResult: ParsingResult,
@@ -348,10 +349,9 @@ export class JSONTemplateReader {
         childDefinition = ReaderUtil.getNode(childDefinition, JsonSchema.items);
         childPath = childPath.add(JsonSchema.items);
       }
-      const cedarField = JSONFieldReader.readFromObject(childDefinition, parsingResult, childPath);
-      if (cedarField != null) {
-        template.addChild(cedarField);
-      }
+      const cedarFieldReaderResult = this.fieldReader.readFromObject(childDefinition, childPath);
+      template.addChild(cedarFieldReaderResult.field);
+      parsingResult.merge(cedarFieldReaderResult.parsingResult);
     }
   }
 
@@ -366,7 +366,7 @@ export class JSONTemplateReader {
     return compareResult;
   }
 
-  private static readAndStoreCandidateChildInfo(
+  private readAndStoreCandidateChildInfo(
     childDefinitionNode: JsonNode,
     childCandidateName: string,
     parsingResult: ParsingResult,

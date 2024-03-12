@@ -38,8 +38,30 @@ import { JSONFieldReaderList } from '../../model/cedar/field/dynamic/list/JSONFi
 import { JSONFieldReaderAttributeValue } from '../../model/cedar/field/dynamic/attribute-value/JSONFieldReaderAttributeValue';
 import { CedarFieldType } from '../../model/cedar/types/beans/CedarFieldType';
 import { JSONFieldReaderControlledTerm } from '../../model/cedar/field/dynamic/controlled-term/JSONFieldReaderControlledTerm';
+import { JSONReaderBehavior } from '../../behavior/JSONReaderBehavior';
+import { JSONFieldReaderResult } from './JSONFieldReaderResult';
+import { JSONFieldWriter } from '../writer/JSONFieldWriter';
+import { CedarUnknownField } from '../../model/cedar/field/CedarUnknownField';
 
 export class JSONFieldReader {
+  private behavior: JSONReaderBehavior;
+
+  private constructor(behavior: JSONReaderBehavior) {
+    this.behavior = behavior;
+  }
+
+  public static getStrict(): JSONFieldReader {
+    return new JSONFieldReader(JSONReaderBehavior.STRICT);
+  }
+
+  public static getFebruary2024(): JSONFieldReader {
+    return new JSONFieldReader(JSONReaderBehavior.FEBRUARY_2024);
+  }
+
+  public static getForBehavior(behavior: JSONReaderBehavior): JSONFieldReader {
+    return new JSONFieldReader(behavior);
+  }
+
   static dynamicTypeReaderMap = new Map<CedarFieldType, JSONFieldTypeSpecificReader>([
     [CedarFieldType.TEXT, new JSONFieldReaderTextField()],
     [CedarFieldType.TEXTAREA, new JSONFieldReaderTextArea()],
@@ -63,13 +85,22 @@ export class JSONFieldReader {
     [CedarFieldType.STATIC_YOUTUBE, new JSONFieldReaderYoutube()],
   ]);
 
-  static readFromObject(fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath): CedarField | null {
-    const field: CedarField | null = this.readFieldSpecificAttributes(fieldSourceObject, parsingResult, path);
-    if (field != null) {
-      this.readNonReportableAttributes(field, fieldSourceObject);
-      this.readReportableAttributes(field, fieldSourceObject, parsingResult, path);
+  public readFromString(fieldSourceString: string): JSONFieldReaderResult {
+    let fieldObject;
+    try {
+      fieldObject = JSON.parse(fieldSourceString);
+    } catch (Exception) {
+      fieldObject = {};
     }
-    return field;
+    return this.readFromObject(fieldObject, new CedarJsonPath());
+  }
+
+  public readFromObject(fieldSourceObject: JsonNode, path: CedarJsonPath): JSONFieldReaderResult {
+    const parsingResult: ParsingResult = new ParsingResult();
+    const field: CedarField = JSONFieldReader.readFieldSpecificAttributes(fieldSourceObject, parsingResult, path);
+    JSONFieldReader.readNonReportableAttributes(field, fieldSourceObject);
+    JSONFieldReader.readReportableAttributes(field, fieldSourceObject, parsingResult, path);
+    return new JSONFieldReaderResult(field, parsingResult, fieldSourceObject);
   }
 
   private static readNonReportableAttributes(field: CedarField, fieldSourceObject: JsonNode) {
@@ -142,11 +173,7 @@ export class JSONFieldReader {
     );
   }
 
-  private static readFieldSpecificAttributes(
-    fieldSourceObject: JsonNode,
-    parsingResult: ParsingResult,
-    path: CedarJsonPath,
-  ): CedarField | null {
+  private static readFieldSpecificAttributes(fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath): CedarField {
     const artifactType: CedarArtifactType = CedarArtifactType.forValue(ReaderUtil.getString(fieldSourceObject, JsonSchema.atType));
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
     const uiInputType: UiInputType = UiInputType.forValue(ReaderUtil.getString(uiNode, CedarModel.inputType));
@@ -168,7 +195,7 @@ export class JSONFieldReader {
         return reader.read(fieldSourceObject, parsingResult, path);
       }
     }
-    return null;
+    return CedarUnknownField.build();
   }
 
   private static fieldHasValueConstraint(fieldSourceObject: JsonNode) {
@@ -194,7 +221,7 @@ export class JSONFieldReader {
 
   private static getCedarFieldType(fieldSourceObject: JsonNode, uiInputType: UiInputType): CedarFieldType {
     let fieldType: CedarFieldType = CedarFieldType.forUiInputType(uiInputType);
-    // The map used in the method will guarantee that TEXT is always returned, but we double-check anyways
+    // The map used in the method will guarantee that TEXT is always returned, but we double-check anyway
     if (fieldType === CedarFieldType.TEXT || fieldType === CedarFieldType.CONTROLLED_TERM) {
       if (this.fieldHasValueConstraint(fieldSourceObject)) {
         fieldType = CedarFieldType.CONTROLLED_TERM;
@@ -203,5 +230,16 @@ export class JSONFieldReader {
       }
     }
     return fieldType;
+  }
+
+  static getRoundTripComparisonResult(jsonFieldReaderResult: JSONFieldReaderResult, writer: JSONFieldWriter): ParsingResult {
+    const compareResult = new ParsingResult();
+    ObjectComparator.compareBothWays(
+      compareResult,
+      jsonFieldReaderResult.fieldSourceObject,
+      writer.getAsJsonNode(jsonFieldReaderResult.field),
+      new CedarJsonPath(),
+    );
+    return compareResult;
   }
 }

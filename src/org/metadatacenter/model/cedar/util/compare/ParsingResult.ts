@@ -22,4 +22,8 @@ export class ParsingResult {
   getBlueprintComparisonErrorCount() {
     return this.blueprintComparisonErrors.length;
   }
+
+  merge(otherResult: ParsingResult) {
+    this.blueprintComparisonErrors.push(...otherResult.blueprintComparisonErrors);
+  }
 }

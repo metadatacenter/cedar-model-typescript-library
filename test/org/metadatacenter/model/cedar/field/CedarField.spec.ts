@@ -8,7 +8,7 @@ describe('CedarField', () => {
     expect(cedarTextField).not.toBeNull();
 
     const writers: CedarWriters = CedarWriters.getStrict();
-    const writer: JSONFieldWriter = writers.getJSONFieldWriter(cedarTextField.cedarFieldType);
+    const writer: JSONFieldWriter = writers.getJSONFieldWriterForType(cedarTextField.cedarFieldType);
 
     const stringified = writer.getAsJsonString(cedarTextField);
 

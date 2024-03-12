@@ -17,6 +17,7 @@ import { AdditionalProperties } from '../../model/cedar/types/beans/AdditionalPr
 import { NullableString } from '../../model/cedar/types/basic-types/NullableString';
 import { JsonNode } from '../../model/cedar/types/basic-types/JsonNode';
 import { CedarJSONTemplateFieldContentDynamic } from '../../model/cedar/util/serialization/CedarJSONTemplateFieldContentDynamic';
+import { URI } from '../../model/cedar/types/beans/URI';
 
 export class JSONAtomicWriter {
   private behavior: JSONWriterBehavior;
@@ -42,6 +43,7 @@ export class JSONAtomicWriter {
       | TimeFormat
       | UiInputType
       | AdditionalProperties
+      | URI
       | null,
   ): string | number | boolean | JsonNode | null {
     if (arg == null) {
@@ -77,6 +79,8 @@ export class JSONAtomicWriter {
       return this.writeUiInputType(arg);
     } else if (arg instanceof AdditionalProperties) {
       return this.writeAdditionalProperties(arg);
+    } else if (arg instanceof URI) {
+      return this.writeURI(arg);
     } else {
       throw new Error('Unsupported type');
     }
@@ -145,5 +149,9 @@ export class JSONAtomicWriter {
       return CedarJSONTemplateFieldContentDynamic.ADDITIONAL_PROPERTIES_VERBATIM_ATTRIBUTE_VALUE_OUTSIDE;
     }
     return null;
+  }
+
+  private writeURI(uri: URI): string {
+    return uri.getValue();
   }
 }

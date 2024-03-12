@@ -4,21 +4,13 @@ import { JsonSchema } from '../../model/cedar/constants/JsonSchema';
 import { JsonNode } from '../../model/cedar/types/basic-types/JsonNode';
 import { CedarArtifactType } from '../../model/cedar/types/beans/CedarArtifactType';
 import { TemplateProperty } from '../../model/cedar/constants/TemplateProperty';
-import { JSONAtomicWriter } from './JSONAtomicWriter';
 import { CedarWriters } from './CedarWriters';
 import { SimpleYamlSerializer } from '../util/yaml/SimpleYamlSerializer';
 import { YAMLAbstractArtifactWriter } from './YAMLAbstractArtifactWriter';
 
 export class YAMLTemplateWriter extends YAMLAbstractArtifactWriter {
-  private behavior: JSONWriterBehavior;
-  private writers: CedarWriters;
-  private readonly atomicWriter: JSONAtomicWriter;
-
   private constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
-    super();
-    this.behavior = behavior;
-    this.writers = writers;
-    this.atomicWriter = writers.getJSONAtomicWriter();
+    super(behavior, writers);
   }
 
   public static getFor(behavior: JSONWriterBehavior, writers: CedarWriters): YAMLTemplateWriter {

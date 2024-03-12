@@ -1,3 +1,5 @@
+import { ReaderUtil } from '../../../io/reader/ReaderUtil';
+
 export class CedarModel {
   static ui = '_ui';
   static schema = '$schema';
@@ -56,4 +58,20 @@ export class CedarModel {
   static templateFieldType = CedarModel.baseTemplateURL + '/core/TemplateField';
   static templateElementType = CedarModel.baseTemplateURL + '/core/TemplateElement';
   static templateStaticFieldType = CedarModel.baseTemplateURL + '/core/StaticTemplateField';
+
+  static ValueConstraints = class {
+    static acronym = 'acronym';
+    static name = 'name';
+    static uri = 'uri';
+    static numTerms: string = 'numTerms';
+
+    static label = 'label';
+    static source = 'source';
+    static type = 'type';
+    static prefLabel: string = 'prefLabel';
+
+    static maxDepth: string = 'maxDepth';
+
+    static vsCollection: string = 'vsCollection';
+  };
 }

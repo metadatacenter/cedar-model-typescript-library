@@ -1,4 +1,5 @@
-import { JsonNode } from '../../model/cedar/types/basic-types/JsonNode';
+import { JsonNode, JsonNodeClass } from '../../model/cedar/types/basic-types/JsonNode';
+import { URI } from '../../model/cedar/types/beans/URI';
 
 export class ReaderUtil {
   public static getString(node: JsonNode, key: string): string | null {
@@ -6,6 +7,14 @@ export class ReaderUtil {
       return node[key] as string;
     } else {
       return null;
+    }
+  }
+
+  public static getStringOrEmpty(node: JsonNode, key: string): string {
+    if (Object.hasOwn(node, key)) {
+      return node[key] as string;
+    } else {
+      return '';
     }
   }
 
@@ -25,11 +34,27 @@ export class ReaderUtil {
     }
   }
 
+  static getNumberOrZero(node: JsonNode, key: string): number {
+    if (Object.hasOwn(node, key)) {
+      return node[key] as number;
+    } else {
+      return 0;
+    }
+  }
+
   public static getNode(node: JsonNode, key: string): JsonNode {
     if (Object.hasOwn(node, key)) {
       return node[key] as JsonNode;
     } else {
-      return {};
+      return JsonNodeClass.getEmpty();
+    }
+  }
+
+  public static getNodeOrNull(node: JsonNode, key: string): JsonNode | null {
+    if (Object.hasOwn(node, key)) {
+      return node[key] as JsonNode;
+    } else {
+      return null;
     }
   }
 
@@ -76,7 +101,11 @@ export class ReaderUtil {
     if (Object.hasOwn(node, key) && Array.isArray(node[key])) {
       return node[key] as Array<JsonNode>;
     } else {
-      return [];
+      return JsonNodeClass.getEmptyList();
     }
+  }
+
+  static getURI(node: JsonNode, key: string): URI {
+    return new URI(this.getStringOrEmpty(node, key));
   }
 }

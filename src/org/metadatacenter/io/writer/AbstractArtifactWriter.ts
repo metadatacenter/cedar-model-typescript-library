@@ -6,8 +6,20 @@ import { BiboStatus } from '../../model/cedar/types/beans/BiboStatus';
 import { PavVersion } from '../../model/cedar/types/beans/PavVersion';
 import { CedarField } from '../../model/cedar/field/CedarField';
 import { CedarModel } from '../../model/cedar/constants/CedarModel';
+import { JSONWriterBehavior } from '../../behavior/JSONWriterBehavior';
+import { CedarWriters } from './CedarWriters';
 
 export abstract class AbstractArtifactWriter {
+  private behavior: JSONWriterBehavior;
+  protected writers: CedarWriters;
+  protected atomicWriter: JSONAtomicWriter;
+
+  protected constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
+    this.behavior = behavior;
+    this.writers = writers;
+    this.atomicWriter = writers.getJSONAtomicWriter();
+  }
+
   protected macroSchemaNameAndDescription(artifact: CedarAbstractArtifact): JsonNode {
     const ndObject: JsonNode = {
       [JsonSchema.schemaName]: artifact.schema_name,
@@ -36,6 +48,7 @@ export abstract class AbstractArtifactWriter {
     }
     return svObject;
   }
+
   protected macroSkos(field: CedarField): JsonNode {
     const skosObject: JsonNode = JsonNodeClass.getEmpty();
     if (field.skos_altLabel !== null && field.skos_altLabel.length > 0) {

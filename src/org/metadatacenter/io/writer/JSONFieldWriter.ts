@@ -1,5 +1,4 @@
 import { JSONWriterBehavior } from '../../behavior/JSONWriterBehavior';
-import { JSONAtomicWriter } from './JSONAtomicWriter';
 import { JsonNode, JsonNodeClass } from '../../model/cedar/types/basic-types/JsonNode';
 import { CedarField } from '../../model/cedar/field/CedarField';
 import { CedarModel } from '../../model/cedar/constants/CedarModel';
@@ -13,15 +12,8 @@ import { JSONAbstractArtifactWriter } from './JSONAbstractArtifactWriter';
 import { AdditionalProperties } from '../../model/cedar/types/beans/AdditionalProperties';
 
 export abstract class JSONFieldWriter extends JSONAbstractArtifactWriter {
-  private behavior: JSONWriterBehavior;
-  private writers: CedarWriters;
-  protected atomicWriter: JSONAtomicWriter;
-
   protected constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
-    super();
-    this.behavior = behavior;
-    this.writers = writers;
-    this.atomicWriter = writers.getJSONAtomicWriter();
+    super(behavior, writers);
   }
 
   protected expandPropertiesNodeForJSON(propertiesObject: JsonNode): void {

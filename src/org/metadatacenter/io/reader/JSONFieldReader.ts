@@ -37,28 +37,30 @@ import { JSONFieldReaderCheckbox } from '../../model/cedar/field/dynamic/checkbo
 import { JSONFieldReaderList } from '../../model/cedar/field/dynamic/list/JSONFieldReaderList';
 import { JSONFieldReaderAttributeValue } from '../../model/cedar/field/dynamic/attribute-value/JSONFieldReaderAttributeValue';
 import { CedarFieldType } from '../../model/cedar/types/beans/CedarFieldType';
+import { JSONFieldReaderControlledTerm } from '../../model/cedar/field/dynamic/controlled-term/JSONFieldReaderControlledTerm';
 
 export class JSONFieldReader {
-  static dynamicTypeReaderMap = new Map<UiInputType, JSONFieldTypeSpecificReader>([
-    [UiInputType.TEXTFIELD, new JSONFieldReaderTextField()],
-    [UiInputType.TEXTAREA, new JSONFieldReaderTextArea()],
-    [UiInputType.LINK, new JSONFieldReaderLink()],
-    [UiInputType.TEMPORAL, new JSONFieldReaderTemporal()],
-    [UiInputType.EMAIL, new JSONFieldReaderEmail()],
-    [UiInputType.NUMERIC, new JSONFieldReaderNumeric()],
-    [UiInputType.PHONE_NUMBER, new JSONFieldReaderPhoneNumber()],
-    [UiInputType.RADIO, new JSONFieldReaderRadio()],
-    [UiInputType.CHECKBOX, new JSONFieldReaderCheckbox()],
-    [UiInputType.LIST, new JSONFieldReaderList()],
-    [UiInputType.ATTRIBUTE_VALUE, new JSONFieldReaderAttributeValue()],
+  static dynamicTypeReaderMap = new Map<CedarFieldType, JSONFieldTypeSpecificReader>([
+    [CedarFieldType.TEXT, new JSONFieldReaderTextField()],
+    [CedarFieldType.TEXTAREA, new JSONFieldReaderTextArea()],
+    [CedarFieldType.CONTROLLED_TERM, new JSONFieldReaderControlledTerm()],
+    [CedarFieldType.LINK, new JSONFieldReaderLink()],
+    [CedarFieldType.TEMPORAL, new JSONFieldReaderTemporal()],
+    [CedarFieldType.EMAIL, new JSONFieldReaderEmail()],
+    [CedarFieldType.NUMERIC, new JSONFieldReaderNumeric()],
+    [CedarFieldType.PHONE_NUMBER, new JSONFieldReaderPhoneNumber()],
+    [CedarFieldType.RADIO, new JSONFieldReaderRadio()],
+    [CedarFieldType.CHECKBOX, new JSONFieldReaderCheckbox()],
+    [CedarFieldType.LIST, new JSONFieldReaderList()],
+    [CedarFieldType.ATTRIBUTE_VALUE, new JSONFieldReaderAttributeValue()],
   ]);
 
-  static staticReaderMap = new Map<UiInputType, JSONFieldTypeSpecificReader>([
-    [UiInputType.PAGE_BREAK, new JSONFieldReaderPageBreak()],
-    [UiInputType.SECTION_BREAK, new JSONFieldReaderSectionBreak()],
-    [UiInputType.IMAGE, new JSONFieldReaderImage()],
-    [UiInputType.RICH_TEXT, new JSONFieldReaderRichText()],
-    [UiInputType.YOUTUBE, new JSONFieldReaderYoutube()],
+  static staticReaderMap = new Map<CedarFieldType, JSONFieldTypeSpecificReader>([
+    [CedarFieldType.STATIC_PAGE_BREAK, new JSONFieldReaderPageBreak()],
+    [CedarFieldType.STATIC_SECTION_BREAK, new JSONFieldReaderSectionBreak()],
+    [CedarFieldType.STATIC_IMAGE, new JSONFieldReaderImage()],
+    [CedarFieldType.STATIC_RICH_TEXT, new JSONFieldReaderRichText()],
+    [CedarFieldType.STATIC_YOUTUBE, new JSONFieldReaderYoutube()],
   ]);
 
   static readFromObject(fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath): CedarField | null {
@@ -148,23 +150,58 @@ export class JSONFieldReader {
     const artifactType: CedarArtifactType = CedarArtifactType.forValue(ReaderUtil.getString(fieldSourceObject, JsonSchema.atType));
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
     const uiInputType: UiInputType = UiInputType.forValue(ReaderUtil.getString(uiNode, CedarModel.inputType));
+    const fieldType: CedarFieldType = this.getCedarFieldType(fieldSourceObject, uiInputType);
     if (artifactType == CedarArtifactType.STATIC_TEMPLATE_FIELD) {
       if (uiInputType != null) {
-        const reader: JSONFieldTypeSpecificReader | undefined = this.staticReaderMap.get(uiInputType);
+        const reader: JSONFieldTypeSpecificReader | undefined = this.staticReaderMap.get(fieldType);
         if (!reader) {
-          throw new Error(`No reader defined for static input type "${uiInputType.getValue()}"`);
+          throw new Error(`No reader defined for static input type "${fieldType.getValue()}"`);
         }
         return reader.read(fieldSourceObject, parsingResult, path);
       }
     } else if (artifactType == CedarArtifactType.TEMPLATE_FIELD) {
       if (uiInputType != null) {
-        const reader: JSONFieldTypeSpecificReader | undefined = this.dynamicTypeReaderMap.get(uiInputType);
+        const reader: JSONFieldTypeSpecificReader | undefined = this.dynamicTypeReaderMap.get(fieldType);
         if (!reader) {
-          throw new Error(`No reader defined for dynamic input type "${uiInputType.getValue()}"`);
+          throw new Error(`No reader defined for dynamic input type "${fieldType.getValue()}"`);
         }
         return reader.read(fieldSourceObject, parsingResult, path);
       }
     }
     return null;
+  }
+
+  private static fieldHasValueConstraint(fieldSourceObject: JsonNode) {
+    const vcNode: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
+    const ontologies: Array<JsonNode> = ReaderUtil.getNodeList(vcNode, CedarModel.ontologies);
+    if (ontologies.length > 0) {
+      return true;
+    }
+    const branches: Array<JsonNode> = ReaderUtil.getNodeList(vcNode, CedarModel.branches);
+    if (branches.length > 0) {
+      return true;
+    }
+    const classes: Array<JsonNode> = ReaderUtil.getNodeList(vcNode, CedarModel.classes);
+    if (classes.length > 0) {
+      return true;
+    }
+    const valueSets: Array<JsonNode> = ReaderUtil.getNodeList(vcNode, CedarModel.valueSets);
+    if (valueSets.length > 0) {
+      return true;
+    }
+    return false;
+  }
+
+  private static getCedarFieldType(fieldSourceObject: JsonNode, uiInputType: UiInputType): CedarFieldType {
+    let fieldType: CedarFieldType = CedarFieldType.forUiInputType(uiInputType);
+    // The map used in the method will guarantee that TEXT is always returned, but we double-check anyways
+    if (fieldType === CedarFieldType.TEXT || fieldType === CedarFieldType.CONTROLLED_TERM) {
+      if (this.fieldHasValueConstraint(fieldSourceObject)) {
+        fieldType = CedarFieldType.CONTROLLED_TERM;
+      } else {
+        fieldType = CedarFieldType.TEXT;
+      }
+    }
+    return fieldType;
   }
 }

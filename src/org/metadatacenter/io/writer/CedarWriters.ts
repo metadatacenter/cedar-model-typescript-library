@@ -21,11 +21,23 @@ import { JSONFieldWriterPhoneNumber } from '../../model/cedar/field/dynamic/phon
 import { JSONFieldWriterEmail } from '../../model/cedar/field/dynamic/email/JSONFieldWriterEmail';
 import { CedarField } from '../../model/cedar/field/CedarField';
 import { JSONFieldWriterAttributeValue } from '../../model/cedar/field/dynamic/attribute-value/JSONFieldWriterAttributeValue';
+import { JSONFieldWriterControlledTerm } from '../../model/cedar/field/dynamic/controlled-term/JSONFieldWriterControlledTerm';
+import { ControlledTermOntology } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/ontology/ControlledTermOntology';
+import { JSONValueConstraintsOntologyWriter } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/ontology/JSONValueConstraintsOntologyWriter';
+import { AbstractJSONControlledTermValueConstraintWriter } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/AbstractJSONControlledTermValueConstraintWriter';
+import { ControlledTermAbstractValueConstraint } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/ControlledTermAbstractValueConstraint';
+import { ControlledTermClass } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/class/ControlledTermClass';
+import { JSONValueConstraintsClassWriter } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/class/JSONValueConstraintsClassWriter';
+import { ControlledTermBranch } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/branch/ControlledTermBranch';
+import { JSONValueConstraintsBranchWriter } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/branch/JSONValueConstraintsBranchWriter';
+import { ControlledTermValueSet } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/value-set/ControlledTermValueSet';
+import { JSONValueConstraintsValueSetWriter } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/value-set/JSONValueConstraintsValueSetWriter';
 
 export class CedarWriters {
   private readonly behavior: JSONWriterBehavior;
   private readonly dynamicFieldWriters: Map<CedarFieldType, JSONFieldWriter>;
   private readonly staticFieldWriters: Map<CedarFieldType, JSONFieldWriter>;
+  private readonly valueConstraintsWriters: Map<string, AbstractJSONControlledTermValueConstraintWriter>;
   private readonly jsonAtomicWriter: JSONAtomicWriter;
   private readonly jsonTemplateWriter: JSONTemplateWriter;
   private readonly yamlTemplateWriter: YAMLTemplateWriter;
@@ -39,6 +51,7 @@ export class CedarWriters {
     this.dynamicFieldWriters = new Map<CedarFieldType, JSONFieldWriter>([
       [CedarFieldType.TEXT, new JSONFieldWriterTextField(behavior, this)],
       [CedarFieldType.TEXTAREA, new JSONFieldWriterTextArea(behavior, this)],
+      [CedarFieldType.CONTROLLED_TERM, new JSONFieldWriterControlledTerm(behavior, this)],
       [CedarFieldType.PHONE_NUMBER, new JSONFieldWriterPhoneNumber(behavior, this)],
       [CedarFieldType.EMAIL, new JSONFieldWriterEmail(behavior, this)],
       [CedarFieldType.LINK, new JSONFieldWriterLink(behavior, this)],
@@ -56,6 +69,13 @@ export class CedarWriters {
       [CedarFieldType.STATIC_IMAGE, new JSONFieldWriterStaticImage(behavior, this)],
       [CedarFieldType.STATIC_RICH_TEXT, new JSONFieldWriterStaticRichText(behavior, this)],
       [CedarFieldType.STATIC_YOUTUBE, new JSONFieldWriterStaticYoutube(behavior, this)],
+    ]);
+
+    this.valueConstraintsWriters = new Map<string, AbstractJSONControlledTermValueConstraintWriter>([
+      [ControlledTermOntology.className, new JSONValueConstraintsOntologyWriter(behavior, this)],
+      [ControlledTermClass.className, new JSONValueConstraintsClassWriter(behavior, this)],
+      [ControlledTermBranch.className, new JSONValueConstraintsBranchWriter(behavior, this)],
+      [ControlledTermValueSet.className, new JSONValueConstraintsValueSetWriter(behavior, this)],
     ]);
   }
 
@@ -97,5 +117,14 @@ export class CedarWriters {
 
   getYAMLTemplateWriter(): YAMLTemplateWriter {
     return this.yamlTemplateWriter;
+  }
+
+  getJSONWriterForValueConstraint(object: ControlledTermAbstractValueConstraint): AbstractJSONControlledTermValueConstraintWriter {
+    const className = object.className;
+    const writer = this.valueConstraintsWriters.get(className);
+    if (writer) {
+      return writer;
+    }
+    throw new Error(`No writer found for class type: ${className}`);
   }
 }

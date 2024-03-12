@@ -46,6 +46,28 @@ export class CedarFieldType {
     return this.staticField;
   }
 
+  public static values(): CedarFieldType[] {
+    return [
+      CedarFieldType.TEXT,
+      CedarFieldType.TEXTAREA,
+      CedarFieldType.CONTROLLED_TERM,
+      CedarFieldType.LINK,
+      CedarFieldType.TEMPORAL,
+      CedarFieldType.EMAIL,
+      CedarFieldType.NUMERIC,
+      CedarFieldType.PHONE_NUMBER,
+      CedarFieldType.RADIO,
+      CedarFieldType.CHECKBOX,
+      CedarFieldType.LIST,
+      CedarFieldType.ATTRIBUTE_VALUE,
+      CedarFieldType.STATIC_PAGE_BREAK,
+      CedarFieldType.STATIC_SECTION_BREAK,
+      CedarFieldType.STATIC_IMAGE,
+      CedarFieldType.STATIC_RICH_TEXT,
+      CedarFieldType.STATIC_YOUTUBE,
+    ];
+  }
+
   public static TEXT = new CedarFieldType(CedarFieldTypeValues.TEXTFIELD, UiInputType.TEXTFIELD, false);
   public static TEXTAREA = new CedarFieldType(CedarFieldTypeValues.TEXTAREA, UiInputType.TEXTAREA, false);
   public static CONTROLLED_TERM = new CedarFieldType(CedarFieldTypeValues.CONTROLLED_TERM, UiInputType.TEXTFIELD, false);
@@ -66,4 +88,13 @@ export class CedarFieldType {
   public static STATIC_YOUTUBE = new CedarFieldType(CedarFieldTypeValues.STATIC_YOUTUBE, UiInputType.YOUTUBE, true);
 
   public static NULL = new CedarFieldType(null, UiInputType.NULL, true);
+
+  static forUiInputType(uiInputType: UiInputType): CedarFieldType {
+    for (const fieldType of CedarFieldType.values()) {
+      if (fieldType.getUiInputType() === uiInputType) {
+        return fieldType;
+      }
+    }
+    return this.NULL;
+  }
 }

@@ -9,7 +9,6 @@ import { CedarArtifactType } from '../../model/cedar/types/beans/CedarArtifactTy
 import { JavascriptType } from '../../model/cedar/types/beans/JavascriptType';
 import { TemplateProperty } from '../../model/cedar/constants/TemplateProperty';
 import { CedarSchema } from '../../model/cedar/types/beans/CedarSchema';
-import { JSONAtomicWriter } from './JSONAtomicWriter';
 import { CedarContainerChildInfo } from '../../model/cedar/types/beans/CedarContainerChildInfo';
 import { CedarField } from '../../model/cedar/field/CedarField';
 import { CedarWriters } from './CedarWriters';
@@ -17,15 +16,8 @@ import { JSONAbstractArtifactWriter } from './JSONAbstractArtifactWriter';
 import { CedarJSONTemplateFieldContentDynamic } from '../../model/cedar/util/serialization/CedarJSONTemplateFieldContentDynamic';
 
 export class JSONTemplateWriter extends JSONAbstractArtifactWriter {
-  private behavior: JSONWriterBehavior;
-  private writers: CedarWriters;
-  private readonly atomicWriter: JSONAtomicWriter;
-
   private constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
-    super();
-    this.behavior = behavior;
-    this.writers = writers;
-    this.atomicWriter = writers.getJSONAtomicWriter();
+    super(behavior, writers);
   }
 
   public static getFor(behavior: JSONWriterBehavior, writers: CedarWriters): JSONTemplateWriter {

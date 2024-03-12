@@ -64,7 +64,7 @@ export class CedarJSONTemplateFieldContentDynamic {
     },
   };
 
-  // This is a verbatim representation for regular fields
+  // This is a verbatim representation for controlled fields
   public static PROPERTIES_VERBATIM_CONTROLLED: JsonNode = {
     '@type': {
       oneOf: [
@@ -83,8 +83,9 @@ export class CedarJSONTemplateFieldContentDynamic {
         },
       ],
     },
-    '@value': {
-      type: ['string', 'null'],
+    '@id': {
+      type: 'string',
+      format: 'uri',
     },
     'rdfs:label': {
       type: ['string', 'null'],

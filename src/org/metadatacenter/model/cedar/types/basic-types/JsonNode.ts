@@ -8,4 +8,8 @@ export abstract class JsonNodeClass {
   static getEmpty(): JsonNode {
     return {};
   }
+
+  static getEmptyList(): Array<JsonNode> {
+    return [];
+  }
 }

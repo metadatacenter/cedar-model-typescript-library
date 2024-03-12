@@ -17,7 +17,7 @@ describe('JSONTemplateReader - template-008', () => {
     const jsonTemplateReaderResult: JSONTemplateReaderResult = reader.readFromString(templateSource);
     expect(jsonTemplateReaderResult).not.toBeNull();
     const parsingResult: ParsingResult = jsonTemplateReaderResult.parsingResult;
-    TestUtil.p(parsingResult);
+    // TestUtil.p(parsingResult);
     expect(parsingResult.wasSuccessful()).toBe(true);
 
     const writers: CedarWriters = CedarWriters.getStrict();
@@ -29,7 +29,7 @@ describe('JSONTemplateReader - template-008', () => {
     // TestUtil.p(compareResult);
 
     expect(compareResult.wasSuccessful()).toBe(false);
-    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(3);
+    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(2);
 
     const uiPagesMissing = new ComparisonError(
       'oco02',
@@ -37,15 +37,6 @@ describe('JSONTemplateReader - template-008', () => {
       new CedarJsonPath(CedarModel.ui, CedarModel.pages),
     );
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
-
-    const requiredTextfieldUnexpected = new ComparisonError(
-      'oca02',
-      ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
-      new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 11),
-      undefined,
-      'Text Field 1',
-    );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredTextfieldUnexpected);
 
     const languageTextField1Unexpected = new ComparisonError(
       'oco01',

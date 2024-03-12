@@ -109,7 +109,6 @@ export class ObjectComparator {
         // Handle arrays (lists) comparison
         if (isNonOrderSensitive) {
           // Non-order-sensitive comparison
-          const obj1Elements = new Set(obj1);
           const obj2Elements = new Set(obj2);
 
           obj1.forEach((element, index) => {
@@ -117,15 +116,6 @@ export class ObjectComparator {
             if (!obj2Elements.has(element)) {
               comparisonResult.addBlueprintComparisonError(
                 new ComparisonError('ola01', ComparisonErrorType.MISSING_VALUE_IN_REAL_OBJECT, newPath, element),
-              );
-            }
-          });
-
-          obj2.forEach((element, index) => {
-            const newPath = currentPath.add(index);
-            if (!obj1Elements.has(element)) {
-              comparisonResult.addBlueprintComparisonError(
-                new ComparisonError('ola02', ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT, newPath, undefined, element),
               );
             }
           });

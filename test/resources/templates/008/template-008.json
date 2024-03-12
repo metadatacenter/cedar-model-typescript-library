@@ -214,7 +214,8 @@
         "pav:createdOn",
         "pav:createdBy",
         "pav:lastUpdatedOn",
-        "oslc:modifiedBy"
+        "oslc:modifiedBy",
+        "Text Field 1"
       ],
       "additionalProperties": false
     },

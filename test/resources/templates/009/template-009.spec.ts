@@ -30,6 +30,7 @@ describe('JSONTemplateReader - template-009', () => {
     expect(compareResult.getBlueprintComparisonErrorCount()).toBe(1);
 
     const uiPagesMissing = new ComparisonError(
+      'oco02',
       ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
       new CedarJsonPath(CedarModel.ui, CedarModel.pages),
     );

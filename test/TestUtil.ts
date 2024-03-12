@@ -20,4 +20,11 @@ export class TestUtil {
     const fileContent = fs.readFileSync(filePath, 'utf8');
     return fileContent;
   }
+
+  static readOutsideResourceAsString(resourceFolder: string, fileName: string): string {
+    const projectRoot = process.cwd();
+    const filePath = path.join(projectRoot, resourceFolder, fileName);
+    const fileContent = fs.readFileSync(filePath, 'utf8');
+    return fileContent;
+  }
 }

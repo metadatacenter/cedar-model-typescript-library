@@ -35,12 +35,14 @@ describe('JSONTemplateReader - template-023', () => {
     expect(compareResult.getBlueprintComparisonErrorCount()).toBe(3);
 
     const uiPagesMissing = new ComparisonError(
+      'oco02',
       ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
       new CedarJsonPath(CedarModel.ui, CedarModel.pages),
     );
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
 
     const requiredControlled1Unexpected = new ComparisonError(
+      'oca02',
       ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
       new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 11),
       undefined,
@@ -49,6 +51,7 @@ describe('JSONTemplateReader - template-023', () => {
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredControlled1Unexpected);
 
     const skosNotationControlled1Unexpected = new ComparisonError(
+      'oco01',
       ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
       new CedarJsonPath(JsonSchema.properties, 'Controlled 1', JsonSchema.properties, CedarModel.skosNotation),
     );

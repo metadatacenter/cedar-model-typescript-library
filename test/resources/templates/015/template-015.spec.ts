@@ -31,12 +31,14 @@ describe('JSONTemplateReader - template-015', () => {
     expect(compareResult.getBlueprintComparisonErrorCount()).toBe(2);
 
     const uiPagesMissing = new ComparisonError(
+      'oco02',
       ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
       new CedarJsonPath(CedarModel.ui, CedarModel.pages),
     );
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
 
     const requiredComplexNumberUnexpected = new ComparisonError(
+      'oca02',
       ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
       new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 11),
       undefined,

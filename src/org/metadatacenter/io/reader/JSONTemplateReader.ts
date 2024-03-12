@@ -165,7 +165,7 @@ export class JSONTemplateReader {
     for (const key of CedarJSONTemplateContent.REQUIRED_PARTIAL) {
       if (!templateRequiredMap.has(key)) {
         parsingResult.addBlueprintComparisonError(
-          new ComparisonError(ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, new CedarJsonPath(JsonSchema.required), key),
+          new ComparisonError('jtr01', ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, new CedarJsonPath(JsonSchema.required), key),
         );
       }
     }
@@ -215,7 +215,7 @@ export class JSONTemplateReader {
     for (const childName of childNames) {
       if (!templateRequiredMap.has(childName)) {
         parsingResult.addBlueprintComparisonError(
-          new ComparisonError(ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, new CedarJsonPath(JsonSchema.required), childName),
+          new ComparisonError('jtr02', ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, new CedarJsonPath(JsonSchema.required), childName),
         );
       }
     }
@@ -224,7 +224,7 @@ export class JSONTemplateReader {
     for (const key of templateRequired) {
       if (!CedarJSONTemplateContent.REQUIRED_PARTIAL_KEY_MAP.has(key) && !candidateChildrenInfo.has(key)) {
         parsingResult.addBlueprintComparisonError(
-          new ComparisonError(ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT, new CedarJsonPath(JsonSchema.required), key),
+          new ComparisonError('jtr03', ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT, new CedarJsonPath(JsonSchema.required), key),
         );
       }
     }
@@ -236,6 +236,7 @@ export class JSONTemplateReader {
       if (templateUIPLabels === null || !templateUIPLabels.has(childInfo.name)) {
         parsingResult.addBlueprintComparisonError(
           new ComparisonError(
+            'jtr04',
             ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
             new CedarJsonPath(CedarModel.ui, CedarModel.propertyLabels),
             childInfo.name,
@@ -252,6 +253,7 @@ export class JSONTemplateReader {
       if (templateUIPDescriptions === null || !templateUIPDescriptions.has(childInfo.name)) {
         parsingResult.addBlueprintComparisonError(
           new ComparisonError(
+            'jtr05',
             ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
             new CedarJsonPath(CedarModel.ui, CedarModel.propertyDescriptions),
             childInfo.name,
@@ -272,6 +274,7 @@ export class JSONTemplateReader {
         if (iriList === null || iriList.length != 1) {
           parsingResult.addBlueprintComparisonError(
             new ComparisonError(
+              'jtr06',
               ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
               new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.properties, childInfo.name, JsonSchema.enum, 0),
             ),
@@ -292,6 +295,7 @@ export class JSONTemplateReader {
       } else {
         parsingResult.addBlueprintComparisonError(
           new ComparisonError(
+            'jtr07',
             ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
             new CedarJsonPath(CedarModel.ui, CedarModel.order),
             null,
@@ -306,6 +310,7 @@ export class JSONTemplateReader {
       if (!templateUIOrder.includes(childInfo.name)) {
         parsingResult.addBlueprintComparisonError(
           new ComparisonError(
+            'jtr08',
             ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
             new CedarJsonPath(CedarModel.ui, CedarModel.order),
             childInfo.name,
@@ -378,7 +383,7 @@ export class JSONTemplateReader {
       return childInfo;
     } else {
       parsingResult.addBlueprintComparisonError(
-        new ComparisonError(ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, path.add(childCandidateName, JsonSchema.atType)),
+        new ComparisonError('jtr09', ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, path.add(childCandidateName, JsonSchema.atType)),
       );
       return null;
     }

@@ -3,13 +3,21 @@ import { CedarJsonPath } from '../path/CedarJsonPath';
 import { ComparisonErrorType } from './ComparisonErrorType';
 
 export class ComparisonError {
+  public readonly errorLocation: string;
   public readonly errorType: ComparisonErrorType;
   public readonly errorPath: CedarJsonPath;
   public readonly expectedValue?: Primitive;
   public readonly encounteredValue?: Primitive;
   // public stackTopLines?: string[];
 
-  constructor(errorType: ComparisonErrorType, errorPath: CedarJsonPath, expectedValue?: Primitive, encounteredValue?: Primitive) {
+  constructor(
+    errorLocation: string,
+    errorType: ComparisonErrorType,
+    errorPath: CedarJsonPath,
+    expectedValue?: Primitive,
+    encounteredValue?: Primitive,
+  ) {
+    this.errorLocation = errorLocation;
     this.errorType = errorType;
     this.errorPath = errorPath;
     this.expectedValue = expectedValue;

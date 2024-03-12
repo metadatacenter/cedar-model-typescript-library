@@ -31,12 +31,14 @@ describe('JSONTemplateReader - template-010', () => {
     expect(compareResult.getBlueprintComparisonErrorCount()).toBe(7);
 
     const uiPagesMissing = new ComparisonError(
+      'oco02',
       ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
       new CedarJsonPath(CedarModel.ui, CedarModel.pages),
     );
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
 
     const requiredSimpleDateUnexpected = new ComparisonError(
+      'oca02',
       ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
       new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 11),
       undefined,
@@ -45,6 +47,7 @@ describe('JSONTemplateReader - template-010', () => {
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredSimpleDateUnexpected);
 
     const requiredSimpleTimeUnexpected = new ComparisonError(
+      'oca02',
       ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
       new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 12),
       undefined,
@@ -53,6 +56,7 @@ describe('JSONTemplateReader - template-010', () => {
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredSimpleTimeUnexpected);
 
     const requiredComplexDateTimeUnexpected = new ComparisonError(
+      'oca02',
       ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
       new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 13),
       undefined,
@@ -61,18 +65,21 @@ describe('JSONTemplateReader - template-010', () => {
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredComplexDateTimeUnexpected);
 
     const languageSimpleDateUnexpected = new ComparisonError(
+      'oco01',
       ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
       new CedarJsonPath(JsonSchema.properties, 'Simple date', JsonSchema.properties, JsonSchema.atLanguage),
     );
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageSimpleDateUnexpected);
 
     const languageSimpleTimeUnexpected = new ComparisonError(
+      'oco01',
       ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
       new CedarJsonPath(JsonSchema.properties, 'Simple time', JsonSchema.properties, JsonSchema.atLanguage),
     );
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageSimpleTimeUnexpected);
 
     const languageComplexDateTimeSimpleTimeUnexpected = new ComparisonError(
+      'oco01',
       ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
       new CedarJsonPath(JsonSchema.properties, 'Complex datetime', JsonSchema.items, JsonSchema.properties, JsonSchema.atLanguage),
     );

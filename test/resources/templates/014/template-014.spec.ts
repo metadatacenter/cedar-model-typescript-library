@@ -31,12 +31,14 @@ describe('JSONTemplateReader - template-014', () => {
     expect(compareResult.getBlueprintComparisonErrorCount()).toBe(6);
 
     const uiPagesMissing = new ComparisonError(
+      'oco02',
       ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
       new CedarJsonPath(CedarModel.ui, CedarModel.pages),
     );
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
 
     const requiredDecimalFieldUnexpected = new ComparisonError(
+      'oca02',
       ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
       new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 11),
       undefined,
@@ -45,6 +47,7 @@ describe('JSONTemplateReader - template-014', () => {
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredDecimalFieldUnexpected);
 
     const requiredLongFieldUnexpected = new ComparisonError(
+      'oca02',
       ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
       new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 12),
       undefined,
@@ -53,6 +56,7 @@ describe('JSONTemplateReader - template-014', () => {
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredLongFieldUnexpected);
 
     const requiredIntegerFieldUnexpected = new ComparisonError(
+      'oca02',
       ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
       new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 13),
       undefined,
@@ -61,6 +65,7 @@ describe('JSONTemplateReader - template-014', () => {
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredIntegerFieldUnexpected);
 
     const requiredDoubleFieldUnexpected = new ComparisonError(
+      'oca02',
       ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
       new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 14),
       undefined,
@@ -69,6 +74,7 @@ describe('JSONTemplateReader - template-014', () => {
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredDoubleFieldUnexpected);
 
     const requiredFloatFieldUnexpected = new ComparisonError(
+      'oca02',
       ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
       new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 15),
       undefined,

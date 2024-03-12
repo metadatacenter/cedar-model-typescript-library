@@ -31,23 +31,26 @@ describe('JSONTemplateReader - template-012', () => {
     expect(compareResult.getBlueprintComparisonErrorCount()).toBe(3);
 
     const uiPagesMissing = new ComparisonError(
+      'oco02',
       ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
       new CedarJsonPath(CedarModel.ui, CedarModel.pages),
     );
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
 
-    const languageEmailFieldUnexpected = new ComparisonError(
-      ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
-      new CedarJsonPath(JsonSchema.properties, 'Email field', JsonSchema.properties, JsonSchema.atLanguage),
-    );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageEmailFieldUnexpected);
-
     const requiredEmailFieldUnexpected = new ComparisonError(
+      'oca02',
       ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
       new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 11),
       undefined,
       'Email field',
     );
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredEmailFieldUnexpected);
+
+    const languageEmailFieldUnexpected = new ComparisonError(
+      'oco01',
+      ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
+      new CedarJsonPath(JsonSchema.properties, 'Email field', JsonSchema.properties, JsonSchema.atLanguage),
+    );
+    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageEmailFieldUnexpected);
   });
 });

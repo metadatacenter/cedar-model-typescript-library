@@ -30,12 +30,14 @@ describe('JSONTemplateReader - template-004', () => {
     expect(compareResult.getBlueprintComparisonErrorCount()).toBe(7);
 
     const uiPagesMissing = new ComparisonError(
+      'oco02',
       ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
       new CedarJsonPath(CedarModel.ui, CedarModel.pages),
     );
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
 
     const requiredField1Unexpected = new ComparisonError(
+      'oca02',
       ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
       new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 11),
       undefined,
@@ -44,6 +46,7 @@ describe('JSONTemplateReader - template-004', () => {
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredField1Unexpected);
 
     const requiredField2Unexpected = new ComparisonError(
+      'oca02',
       ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
       new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 12),
       undefined,
@@ -52,6 +55,7 @@ describe('JSONTemplateReader - template-004', () => {
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredField2Unexpected);
 
     const requiredField3Unexpected = new ComparisonError(
+      'oca02',
       ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
       new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 13),
       undefined,
@@ -60,18 +64,21 @@ describe('JSONTemplateReader - template-004', () => {
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredField3Unexpected);
 
     const languageField1Unexpected = new ComparisonError(
+      'oco01',
       ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
       new CedarJsonPath(JsonSchema.properties, 'Field 1', JsonSchema.properties, JsonSchema.atLanguage),
     );
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageField1Unexpected);
 
     const languageField2Unexpected = new ComparisonError(
+      'oco01',
       ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
       new CedarJsonPath(JsonSchema.properties, 'Field 2', JsonSchema.properties, JsonSchema.atLanguage),
     );
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageField2Unexpected);
 
     const languageField3Unexpected = new ComparisonError(
+      'oco01',
       ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
       new CedarJsonPath(JsonSchema.properties, 'Field 3', JsonSchema.properties, JsonSchema.atLanguage),
     );

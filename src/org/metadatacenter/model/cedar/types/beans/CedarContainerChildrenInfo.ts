@@ -75,7 +75,7 @@ export class CedarContainerChildrenInfo {
 
   hasAttributeValue(): boolean {
     return this.childList.some((childInfo) => {
-      return childInfo.uiInputType == UiInputType.ATTRIBUTE_VALUE;
+      return childInfo.uiInputType === UiInputType.ATTRIBUTE_VALUE;
     });
   }
 }

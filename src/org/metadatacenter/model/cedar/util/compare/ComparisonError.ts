@@ -8,7 +8,7 @@ export class ComparisonError {
   public readonly errorPath: CedarJsonPath;
   public readonly expectedValue?: Primitive;
   public readonly encounteredValue?: Primitive;
-  // public stackTopLines?: string[];
+  public stackTopLines?: string[];
 
   constructor(
     errorLocation: string,
@@ -22,14 +22,14 @@ export class ComparisonError {
     this.errorPath = errorPath;
     this.expectedValue = expectedValue;
     this.encounteredValue = encounteredValue;
-    //    this.parseStackTrace();
+    // this.parseStackTrace();
   }
-  // private parseStackTrace() {
-  //   const logError = new Error();
-  //   if (logError && logError.stack) {
-  //     const stackLines = logError.stack.split('\n');
-  //     // Store the top three lines of the stack, excluding the constructs
-  //     this.stackTopLines = stackLines.slice(3, 6);
-  //   }
-  // }
+  private parseStackTrace() {
+    const logError = new Error();
+    if (logError && logError.stack) {
+      const stackLines = logError.stack.split('\n');
+      // Store the top three lines of the stack, excluding the constructs
+      this.stackTopLines = stackLines.slice(3, 12);
+    }
+  }
 }

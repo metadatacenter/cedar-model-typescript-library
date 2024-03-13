@@ -54,7 +54,7 @@ export class JSONElementReader extends JSONContainerArtifactReader {
     const element = CedarElement.buildEmptyWithNullValues();
 
     JSONElementReader.readNonReportableAttributes(element, elementSourceObject);
-    JSONElementReader.readReportableAttributes(element, elementSourceObject, parsingResult);
+    JSONElementReader.readReportableAttributes(element, elementSourceObject, parsingResult, topPath);
     // TODO: this is not neededJSONElementReader.readInstanceTypeSpecification(template, elementSourceObject, parsingResult);
     this.readAndValidateChildrenInfo(element, elementSourceObject, parsingResult, topPath);
 
@@ -65,26 +65,31 @@ export class JSONElementReader extends JSONContainerArtifactReader {
     super.readNonReportableAttributes(element, elementSourceObject);
   }
 
-  private static readReportableAttributes(element: CedarElement, elementSourceObject: JsonNode, parsingResult: ParsingResult) {
+  private static readReportableAttributes(
+    element: CedarElement,
+    elementSourceObject: JsonNode,
+    parsingResult: ParsingResult,
+    path: CedarJsonPath,
+  ) {
     // Read and validate, but do not store top level @type
     ObjectComparator.comparePrimitive(
       parsingResult,
       CedarArtifactType.TEMPLATE_ELEMENT.getValue(),
       ReaderUtil.getString(elementSourceObject, JsonSchema.atType),
-      new CedarJsonPath(JsonSchema.atType),
+      path.add(JsonSchema.atType),
     );
 
     // Read and validate, but do not store top level @context
     const topContextNode: JsonNode = ReaderUtil.getNode(elementSourceObject, JsonSchema.atContext);
     const blueprint = CedarJSONElementContent.CONTEXT_VERBATIM;
-    ObjectComparator.compareBothWays(parsingResult, blueprint, topContextNode, new CedarJsonPath(JsonSchema.atContext));
+    ObjectComparator.compareBothWays(parsingResult, blueprint, topContextNode, path.add(JsonSchema.atContext));
 
     // Read and validate, but do not store top level type
     ObjectComparator.comparePrimitive(
       parsingResult,
       JavascriptType.OBJECT.getValue(),
       ReaderUtil.getString(elementSourceObject, CedarModel.type),
-      new CedarJsonPath(CedarModel.type),
+      path.add(CedarModel.type),
     );
 
     // Read and validate, but do not store top level additionalProperties
@@ -93,7 +98,7 @@ export class JSONElementReader extends JSONContainerArtifactReader {
     //   parsingResult,
     //   false,
     //   ReaderUtil.getBoolean(templateSourceObject, TemplateProperty.additionalProperties),
-    //   new CedarJsonPath(TemplateProperty.additionalProperties),
+    //   path.add(TemplateProperty.additionalProperties),
     // );
 
     // Read and validate, but do not store top level $schema
@@ -101,7 +106,7 @@ export class JSONElementReader extends JSONContainerArtifactReader {
       parsingResult,
       CedarSchema.CURRENT.getValue(),
       ReaderUtil.getString(elementSourceObject, CedarModel.schema),
-      new CedarJsonPath(CedarModel.schema),
+      path.add(CedarModel.schema),
     );
   }
 
@@ -124,7 +129,7 @@ export class JSONElementReader extends JSONContainerArtifactReader {
     for (const key of CedarJSONElementContent.REQUIRED_PARTIAL) {
       if (!elementRequiredMap.has(key)) {
         parsingResult.addBlueprintComparisonError(
-          new ComparisonError('jtr01', ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, new CedarJsonPath(JsonSchema.required), key),
+          new ComparisonError('jtr01', ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, path.add(JsonSchema.required), key),
         );
       }
     }
@@ -174,7 +179,7 @@ export class JSONElementReader extends JSONContainerArtifactReader {
     for (const childName of childNames) {
       if (!elementRequiredMap.has(childName)) {
         parsingResult.addBlueprintComparisonError(
-          new ComparisonError('jtr02', ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, new CedarJsonPath(JsonSchema.required), childName),
+          new ComparisonError('jtr02', ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, path.add(JsonSchema.required), childName),
         );
       }
     }
@@ -183,7 +188,7 @@ export class JSONElementReader extends JSONContainerArtifactReader {
     for (const key of elementRequired) {
       if (!CedarJSONElementContent.REQUIRED_PARTIAL_KEY_MAP.has(key) && !candidateChildrenInfo.has(key)) {
         parsingResult.addBlueprintComparisonError(
-          new ComparisonError('jtr03', ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT, new CedarJsonPath(JsonSchema.required), key),
+          new ComparisonError('jtr03', ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT, path.add(JsonSchema.required), key),
         );
       }
     }
@@ -197,7 +202,7 @@ export class JSONElementReader extends JSONContainerArtifactReader {
           new ComparisonError(
             'jtr04',
             ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-            new CedarJsonPath(CedarModel.ui, CedarModel.propertyLabels),
+            path.add(CedarModel.ui, CedarModel.propertyLabels),
             childInfo.name,
           ),
         );
@@ -214,7 +219,7 @@ export class JSONElementReader extends JSONContainerArtifactReader {
           new ComparisonError(
             'jtr05',
             ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-            new CedarJsonPath(CedarModel.ui, CedarModel.propertyDescriptions),
+            path.add(CedarModel.ui, CedarModel.propertyDescriptions),
             childInfo.name,
           ),
         );
@@ -236,7 +241,7 @@ export class JSONElementReader extends JSONContainerArtifactReader {
             new ComparisonError(
               'jtr06',
               ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-              new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.properties, childInfo.name, JsonSchema.enum, 0),
+              path.add(JsonSchema.properties, JsonSchema.atContext, JsonSchema.properties, childInfo.name, JsonSchema.enum, 0),
             ),
           );
         } else {
@@ -257,7 +262,7 @@ export class JSONElementReader extends JSONContainerArtifactReader {
           new ComparisonError(
             'jtr07',
             ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
-            new CedarJsonPath(CedarModel.ui, CedarModel.order),
+            path.add(CedarModel.ui, CedarModel.order),
             null,
             key,
           ),
@@ -272,7 +277,7 @@ export class JSONElementReader extends JSONContainerArtifactReader {
           new ComparisonError(
             'jtr08',
             ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-            new CedarJsonPath(CedarModel.ui, CedarModel.order),
+            path.add(CedarModel.ui, CedarModel.order),
             childInfo.name,
             null,
           ),
@@ -302,13 +307,13 @@ export class JSONElementReader extends JSONContainerArtifactReader {
     if (pCRequired != null && pCRequired.length == 0) {
       ReaderUtil.deleteNodeKey(atContext, JsonSchema.required);
     }
-    ObjectComparator.compareToLeft(parsingResult, blueprint, elementProperties, new CedarJsonPath(JsonSchema.properties));
+    ObjectComparator.compareToLeft(parsingResult, blueprint, elementProperties, path.add(JsonSchema.properties));
 
     // Parse children
     // TODO: handle elements, generalize this code, since it will be used in templates and elements as well
     for (const childInfo of finalChildrenInfo.children) {
       let childDefinition: JsonNode = ReaderUtil.getNode(elementProperties, childInfo.name);
-      let childPath: CedarJsonPath = new CedarJsonPath(JsonSchema.properties, childInfo.name);
+      let childPath: CedarJsonPath = path.add(JsonSchema.properties, childInfo.name);
       if (childInfo.multiInstance) {
         childDefinition = ReaderUtil.getNode(childDefinition, JsonSchema.items);
         childPath = childPath.add(JsonSchema.items);

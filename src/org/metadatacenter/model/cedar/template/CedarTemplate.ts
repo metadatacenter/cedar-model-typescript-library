@@ -1,7 +1,6 @@
 import { BiboStatus } from '../types/beans/BiboStatus';
 import { SchemaVersion } from '../types/beans/SchemaVersion';
 import { PavVersion } from '../types/beans/PavVersion';
-import { AdditionalProperties } from '../types/beans/AdditionalProperties';
 import { CedarContainerAbstractArtifact } from '../CedarAbstractContainerArtifact';
 
 export class CedarTemplate extends CedarContainerAbstractArtifact {

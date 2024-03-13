@@ -1,4 +1,5 @@
 import { CedarWriters } from './org/metadatacenter/io/writer/CedarWriters';
+import { CedarBuilders } from './org/metadatacenter/model/cedar/CedarBuilders';
 
 import { JSONFieldReader } from './org/metadatacenter/io/reader/JSONFieldReader';
 import { JSONElementReader } from './org/metadatacenter/io/reader/JSONElementReader';
@@ -21,6 +22,7 @@ import { CedarRadioField } from './org/metadatacenter/model/cedar/field/dynamic/
 import { CedarTemporalField } from './org/metadatacenter/model/cedar/field/dynamic/temporal/CedarTemporalField';
 import { CedarTextArea } from './org/metadatacenter/model/cedar/field/dynamic/textarea/CedarTextArea';
 import { CedarTextField } from './org/metadatacenter/model/cedar/field/dynamic/textfield/CedarTextField';
+import { TextFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/textfield/TextFieldBuilder';
 import { CedarStaticImageField } from './org/metadatacenter/model/cedar/field/static/image/CedarStaticImageField';
 import { CedarStaticPageBreakField } from './org/metadatacenter/model/cedar/field/static/page-break/CedarStaticPageBreakField';
 import { CedarStaticRichTextField } from './org/metadatacenter/model/cedar/field/static/rich-text/CedarStaticRichTextField';
@@ -30,7 +32,12 @@ import { CedarStaticYoutubeField } from './org/metadatacenter/model/cedar/field/
 import { CedarElement } from './org/metadatacenter/model/cedar/element/CedarElement';
 import { CedarTemplate } from './org/metadatacenter/model/cedar/template/CedarTemplate';
 
+import { JsonNode } from './org/metadatacenter/model/cedar/types/basic-types/JsonNode';
+import { CedarDate } from './org/metadatacenter/model/cedar/types/beans/CedarDate';
+import { SchemaVersion } from './org/metadatacenter/model/cedar/types/beans/SchemaVersion';
+
 export { CedarWriters };
+export { CedarBuilders };
 
 export { JSONFieldReader };
 export { JSONElementReader };
@@ -52,7 +59,7 @@ export { CedarPhoneNumberField };
 export { CedarRadioField };
 export { CedarTemporalField };
 export { CedarTextArea };
-export { CedarTextField };
+export { CedarTextField, TextFieldBuilder };
 export { CedarStaticImageField };
 export { CedarStaticPageBreakField };
 export { CedarStaticRichTextField };
@@ -61,3 +68,7 @@ export { CedarStaticYoutubeField };
 
 export { CedarElement };
 export { CedarTemplate };
+
+export { JsonNode };
+export { CedarDate };
+export { SchemaVersion };

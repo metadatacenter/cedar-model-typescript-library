@@ -30,4 +30,24 @@ export class CedarDate {
     const timezoneOffset = isoDateString.match(/Z|([+-])([01]\d):?([0-5]\d)$/)?.[0] ?? 'Z';
     return new CedarDate(date, timezoneOffset);
   }
+
+  public static now(): CedarDate {
+    const date = new Date();
+    const timezoneOffset = this.getCurrentGMTOffset();
+    return new CedarDate(date, timezoneOffset);
+  }
+
+  public static getCurrentGMTOffset(): string {
+    const offset = new Date().getTimezoneOffset();
+
+    const hours = Math.abs(Math.floor(offset / 60));
+    const minutes = Math.abs(offset % 60);
+
+    const hoursFormatted = hours.toString().padStart(2, '0');
+    const minutesFormatted = minutes.toString().padStart(2, '0');
+
+    const sign = offset > 0 ? '-' : '+';
+
+    return `${sign}${hoursFormatted}:${minutesFormatted}`;
+  }
 }

@@ -1,9 +1,15 @@
-import { CedarDate } from '../../model/cedar/types/beans/CedarDate';
-import { CedarUser } from '../../model/cedar/types/beans/CedarUser';
-import { PavVersion } from '../../model/cedar/types/beans/PavVersion';
-import { BiboStatus } from '../../model/cedar/types/beans/BiboStatus';
+import { CedarDate } from './types/beans/CedarDate';
+import { CedarUser } from './types/beans/CedarUser';
+import { PavVersion } from './types/beans/PavVersion';
+import { BiboStatus } from './types/beans/BiboStatus';
+import { CedarArtifactId } from './types/beans/CedarArtifactId';
+import { SchemaVersion } from './types/beans/SchemaVersion';
 
 export abstract class CedarAbstractArtifact {
+  public at_id: CedarArtifactId = CedarArtifactId.NULL;
+  public title: string | null = null;
+  public description: string | null = null;
+  public schema_schemaVersion: SchemaVersion = SchemaVersion.NULL;
   // provenance
   public pav_createdOn: CedarDate | null = CedarDate.forValue(null);
   public pav_createdBy: CedarUser = CedarUser.forValue(null);

@@ -33,7 +33,7 @@ export class CedarContainerChildrenInfo {
     return Array.from(this.nameMap.entries())
       .filter(
         ([_, childInfo]) =>
-          childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD && childInfo.uiInputType != UiInputType.ATTRIBUTE_VALUE,
+          childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD && childInfo.uiInputType !== UiInputType.ATTRIBUTE_VALUE,
       )
       .map(([name, _]) => name);
   }
@@ -57,6 +57,16 @@ export class CedarContainerChildrenInfo {
     const iriMap: { [key: string]: { [key in typeof JsonSchema.enum]: Array<string | null> } } = {};
     this.childList.forEach((childInfo) => {
       if (childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD) {
+        iriMap[childInfo.name] = { [JsonSchema.enum]: [childInfo.iri] };
+      }
+    });
+    return iriMap;
+  }
+
+  public getNonStaticNonAttributeValueIRIMap(): { [key: string]: { [key in typeof JsonSchema.enum]: Array<NullableString> } } {
+    const iriMap: { [key: string]: { [key in typeof JsonSchema.enum]: Array<string | null> } } = {};
+    this.childList.forEach((childInfo) => {
+      if (childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD && childInfo.uiInputType !== UiInputType.ATTRIBUTE_VALUE) {
         iriMap[childInfo.name] = { [JsonSchema.enum]: [childInfo.iri] };
       }
     });

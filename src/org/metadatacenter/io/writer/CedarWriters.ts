@@ -32,6 +32,7 @@ import { ControlledTermBranch } from '../../model/cedar/field/dynamic/controlled
 import { JSONValueConstraintsBranchWriter } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/branch/JSONValueConstraintsBranchWriter';
 import { ControlledTermValueSet } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/value-set/ControlledTermValueSet';
 import { JSONValueConstraintsValueSetWriter } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/value-set/JSONValueConstraintsValueSetWriter';
+import { JSONElementWriter } from './JSONElementWriter';
 
 export class CedarWriters {
   private readonly behavior: JSONWriterBehavior;
@@ -40,12 +41,14 @@ export class CedarWriters {
   private readonly valueConstraintsWriters: Map<string, AbstractJSONControlledTermValueConstraintWriter>;
   private readonly jsonAtomicWriter: JSONAtomicWriter;
   private readonly jsonTemplateWriter: JSONTemplateWriter;
+  private readonly jsonElementWriter: JSONElementWriter;
   private readonly yamlTemplateWriter: YAMLTemplateWriter;
 
   private constructor(behavior: JSONWriterBehavior) {
     this.behavior = behavior;
     this.jsonAtomicWriter = new JSONAtomicWriter(behavior);
     this.jsonTemplateWriter = JSONTemplateWriter.getFor(behavior, this);
+    this.jsonElementWriter = JSONElementWriter.getFor(behavior, this);
     this.yamlTemplateWriter = YAMLTemplateWriter.getFor(behavior, this);
 
     this.dynamicFieldWriters = new Map<CedarFieldType, JSONFieldWriter>([
@@ -89,6 +92,10 @@ export class CedarWriters {
 
   getJSONTemplateWriter(): JSONTemplateWriter {
     return this.jsonTemplateWriter;
+  }
+
+  getJSONElementWriter(): JSONElementWriter {
+    return this.jsonElementWriter;
   }
 
   getJSONAtomicWriter() {

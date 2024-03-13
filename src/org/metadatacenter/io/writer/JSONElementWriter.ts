@@ -1,7 +1,6 @@
 import { JSONWriterBehavior } from '../../behavior/JSONWriterBehavior';
 import { CedarTemplate } from '../../model/cedar/template/CedarTemplate';
 import { ReaderUtil } from '../reader/ReaderUtil';
-import { CedarJSONTemplateContent } from '../../model/cedar/util/serialization/CedarJSONTemplateContent';
 import { JsonSchema } from '../../model/cedar/constants/JsonSchema';
 import { JsonNode, JsonNodeClass } from '../../model/cedar/types/basic-types/JsonNode';
 import { CedarModel } from '../../model/cedar/constants/CedarModel';
@@ -15,33 +14,40 @@ import { CedarWriters } from './CedarWriters';
 import { JSONAbstractArtifactWriter } from './JSONAbstractArtifactWriter';
 import { CedarJSONTemplateFieldContentDynamic } from '../../model/cedar/util/serialization/CedarJSONTemplateFieldContentDynamic';
 import { CedarElement } from '../../model/cedar/element/CedarElement';
+import { CedarJSONElementContent } from '../../model/cedar/util/serialization/CedarJSONElementContent';
 
-export class JSONTemplateWriter extends JSONAbstractArtifactWriter {
+export class JSONElementWriter extends JSONAbstractArtifactWriter {
   private constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
     super(behavior, writers);
   }
 
-  public static getFor(behavior: JSONWriterBehavior, writers: CedarWriters): JSONTemplateWriter {
-    return new JSONTemplateWriter(behavior, writers);
+  public static getFor(behavior: JSONWriterBehavior, writers: CedarWriters): JSONElementWriter {
+    return new JSONElementWriter(behavior, writers);
   }
 
-  private buildProperties(template: CedarTemplate): JsonNode {
+  private buildProperties(element: CedarElement): JsonNode {
     // clone, because we will need to modify deep content
-    const properties = ReaderUtil.deepClone(CedarJSONTemplateContent.PROPERTIES_PARTIAL);
+    const properties = ReaderUtil.deepClone(CedarJSONElementContent.PROPERTIES_PARTIAL);
 
     // Include the IRI mapping
     properties[JsonSchema.atContext][JsonSchema.properties] = {
       ...properties[JsonSchema.atContext][JsonSchema.properties],
-      ...template.childrenInfo.getNonStaticIRIMap(),
+      ...element.childrenInfo.getNonStaticNonAttributeValueIRIMap(),
     };
 
-    properties[JsonSchema.atContext][JsonSchema.required] = [
-      ...properties[JsonSchema.atContext][JsonSchema.required],
-      ...template.childrenInfo.getChildrenNamesForRequired(),
-    ];
+    // Omit required if empty
+    const childNamesForRequired = element.childrenInfo.getChildrenNamesForRequired();
+    if (childNamesForRequired.length > 0) {
+      properties[JsonSchema.atContext][JsonSchema.required] = [
+        ...properties[JsonSchema.atContext][JsonSchema.required],
+        ...childNamesForRequired,
+      ];
+    } else {
+      ReaderUtil.deleteNodeKey(properties[JsonSchema.atContext], JsonSchema.required);
+    }
 
     // Attribute value modification
-    if (template.childrenInfo.hasAttributeValue()) {
+    if (element.childrenInfo.hasAttributeValue()) {
       properties[JsonSchema.atContext][TemplateProperty.additionalProperties] =
         CedarJSONTemplateFieldContentDynamic.ADDITIONAL_PROPERTIES_VERBATIM_ATTRIBUTE_VALUE_INSIDE;
     }
@@ -49,22 +55,8 @@ export class JSONTemplateWriter extends JSONAbstractArtifactWriter {
     // include the field/element definitions
     const extendedProperties = {
       ...properties,
-      ...this.getChildMapAsJSON(template),
+      ...this.getChildMapAsJSON(element),
     };
-
-    // Inject instance type specification, if present
-    if (template.instanceTypeSpecification !== null) {
-      const oneOfNode: Array<JsonNode> = extendedProperties[JsonSchema.atType][JsonSchema.oneOf];
-      oneOfNode.forEach((item: JsonNode) => {
-        const itemType = ReaderUtil.getString(item, JsonSchema.type);
-        if (itemType == 'string') {
-          item[JsonSchema.enum] = [template.instanceTypeSpecification];
-        } else if (itemType == 'array') {
-          const items: JsonNode = ReaderUtil.getNode(item, JsonSchema.items);
-          items[JsonSchema.enum] = [template.instanceTypeSpecification];
-        }
-      });
-    }
 
     return extendedProperties;
   }
@@ -73,57 +65,45 @@ export class JSONTemplateWriter extends JSONAbstractArtifactWriter {
     return JSON.stringify(this.getAsJsonNode(template), null, indent);
   }
 
-  getAsJsonNode(template: CedarTemplate): JsonNode {
-    const extendedProperties: JsonNode = this.buildProperties(template);
+  getAsJsonNode(element: CedarElement): JsonNode {
+    const extendedProperties: JsonNode = this.buildProperties(element);
 
-    const templateUI: JsonNode = {
-      [CedarModel.order]: template.childrenInfo.getChildrenNames(),
-      [CedarModel.propertyLabels]: template.childrenInfo.getPropertyLabelMap(),
-      [CedarModel.propertyDescriptions]: template.childrenInfo.getPropertyDescriptionMap(),
+    const elementUi: JsonNode = {
+      [CedarModel.order]: element.childrenInfo.getChildrenNames(),
+      [CedarModel.propertyLabels]: element.childrenInfo.getPropertyLabelMap(),
+      [CedarModel.propertyDescriptions]: element.childrenInfo.getPropertyDescriptionMap(),
     };
-    if (template.header !== null) {
-      templateUI[CedarModel.header] = template.header;
-    }
-    if (template.footer !== null) {
-      templateUI[CedarModel.footer] = template.footer;
-    }
     // if (JSONTemplateReader.getBehavior() == JSONTemplateReader.FEBRUARY_2024) {
     //   templateUI[CedarModel.pages] = [];
     // }
 
-    const schemaIdentifier: JsonNode = JsonNodeClass.getEmpty();
-    if (template.schema_identifier !== null) {
-      schemaIdentifier[JsonSchema.schemaIdentifier] = template.schema_identifier;
-    }
-
     // build the final object
     return {
-      [JsonSchema.atId]: this.atomicWriter.write(template.at_id),
-      [JsonSchema.atType]: this.atomicWriter.write(CedarArtifactType.TEMPLATE),
-      [JsonSchema.atContext]: CedarJSONTemplateContent.CONTEXT_VERBATIM,
+      [JsonSchema.atId]: this.atomicWriter.write(element.at_id),
+      [JsonSchema.atType]: this.atomicWriter.write(CedarArtifactType.TEMPLATE_ELEMENT),
+      [JsonSchema.atContext]: CedarJSONElementContent.CONTEXT_VERBATIM,
       [CedarModel.type]: this.atomicWriter.write(JavascriptType.OBJECT),
-      [TemplateProperty.title]: template.title,
-      [TemplateProperty.description]: template.description,
-      [CedarModel.ui]: templateUI,
+      [TemplateProperty.title]: element.title,
+      [TemplateProperty.description]: element.description,
+      [CedarModel.ui]: elementUi,
       [JsonSchema.properties]: extendedProperties,
-      [JsonSchema.required]: [...CedarJSONTemplateContent.REQUIRED_PARTIAL, ...template.childrenInfo.getChildrenNamesForRequired()],
-      ...this.macroSchemaNameAndDescription(template),
-      ...this.macroProvenance(template, this.atomicWriter),
-      [JsonSchema.schemaVersion]: this.atomicWriter.write(template.schema_schemaVersion),
-      [TemplateProperty.additionalProperties]: this.atomicWriter.write(template.getAdditionalProperties()),
-      ...this.macroStatusAndVersion(template, this.atomicWriter),
+      [JsonSchema.required]: [...CedarJSONElementContent.REQUIRED_PARTIAL, ...element.childrenInfo.getChildrenNamesForRequired()],
+      ...this.macroSchemaNameAndDescription(element),
+      ...this.macroProvenance(element, this.atomicWriter),
+      [JsonSchema.schemaVersion]: this.atomicWriter.write(element.schema_schemaVersion),
+      [TemplateProperty.additionalProperties]: this.atomicWriter.write(element.getAdditionalProperties()),
+      ...this.macroStatusAndVersion(element, this.atomicWriter),
       [CedarModel.schema]: this.atomicWriter.write(CedarSchema.CURRENT),
-      ...schemaIdentifier,
     };
   }
 
-  private getChildMapAsJSON(template: CedarTemplate): JsonNode {
+  private getChildMapAsJSON(element: CedarElement): JsonNode {
     const childMap: JsonNode = JsonNodeClass.getEmpty();
 
-    template.children.forEach((child) => {
+    element.children.forEach((child) => {
       const childName = child.schema_name;
       if (childName !== null) {
-        const childMeta: CedarContainerChildInfo | null = template.childrenInfo.get(childName);
+        const childMeta: CedarContainerChildInfo | null = element.childrenInfo.get(childName);
         if (childMeta !== null) {
           if (childMeta.multiInstance) {
             // TODO: handle maxItems, minItems inconsistencies

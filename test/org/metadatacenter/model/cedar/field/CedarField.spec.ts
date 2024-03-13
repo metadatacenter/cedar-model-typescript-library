@@ -1,6 +1,5 @@
-import { CedarWriters } from '../../../../../../src/org/metadatacenter/io/writer/CedarWriters';
 import { CedarTextField } from '../../../../../../src/org/metadatacenter/model/cedar/field/dynamic/textfield/CedarTextField';
-import { JSONFieldWriter } from '../../../../../../src/org/metadatacenter/io/writer/JSONFieldWriter';
+import { CedarWriters, JSONFieldWriter } from '../../../../../../src';
 
 describe('CedarField', () => {
   test('creates empty field null values', () => {

@@ -4,8 +4,7 @@ import { ComparisonError } from '../../../../src/org/metadatacenter/model/cedar/
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
 import { CedarJsonPath } from '../../../../src/org/metadatacenter/model/cedar/util/path/CedarJsonPath';
 import { JsonSchema } from '../../../../src/org/metadatacenter/model/cedar/constants/JsonSchema';
-import { CedarWriters } from '../../../../src/org/metadatacenter/io/writer/CedarWriters';
-import { JSONFieldReader, JSONFieldWriter } from '../../../../src';
+import { CedarWriters, JSONFieldReader, JSONFieldWriter } from '../../../../src';
 
 describe('JSONFieldReader - field-001', () => {
   test('reads a text field with a lot of features', () => {

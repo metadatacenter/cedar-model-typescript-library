@@ -1,23 +1,9 @@
-import { JavascriptType } from '../types/beans/JavascriptType';
 import { BiboStatus } from '../types/beans/BiboStatus';
 import { SchemaVersion } from '../types/beans/SchemaVersion';
-import { JsonSchema } from '../constants/JsonSchema';
-import { TemplateProperty } from '../constants/TemplateProperty';
-import { CedarArtifactType } from '../types/beans/CedarArtifactType';
-import { CedarModel } from '../constants/CedarModel';
-import { CedarSchema } from '../types/beans/CedarSchema';
 import { PavVersion } from '../types/beans/PavVersion';
-import { CedarArtifactId } from '../types/beans/CedarArtifactId';
-import { CedarJSONTemplateFieldContentDynamic } from '../util/serialization/CedarJSONTemplateFieldContentDynamic';
-import { CedarAbstractArtifact } from '../../../io/writer/CedarAbstractArtifact';
-import { AdditionalProperties } from '../types/beans/AdditionalProperties';
+import { CedarContainerAbstractArtifact } from '../CedarAbstractContainerArtifact';
 
-export class CedarElement extends CedarAbstractArtifact {
-  public at_id: CedarArtifactId = CedarArtifactId.NULL;
-  public title: string | null = null;
-  public description: string | null = null;
-  public schema_schemaVersion: SchemaVersion = SchemaVersion.NULL;
-
+export class CedarElement extends CedarContainerAbstractArtifact {
   private constructor() {
     super();
   }
@@ -32,39 +18,5 @@ export class CedarElement extends CedarAbstractArtifact {
     r.bibo_status = BiboStatus.DRAFT;
     r.pav_version = PavVersion.DEFAULT;
     return r;
-  }
-
-  /**
-   * Do not use directly, it will not produce the expected result
-   * Use asCedarFieldString(indent) or asCedarFieldObject() instead
-   * Will be used by JSON.stringify
-   */
-  private toJSON() {
-    // TODO: include properties based on field type
-    const typeSpecificProperties = CedarJSONTemplateFieldContentDynamic.PROPERTIES_VERBATIM_LITERAL;
-
-    // build the final object
-    return {
-      [JsonSchema.atId]: this.at_id,
-      [JsonSchema.atType]: CedarArtifactType.TEMPLATE_ELEMENT,
-      [JsonSchema.atContext]: CedarJSONTemplateFieldContentDynamic.CONTEXT_VERBATIM,
-      [CedarModel.type]: JavascriptType.OBJECT,
-      [TemplateProperty.title]: this.title,
-      [TemplateProperty.description]: this.description,
-      [CedarModel.ui]: {
-        [CedarModel.inputType]: 'INPUT TYPE COMES HERE', // TODO: this is be dependent on type
-      },
-      [CedarModel.valueConstraints]: {
-        keys: 'VALUE CONSTRAINTS COME HERE', // TODO: this is be dependent on type
-      },
-      [JsonSchema.properties]: typeSpecificProperties,
-      [JsonSchema.required]: [JsonSchema.atValue], // TODO: this might be dependent on type
-      // ...this.macroSchemaNameAndDescription(),
-      // ...this.macroProvenance(),
-      [JsonSchema.schemaVersion]: this.schema_schemaVersion,
-      [TemplateProperty.additionalProperties]: false,
-      // ...this.macroStatusAndVersion(),
-      [CedarModel.schema]: CedarSchema.CURRENT,
-    };
   }
 }

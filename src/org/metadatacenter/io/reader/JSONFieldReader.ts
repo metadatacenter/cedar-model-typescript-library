@@ -2,15 +2,9 @@ import { JsonNode, JsonNodeClass } from '../../model/cedar/types/basic-types/Jso
 import { ParsingResult } from '../../model/cedar/util/compare/ParsingResult';
 import { CedarJsonPath } from '../../model/cedar/util/path/CedarJsonPath';
 import { CedarField } from '../../model/cedar/field/CedarField';
-import { CedarArtifactId } from '../../model/cedar/types/beans/CedarArtifactId';
 import { ReaderUtil } from './ReaderUtil';
 import { JsonSchema } from '../../model/cedar/constants/JsonSchema';
 import { TemplateProperty } from '../../model/cedar/constants/TemplateProperty';
-import { CedarUser } from '../../model/cedar/types/beans/CedarUser';
-import { CedarDate } from '../../model/cedar/types/beans/CedarDate';
-import { SchemaVersion } from '../../model/cedar/types/beans/SchemaVersion';
-import { PavVersion } from '../../model/cedar/types/beans/PavVersion';
-import { BiboStatus } from '../../model/cedar/types/beans/BiboStatus';
 import { ObjectComparator } from '../../model/cedar/util/compare/ObjectComparator';
 import { CedarArtifactType } from '../../model/cedar/types/beans/CedarArtifactType';
 import { JavascriptType } from '../../model/cedar/types/beans/JavascriptType';
@@ -42,12 +36,11 @@ import { JSONReaderBehavior } from '../../behavior/JSONReaderBehavior';
 import { JSONFieldReaderResult } from './JSONFieldReaderResult';
 import { JSONFieldWriter } from '../writer/JSONFieldWriter';
 import { CedarUnknownField } from '../../model/cedar/field/CedarUnknownField';
+import { JSONAbstractArtifactReader } from './JSONAbstractArtifactReader';
 
-export class JSONFieldReader {
-  private behavior: JSONReaderBehavior;
-
+export class JSONFieldReader extends JSONAbstractArtifactReader {
   private constructor(behavior: JSONReaderBehavior) {
-    this.behavior = behavior;
+    super(behavior);
   }
 
   public static getStrict(): JSONFieldReader {
@@ -103,20 +96,9 @@ export class JSONFieldReader {
     return new JSONFieldReaderResult(field, parsingResult, fieldSourceObject);
   }
 
-  private static readNonReportableAttributes(field: CedarField, fieldSourceObject: JsonNode) {
-    // Read in non-reportable properties
-    field.at_id = CedarArtifactId.forValue(ReaderUtil.getString(fieldSourceObject, JsonSchema.atId));
-    field.title = ReaderUtil.getString(fieldSourceObject, TemplateProperty.title);
-    field.description = ReaderUtil.getString(fieldSourceObject, TemplateProperty.description);
-    field.schema_name = ReaderUtil.getString(fieldSourceObject, JsonSchema.schemaName);
-    field.schema_description = ReaderUtil.getString(fieldSourceObject, JsonSchema.schemaDescription);
-    field.pav_createdBy = CedarUser.forValue(ReaderUtil.getString(fieldSourceObject, JsonSchema.pavCreatedBy));
-    field.pav_createdOn = CedarDate.forValue(ReaderUtil.getString(fieldSourceObject, JsonSchema.pavCreatedOn));
-    field.oslc_modifiedBy = CedarUser.forValue(ReaderUtil.getString(fieldSourceObject, JsonSchema.oslcModifiedBy));
-    field.pav_lastUpdatedOn = CedarDate.forValue(ReaderUtil.getString(fieldSourceObject, JsonSchema.pavLastUpdatedOn));
-    field.schema_schemaVersion = SchemaVersion.forValue(ReaderUtil.getString(fieldSourceObject, JsonSchema.schemaVersion));
-    field.pav_version = PavVersion.forValue(ReaderUtil.getString(fieldSourceObject, JsonSchema.pavVersion));
-    field.bibo_status = BiboStatus.forValue(ReaderUtil.getString(fieldSourceObject, JsonSchema.biboStatus));
+  protected static readNonReportableAttributes(field: CedarField, fieldSourceObject: JsonNode) {
+    super.readNonReportableAttributes(field, fieldSourceObject);
+    // Read field-specific nodes
     field.skos_prefLabel = ReaderUtil.getString(fieldSourceObject, CedarModel.skosPrefLabel);
   }
 

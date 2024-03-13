@@ -1,4 +1,4 @@
-import { CedarAbstractArtifact } from './CedarAbstractArtifact';
+import { CedarAbstractArtifact } from '../../model/cedar/CedarAbstractArtifact';
 import { JsonNode, JsonNodeClass } from '../../model/cedar/types/basic-types/JsonNode';
 import { JsonSchema } from '../../model/cedar/constants/JsonSchema';
 import { JSONAtomicWriter } from './JSONAtomicWriter';

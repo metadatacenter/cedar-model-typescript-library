@@ -1,7 +1,6 @@
 import { CedarTemplate } from '../../../../../../src/org/metadatacenter/model/cedar/template/CedarTemplate';
 import { CedarWriters } from '../../../../../../src/org/metadatacenter/io/writer/CedarWriters';
 import { JSONTemplateWriter } from '../../../../../../src/org/metadatacenter/io/writer/JSONTemplateWriter';
-import { TestUtil } from '../../../../../TestUtil';
 
 describe('CedarTemplate', () => {
   test('creates empty with null values', () => {

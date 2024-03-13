@@ -81,7 +81,23 @@ export class ReaderUtil {
   }
 
   public static deepClone(obj: object) {
-    return JSON.parse(JSON.stringify(obj));
+    //return JSON.parse(JSON.stringify(obj));
+    return this.deepUnfreeze(obj);
+  }
+
+  public static deepUnfreeze(object: any): any {
+    if (object === null || (typeof object !== 'object' && typeof object !== 'function')) {
+      return object;
+    }
+
+    // Create a shallow clone for array or object
+    const clone = Array.isArray(object) ? object.slice() : { ...object };
+
+    Object.getOwnPropertyNames(clone).forEach((prop) => {
+      clone[prop] = this.deepUnfreeze(clone[prop]);
+    });
+
+    return clone;
   }
 
   public static deepFreeze(object: any) {
@@ -107,5 +123,11 @@ export class ReaderUtil {
 
   static getURI(node: JsonNode, key: string): URI {
     return new URI(this.getStringOrEmpty(node, key));
+  }
+
+  static deleteNodeKey(node: JsonNode, key: string) {
+    if (Object.hasOwn(node, key)) {
+      delete node[key];
+    }
   }
 }

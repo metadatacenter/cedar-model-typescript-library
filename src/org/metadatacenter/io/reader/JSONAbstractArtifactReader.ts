@@ -10,15 +10,17 @@ import { CedarDate } from '../../model/cedar/types/beans/CedarDate';
 import { SchemaVersion } from '../../model/cedar/types/beans/SchemaVersion';
 import { PavVersion } from '../../model/cedar/types/beans/PavVersion';
 import { BiboStatus } from '../../model/cedar/types/beans/BiboStatus';
+import { CedarArtifactType } from '../../model/cedar/types/beans/CedarArtifactType';
 
 export abstract class JSONAbstractArtifactReader {
   protected behavior: JSONReaderBehavior;
+  protected knownArtifactType: CedarArtifactType = CedarArtifactType.NULL;
 
   protected constructor(behavior: JSONReaderBehavior) {
     this.behavior = behavior;
   }
 
-  protected static readNonReportableAttributes(container: CedarAbstractArtifact, sourceObject: JsonNode): void {
+  protected readNonReportableAttributes(container: CedarAbstractArtifact, sourceObject: JsonNode): void {
     // Read in non-reportable properties
     container.at_id = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, JsonSchema.atId));
     container.title = ReaderUtil.getString(sourceObject, TemplateProperty.title);

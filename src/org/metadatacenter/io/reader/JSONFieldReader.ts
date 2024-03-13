@@ -91,23 +91,18 @@ export class JSONFieldReader extends JSONAbstractArtifactReader {
   public readFromObject(fieldSourceObject: JsonNode, path: CedarJsonPath): JSONFieldReaderResult {
     const parsingResult: ParsingResult = new ParsingResult();
     const field: CedarField = JSONFieldReader.readFieldSpecificAttributes(fieldSourceObject, parsingResult, path);
-    JSONFieldReader.readNonReportableAttributes(field, fieldSourceObject);
-    JSONFieldReader.readReportableAttributes(field, fieldSourceObject, parsingResult, path);
+    this.readNonReportableAttributes(field, fieldSourceObject);
+    this.readReportableAttributes(field, fieldSourceObject, parsingResult, path);
     return new JSONFieldReaderResult(field, parsingResult, fieldSourceObject);
   }
 
-  protected static readNonReportableAttributes(field: CedarField, fieldSourceObject: JsonNode) {
+  protected readNonReportableAttributes(field: CedarField, fieldSourceObject: JsonNode) {
     super.readNonReportableAttributes(field, fieldSourceObject);
     // Read field-specific nodes
     field.skos_prefLabel = ReaderUtil.getString(fieldSourceObject, CedarModel.skosPrefLabel);
   }
 
-  private static readReportableAttributes(
-    field: CedarField,
-    fieldSourceObject: JsonNode,
-    parsingResult: ParsingResult,
-    path: CedarJsonPath,
-  ) {
+  private readReportableAttributes(field: CedarField, fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath) {
     // Read and validate, but do not store top level @type
 
     // Read and validate, but do not store top level @context

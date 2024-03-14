@@ -1,5 +1,4 @@
 import { AbstractArtifactBuilder } from '../AbstractArtifacBuilder';
-import { CedarAbstractArtifact } from '../CedarAbstractArtifact';
 import { CedarField } from './CedarField';
 
 export abstract class FieldBuilder extends AbstractArtifactBuilder {

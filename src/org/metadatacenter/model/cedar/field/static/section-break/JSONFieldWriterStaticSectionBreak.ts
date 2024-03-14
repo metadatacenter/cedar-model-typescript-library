@@ -1,5 +1,5 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
-import { JSONFieldWriter } from '../../../../../io/writer/JSONFieldWriter';
+import { JSONFieldWriterInternal } from '../../../../../io/writer/JSONFieldWriterInternal';
 import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
 import { CedarWriters } from '../../../../../io/writer/CedarWriters';
 import { CedarStaticSectionBreakField } from './CedarStaticSectionBreakField';
@@ -11,7 +11,7 @@ import { TemplateProperty } from '../../../constants/TemplateProperty';
 import { CedarSchema } from '../../../types/beans/CedarSchema';
 import { AdditionalProperties } from '../../../types/beans/AdditionalProperties';
 
-export class JSONFieldWriterStaticSectionsBreak extends JSONFieldWriter {
+export class JSONFieldWriterStaticSectionsBreak extends JSONFieldWriterInternal {
   constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
     super(behavior, writers);
   }

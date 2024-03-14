@@ -34,7 +34,7 @@ import { CedarFieldType } from '../../model/cedar/types/beans/CedarFieldType';
 import { JSONFieldReaderControlledTerm } from '../../model/cedar/field/dynamic/controlled-term/JSONFieldReaderControlledTerm';
 import { JSONReaderBehavior } from '../../behavior/JSONReaderBehavior';
 import { JSONFieldReaderResult } from './JSONFieldReaderResult';
-import { JSONFieldWriter } from '../writer/JSONFieldWriter';
+import { JSONFieldWriterInternal } from '../writer/JSONFieldWriterInternal';
 import { CedarUnknownField } from '../../model/cedar/field/CedarUnknownField';
 import { JSONAbstractArtifactReader } from './JSONAbstractArtifactReader';
 import { CedarContainerChildInfo } from '../../model/cedar/types/beans/CedarContainerChildInfo';
@@ -215,7 +215,7 @@ export class JSONFieldReader extends JSONAbstractArtifactReader {
     return fieldType;
   }
 
-  static getRoundTripComparisonResult(jsonFieldReaderResult: JSONFieldReaderResult, writer: JSONFieldWriter): ParsingResult {
+  static getRoundTripComparisonResult(jsonFieldReaderResult: JSONFieldReaderResult, writer: JSONFieldWriterInternal): ParsingResult {
     const compareResult = new ParsingResult();
     ObjectComparator.compareBothWays(
       compareResult,

@@ -5,7 +5,8 @@ import { JSONFieldReader } from './org/metadatacenter/io/reader/JSONFieldReader'
 import { JSONElementReader } from './org/metadatacenter/io/reader/JSONElementReader';
 import { JSONTemplateReader } from './org/metadatacenter/io/reader/JSONTemplateReader';
 
-import { JSONFieldWriterExternal } from './org/metadatacenter/io/writer/JSONFieldWriterExternal';
+import { JSONFieldWriterInternal } from './org/metadatacenter/io/writer/JSONFieldWriterInternal';
+import { JSONFieldWriter } from './org/metadatacenter/io/writer/JSONFieldWriter';
 import { JSONElementWriter } from './org/metadatacenter/io/writer/JSONElementWriter';
 import { JSONTemplateWriter } from './org/metadatacenter/io/writer/JSONTemplateWriter';
 
@@ -44,7 +45,7 @@ export { JSONFieldReader };
 export { JSONElementReader };
 export { JSONTemplateReader };
 
-export { JSONFieldWriterExternal as JSONFieldWriter };
+export { JSONFieldWriterInternal as JSONFieldWriter };
 export { JSONElementWriter };
 export { JSONTemplateWriter };
 

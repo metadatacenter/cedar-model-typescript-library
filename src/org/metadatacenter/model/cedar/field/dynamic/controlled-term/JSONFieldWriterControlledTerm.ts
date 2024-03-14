@@ -1,14 +1,14 @@
 import { JsonNode, JsonNodeClass } from '../../../types/basic-types/JsonNode';
 import { CedarModel } from '../../../constants/CedarModel';
 import { CedarControlledTermField } from './CedarControlledTermField';
-import { JSONFieldWriter } from '../../../../../io/writer/JSONFieldWriter';
+import { JSONFieldWriterInternal } from '../../../../../io/writer/JSONFieldWriterInternal';
 import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
 import { CedarWriters } from '../../../../../io/writer/CedarWriters';
 import { JsonSchema } from '../../../constants/JsonSchema';
 import { CedarJSONTemplateFieldContentDynamic } from '../../../util/serialization/CedarJSONTemplateFieldContentDynamic';
 import { CedarContainerChildInfo } from '../../../types/beans/CedarContainerChildInfo';
 
-export class JSONFieldWriterControlledTerm extends JSONFieldWriter {
+export class JSONFieldWriterControlledTerm extends JSONFieldWriterInternal {
   constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
     super(behavior, writers);
   }

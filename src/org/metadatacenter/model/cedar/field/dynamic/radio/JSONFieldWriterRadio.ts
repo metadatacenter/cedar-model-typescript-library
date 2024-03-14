@@ -1,12 +1,12 @@
 import { JsonNode, JsonNodeClass } from '../../../types/basic-types/JsonNode';
 import { CedarModel } from '../../../constants/CedarModel';
-import { JSONFieldWriter } from '../../../../../io/writer/JSONFieldWriter';
+import { JSONFieldWriterInternal } from '../../../../../io/writer/JSONFieldWriterInternal';
 import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
 import { CedarWriters } from '../../../../../io/writer/CedarWriters';
 import { CedarRadioField } from './CedarRadioField';
 import { CedarContainerChildInfo } from '../../../types/beans/CedarContainerChildInfo';
 
-export class JSONFieldWriterRadio extends JSONFieldWriter {
+export class JSONFieldWriterRadio extends JSONFieldWriterInternal {
   constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
     super(behavior, writers);
   }

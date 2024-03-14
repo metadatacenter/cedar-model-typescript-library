@@ -3,12 +3,12 @@ import { CedarModel } from '../../../constants/CedarModel';
 import { TimeFormat } from '../../../types/beans/TimeFormat';
 import { TemporalGranularity } from '../../../types/beans/TemporalGranularity';
 import { CedarTemporalField } from './CedarTemporalField';
-import { JSONFieldWriter } from '../../../../../io/writer/JSONFieldWriter';
+import { JSONFieldWriterInternal } from '../../../../../io/writer/JSONFieldWriterInternal';
 import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
 import { CedarWriters } from '../../../../../io/writer/CedarWriters';
 import { CedarContainerChildInfo } from '../../../types/beans/CedarContainerChildInfo';
 
-export class JSONFieldWriterTemporal extends JSONFieldWriter {
+export class JSONFieldWriterTemporal extends JSONFieldWriterInternal {
   constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
     super(behavior, writers);
   }

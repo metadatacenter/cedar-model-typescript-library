@@ -17,7 +17,7 @@ export class YAMLTemplateWriter extends YAMLAbstractArtifactWriter {
     return new YAMLTemplateWriter(behavior, writers);
   }
 
-  getAsYamlNode(template: CedarTemplate): JsonNode {
+  public getAsYamlNode(template: CedarTemplate): JsonNode {
     // build the final object
     return {
       [JsonSchema.atId]: this.atomicWriter.write(template.at_id),
@@ -31,7 +31,7 @@ export class YAMLTemplateWriter extends YAMLAbstractArtifactWriter {
     };
   }
 
-  getAsYamlString(template: CedarTemplate): string {
+  public getAsYamlString(template: CedarTemplate): string {
     return SimpleYamlSerializer.serialize(this.getAsYamlNode(template));
   }
 }

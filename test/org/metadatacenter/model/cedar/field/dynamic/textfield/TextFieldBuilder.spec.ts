@@ -1,12 +1,4 @@
-import {
-  CedarBuilders,
-  CedarDate,
-  CedarTextField,
-  CedarWriters,
-  JSONFieldWriter,
-  SchemaVersion,
-  TextFieldBuilder,
-} from '../../../../../../../../src';
+import { CedarBuilders, CedarDate, CedarTextField, CedarWriters, SchemaVersion, TextFieldBuilder } from '../../../../../../../../src';
 
 describe('TextFieldBuilder', () => {
   test('creates text field with builder', () => {
@@ -35,7 +27,7 @@ describe('TextFieldBuilder', () => {
       .build();
 
     const writers: CedarWriters = CedarWriters.getStrict();
-    const jsonWriter: JSONFieldWriter = writers.getJSONFieldWriterForField(field);
+    const jsonWriter = writers.getJSONFieldWriterForField(field);
 
     const stringified = jsonWriter.getAsJsonString(field);
     const backparsed = JSON.parse(stringified);

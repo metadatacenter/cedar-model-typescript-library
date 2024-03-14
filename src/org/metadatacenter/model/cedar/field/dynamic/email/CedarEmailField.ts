@@ -2,13 +2,13 @@ import { SchemaVersion } from '../../../types/beans/SchemaVersion';
 import { CedarField } from '../../CedarField';
 import { CedarFieldType } from '../../../types/beans/CedarFieldType';
 import { CedarArtifactType } from '../../../types/beans/CedarArtifactType';
-import { ValueConstraintsEmailField } from './ValueConstraintsEmailField';
+import { ValueConstraints } from '../../ValueConstraints';
 
 export class CedarEmailField extends CedarField {
   private constructor() {
     super();
     this.cedarFieldType = CedarFieldType.EMAIL;
-    this.valueConstraints = new ValueConstraintsEmailField();
+    this.valueConstraints = new ValueConstraints();
     this.cedarArtifactType = CedarArtifactType.TEMPLATE_FIELD;
   }
 

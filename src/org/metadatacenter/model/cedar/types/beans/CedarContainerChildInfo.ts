@@ -16,6 +16,7 @@ export class CedarContainerChildInfo {
   private _maxItems: NullableNumber = null;
 
   private _requiredValue: boolean = false;
+  private _hidden: boolean = false;
 
   public static empty(): CedarContainerChildInfo {
     return new CedarContainerChildInfo('');
@@ -99,5 +100,13 @@ export class CedarContainerChildInfo {
 
   set requiredValue(value: boolean) {
     this._requiredValue = value;
+  }
+
+  get hidden(): boolean {
+    return this._hidden;
+  }
+
+  set hidden(value: boolean) {
+    this._hidden = value;
   }
 }

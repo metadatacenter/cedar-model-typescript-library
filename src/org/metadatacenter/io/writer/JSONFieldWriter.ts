@@ -25,16 +25,20 @@ export abstract class JSONFieldWriter extends JSONAbstractArtifactWriter {
     requiredObject[JsonSchema.required] = [JsonSchema.atValue];
   }
 
-  protected expandUINodeForJSON(_uiNode: JsonNode, _field: CedarField): void {}
+  protected expandUINodeForJSON(uiNode: JsonNode, _field: CedarField, childInfo: CedarContainerChildInfo): void {
+    if (childInfo.hidden) {
+      uiNode[CedarModel.Ui.hidden] = childInfo.hidden;
+    }
+  }
 
-  protected buildUIObject(field: CedarField): JsonNode {
+  protected buildUIObject(field: CedarField, childInfo: CedarContainerChildInfo): JsonNode {
     const uiNode: JsonNode = {
       [CedarModel.inputType]: this.atomicWriter.write(field.cedarFieldType.getUiInputType()),
     };
     const uiObject: JsonNode = {
       [CedarModel.ui]: uiNode,
     };
-    this.expandUINodeForJSON(uiNode, field);
+    this.expandUINodeForJSON(uiNode, field, childInfo);
     return uiObject;
   }
 
@@ -53,7 +57,7 @@ export abstract class JSONFieldWriter extends JSONAbstractArtifactWriter {
     return vcObject;
   }
 
-  getAsJsonString(field: CedarField, indent: number = 2): string {
+  public getAsJsonString(field: CedarField, indent: number = 2): string {
     return JSON.stringify(this.getAsJsonNode(field, CedarContainerChildInfo.empty()), null, indent);
   }
 
@@ -67,7 +71,7 @@ export abstract class JSONFieldWriter extends JSONAbstractArtifactWriter {
     this.expandRequiredNodeForJSON(requiredObject);
 
     // Build ui wrapper
-    const uiObject: JsonNode = this.buildUIObject(field);
+    const uiObject: JsonNode = this.buildUIObject(field, childInfo);
 
     // Build value constraints wrapper
     const vcObject: JsonNode = this.buildValueConstraintsObject(field, childInfo);

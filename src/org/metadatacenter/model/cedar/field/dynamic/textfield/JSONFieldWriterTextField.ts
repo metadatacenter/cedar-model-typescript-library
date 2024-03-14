@@ -11,7 +11,8 @@ export class JSONFieldWriterTextField extends JSONFieldWriter {
     super(behavior, writers);
   }
 
-  override expandUINodeForJSON(uiNode: JsonNode, field: CedarTextField): void {
+  override expandUINodeForJSON(uiNode: JsonNode, field: CedarTextField, childInfo: CedarContainerChildInfo): void {
+    super.expandUINodeForJSON(uiNode, field, childInfo);
     if (field.valueRecommendationEnabled) {
       uiNode[CedarModel.valueRecommendationEnabled] = field.valueRecommendationEnabled;
     }

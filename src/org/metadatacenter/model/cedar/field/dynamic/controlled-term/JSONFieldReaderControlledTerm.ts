@@ -4,7 +4,6 @@ import { CedarJsonPath } from '../../../util/path/CedarJsonPath';
 import { CedarControlledTermField } from './CedarControlledTermField';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { CedarModel } from '../../../constants/CedarModel';
-import { ValueConstraintsControlledTermField } from './ValueConstraintsControlledTermField';
 import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
 import { ControlledTermOntology } from './value-constraint/ontology/ControlledTermOntology';
 import { ControlledTermClass } from './value-constraint/class/ControlledTermClass';
@@ -22,21 +21,22 @@ export class JSONFieldReaderControlledTerm extends JSONFieldTypeSpecificReader {
     _path: CedarJsonPath,
   ): CedarControlledTermField {
     const field = CedarControlledTermField.buildEmptyWithNullValues();
+    this.readRequiredAndHidden(fieldSourceObject, childInfo);
+
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
-    field.valueRecommendationEnabled = ReaderUtil.getBoolean(uiNode, CedarModel.valueRecommendationEnabled);
+    if (uiNode) {
+      field.valueRecommendationEnabled = ReaderUtil.getBoolean(uiNode, CedarModel.valueRecommendationEnabled);
+    }
 
     field.skos_altLabel = ReaderUtil.getStringList(fieldSourceObject, CedarModel.skosAltLabel);
 
-    const vcTF = new ValueConstraintsControlledTermField();
-    field.valueConstraints = vcTF;
     const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
     if (valueConstraints != null) {
-      childInfo.requiredValue = ReaderUtil.getBoolean(valueConstraints, CedarModel.requiredValue);
-      vcTF.ontologies = this.getOntologies(ReaderUtil.getNodeList(valueConstraints, CedarModel.ontologies));
-      vcTF.classes = this.getClasses(ReaderUtil.getNodeList(valueConstraints, CedarModel.classes));
-      vcTF.branches = this.getBranches(ReaderUtil.getNodeList(valueConstraints, CedarModel.branches));
-      vcTF.valueSets = this.getValueSets(ReaderUtil.getNodeList(valueConstraints, CedarModel.valueSets));
-      vcTF.defaultValue = this.getDefaultValue(ReaderUtil.getNodeOrNull(valueConstraints, CedarModel.defaultValue));
+      field.valueConstraints.ontologies = this.getOntologies(ReaderUtil.getNodeList(valueConstraints, CedarModel.ontologies));
+      field.valueConstraints.classes = this.getClasses(ReaderUtil.getNodeList(valueConstraints, CedarModel.classes));
+      field.valueConstraints.branches = this.getBranches(ReaderUtil.getNodeList(valueConstraints, CedarModel.branches));
+      field.valueConstraints.valueSets = this.getValueSets(ReaderUtil.getNodeList(valueConstraints, CedarModel.valueSets));
+      field.valueConstraints.defaultValue = this.getDefaultValue(ReaderUtil.getNodeOrNull(valueConstraints, CedarModel.defaultValue));
     }
     return field;
   }

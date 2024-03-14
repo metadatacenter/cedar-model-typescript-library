@@ -1,15 +1,15 @@
 import { SchemaVersion } from '../../../types/beans/SchemaVersion';
 import { CedarField } from '../../CedarField';
 import { CedarFieldType } from '../../../types/beans/CedarFieldType';
-import { ValueConstraintsLinkField } from './ValueConstraintsLinkField';
 import { CedarArtifactType } from '../../../types/beans/CedarArtifactType';
+import { ValueConstraints } from '../../ValueConstraints';
 
 export class CedarLinkField extends CedarField {
   private constructor() {
     super();
     this.cedarFieldType = CedarFieldType.LINK;
     this.cedarArtifactType = CedarArtifactType.TEMPLATE_FIELD;
-    this.valueConstraints = new ValueConstraintsLinkField();
+    this.valueConstraints = new ValueConstraints();
   }
 
   public static buildEmptyWithNullValues(): CedarLinkField {

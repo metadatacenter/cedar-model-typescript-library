@@ -4,7 +4,7 @@ import { ComparisonError } from '../../../../src/org/metadatacenter/model/cedar/
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
 import { CedarJsonPath } from '../../../../src/org/metadatacenter/model/cedar/util/path/CedarJsonPath';
 import { JsonSchema } from '../../../../src/org/metadatacenter/model/cedar/constants/JsonSchema';
-import { CedarWriters, JSONFieldReader, JSONFieldWriter } from '../../../../src';
+import { CedarWriters, JSONFieldReader } from '../../../../src';
 
 describe('JSONFieldReader - field-001', () => {
   test('reads a text field with a lot of features', () => {
@@ -16,7 +16,7 @@ describe('JSONFieldReader - field-001', () => {
     expect(parsingResult.wasSuccessful()).toBe(true);
 
     const writers: CedarWriters = CedarWriters.getStrict();
-    const writer: JSONFieldWriter = writers.getJSONFieldWriterForField(jsonFieldReaderResult.field);
+    const writer = writers.getJSONFieldWriterForField(jsonFieldReaderResult.field);
 
     const compareResult: ParsingResult = JSONFieldReader.getRoundTripComparisonResult(jsonFieldReaderResult, writer);
 

@@ -90,19 +90,19 @@ export class CedarWriters {
     return new CedarWriters(behavior);
   }
 
-  getJSONTemplateWriter(): JSONTemplateWriter {
+  public getJSONTemplateWriter(): JSONTemplateWriter {
     return this.jsonTemplateWriter;
   }
 
-  getJSONElementWriter(): JSONElementWriter {
+  public getJSONElementWriter(): JSONElementWriter {
     return this.jsonElementWriter;
   }
 
-  getJSONAtomicWriter() {
+  public getJSONAtomicWriter() {
     return this.jsonAtomicWriter;
   }
 
-  getJSONFieldWriterForType(cedarFieldOrType: CedarFieldType): JSONFieldWriter {
+  public getJSONFieldWriterForType(cedarFieldOrType: CedarFieldType): JSONFieldWriter {
     let cedarFieldType: CedarFieldType;
     if (cedarFieldOrType instanceof CedarField) {
       cedarFieldType = cedarFieldOrType.cedarFieldType;
@@ -122,11 +122,11 @@ export class CedarWriters {
     throw new Error(`No writer found for field type: ${cedarFieldType.getValue()}`);
   }
 
-  getYAMLTemplateWriter(): YAMLTemplateWriter {
+  public getYAMLTemplateWriter(): YAMLTemplateWriter {
     return this.yamlTemplateWriter;
   }
 
-  getJSONWriterForValueConstraint(object: ControlledTermAbstractValueConstraint): AbstractJSONControlledTermValueConstraintWriter {
+  public getJSONWriterForValueConstraint(object: ControlledTermAbstractValueConstraint): AbstractJSONControlledTermValueConstraintWriter {
     const className = object.className;
     const writer = this.valueConstraintsWriters.get(className);
     if (writer) {
@@ -135,7 +135,7 @@ export class CedarWriters {
     throw new Error(`No writer found for class type: ${className}`);
   }
 
-  getJSONFieldWriterForField(field: CedarField): JSONFieldWriter {
+  public getJSONFieldWriterForField(field: CedarField): JSONFieldWriter {
     return this.getJSONFieldWriterForType(field.cedarFieldType);
   }
 }

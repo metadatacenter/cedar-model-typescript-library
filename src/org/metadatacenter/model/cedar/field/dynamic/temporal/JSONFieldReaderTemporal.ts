@@ -4,7 +4,6 @@ import { CedarJsonPath } from '../../../util/path/CedarJsonPath';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { CedarModel } from '../../../constants/CedarModel';
 import { CedarTemporalField } from './CedarTemporalField';
-import { ValueConstraintsTemporalField } from './ValueConstraintsTemporalField';
 import { TemporalType } from '../../../types/beans/TemporalType';
 import { TimeFormat } from '../../../types/beans/TimeFormat';
 import { TemporalGranularity } from '../../../types/beans/TemporalGranularity';
@@ -19,6 +18,8 @@ export class JSONFieldReaderTemporal extends JSONFieldTypeSpecificReader {
     _path: CedarJsonPath,
   ): CedarTemporalField {
     const field = CedarTemporalField.buildEmptyWithNullValues();
+    this.readRequiredAndHidden(fieldSourceObject, childInfo);
+
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
     if (uiNode != null) {
       field.temporalGranularity = TemporalGranularity.forValue(ReaderUtil.getString(uiNode, CedarModel.temporalGranularity));
@@ -28,12 +29,9 @@ export class JSONFieldReaderTemporal extends JSONFieldTypeSpecificReader {
 
     field.skos_altLabel = ReaderUtil.getStringList(fieldSourceObject, CedarModel.skosAltLabel);
 
-    const vcTF = new ValueConstraintsTemporalField();
-    field.valueConstraints = vcTF;
     const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
     if (valueConstraints != null) {
-      childInfo.requiredValue = ReaderUtil.getBoolean(valueConstraints, CedarModel.requiredValue);
-      vcTF.temporalType = TemporalType.forValue(ReaderUtil.getString(valueConstraints, CedarModel.temporalType));
+      field.valueConstraints.temporalType = TemporalType.forValue(ReaderUtil.getString(valueConstraints, CedarModel.temporalType));
     }
     return field;
   }

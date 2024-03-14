@@ -74,4 +74,8 @@ export class CedarModel {
 
     static vsCollection: string = 'vsCollection';
   };
+
+  static Ui = class {
+    static hidden = 'hidden';
+  };
 }

@@ -13,7 +13,8 @@ export class JSONFieldWriterTemporal extends JSONFieldWriter {
     super(behavior, writers);
   }
 
-  override expandUINodeForJSON(uiNode: JsonNode, field: CedarTemporalField): void {
+  override expandUINodeForJSON(uiNode: JsonNode, field: CedarTemporalField, childInfo: CedarContainerChildInfo): void {
+    super.expandUINodeForJSON(uiNode, field, childInfo);
     if (field.timezoneEnabled) {
       uiNode[CedarModel.timezoneEnabled] = field.timezoneEnabled;
     }

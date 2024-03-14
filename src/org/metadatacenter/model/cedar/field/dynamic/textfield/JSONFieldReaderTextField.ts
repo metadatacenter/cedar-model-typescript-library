@@ -4,7 +4,6 @@ import { CedarJsonPath } from '../../../util/path/CedarJsonPath';
 import { CedarTextField } from './CedarTextField';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { CedarModel } from '../../../constants/CedarModel';
-import { ValueConstraintsTextField } from './ValueConstraintsTextField';
 import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
 import { CedarContainerChildInfo } from '../../../types/beans/CedarContainerChildInfo';
 
@@ -16,20 +15,19 @@ export class JSONFieldReaderTextField extends JSONFieldTypeSpecificReader {
     _path: CedarJsonPath,
   ): CedarTextField {
     const field = CedarTextField.buildEmptyWithNullValues();
+    this.readRequiredAndHidden(fieldSourceObject, childInfo);
+
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
     field.valueRecommendationEnabled = ReaderUtil.getBoolean(uiNode, CedarModel.valueRecommendationEnabled);
 
     field.skos_altLabel = ReaderUtil.getStringList(fieldSourceObject, CedarModel.skosAltLabel);
 
-    const vcTF = new ValueConstraintsTextField();
-    field.valueConstraints = vcTF;
     const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
     if (valueConstraints != null) {
-      childInfo.requiredValue = ReaderUtil.getBoolean(valueConstraints, CedarModel.requiredValue);
-      vcTF.defaultValue = ReaderUtil.getString(valueConstraints, CedarModel.defaultValue);
-      vcTF.minLength = ReaderUtil.getNumber(valueConstraints, CedarModel.minLength);
-      vcTF.maxLength = ReaderUtil.getNumber(valueConstraints, CedarModel.maxLength);
-      vcTF.regex = ReaderUtil.getString(valueConstraints, CedarModel.regex);
+      field.valueConstraints.defaultValue = ReaderUtil.getString(valueConstraints, CedarModel.defaultValue);
+      field.valueConstraints.minLength = ReaderUtil.getNumber(valueConstraints, CedarModel.minLength);
+      field.valueConstraints.maxLength = ReaderUtil.getNumber(valueConstraints, CedarModel.maxLength);
+      field.valueConstraints.regex = ReaderUtil.getString(valueConstraints, CedarModel.regex);
     }
     return field;
   }

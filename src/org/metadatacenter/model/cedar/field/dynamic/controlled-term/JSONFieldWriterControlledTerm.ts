@@ -17,7 +17,8 @@ export class JSONFieldWriterControlledTerm extends JSONFieldWriter {
     propertiesObject[JsonSchema.properties] = CedarJSONTemplateFieldContentDynamic.PROPERTIES_VERBATIM_CONTROLLED;
   }
 
-  override expandUINodeForJSON(uiNode: JsonNode, field: CedarControlledTermField): void {
+  override expandUINodeForJSON(uiNode: JsonNode, field: CedarControlledTermField, childInfo: CedarContainerChildInfo): void {
+    super.expandUINodeForJSON(uiNode, field, childInfo);
     if (field.valueRecommendationEnabled) {
       uiNode[CedarModel.valueRecommendationEnabled] = field.valueRecommendationEnabled;
     }

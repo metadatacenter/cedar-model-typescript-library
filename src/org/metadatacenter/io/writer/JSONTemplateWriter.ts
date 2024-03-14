@@ -66,11 +66,11 @@ export class JSONTemplateWriter extends JSONAbstractContainerArtifactWriter {
     return extendedProperties;
   }
 
-  getAsJsonString(template: CedarTemplate, indent: number = 2): string {
+  public getAsJsonString(template: CedarTemplate, indent: number = 2): string {
     return JSON.stringify(this.getAsJsonNode(template), null, indent);
   }
 
-  getAsJsonNode(template: CedarTemplate): JsonNode {
+  public getAsJsonNode(template: CedarTemplate): JsonNode {
     const extendedProperties: JsonNode = this.buildProperties(template);
 
     const templateUI: JsonNode = {

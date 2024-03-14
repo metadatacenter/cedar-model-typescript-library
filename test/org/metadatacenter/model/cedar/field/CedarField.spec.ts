@@ -1,5 +1,5 @@
 import { CedarTextField } from '../../../../../../src/org/metadatacenter/model/cedar/field/dynamic/textfield/CedarTextField';
-import { CedarWriters, JSONFieldWriter } from '../../../../../../src';
+import { CedarWriters } from '../../../../../../src';
 
 describe('CedarField', () => {
   test('creates empty field null values', () => {
@@ -7,7 +7,7 @@ describe('CedarField', () => {
     expect(cedarTextField).not.toBeNull();
 
     const writers: CedarWriters = CedarWriters.getStrict();
-    const writer: JSONFieldWriter = writers.getJSONFieldWriterForType(cedarTextField.cedarFieldType);
+    const writer = writers.getJSONFieldWriterForType(cedarTextField.cedarFieldType);
 
     const stringified = writer.getAsJsonString(cedarTextField);
 

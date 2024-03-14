@@ -5,7 +5,6 @@ import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { CedarModel } from '../../../constants/CedarModel';
 import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
 import { CedarCheckboxField } from './CedarCheckboxField';
-import { ValueConstraintsCheckboxField } from './ValueConstraintsCheckboxField';
 import { CedarCheckboxOption } from './CedarCheckboxOption';
 import { CedarContainerChildInfo } from '../../../types/beans/CedarContainerChildInfo';
 
@@ -17,12 +16,9 @@ export class JSONFieldReaderCheckbox extends JSONFieldTypeSpecificReader {
     _path: CedarJsonPath,
   ): CedarCheckboxField {
     const field = CedarCheckboxField.buildEmptyWithNullValues();
-
-    const vcCBF = new ValueConstraintsCheckboxField();
-    field.valueConstraints = vcCBF;
+    this.readRequiredAndHidden(fieldSourceObject, childInfo);
     const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
     if (valueConstraints != null) {
-      childInfo.requiredValue = ReaderUtil.getBoolean(valueConstraints, CedarModel.requiredValue);
       const literals: Array<JsonNode> = ReaderUtil.getNodeList(valueConstraints, CedarModel.literals);
       if (literals !== null) {
         literals.forEach((literal) => {
@@ -30,7 +26,7 @@ export class JSONFieldReaderCheckbox extends JSONFieldTypeSpecificReader {
           const selectedByDefault = ReaderUtil.getBoolean(literal, CedarModel.selectedByDefault);
           if (label != null) {
             const option = new CedarCheckboxOption(label, selectedByDefault);
-            vcCBF.literals.push(option);
+            field.valueConstraints.literals.push(option);
           }
         });
       }

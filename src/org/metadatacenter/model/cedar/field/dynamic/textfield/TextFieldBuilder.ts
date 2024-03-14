@@ -2,6 +2,7 @@ import { CedarTextField } from './CedarTextField';
 import { FieldBuilder } from '../../FieldBuilder';
 
 export class TextFieldBuilder extends FieldBuilder {
+  private requiredValue: boolean = false;
   private defaultValue: string | null = null;
   private minLength: number | null = null;
   private maxLength: number | null = null;
@@ -33,16 +34,22 @@ export class TextFieldBuilder extends FieldBuilder {
     return this;
   }
 
+  public withRequiredValue(requiredValue: boolean): TextFieldBuilder {
+    this.requiredValue = requiredValue;
+    return this;
+  }
+
   public build(): CedarTextField {
-    const field = CedarTextField.buildEmptyWithNullValues();
-    super.buildInternal(field);
+    const textField = CedarTextField.buildEmptyWithNullValues();
+    super.buildInternal(textField);
 
-    field.valueConstraints.defaultValue = this.defaultValue;
-    field.valueConstraints.minLength = this.minLength;
-    field.valueConstraints.maxLength = this.maxLength;
-    field.valueConstraints.regex = this.regex;
-    field.valueRecommendationEnabled = this.valueRecommendationEnabled;
+    textField.valueConstraints.requiredValue = this.requiredValue;
+    textField.valueConstraints.defaultValue = this.defaultValue;
+    textField.valueConstraints.minLength = this.minLength;
+    textField.valueConstraints.maxLength = this.maxLength;
+    textField.valueConstraints.regex = this.regex;
+    textField.valueRecommendationEnabled = this.valueRecommendationEnabled;
 
-    return field;
+    return textField;
   }
 }

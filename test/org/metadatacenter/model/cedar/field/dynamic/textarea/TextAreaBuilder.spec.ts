@@ -1,18 +1,19 @@
 import {
   CedarBuilders,
   CedarDate,
+  CedarTextArea,
   CedarTextField,
   CedarWriters,
   JSONFieldWriter,
   SchemaVersion,
-  TextFieldBuilder,
+  TextAreaBuilder,
 } from '../../../../../../../../src';
 
-describe('TextFieldBuilder', () => {
-  test('creates text field with builder', () => {
-    const builder: TextFieldBuilder = CedarBuilders.textFieldBuilder();
+describe('TextAreaBuilder', () => {
+  test('creates text area with builder', () => {
+    const builder: TextAreaBuilder = CedarBuilders.textAreaBuilder();
     const now = CedarDate.now();
-    const field: CedarTextField = builder
+    const field: CedarTextArea = builder
       .withAtId('https://repo.metadatacenter.org/template-fields/f38b5ef4-a078-4d82-90c0-a9a721ad5ecf')
       .withTitle('Text field title')
       .withDescription('Text field description')
@@ -27,11 +28,6 @@ describe('TextFieldBuilder', () => {
       .withSchemaDescription('Schema description of the template')
       .withPreferredLabel('Preferred label')
       .withAlternateLabels(['Alt label 1', 'Alt label 2', 'Alt label 3'])
-      .withDefaultValue('default')
-      .withMinLength(10)
-      .withMaxLength(100)
-      .withRegex('regex')
-      .withSuggestions(true)
       .withRequiredValue(true)
       .build();
 
@@ -48,8 +44,7 @@ describe('TextFieldBuilder', () => {
     expect(backparsed['description']).toBe('Text field description');
 
     expect(backparsed['_ui']).not.toBeNull();
-    expect(backparsed['_ui']['inputType']).toBe('textfield');
-    expect(backparsed['_ui']['valueRecommendationEnabled']).toBe(true);
+    expect(backparsed['_ui']['inputType']).toBe('textarea');
 
     expect(backparsed['properties']).not.toBeNull();
     expect(backparsed['required']).not.toBeNull();
@@ -73,9 +68,5 @@ describe('TextFieldBuilder', () => {
     expect(backparsed['skos:altLabel']).toStrictEqual(['Alt label 1', 'Alt label 2', 'Alt label 3']);
 
     expect(backparsed['_valueConstraints']['requiredValue']).toBe(true);
-    expect(backparsed['_valueConstraints']['regex']).toBe('regex');
-    expect(backparsed['_valueConstraints']['defaultValue']).toBe('default');
-    expect(backparsed['_valueConstraints']['minLength']).toBe(10);
-    expect(backparsed['_valueConstraints']['maxLength']).toBe(100);
   });
 });

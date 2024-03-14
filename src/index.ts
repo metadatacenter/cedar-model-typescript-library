@@ -21,6 +21,7 @@ import { CedarPhoneNumberField } from './org/metadatacenter/model/cedar/field/dy
 import { CedarRadioField } from './org/metadatacenter/model/cedar/field/dynamic/radio/CedarRadioField';
 import { CedarTemporalField } from './org/metadatacenter/model/cedar/field/dynamic/temporal/CedarTemporalField';
 import { CedarTextArea } from './org/metadatacenter/model/cedar/field/dynamic/textarea/CedarTextArea';
+import { TextAreaBuilder } from './org/metadatacenter/model/cedar/field/dynamic/textarea/TextAreaBuilder';
 import { CedarTextField } from './org/metadatacenter/model/cedar/field/dynamic/textfield/CedarTextField';
 import { TextFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/textfield/TextFieldBuilder';
 import { CedarStaticImageField } from './org/metadatacenter/model/cedar/field/static/image/CedarStaticImageField';
@@ -58,7 +59,7 @@ export { CedarNumericField };
 export { CedarPhoneNumberField };
 export { CedarRadioField };
 export { CedarTemporalField };
-export { CedarTextArea };
+export { CedarTextArea, TextAreaBuilder };
 export { CedarTextField, TextFieldBuilder };
 export { CedarStaticImageField };
 export { CedarStaticPageBreakField };

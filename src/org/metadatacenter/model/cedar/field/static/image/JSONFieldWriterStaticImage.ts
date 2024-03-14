@@ -8,10 +8,10 @@ import { CedarModel } from '../../../constants/CedarModel';
 import { JavascriptType } from '../../../types/beans/JavascriptType';
 import { TemplateProperty } from '../../../constants/TemplateProperty';
 import { CedarSchema } from '../../../types/beans/CedarSchema';
-import { JSONFieldWriter } from '../../../../../io/writer/JSONFieldWriter';
+import { JSONFieldWriterInternal } from '../../../../../io/writer/JSONFieldWriterInternal';
 import { AdditionalProperties } from '../../../types/beans/AdditionalProperties';
 
-export class JSONFieldWriterStaticImage extends JSONFieldWriter {
+export class JSONFieldWriterStaticImage extends JSONFieldWriterInternal {
   constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
     super(behavior, writers);
   }

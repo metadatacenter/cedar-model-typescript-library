@@ -1,8 +1,8 @@
 import { ValueConstraints } from '../../ValueConstraints';
-import { CedarRadioOption } from './CedarRadioOption';
+import { RadioOption } from './RadioOption';
 
 export class ValueConstraintsRadioField extends ValueConstraints {
-  literals: Array<CedarRadioOption> = [];
+  literals: Array<RadioOption> = [];
 
   public constructor() {
     super();

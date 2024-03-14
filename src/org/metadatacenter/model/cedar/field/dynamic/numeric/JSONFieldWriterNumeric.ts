@@ -1,12 +1,12 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
-import { CedarJSONTemplateFieldContentDynamic } from '../../../util/serialization/CedarJSONTemplateFieldContentDynamic';
+import { JSONTemplateFieldContentDynamic } from '../../../util/serialization/JSONTemplateFieldContentDynamic';
 import { JsonSchema } from '../../../constants/JsonSchema';
 import { JSONFieldWriterInternal } from '../../../../../io/writer/JSONFieldWriterInternal';
 import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
 import { CedarWriters } from '../../../../../io/writer/CedarWriters';
 import { CedarModel } from '../../../constants/CedarModel';
-import { CedarNumericField } from './CedarNumericField';
-import { CedarContainerChildInfo } from '../../../types/beans/CedarContainerChildInfo';
+import { NumericField } from './NumericField';
+import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 
 export class JSONFieldWriterNumeric extends JSONFieldWriterInternal {
   constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
@@ -14,14 +14,14 @@ export class JSONFieldWriterNumeric extends JSONFieldWriterInternal {
   }
 
   override expandPropertiesNodeForJSON(propertiesObject: JsonNode): void {
-    propertiesObject[JsonSchema.properties] = CedarJSONTemplateFieldContentDynamic.PROPERTIES_VERBATIM_NUMERIC;
+    propertiesObject[JsonSchema.properties] = JSONTemplateFieldContentDynamic.PROPERTIES_VERBATIM_NUMERIC;
   }
 
   override expandRequiredNodeForJSON(requiredObject: JsonNode): void {
     requiredObject[JsonSchema.required] = [JsonSchema.atValue, JsonSchema.atType];
   }
 
-  override expandValueConstraintsNodeForJSON(vcNode: JsonNode, field: CedarNumericField, childInfo: CedarContainerChildInfo): void {
+  override expandValueConstraintsNodeForJSON(vcNode: JsonNode, field: NumericField, childInfo: ChildDeploymentInfo): void {
     super.expandValueConstraintsNodeForJSON(vcNode, field, childInfo);
     vcNode[CedarModel.numberType] = this.atomicWriter.write(field.valueConstraints.numberType);
     if (field.valueConstraints.minValue != null) {

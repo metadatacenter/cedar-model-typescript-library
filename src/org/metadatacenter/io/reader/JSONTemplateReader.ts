@@ -1,22 +1,22 @@
 import { CedarModel } from '../../model/cedar/constants/CedarModel';
 import { JsonSchema } from '../../model/cedar/constants/JsonSchema';
-import { CedarArtifactType } from '../../model/cedar/types/beans/CedarArtifactType';
+import { CedarArtifactType } from '../../model/cedar/types/cedar-types/CedarArtifactType';
 import { TemplateProperty } from '../../model/cedar/constants/TemplateProperty';
 import { ReaderUtil } from './ReaderUtil';
 import { JsonNode } from '../../model/cedar/types/basic-types/JsonNode';
-import { CedarJSONTemplateContent } from '../../model/cedar/util/serialization/CedarJSONTemplateContent';
+import { JSONTemplateContent } from '../../model/cedar/util/serialization/JSONTemplateContent';
 import { ObjectComparator } from '../../model/cedar/util/compare/ObjectComparator';
 import { ParsingResult } from '../../model/cedar/util/compare/ParsingResult';
 import { JSONTemplateReaderResult } from './JSONTemplateReaderResult';
-import { CedarContainerChildrenInfo } from '../../model/cedar/types/beans/CedarContainerChildrenInfo';
-import { CedarJsonPath } from '../../model/cedar/util/path/CedarJsonPath';
+import { ContainerArtifactChildrenInfo } from '../../model/cedar/deployment/ContainerArtifactChildrenInfo';
+import { JsonPath } from '../../model/cedar/util/path/JsonPath';
 import { JSONReaderBehavior } from '../../behavior/JSONReaderBehavior';
 import { JSONTemplateWriter } from '../writer/JSONTemplateWriter';
-import { CedarJSONTemplateFieldContentDynamic } from '../../model/cedar/util/serialization/CedarJSONTemplateFieldContentDynamic';
+import { JSONTemplateFieldContentDynamic } from '../../model/cedar/util/serialization/JSONTemplateFieldContentDynamic';
 import { JSONElementReader } from './JSONElementReader';
 import { JSONContainerArtifactReader } from './JSONContainerArtifactReader';
-import { CedarTemplate } from '../../model/cedar/template/CedarTemplate';
-import { CedarContainerChildInfo } from '../../model/cedar/types/beans/CedarContainerChildInfo';
+import { Template } from '../../model/cedar/template/Template';
+import { ChildDeploymentInfo } from '../../model/cedar/deployment/ChildDeploymentInfo';
 
 export class JSONTemplateReader extends JSONContainerArtifactReader {
   private elementReader: JSONElementReader;
@@ -43,7 +43,7 @@ export class JSONTemplateReader extends JSONContainerArtifactReader {
     return this.elementReader;
   }
 
-  protected override includeInIRIMapping(childInfo: CedarContainerChildInfo): boolean {
+  protected override includeInIRIMapping(childInfo: ChildDeploymentInfo): boolean {
     return childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD;
   }
 
@@ -57,9 +57,9 @@ export class JSONTemplateReader extends JSONContainerArtifactReader {
     return this.readFromObject(templateObject);
   }
 
-  public readFromObject(templateSourceObject: JsonNode, topPath: CedarJsonPath = new CedarJsonPath()): JSONTemplateReaderResult {
+  public readFromObject(templateSourceObject: JsonNode, topPath: JsonPath = new JsonPath()): JSONTemplateReaderResult {
     const parsingResult: ParsingResult = new ParsingResult();
-    const template = CedarTemplate.buildEmptyWithNullValues();
+    const template = Template.buildEmptyWithNullValues();
 
     this.readNonReportableAttributes(template, templateSourceObject);
     this.readReportableAttributes(template, templateSourceObject, parsingResult, topPath);
@@ -69,7 +69,7 @@ export class JSONTemplateReader extends JSONContainerArtifactReader {
     return new JSONTemplateReaderResult(template, parsingResult, templateSourceObject);
   }
 
-  protected readNonReportableAttributes(template: CedarTemplate, templateSourceObject: JsonNode) {
+  protected readNonReportableAttributes(template: Template, templateSourceObject: JsonNode) {
     super.readNonReportableAttributes(template, templateSourceObject);
     // Read template-only properties
     template.schema_identifier = ReaderUtil.getString(templateSourceObject, JsonSchema.schemaIdentifier);
@@ -80,7 +80,7 @@ export class JSONTemplateReader extends JSONContainerArtifactReader {
     }
   }
 
-  private readInstanceTypeSpecification(template: CedarTemplate, templateSourceObject: JsonNode, parsingResult: ParsingResult) {
+  private readInstanceTypeSpecification(template: Template, templateSourceObject: JsonNode, parsingResult: ParsingResult) {
     const properties: JsonNode = ReaderUtil.getNode(templateSourceObject, JsonSchema.properties);
     if (properties !== null) {
       const atType: JsonNode = ReaderUtil.getNode(properties, JsonSchema.atType);
@@ -98,25 +98,20 @@ export class JSONTemplateReader extends JSONContainerArtifactReader {
     }
   }
 
-  private readAndValidateChildrenInfo(
-    template: CedarTemplate,
-    templateSourceObject: JsonNode,
-    parsingResult: ParsingResult,
-    path: CedarJsonPath,
-  ) {
+  private readAndValidateChildrenInfo(template: Template, templateSourceObject: JsonNode, parsingResult: ParsingResult, path: JsonPath) {
     const templateRequired: Array<string> = ReaderUtil.getStringList(templateSourceObject, JsonSchema.required);
     const templateProperties: JsonNode = ReaderUtil.getNode(templateSourceObject, JsonSchema.properties);
 
     const templateRequiredMap: Map<string, boolean> = this.generateAndValidateRequiredMap(
       templateRequired,
-      CedarJSONTemplateContent.REQUIRED_PARTIAL,
+      JSONTemplateContent.REQUIRED_PARTIAL,
       parsingResult,
       path,
     );
 
-    const candidateChildrenInfo: CedarContainerChildrenInfo = this.getCandidateChildrenInfo(
+    const candidateChildrenInfo: ContainerArtifactChildrenInfo = this.getCandidateChildrenInfo(
       templateProperties,
-      CedarJSONTemplateContent.PROPERTIES_PARTIAL_KEY_MAP,
+      JSONTemplateContent.PROPERTIES_PARTIAL_KEY_MAP,
       parsingResult,
       path,
     );
@@ -125,7 +120,7 @@ export class JSONTemplateReader extends JSONContainerArtifactReader {
       candidateChildrenInfo,
       templateRequiredMap,
       templateRequired,
-      CedarJSONTemplateContent.REQUIRED_PARTIAL_KEY_MAP,
+      JSONTemplateContent.REQUIRED_PARTIAL_KEY_MAP,
       parsingResult,
       path,
     );
@@ -147,7 +142,7 @@ export class JSONTemplateReader extends JSONContainerArtifactReader {
     this.parseChildren(finalChildrenInfo, templateProperties, template, parsingResult, path);
   }
 
-  private validateProperties(templateProperties: JsonNode, template: CedarTemplate, parsingResult: ParsingResult, path: CedarJsonPath) {
+  private validateProperties(templateProperties: JsonNode, template: Template, parsingResult: ParsingResult, path: JsonPath) {
     // Validate properties
     // 'properties' should have extra entry for Fields/Elements as definition
     // 'properties/context/properties' should have extra entry for Fields/Elements as IRI mappings
@@ -157,12 +152,12 @@ export class JSONTemplateReader extends JSONContainerArtifactReader {
     //    "type": "string",
     //    "format": "uri"
     //  },
-    let blueprint: JsonNode = CedarJSONTemplateContent.PROPERTIES_PARTIAL;
+    let blueprint: JsonNode = JSONTemplateContent.PROPERTIES_PARTIAL;
     if (template.childrenInfo.hasAttributeValue()) {
-      blueprint = ReaderUtil.deepClone(CedarJSONTemplateContent.PROPERTIES_PARTIAL) as JsonNode;
+      blueprint = ReaderUtil.deepClone(JSONTemplateContent.PROPERTIES_PARTIAL) as JsonNode;
       const atContext: JsonNode = blueprint[JsonSchema.atContext] as JsonNode;
       atContext[TemplateProperty.additionalProperties] =
-        CedarJSONTemplateFieldContentDynamic.ADDITIONAL_PROPERTIES_VERBATIM_ATTRIBUTE_VALUE_INSIDE;
+        JSONTemplateFieldContentDynamic.ADDITIONAL_PROPERTIES_VERBATIM_ATTRIBUTE_VALUE_INSIDE;
     }
     ObjectComparator.compareToLeft(parsingResult, blueprint, templateProperties, path.add(JsonSchema.properties));
   }
@@ -173,7 +168,7 @@ export class JSONTemplateReader extends JSONContainerArtifactReader {
       compareResult,
       jsonTemplateReaderResult.templateSourceObject,
       writer.getAsJsonNode(jsonTemplateReaderResult.template),
-      new CedarJsonPath(),
+      new JsonPath(),
     );
     return compareResult;
   }

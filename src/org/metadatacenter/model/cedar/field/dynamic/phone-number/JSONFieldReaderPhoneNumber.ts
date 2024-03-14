@@ -1,18 +1,18 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
 import { ParsingResult } from '../../../util/compare/ParsingResult';
-import { CedarJsonPath } from '../../../util/path/CedarJsonPath';
-import { CedarPhoneNumberField } from './CedarPhoneNumberField';
+import { JsonPath } from '../../../util/path/JsonPath';
+import { PhoneNumberField } from './PhoneNumberField';
 import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
-import { CedarContainerChildInfo } from '../../../types/beans/CedarContainerChildInfo';
+import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 
 export class JSONFieldReaderPhoneNumber extends JSONFieldTypeSpecificReader {
   override read(
     fieldSourceObject: JsonNode,
-    childInfo: CedarContainerChildInfo,
+    childInfo: ChildDeploymentInfo,
     _parsingResult: ParsingResult,
-    _path: CedarJsonPath,
-  ): CedarPhoneNumberField {
-    const field = CedarPhoneNumberField.buildEmptyWithNullValues();
+    _path: JsonPath,
+  ): PhoneNumberField {
+    const field = PhoneNumberField.buildEmptyWithNullValues();
     this.readRequiredAndHidden(fieldSourceObject, childInfo);
     return field;
   }

@@ -1,4 +1,4 @@
-import { URI } from '../../../../types/beans/URI';
+import { URI } from '../../../../types/wrapped-types/URI';
 
 export class ControlledTermDefaultValue {
   private _termUri: URI;

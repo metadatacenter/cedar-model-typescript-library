@@ -1,23 +1,23 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
 import { ParsingResult } from '../../../util/compare/ParsingResult';
-import { CedarJsonPath } from '../../../util/path/CedarJsonPath';
+import { JsonPath } from '../../../util/path/JsonPath';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { CedarModel } from '../../../constants/CedarModel';
-import { CedarTemporalField } from './CedarTemporalField';
-import { TemporalType } from '../../../types/beans/TemporalType';
-import { TimeFormat } from '../../../types/beans/TimeFormat';
-import { TemporalGranularity } from '../../../types/beans/TemporalGranularity';
+import { TemporalField } from './TemporalField';
+import { TemporalType } from '../../../types/wrapped-types/TemporalType';
+import { TimeFormat } from '../../../types/wrapped-types/TimeFormat';
+import { TemporalGranularity } from '../../../types/wrapped-types/TemporalGranularity';
 import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
-import { CedarContainerChildInfo } from '../../../types/beans/CedarContainerChildInfo';
+import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 
 export class JSONFieldReaderTemporal extends JSONFieldTypeSpecificReader {
   override read(
     fieldSourceObject: JsonNode,
-    childInfo: CedarContainerChildInfo,
+    childInfo: ChildDeploymentInfo,
     _parsingResult: ParsingResult,
-    _path: CedarJsonPath,
-  ): CedarTemporalField {
-    const field = CedarTemporalField.buildEmptyWithNullValues();
+    _path: JsonPath,
+  ): TemporalField {
+    const field = TemporalField.buildEmptyWithNullValues();
     this.readRequiredAndHidden(fieldSourceObject, childInfo);
 
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);

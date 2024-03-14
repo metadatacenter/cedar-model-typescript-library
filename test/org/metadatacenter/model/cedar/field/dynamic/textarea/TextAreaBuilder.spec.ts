@@ -1,10 +1,10 @@
-import { CedarBuilders, CedarDate, CedarTextArea, CedarWriters, SchemaVersion, TextAreaBuilder } from '../../../../../../../../src';
+import { CedarBuilders, ISODate, TextArea, CedarWriters, SchemaVersion, TextAreaBuilder } from '../../../../../../../../src';
 
 describe('TextAreaBuilder', () => {
   test('creates text area with builder', () => {
     const builder: TextAreaBuilder = CedarBuilders.textAreaBuilder();
-    const now = CedarDate.now();
-    const field: CedarTextArea = builder
+    const now = ISODate.now();
+    const field: TextArea = builder
       .withAtId('https://repo.metadatacenter.org/template-fields/f38b5ef4-a078-4d82-90c0-a9a721ad5ecf')
       .withTitle('Text field title')
       .withDescription('Text field description')

@@ -6,7 +6,7 @@ import { JSONTemplateWriter } from '../../../../src/org/metadatacenter/io/writer
 import { CedarWriters } from '../../../../src/org/metadatacenter/io/writer/CedarWriters';
 import { ComparisonError } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonError';
 import { CedarModel } from '../../../../src/org/metadatacenter/model/cedar/constants/CedarModel';
-import { CedarJsonPath } from '../../../../src/org/metadatacenter/model/cedar/util/path/CedarJsonPath';
+import { JsonPath } from '../../../../src/org/metadatacenter/model/cedar/util/path/JsonPath';
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
 import { JsonSchema } from '../../../../src/org/metadatacenter/model/cedar/constants/JsonSchema';
 
@@ -35,14 +35,14 @@ describe('JSONTemplateReader - template-101', () => {
     const uiPagesMissing = new ComparisonError(
       'oco02',
       ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-      new CedarJsonPath(CedarModel.ui, CedarModel.pages),
+      new JsonPath(CedarModel.ui, CedarModel.pages),
     );
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
 
     const textFieldLanguageUnexpected = new ComparisonError(
       'oco01',
       ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
-      new CedarJsonPath(
+      new JsonPath(
         JsonSchema.properties,
         '#002 Element with three fields',
         JsonSchema.properties,
@@ -56,7 +56,7 @@ describe('JSONTemplateReader - template-101', () => {
     const emailLanguageUnexpected = new ComparisonError(
       'oco01',
       ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
-      new CedarJsonPath(
+      new JsonPath(
         JsonSchema.properties,
         '#002 Element with three fields',
         JsonSchema.properties,

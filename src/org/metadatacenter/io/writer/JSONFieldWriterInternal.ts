@@ -1,16 +1,16 @@
 import { JSONWriterBehavior } from '../../behavior/JSONWriterBehavior';
 import { JsonNode, JsonNodeClass } from '../../model/cedar/types/basic-types/JsonNode';
-import { CedarField } from '../../model/cedar/field/CedarField';
+import { TemplateField } from '../../model/cedar/field/TemplateField';
 import { CedarModel } from '../../model/cedar/constants/CedarModel';
 import { JsonSchema } from '../../model/cedar/constants/JsonSchema';
-import { CedarJSONTemplateFieldContentDynamic } from '../../model/cedar/util/serialization/CedarJSONTemplateFieldContentDynamic';
-import { JavascriptType } from '../../model/cedar/types/beans/JavascriptType';
+import { JSONTemplateFieldContentDynamic } from '../../model/cedar/util/serialization/JSONTemplateFieldContentDynamic';
+import { JavascriptType } from '../../model/cedar/types/wrapped-types/JavascriptType';
 import { TemplateProperty } from '../../model/cedar/constants/TemplateProperty';
-import { CedarSchema } from '../../model/cedar/types/beans/CedarSchema';
+import { ArtifactSchema } from '../../model/cedar/types/wrapped-types/ArtifactSchema';
 import { CedarWriters } from './CedarWriters';
 import { JSONAbstractArtifactWriter } from './JSONAbstractArtifactWriter';
-import { AdditionalProperties } from '../../model/cedar/types/beans/AdditionalProperties';
-import { CedarContainerChildInfo } from '../../model/cedar/types/beans/CedarContainerChildInfo';
+import { AdditionalProperties } from '../../model/cedar/types/wrapped-types/AdditionalProperties';
+import { ChildDeploymentInfo } from '../../model/cedar/deployment/ChildDeploymentInfo';
 
 export abstract class JSONFieldWriterInternal extends JSONAbstractArtifactWriter {
   protected constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
@@ -18,20 +18,20 @@ export abstract class JSONFieldWriterInternal extends JSONAbstractArtifactWriter
   }
 
   protected expandPropertiesNodeForJSON(propertiesObject: JsonNode): void {
-    propertiesObject[JsonSchema.properties] = CedarJSONTemplateFieldContentDynamic.PROPERTIES_VERBATIM_LITERAL;
+    propertiesObject[JsonSchema.properties] = JSONTemplateFieldContentDynamic.PROPERTIES_VERBATIM_LITERAL;
   }
 
   protected expandRequiredNodeForJSON(requiredObject: JsonNode): void {
     requiredObject[JsonSchema.required] = [JsonSchema.atValue];
   }
 
-  protected expandUINodeForJSON(uiNode: JsonNode, _field: CedarField, childInfo: CedarContainerChildInfo): void {
+  protected expandUINodeForJSON(uiNode: JsonNode, _field: TemplateField, childInfo: ChildDeploymentInfo): void {
     if (childInfo.hidden) {
       uiNode[CedarModel.Ui.hidden] = childInfo.hidden;
     }
   }
 
-  protected buildUIObject(field: CedarField, childInfo: CedarContainerChildInfo): JsonNode {
+  protected buildUIObject(field: TemplateField, childInfo: ChildDeploymentInfo): JsonNode {
     const uiNode: JsonNode = {
       [CedarModel.inputType]: this.atomicWriter.write(field.cedarFieldType.getUiInputType()),
     };
@@ -42,13 +42,13 @@ export abstract class JSONFieldWriterInternal extends JSONAbstractArtifactWriter
     return uiObject;
   }
 
-  protected expandTypeNodeForJSON(_typeNode: JsonNode, _field: CedarField): void {}
+  protected expandTypeNodeForJSON(_typeNode: JsonNode, _field: TemplateField): void {}
 
-  protected expandValueConstraintsNodeForJSON(vcNode: JsonNode, field: CedarField, childInfo: CedarContainerChildInfo): void {
+  protected expandValueConstraintsNodeForJSON(vcNode: JsonNode, field: TemplateField, childInfo: ChildDeploymentInfo): void {
     vcNode[CedarModel.requiredValue] = childInfo.requiredValue;
   }
 
-  protected buildValueConstraintsObject(field: CedarField, childInfo: CedarContainerChildInfo): JsonNode {
+  protected buildValueConstraintsObject(field: TemplateField, childInfo: ChildDeploymentInfo): JsonNode {
     const vcNode: JsonNode = JsonNodeClass.getEmpty();
     const vcObject = {
       [CedarModel.valueConstraints]: vcNode,
@@ -57,13 +57,13 @@ export abstract class JSONFieldWriterInternal extends JSONAbstractArtifactWriter
     return vcObject;
   }
 
-  public getAsJsonString(field: CedarField, indent: number = 2): string {
-    return JSON.stringify(this.getAsJsonNode(field, CedarContainerChildInfo.empty()), null, indent);
+  public getAsJsonString(field: TemplateField, indent: number = 2): string {
+    return JSON.stringify(this.getAsJsonNode(field, ChildDeploymentInfo.empty()), null, indent);
   }
 
-  public getAsJsonNode(field: CedarField): JsonNode;
-  public getAsJsonNode(field: CedarField, childInfo: CedarContainerChildInfo): JsonNode;
-  public getAsJsonNode(field: CedarField, childInfo: CedarContainerChildInfo = CedarContainerChildInfo.empty()): JsonNode {
+  public getAsJsonNode(field: TemplateField): JsonNode;
+  public getAsJsonNode(field: TemplateField, childInfo: ChildDeploymentInfo): JsonNode;
+  public getAsJsonNode(field: TemplateField, childInfo: ChildDeploymentInfo = ChildDeploymentInfo.empty()): JsonNode {
     // Build properties wrapper, based on type
     const propertiesObject: JsonNode = JsonNodeClass.getEmpty();
     this.expandPropertiesNodeForJSON(propertiesObject);
@@ -88,7 +88,7 @@ export abstract class JSONFieldWriterInternal extends JSONAbstractArtifactWriter
     return {
       [JsonSchema.atId]: this.atomicWriter.write(field.at_id),
       [JsonSchema.atType]: this.atomicWriter.write(field.cedarArtifactType),
-      [JsonSchema.atContext]: CedarJSONTemplateFieldContentDynamic.CONTEXT_VERBATIM,
+      [JsonSchema.atContext]: JSONTemplateFieldContentDynamic.CONTEXT_VERBATIM,
       ...typeNode,
       [TemplateProperty.title]: field.title,
       [TemplateProperty.description]: field.description,
@@ -101,7 +101,7 @@ export abstract class JSONFieldWriterInternal extends JSONAbstractArtifactWriter
       [JsonSchema.schemaVersion]: this.atomicWriter.write(field.schema_schemaVersion),
       [TemplateProperty.additionalProperties]: this.atomicWriter.write(AdditionalProperties.FALSE),
       ...this.macroStatusAndVersion(field, this.atomicWriter),
-      [CedarModel.schema]: this.atomicWriter.write(CedarSchema.CURRENT),
+      [CedarModel.schema]: this.atomicWriter.write(ArtifactSchema.CURRENT),
       ...this.macroSkos(field),
     };
   }

@@ -3,7 +3,7 @@ import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/ut
 import { TestUtil } from '../../../TestUtil';
 import { ComparisonError } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonError';
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
-import { CedarJsonPath } from '../../../../src/org/metadatacenter/model/cedar/util/path/CedarJsonPath';
+import { JsonPath } from '../../../../src/org/metadatacenter/model/cedar/util/path/JsonPath';
 import { CedarModel } from '../../../../src/org/metadatacenter/model/cedar/constants/CedarModel';
 import { JsonSchema } from '../../../../src/org/metadatacenter/model/cedar/constants/JsonSchema';
 import { CedarWriters } from '../../../../src/org/metadatacenter/io/writer/CedarWriters';
@@ -34,14 +34,14 @@ describe('JSONTemplateReader - template-002', () => {
     const uiPagesMissing = new ComparisonError(
       'oco02',
       ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-      new CedarJsonPath(CedarModel.ui, CedarModel.pages),
+      new JsonPath(CedarModel.ui, CedarModel.pages),
     );
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
 
     const requiredTextfieldUnexpected = new ComparisonError(
       'oca02',
       ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
-      new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 11),
+      new JsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 11),
       undefined,
       'Textfield',
     );
@@ -50,7 +50,7 @@ describe('JSONTemplateReader - template-002', () => {
     const languageTextfieldUnexpected = new ComparisonError(
       'oco01',
       ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
-      new CedarJsonPath(JsonSchema.properties, 'Textfield', JsonSchema.properties, JsonSchema.atLanguage),
+      new JsonPath(JsonSchema.properties, 'Textfield', JsonSchema.properties, JsonSchema.atLanguage),
     );
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageTextfieldUnexpected);
   });

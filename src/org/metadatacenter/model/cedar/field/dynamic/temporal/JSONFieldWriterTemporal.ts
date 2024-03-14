@@ -1,19 +1,19 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
 import { CedarModel } from '../../../constants/CedarModel';
-import { TimeFormat } from '../../../types/beans/TimeFormat';
-import { TemporalGranularity } from '../../../types/beans/TemporalGranularity';
-import { CedarTemporalField } from './CedarTemporalField';
+import { TimeFormat } from '../../../types/wrapped-types/TimeFormat';
+import { TemporalGranularity } from '../../../types/wrapped-types/TemporalGranularity';
+import { TemporalField } from './TemporalField';
 import { JSONFieldWriterInternal } from '../../../../../io/writer/JSONFieldWriterInternal';
 import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
 import { CedarWriters } from '../../../../../io/writer/CedarWriters';
-import { CedarContainerChildInfo } from '../../../types/beans/CedarContainerChildInfo';
+import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 
 export class JSONFieldWriterTemporal extends JSONFieldWriterInternal {
   constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
     super(behavior, writers);
   }
 
-  override expandUINodeForJSON(uiNode: JsonNode, field: CedarTemporalField, childInfo: CedarContainerChildInfo): void {
+  override expandUINodeForJSON(uiNode: JsonNode, field: TemporalField, childInfo: ChildDeploymentInfo): void {
     super.expandUINodeForJSON(uiNode, field, childInfo);
     if (field.timezoneEnabled) {
       uiNode[CedarModel.timezoneEnabled] = field.timezoneEnabled;
@@ -26,7 +26,7 @@ export class JSONFieldWriterTemporal extends JSONFieldWriterInternal {
     }
   }
 
-  override expandValueConstraintsNodeForJSON(vcNode: JsonNode, field: CedarTemporalField, childInfo: CedarContainerChildInfo): void {
+  override expandValueConstraintsNodeForJSON(vcNode: JsonNode, field: TemporalField, childInfo: ChildDeploymentInfo): void {
     super.expandValueConstraintsNodeForJSON(vcNode, field, childInfo);
     vcNode[CedarModel.temporalType] = this.atomicWriter.write(field.valueConstraints.temporalType);
   }

@@ -1,6 +1,6 @@
 import { JSONTemplateReader } from '../../../../src/org/metadatacenter/io/reader/JSONTemplateReader';
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
-import { CedarJsonPath } from '../../../../src/org/metadatacenter/model/cedar/util/path/CedarJsonPath';
+import { JsonPath } from '../../../../src/org/metadatacenter/model/cedar/util/path/JsonPath';
 import { TestUtil } from '../../../TestUtil';
 import { ComparisonError } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonError';
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
@@ -33,14 +33,14 @@ describe('JSONTemplateReader - template-019', () => {
     const uiPagesMissing = new ComparisonError(
       'oco02',
       ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-      new CedarJsonPath(CedarModel.ui, CedarModel.pages),
+      new JsonPath(CedarModel.ui, CedarModel.pages),
     );
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
 
     const requiredPickFromUnexpected = new ComparisonError(
       'oca02',
       ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
-      new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 11),
+      new JsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 11),
       undefined,
       'Pick from',
     );
@@ -49,7 +49,7 @@ describe('JSONTemplateReader - template-019', () => {
     const languagePickFromUnexpected = new ComparisonError(
       'oco01',
       ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
-      new CedarJsonPath(JsonSchema.properties, 'Pick from', JsonSchema.properties, JsonSchema.atLanguage),
+      new JsonPath(JsonSchema.properties, 'Pick from', JsonSchema.properties, JsonSchema.atLanguage),
     );
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languagePickFromUnexpected);
   });

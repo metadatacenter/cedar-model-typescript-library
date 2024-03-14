@@ -1,8 +1,8 @@
 import { JSONWriterBehavior } from '../../behavior/JSONWriterBehavior';
-import { CedarTemplate } from '../../model/cedar/template/CedarTemplate';
+import { Template } from '../../model/cedar/template/Template';
 import { JsonSchema } from '../../model/cedar/constants/JsonSchema';
 import { JsonNode } from '../../model/cedar/types/basic-types/JsonNode';
-import { CedarArtifactType } from '../../model/cedar/types/beans/CedarArtifactType';
+import { CedarArtifactType } from '../../model/cedar/types/cedar-types/CedarArtifactType';
 import { TemplateProperty } from '../../model/cedar/constants/TemplateProperty';
 import { CedarWriters } from './CedarWriters';
 import { SimpleYamlSerializer } from '../util/yaml/SimpleYamlSerializer';
@@ -17,7 +17,7 @@ export class YAMLTemplateWriter extends YAMLAbstractArtifactWriter {
     return new YAMLTemplateWriter(behavior, writers);
   }
 
-  public getAsYamlNode(template: CedarTemplate): JsonNode {
+  public getAsYamlNode(template: Template): JsonNode {
     // build the final object
     return {
       [JsonSchema.atId]: this.atomicWriter.write(template.at_id),
@@ -31,7 +31,7 @@ export class YAMLTemplateWriter extends YAMLAbstractArtifactWriter {
     };
   }
 
-  public getAsYamlString(template: CedarTemplate): string {
+  public getAsYamlString(template: Template): string {
     return SimpleYamlSerializer.serialize(this.getAsYamlNode(template));
   }
 }

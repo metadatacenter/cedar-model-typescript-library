@@ -1,20 +1,20 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
 import { ParsingResult } from '../../../util/compare/ParsingResult';
-import { CedarJsonPath } from '../../../util/path/CedarJsonPath';
+import { JsonPath } from '../../../util/path/JsonPath';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { CedarModel } from '../../../constants/CedarModel';
-import { CedarStaticImageField } from './CedarStaticImageField';
+import { StaticImageField } from './StaticImageField';
 import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
-import { CedarContainerChildInfo } from '../../../types/beans/CedarContainerChildInfo';
+import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 
 export class JSONFieldReaderImage extends JSONFieldTypeSpecificReader {
   override read(
     fieldSourceObject: JsonNode,
-    _childInfo: CedarContainerChildInfo,
+    _childInfo: ChildDeploymentInfo,
     _parsingResult: ParsingResult,
-    _path: CedarJsonPath,
-  ): CedarStaticImageField {
-    const field = CedarStaticImageField.buildEmptyWithNullValues();
+    _path: JsonPath,
+  ): StaticImageField {
+    const field = StaticImageField.buildEmptyWithNullValues();
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
     field.content = ReaderUtil.getString(uiNode, CedarModel.content);
     return field;

@@ -2,7 +2,7 @@ import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/ut
 import { TestUtil } from '../../../TestUtil';
 import { ComparisonError } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonError';
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
-import { CedarJsonPath } from '../../../../src/org/metadatacenter/model/cedar/util/path/CedarJsonPath';
+import { JsonPath } from '../../../../src/org/metadatacenter/model/cedar/util/path/JsonPath';
 import { JsonSchema } from '../../../../src/org/metadatacenter/model/cedar/constants/JsonSchema';
 import { CedarWriters, JSONElementReader, JSONElementWriter } from '../../../../src';
 
@@ -30,7 +30,7 @@ describe('JSONElementReader - element-003', () => {
     const languageTextfieldUnexpected = new ComparisonError(
       'oco01',
       ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
-      new CedarJsonPath(
+      new JsonPath(
         JsonSchema.properties,
         '#002 Element with three fields',
         JsonSchema.properties,
@@ -44,7 +44,7 @@ describe('JSONElementReader - element-003', () => {
     const languageEmailUnexpected = new ComparisonError(
       'oco01',
       ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
-      new CedarJsonPath(
+      new JsonPath(
         JsonSchema.properties,
         '#002 Element with three fields',
         JsonSchema.properties,

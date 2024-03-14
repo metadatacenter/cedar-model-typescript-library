@@ -2,7 +2,7 @@ import { JsonNode } from '../../types/basic-types/JsonNode';
 import { ParsingResult } from './ParsingResult';
 import { ComparisonError } from './ComparisonError';
 import { Primitive } from '../../types/basic-types/Primitive';
-import { CedarJsonPath } from '../path/CedarJsonPath';
+import { JsonPath } from '../path/JsonPath';
 import { ComparisonErrorType } from './ComparisonErrorType';
 import { JsonSchema } from '../../constants/JsonSchema';
 
@@ -13,9 +13,9 @@ export class ObjectComparator {
     comparisonResult: ParsingResult,
     blueprintObject: ComparableObject,
     realObject: ComparableObject,
-    path: CedarJsonPath,
+    path: JsonPath,
   ): void {
-    function recurse(currentPath: CedarJsonPath, obj1: ComparableObject, obj2: ComparableObject) {
+    function recurse(currentPath: JsonPath, obj1: ComparableObject, obj2: ComparableObject) {
       const isNonOrderSensitive = currentPath.getLastComponent() == JsonSchema.required;
 
       if (Array.isArray(obj1) && Array.isArray(obj2)) {
@@ -100,9 +100,9 @@ export class ObjectComparator {
     comparisonResult: ParsingResult,
     blueprintObject: ComparableObject,
     realObject: ComparableObject,
-    path: CedarJsonPath,
+    path: JsonPath,
   ): void {
-    function recurse(currentPath: CedarJsonPath, obj1: ComparableObject, obj2: ComparableObject) {
+    function recurse(currentPath: JsonPath, obj1: ComparableObject, obj2: ComparableObject) {
       const isNonOrderSensitive = currentPath.getLastComponent() == JsonSchema.required;
 
       if (Array.isArray(obj1) && Array.isArray(obj2)) {
@@ -158,7 +158,7 @@ export class ObjectComparator {
     recurse(path, blueprintObject, realObject);
   }
 
-  static comparePrimitive(comparisonResult: ParsingResult, blue: Primitive, actual: Primitive, path: CedarJsonPath): ParsingResult {
+  static comparePrimitive(comparisonResult: ParsingResult, blue: Primitive, actual: Primitive, path: JsonPath): ParsingResult {
     if (blue !== actual) {
       comparisonResult.addBlueprintComparisonError(new ComparisonError('opp1', ComparisonErrorType.VALUE_MISMATCH, path, blue, actual));
     }

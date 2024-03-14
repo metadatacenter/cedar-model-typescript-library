@@ -1,10 +1,10 @@
-import { CedarDate } from './types/beans/CedarDate';
-import { CedarUser } from './types/beans/CedarUser';
-import { PavVersion } from './types/beans/PavVersion';
-import { BiboStatus } from './types/beans/BiboStatus';
-import { CedarArtifactId } from './types/beans/CedarArtifactId';
-import { SchemaVersion } from './types/beans/SchemaVersion';
-import { CedarAbstractArtifact } from './CedarAbstractArtifact';
+import { ISODate } from './types/wrapped-types/ISODate';
+import { CedarUser } from './types/cedar-types/CedarUser';
+import { PavVersion } from './types/wrapped-types/PavVersion';
+import { BiboStatus } from './types/wrapped-types/BiboStatus';
+import { CedarArtifactId } from './types/cedar-types/CedarArtifactId';
+import { SchemaVersion } from './types/wrapped-types/SchemaVersion';
+import { AbstractArtifact } from './AbstractArtifact';
 
 export abstract class AbstractArtifactBuilder {
   protected at_id: CedarArtifactId = CedarArtifactId.NULL;
@@ -12,9 +12,9 @@ export abstract class AbstractArtifactBuilder {
   protected description: string | null = null;
   protected schema_schemaVersion: SchemaVersion = SchemaVersion.CURRENT;
   // provenance
-  protected pav_createdOn: CedarDate | null = CedarDate.forValue(null);
+  protected pav_createdOn: ISODate | null = ISODate.forValue(null);
   protected pav_createdBy: CedarUser = CedarUser.forValue(null);
-  protected pav_lastUpdatedOn: CedarDate | null = CedarDate.forValue(null);
+  protected pav_lastUpdatedOn: ISODate | null = ISODate.forValue(null);
   protected oslc_modifiedBy: CedarUser = CedarUser.forValue(null);
   // status and version
   protected pav_version: PavVersion = PavVersion.DEFAULT;
@@ -47,11 +47,11 @@ export abstract class AbstractArtifactBuilder {
     return this;
   }
 
-  withCreatedOn(createdOn: CedarDate | string): this {
-    if (createdOn instanceof CedarDate) {
+  withCreatedOn(createdOn: ISODate | string): this {
+    if (createdOn instanceof ISODate) {
       this.pav_createdOn = createdOn;
     } else {
-      this.pav_createdOn = CedarDate.forValue(createdOn);
+      this.pav_createdOn = ISODate.forValue(createdOn);
     }
     return this;
   }
@@ -65,11 +65,11 @@ export abstract class AbstractArtifactBuilder {
     return this;
   }
 
-  withLastUpdatedOn(lastUpdatedOn: CedarDate | string): this {
-    if (lastUpdatedOn instanceof CedarDate) {
+  withLastUpdatedOn(lastUpdatedOn: ISODate | string): this {
+    if (lastUpdatedOn instanceof ISODate) {
       this.pav_lastUpdatedOn = lastUpdatedOn;
     } else {
-      this.pav_lastUpdatedOn = CedarDate.forValue(lastUpdatedOn);
+      this.pav_lastUpdatedOn = ISODate.forValue(lastUpdatedOn);
     }
     return this;
   }
@@ -111,7 +111,7 @@ export abstract class AbstractArtifactBuilder {
     return this;
   }
 
-  protected buildInternal(artifact: CedarAbstractArtifact): void {
+  protected buildInternal(artifact: AbstractArtifact): void {
     artifact.at_id = this.at_id;
     artifact.title = this.title;
     artifact.description = this.description;

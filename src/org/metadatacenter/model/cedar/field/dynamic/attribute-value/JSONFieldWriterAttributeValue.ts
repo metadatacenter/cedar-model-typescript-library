@@ -2,9 +2,9 @@ import { JSONFieldWriterInternal } from '../../../../../io/writer/JSONFieldWrite
 import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
 import { CedarWriters } from '../../../../../io/writer/CedarWriters';
 import { JsonNode, JsonNodeClass } from '../../../types/basic-types/JsonNode';
-import { CedarField } from '../../CedarField';
+import { TemplateField } from '../../TemplateField';
 import { CedarModel } from '../../../constants/CedarModel';
-import { JavascriptType } from '../../../types/beans/JavascriptType';
+import { JavascriptType } from '../../../types/wrapped-types/JavascriptType';
 
 export class JSONFieldWriterAttributeValue extends JSONFieldWriterInternal {
   constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
@@ -19,11 +19,11 @@ export class JSONFieldWriterAttributeValue extends JSONFieldWriterInternal {
     // Required node must not be present for attribute-value field
   }
 
-  protected expandTypeNodeForJSON(typeNode: JsonNode, _field: CedarField): void {
+  protected expandTypeNodeForJSON(typeNode: JsonNode, _field: TemplateField): void {
     typeNode[CedarModel.type] = this.atomicWriter.write(JavascriptType.STRING);
   }
 
-  protected buildValueConstraintsObject(_field: CedarField): JsonNode {
+  protected buildValueConstraintsObject(_field: TemplateField): JsonNode {
     return JsonNodeClass.getEmpty();
   }
 }

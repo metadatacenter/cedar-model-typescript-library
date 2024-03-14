@@ -1,18 +1,18 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
 import { ParsingResult } from '../../../util/compare/ParsingResult';
-import { CedarJsonPath } from '../../../util/path/CedarJsonPath';
-import { CedarStaticSectionBreakField } from './CedarStaticSectionBreakField';
+import { JsonPath } from '../../../util/path/JsonPath';
+import { StaticSectionBreakField } from './StaticSectionBreakField';
 import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
-import { CedarContainerChildInfo } from '../../../types/beans/CedarContainerChildInfo';
+import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 
 export class JSONFieldReaderSectionBreak extends JSONFieldTypeSpecificReader {
   override read(
     _fieldSourceObject: JsonNode,
-    _childInfo: CedarContainerChildInfo,
+    _childInfo: ChildDeploymentInfo,
     _parsingResult: ParsingResult,
-    _path: CedarJsonPath,
-  ): CedarStaticSectionBreakField {
-    const field = CedarStaticSectionBreakField.buildEmptyWithNullValues();
+    _path: JsonPath,
+  ): StaticSectionBreakField {
+    const field = StaticSectionBreakField.buildEmptyWithNullValues();
     return field;
   }
 }

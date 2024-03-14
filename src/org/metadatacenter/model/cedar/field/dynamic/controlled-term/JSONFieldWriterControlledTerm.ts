@@ -1,12 +1,12 @@
 import { JsonNode, JsonNodeClass } from '../../../types/basic-types/JsonNode';
 import { CedarModel } from '../../../constants/CedarModel';
-import { CedarControlledTermField } from './CedarControlledTermField';
+import { ControlledTermField } from './ControlledTermField';
 import { JSONFieldWriterInternal } from '../../../../../io/writer/JSONFieldWriterInternal';
 import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
 import { CedarWriters } from '../../../../../io/writer/CedarWriters';
 import { JsonSchema } from '../../../constants/JsonSchema';
-import { CedarJSONTemplateFieldContentDynamic } from '../../../util/serialization/CedarJSONTemplateFieldContentDynamic';
-import { CedarContainerChildInfo } from '../../../types/beans/CedarContainerChildInfo';
+import { JSONTemplateFieldContentDynamic } from '../../../util/serialization/JSONTemplateFieldContentDynamic';
+import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 
 export class JSONFieldWriterControlledTerm extends JSONFieldWriterInternal {
   constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
@@ -14,10 +14,10 @@ export class JSONFieldWriterControlledTerm extends JSONFieldWriterInternal {
   }
 
   override expandPropertiesNodeForJSON(propertiesObject: JsonNode): void {
-    propertiesObject[JsonSchema.properties] = CedarJSONTemplateFieldContentDynamic.PROPERTIES_VERBATIM_CONTROLLED;
+    propertiesObject[JsonSchema.properties] = JSONTemplateFieldContentDynamic.PROPERTIES_VERBATIM_CONTROLLED;
   }
 
-  override expandUINodeForJSON(uiNode: JsonNode, field: CedarControlledTermField, childInfo: CedarContainerChildInfo): void {
+  override expandUINodeForJSON(uiNode: JsonNode, field: ControlledTermField, childInfo: ChildDeploymentInfo): void {
     super.expandUINodeForJSON(uiNode, field, childInfo);
     if (field.valueRecommendationEnabled) {
       uiNode[CedarModel.valueRecommendationEnabled] = field.valueRecommendationEnabled;
@@ -28,7 +28,7 @@ export class JSONFieldWriterControlledTerm extends JSONFieldWriterInternal {
     // TODO: Should the @id be required in case of a controlled term? or @value?
   }
 
-  override expandValueConstraintsNodeForJSON(vcNode: JsonNode, field: CedarControlledTermField, childInfo: CedarContainerChildInfo): void {
+  override expandValueConstraintsNodeForJSON(vcNode: JsonNode, field: ControlledTermField, childInfo: ChildDeploymentInfo): void {
     super.expandValueConstraintsNodeForJSON(vcNode, field, childInfo);
     if (field.valueConstraints.defaultValue != null) {
       const defaultValue = JsonNodeClass.getEmpty();

@@ -1,18 +1,18 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
 import { ParsingResult } from '../../../util/compare/ParsingResult';
-import { CedarJsonPath } from '../../../util/path/CedarJsonPath';
-import { CedarAttributeValueField } from './CedarAttributeValueField';
+import { JsonPath } from '../../../util/path/JsonPath';
+import { AttributeValueField } from './AttributeValueField';
 import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
-import { CedarContainerChildInfo } from '../../../types/beans/CedarContainerChildInfo';
+import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 
 export class JSONFieldReaderAttributeValue extends JSONFieldTypeSpecificReader {
   override read(
     fieldSourceObject: JsonNode,
-    childInfo: CedarContainerChildInfo,
+    childInfo: ChildDeploymentInfo,
     _parsingResult: ParsingResult,
-    _path: CedarJsonPath,
-  ): CedarAttributeValueField {
-    const field = CedarAttributeValueField.buildEmptyWithNullValues();
+    _path: JsonPath,
+  ): AttributeValueField {
+    const field = AttributeValueField.buildEmptyWithNullValues();
     this.readRequiredAndHidden(fieldSourceObject, childInfo);
     return field;
   }

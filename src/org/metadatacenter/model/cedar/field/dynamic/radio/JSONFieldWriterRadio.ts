@@ -3,15 +3,15 @@ import { CedarModel } from '../../../constants/CedarModel';
 import { JSONFieldWriterInternal } from '../../../../../io/writer/JSONFieldWriterInternal';
 import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
 import { CedarWriters } from '../../../../../io/writer/CedarWriters';
-import { CedarRadioField } from './CedarRadioField';
-import { CedarContainerChildInfo } from '../../../types/beans/CedarContainerChildInfo';
+import { RadioField } from './RadioField';
+import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 
 export class JSONFieldWriterRadio extends JSONFieldWriterInternal {
   constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
     super(behavior, writers);
   }
 
-  override expandValueConstraintsNodeForJSON(vcNode: JsonNode, field: CedarRadioField, childInfo: CedarContainerChildInfo): void {
+  override expandValueConstraintsNodeForJSON(vcNode: JsonNode, field: RadioField, childInfo: ChildDeploymentInfo): void {
     super.expandValueConstraintsNodeForJSON(vcNode, field, childInfo);
     vcNode[CedarModel.multipleChoice] = false;
     const literals: Array<JsonNode> = JsonNodeClass.getEmptyList();

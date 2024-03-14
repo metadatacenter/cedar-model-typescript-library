@@ -1,7 +1,7 @@
-import { CedarTextField } from './CedarTextField';
-import { FieldBuilder } from '../../FieldBuilder';
+import { TextField } from './TextField';
+import { TemplateFieldBuilder } from '../../TemplateFieldBuilder';
 
-export class TextFieldBuilder extends FieldBuilder {
+export class TextFieldBuilder extends TemplateFieldBuilder {
   private defaultValue: string | null = null;
   private minLength: number | null = null;
   private maxLength: number | null = null;
@@ -33,8 +33,8 @@ export class TextFieldBuilder extends FieldBuilder {
     return this;
   }
 
-  public build(): CedarTextField {
-    const textField = CedarTextField.buildEmptyWithNullValues();
+  public build(): TextField {
+    const textField = TextField.buildEmptyWithNullValues();
     super.buildInternal(textField);
 
     textField.valueConstraints.defaultValue = this.defaultValue;

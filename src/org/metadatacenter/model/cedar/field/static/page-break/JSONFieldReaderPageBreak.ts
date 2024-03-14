@@ -1,18 +1,18 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
 import { ParsingResult } from '../../../util/compare/ParsingResult';
-import { CedarJsonPath } from '../../../util/path/CedarJsonPath';
-import { CedarStaticPageBreakField } from './CedarStaticPageBreakField';
+import { JsonPath } from '../../../util/path/JsonPath';
+import { StaticPageBreakField } from './StaticPageBreakField';
 import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
-import { CedarContainerChildInfo } from '../../../types/beans/CedarContainerChildInfo';
+import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 
 export class JSONFieldReaderPageBreak extends JSONFieldTypeSpecificReader {
   override read(
     _fieldSourceObject: JsonNode,
-    _childInfo: CedarContainerChildInfo,
+    _childInfo: ChildDeploymentInfo,
     _parsingResult: ParsingResult,
-    _path: CedarJsonPath,
-  ): CedarStaticPageBreakField {
-    const field = CedarStaticPageBreakField.buildEmptyWithNullValues();
+    _path: JsonPath,
+  ): StaticPageBreakField {
+    const field = StaticPageBreakField.buildEmptyWithNullValues();
     return field;
   }
 }

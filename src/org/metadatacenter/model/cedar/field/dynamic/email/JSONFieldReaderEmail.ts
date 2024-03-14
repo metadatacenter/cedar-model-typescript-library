@@ -1,18 +1,13 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
 import { ParsingResult } from '../../../util/compare/ParsingResult';
-import { CedarJsonPath } from '../../../util/path/CedarJsonPath';
-import { CedarEmailField } from './CedarEmailField';
+import { JsonPath } from '../../../util/path/JsonPath';
+import { EmailField } from './EmailField';
 import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
-import { CedarContainerChildInfo } from '../../../types/beans/CedarContainerChildInfo';
+import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 
 export class JSONFieldReaderEmail extends JSONFieldTypeSpecificReader {
-  override read(
-    fieldSourceObject: JsonNode,
-    childInfo: CedarContainerChildInfo,
-    _parsingResult: ParsingResult,
-    _path: CedarJsonPath,
-  ): CedarEmailField {
-    const field = CedarEmailField.buildEmptyWithNullValues();
+  override read(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, _parsingResult: ParsingResult, _path: JsonPath): EmailField {
+    const field = EmailField.buildEmptyWithNullValues();
     this.readRequiredAndHidden(fieldSourceObject, childInfo);
     return field;
   }

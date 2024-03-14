@@ -1,5 +1,5 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
-import { CedarJSONTemplateFieldContentDynamic } from '../../../util/serialization/CedarJSONTemplateFieldContentDynamic';
+import { JSONTemplateFieldContentDynamic } from '../../../util/serialization/JSONTemplateFieldContentDynamic';
 import { JsonSchema } from '../../../constants/JsonSchema';
 import { JSONFieldWriterInternal } from '../../../../../io/writer/JSONFieldWriterInternal';
 import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
@@ -11,7 +11,7 @@ export class JSONFieldWriterLink extends JSONFieldWriterInternal {
   }
 
   override expandPropertiesNodeForJSON(propertiesObject: JsonNode): void {
-    propertiesObject[JsonSchema.properties] = CedarJSONTemplateFieldContentDynamic.PROPERTIES_VERBATIM_IRI;
+    propertiesObject[JsonSchema.properties] = JSONTemplateFieldContentDynamic.PROPERTIES_VERBATIM_IRI;
   }
 
   override expandRequiredNodeForJSON(_requiredObject: JsonNode): void {

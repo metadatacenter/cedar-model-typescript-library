@@ -1,5 +1,5 @@
 import { JSONTemplateReader } from '../../../../src/org/metadatacenter/io/reader/JSONTemplateReader';
-import { CedarJsonPath } from '../../../../src/org/metadatacenter/model/cedar/util/path/CedarJsonPath';
+import { JsonPath } from '../../../../src/org/metadatacenter/model/cedar/util/path/JsonPath';
 import { ComparisonError } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonError';
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
 import { JsonSchema } from '../../../../src/org/metadatacenter/model/cedar/constants/JsonSchema';
@@ -22,7 +22,7 @@ describe('JSONTemplateReader - template-003', () => {
     const requiredTextfieldChild = new ComparisonError(
       'jtr02',
       ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-      new CedarJsonPath(JsonSchema.required),
+      new JsonPath(JsonSchema.required),
       'TextfieldChild',
     );
     expect(parsingResult.getBlueprintComparisonErrors()).toContainEqual(requiredTextfieldChild);
@@ -30,7 +30,7 @@ describe('JSONTemplateReader - template-003', () => {
     const requiredTextfieldRequired = new ComparisonError(
       'jtr03',
       ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
-      new CedarJsonPath(JsonSchema.required),
+      new JsonPath(JsonSchema.required),
       'TextfieldRequired',
     );
     expect(parsingResult.getBlueprintComparisonErrors()).toContainEqual(requiredTextfieldRequired);
@@ -38,7 +38,7 @@ describe('JSONTemplateReader - template-003', () => {
     const uiPropertyLabels = new ComparisonError(
       'jtr04',
       ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-      new CedarJsonPath(CedarModel.ui, CedarModel.propertyLabels),
+      new JsonPath(CedarModel.ui, CedarModel.propertyLabels),
       'TextfieldChild',
     );
     expect(parsingResult.getBlueprintComparisonErrors()).toContainEqual(uiPropertyLabels);
@@ -46,7 +46,7 @@ describe('JSONTemplateReader - template-003', () => {
     const uiPropertyDescriptions = new ComparisonError(
       'jtr05',
       ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-      new CedarJsonPath(CedarModel.ui, CedarModel.propertyDescriptions),
+      new JsonPath(CedarModel.ui, CedarModel.propertyDescriptions),
       'TextfieldChild',
     );
     expect(parsingResult.getBlueprintComparisonErrors()).toContainEqual(uiPropertyDescriptions);
@@ -54,14 +54,14 @@ describe('JSONTemplateReader - template-003', () => {
     const iriMapping = new ComparisonError(
       'jtr06',
       ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-      new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.properties, 'TextfieldChild', JsonSchema.enum, 0),
+      new JsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.properties, 'TextfieldChild', JsonSchema.enum, 0),
     );
     expect(parsingResult.getBlueprintComparisonErrors()).toContainEqual(iriMapping);
 
     const uiOrderExtra = new ComparisonError(
       'jtr07',
       ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
-      new CedarJsonPath(CedarModel.ui, CedarModel.order),
+      new JsonPath(CedarModel.ui, CedarModel.order),
       null,
       'TextfieldOrder',
     );
@@ -70,7 +70,7 @@ describe('JSONTemplateReader - template-003', () => {
     const uiOrderMissing = new ComparisonError(
       'jtr08',
       ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-      new CedarJsonPath(CedarModel.ui, CedarModel.order),
+      new JsonPath(CedarModel.ui, CedarModel.order),
       'TextfieldChildExtra',
       null,
     );
@@ -79,14 +79,14 @@ describe('JSONTemplateReader - template-003', () => {
     const propertiesRdfsMissing = new ComparisonError(
       'olo01',
       ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-      new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.properties, 'rdfs'),
+      new JsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.properties, 'rdfs'),
     );
     expect(parsingResult.getBlueprintComparisonErrors()).toContainEqual(propertiesRdfsMissing);
 
     const propertiesXsdTypeValueMismatch = new ComparisonError(
       'olo02',
       ComparisonErrorType.VALUE_MISMATCH,
-      new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.properties, 'xsd', 'type'),
+      new JsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.properties, 'xsd', 'type'),
       'string',
       'string--',
     );

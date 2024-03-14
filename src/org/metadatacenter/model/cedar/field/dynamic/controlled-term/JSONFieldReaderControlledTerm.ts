@@ -1,7 +1,7 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
 import { ParsingResult } from '../../../util/compare/ParsingResult';
-import { CedarJsonPath } from '../../../util/path/CedarJsonPath';
-import { CedarControlledTermField } from './CedarControlledTermField';
+import { JsonPath } from '../../../util/path/JsonPath';
+import { ControlledTermField } from './ControlledTermField';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { CedarModel } from '../../../constants/CedarModel';
 import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
@@ -11,16 +11,16 @@ import { ControlledTermBranch } from './value-constraint/branch/ControlledTermBr
 import { ControlledTermValueSet } from './value-constraint/value-set/ControlledTermValueSet';
 import { ControlledTermDefaultValue } from './value-constraint/ControlledTermDefaultValue';
 import { JsonSchema } from '../../../constants/JsonSchema';
-import { CedarContainerChildInfo } from '../../../types/beans/CedarContainerChildInfo';
+import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 
 export class JSONFieldReaderControlledTerm extends JSONFieldTypeSpecificReader {
   override read(
     fieldSourceObject: JsonNode,
-    childInfo: CedarContainerChildInfo,
+    childInfo: ChildDeploymentInfo,
     _parsingResult: ParsingResult,
-    _path: CedarJsonPath,
-  ): CedarControlledTermField {
-    const field = CedarControlledTermField.buildEmptyWithNullValues();
+    _path: JsonPath,
+  ): ControlledTermField {
+    const field = ControlledTermField.buildEmptyWithNullValues();
     this.readRequiredAndHidden(fieldSourceObject, childInfo);
 
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);

@@ -3,22 +3,22 @@ import { JSONAbstractArtifactReader } from './JSONAbstractArtifactReader';
 import { JSONFieldReader } from './JSONFieldReader';
 import { JsonNode } from '../../model/cedar/types/basic-types/JsonNode';
 import { ParsingResult } from '../../model/cedar/util/compare/ParsingResult';
-import { CedarContainerChildrenInfo } from '../../model/cedar/types/beans/CedarContainerChildrenInfo';
-import { CedarJsonPath } from '../../model/cedar/util/path/CedarJsonPath';
-import { CedarContainerChildInfo } from '../../model/cedar/types/beans/CedarContainerChildInfo';
-import { CedarArtifactType } from '../../model/cedar/types/beans/CedarArtifactType';
+import { ContainerArtifactChildrenInfo } from '../../model/cedar/deployment/ContainerArtifactChildrenInfo';
+import { JsonPath } from '../../model/cedar/util/path/JsonPath';
+import { ChildDeploymentInfo } from '../../model/cedar/deployment/ChildDeploymentInfo';
+import { CedarArtifactType } from '../../model/cedar/types/cedar-types/CedarArtifactType';
 import { ReaderUtil } from './ReaderUtil';
 import { JsonSchema } from '../../model/cedar/constants/JsonSchema';
 import { CedarModel } from '../../model/cedar/constants/CedarModel';
-import { UiInputType } from '../../model/cedar/types/beans/UiInputType';
+import { UiInputType } from '../../model/cedar/types/wrapped-types/UiInputType';
 import { ComparisonError } from '../../model/cedar/util/compare/ComparisonError';
 import { ComparisonErrorType } from '../../model/cedar/util/compare/ComparisonErrorType';
-import { CedarElement } from '../../model/cedar/element/CedarElement';
+import { TemplateElement } from '../../model/cedar/element/TemplateElement';
 import { ObjectComparator } from '../../model/cedar/util/compare/ObjectComparator';
-import { CedarJSONElementContent } from '../../model/cedar/util/serialization/CedarJSONElementContent';
-import { JavascriptType } from '../../model/cedar/types/beans/JavascriptType';
-import { CedarSchema } from '../../model/cedar/types/beans/CedarSchema';
-import { CedarContainerAbstractArtifact } from '../../model/cedar/CedarAbstractContainerArtifact';
+import { JSONElementContent } from '../../model/cedar/util/serialization/JSONElementContent';
+import { JavascriptType } from '../../model/cedar/types/wrapped-types/JavascriptType';
+import { ArtifactSchema } from '../../model/cedar/types/wrapped-types/ArtifactSchema';
+import { AbstractContainerArtifact } from '../../model/cedar/AbstractContainerArtifact';
 import { JSONElementReader } from './JSONElementReader';
 
 export abstract class JSONContainerArtifactReader extends JSONAbstractArtifactReader {
@@ -31,18 +31,18 @@ export abstract class JSONContainerArtifactReader extends JSONAbstractArtifactRe
 
   protected abstract getElementReader(): JSONElementReader;
 
-  protected abstract includeInIRIMapping(childInfo: CedarContainerChildInfo): boolean;
+  protected abstract includeInIRIMapping(childInfo: ChildDeploymentInfo): boolean;
 
   protected readAndStoreCandidateChildInfo(
     childDefinitionNode: JsonNode,
     childCandidateName: string,
     parsingResult: ParsingResult,
-    candidateChildrenInfo: CedarContainerChildrenInfo,
-    path: CedarJsonPath,
-  ): CedarContainerChildInfo | null {
+    candidateChildrenInfo: ContainerArtifactChildrenInfo,
+    path: JsonPath,
+  ): ChildDeploymentInfo | null {
     const atType: CedarArtifactType = CedarArtifactType.forValue(ReaderUtil.getString(childDefinitionNode, JsonSchema.atType));
     if (atType !== CedarArtifactType.NULL) {
-      const childInfo: CedarContainerChildInfo = new CedarContainerChildInfo(childCandidateName);
+      const childInfo: ChildDeploymentInfo = new ChildDeploymentInfo(childCandidateName);
       childInfo.atType = atType;
       const uiNode: JsonNode = ReaderUtil.getNode(childDefinitionNode, CedarModel.ui);
       childInfo.uiInputType = UiInputType.forValue(ReaderUtil.getString(uiNode, CedarModel.inputType));
@@ -57,10 +57,10 @@ export abstract class JSONContainerArtifactReader extends JSONAbstractArtifactRe
   }
 
   protected readReportableAttributes(
-    element: CedarElement,
+    element: TemplateElement,
     elementSourceObject: JsonNode,
     parsingResult: ParsingResult,
-    path: CedarJsonPath,
+    path: JsonPath,
   ) {
     // Read and validate, but do not store top level @type
     ObjectComparator.comparePrimitive(
@@ -72,7 +72,7 @@ export abstract class JSONContainerArtifactReader extends JSONAbstractArtifactRe
 
     // Read and validate, but do not store top level @context
     const topContextNode: JsonNode = ReaderUtil.getNode(elementSourceObject, JsonSchema.atContext);
-    const blueprint = CedarJSONElementContent.CONTEXT_VERBATIM;
+    const blueprint = JSONElementContent.CONTEXT_VERBATIM;
     ObjectComparator.compareBothWays(parsingResult, blueprint, topContextNode, path.add(JsonSchema.atContext));
 
     // Read and validate, but do not store top level type
@@ -95,24 +95,24 @@ export abstract class JSONContainerArtifactReader extends JSONAbstractArtifactRe
     // Read and validate, but do not store top level $schema
     ObjectComparator.comparePrimitive(
       parsingResult,
-      CedarSchema.CURRENT.getValue(),
+      ArtifactSchema.CURRENT.getValue(),
       ReaderUtil.getString(elementSourceObject, CedarModel.schema),
       path.add(CedarModel.schema),
     );
   }
 
   protected parseChildren(
-    finalChildrenInfo: CedarContainerChildrenInfo,
+    finalChildrenInfo: ContainerArtifactChildrenInfo,
     containerProperties: JsonNode,
-    container: CedarContainerAbstractArtifact,
+    container: AbstractContainerArtifact,
     parsingResult: ParsingResult,
-    path: CedarJsonPath,
+    path: JsonPath,
   ) {
     // Parse children
     // TODO: handle elements, generalize this code, since it will be used in templates and elements as well
     for (const childInfo of finalChildrenInfo.children) {
       let childDefinition: JsonNode = ReaderUtil.getNode(containerProperties, childInfo.name);
-      let childPath: CedarJsonPath = path.add(JsonSchema.properties, childInfo.name);
+      let childPath: JsonPath = path.add(JsonSchema.properties, childInfo.name);
       if (childInfo.multiInstance) {
         childDefinition = ReaderUtil.getNode(childDefinition, JsonSchema.items);
         childPath = childPath.add(JsonSchema.items);
@@ -130,10 +130,10 @@ export abstract class JSONContainerArtifactReader extends JSONAbstractArtifactRe
   }
 
   protected validatePropertiesVsOrder(
-    candidateChildrenInfo: CedarContainerChildrenInfo,
+    candidateChildrenInfo: ContainerArtifactChildrenInfo,
     containerUIOrder: string[],
     parsingResult: ParsingResult,
-    path: CedarJsonPath,
+    path: JsonPath,
   ) {
     // Children present in the 'properties' but not in the 'order' will also result in error
     for (const childInfo of candidateChildrenInfo.children) {
@@ -153,12 +153,12 @@ export abstract class JSONContainerArtifactReader extends JSONAbstractArtifactRe
 
   protected finalizeChildInfo(
     elementUIOrder: string[],
-    candidateChildrenInfo: CedarContainerChildrenInfo,
+    candidateChildrenInfo: ContainerArtifactChildrenInfo,
     parsingResult: ParsingResult,
-    path: CedarJsonPath,
-  ): CedarContainerChildrenInfo {
+    path: JsonPath,
+  ): ContainerArtifactChildrenInfo {
     // Generate final child info, based on the order and content of _ui/order. Disregard candidates not present in _ui/order with an error
-    const finalChildrenInfo = new CedarContainerChildrenInfo();
+    const finalChildrenInfo = new ContainerArtifactChildrenInfo();
     for (const key of elementUIOrder) {
       const candidate = candidateChildrenInfo.get(key);
       if (candidate !== null && candidate !== undefined) {
@@ -182,10 +182,10 @@ export abstract class JSONContainerArtifactReader extends JSONAbstractArtifactRe
     containerProperties: JsonNode,
     partialKeyMap: Map<string, boolean>,
     parsingResult: ParsingResult,
-    path: CedarJsonPath,
-  ): CedarContainerChildrenInfo {
+    path: JsonPath,
+  ): ContainerArtifactChildrenInfo {
     // Generate the candidate children names list based on the unknown keys of "properties"
-    const candidateChildrenInfo: CedarContainerChildrenInfo = new CedarContainerChildrenInfo();
+    const candidateChildrenInfo: ContainerArtifactChildrenInfo = new ContainerArtifactChildrenInfo();
     Object.keys(containerProperties).forEach((key) => {
       if (!partialKeyMap.has(key)) {
         const propertiesChildNode: JsonNode = ReaderUtil.getNode(containerProperties, key);
@@ -205,7 +205,7 @@ export abstract class JSONContainerArtifactReader extends JSONAbstractArtifactRe
           } else if (typeOfItems == 'array') {
             // Multiple instance, parse multi-info, then process 'items'
             childDefinitionNode = ReaderUtil.getNode(propertiesChildNode, JsonSchema.items);
-            const childInfo: CedarContainerChildInfo | null = this.readAndStoreCandidateChildInfo(
+            const childInfo: ChildDeploymentInfo | null = this.readAndStoreCandidateChildInfo(
               childDefinitionNode,
               key,
               parsingResult,
@@ -230,7 +230,7 @@ export abstract class JSONContainerArtifactReader extends JSONAbstractArtifactRe
     elementRequired: Array<string>,
     requiredPartial: Array<string>,
     parsingResult: ParsingResult,
-    path: CedarJsonPath,
+    path: JsonPath,
   ): Map<string, boolean> {
     // Generate a map of the "required" list for caching reasons
     const elementRequiredMap: Map<string, boolean> = elementRequired.reduce((acc, current) => {
@@ -250,12 +250,12 @@ export abstract class JSONContainerArtifactReader extends JSONAbstractArtifactRe
   }
 
   protected checkRequiredBothWays(
-    candidateChildrenInfo: CedarContainerChildrenInfo,
+    candidateChildrenInfo: ContainerArtifactChildrenInfo,
     elementRequiredMap: Map<string, boolean>,
     elementRequired: Array<string>,
     requiredPartialKeyMap: Map<string, boolean>,
     parsingResult: ParsingResult,
-    path: CedarJsonPath,
+    path: JsonPath,
   ) {
     // Check if all candidate children are present in the "required". Static fields don't need to be there
     const childNames: Array<string> = candidateChildrenInfo.getChildrenNamesForRequired();
@@ -279,9 +279,9 @@ export abstract class JSONContainerArtifactReader extends JSONAbstractArtifactRe
 
   protected extractUIPreferredLabelsAndDescriptions(
     containerUI: JsonNode,
-    candidateChildrenInfo: CedarContainerChildrenInfo,
+    candidateChildrenInfo: ContainerArtifactChildrenInfo,
     parsingResult: ParsingResult,
-    path: CedarJsonPath,
+    path: JsonPath,
   ) {
     // Extract _ui/propertyLabels
     const containerUIPLabels = ReaderUtil.getStringMap(containerUI, CedarModel.propertyLabels);
@@ -320,9 +320,9 @@ export abstract class JSONContainerArtifactReader extends JSONAbstractArtifactRe
 
   protected extractIRIMappings(
     elementProperties: JsonNode,
-    candidateChildrenInfo: CedarContainerChildrenInfo,
+    candidateChildrenInfo: ContainerArtifactChildrenInfo,
     parsingResult: ParsingResult,
-    path: CedarJsonPath,
+    path: JsonPath,
   ) {
     // Get the IRI mappings
     const elementPropertiesContext: JsonNode = ReaderUtil.getNode(elementProperties, JsonSchema.atContext);

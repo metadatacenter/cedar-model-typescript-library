@@ -1,8 +1,8 @@
 import { ValueConstraints } from '../../ValueConstraints';
-import { CedarCheckboxOption } from './CedarCheckboxOption';
+import { CheckboxOption } from './CheckboxOption';
 
 export class ValueConstraintsCheckboxField extends ValueConstraints {
-  literals: Array<CedarCheckboxOption> = [];
+  literals: Array<CheckboxOption> = [];
 
   public constructor() {
     super();

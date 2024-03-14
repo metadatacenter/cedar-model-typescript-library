@@ -1,22 +1,22 @@
 import { CedarModel } from '../../model/cedar/constants/CedarModel';
 import { JsonSchema } from '../../model/cedar/constants/JsonSchema';
-import { CedarArtifactType } from '../../model/cedar/types/beans/CedarArtifactType';
+import { CedarArtifactType } from '../../model/cedar/types/cedar-types/CedarArtifactType';
 import { TemplateProperty } from '../../model/cedar/constants/TemplateProperty';
 import { ReaderUtil } from './ReaderUtil';
 import { JsonNode } from '../../model/cedar/types/basic-types/JsonNode';
 import { ObjectComparator } from '../../model/cedar/util/compare/ObjectComparator';
 import { ParsingResult } from '../../model/cedar/util/compare/ParsingResult';
-import { CedarContainerChildrenInfo } from '../../model/cedar/types/beans/CedarContainerChildrenInfo';
-import { CedarJsonPath } from '../../model/cedar/util/path/CedarJsonPath';
+import { ContainerArtifactChildrenInfo } from '../../model/cedar/deployment/ContainerArtifactChildrenInfo';
+import { JsonPath } from '../../model/cedar/util/path/JsonPath';
 import { JSONReaderBehavior } from '../../behavior/JSONReaderBehavior';
-import { UiInputType } from '../../model/cedar/types/beans/UiInputType';
-import { CedarJSONTemplateFieldContentDynamic } from '../../model/cedar/util/serialization/CedarJSONTemplateFieldContentDynamic';
+import { UiInputType } from '../../model/cedar/types/wrapped-types/UiInputType';
+import { JSONTemplateFieldContentDynamic } from '../../model/cedar/util/serialization/JSONTemplateFieldContentDynamic';
 import { JSONElementReaderResult } from './JSONElementReaderResult';
-import { CedarElement } from '../../model/cedar/element/CedarElement';
+import { TemplateElement } from '../../model/cedar/element/TemplateElement';
 import { JSONContainerArtifactReader } from './JSONContainerArtifactReader';
-import { CedarJSONElementContent } from '../../model/cedar/util/serialization/CedarJSONElementContent';
+import { JSONElementContent } from '../../model/cedar/util/serialization/JSONElementContent';
 import { JSONElementWriter } from '../writer/JSONElementWriter';
-import { CedarContainerChildInfo } from '../../model/cedar/types/beans/CedarContainerChildInfo';
+import { ChildDeploymentInfo } from '../../model/cedar/deployment/ChildDeploymentInfo';
 
 export class JSONElementReader extends JSONContainerArtifactReader {
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.TEMPLATE_ELEMENT;
@@ -40,7 +40,7 @@ export class JSONElementReader extends JSONContainerArtifactReader {
   protected override getElementReader(): JSONElementReader {
     return this;
   }
-  protected override includeInIRIMapping(childInfo: CedarContainerChildInfo): boolean {
+  protected override includeInIRIMapping(childInfo: ChildDeploymentInfo): boolean {
     return childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD && childInfo.uiInputType !== UiInputType.ATTRIBUTE_VALUE;
   }
 
@@ -51,16 +51,12 @@ export class JSONElementReader extends JSONContainerArtifactReader {
     } catch (Exception) {
       elementObject = {};
     }
-    return this.readFromObject(elementObject, CedarContainerChildInfo.empty(), new CedarJsonPath());
+    return this.readFromObject(elementObject, ChildDeploymentInfo.empty(), new JsonPath());
   }
 
-  public readFromObject(
-    elementSourceObject: JsonNode,
-    _childInfo: CedarContainerChildInfo,
-    topPath: CedarJsonPath,
-  ): JSONElementReaderResult {
+  public readFromObject(elementSourceObject: JsonNode, _childInfo: ChildDeploymentInfo, topPath: JsonPath): JSONElementReaderResult {
     const parsingResult: ParsingResult = new ParsingResult();
-    const element = CedarElement.buildEmptyWithNullValues();
+    const element = TemplateElement.buildEmptyWithNullValues();
 
     this.readNonReportableAttributes(element, elementSourceObject);
     this.readReportableAttributes(element, elementSourceObject, parsingResult, topPath);
@@ -69,29 +65,29 @@ export class JSONElementReader extends JSONContainerArtifactReader {
     return new JSONElementReaderResult(element, parsingResult, elementSourceObject);
   }
 
-  protected readNonReportableAttributes(element: CedarElement, elementSourceObject: JsonNode) {
+  protected readNonReportableAttributes(element: TemplateElement, elementSourceObject: JsonNode) {
     super.readNonReportableAttributes(element, elementSourceObject);
   }
 
   private readAndValidateChildrenInfo(
-    element: CedarElement,
+    element: TemplateElement,
     elementSourceObject: JsonNode,
     parsingResult: ParsingResult,
-    path: CedarJsonPath,
+    path: JsonPath,
   ) {
     const elementRequired: Array<string> = ReaderUtil.getStringList(elementSourceObject, JsonSchema.required);
     const elementProperties: JsonNode = ReaderUtil.getNode(elementSourceObject, JsonSchema.properties);
 
     const elementRequiredMap: Map<string, boolean> = this.generateAndValidateRequiredMap(
       elementRequired,
-      CedarJSONElementContent.REQUIRED_PARTIAL,
+      JSONElementContent.REQUIRED_PARTIAL,
       parsingResult,
       path,
     );
 
-    const candidateChildrenInfo: CedarContainerChildrenInfo = this.getCandidateChildrenInfo(
+    const candidateChildrenInfo: ContainerArtifactChildrenInfo = this.getCandidateChildrenInfo(
       elementProperties,
-      CedarJSONElementContent.PROPERTIES_PARTIAL_KEY_MAP,
+      JSONElementContent.PROPERTIES_PARTIAL_KEY_MAP,
       parsingResult,
       path,
     );
@@ -100,7 +96,7 @@ export class JSONElementReader extends JSONContainerArtifactReader {
       candidateChildrenInfo,
       elementRequiredMap,
       elementRequired,
-      CedarJSONElementContent.REQUIRED_PARTIAL_KEY_MAP,
+      JSONElementContent.REQUIRED_PARTIAL_KEY_MAP,
       parsingResult,
       path,
     );
@@ -122,7 +118,7 @@ export class JSONElementReader extends JSONContainerArtifactReader {
     this.parseChildren(finalChildrenInfo, elementProperties, element, parsingResult, path);
   }
 
-  private validateProperties(elementProperties: JsonNode, element: CedarElement, parsingResult: ParsingResult, path: CedarJsonPath) {
+  private validateProperties(elementProperties: JsonNode, element: TemplateElement, parsingResult: ParsingResult, path: JsonPath) {
     // Validate properties
     // 'properties' should have extra entry for Fields/Elements as definition
     // 'properties/context/properties' should have extra entry for Fields/Elements as IRI mappings
@@ -132,11 +128,11 @@ export class JSONElementReader extends JSONContainerArtifactReader {
     //    "type": "string",
     //    "format": "uri"
     //  },
-    const blueprint = ReaderUtil.deepClone(CedarJSONElementContent.PROPERTIES_PARTIAL) as JsonNode;
+    const blueprint = ReaderUtil.deepClone(JSONElementContent.PROPERTIES_PARTIAL) as JsonNode;
     if (element.childrenInfo.hasAttributeValue()) {
       const atContext: JsonNode = blueprint[JsonSchema.atContext] as JsonNode;
       atContext[TemplateProperty.additionalProperties] =
-        CedarJSONTemplateFieldContentDynamic.ADDITIONAL_PROPERTIES_VERBATIM_ATTRIBUTE_VALUE_INSIDE;
+        JSONTemplateFieldContentDynamic.ADDITIONAL_PROPERTIES_VERBATIM_ATTRIBUTE_VALUE_INSIDE;
     }
     // Required should not be present if empty
     const atContext: JsonNode = blueprint[JsonSchema.atContext] as JsonNode;
@@ -153,7 +149,7 @@ export class JSONElementReader extends JSONContainerArtifactReader {
       compareResult,
       jsonElementReaderResult.elementSourceObject,
       writer.getAsJsonNode(jsonElementReaderResult.element),
-      new CedarJsonPath(),
+      new JsonPath(),
     );
     return compareResult;
   }

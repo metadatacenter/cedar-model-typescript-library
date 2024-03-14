@@ -1,9 +1,9 @@
-import { CedarTextField } from '../../../../../../src/org/metadatacenter/model/cedar/field/dynamic/textfield/CedarTextField';
+import { TextField } from '../../../../../../src/org/metadatacenter/model/cedar/field/dynamic/textfield/TextField';
 import { CedarWriters } from '../../../../../../src';
 
 describe('CedarField', () => {
   test('creates empty field null values', () => {
-    const cedarTextField = CedarTextField.buildEmptyWithNullValues();
+    const cedarTextField = TextField.buildEmptyWithNullValues();
     expect(cedarTextField).not.toBeNull();
 
     const writers: CedarWriters = CedarWriters.getStrict();

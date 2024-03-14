@@ -2,7 +2,7 @@ import { JSONWriterBehavior } from '../../behavior/JSONWriterBehavior';
 import { JSONAtomicWriter } from './JSONAtomicWriter';
 import { JSONFieldWriterInternal } from './JSONFieldWriterInternal';
 import { JSONTemplateWriter } from './JSONTemplateWriter';
-import { CedarFieldType } from '../../model/cedar/types/beans/CedarFieldType';
+import { CedarFieldType } from '../../model/cedar/types/cedar-types/CedarFieldType';
 import { JSONFieldWriterTextField } from '../../model/cedar/field/dynamic/textfield/JSONFieldWriterTextField';
 import { JSONFieldWriterLink } from '../../model/cedar/field/dynamic/link/JSONFieldWriterLink';
 import { JSONFieldWriterNumeric } from '../../model/cedar/field/dynamic/numeric/JSONFieldWriterNumeric';
@@ -19,7 +19,7 @@ import { JSONFieldWriterList } from '../../model/cedar/field/dynamic/list/JSONFi
 import { JSONFieldWriterTextArea } from '../../model/cedar/field/dynamic/textarea/JSONFieldWriterTextArea';
 import { JSONFieldWriterPhoneNumber } from '../../model/cedar/field/dynamic/phone-number/JSONFieldWriterPhoneNumber';
 import { JSONFieldWriterEmail } from '../../model/cedar/field/dynamic/email/JSONFieldWriterEmail';
-import { CedarField } from '../../model/cedar/field/CedarField';
+import { TemplateField } from '../../model/cedar/field/TemplateField';
 import { JSONFieldWriterAttributeValue } from '../../model/cedar/field/dynamic/attribute-value/JSONFieldWriterAttributeValue';
 import { JSONFieldWriterControlledTerm } from '../../model/cedar/field/dynamic/controlled-term/JSONFieldWriterControlledTerm';
 import { ControlledTermOntology } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/ontology/ControlledTermOntology';
@@ -104,7 +104,7 @@ export class CedarWriters {
 
   public getJSONFieldWriterForType(cedarFieldOrType: CedarFieldType): JSONFieldWriterInternal {
     let cedarFieldType: CedarFieldType;
-    if (cedarFieldOrType instanceof CedarField) {
+    if (cedarFieldOrType instanceof TemplateField) {
       cedarFieldType = cedarFieldOrType.cedarFieldType;
     } else {
       cedarFieldType = cedarFieldOrType;
@@ -135,7 +135,7 @@ export class CedarWriters {
     throw new Error(`No writer found for class type: ${className}`);
   }
 
-  public getJSONFieldWriterForField(field: CedarField): JSONFieldWriterInternal {
+  public getJSONFieldWriterForField(field: TemplateField): JSONFieldWriterInternal {
     return this.getJSONFieldWriterForType(field.cedarFieldType);
   }
 }

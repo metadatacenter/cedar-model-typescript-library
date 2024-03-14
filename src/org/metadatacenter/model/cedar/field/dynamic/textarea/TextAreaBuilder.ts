@@ -1,9 +1,9 @@
-import { FieldBuilder } from '../../FieldBuilder';
-import { CedarTextArea } from './CedarTextArea';
+import { TemplateFieldBuilder } from '../../TemplateFieldBuilder';
+import { TextArea } from './TextArea';
 
-export class TextAreaBuilder extends FieldBuilder {
-  public build(): CedarTextArea {
-    const textArea = CedarTextArea.buildEmptyWithNullValues();
+export class TextAreaBuilder extends TemplateFieldBuilder {
+  public build(): TextArea {
+    const textArea = TextArea.buildEmptyWithNullValues();
     super.buildInternal(textArea);
 
     return textArea;

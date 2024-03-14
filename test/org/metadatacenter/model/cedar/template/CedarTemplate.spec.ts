@@ -1,10 +1,10 @@
-import { CedarTemplate } from '../../../../../../src/org/metadatacenter/model/cedar/template/CedarTemplate';
+import { Template } from '../../../../../../src/org/metadatacenter/model/cedar/template/Template';
 import { CedarWriters } from '../../../../../../src/org/metadatacenter/io/writer/CedarWriters';
 import { JSONTemplateWriter } from '../../../../../../src/org/metadatacenter/io/writer/JSONTemplateWriter';
 
 describe('CedarTemplate', () => {
   test('creates empty with null values', () => {
-    const cedarTemplate = CedarTemplate.buildEmptyWithNullValues();
+    const cedarTemplate = Template.buildEmptyWithNullValues();
     expect(cedarTemplate).not.toBeNull();
 
     const writers: CedarWriters = CedarWriters.getStrict();
@@ -40,7 +40,7 @@ describe('CedarTemplate', () => {
   });
 
   test('creates empty with default values', () => {
-    const cedarTemplate = CedarTemplate.buildEmptyWithDefaultValues();
+    const cedarTemplate = Template.buildEmptyWithDefaultValues();
     expect(cedarTemplate).not.toBeNull();
 
     const writers: CedarWriters = CedarWriters.getStrict();
@@ -76,7 +76,7 @@ describe('CedarTemplate', () => {
   });
 
   test('creates empty with default values', () => {
-    const cedarTemplate = CedarTemplate.buildEmptyWithDefaultValues();
+    const cedarTemplate = Template.buildEmptyWithDefaultValues();
     expect(cedarTemplate).not.toBeNull();
 
     const writers: CedarWriters = CedarWriters.getStrict();

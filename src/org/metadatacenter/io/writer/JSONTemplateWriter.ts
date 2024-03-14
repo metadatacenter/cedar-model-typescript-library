@@ -1,16 +1,16 @@
 import { JSONWriterBehavior } from '../../behavior/JSONWriterBehavior';
-import { CedarTemplate } from '../../model/cedar/template/CedarTemplate';
+import { Template } from '../../model/cedar/template/Template';
 import { ReaderUtil } from '../reader/ReaderUtil';
-import { CedarJSONTemplateContent } from '../../model/cedar/util/serialization/CedarJSONTemplateContent';
+import { JSONTemplateContent } from '../../model/cedar/util/serialization/JSONTemplateContent';
 import { JsonSchema } from '../../model/cedar/constants/JsonSchema';
 import { JsonNode, JsonNodeClass } from '../../model/cedar/types/basic-types/JsonNode';
 import { CedarModel } from '../../model/cedar/constants/CedarModel';
-import { CedarArtifactType } from '../../model/cedar/types/beans/CedarArtifactType';
-import { JavascriptType } from '../../model/cedar/types/beans/JavascriptType';
+import { CedarArtifactType } from '../../model/cedar/types/cedar-types/CedarArtifactType';
+import { JavascriptType } from '../../model/cedar/types/wrapped-types/JavascriptType';
 import { TemplateProperty } from '../../model/cedar/constants/TemplateProperty';
-import { CedarSchema } from '../../model/cedar/types/beans/CedarSchema';
+import { ArtifactSchema } from '../../model/cedar/types/wrapped-types/ArtifactSchema';
 import { CedarWriters } from './CedarWriters';
-import { CedarJSONTemplateFieldContentDynamic } from '../../model/cedar/util/serialization/CedarJSONTemplateFieldContentDynamic';
+import { JSONTemplateFieldContentDynamic } from '../../model/cedar/util/serialization/JSONTemplateFieldContentDynamic';
 import { JSONAbstractContainerArtifactWriter } from './JSONAbstractContainerArtifactWriter';
 
 export class JSONTemplateWriter extends JSONAbstractContainerArtifactWriter {
@@ -22,9 +22,9 @@ export class JSONTemplateWriter extends JSONAbstractContainerArtifactWriter {
     return new JSONTemplateWriter(behavior, writers);
   }
 
-  private buildProperties(template: CedarTemplate): JsonNode {
+  private buildProperties(template: Template): JsonNode {
     // clone, because we will need to modify deep content
-    const properties = ReaderUtil.deepClone(CedarJSONTemplateContent.PROPERTIES_PARTIAL);
+    const properties = ReaderUtil.deepClone(JSONTemplateContent.PROPERTIES_PARTIAL);
 
     // Include the IRI mapping
     properties[JsonSchema.atContext][JsonSchema.properties] = {
@@ -40,7 +40,7 @@ export class JSONTemplateWriter extends JSONAbstractContainerArtifactWriter {
     // Attribute value modification
     if (template.childrenInfo.hasAttributeValue()) {
       properties[JsonSchema.atContext][TemplateProperty.additionalProperties] =
-        CedarJSONTemplateFieldContentDynamic.ADDITIONAL_PROPERTIES_VERBATIM_ATTRIBUTE_VALUE_INSIDE;
+        JSONTemplateFieldContentDynamic.ADDITIONAL_PROPERTIES_VERBATIM_ATTRIBUTE_VALUE_INSIDE;
     }
 
     // include the field/element definitions
@@ -66,11 +66,11 @@ export class JSONTemplateWriter extends JSONAbstractContainerArtifactWriter {
     return extendedProperties;
   }
 
-  public getAsJsonString(template: CedarTemplate, indent: number = 2): string {
+  public getAsJsonString(template: Template, indent: number = 2): string {
     return JSON.stringify(this.getAsJsonNode(template), null, indent);
   }
 
-  public getAsJsonNode(template: CedarTemplate): JsonNode {
+  public getAsJsonNode(template: Template): JsonNode {
     const extendedProperties: JsonNode = this.buildProperties(template);
 
     const templateUI: JsonNode = {
@@ -97,19 +97,19 @@ export class JSONTemplateWriter extends JSONAbstractContainerArtifactWriter {
     return {
       [JsonSchema.atId]: this.atomicWriter.write(template.at_id),
       [JsonSchema.atType]: this.atomicWriter.write(CedarArtifactType.TEMPLATE),
-      [JsonSchema.atContext]: CedarJSONTemplateContent.CONTEXT_VERBATIM,
+      [JsonSchema.atContext]: JSONTemplateContent.CONTEXT_VERBATIM,
       [CedarModel.type]: this.atomicWriter.write(JavascriptType.OBJECT),
       [TemplateProperty.title]: template.title,
       [TemplateProperty.description]: template.description,
       [CedarModel.ui]: templateUI,
       [JsonSchema.properties]: extendedProperties,
-      [JsonSchema.required]: [...CedarJSONTemplateContent.REQUIRED_PARTIAL, ...template.childrenInfo.getChildrenNamesForRequired()],
+      [JsonSchema.required]: [...JSONTemplateContent.REQUIRED_PARTIAL, ...template.childrenInfo.getChildrenNamesForRequired()],
       ...this.macroSchemaNameAndDescription(template),
       ...this.macroProvenance(template, this.atomicWriter),
       [JsonSchema.schemaVersion]: this.atomicWriter.write(template.schema_schemaVersion),
       [TemplateProperty.additionalProperties]: this.atomicWriter.write(template.getAdditionalProperties()),
       ...this.macroStatusAndVersion(template, this.atomicWriter),
-      [CedarModel.schema]: this.atomicWriter.write(CedarSchema.CURRENT),
+      [CedarModel.schema]: this.atomicWriter.write(ArtifactSchema.CURRENT),
       ...schemaIdentifier,
     };
   }

@@ -1,8 +1,8 @@
 import { ValueConstraints } from '../../ValueConstraints';
-import { CedarListOption } from './CedarListOption';
+import { ListOption } from './ListOption';
 
 export class ValueConstraintsListField extends ValueConstraints {
-  literals: Array<CedarListOption> = [];
+  literals: Array<ListOption> = [];
 
   public constructor() {
     super();

@@ -1,5 +1,5 @@
 import { ValueConstraints } from '../../ValueConstraints';
-import { NumberType } from '../../../types/beans/NumberType';
+import { NumberType } from '../../../types/wrapped-types/NumberType';
 
 export class ValueConstraintsNumericField extends ValueConstraints {
   numberType: NumberType = NumberType.NULL;

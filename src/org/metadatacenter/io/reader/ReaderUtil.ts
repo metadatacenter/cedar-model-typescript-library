@@ -1,5 +1,5 @@
 import { JsonNode, JsonNodeClass } from '../../model/cedar/types/basic-types/JsonNode';
-import { URI } from '../../model/cedar/types/beans/URI';
+import { URI } from '../../model/cedar/types/wrapped-types/URI';
 
 export class ReaderUtil {
   public static getString(node: JsonNode, key: string): string | null {

@@ -1,23 +1,23 @@
 import { JSONWriterBehavior } from '../../behavior/JSONWriterBehavior';
-import { CedarArtifactId } from '../../model/cedar/types/beans/CedarArtifactId';
-import { CedarArtifactType } from '../../model/cedar/types/beans/CedarArtifactType';
-import { JavascriptType } from '../../model/cedar/types/beans/JavascriptType';
-import { CedarDate } from '../../model/cedar/types/beans/CedarDate';
-import { CedarUser } from '../../model/cedar/types/beans/CedarUser';
-import { BiboStatus } from '../../model/cedar/types/beans/BiboStatus';
-import { PavVersion } from '../../model/cedar/types/beans/PavVersion';
-import { CedarSchema } from '../../model/cedar/types/beans/CedarSchema';
-import { SchemaVersion } from '../../model/cedar/types/beans/SchemaVersion';
-import { NumberType, NumberTypeValue } from '../../model/cedar/types/beans/NumberType';
-import { TemporalType, TemporalTypeValue } from '../../model/cedar/types/beans/TemporalType';
-import { TemporalGranularity, TemporalGranularityValue } from '../../model/cedar/types/beans/TemporalGranularity';
-import { TimeFormat, TimeFormatValue } from '../../model/cedar/types/beans/TimeFormat';
-import { UiInputType, UiInputTypeValue } from '../../model/cedar/types/beans/UiInputType';
-import { AdditionalProperties } from '../../model/cedar/types/beans/AdditionalProperties';
+import { CedarArtifactId } from '../../model/cedar/types/cedar-types/CedarArtifactId';
+import { CedarArtifactType } from '../../model/cedar/types/cedar-types/CedarArtifactType';
+import { JavascriptType } from '../../model/cedar/types/wrapped-types/JavascriptType';
+import { ISODate } from '../../model/cedar/types/wrapped-types/ISODate';
+import { CedarUser } from '../../model/cedar/types/cedar-types/CedarUser';
+import { BiboStatus } from '../../model/cedar/types/wrapped-types/BiboStatus';
+import { PavVersion } from '../../model/cedar/types/wrapped-types/PavVersion';
+import { ArtifactSchema } from '../../model/cedar/types/wrapped-types/ArtifactSchema';
+import { SchemaVersion } from '../../model/cedar/types/wrapped-types/SchemaVersion';
+import { NumberType, NumberTypeValue } from '../../model/cedar/types/wrapped-types/NumberType';
+import { TemporalType, TemporalTypeValue } from '../../model/cedar/types/wrapped-types/TemporalType';
+import { TemporalGranularity, TemporalGranularityValue } from '../../model/cedar/types/wrapped-types/TemporalGranularity';
+import { TimeFormat, TimeFormatValue } from '../../model/cedar/types/wrapped-types/TimeFormat';
+import { UiInputType, UiInputTypeValue } from '../../model/cedar/types/wrapped-types/UiInputType';
+import { AdditionalProperties } from '../../model/cedar/types/wrapped-types/AdditionalProperties';
 import { NullableString } from '../../model/cedar/types/basic-types/NullableString';
 import { JsonNode } from '../../model/cedar/types/basic-types/JsonNode';
-import { CedarJSONTemplateFieldContentDynamic } from '../../model/cedar/util/serialization/CedarJSONTemplateFieldContentDynamic';
-import { URI } from '../../model/cedar/types/beans/URI';
+import { JSONTemplateFieldContentDynamic } from '../../model/cedar/util/serialization/JSONTemplateFieldContentDynamic';
+import { URI } from '../../model/cedar/types/wrapped-types/URI';
 
 export class JSONAtomicWriter {
   private behavior: JSONWriterBehavior;
@@ -31,11 +31,11 @@ export class JSONAtomicWriter {
       | CedarArtifactId
       | CedarArtifactType
       | JavascriptType
-      | CedarDate
+      | ISODate
       | CedarUser
       | BiboStatus
       | PavVersion
-      | CedarSchema
+      | ArtifactSchema
       | SchemaVersion
       | NumberType
       | TemporalType
@@ -55,7 +55,7 @@ export class JSONAtomicWriter {
       return this.writeCedarArtifactType(arg);
     } else if (arg instanceof JavascriptType) {
       return this.writeJavascriptType(arg);
-    } else if (arg instanceof CedarDate) {
+    } else if (arg instanceof ISODate) {
       return this.writeCedarDate(arg);
     } else if (arg instanceof CedarUser) {
       return this.writeCedarUser(arg);
@@ -63,7 +63,7 @@ export class JSONAtomicWriter {
       return this.writeBiboStatus(arg);
     } else if (arg instanceof PavVersion) {
       return this.writePavVersion(arg);
-    } else if (arg instanceof CedarSchema) {
+    } else if (arg instanceof ArtifactSchema) {
       return this.writeCedarSchema(arg);
     } else if (arg instanceof SchemaVersion) {
       return this.writeSchemaVersion(arg);
@@ -98,7 +98,7 @@ export class JSONAtomicWriter {
     return type.getValue();
   }
 
-  private writeCedarDate(date: CedarDate): NullableString {
+  private writeCedarDate(date: ISODate): NullableString {
     return date.getValue();
   }
 
@@ -114,7 +114,7 @@ export class JSONAtomicWriter {
     return version.getValue();
   }
 
-  private writeCedarSchema(schema: CedarSchema): NullableString {
+  private writeCedarSchema(schema: ArtifactSchema): NullableString {
     return schema.getValue();
   }
 
@@ -146,7 +146,7 @@ export class JSONAtomicWriter {
     if (additionalProperties === AdditionalProperties.FALSE) {
       return false;
     } else if (additionalProperties === AdditionalProperties.ALLOW_ATTRIBUTE_VALUE) {
-      return CedarJSONTemplateFieldContentDynamic.ADDITIONAL_PROPERTIES_VERBATIM_ATTRIBUTE_VALUE_OUTSIDE;
+      return JSONTemplateFieldContentDynamic.ADDITIONAL_PROPERTIES_VERBATIM_ATTRIBUTE_VALUE_OUTSIDE;
     }
     return null;
   }

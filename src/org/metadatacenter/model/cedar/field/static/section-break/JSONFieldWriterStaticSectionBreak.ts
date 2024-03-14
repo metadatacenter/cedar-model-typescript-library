@@ -2,25 +2,25 @@ import { JsonNode } from '../../../types/basic-types/JsonNode';
 import { JSONFieldWriterInternal } from '../../../../../io/writer/JSONFieldWriterInternal';
 import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
 import { CedarWriters } from '../../../../../io/writer/CedarWriters';
-import { CedarStaticSectionBreakField } from './CedarStaticSectionBreakField';
+import { StaticSectionBreakField } from './StaticSectionBreakField';
 import { JsonSchema } from '../../../constants/JsonSchema';
-import { CedarJSONTemplateFieldContentStatic } from '../../../util/serialization/CedarJSONTemplateFieldContentStatic';
+import { JSONTemplateFieldContentStatic } from '../../../util/serialization/JSONTemplateFieldContentStatic';
 import { CedarModel } from '../../../constants/CedarModel';
-import { JavascriptType } from '../../../types/beans/JavascriptType';
+import { JavascriptType } from '../../../types/wrapped-types/JavascriptType';
 import { TemplateProperty } from '../../../constants/TemplateProperty';
-import { CedarSchema } from '../../../types/beans/CedarSchema';
-import { AdditionalProperties } from '../../../types/beans/AdditionalProperties';
+import { ArtifactSchema } from '../../../types/wrapped-types/ArtifactSchema';
+import { AdditionalProperties } from '../../../types/wrapped-types/AdditionalProperties';
 
 export class JSONFieldWriterStaticSectionsBreak extends JSONFieldWriterInternal {
   constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
     super(behavior, writers);
   }
 
-  override getAsJsonNode(field: CedarStaticSectionBreakField): JsonNode {
+  override getAsJsonNode(field: StaticSectionBreakField): JsonNode {
     return {
       [JsonSchema.atId]: this.atomicWriter.write(field.at_id),
       [JsonSchema.atType]: this.atomicWriter.write(field.cedarArtifactType),
-      [JsonSchema.atContext]: CedarJSONTemplateFieldContentStatic.CONTEXT_VERBATIM,
+      [JsonSchema.atContext]: JSONTemplateFieldContentStatic.CONTEXT_VERBATIM,
       [CedarModel.type]: this.atomicWriter.write(JavascriptType.OBJECT),
       [TemplateProperty.title]: field.title,
       [TemplateProperty.description]: field.description,
@@ -33,7 +33,7 @@ export class JSONFieldWriterStaticSectionsBreak extends JSONFieldWriterInternal 
       ...this.macroProvenance(field, this.atomicWriter),
       [TemplateProperty.additionalProperties]: this.atomicWriter.write(AdditionalProperties.FALSE),
       ...this.macroSkos(field),
-      [CedarModel.schema]: this.atomicWriter.write(CedarSchema.CURRENT),
+      [CedarModel.schema]: this.atomicWriter.write(ArtifactSchema.CURRENT),
     };
   }
 }

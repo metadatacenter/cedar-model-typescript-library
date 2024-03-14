@@ -1,4 +1,4 @@
-import { URI } from '../../../../../types/beans/URI';
+import { URI } from '../../../../../types/wrapped-types/URI';
 import { ControlledTermAbstractValueConstraint } from '../ControlledTermAbstractValueConstraint';
 
 export class ControlledTermValueSet extends ControlledTermAbstractValueConstraint {

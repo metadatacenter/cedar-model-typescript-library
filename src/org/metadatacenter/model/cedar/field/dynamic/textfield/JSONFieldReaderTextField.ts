@@ -1,20 +1,15 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
 import { ParsingResult } from '../../../util/compare/ParsingResult';
-import { CedarJsonPath } from '../../../util/path/CedarJsonPath';
-import { CedarTextField } from './CedarTextField';
+import { JsonPath } from '../../../util/path/JsonPath';
+import { TextField } from './TextField';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { CedarModel } from '../../../constants/CedarModel';
 import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
-import { CedarContainerChildInfo } from '../../../types/beans/CedarContainerChildInfo';
+import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 
 export class JSONFieldReaderTextField extends JSONFieldTypeSpecificReader {
-  override read(
-    fieldSourceObject: JsonNode,
-    childInfo: CedarContainerChildInfo,
-    _parsingResult: ParsingResult,
-    _path: CedarJsonPath,
-  ): CedarTextField {
-    const field = CedarTextField.buildEmptyWithNullValues();
+  override read(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, _parsingResult: ParsingResult, _path: JsonPath): TextField {
+    const field = TextField.buildEmptyWithNullValues();
     this.readRequiredAndHidden(fieldSourceObject, childInfo);
 
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);

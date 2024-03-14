@@ -3,15 +3,15 @@ import { CedarModel } from '../../../constants/CedarModel';
 import { JSONFieldWriterInternal } from '../../../../../io/writer/JSONFieldWriterInternal';
 import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
 import { CedarWriters } from '../../../../../io/writer/CedarWriters';
-import { CedarListField } from './CedarListField';
-import { CedarContainerChildInfo } from '../../../types/beans/CedarContainerChildInfo';
+import { ListField } from './ListField';
+import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 
 export class JSONFieldWriterList extends JSONFieldWriterInternal {
   constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
     super(behavior, writers);
   }
 
-  override expandValueConstraintsNodeForJSON(vcNode: JsonNode, field: CedarListField, childInfo: CedarContainerChildInfo): void {
+  override expandValueConstraintsNodeForJSON(vcNode: JsonNode, field: ListField, childInfo: ChildDeploymentInfo): void {
     super.expandValueConstraintsNodeForJSON(vcNode, field, childInfo);
     vcNode[CedarModel.multipleChoice] = field.multipleChoice;
     const literals: Array<JsonNode> = JsonNodeClass.getEmptyList();

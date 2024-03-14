@@ -1,20 +1,20 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
 import { ParsingResult } from '../../../util/compare/ParsingResult';
-import { CedarJsonPath } from '../../../util/path/CedarJsonPath';
+import { JsonPath } from '../../../util/path/JsonPath';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { CedarModel } from '../../../constants/CedarModel';
-import { CedarStaticRichTextField } from './CedarStaticRichTextField';
+import { StaticRichTextField } from './StaticRichTextField';
 import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
-import { CedarContainerChildInfo } from '../../../types/beans/CedarContainerChildInfo';
+import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 
 export class JSONFieldReaderRichText extends JSONFieldTypeSpecificReader {
   override read(
     fieldSourceObject: JsonNode,
-    _childInfo: CedarContainerChildInfo,
+    _childInfo: ChildDeploymentInfo,
     _parsingResult: ParsingResult,
-    _path: CedarJsonPath,
-  ): CedarStaticRichTextField {
-    const field = CedarStaticRichTextField.buildEmptyWithNullValues();
+    _path: JsonPath,
+  ): StaticRichTextField {
+    const field = StaticRichTextField.buildEmptyWithNullValues();
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
     field.content = ReaderUtil.getString(uiNode, CedarModel.content);
     return field;

@@ -6,6 +6,7 @@ import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
 import { CedarWriters } from '../../../../../io/writer/CedarWriters';
 import { JsonSchema } from '../../../constants/JsonSchema';
 import { CedarJSONTemplateFieldContentDynamic } from '../../../util/serialization/CedarJSONTemplateFieldContentDynamic';
+import { CedarContainerChildInfo } from '../../../types/beans/CedarContainerChildInfo';
 
 export class JSONFieldWriterControlledTerm extends JSONFieldWriter {
   constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
@@ -26,8 +27,8 @@ export class JSONFieldWriterControlledTerm extends JSONFieldWriter {
     // TODO: Should the @id be required in case of a controlled term? or @value?
   }
 
-  override expandValueConstraintsNodeForJSON(vcNode: JsonNode, field: CedarControlledTermField): void {
-    super.expandValueConstraintsNodeForJSON(vcNode, field);
+  override expandValueConstraintsNodeForJSON(vcNode: JsonNode, field: CedarControlledTermField, childInfo: CedarContainerChildInfo): void {
+    super.expandValueConstraintsNodeForJSON(vcNode, field, childInfo);
     if (field.valueConstraints.defaultValue != null) {
       const defaultValue = JsonNodeClass.getEmpty();
       defaultValue[JsonSchema.termUri] = this.atomicWriter.write(field.valueConstraints.defaultValue.termUri);

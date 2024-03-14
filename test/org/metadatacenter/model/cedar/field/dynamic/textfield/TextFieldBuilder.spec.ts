@@ -32,7 +32,6 @@ describe('TextFieldBuilder', () => {
       .withMaxLength(100)
       .withRegex('regex')
       .withSuggestions(true)
-      .withRequiredValue(true)
       .build();
 
     const writers: CedarWriters = CedarWriters.getStrict();
@@ -72,7 +71,7 @@ describe('TextFieldBuilder', () => {
     expect(backparsed['skos:prefLabel']).toBe('Preferred label');
     expect(backparsed['skos:altLabel']).toStrictEqual(['Alt label 1', 'Alt label 2', 'Alt label 3']);
 
-    expect(backparsed['_valueConstraints']['requiredValue']).toBe(true);
+    expect(backparsed['_valueConstraints']['requiredValue']).toBe(false);
     expect(backparsed['_valueConstraints']['regex']).toBe('regex');
     expect(backparsed['_valueConstraints']['defaultValue']).toBe('default');
     expect(backparsed['_valueConstraints']['minLength']).toBe(10);

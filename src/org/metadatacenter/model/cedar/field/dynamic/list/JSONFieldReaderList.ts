@@ -7,9 +7,15 @@ import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldT
 import { CedarListField } from './CedarListField';
 import { ValueConstraintsListField } from './ValueConstraintsListField';
 import { CedarListOption } from './CedarListOption';
+import { CedarContainerChildInfo } from '../../../types/beans/CedarContainerChildInfo';
 
 export class JSONFieldReaderList extends JSONFieldTypeSpecificReader {
-  override read(fieldSourceObject: JsonNode, _parsingResult: ParsingResult, _path: CedarJsonPath): CedarListField {
+  override read(
+    fieldSourceObject: JsonNode,
+    childInfo: CedarContainerChildInfo,
+    _parsingResult: ParsingResult,
+    _path: CedarJsonPath,
+  ): CedarListField {
     const field = CedarListField.buildEmptyWithNullValues();
 
     const vcLF = new ValueConstraintsListField();
@@ -17,7 +23,7 @@ export class JSONFieldReaderList extends JSONFieldTypeSpecificReader {
     const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
     if (valueConstraints != null) {
       field.multipleChoice = ReaderUtil.getBoolean(valueConstraints, CedarModel.multipleChoice);
-      vcLF.requiredValue = ReaderUtil.getBoolean(valueConstraints, CedarModel.requiredValue);
+      childInfo.requiredValue = ReaderUtil.getBoolean(valueConstraints, CedarModel.requiredValue);
       const literals: Array<JsonNode> = ReaderUtil.getNodeList(valueConstraints, CedarModel.literals);
       if (literals !== null) {
         literals.forEach((literal) => {

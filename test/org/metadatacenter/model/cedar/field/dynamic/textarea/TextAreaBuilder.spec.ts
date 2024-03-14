@@ -28,7 +28,6 @@ describe('TextAreaBuilder', () => {
       .withSchemaDescription('Schema description of the template')
       .withPreferredLabel('Preferred label')
       .withAlternateLabels(['Alt label 1', 'Alt label 2', 'Alt label 3'])
-      .withRequiredValue(true)
       .build();
 
     const writers: CedarWriters = CedarWriters.getStrict();
@@ -67,6 +66,6 @@ describe('TextAreaBuilder', () => {
     expect(backparsed['skos:prefLabel']).toBe('Preferred label');
     expect(backparsed['skos:altLabel']).toStrictEqual(['Alt label 1', 'Alt label 2', 'Alt label 3']);
 
-    expect(backparsed['_valueConstraints']['requiredValue']).toBe(true);
+    expect(backparsed['_valueConstraints']['requiredValue']).toBe(false);
   });
 });

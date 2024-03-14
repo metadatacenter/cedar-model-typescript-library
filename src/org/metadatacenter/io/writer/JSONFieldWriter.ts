@@ -10,6 +10,7 @@ import { CedarSchema } from '../../model/cedar/types/beans/CedarSchema';
 import { CedarWriters } from './CedarWriters';
 import { JSONAbstractArtifactWriter } from './JSONAbstractArtifactWriter';
 import { AdditionalProperties } from '../../model/cedar/types/beans/AdditionalProperties';
+import { CedarContainerChildInfo } from '../../model/cedar/types/beans/CedarContainerChildInfo';
 
 export abstract class JSONFieldWriter extends JSONAbstractArtifactWriter {
   protected constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
@@ -39,24 +40,24 @@ export abstract class JSONFieldWriter extends JSONAbstractArtifactWriter {
 
   protected expandTypeNodeForJSON(_typeNode: JsonNode, _field: CedarField): void {}
 
-  protected expandValueConstraintsNodeForJSON(vcNode: JsonNode, field: CedarField): void {
-    vcNode[CedarModel.requiredValue] = field.valueConstraints.requiredValue;
+  protected expandValueConstraintsNodeForJSON(vcNode: JsonNode, field: CedarField, childInfo: CedarContainerChildInfo): void {
+    vcNode[CedarModel.requiredValue] = childInfo.requiredValue;
   }
 
-  protected buildValueConstraintsObject(field: CedarField): JsonNode {
+  protected buildValueConstraintsObject(field: CedarField, childInfo: CedarContainerChildInfo): JsonNode {
     const vcNode: JsonNode = JsonNodeClass.getEmpty();
     const vcObject = {
       [CedarModel.valueConstraints]: vcNode,
     };
-    this.expandValueConstraintsNodeForJSON(vcNode, field);
+    this.expandValueConstraintsNodeForJSON(vcNode, field, childInfo);
     return vcObject;
   }
 
   getAsJsonString(field: CedarField, indent: number = 2): string {
-    return JSON.stringify(this.getAsJsonNode(field), null, indent);
+    return JSON.stringify(this.getAsJsonNode(field, CedarContainerChildInfo.empty()), null, indent);
   }
 
-  public getAsJsonNode(field: CedarField): JsonNode {
+  public getAsJsonNode(field: CedarField, childInfo: CedarContainerChildInfo): JsonNode {
     // Build properties wrapper, based on type
     const propertiesObject: JsonNode = JsonNodeClass.getEmpty();
     this.expandPropertiesNodeForJSON(propertiesObject);
@@ -69,7 +70,7 @@ export abstract class JSONFieldWriter extends JSONAbstractArtifactWriter {
     const uiObject: JsonNode = this.buildUIObject(field);
 
     // Build value constraints wrapper
-    const vcObject: JsonNode = this.buildValueConstraintsObject(field);
+    const vcObject: JsonNode = this.buildValueConstraintsObject(field, childInfo);
 
     // Build type wrapper
     const typeNode: JsonNode = {

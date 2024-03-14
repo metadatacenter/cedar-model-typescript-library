@@ -37,6 +37,7 @@ import { JSONFieldReaderResult } from './JSONFieldReaderResult';
 import { JSONFieldWriter } from '../writer/JSONFieldWriter';
 import { CedarUnknownField } from '../../model/cedar/field/CedarUnknownField';
 import { JSONAbstractArtifactReader } from './JSONAbstractArtifactReader';
+import { CedarContainerChildInfo } from '../../model/cedar/types/beans/CedarContainerChildInfo';
 
 export class JSONFieldReader extends JSONAbstractArtifactReader {
   private constructor(behavior: JSONReaderBehavior) {
@@ -85,12 +86,12 @@ export class JSONFieldReader extends JSONAbstractArtifactReader {
     } catch (Exception) {
       fieldObject = {};
     }
-    return this.readFromObject(fieldObject, new CedarJsonPath());
+    return this.readFromObject(fieldObject, CedarContainerChildInfo.empty(), new CedarJsonPath());
   }
 
-  public readFromObject(fieldSourceObject: JsonNode, path: CedarJsonPath): JSONFieldReaderResult {
+  public readFromObject(fieldSourceObject: JsonNode, childInfo: CedarContainerChildInfo, path: CedarJsonPath): JSONFieldReaderResult {
     const parsingResult: ParsingResult = new ParsingResult();
-    const field: CedarField = JSONFieldReader.readFieldSpecificAttributes(fieldSourceObject, parsingResult, path);
+    const field: CedarField = JSONFieldReader.readFieldSpecificAttributes(fieldSourceObject, childInfo, parsingResult, path);
     this.readNonReportableAttributes(field, fieldSourceObject);
     this.readReportableAttributes(field, fieldSourceObject, parsingResult, path);
     return new JSONFieldReaderResult(field, parsingResult, fieldSourceObject);
@@ -150,7 +151,12 @@ export class JSONFieldReader extends JSONAbstractArtifactReader {
     );
   }
 
-  private static readFieldSpecificAttributes(fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: CedarJsonPath): CedarField {
+  private static readFieldSpecificAttributes(
+    fieldSourceObject: JsonNode,
+    childInfo: CedarContainerChildInfo,
+    parsingResult: ParsingResult,
+    path: CedarJsonPath,
+  ): CedarField {
     const artifactType: CedarArtifactType = CedarArtifactType.forValue(ReaderUtil.getString(fieldSourceObject, JsonSchema.atType));
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
     const uiInputType: UiInputType = UiInputType.forValue(ReaderUtil.getString(uiNode, CedarModel.inputType));
@@ -161,7 +167,7 @@ export class JSONFieldReader extends JSONAbstractArtifactReader {
         if (!reader) {
           throw new Error(`No reader defined for static input type "${fieldType.getValue()}"`);
         }
-        return reader.read(fieldSourceObject, parsingResult, path);
+        return reader.read(fieldSourceObject, childInfo, parsingResult, path);
       }
     } else if (artifactType == CedarArtifactType.TEMPLATE_FIELD) {
       if (uiInputType != null) {
@@ -169,7 +175,7 @@ export class JSONFieldReader extends JSONAbstractArtifactReader {
         if (!reader) {
           throw new Error(`No reader defined for dynamic input type "${fieldType.getValue()}"`);
         }
-        return reader.read(fieldSourceObject, parsingResult, path);
+        return reader.read(fieldSourceObject, childInfo, parsingResult, path);
       }
     }
     return CedarUnknownField.build();
@@ -214,7 +220,7 @@ export class JSONFieldReader extends JSONAbstractArtifactReader {
     ObjectComparator.compareBothWays(
       compareResult,
       jsonFieldReaderResult.fieldSourceObject,
-      writer.getAsJsonNode(jsonFieldReaderResult.field),
+      writer.getAsJsonNode(jsonFieldReaderResult.field, CedarContainerChildInfo.empty()),
       new CedarJsonPath(),
     );
     return compareResult;

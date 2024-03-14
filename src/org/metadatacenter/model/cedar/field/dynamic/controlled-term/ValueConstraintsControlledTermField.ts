@@ -11,7 +11,6 @@ export class ValueConstraintsControlledTermField extends ValueConstraints {
   public valueSets: Array<ControlledTermValueSet> = [];
   public classes: Array<ControlledTermClass> = [];
   public branches: Array<ControlledTermBranch> = [];
-  public requiredValue: boolean = false;
 
   public constructor() {
     super();

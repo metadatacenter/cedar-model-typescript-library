@@ -4,6 +4,7 @@ import { CedarTextField } from './CedarTextField';
 import { JSONFieldWriter } from '../../../../../io/writer/JSONFieldWriter';
 import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
 import { CedarWriters } from '../../../../../io/writer/CedarWriters';
+import { CedarContainerChildInfo } from '../../../types/beans/CedarContainerChildInfo';
 
 export class JSONFieldWriterTextField extends JSONFieldWriter {
   constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
@@ -16,8 +17,8 @@ export class JSONFieldWriterTextField extends JSONFieldWriter {
     }
   }
 
-  override expandValueConstraintsNodeForJSON(vcNode: JsonNode, field: CedarTextField): void {
-    super.expandValueConstraintsNodeForJSON(vcNode, field);
+  override expandValueConstraintsNodeForJSON(vcNode: JsonNode, field: CedarTextField, childInfo: CedarContainerChildInfo): void {
+    super.expandValueConstraintsNodeForJSON(vcNode, field, childInfo);
     if (field.valueConstraints.defaultValue != null) {
       vcNode[CedarModel.defaultValue] = field.valueConstraints.defaultValue;
     }

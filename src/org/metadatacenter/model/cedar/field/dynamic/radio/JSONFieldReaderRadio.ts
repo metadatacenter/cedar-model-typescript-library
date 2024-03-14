@@ -7,16 +7,22 @@ import { CedarModel } from '../../../constants/CedarModel';
 import { ValueConstraintsRadioField } from './ValueConstraintsRadioField';
 import { CedarRadioOption } from './CedarRadioOption';
 import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
+import { CedarContainerChildInfo } from '../../../types/beans/CedarContainerChildInfo';
 
 export class JSONFieldReaderRadio extends JSONFieldTypeSpecificReader {
-  override read(fieldSourceObject: JsonNode, _parsingResult: ParsingResult, _path: CedarJsonPath): CedarRadioField {
+  override read(
+    fieldSourceObject: JsonNode,
+    childInfo: CedarContainerChildInfo,
+    _parsingResult: ParsingResult,
+    _path: CedarJsonPath,
+  ): CedarRadioField {
     const field = CedarRadioField.buildEmptyWithNullValues();
 
     const vcRF = new ValueConstraintsRadioField();
     field.valueConstraints = vcRF;
     const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
     if (valueConstraints != null) {
-      vcRF.requiredValue = ReaderUtil.getBoolean(valueConstraints, CedarModel.requiredValue);
+      childInfo.requiredValue = ReaderUtil.getBoolean(valueConstraints, CedarModel.requiredValue);
       const literals: Array<JsonNode> = ReaderUtil.getNodeList(valueConstraints, CedarModel.literals);
       if (literals !== null) {
         literals.forEach((literal) => {

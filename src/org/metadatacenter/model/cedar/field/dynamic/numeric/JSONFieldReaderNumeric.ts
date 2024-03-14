@@ -7,9 +7,15 @@ import { ValueConstraintsNumericField } from './ValueConstraintsNumericField';
 import { CedarNumericField } from './CedarNumericField';
 import { NumberType } from '../../../types/beans/NumberType';
 import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
+import { CedarContainerChildInfo } from '../../../types/beans/CedarContainerChildInfo';
 
 export class JSONFieldReaderNumeric extends JSONFieldTypeSpecificReader {
-  override read(fieldSourceObject: JsonNode, _parsingResult: ParsingResult, _path: CedarJsonPath): CedarNumericField {
+  override read(
+    fieldSourceObject: JsonNode,
+    childInfo: CedarContainerChildInfo,
+    _parsingResult: ParsingResult,
+    _path: CedarJsonPath,
+  ): CedarNumericField {
     const field = CedarNumericField.buildEmptyWithNullValues();
 
     field.skos_altLabel = ReaderUtil.getStringList(fieldSourceObject, CedarModel.skosAltLabel);
@@ -18,7 +24,7 @@ export class JSONFieldReaderNumeric extends JSONFieldTypeSpecificReader {
     field.valueConstraints = vcNF;
     const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
     if (valueConstraints != null) {
-      vcNF.requiredValue = ReaderUtil.getBoolean(valueConstraints, CedarModel.requiredValue);
+      childInfo.requiredValue = ReaderUtil.getBoolean(valueConstraints, CedarModel.requiredValue);
       vcNF.numberType = NumberType.forValue(ReaderUtil.getString(valueConstraints, CedarModel.numberType));
       vcNF.minValue = ReaderUtil.getNumber(valueConstraints, CedarModel.minValue);
       vcNF.maxValue = ReaderUtil.getNumber(valueConstraints, CedarModel.maxValue);

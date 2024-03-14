@@ -7,16 +7,22 @@ import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldT
 import { CedarCheckboxField } from './CedarCheckboxField';
 import { ValueConstraintsCheckboxField } from './ValueConstraintsCheckboxField';
 import { CedarCheckboxOption } from './CedarCheckboxOption';
+import { CedarContainerChildInfo } from '../../../types/beans/CedarContainerChildInfo';
 
 export class JSONFieldReaderCheckbox extends JSONFieldTypeSpecificReader {
-  override read(fieldSourceObject: JsonNode, _parsingResult: ParsingResult, _path: CedarJsonPath): CedarCheckboxField {
+  override read(
+    fieldSourceObject: JsonNode,
+    childInfo: CedarContainerChildInfo,
+    _parsingResult: ParsingResult,
+    _path: CedarJsonPath,
+  ): CedarCheckboxField {
     const field = CedarCheckboxField.buildEmptyWithNullValues();
 
     const vcCBF = new ValueConstraintsCheckboxField();
     field.valueConstraints = vcCBF;
     const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
     if (valueConstraints != null) {
-      vcCBF.requiredValue = ReaderUtil.getBoolean(valueConstraints, CedarModel.requiredValue);
+      childInfo.requiredValue = ReaderUtil.getBoolean(valueConstraints, CedarModel.requiredValue);
       const literals: Array<JsonNode> = ReaderUtil.getNodeList(valueConstraints, CedarModel.literals);
       if (literals !== null) {
         literals.forEach((literal) => {

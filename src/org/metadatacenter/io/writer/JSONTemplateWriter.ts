@@ -9,14 +9,11 @@ import { CedarArtifactType } from '../../model/cedar/types/beans/CedarArtifactTy
 import { JavascriptType } from '../../model/cedar/types/beans/JavascriptType';
 import { TemplateProperty } from '../../model/cedar/constants/TemplateProperty';
 import { CedarSchema } from '../../model/cedar/types/beans/CedarSchema';
-import { CedarContainerChildInfo } from '../../model/cedar/types/beans/CedarContainerChildInfo';
-import { CedarField } from '../../model/cedar/field/CedarField';
 import { CedarWriters } from './CedarWriters';
-import { JSONAbstractArtifactWriter } from './JSONAbstractArtifactWriter';
 import { CedarJSONTemplateFieldContentDynamic } from '../../model/cedar/util/serialization/CedarJSONTemplateFieldContentDynamic';
-import { CedarElement } from '../../model/cedar/element/CedarElement';
+import { JSONAbstractContainerArtifactWriter } from './JSONAbstractContainerArtifactWriter';
 
-export class JSONTemplateWriter extends JSONAbstractArtifactWriter {
+export class JSONTemplateWriter extends JSONAbstractContainerArtifactWriter {
   private constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
     super(behavior, writers);
   }
@@ -115,42 +112,5 @@ export class JSONTemplateWriter extends JSONAbstractArtifactWriter {
       [CedarModel.schema]: this.atomicWriter.write(CedarSchema.CURRENT),
       ...schemaIdentifier,
     };
-  }
-
-  private getChildMapAsJSON(template: CedarTemplate): JsonNode {
-    const childMap: JsonNode = JsonNodeClass.getEmpty();
-
-    template.children.forEach((child) => {
-      const childName = child.schema_name;
-      if (childName !== null) {
-        const childMeta: CedarContainerChildInfo | null = template.childrenInfo.get(childName);
-        if (childMeta !== null) {
-          if (childMeta.multiInstance) {
-            // TODO: handle maxItems, minItems inconsistencies
-            const childNode: JsonNode = {
-              [JsonSchema.type]: 'array',
-              [CedarModel.minItems]: childMeta.minItems,
-            };
-            if (child instanceof CedarField) {
-              childNode[JsonSchema.items] = this.writers.getJSONFieldWriterForType(child.cedarFieldType).getAsJsonNode(child);
-            } else if (child instanceof CedarElement) {
-              childNode[JsonSchema.items] = this.writers.getJSONElementWriter().getAsJsonNode(child);
-            }
-            if (childMeta.maxItems !== null) {
-              childNode[CedarModel.maxItems] = childMeta.maxItems;
-            }
-            childMap[childName] = childNode;
-          } else {
-            if (child instanceof CedarField) {
-              childMap[childName] = this.writers.getJSONFieldWriterForType(child.cedarFieldType).getAsJsonNode(child);
-            } else if (child instanceof CedarElement) {
-              childMap[childName] = this.writers.getJSONElementWriter().getAsJsonNode(child);
-            }
-          }
-        }
-      }
-    });
-
-    return childMap;
   }
 }

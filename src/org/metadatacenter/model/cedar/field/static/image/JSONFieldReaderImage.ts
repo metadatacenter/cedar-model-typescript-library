@@ -5,9 +5,15 @@ import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { CedarModel } from '../../../constants/CedarModel';
 import { CedarStaticImageField } from './CedarStaticImageField';
 import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
+import { CedarContainerChildInfo } from '../../../types/beans/CedarContainerChildInfo';
 
 export class JSONFieldReaderImage extends JSONFieldTypeSpecificReader {
-  override read(fieldSourceObject: JsonNode, _parsingResult: ParsingResult, _path: CedarJsonPath): CedarStaticImageField {
+  override read(
+    fieldSourceObject: JsonNode,
+    _childInfo: CedarContainerChildInfo,
+    _parsingResult: ParsingResult,
+    _path: CedarJsonPath,
+  ): CedarStaticImageField {
     const field = CedarStaticImageField.buildEmptyWithNullValues();
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
     field.content = ReaderUtil.getString(uiNode, CedarModel.content);

@@ -12,9 +12,15 @@ import { ControlledTermBranch } from './value-constraint/branch/ControlledTermBr
 import { ControlledTermValueSet } from './value-constraint/value-set/ControlledTermValueSet';
 import { ControlledTermDefaultValue } from './value-constraint/ControlledTermDefaultValue';
 import { JsonSchema } from '../../../constants/JsonSchema';
+import { CedarContainerChildInfo } from '../../../types/beans/CedarContainerChildInfo';
 
 export class JSONFieldReaderControlledTerm extends JSONFieldTypeSpecificReader {
-  override read(fieldSourceObject: JsonNode, _parsingResult: ParsingResult, _path: CedarJsonPath): CedarControlledTermField {
+  override read(
+    fieldSourceObject: JsonNode,
+    childInfo: CedarContainerChildInfo,
+    _parsingResult: ParsingResult,
+    _path: CedarJsonPath,
+  ): CedarControlledTermField {
     const field = CedarControlledTermField.buildEmptyWithNullValues();
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
     field.valueRecommendationEnabled = ReaderUtil.getBoolean(uiNode, CedarModel.valueRecommendationEnabled);
@@ -25,7 +31,7 @@ export class JSONFieldReaderControlledTerm extends JSONFieldTypeSpecificReader {
     field.valueConstraints = vcTF;
     const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
     if (valueConstraints != null) {
-      vcTF.requiredValue = ReaderUtil.getBoolean(valueConstraints, CedarModel.requiredValue);
+      childInfo.requiredValue = ReaderUtil.getBoolean(valueConstraints, CedarModel.requiredValue);
       vcTF.ontologies = this.getOntologies(ReaderUtil.getNodeList(valueConstraints, CedarModel.ontologies));
       vcTF.classes = this.getClasses(ReaderUtil.getNodeList(valueConstraints, CedarModel.classes));
       vcTF.branches = this.getBranches(ReaderUtil.getNodeList(valueConstraints, CedarModel.branches));

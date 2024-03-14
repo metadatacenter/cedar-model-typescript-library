@@ -2,21 +2,19 @@ import { JSONWriterBehavior } from '../../behavior/JSONWriterBehavior';
 import { CedarTemplate } from '../../model/cedar/template/CedarTemplate';
 import { ReaderUtil } from '../reader/ReaderUtil';
 import { JsonSchema } from '../../model/cedar/constants/JsonSchema';
-import { JsonNode, JsonNodeClass } from '../../model/cedar/types/basic-types/JsonNode';
+import { JsonNode } from '../../model/cedar/types/basic-types/JsonNode';
 import { CedarModel } from '../../model/cedar/constants/CedarModel';
 import { CedarArtifactType } from '../../model/cedar/types/beans/CedarArtifactType';
 import { JavascriptType } from '../../model/cedar/types/beans/JavascriptType';
 import { TemplateProperty } from '../../model/cedar/constants/TemplateProperty';
 import { CedarSchema } from '../../model/cedar/types/beans/CedarSchema';
-import { CedarContainerChildInfo } from '../../model/cedar/types/beans/CedarContainerChildInfo';
-import { CedarField } from '../../model/cedar/field/CedarField';
 import { CedarWriters } from './CedarWriters';
-import { JSONAbstractArtifactWriter } from './JSONAbstractArtifactWriter';
 import { CedarJSONTemplateFieldContentDynamic } from '../../model/cedar/util/serialization/CedarJSONTemplateFieldContentDynamic';
 import { CedarElement } from '../../model/cedar/element/CedarElement';
 import { CedarJSONElementContent } from '../../model/cedar/util/serialization/CedarJSONElementContent';
+import { JSONAbstractContainerArtifactWriter } from './JSONAbstractContainerArtifactWriter';
 
-export class JSONElementWriter extends JSONAbstractArtifactWriter {
+export class JSONElementWriter extends JSONAbstractContainerArtifactWriter {
   private constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
     super(behavior, writers);
   }
@@ -95,42 +93,5 @@ export class JSONElementWriter extends JSONAbstractArtifactWriter {
       ...this.macroStatusAndVersion(element, this.atomicWriter),
       [CedarModel.schema]: this.atomicWriter.write(CedarSchema.CURRENT),
     };
-  }
-
-  private getChildMapAsJSON(element: CedarElement): JsonNode {
-    const childMap: JsonNode = JsonNodeClass.getEmpty();
-
-    element.children.forEach((child) => {
-      const childName = child.schema_name;
-      if (childName !== null) {
-        const childMeta: CedarContainerChildInfo | null = element.childrenInfo.get(childName);
-        if (childMeta !== null) {
-          if (childMeta.multiInstance) {
-            // TODO: handle maxItems, minItems inconsistencies
-            const childNode: JsonNode = {
-              [JsonSchema.type]: 'array',
-              [CedarModel.minItems]: childMeta.minItems,
-            };
-            if (child instanceof CedarField) {
-              childNode[JsonSchema.items] = this.writers.getJSONFieldWriterForType(child.cedarFieldType).getAsJsonNode(child);
-            } else if (child instanceof CedarElement) {
-              childNode[JsonSchema.items] = this.writers.getJSONElementWriter().getAsJsonNode(child);
-            }
-            if (childMeta.maxItems !== null) {
-              childNode[CedarModel.maxItems] = childMeta.maxItems;
-            }
-            childMap[childName] = childNode;
-          } else {
-            if (child instanceof CedarField) {
-              childMap[childName] = this.writers.getJSONFieldWriterForType(child.cedarFieldType).getAsJsonNode(child);
-            } else if (child instanceof CedarElement) {
-              childMap[childName] = this.writers.getJSONElementWriter().getAsJsonNode(child);
-            }
-          }
-        }
-      }
-    });
-
-    return childMap;
   }
 }

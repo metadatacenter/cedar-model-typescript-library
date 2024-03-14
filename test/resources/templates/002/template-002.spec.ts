@@ -18,6 +18,8 @@ describe('JSONTemplateReader - template-002', () => {
     const parsingResult = jsonTemplateReaderResult.parsingResult;
     expect(parsingResult.wasSuccessful()).toBe(true);
 
+    // TestUtil.p(jsonTemplateReaderResult.template);
+
     const writers: CedarWriters = CedarWriters.getStrict();
     const writer: JSONTemplateWriter = writers.getJSONTemplateWriter();
 

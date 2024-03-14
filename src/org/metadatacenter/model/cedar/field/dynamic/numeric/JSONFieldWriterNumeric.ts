@@ -6,6 +6,7 @@ import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
 import { CedarWriters } from '../../../../../io/writer/CedarWriters';
 import { CedarModel } from '../../../constants/CedarModel';
 import { CedarNumericField } from './CedarNumericField';
+import { CedarContainerChildInfo } from '../../../types/beans/CedarContainerChildInfo';
 
 export class JSONFieldWriterNumeric extends JSONFieldWriter {
   constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
@@ -20,8 +21,8 @@ export class JSONFieldWriterNumeric extends JSONFieldWriter {
     requiredObject[JsonSchema.required] = [JsonSchema.atValue, JsonSchema.atType];
   }
 
-  override expandValueConstraintsNodeForJSON(vcNode: JsonNode, field: CedarNumericField): void {
-    super.expandValueConstraintsNodeForJSON(vcNode, field);
+  override expandValueConstraintsNodeForJSON(vcNode: JsonNode, field: CedarNumericField, childInfo: CedarContainerChildInfo): void {
+    super.expandValueConstraintsNodeForJSON(vcNode, field, childInfo);
     vcNode[CedarModel.numberType] = this.atomicWriter.write(field.valueConstraints.numberType);
     if (field.valueConstraints.minValue != null) {
       vcNode[CedarModel.minValue] = field.valueConstraints.minValue;

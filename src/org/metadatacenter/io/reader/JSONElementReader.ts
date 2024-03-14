@@ -51,10 +51,14 @@ export class JSONElementReader extends JSONContainerArtifactReader {
     } catch (Exception) {
       elementObject = {};
     }
-    return this.readFromObject(elementObject);
+    return this.readFromObject(elementObject, CedarContainerChildInfo.empty(), new CedarJsonPath());
   }
 
-  public readFromObject(elementSourceObject: JsonNode, topPath: CedarJsonPath = new CedarJsonPath()): JSONElementReaderResult {
+  public readFromObject(
+    elementSourceObject: JsonNode,
+    _childInfo: CedarContainerChildInfo,
+    topPath: CedarJsonPath,
+  ): JSONElementReaderResult {
     const parsingResult: ParsingResult = new ParsingResult();
     const element = CedarElement.buildEmptyWithNullValues();
 

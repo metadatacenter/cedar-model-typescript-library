@@ -118,11 +118,11 @@ export abstract class JSONContainerArtifactReader extends JSONAbstractArtifactRe
         childPath = childPath.add(JsonSchema.items);
       }
       if (childInfo.atType === CedarArtifactType.TEMPLATE_FIELD || childInfo.atType === CedarArtifactType.STATIC_TEMPLATE_FIELD) {
-        const cedarFieldReaderResult = this.fieldReader.readFromObject(childDefinition, childPath);
+        const cedarFieldReaderResult = this.fieldReader.readFromObject(childDefinition, childInfo, childPath);
         container.addChild(cedarFieldReaderResult.field);
         parsingResult.merge(cedarFieldReaderResult.parsingResult);
       } else if (childInfo.atType === CedarArtifactType.TEMPLATE_ELEMENT) {
-        const cedarElementReaderResult = this.getElementReader().readFromObject(childDefinition, childPath);
+        const cedarElementReaderResult = this.getElementReader().readFromObject(childDefinition, childInfo, childPath);
         container.addChild(cedarElementReaderResult.element);
         parsingResult.merge(cedarElementReaderResult.parsingResult);
       }

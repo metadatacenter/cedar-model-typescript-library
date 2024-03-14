@@ -15,6 +15,12 @@ export class CedarContainerChildInfo {
   private _minItems: NullableNumber = null;
   private _maxItems: NullableNumber = null;
 
+  private _requiredValue: boolean = false;
+
+  public static empty(): CedarContainerChildInfo {
+    return new CedarContainerChildInfo('');
+  }
+
   constructor(name: string) {
     this._name = name;
   }
@@ -85,5 +91,13 @@ export class CedarContainerChildInfo {
 
   set maxItems(value: NullableNumber) {
     this._maxItems = value;
+  }
+
+  get requiredValue(): boolean {
+    return this._requiredValue;
+  }
+
+  set requiredValue(value: boolean) {
+    this._requiredValue = value;
   }
 }

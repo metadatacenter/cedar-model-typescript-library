@@ -6,6 +6,7 @@ import { CedarTemporalField } from './CedarTemporalField';
 import { JSONFieldWriter } from '../../../../../io/writer/JSONFieldWriter';
 import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
 import { CedarWriters } from '../../../../../io/writer/CedarWriters';
+import { CedarContainerChildInfo } from '../../../types/beans/CedarContainerChildInfo';
 
 export class JSONFieldWriterTemporal extends JSONFieldWriter {
   constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
@@ -24,8 +25,8 @@ export class JSONFieldWriterTemporal extends JSONFieldWriter {
     }
   }
 
-  override expandValueConstraintsNodeForJSON(vcNode: JsonNode, field: CedarTemporalField): void {
-    super.expandValueConstraintsNodeForJSON(vcNode, field);
+  override expandValueConstraintsNodeForJSON(vcNode: JsonNode, field: CedarTemporalField, childInfo: CedarContainerChildInfo): void {
+    super.expandValueConstraintsNodeForJSON(vcNode, field, childInfo);
     vcNode[CedarModel.temporalType] = this.atomicWriter.write(field.valueConstraints.temporalType);
   }
 }

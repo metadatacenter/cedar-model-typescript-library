@@ -2,6 +2,7 @@ import { TextFieldBuilder } from '../../model/cedar/field/dynamic/textfield/Text
 import { TextAreaBuilder } from '../../model/cedar/field/dynamic/textarea/TextAreaBuilder';
 import { TemporalFieldBuilder } from '../../model/cedar/field/dynamic/temporal/TemporalFieldBuilder';
 import { PhoneNumberFieldBuilder } from '../../model/cedar/field/dynamic/phone-number/PhoneNumberFieldBuilder';
+import { NumericFieldBuilder } from '../../model/cedar/field/dynamic/numeric/NumericFieldBuilder';
 
 export abstract class CedarBuilders {
   static textFieldBuilder(): TextFieldBuilder {
@@ -17,5 +18,9 @@ export abstract class CedarBuilders {
   }
   static phoneNumberFieldBuilder(): PhoneNumberFieldBuilder {
     return new PhoneNumberFieldBuilder();
+  }
+
+  static numericFieldBuilder(): NumericFieldBuilder {
+    return new NumericFieldBuilder();
   }
 }

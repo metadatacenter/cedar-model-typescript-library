@@ -18,6 +18,7 @@ import { EmailField } from './org/metadatacenter/model/cedar/field/dynamic/email
 import { LinkField } from './org/metadatacenter/model/cedar/field/dynamic/link/LinkField';
 import { ListField } from './org/metadatacenter/model/cedar/field/dynamic/list/ListField';
 import { NumericField } from './org/metadatacenter/model/cedar/field/dynamic/numeric/NumericField';
+import { NumericFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/numeric/NumericFieldBuilder';
 import { PhoneNumberField } from './org/metadatacenter/model/cedar/field/dynamic/phone-number/PhoneNumberField';
 import { PhoneNumberFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/phone-number/PhoneNumberFieldBuilder';
 import { RadioField } from './org/metadatacenter/model/cedar/field/dynamic/radio/RadioField';
@@ -43,6 +44,7 @@ import { SchemaVersion } from './org/metadatacenter/model/cedar/types/wrapped-ty
 import { TemporalGranularity } from './org/metadatacenter/model/cedar/types/wrapped-types/TemporalGranularity';
 import { TimeFormat } from './org/metadatacenter/model/cedar/types/wrapped-types/TimeFormat';
 import { TemporalType } from './org/metadatacenter/model/cedar/types/wrapped-types/TemporalType';
+import { NumberType } from './org/metadatacenter/model/cedar/types/wrapped-types/NumberType';
 
 export { CedarWriters };
 export { CedarBuilders };
@@ -62,7 +64,7 @@ export { ControlledTermField };
 export { EmailField };
 export { LinkField };
 export { ListField };
-export { NumericField };
+export { NumericField, NumericFieldBuilder };
 export { PhoneNumberField, PhoneNumberFieldBuilder };
 export { RadioField };
 export { TemporalField, TemporalFieldBuilder };
@@ -84,3 +86,4 @@ export { SchemaVersion };
 export { TemporalGranularity };
 export { TimeFormat };
 export { TemporalType };
+export { NumberType };

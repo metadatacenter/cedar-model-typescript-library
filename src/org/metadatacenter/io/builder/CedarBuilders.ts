@@ -7,6 +7,7 @@ import { EmailFieldBuilder } from '../../model/cedar/field/dynamic/email/EmailFi
 import { AttributeValueFieldBuilder } from '../../model/cedar/field/dynamic/attribute-value/AttributeValueFieldBuilder';
 import { StaticYoutubeFieldBuilder } from '../../model/cedar/field/static/youtube/StaticYoutubeFieldBuilder';
 import { StaticSectionBreakFieldBuilder } from '../../model/cedar/field/static/section-break/StaticSectionBreakFieldBuilder';
+import { StaticRichTextFieldBuilder } from '../../model/cedar/field/static/rich-text/StaticRichTextFieldBuilder';
 
 export abstract class CedarBuilders {
   static textFieldBuilder(): TextFieldBuilder {
@@ -43,5 +44,9 @@ export abstract class CedarBuilders {
 
   static sectionBreakFieldBuilder(): StaticSectionBreakFieldBuilder {
     return new StaticSectionBreakFieldBuilder();
+  }
+
+  static richTextFieldBuilder(): StaticRichTextFieldBuilder {
+    return new StaticRichTextFieldBuilder();
   }
 }

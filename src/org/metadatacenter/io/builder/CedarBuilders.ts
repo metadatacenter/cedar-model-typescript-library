@@ -9,6 +9,7 @@ import { StaticYoutubeFieldBuilder } from '../../model/cedar/field/static/youtub
 import { StaticSectionBreakFieldBuilder } from '../../model/cedar/field/static/section-break/StaticSectionBreakFieldBuilder';
 import { StaticRichTextFieldBuilder } from '../../model/cedar/field/static/rich-text/StaticRichTextFieldBuilder';
 import { StaticPageBreakFieldBuilder } from '../../model/cedar/field/static/page-break/StaticPageBreakFieldBuilder';
+import { StaticImageFieldBuilder } from '../../model/cedar/field/static/image/StaticImageFieldBuilder';
 
 export abstract class CedarBuilders {
   static textFieldBuilder(): TextFieldBuilder {
@@ -53,5 +54,9 @@ export abstract class CedarBuilders {
 
   static pageBreakFieldBuilder(): StaticPageBreakFieldBuilder {
     return new StaticPageBreakFieldBuilder();
+  }
+
+  static imageFieldBuilder(): StaticImageFieldBuilder {
+    return new StaticImageFieldBuilder();
   }
 }

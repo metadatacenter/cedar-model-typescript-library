@@ -24,11 +24,9 @@ export class StaticYoutubeFieldBuilder extends TemplateFieldBuilder {
   public build(): StaticYoutubeField {
     const staticYoutubeField = StaticYoutubeField.buildEmptyWithNullValues();
     super.buildInternal(staticYoutubeField);
-
     staticYoutubeField.videoId = this.videoId;
     staticYoutubeField.width = this.width;
     staticYoutubeField.height = this.height;
-
     return staticYoutubeField;
   }
 }

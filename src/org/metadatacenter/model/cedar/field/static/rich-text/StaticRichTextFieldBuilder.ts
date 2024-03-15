@@ -12,9 +12,7 @@ export class StaticRichTextFieldBuilder extends TemplateFieldBuilder {
   public build(): StaticRichTextField {
     const staticRichTextField = StaticRichTextField.buildEmptyWithNullValues();
     super.buildInternal(staticRichTextField);
-
     staticRichTextField.content = this.content;
-
     return staticRichTextField;
   }
 }

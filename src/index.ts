@@ -19,6 +19,7 @@ import { LinkField } from './org/metadatacenter/model/cedar/field/dynamic/link/L
 import { ListField } from './org/metadatacenter/model/cedar/field/dynamic/list/ListField';
 import { NumericField } from './org/metadatacenter/model/cedar/field/dynamic/numeric/NumericField';
 import { PhoneNumberField } from './org/metadatacenter/model/cedar/field/dynamic/phone-number/PhoneNumberField';
+import { PhoneNumberFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/phone-number/PhoneNumberFieldBuilder';
 import { RadioField } from './org/metadatacenter/model/cedar/field/dynamic/radio/RadioField';
 import { TemporalField } from './org/metadatacenter/model/cedar/field/dynamic/temporal/TemporalField';
 import { TemporalFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/temporal/TemporalFieldBuilder';
@@ -62,7 +63,7 @@ export { EmailField };
 export { LinkField };
 export { ListField };
 export { NumericField };
-export { PhoneNumberField };
+export { PhoneNumberField, PhoneNumberFieldBuilder };
 export { RadioField };
 export { TemporalField, TemporalFieldBuilder };
 export { TextArea, TextAreaBuilder };

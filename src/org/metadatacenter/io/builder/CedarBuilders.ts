@@ -8,6 +8,7 @@ import { AttributeValueFieldBuilder } from '../../model/cedar/field/dynamic/attr
 import { StaticYoutubeFieldBuilder } from '../../model/cedar/field/static/youtube/StaticYoutubeFieldBuilder';
 import { StaticSectionBreakFieldBuilder } from '../../model/cedar/field/static/section-break/StaticSectionBreakFieldBuilder';
 import { StaticRichTextFieldBuilder } from '../../model/cedar/field/static/rich-text/StaticRichTextFieldBuilder';
+import { StaticPageBreakFieldBuilder } from '../../model/cedar/field/static/page-break/StaticPageBreakFieldBuilder';
 
 export abstract class CedarBuilders {
   static textFieldBuilder(): TextFieldBuilder {
@@ -48,5 +49,9 @@ export abstract class CedarBuilders {
 
   static richTextFieldBuilder(): StaticRichTextFieldBuilder {
     return new StaticRichTextFieldBuilder();
+  }
+
+  static pageBreakFieldBuilder(): StaticPageBreakFieldBuilder {
+    return new StaticPageBreakFieldBuilder();
   }
 }

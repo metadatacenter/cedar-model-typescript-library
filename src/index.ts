@@ -32,6 +32,7 @@ import { TextField } from './org/metadatacenter/model/cedar/field/dynamic/textfi
 import { TextFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/textfield/TextFieldBuilder';
 import { StaticImageField } from './org/metadatacenter/model/cedar/field/static/image/StaticImageField';
 import { StaticPageBreakField } from './org/metadatacenter/model/cedar/field/static/page-break/StaticPageBreakField';
+import { StaticPageBreakFieldBuilder } from './org/metadatacenter/model/cedar/field/static/page-break/StaticPageBreakFieldBuilder';
 import { StaticRichTextField } from './org/metadatacenter/model/cedar/field/static/rich-text/StaticRichTextField';
 import { StaticRichTextFieldBuilder } from './org/metadatacenter/model/cedar/field/static/rich-text/StaticRichTextFieldBuilder';
 import { StaticSectionBreakField } from './org/metadatacenter/model/cedar/field/static/section-break/StaticSectionBreakField';
@@ -76,7 +77,7 @@ export { TemporalField, TemporalFieldBuilder };
 export { TextArea, TextAreaBuilder };
 export { TextField, TextFieldBuilder };
 export { StaticImageField };
-export { StaticPageBreakField };
+export { StaticPageBreakField, StaticPageBreakFieldBuilder };
 export { StaticRichTextField, StaticRichTextFieldBuilder };
 export { StaticSectionBreakField, StaticSectionBreakFieldBuilder };
 export { StaticYoutubeField, StaticYoutubeFieldBuilder };

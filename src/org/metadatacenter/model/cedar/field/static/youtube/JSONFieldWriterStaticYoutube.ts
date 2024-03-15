@@ -36,8 +36,9 @@ export class JSONFieldWriterStaticYoutube extends JSONFieldWriterInternal {
       [JsonSchema.schemaVersion]: this.atomicWriter.write(field.schema_schemaVersion),
       ...this.macroProvenance(field, this.atomicWriter),
       [TemplateProperty.additionalProperties]: this.atomicWriter.write(AdditionalProperties.FALSE),
-      ...this.macroSkos(field),
+      ...this.macroStatusAndVersion(field, this.atomicWriter),
       [CedarModel.schema]: this.atomicWriter.write(ArtifactSchema.CURRENT),
+      ...this.macroSkos(field),
     };
   }
 }

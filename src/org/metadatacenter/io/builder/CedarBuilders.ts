@@ -5,6 +5,7 @@ import { PhoneNumberFieldBuilder } from '../../model/cedar/field/dynamic/phone-n
 import { NumericFieldBuilder } from '../../model/cedar/field/dynamic/numeric/NumericFieldBuilder';
 import { EmailFieldBuilder } from '../../model/cedar/field/dynamic/email/EmailFieldBuilder';
 import { AttributeValueFieldBuilder } from '../../model/cedar/field/dynamic/attribute-value/AttributeValueFieldBuilder';
+import { StaticYoutubeFieldBuilder } from '../../model/cedar/field/static/youtube/StaticYoutubeFieldBuilder';
 
 export abstract class CedarBuilders {
   static textFieldBuilder(): TextFieldBuilder {
@@ -32,5 +33,9 @@ export abstract class CedarBuilders {
 
   static attributeValueFieldBuilder(): AttributeValueFieldBuilder {
     return new AttributeValueFieldBuilder();
+  }
+
+  static youtubeFieldBuilder(): StaticYoutubeFieldBuilder {
+    return new StaticYoutubeFieldBuilder();
   }
 }

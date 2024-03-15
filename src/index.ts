@@ -35,6 +35,7 @@ import { StaticPageBreakField } from './org/metadatacenter/model/cedar/field/sta
 import { StaticRichTextField } from './org/metadatacenter/model/cedar/field/static/rich-text/StaticRichTextField';
 import { StaticSectionBreakField } from './org/metadatacenter/model/cedar/field/static/section-break/StaticSectionBreakField';
 import { StaticYoutubeField } from './org/metadatacenter/model/cedar/field/static/youtube/StaticYoutubeField';
+import { StaticYoutubeFieldBuilder } from './org/metadatacenter/model/cedar/field/static/youtube/StaticYoutubeFieldBuilder';
 
 import { TemplateElement } from './org/metadatacenter/model/cedar/element/TemplateElement';
 import { Template } from './org/metadatacenter/model/cedar/template/Template';
@@ -76,7 +77,7 @@ export { StaticImageField };
 export { StaticPageBreakField };
 export { StaticRichTextField };
 export { StaticSectionBreakField };
-export { StaticYoutubeField };
+export { StaticYoutubeField, StaticYoutubeFieldBuilder };
 
 export { TemplateElement };
 export { Template };

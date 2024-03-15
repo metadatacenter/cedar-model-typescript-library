@@ -10,6 +10,7 @@ import { StaticSectionBreakFieldBuilder } from '../../model/cedar/field/static/s
 import { StaticRichTextFieldBuilder } from '../../model/cedar/field/static/rich-text/StaticRichTextFieldBuilder';
 import { StaticPageBreakFieldBuilder } from '../../model/cedar/field/static/page-break/StaticPageBreakFieldBuilder';
 import { StaticImageFieldBuilder } from '../../model/cedar/field/static/image/StaticImageFieldBuilder';
+import { LinkFieldBuilder } from '../../model/cedar/field/dynamic/link/LinkFieldBuilder';
 
 export abstract class CedarBuilders {
   static textFieldBuilder(): TextFieldBuilder {
@@ -58,5 +59,9 @@ export abstract class CedarBuilders {
 
   static imageFieldBuilder(): StaticImageFieldBuilder {
     return new StaticImageFieldBuilder();
+  }
+
+  static linkFieldBuilder(): LinkFieldBuilder {
+    return new LinkFieldBuilder();
   }
 }

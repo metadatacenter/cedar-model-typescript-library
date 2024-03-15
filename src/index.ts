@@ -18,6 +18,7 @@ import { ControlledTermField } from './org/metadatacenter/model/cedar/field/dyna
 import { EmailField } from './org/metadatacenter/model/cedar/field/dynamic/email/EmailField';
 import { EmailFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/email/EmailFieldBuilder';
 import { LinkField } from './org/metadatacenter/model/cedar/field/dynamic/link/LinkField';
+import { LinkFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/link/LinkFieldBuilder';
 import { ListField } from './org/metadatacenter/model/cedar/field/dynamic/list/ListField';
 import { NumericField } from './org/metadatacenter/model/cedar/field/dynamic/numeric/NumericField';
 import { NumericFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/numeric/NumericFieldBuilder';
@@ -69,7 +70,7 @@ export { AttributeValueField, AttributeValueFieldBuilder };
 export { CheckboxField };
 export { ControlledTermField };
 export { EmailField, EmailFieldBuilder };
-export { LinkField };
+export { LinkField, LinkFieldBuilder };
 export { ListField };
 export { NumericField, NumericFieldBuilder };
 export { PhoneNumberField, PhoneNumberFieldBuilder };

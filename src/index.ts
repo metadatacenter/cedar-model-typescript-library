@@ -21,6 +21,7 @@ import { NumericField } from './org/metadatacenter/model/cedar/field/dynamic/num
 import { PhoneNumberField } from './org/metadatacenter/model/cedar/field/dynamic/phone-number/PhoneNumberField';
 import { RadioField } from './org/metadatacenter/model/cedar/field/dynamic/radio/RadioField';
 import { TemporalField } from './org/metadatacenter/model/cedar/field/dynamic/temporal/TemporalField';
+import { TemporalFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/temporal/TemporalFieldBuilder';
 import { TextArea } from './org/metadatacenter/model/cedar/field/dynamic/textarea/TextArea';
 import { TextAreaBuilder } from './org/metadatacenter/model/cedar/field/dynamic/textarea/TextAreaBuilder';
 import { TextField } from './org/metadatacenter/model/cedar/field/dynamic/textfield/TextField';
@@ -37,6 +38,10 @@ import { Template } from './org/metadatacenter/model/cedar/template/Template';
 import { JsonNode } from './org/metadatacenter/model/cedar/types/basic-types/JsonNode';
 import { ISODate } from './org/metadatacenter/model/cedar/types/wrapped-types/ISODate';
 import { SchemaVersion } from './org/metadatacenter/model/cedar/types/wrapped-types/SchemaVersion';
+
+import { TemporalGranularity } from './org/metadatacenter/model/cedar/types/wrapped-types/TemporalGranularity';
+import { TimeFormat } from './org/metadatacenter/model/cedar/types/wrapped-types/TimeFormat';
+import { TemporalType } from './org/metadatacenter/model/cedar/types/wrapped-types/TemporalType';
 
 export { CedarWriters };
 export { CedarBuilders };
@@ -59,7 +64,7 @@ export { ListField };
 export { NumericField };
 export { PhoneNumberField };
 export { RadioField };
-export { TemporalField };
+export { TemporalField, TemporalFieldBuilder };
 export { TextArea, TextAreaBuilder };
 export { TextField, TextFieldBuilder };
 export { StaticImageField };
@@ -74,3 +79,7 @@ export { Template };
 export { JsonNode };
 export { ISODate };
 export { SchemaVersion };
+
+export { TemporalGranularity };
+export { TimeFormat };
+export { TemporalType };

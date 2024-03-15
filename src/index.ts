@@ -12,6 +12,7 @@ import { JSONTemplateWriter } from './org/metadatacenter/io/writer/JSONTemplateW
 
 import { TemplateField } from './org/metadatacenter/model/cedar/field/TemplateField';
 import { AttributeValueField } from './org/metadatacenter/model/cedar/field/dynamic/attribute-value/AttributeValueField';
+import { AttributeValueFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/attribute-value/AttributeValueFieldBuilder';
 import { CheckboxField } from './org/metadatacenter/model/cedar/field/dynamic/checkbox/CheckboxField';
 import { ControlledTermField } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/ControlledTermField';
 import { EmailField } from './org/metadatacenter/model/cedar/field/dynamic/email/EmailField';
@@ -59,7 +60,7 @@ export { JSONElementWriter };
 export { JSONTemplateWriter };
 
 export { TemplateField };
-export { AttributeValueField };
+export { AttributeValueField, AttributeValueFieldBuilder };
 export { CheckboxField };
 export { ControlledTermField };
 export { EmailField, EmailFieldBuilder };

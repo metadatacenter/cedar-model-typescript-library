@@ -4,6 +4,7 @@ import { TemporalFieldBuilder } from '../../model/cedar/field/dynamic/temporal/T
 import { PhoneNumberFieldBuilder } from '../../model/cedar/field/dynamic/phone-number/PhoneNumberFieldBuilder';
 import { NumericFieldBuilder } from '../../model/cedar/field/dynamic/numeric/NumericFieldBuilder';
 import { EmailFieldBuilder } from '../../model/cedar/field/dynamic/email/EmailFieldBuilder';
+import { AttributeValueFieldBuilder } from '../../model/cedar/field/dynamic/attribute-value/AttributeValueFieldBuilder';
 
 export abstract class CedarBuilders {
   static textFieldBuilder(): TextFieldBuilder {
@@ -27,5 +28,9 @@ export abstract class CedarBuilders {
 
   static emailFieldBuilder(): EmailFieldBuilder {
     return new EmailFieldBuilder();
+  }
+
+  static attributeValueFieldBuilder(): AttributeValueFieldBuilder {
+    return new AttributeValueFieldBuilder();
   }
 }

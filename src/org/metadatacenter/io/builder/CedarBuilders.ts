@@ -11,6 +11,8 @@ import { StaticRichTextFieldBuilder } from '../../model/cedar/field/static/rich-
 import { StaticPageBreakFieldBuilder } from '../../model/cedar/field/static/page-break/StaticPageBreakFieldBuilder';
 import { StaticImageFieldBuilder } from '../../model/cedar/field/static/image/StaticImageFieldBuilder';
 import { LinkFieldBuilder } from '../../model/cedar/field/dynamic/link/LinkFieldBuilder';
+import { ListFieldBuilder } from '../../model/cedar/field/dynamic/list/ListFieldBuilder';
+import { RadioFieldBuilder } from '../../model/cedar/field/dynamic/radio/RadioFieldBuilder';
 
 export abstract class CedarBuilders {
   static textFieldBuilder(): TextFieldBuilder {
@@ -63,5 +65,13 @@ export abstract class CedarBuilders {
 
   static linkFieldBuilder(): LinkFieldBuilder {
     return new LinkFieldBuilder();
+  }
+
+  static listFieldBuilder(): ListFieldBuilder {
+    return new ListFieldBuilder();
+  }
+
+  static radioFieldBuilder(): RadioFieldBuilder {
+    return new RadioFieldBuilder();
   }
 }

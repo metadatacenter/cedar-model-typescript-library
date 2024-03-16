@@ -13,6 +13,7 @@ import { StaticImageFieldBuilder } from '../../model/cedar/field/static/image/St
 import { LinkFieldBuilder } from '../../model/cedar/field/dynamic/link/LinkFieldBuilder';
 import { ListFieldBuilder } from '../../model/cedar/field/dynamic/list/ListFieldBuilder';
 import { RadioFieldBuilder } from '../../model/cedar/field/dynamic/radio/RadioFieldBuilder';
+import { CheckboxFieldBuilder } from '../../model/cedar/field/dynamic/checkbox/CheckboxFieldBuilder';
 
 export abstract class CedarBuilders {
   static textFieldBuilder(): TextFieldBuilder {
@@ -73,5 +74,9 @@ export abstract class CedarBuilders {
 
   static radioFieldBuilder(): RadioFieldBuilder {
     return new RadioFieldBuilder();
+  }
+
+  static checkboxFieldBuilder(): CheckboxFieldBuilder {
+    return new CheckboxFieldBuilder();
   }
 }

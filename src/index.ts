@@ -14,6 +14,7 @@ import { TemplateField } from './org/metadatacenter/model/cedar/field/TemplateFi
 import { AttributeValueField } from './org/metadatacenter/model/cedar/field/dynamic/attribute-value/AttributeValueField';
 import { AttributeValueFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/attribute-value/AttributeValueFieldBuilder';
 import { CheckboxField } from './org/metadatacenter/model/cedar/field/dynamic/checkbox/CheckboxField';
+import { CheckboxFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/checkbox/CheckboxFieldBuilder';
 import { ControlledTermField } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/ControlledTermField';
 import { EmailField } from './org/metadatacenter/model/cedar/field/dynamic/email/EmailField';
 import { EmailFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/email/EmailFieldBuilder';
@@ -69,7 +70,7 @@ export { JSONTemplateWriter };
 
 export { TemplateField };
 export { AttributeValueField, AttributeValueFieldBuilder };
-export { CheckboxField };
+export { CheckboxField, CheckboxFieldBuilder };
 export { ControlledTermField };
 export { EmailField, EmailFieldBuilder };
 export { LinkField, LinkFieldBuilder };

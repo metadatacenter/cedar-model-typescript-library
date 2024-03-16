@@ -4,10 +4,10 @@ import { ControlledTermAbstractValueConstraint } from '../ControlledTermAbstract
 export class ControlledTermOntology extends ControlledTermAbstractValueConstraint {
   static className = 'ControlledTermOntology';
   public className = 'ControlledTermOntology';
-  private _acronym: string;
-  private _name: string;
-  private _uri: URI;
-  private _numTerms: number = 0;
+  private readonly _acronym: string;
+  private readonly _name: string;
+  private readonly _uri: URI;
+  private readonly _numTerms: number = 0;
 
   constructor(acronym: string, name: string, numTerms: number, uri: URI) {
     super();

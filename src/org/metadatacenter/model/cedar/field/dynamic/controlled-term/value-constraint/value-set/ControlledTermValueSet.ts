@@ -4,10 +4,10 @@ import { ControlledTermAbstractValueConstraint } from '../ControlledTermAbstract
 export class ControlledTermValueSet extends ControlledTermAbstractValueConstraint {
   static className = 'ControlledTermValueSet';
   public className = 'ControlledTermValueSet';
-  private _vsCollection: string;
-  private _name: string;
-  private _uri: URI;
-  private _numTerms: number = 0;
+  private readonly _vsCollection: string;
+  private readonly _name: string;
+  private readonly _uri: URI;
+  private readonly _numTerms: number = 0;
 
   constructor(vsCollection: string, name: string, numTerms: number, uri: URI) {
     super();

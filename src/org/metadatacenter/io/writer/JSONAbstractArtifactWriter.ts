@@ -6,12 +6,13 @@ import { CedarModel } from '../../model/cedar/constants/CedarModel';
 import { TemplateField } from '../../model/cedar/field/TemplateField';
 import { TemplateElement } from '../../model/cedar/element/TemplateElement';
 import { AbstractContainerArtifact } from '../../model/cedar/AbstractContainerArtifact';
+import { TemplateChild } from '../../model/cedar/types/basic-types/TemplateChild';
 
 export abstract class JSONAbstractArtifactWriter extends AbstractArtifactWriter {
   protected getChildMapAsJSON(container: AbstractContainerArtifact): JsonNode {
     const childMap: JsonNode = JsonNodeClass.getEmpty();
 
-    container.children.forEach((child) => {
+    container.children.forEach((child: TemplateChild) => {
       const childName = child.schema_name;
       if (childName !== null) {
         const childMeta: ChildDeploymentInfo | null = container.childrenInfo.get(childName);

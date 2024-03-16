@@ -102,14 +102,7 @@ export class CedarWriters {
     return this.jsonAtomicWriter;
   }
 
-  public getJSONFieldWriterForType(cedarFieldOrType: CedarFieldType): JSONFieldWriterInternal {
-    let cedarFieldType: CedarFieldType;
-    if (cedarFieldOrType instanceof TemplateField) {
-      cedarFieldType = cedarFieldOrType.cedarFieldType;
-    } else {
-      cedarFieldType = cedarFieldOrType;
-    }
-
+  public getJSONFieldWriterForType(cedarFieldType: CedarFieldType): JSONFieldWriterInternal {
     let writer: JSONFieldWriterInternal | undefined;
     if (cedarFieldType.isStaticField) {
       writer = this.staticFieldWriters.get(cedarFieldType);

@@ -100,17 +100,15 @@ export class ReaderUtil {
     return clone;
   }
 
-  public static deepFreeze(object: any) {
+  public static deepFreeze<T extends object>(object: T): T {
     Object.freeze(object);
     Object.getOwnPropertyNames(object).forEach((prop) => {
-      if (
-        object[prop] !== null &&
-        (typeof object[prop] === 'object' || typeof object[prop] === 'function') &&
-        !Object.isFrozen(object[prop])
-      ) {
-        this.deepFreeze(object[prop]);
+      const propValue = object[prop as keyof T];
+      if (propValue !== null && (typeof propValue === 'object' || typeof propValue === 'function') && !Object.isFrozen(propValue)) {
+        this.deepFreeze(propValue as T);
       }
     });
+    return object;
   }
 
   public static getNodeList(node: JsonNode, key: string): Array<JsonNode> {

@@ -1,5 +1,5 @@
 export class URI {
-  private value: string;
+  private readonly value: string;
 
   constructor(value: string) {
     this.value = value;

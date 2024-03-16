@@ -4,11 +4,11 @@ import { ControlledTermAbstractValueConstraint } from '../ControlledTermAbstract
 export class ControlledTermBranch extends ControlledTermAbstractValueConstraint {
   static className = 'ControlledTermBranch';
   public className = 'ControlledTermBranch';
-  private _source: string;
-  private _acronym: string;
-  private _name: string;
-  private _uri: URI;
-  private _maxDepth: number = 0;
+  private readonly _source: string;
+  private readonly _acronym: string;
+  private readonly _name: string;
+  private readonly _uri: URI;
+  private readonly _maxDepth: number = 0;
 
   constructor(source: string, acronym: string, name: string, maxDepth: number, uri: URI) {
     super();

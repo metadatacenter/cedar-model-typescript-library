@@ -19,7 +19,7 @@ import { Template } from '../../model/cedar/template/Template';
 import { ChildDeploymentInfo } from '../../model/cedar/deployment/ChildDeploymentInfo';
 
 export class JSONTemplateReader extends JSONContainerArtifactReader {
-  private elementReader: JSONElementReader;
+  private readonly elementReader: JSONElementReader;
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.TEMPLATE;
 
   private constructor(behavior: JSONReaderBehavior) {
@@ -80,7 +80,7 @@ export class JSONTemplateReader extends JSONContainerArtifactReader {
     }
   }
 
-  private readInstanceTypeSpecification(template: Template, templateSourceObject: JsonNode, parsingResult: ParsingResult) {
+  private readInstanceTypeSpecification(template: Template, templateSourceObject: JsonNode, _parsingResult: ParsingResult) {
     const properties: JsonNode = ReaderUtil.getNode(templateSourceObject, JsonSchema.properties);
     if (properties !== null) {
       const atType: JsonNode = ReaderUtil.getNode(properties, JsonSchema.atType);

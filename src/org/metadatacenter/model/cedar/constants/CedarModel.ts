@@ -1,5 +1,3 @@
-import { ReaderUtil } from '../../../io/reader/ReaderUtil';
-
 export class CedarModel {
   static ui = '_ui';
   static schema = '$schema';
@@ -55,9 +53,9 @@ export class CedarModel {
   static enum = 'enum';
 
   static baseTemplateURL = 'https://schema.metadatacenter.org';
-  static templateFieldType = CedarModel.baseTemplateURL + '/core/TemplateField';
-  static templateElementType = CedarModel.baseTemplateURL + '/core/TemplateElement';
-  static templateStaticFieldType = CedarModel.baseTemplateURL + '/core/StaticTemplateField';
+  // static templateFieldType = CedarModel.baseTemplateURL + '/core/TemplateField';
+  // static templateElementType = CedarModel.baseTemplateURL + '/core/TemplateElement';
+  // static templateStaticFieldType = CedarModel.baseTemplateURL + '/core/StaticTemplateField';
 
   static ValueConstraints = class {
     static acronym = 'acronym';

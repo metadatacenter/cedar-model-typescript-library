@@ -1,8 +1,8 @@
 import { URI } from '../../../../types/wrapped-types/URI';
 
 export class ControlledTermDefaultValue {
-  private _termUri: URI;
-  private _rdfsLabel: string;
+  private readonly _termUri: URI;
+  private readonly _rdfsLabel: string;
 
   constructor(termUri: URI, rdfsLabel: string) {
     this._termUri = termUri;

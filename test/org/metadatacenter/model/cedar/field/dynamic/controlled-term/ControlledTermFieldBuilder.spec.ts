@@ -1,18 +1,17 @@
 import {
   CedarBuilders,
   CedarWriters,
-  ControlledTermDefaultValue,
+  ControlledTermBranchBuilder,
+  ControlledTermClassBuilder,
+  ControlledTermDefaultValueBuilder,
   ControlledTermField,
   ControlledTermFieldBuilder,
+  ControlledTermOntologyBuilder,
+  ControlledTermValueSetBuilder,
   ISODate,
   SchemaVersion,
   URI,
 } from '../../../../../../../../src';
-import { ControlledTermDefaultValueBuilder } from '../../../../../../../../src/org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/ControlledTermDefaultValueBuilder';
-import { ControlledTermBranchBuilder } from '../../../../../../../../src/org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/branch/ControlledTermBranchBuilder';
-import { ControlledTermClassBuilder } from '../../../../../../../../src/org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/class/ControlledTermClassBuilder';
-import { ControlledTermOntologyBuilder } from '../../../../../../../../src/org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/ontology/ControlledTermOntologyBuilder';
-import { ControlledTermValueSetBuilder } from '../../../../../../../../src/org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/value-set/ControlledTermValueSetBuilder';
 
 describe('ControlledTermFieldBuilder', () => {
   test('creates controlled field with builder', () => {

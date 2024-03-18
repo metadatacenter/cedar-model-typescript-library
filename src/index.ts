@@ -16,6 +16,7 @@ import { AttributeValueFieldBuilder } from './org/metadatacenter/model/cedar/fie
 import { CheckboxField } from './org/metadatacenter/model/cedar/field/dynamic/checkbox/CheckboxField';
 import { CheckboxFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/checkbox/CheckboxFieldBuilder';
 import { ControlledTermField } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/ControlledTermField';
+import { ControlledTermFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/ControlledTermFieldBuilder';
 import { EmailField } from './org/metadatacenter/model/cedar/field/dynamic/email/EmailField';
 import { EmailFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/email/EmailFieldBuilder';
 import { LinkField } from './org/metadatacenter/model/cedar/field/dynamic/link/LinkField';
@@ -56,6 +57,13 @@ import { TemporalGranularity } from './org/metadatacenter/model/cedar/types/wrap
 import { TimeFormat } from './org/metadatacenter/model/cedar/types/wrapped-types/TimeFormat';
 import { TemporalType } from './org/metadatacenter/model/cedar/types/wrapped-types/TemporalType';
 import { NumberType } from './org/metadatacenter/model/cedar/types/wrapped-types/NumberType';
+import { URI } from './org/metadatacenter/model/cedar/types/wrapped-types/URI';
+
+import { ControlledTermBranchBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/branch/ControlledTermBranchBuilder';
+import { ControlledTermClassBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/class/ControlledTermClassBuilder';
+import { ControlledTermOntologyBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/ontology/ControlledTermOntologyBuilder';
+import { ControlledTermValueSetBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/value-set/ControlledTermValueSetBuilder';
+import { ControlledTermDefaultValueBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/ControlledTermDefaultValueBuilder';
 
 export { CedarWriters };
 export { CedarBuilders };
@@ -71,7 +79,7 @@ export { JSONTemplateWriter };
 export { TemplateField };
 export { AttributeValueField, AttributeValueFieldBuilder };
 export { CheckboxField, CheckboxFieldBuilder };
-export { ControlledTermField };
+export { ControlledTermField, ControlledTermFieldBuilder };
 export { EmailField, EmailFieldBuilder };
 export { LinkField, LinkFieldBuilder };
 export { ListField, ListFieldBuilder };
@@ -98,3 +106,10 @@ export { TemporalGranularity };
 export { TimeFormat };
 export { TemporalType };
 export { NumberType };
+export { URI };
+
+export { ControlledTermDefaultValueBuilder };
+export { ControlledTermBranchBuilder };
+export { ControlledTermClassBuilder };
+export { ControlledTermOntologyBuilder };
+export { ControlledTermValueSetBuilder };

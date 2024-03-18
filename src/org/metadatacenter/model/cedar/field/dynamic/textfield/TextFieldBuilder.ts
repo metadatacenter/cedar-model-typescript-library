@@ -28,8 +28,8 @@ export class TextFieldBuilder extends TemplateFieldBuilder {
     return this;
   }
 
-  public withSuggestions(valueRecommendationEnabled: boolean): TextFieldBuilder {
-    this.valueRecommendationEnabled = valueRecommendationEnabled;
+  public withValueRecommendationEnabled(enabled: boolean): TextFieldBuilder {
+    this.valueRecommendationEnabled = enabled;
     return this;
   }
 

@@ -8,4 +8,8 @@ export class URI {
   getValue() {
     return this.value;
   }
+
+  static empty(): URI {
+    return new URI('');
+  }
 }

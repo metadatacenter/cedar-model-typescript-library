@@ -23,7 +23,7 @@ describe('TextFieldBuilder', () => {
       .withMinLength(10)
       .withMaxLength(100)
       .withRegex('regex')
-      .withSuggestions(true)
+      .withValueRecommendationEnabled(true)
       .build();
 
     const writers: CedarWriters = CedarWriters.getStrict();

@@ -14,6 +14,7 @@ import { LinkFieldBuilder } from '../../model/cedar/field/dynamic/link/LinkField
 import { ListFieldBuilder } from '../../model/cedar/field/dynamic/list/ListFieldBuilder';
 import { RadioFieldBuilder } from '../../model/cedar/field/dynamic/radio/RadioFieldBuilder';
 import { CheckboxFieldBuilder } from '../../model/cedar/field/dynamic/checkbox/CheckboxFieldBuilder';
+import { ControlledTermFieldBuilder } from '../../model/cedar/field/dynamic/controlled-term/ControlledTermFieldBuilder';
 
 export abstract class CedarBuilders {
   static textFieldBuilder(): TextFieldBuilder {
@@ -78,5 +79,9 @@ export abstract class CedarBuilders {
 
   static checkboxFieldBuilder(): CheckboxFieldBuilder {
     return new CheckboxFieldBuilder();
+  }
+
+  static controlledTermFieldBuilder(): ControlledTermFieldBuilder {
+    return new ControlledTermFieldBuilder();
   }
 }

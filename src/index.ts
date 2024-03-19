@@ -5,9 +5,9 @@ import { JSONFieldReader } from './org/metadatacenter/io/reader/JSONFieldReader'
 import { JSONElementReader } from './org/metadatacenter/io/reader/JSONElementReader';
 import { JSONTemplateReader } from './org/metadatacenter/io/reader/JSONTemplateReader';
 
-import { JSONFieldWriterInternal } from './org/metadatacenter/io/writer/JSONFieldWriterInternal';
-import { JSONFieldWriter } from './org/metadatacenter/io/writer/JSONFieldWriter';
-import { JSONElementWriter } from './org/metadatacenter/io/writer/JSONElementWriter';
+import { JSONTemplateFieldWriterInternal } from './org/metadatacenter/io/writer/JSONTemplateFieldWriterInternal';
+import { JSONTemplateFieldWriter } from './org/metadatacenter/io/writer/JSONTemplateFieldWriter';
+import { JSONTemplateElementWriter } from './org/metadatacenter/io/writer/JSONTemplateElementWriter';
 import { JSONTemplateWriter } from './org/metadatacenter/io/writer/JSONTemplateWriter';
 
 import { TemplateField } from './org/metadatacenter/model/cedar/field/TemplateField';
@@ -78,8 +78,8 @@ export { JSONFieldReader };
 export { JSONElementReader };
 export { JSONTemplateReader };
 
-export { JSONFieldWriterInternal as JSONFieldWriter };
-export { JSONElementWriter };
+export { JSONTemplateFieldWriterInternal as JSONTemplateFieldWriter };
+export { JSONTemplateElementWriter };
 export { JSONTemplateWriter };
 
 export { TemplateField };

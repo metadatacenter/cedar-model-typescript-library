@@ -4,7 +4,7 @@ import { ComparisonError } from '../../../../src/org/metadatacenter/model/cedar/
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
 import { JsonPath } from '../../../../src/org/metadatacenter/model/cedar/util/path/JsonPath';
 import { JsonSchema } from '../../../../src/org/metadatacenter/model/cedar/constants/JsonSchema';
-import { CedarWriters, JSONElementReader, JSONElementWriter } from '../../../../src';
+import { CedarWriters, JSONElementReader, JSONTemplateElementWriter } from '../../../../src';
 
 describe('JSONElementReader - element-002', () => {
   test('reads an element with three fields', () => {
@@ -17,7 +17,7 @@ describe('JSONElementReader - element-002', () => {
     expect(parsingResult.wasSuccessful()).toBe(true);
 
     const writers: CedarWriters = CedarWriters.getStrict();
-    const writer: JSONElementWriter = writers.getJSONElementWriter();
+    const writer: JSONTemplateElementWriter = writers.getJSONTemplateElementWriter();
 
     const compareResult: ParsingResult = JSONElementReader.getRoundTripComparisonResult(jsonElementReaderResult, writer);
 

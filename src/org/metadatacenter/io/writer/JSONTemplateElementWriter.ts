@@ -14,13 +14,13 @@ import { TemplateElement } from '../../model/cedar/element/TemplateElement';
 import { JSONElementContent } from '../../model/cedar/util/serialization/JSONElementContent';
 import { JSONAbstractContainerArtifactWriter } from './JSONAbstractContainerArtifactWriter';
 
-export class JSONElementWriter extends JSONAbstractContainerArtifactWriter {
+export class JSONTemplateElementWriter extends JSONAbstractContainerArtifactWriter {
   private constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
     super(behavior, writers);
   }
 
-  public static getFor(behavior: JSONWriterBehavior, writers: CedarWriters): JSONElementWriter {
-    return new JSONElementWriter(behavior, writers);
+  public static getFor(behavior: JSONWriterBehavior, writers: CedarWriters): JSONTemplateElementWriter {
+    return new JSONTemplateElementWriter(behavior, writers);
   }
 
   private buildProperties(element: TemplateElement): JsonNode {

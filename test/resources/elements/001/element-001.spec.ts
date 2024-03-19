@@ -1,6 +1,6 @@
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
 import { TestUtil } from '../../../TestUtil';
-import { CedarWriters, JSONElementReader, JSONElementWriter } from '../../../../src';
+import { CedarWriters, JSONElementReader, JSONTemplateElementWriter } from '../../../../src';
 
 describe('JSONElementReader - element-001', () => {
   test('reads an element with attribute-value field', () => {
@@ -13,7 +13,7 @@ describe('JSONElementReader - element-001', () => {
     expect(parsingResult.wasSuccessful()).toBe(true);
 
     const writers: CedarWriters = CedarWriters.getStrict();
-    const writer: JSONElementWriter = writers.getJSONElementWriter();
+    const writer: JSONTemplateElementWriter = writers.getJSONTemplateElementWriter();
 
     const compareResult: ParsingResult = JSONElementReader.getRoundTripComparisonResult(jsonElementReaderResult, writer);
 

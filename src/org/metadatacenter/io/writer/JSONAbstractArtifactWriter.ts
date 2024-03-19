@@ -32,14 +32,14 @@ export abstract class JSONAbstractArtifactWriter extends AbstractArtifactWriter 
               if (child instanceof TemplateField) {
                 childNode[JsonSchema.items] = this.writers.getJSONFieldWriterForType(child.cedarFieldType).getAsJsonNode(child, childMeta);
               } else if (child instanceof TemplateElement) {
-                childNode[JsonSchema.items] = this.writers.getJSONElementWriter().getAsJsonNode(child);
+                childNode[JsonSchema.items] = this.writers.getJSONTemplateElementWriter().getAsJsonNode(child);
               }
               childMap[childName] = childNode;
             } else {
               if (child instanceof TemplateField) {
                 childMap[childName] = this.writers.getJSONFieldWriterForType(child.cedarFieldType).getAsJsonNode(child, childMeta);
               } else if (child instanceof TemplateElement) {
-                childMap[childName] = this.writers.getJSONElementWriter().getAsJsonNode(child);
+                childMap[childName] = this.writers.getJSONTemplateElementWriter().getAsJsonNode(child);
               }
             }
           }

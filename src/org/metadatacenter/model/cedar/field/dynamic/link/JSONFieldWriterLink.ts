@@ -1,11 +1,11 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
 import { JSONTemplateFieldContentDynamic } from '../../../util/serialization/JSONTemplateFieldContentDynamic';
 import { JsonSchema } from '../../../constants/JsonSchema';
-import { JSONFieldWriterInternal } from '../../../../../io/writer/JSONFieldWriterInternal';
+import { JSONTemplateFieldWriterInternal } from '../../../../../io/writer/JSONTemplateFieldWriterInternal';
 import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
 import { CedarWriters } from '../../../../../io/writer/CedarWriters';
 
-export class JSONFieldWriterLink extends JSONFieldWriterInternal {
+export class JSONFieldWriterLink extends JSONTemplateFieldWriterInternal {
   constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
     super(behavior, writers);
   }

@@ -3,7 +3,7 @@ import {
   CedarBuilders,
   CedarWriters,
   ISODate,
-  JSONElementWriter,
+  JSONTemplateElementWriter,
   SchemaVersion,
   TemplateElement,
   TemplateElementBuilder,
@@ -67,7 +67,7 @@ describe('TemplateElement', () => {
     //TestUtil.p(template);
 
     const writers: CedarWriters = CedarWriters.getStrict();
-    const writer: JSONElementWriter = writers.getJSONElementWriter();
+    const writer: JSONTemplateElementWriter = writers.getJSONTemplateElementWriter();
 
     const stringified = JSON.stringify(writer.getAsJsonNode(templateElement), null, 2);
     const backparsed = JSON.parse(stringified);

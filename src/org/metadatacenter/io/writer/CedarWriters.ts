@@ -1,6 +1,6 @@
 import { JSONWriterBehavior } from '../../behavior/JSONWriterBehavior';
 import { JSONAtomicWriter } from './JSONAtomicWriter';
-import { JSONFieldWriterInternal } from './JSONFieldWriterInternal';
+import { JSONTemplateFieldWriterInternal } from './JSONTemplateFieldWriterInternal';
 import { JSONTemplateWriter } from './JSONTemplateWriter';
 import { CedarFieldType } from '../../model/cedar/types/cedar-types/CedarFieldType';
 import { JSONFieldWriterTextField } from '../../model/cedar/field/dynamic/textfield/JSONFieldWriterTextField';
@@ -32,26 +32,26 @@ import { ControlledTermBranch } from '../../model/cedar/field/dynamic/controlled
 import { JSONValueConstraintsBranchWriter } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/branch/JSONValueConstraintsBranchWriter';
 import { ControlledTermValueSet } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/value-set/ControlledTermValueSet';
 import { JSONValueConstraintsValueSetWriter } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/value-set/JSONValueConstraintsValueSetWriter';
-import { JSONElementWriter } from './JSONElementWriter';
+import { JSONTemplateElementWriter } from './JSONTemplateElementWriter';
 
 export class CedarWriters {
   private readonly behavior: JSONWriterBehavior;
-  private readonly dynamicFieldWriters: Map<CedarFieldType, JSONFieldWriterInternal>;
-  private readonly staticFieldWriters: Map<CedarFieldType, JSONFieldWriterInternal>;
+  private readonly dynamicFieldWriters: Map<CedarFieldType, JSONTemplateFieldWriterInternal>;
+  private readonly staticFieldWriters: Map<CedarFieldType, JSONTemplateFieldWriterInternal>;
   private readonly valueConstraintsWriters: Map<string, AbstractJSONControlledTermValueConstraintWriter>;
   private readonly jsonAtomicWriter: JSONAtomicWriter;
   private readonly jsonTemplateWriter: JSONTemplateWriter;
-  private readonly jsonElementWriter: JSONElementWriter;
+  private readonly jsonTemplateElementWriter: JSONTemplateElementWriter;
   private readonly yamlTemplateWriter: YAMLTemplateWriter;
 
   private constructor(behavior: JSONWriterBehavior) {
     this.behavior = behavior;
     this.jsonAtomicWriter = new JSONAtomicWriter(behavior);
     this.jsonTemplateWriter = JSONTemplateWriter.getFor(behavior, this);
-    this.jsonElementWriter = JSONElementWriter.getFor(behavior, this);
+    this.jsonTemplateElementWriter = JSONTemplateElementWriter.getFor(behavior, this);
     this.yamlTemplateWriter = YAMLTemplateWriter.getFor(behavior, this);
 
-    this.dynamicFieldWriters = new Map<CedarFieldType, JSONFieldWriterInternal>([
+    this.dynamicFieldWriters = new Map<CedarFieldType, JSONTemplateFieldWriterInternal>([
       [CedarFieldType.TEXT, new JSONFieldWriterTextField(behavior, this)],
       [CedarFieldType.TEXTAREA, new JSONFieldWriterTextArea(behavior, this)],
       [CedarFieldType.CONTROLLED_TERM, new JSONFieldWriterControlledTerm(behavior, this)],
@@ -66,7 +66,7 @@ export class CedarWriters {
       [CedarFieldType.ATTRIBUTE_VALUE, new JSONFieldWriterAttributeValue(behavior, this)],
     ]);
 
-    this.staticFieldWriters = new Map<CedarFieldType, JSONFieldWriterInternal>([
+    this.staticFieldWriters = new Map<CedarFieldType, JSONTemplateFieldWriterInternal>([
       [CedarFieldType.STATIC_PAGE_BREAK, new JSONFieldWriterStaticPageBreak(behavior, this)],
       [CedarFieldType.STATIC_SECTION_BREAK, new JSONFieldWriterStaticSectionsBreak(behavior, this)],
       [CedarFieldType.STATIC_IMAGE, new JSONFieldWriterStaticImage(behavior, this)],
@@ -94,16 +94,16 @@ export class CedarWriters {
     return this.jsonTemplateWriter;
   }
 
-  public getJSONElementWriter(): JSONElementWriter {
-    return this.jsonElementWriter;
+  public getJSONTemplateElementWriter(): JSONTemplateElementWriter {
+    return this.jsonTemplateElementWriter;
   }
 
   public getJSONAtomicWriter() {
     return this.jsonAtomicWriter;
   }
 
-  public getJSONFieldWriterForType(cedarFieldType: CedarFieldType): JSONFieldWriterInternal {
-    let writer: JSONFieldWriterInternal | undefined;
+  public getJSONFieldWriterForType(cedarFieldType: CedarFieldType): JSONTemplateFieldWriterInternal {
+    let writer: JSONTemplateFieldWriterInternal | undefined;
     if (cedarFieldType.isStaticField) {
       writer = this.staticFieldWriters.get(cedarFieldType);
     } else {
@@ -128,7 +128,7 @@ export class CedarWriters {
     throw new Error(`No writer found for class type: ${className}`);
   }
 
-  public getJSONFieldWriterForField(field: TemplateField): JSONFieldWriterInternal {
+  public getJSONFieldWriterForField(field: TemplateField): JSONTemplateFieldWriterInternal {
     return this.getJSONFieldWriterForType(field.cedarFieldType);
   }
 }

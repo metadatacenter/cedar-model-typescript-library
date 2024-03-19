@@ -12,7 +12,7 @@ import { JSONAbstractArtifactWriter } from './JSONAbstractArtifactWriter';
 import { AdditionalProperties } from '../../model/cedar/types/wrapped-types/AdditionalProperties';
 import { ChildDeploymentInfo } from '../../model/cedar/deployment/ChildDeploymentInfo';
 
-export abstract class JSONFieldWriterInternal extends JSONAbstractArtifactWriter {
+export abstract class JSONTemplateFieldWriterInternal extends JSONAbstractArtifactWriter {
   protected constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
     super(behavior, writers);
   }

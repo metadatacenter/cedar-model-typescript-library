@@ -4,7 +4,7 @@ A library to work with CEDAR templates and instances - implemented in TypeScript
 ## Build
 ```shell
 npm install
-tsc
+npm run build
 ```
 
 ## Run the tests

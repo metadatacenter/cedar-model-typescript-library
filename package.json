@@ -6,9 +6,11 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "jest",
-    "build": "tsc",
+    "build": "tsc && cp package-dist.json dist/package.json",
     "build:watch": "tsc --watch",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "link": "cd dist && npm link",
+    "unlink": "cd dist && npm unlink cedar-model-typescript-library"
   },
   "repository": {
     "type": "git",

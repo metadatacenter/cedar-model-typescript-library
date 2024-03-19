@@ -20,7 +20,6 @@ import { JavascriptType } from '../../model/cedar/types/wrapped-types/Javascript
 import { ArtifactSchema } from '../../model/cedar/types/wrapped-types/ArtifactSchema';
 import { AbstractContainerArtifact } from '../../model/cedar/AbstractContainerArtifact';
 import { JSONElementReader } from './JSONElementReader';
-import { TestUtil } from '../../../../../test/TestUtil';
 
 export abstract class JSONContainerArtifactReader extends JSONAbstractArtifactReader {
   protected fieldReader: JSONFieldReader;

@@ -22,7 +22,10 @@ export class ComparisonError {
     this.errorPath = errorPath;
     this.expectedValue = expectedValue;
     this.encounteredValue = encounteredValue;
-    // this.parseStackTrace();
+    // eslint-disable-next-line no-constant-condition
+    if (false) {
+      this.parseStackTrace();
+    }
   }
   private parseStackTrace() {
     const logError = new Error();

@@ -48,9 +48,9 @@ export class JSONFieldReader extends JSONAbstractArtifactReader {
     return new JSONFieldReader(JSONReaderBehavior.STRICT);
   }
 
-  public static getFebruary2024(): JSONFieldReader {
-    return new JSONFieldReader(JSONReaderBehavior.FEBRUARY_2024);
-  }
+  // public static getFebruary2024(): JSONFieldReader {
+  //   return new JSONFieldReader(JSONReaderBehavior.FEBRUARY_2024);
+  // }
 
   public static getForBehavior(behavior: JSONReaderBehavior): JSONFieldReader {
     return new JSONFieldReader(behavior);

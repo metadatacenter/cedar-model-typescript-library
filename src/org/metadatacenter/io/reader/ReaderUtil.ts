@@ -85,6 +85,7 @@ export class ReaderUtil {
     return this.deepUnfreeze(obj);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public static deepUnfreeze(object: any): any {
     if (object === null || (typeof object !== 'object' && typeof object !== 'function')) {
       return object;

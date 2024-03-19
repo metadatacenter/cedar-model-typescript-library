@@ -12,7 +12,6 @@ export class JSONFieldReaderPageBreak extends JSONFieldTypeSpecificReader {
     _parsingResult: ParsingResult,
     _path: JsonPath,
   ): StaticPageBreakField {
-    const field = StaticPageBreakField.buildEmptyWithNullValues();
-    return field;
+    return StaticPageBreakField.buildEmptyWithNullValues();
   }
 }

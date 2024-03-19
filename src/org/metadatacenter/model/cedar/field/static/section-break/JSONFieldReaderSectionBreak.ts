@@ -12,7 +12,6 @@ export class JSONFieldReaderSectionBreak extends JSONFieldTypeSpecificReader {
     _parsingResult: ParsingResult,
     _path: JsonPath,
   ): StaticSectionBreakField {
-    const field = StaticSectionBreakField.buildEmptyWithNullValues();
-    return field;
+    return StaticSectionBreakField.buildEmptyWithNullValues();
   }
 }

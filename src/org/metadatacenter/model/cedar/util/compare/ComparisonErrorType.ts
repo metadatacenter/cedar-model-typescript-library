@@ -51,6 +51,7 @@ export class ComparisonErrorType {
     return this.NULL;
   }
 
+  // noinspection JSUnusedGlobalSymbols
   toJSON() {
     return this.value;
   }

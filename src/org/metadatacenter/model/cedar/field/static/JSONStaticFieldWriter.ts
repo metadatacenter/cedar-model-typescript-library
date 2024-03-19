@@ -24,10 +24,9 @@ export class JSONStaticFieldWriter extends JSONTemplateFieldWriterInternal {
       [CedarModel.inputType]: this.atomicWriter.write(field.cedarFieldType.getUiInputType()),
     };
     this.expandUiNode(uiNode, field);
-    const uiObject: JsonNode = {
+    return {
       [CedarModel.ui]: uiNode,
-    };
-    return uiObject;
+    } as JsonNode;
   }
 
   override getAsJsonNode(field: StaticImageField): JsonNode {

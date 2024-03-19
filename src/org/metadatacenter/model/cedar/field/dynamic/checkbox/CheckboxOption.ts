@@ -1,9 +1,7 @@
-export class CheckboxOption {
-  public label: string;
-  public selectedByDefault: boolean;
+import { ChoiceOptionEntity } from '../../ChoiceOptionEntity';
 
+export class CheckboxOption extends ChoiceOptionEntity {
   public constructor(label: string, selectedByDefault: boolean) {
-    this.label = label;
-    this.selectedByDefault = selectedByDefault;
+    super(label, selectedByDefault);
   }
 }

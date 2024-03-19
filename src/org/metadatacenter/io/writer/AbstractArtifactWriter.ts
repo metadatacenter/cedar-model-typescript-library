@@ -21,21 +21,19 @@ export abstract class AbstractArtifactWriter {
   }
 
   protected macroSchemaNameAndDescription(artifact: AbstractArtifact): JsonNode {
-    const ndObject: JsonNode = {
+    return {
       [JsonSchema.schemaName]: artifact.schema_name,
       [JsonSchema.schemaDescription]: artifact.schema_description,
-    };
-    return ndObject;
+    } as JsonNode;
   }
 
   protected macroProvenance(artifact: AbstractArtifact, atomicWriter: JSONAtomicWriter): JsonNode {
-    const provObject: JsonNode = {
+    return {
       [JsonSchema.pavCreatedOn]: atomicWriter.write(artifact.pav_createdOn),
       [JsonSchema.pavCreatedBy]: atomicWriter.write(artifact.pav_createdBy),
       [JsonSchema.pavLastUpdatedOn]: atomicWriter.write(artifact.pav_lastUpdatedOn),
       [JsonSchema.oslcModifiedBy]: atomicWriter.write(artifact.oslc_modifiedBy),
-    };
-    return provObject;
+    } as JsonNode;
   }
 
   protected macroStatusAndVersion(artifact: AbstractArtifact, atomicWriter: JSONAtomicWriter): JsonNode {

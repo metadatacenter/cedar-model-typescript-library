@@ -11,6 +11,10 @@ import { CedarWriters } from './CedarWriters';
 import { JSONAbstractArtifactWriter } from './JSONAbstractArtifactWriter';
 import { AdditionalProperties } from '../../model/cedar/types/wrapped-types/AdditionalProperties';
 import { ChildDeploymentInfo } from '../../model/cedar/deployment/ChildDeploymentInfo';
+import { CheckboxField } from '../../model/cedar/field/dynamic/checkbox/CheckboxField';
+import { ListField } from '../../model/cedar/field/dynamic/list/ListField';
+import { RadioField } from '../../model/cedar/field/dynamic/radio/RadioField';
+import { ChoiceOptionEntity } from '../../model/cedar/field/ChoiceOptionEntity';
 
 export abstract class JSONTemplateFieldWriterInternal extends JSONAbstractArtifactWriter {
   protected constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
@@ -55,6 +59,19 @@ export abstract class JSONTemplateFieldWriterInternal extends JSONAbstractArtifa
     };
     this.expandValueConstraintsNodeForJSON(vcNode, field, childInfo);
     return vcObject;
+  }
+
+  protected expandLiterals(field: CheckboxField | ListField | RadioField, vcNode: JsonNode) {
+    const literals: Array<JsonNode> = JsonNodeClass.getEmptyList();
+    field.valueConstraints.literals.forEach((option: ChoiceOptionEntity) => {
+      const literal = JsonNodeClass.getEmpty();
+      literal[CedarModel.label] = option.label;
+      if (option.selectedByDefault) {
+        literal[CedarModel.selectedByDefault] = option.selectedByDefault;
+      }
+      literals.push(literal);
+    });
+    vcNode[CedarModel.literals] = literals;
   }
 
   public getAsJsonString(field: TemplateField, indent: number = 2): string {

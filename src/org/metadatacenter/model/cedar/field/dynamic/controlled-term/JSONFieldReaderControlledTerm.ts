@@ -103,10 +103,9 @@ export class JSONFieldReaderControlledTerm extends JSONFieldTypeSpecificReader {
     if (node == null) {
       return null;
     }
-    const ret = new ControlledTermDefaultValue(
+    return new ControlledTermDefaultValue(
       ReaderUtil.getURI(node, JsonSchema.termUri),
       ReaderUtil.getStringOrEmpty(node, JsonSchema.rdfsLabel),
     );
-    return ret;
   }
 }

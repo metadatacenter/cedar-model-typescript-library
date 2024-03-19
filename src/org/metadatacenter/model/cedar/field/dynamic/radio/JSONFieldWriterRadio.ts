@@ -1,4 +1,4 @@
-import { JsonNode, JsonNodeClass } from '../../../types/basic-types/JsonNode';
+import { JsonNode } from '../../../types/basic-types/JsonNode';
 import { CedarModel } from '../../../constants/CedarModel';
 import { JSONTemplateFieldWriterInternal } from '../../../../../io/writer/JSONTemplateFieldWriterInternal';
 import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
@@ -14,15 +14,6 @@ export class JSONFieldWriterRadio extends JSONTemplateFieldWriterInternal {
   override expandValueConstraintsNodeForJSON(vcNode: JsonNode, field: RadioField, childInfo: ChildDeploymentInfo): void {
     super.expandValueConstraintsNodeForJSON(vcNode, field, childInfo);
     vcNode[CedarModel.multipleChoice] = false;
-    const literals: Array<JsonNode> = JsonNodeClass.getEmptyList();
-    field.valueConstraints.literals.forEach((option) => {
-      const literal = JsonNodeClass.getEmpty();
-      literal[CedarModel.label] = option.label;
-      if (option.selectedByDefault) {
-        literal[CedarModel.selectedByDefault] = option.selectedByDefault;
-      }
-      literals.push(literal);
-    });
-    vcNode[CedarModel.literals] = literals;
+    this.expandLiterals(field, vcNode);
   }
 }

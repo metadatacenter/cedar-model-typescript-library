@@ -115,9 +115,9 @@ export class CedarWriters {
     throw new Error(`No writer found for field type: ${cedarFieldType.getValue()}`);
   }
 
-  public getYAMLTemplateWriter(): YAMLTemplateWriter {
-    return this.yamlTemplateWriter;
-  }
+  // public getYAMLTemplateWriter(): YAMLTemplateWriter {
+  //   return this.yamlTemplateWriter;
+  // }
 
   public getJSONWriterForValueConstraint(object: ControlledTermAbstractValueConstraint): AbstractJSONControlledTermValueConstraintWriter {
     const className = object.className;

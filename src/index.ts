@@ -6,6 +6,7 @@ import { JSONElementReader } from './org/metadatacenter/io/reader/JSONElementRea
 import { JSONTemplateReader } from './org/metadatacenter/io/reader/JSONTemplateReader';
 
 import { JSONTemplateFieldWriterInternal } from './org/metadatacenter/io/writer/JSONTemplateFieldWriterInternal';
+// It is needed, do not remove, even if it looks unused
 import { JSONTemplateFieldWriter } from './org/metadatacenter/io/writer/JSONTemplateFieldWriter';
 import { JSONTemplateElementWriter } from './org/metadatacenter/io/writer/JSONTemplateElementWriter';
 import { JSONTemplateWriter } from './org/metadatacenter/io/writer/JSONTemplateWriter';
@@ -78,6 +79,7 @@ export { JSONFieldReader };
 export { JSONElementReader };
 export { JSONTemplateReader };
 
+// It is needed, do not remove, even if it looks unused
 export { JSONTemplateFieldWriterInternal as JSONTemplateFieldWriter };
 export { JSONTemplateElementWriter };
 export { JSONTemplateWriter };

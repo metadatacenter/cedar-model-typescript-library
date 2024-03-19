@@ -1,9 +1,8 @@
 import { JSONTemplateReader } from '../../../../src/org/metadatacenter/io/reader/JSONTemplateReader';
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
-import { TestUtil } from '../../../TestUtil';
 import { JSONTemplateReaderResult } from '../../../../src/org/metadatacenter/io/reader/JSONTemplateReaderResult';
-import { JSONTemplateWriter } from '../../../../src/org/metadatacenter/io/writer/JSONTemplateWriter';
-import { CedarWriters } from '../../../../src/org/metadatacenter/io/writer/CedarWriters';
+import { CedarWriters, JSONTemplateWriter } from '../../../../src';
+import { TestUtil } from '../../../TestUtil';
 
 describe('JSONTemplateReader - CEDAR reference templates', () => {
   test('reads template from CEDAR Artifact Library', () => {

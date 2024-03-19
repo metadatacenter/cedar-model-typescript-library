@@ -1,4 +1,4 @@
-import { JSONTemplateReader } from '../../../../src/org/metadatacenter/io/reader/JSONTemplateReader';
+import { JSONTemplateReader } from '../../../../src';
 
 describe('JSONTemplateReader', () => {
   test('reads empty template as string, should be not null', () => {

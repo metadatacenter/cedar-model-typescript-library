@@ -1,5 +1,4 @@
-import { TextField } from '../../../../../../src/org/metadatacenter/model/cedar/field/dynamic/textfield/TextField';
-import { CedarWriters } from '../../../../../../src';
+import { CedarWriters, TextField } from '../../../../../../src';
 
 describe('TemplateField', () => {
   test('creates empty field null values', () => {

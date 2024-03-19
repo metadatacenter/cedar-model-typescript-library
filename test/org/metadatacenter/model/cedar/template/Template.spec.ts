@@ -1,4 +1,3 @@
-import { TestUtil } from '../../../../../TestUtil';
 import {
   BiboStatus,
   CedarBuilders,
@@ -11,7 +10,6 @@ import {
   TextField,
   TextFieldBuilder,
 } from '../../../../../../src';
-import { ChildDeploymentInfo } from '../../../../../../src/org/metadatacenter/model/cedar/deployment/ChildDeploymentInfo';
 
 describe('Template', () => {
   test('creates template with one field', () => {
@@ -38,17 +36,17 @@ describe('Template', () => {
       .withValueRecommendationEnabled(true)
       .build();
 
-    const textFieldDeployment = new ChildDeploymentInfo('_text_field');
-    textFieldDeployment.iri = 'https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde';
-    textFieldDeployment.atType = textField.cedarArtifactType;
-    textFieldDeployment.uiInputType = textField.cedarFieldType.getUiInputType();
-    textFieldDeployment.requiredValue = true;
-    textFieldDeployment.hidden = true;
-    textFieldDeployment.label = 'Text field property label';
-    textFieldDeployment.description = 'Text field property description';
-    textFieldDeployment.multiInstance = true;
-    textFieldDeployment.minItems = 0;
-    textFieldDeployment.maxItems = 123;
+    const textFieldDeploymentBuilder = CedarBuilders.childDeploymentBuilder(textField, '_text_field')
+      .withIri('https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde')
+      .withLabel('Text field property label')
+      .withDescription('Text field property description')
+      .withMultiInstance(true)
+      .withMinItems(0)
+      .withMaxItems(123)
+      .withRequiredValue(true)
+      .withHidden(true);
+
+    const textFieldDeployment = textFieldDeploymentBuilder.build();
 
     const templateBuilder: TemplateBuilder = CedarBuilders.templateBuilder();
     const template: Template = templateBuilder

@@ -67,6 +67,9 @@ import { ControlledTermValueSetBuilder } from './org/metadatacenter/model/cedar/
 import { ControlledTermDefaultValueBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/ControlledTermDefaultValueBuilder';
 import { BiboStatus } from './org/metadatacenter/model/cedar/types/wrapped-types/BiboStatus';
 
+import { ChildDeploymentInfo } from './org/metadatacenter/model/cedar/deployment/ChildDeploymentInfo';
+import { ChildDeploymentInfoBuilder } from './org/metadatacenter/model/cedar/deployment/ChildDeploymentInfoBuilder';
+
 export { CedarBuilders };
 export { CedarWriters };
 
@@ -116,3 +119,5 @@ export { ControlledTermBranchBuilder };
 export { ControlledTermClassBuilder };
 export { ControlledTermOntologyBuilder };
 export { ControlledTermValueSetBuilder };
+
+export { ChildDeploymentInfo, ChildDeploymentInfoBuilder };

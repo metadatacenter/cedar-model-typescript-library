@@ -16,6 +16,8 @@ import { RadioFieldBuilder } from '../../model/cedar/field/dynamic/radio/RadioFi
 import { CheckboxFieldBuilder } from '../../model/cedar/field/dynamic/checkbox/CheckboxFieldBuilder';
 import { ControlledTermFieldBuilder } from '../../model/cedar/field/dynamic/controlled-term/ControlledTermFieldBuilder';
 import { TemplateBuilder } from '../../model/cedar/template/TemplateBuilder';
+import { ChildDeploymentInfoBuilder } from '../../model/cedar/deployment/ChildDeploymentInfoBuilder';
+import { TemplateChild } from '../../model/cedar/types/basic-types/TemplateChild';
 
 export abstract class CedarBuilders {
   static templateBuilder(): TemplateBuilder {
@@ -88,5 +90,9 @@ export abstract class CedarBuilders {
 
   static controlledTermFieldBuilder(): ControlledTermFieldBuilder {
     return new ControlledTermFieldBuilder();
+  }
+
+  static childDeploymentBuilder(child: TemplateChild, childName: string): ChildDeploymentInfoBuilder {
+    return new ChildDeploymentInfoBuilder(child, childName);
   }
 }

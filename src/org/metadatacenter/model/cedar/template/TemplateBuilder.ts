@@ -37,7 +37,7 @@ export class TemplateBuilder extends AbstractArtifactBuilder {
   }
 
   public build(): Template {
-    const template = Template.buildEmptyWithNullValues();
+    const template: Template = Template.buildEmptyWithNullValues();
     super.buildInternal(template);
 
     template.header = this.header;

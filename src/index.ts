@@ -47,6 +47,7 @@ import { StaticYoutubeField } from './org/metadatacenter/model/cedar/field/stati
 import { StaticYoutubeFieldBuilder } from './org/metadatacenter/model/cedar/field/static/youtube/StaticYoutubeFieldBuilder';
 
 import { TemplateElement } from './org/metadatacenter/model/cedar/element/TemplateElement';
+import { TemplateElementBuilder } from './org/metadatacenter/model/cedar/element/TemplateElementBuilder';
 import { Template } from './org/metadatacenter/model/cedar/template/Template';
 import { TemplateBuilder } from './org/metadatacenter/model/cedar/template/TemplateBuilder';
 
@@ -100,7 +101,7 @@ export { StaticRichTextField, StaticRichTextFieldBuilder };
 export { StaticSectionBreakField, StaticSectionBreakFieldBuilder };
 export { StaticYoutubeField, StaticYoutubeFieldBuilder };
 
-export { TemplateElement };
+export { TemplateElement, TemplateElementBuilder };
 export { Template, TemplateBuilder };
 
 export { JsonNode };

@@ -18,10 +18,15 @@ import { ControlledTermFieldBuilder } from '../../model/cedar/field/dynamic/cont
 import { TemplateBuilder } from '../../model/cedar/template/TemplateBuilder';
 import { ChildDeploymentInfoBuilder } from '../../model/cedar/deployment/ChildDeploymentInfoBuilder';
 import { TemplateChild } from '../../model/cedar/types/basic-types/TemplateChild';
+import { TemplateElementBuilder } from '../../model/cedar/element/TemplateElementBuilder';
 
 export abstract class CedarBuilders {
   static templateBuilder(): TemplateBuilder {
     return new TemplateBuilder();
+  }
+
+  static templateElementBuilder(): TemplateElementBuilder {
+    return new TemplateElementBuilder();
   }
 
   static textFieldBuilder(): TextFieldBuilder {

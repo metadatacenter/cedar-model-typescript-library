@@ -2,6 +2,7 @@ import { BiboStatus } from '../types/wrapped-types/BiboStatus';
 import { SchemaVersion } from '../types/wrapped-types/SchemaVersion';
 import { PavVersion } from '../types/wrapped-types/PavVersion';
 import { AbstractContainerArtifact } from '../AbstractContainerArtifact';
+import { CedarArtifactType } from '../types/cedar-types/CedarArtifactType';
 
 export class Template extends AbstractContainerArtifact {
   public header: string | null = null;
@@ -11,6 +12,7 @@ export class Template extends AbstractContainerArtifact {
 
   private constructor() {
     super();
+    this.cedarArtifactType = CedarArtifactType.TEMPLATE;
   }
 
   public static buildEmptyWithNullValues(): Template {

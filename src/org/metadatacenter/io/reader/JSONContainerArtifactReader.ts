@@ -20,6 +20,7 @@ import { JavascriptType } from '../../model/cedar/types/wrapped-types/Javascript
 import { ArtifactSchema } from '../../model/cedar/types/wrapped-types/ArtifactSchema';
 import { AbstractContainerArtifact } from '../../model/cedar/AbstractContainerArtifact';
 import { JSONElementReader } from './JSONElementReader';
+import { TestUtil } from '../../../../../test/TestUtil';
 
 export abstract class JSONContainerArtifactReader extends JSONAbstractArtifactReader {
   protected fieldReader: JSONFieldReader;
@@ -119,11 +120,11 @@ export abstract class JSONContainerArtifactReader extends JSONAbstractArtifactRe
       }
       if (childInfo.atType === CedarArtifactType.TEMPLATE_FIELD || childInfo.atType === CedarArtifactType.STATIC_TEMPLATE_FIELD) {
         const cedarFieldReaderResult = this.fieldReader.readFromObject(childDefinition, childInfo, childPath);
-        container.addChild(cedarFieldReaderResult.field);
+        container.addChild(cedarFieldReaderResult.field, childInfo);
         parsingResult.merge(cedarFieldReaderResult.parsingResult);
       } else if (childInfo.atType === CedarArtifactType.TEMPLATE_ELEMENT) {
         const cedarElementReaderResult = this.getElementReader().readFromObject(childDefinition, childInfo, childPath);
-        container.addChild(cedarElementReaderResult.element);
+        container.addChild(cedarElementReaderResult.element, childInfo);
         parsingResult.merge(cedarElementReaderResult.parsingResult);
       }
     }

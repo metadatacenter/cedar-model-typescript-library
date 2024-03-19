@@ -12,36 +12,39 @@ export abstract class JSONAbstractArtifactWriter extends AbstractArtifactWriter 
   protected getChildMapAsJSON(container: AbstractContainerArtifact): JsonNode {
     const childMap: JsonNode = JsonNodeClass.getEmpty();
 
-    container.children.forEach((child: TemplateChild) => {
-      const childName = child.schema_name;
-      if (childName !== null) {
-        const childMeta: ChildDeploymentInfo | null = container.childrenInfo.get(childName);
-        if (childMeta !== null) {
-          if (childMeta.multiInstance) {
-            // TODO: handle maxItems, minItems inconsistencies
-            const childNode: JsonNode = {
-              [JsonSchema.type]: 'array',
-              [CedarModel.minItems]: childMeta.minItems,
-            };
-            if (child instanceof TemplateField) {
-              childNode[JsonSchema.items] = this.writers.getJSONFieldWriterForType(child.cedarFieldType).getAsJsonNode(child, childMeta);
-            } else if (child instanceof TemplateElement) {
-              childNode[JsonSchema.items] = this.writers.getJSONElementWriter().getAsJsonNode(child);
-            }
-            if (childMeta.maxItems !== null) {
-              childNode[CedarModel.maxItems] = childMeta.maxItems;
-            }
-            childMap[childName] = childNode;
-          } else {
-            if (child instanceof TemplateField) {
-              childMap[childName] = this.writers.getJSONFieldWriterForType(child.cedarFieldType).getAsJsonNode(child, childMeta);
-            } else if (child instanceof TemplateElement) {
-              childMap[childName] = this.writers.getJSONElementWriter().getAsJsonNode(child);
+    container
+      .getChildrenInfo()
+      .getChildrenNames()
+      .forEach((childName: string) => {
+        const child: TemplateChild | null = container.getChild(childName);
+        if (child != null) {
+          const childMeta: ChildDeploymentInfo | null = container.getChildrenInfo().get(childName);
+          if (childMeta !== null) {
+            if (childMeta.multiInstance) {
+              // TODO: handle maxItems, minItems inconsistencies
+              const childNode: JsonNode = {
+                [JsonSchema.type]: 'array',
+                [CedarModel.minItems]: childMeta.minItems,
+              };
+              if (childMeta.maxItems !== null) {
+                childNode[CedarModel.maxItems] = childMeta.maxItems;
+              }
+              if (child instanceof TemplateField) {
+                childNode[JsonSchema.items] = this.writers.getJSONFieldWriterForType(child.cedarFieldType).getAsJsonNode(child, childMeta);
+              } else if (child instanceof TemplateElement) {
+                childNode[JsonSchema.items] = this.writers.getJSONElementWriter().getAsJsonNode(child);
+              }
+              childMap[childName] = childNode;
+            } else {
+              if (child instanceof TemplateField) {
+                childMap[childName] = this.writers.getJSONFieldWriterForType(child.cedarFieldType).getAsJsonNode(child, childMeta);
+              } else if (child instanceof TemplateElement) {
+                childMap[childName] = this.writers.getJSONElementWriter().getAsJsonNode(child);
+              }
             }
           }
         }
-      }
-    });
+      });
 
     return childMap;
   }

@@ -30,11 +30,11 @@ export class JSONElementWriter extends JSONAbstractContainerArtifactWriter {
     // Include the IRI mapping
     properties[JsonSchema.atContext][JsonSchema.properties] = {
       ...properties[JsonSchema.atContext][JsonSchema.properties],
-      ...element.childrenInfo.getNonStaticNonAttributeValueIRIMap(),
+      ...element.getChildrenInfo().getNonStaticNonAttributeValueIRIMap(),
     };
 
     // Omit required if empty
-    const childNamesForRequired = element.childrenInfo.getChildrenNamesForRequired();
+    const childNamesForRequired = element.getChildrenInfo().getChildrenNamesForRequired();
     if (childNamesForRequired.length > 0) {
       properties[JsonSchema.atContext][JsonSchema.required] = [
         ...properties[JsonSchema.atContext][JsonSchema.required],
@@ -45,7 +45,7 @@ export class JSONElementWriter extends JSONAbstractContainerArtifactWriter {
     }
 
     // Attribute value modification
-    if (element.childrenInfo.hasAttributeValue()) {
+    if (element.getChildrenInfo().hasAttributeValue()) {
       properties[JsonSchema.atContext][TemplateProperty.additionalProperties] =
         JSONTemplateFieldContentDynamic.ADDITIONAL_PROPERTIES_VERBATIM_ATTRIBUTE_VALUE_INSIDE;
     }
@@ -67,9 +67,9 @@ export class JSONElementWriter extends JSONAbstractContainerArtifactWriter {
     const extendedProperties: JsonNode = this.buildProperties(element);
 
     const elementUi: JsonNode = {
-      [CedarModel.order]: element.childrenInfo.getChildrenNames(),
-      [CedarModel.propertyLabels]: element.childrenInfo.getPropertyLabelMap(),
-      [CedarModel.propertyDescriptions]: element.childrenInfo.getPropertyDescriptionMap(),
+      [CedarModel.order]: element.getChildrenInfo().getChildrenNames(),
+      [CedarModel.propertyLabels]: element.getChildrenInfo().getPropertyLabelMap(),
+      [CedarModel.propertyDescriptions]: element.getChildrenInfo().getPropertyDescriptionMap(),
     };
     // if (JSONTemplateReader.getBehavior() == JSONTemplateReader.FEBRUARY_2024) {
     //   templateUI[CedarModel.pages] = [];
@@ -85,7 +85,7 @@ export class JSONElementWriter extends JSONAbstractContainerArtifactWriter {
       [TemplateProperty.description]: element.description,
       [CedarModel.ui]: elementUi,
       [JsonSchema.properties]: extendedProperties,
-      [JsonSchema.required]: [...JSONElementContent.REQUIRED_PARTIAL, ...element.childrenInfo.getChildrenNamesForRequired()],
+      [JsonSchema.required]: [...JSONElementContent.REQUIRED_PARTIAL, ...element.getChildrenInfo().getChildrenNamesForRequired()],
       ...this.macroSchemaNameAndDescription(element),
       ...this.macroProvenance(element, this.atomicWriter),
       [JsonSchema.schemaVersion]: this.atomicWriter.write(element.schema_schemaVersion),

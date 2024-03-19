@@ -1,7 +1,7 @@
 import { TextField } from '../../../../../../src/org/metadatacenter/model/cedar/field/dynamic/textfield/TextField';
 import { CedarWriters } from '../../../../../../src';
 
-describe('CedarField', () => {
+describe('TemplateField', () => {
   test('creates empty field null values', () => {
     const cedarTextField = TextField.buildEmptyWithNullValues();
     expect(cedarTextField).not.toBeNull();

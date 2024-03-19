@@ -4,6 +4,7 @@ import { PavVersion } from './types/wrapped-types/PavVersion';
 import { BiboStatus } from './types/wrapped-types/BiboStatus';
 import { CedarArtifactId } from './types/cedar-types/CedarArtifactId';
 import { SchemaVersion } from './types/wrapped-types/SchemaVersion';
+import { CedarArtifactType } from './types/cedar-types/CedarArtifactType';
 
 export abstract class AbstractArtifact {
   public at_id: CedarArtifactId = CedarArtifactId.NULL;
@@ -21,4 +22,6 @@ export abstract class AbstractArtifact {
   // schema name and description
   public schema_name: string | null = null;
   public schema_description: string | null = null;
+  //
+  public cedarArtifactType: CedarArtifactType = CedarArtifactType.NULL;
 }

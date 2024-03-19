@@ -111,14 +111,18 @@ export class JSONElementReader extends JSONContainerArtifactReader {
 
     this.validatePropertiesVsOrder(candidateChildrenInfo, elementUIOrder, parsingResult, path);
 
-    element.childrenInfo = finalChildrenInfo;
-
-    this.validateProperties(elementProperties, element, parsingResult, path);
+    this.validateProperties(finalChildrenInfo, elementProperties, element, parsingResult, path);
 
     this.parseChildren(finalChildrenInfo, elementProperties, element, parsingResult, path);
   }
 
-  private validateProperties(elementProperties: JsonNode, element: TemplateElement, parsingResult: ParsingResult, path: JsonPath) {
+  private validateProperties(
+    childrenInfo: ContainerArtifactChildrenInfo,
+    elementProperties: JsonNode,
+    _element: TemplateElement,
+    parsingResult: ParsingResult,
+    path: JsonPath,
+  ) {
     // Validate properties
     // 'properties' should have extra entry for Fields/Elements as definition
     // 'properties/context/properties' should have extra entry for Fields/Elements as IRI mappings
@@ -129,7 +133,7 @@ export class JSONElementReader extends JSONContainerArtifactReader {
     //    "format": "uri"
     //  },
     const blueprint = ReaderUtil.deepClone(JSONElementContent.PROPERTIES_PARTIAL) as JsonNode;
-    if (element.childrenInfo.hasAttributeValue()) {
+    if (childrenInfo.hasAttributeValue()) {
       const atContext: JsonNode = blueprint[JsonSchema.atContext] as JsonNode;
       atContext[TemplateProperty.additionalProperties] =
         JSONTemplateFieldContentDynamic.ADDITIONAL_PROPERTIES_VERBATIM_ATTRIBUTE_VALUE_INSIDE;

@@ -48,6 +48,7 @@ import { StaticYoutubeFieldBuilder } from './org/metadatacenter/model/cedar/fiel
 
 import { TemplateElement } from './org/metadatacenter/model/cedar/element/TemplateElement';
 import { Template } from './org/metadatacenter/model/cedar/template/Template';
+import { TemplateBuilder } from './org/metadatacenter/model/cedar/template/TemplateBuilder';
 
 import { JsonNode } from './org/metadatacenter/model/cedar/types/basic-types/JsonNode';
 import { ISODate } from './org/metadatacenter/model/cedar/types/wrapped-types/ISODate';
@@ -64,9 +65,10 @@ import { ControlledTermClassBuilder } from './org/metadatacenter/model/cedar/fie
 import { ControlledTermOntologyBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/ontology/ControlledTermOntologyBuilder';
 import { ControlledTermValueSetBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/value-set/ControlledTermValueSetBuilder';
 import { ControlledTermDefaultValueBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/ControlledTermDefaultValueBuilder';
+import { BiboStatus } from './org/metadatacenter/model/cedar/types/wrapped-types/BiboStatus';
 
-export { CedarWriters };
 export { CedarBuilders };
+export { CedarWriters };
 
 export { JSONFieldReader };
 export { JSONElementReader };
@@ -96,7 +98,7 @@ export { StaticSectionBreakField, StaticSectionBreakFieldBuilder };
 export { StaticYoutubeField, StaticYoutubeFieldBuilder };
 
 export { TemplateElement };
-export { Template };
+export { Template, TemplateBuilder };
 
 export { JsonNode };
 export { ISODate };
@@ -107,6 +109,7 @@ export { TimeFormat };
 export { TemporalType };
 export { NumberType };
 export { URI };
+export { BiboStatus };
 
 export { ControlledTermDefaultValueBuilder };
 export { ControlledTermBranchBuilder };

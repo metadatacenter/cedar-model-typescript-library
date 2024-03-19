@@ -6,11 +6,11 @@ export class TestUtil {
     console.log(obj);
   }
 
-  public static p(obj: object | string | undefined) {
+  public static p(obj: object | string | null | undefined) {
     console.log(TestUtil.d(obj));
   }
 
-  public static d(obj: object | string | undefined): string {
+  public static d(obj: object | string | null | undefined): string {
     return JSON.stringify(obj, null, 2);
   }
 

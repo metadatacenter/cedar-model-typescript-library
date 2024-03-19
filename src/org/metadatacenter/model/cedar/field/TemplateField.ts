@@ -1,4 +1,3 @@
-import { CedarArtifactType } from '../types/cedar-types/CedarArtifactType';
 import { ValueConstraints } from './ValueConstraints';
 import { CedarFieldType } from '../types/cedar-types/CedarFieldType';
 import { AbstractArtifact } from '../AbstractArtifact';
@@ -9,5 +8,4 @@ export abstract class TemplateField extends AbstractArtifact {
 
   public valueConstraints: ValueConstraints = new ValueConstraints();
   public cedarFieldType: CedarFieldType = CedarFieldType.NULL;
-  public cedarArtifactType: CedarArtifactType = CedarArtifactType.NULL;
 }

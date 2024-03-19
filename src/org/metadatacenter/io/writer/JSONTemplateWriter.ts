@@ -29,16 +29,16 @@ export class JSONTemplateWriter extends JSONAbstractContainerArtifactWriter {
     // Include the IRI mapping
     properties[JsonSchema.atContext][JsonSchema.properties] = {
       ...properties[JsonSchema.atContext][JsonSchema.properties],
-      ...template.childrenInfo.getNonStaticIRIMap(),
+      ...template.getChildrenInfo().getNonStaticIRIMap(),
     };
 
     properties[JsonSchema.atContext][JsonSchema.required] = [
       ...properties[JsonSchema.atContext][JsonSchema.required],
-      ...template.childrenInfo.getChildrenNamesForRequired(),
+      ...template.getChildrenInfo().getChildrenNamesForRequired(),
     ];
 
     // Attribute value modification
-    if (template.childrenInfo.hasAttributeValue()) {
+    if (template.getChildrenInfo().hasAttributeValue()) {
       properties[JsonSchema.atContext][TemplateProperty.additionalProperties] =
         JSONTemplateFieldContentDynamic.ADDITIONAL_PROPERTIES_VERBATIM_ATTRIBUTE_VALUE_INSIDE;
     }
@@ -74,9 +74,9 @@ export class JSONTemplateWriter extends JSONAbstractContainerArtifactWriter {
     const extendedProperties: JsonNode = this.buildProperties(template);
 
     const templateUI: JsonNode = {
-      [CedarModel.order]: template.childrenInfo.getChildrenNames(),
-      [CedarModel.propertyLabels]: template.childrenInfo.getPropertyLabelMap(),
-      [CedarModel.propertyDescriptions]: template.childrenInfo.getPropertyDescriptionMap(),
+      [CedarModel.order]: template.getChildrenInfo().getChildrenNames(),
+      [CedarModel.propertyLabels]: template.getChildrenInfo().getPropertyLabelMap(),
+      [CedarModel.propertyDescriptions]: template.getChildrenInfo().getPropertyDescriptionMap(),
     };
     if (template.header !== null) {
       templateUI[CedarModel.header] = template.header;
@@ -103,7 +103,7 @@ export class JSONTemplateWriter extends JSONAbstractContainerArtifactWriter {
       [TemplateProperty.description]: template.description,
       [CedarModel.ui]: templateUI,
       [JsonSchema.properties]: extendedProperties,
-      [JsonSchema.required]: [...JSONTemplateContent.REQUIRED_PARTIAL, ...template.childrenInfo.getChildrenNamesForRequired()],
+      [JsonSchema.required]: [...JSONTemplateContent.REQUIRED_PARTIAL, ...template.getChildrenInfo().getChildrenNamesForRequired()],
       ...this.macroSchemaNameAndDescription(template),
       ...this.macroProvenance(template, this.atomicWriter),
       [JsonSchema.schemaVersion]: this.atomicWriter.write(template.schema_schemaVersion),

@@ -15,8 +15,13 @@ import { ListFieldBuilder } from '../../model/cedar/field/dynamic/list/ListField
 import { RadioFieldBuilder } from '../../model/cedar/field/dynamic/radio/RadioFieldBuilder';
 import { CheckboxFieldBuilder } from '../../model/cedar/field/dynamic/checkbox/CheckboxFieldBuilder';
 import { ControlledTermFieldBuilder } from '../../model/cedar/field/dynamic/controlled-term/ControlledTermFieldBuilder';
+import { TemplateBuilder } from '../../model/cedar/template/TemplateBuilder';
 
 export abstract class CedarBuilders {
+  static templateBuilder(): TemplateBuilder {
+    return new TemplateBuilder();
+  }
+
   static textFieldBuilder(): TextFieldBuilder {
     return new TextFieldBuilder();
   }

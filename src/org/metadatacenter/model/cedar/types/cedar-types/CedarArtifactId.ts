@@ -12,6 +12,10 @@ export class CedarArtifactId {
   public static NULL = new CedarArtifactId(null);
 
   static forValue(value: string | null): CedarArtifactId {
-    return new CedarArtifactId(value);
+    if (value === null) {
+      return CedarArtifactId.NULL;
+    } else {
+      return new CedarArtifactId(value);
+    }
   }
 }

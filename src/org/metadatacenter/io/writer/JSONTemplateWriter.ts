@@ -32,10 +32,12 @@ export class JSONTemplateWriter extends JSONAbstractContainerArtifactWriter {
       ...template.getChildrenInfo().getNonStaticIRIMap(),
     };
 
-    properties[JsonSchema.atContext][JsonSchema.required] = [
-      ...properties[JsonSchema.atContext][JsonSchema.required],
-      ...template.getChildrenInfo().getChildrenNamesForRequired(),
-    ];
+    let requiredChildren: string[] = [];
+    if (this.behavior.includeChildrenAsRequired()) {
+      requiredChildren = template.getChildrenInfo().getChildrenNamesForRequired();
+    }
+
+    properties[JsonSchema.atContext][JsonSchema.required] = [...properties[JsonSchema.atContext][JsonSchema.required], ...requiredChildren];
 
     // Attribute value modification
     if (template.getChildrenInfo().hasAttributeValue()) {
@@ -78,15 +80,16 @@ export class JSONTemplateWriter extends JSONAbstractContainerArtifactWriter {
       [CedarModel.propertyLabels]: template.getChildrenInfo().getPropertyLabelMap(),
       [CedarModel.propertyDescriptions]: template.getChildrenInfo().getPropertyDescriptionMap(),
     };
+    if (this.behavior.outputPages()) {
+      templateUI[CedarModel.pages] = [];
+    }
+
     if (template.header !== null) {
       templateUI[CedarModel.header] = template.header;
     }
     if (template.footer !== null) {
       templateUI[CedarModel.footer] = template.footer;
     }
-    // if (JSONTemplateReader.getBehavior() == JSONTemplateReader.FEBRUARY_2024) {
-    //   templateUI[CedarModel.pages] = [];
-    // }
 
     const schemaIdentifier: JsonNode = JsonNodeClass.getEmpty();
     if (template.schema_identifier !== null) {
@@ -111,6 +114,7 @@ export class JSONTemplateWriter extends JSONAbstractContainerArtifactWriter {
       ...this.macroStatusAndVersion(template, this.atomicWriter),
       [CedarModel.schema]: this.atomicWriter.write(ArtifactSchema.CURRENT),
       ...schemaIdentifier,
+      ...this.macroDerivedFrom(template),
     };
   }
 }

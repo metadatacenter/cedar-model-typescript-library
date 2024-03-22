@@ -24,4 +24,6 @@ export abstract class AbstractArtifact {
   public schema_description: string | null = null;
   //
   public cedarArtifactType: CedarArtifactType = CedarArtifactType.NULL;
+  //
+  public pav_derivedFrom: CedarArtifactId = CedarArtifactId.NULL;
 }

@@ -86,6 +86,10 @@ export class CedarWriters {
     return new CedarWriters(JSONWriterBehavior.STRICT);
   }
 
+  public static getFebruary2024(): CedarWriters {
+    return new CedarWriters(JSONWriterBehavior.FEBRUARY_2024);
+  }
+
   public static getFor(behavior: JSONWriterBehavior): CedarWriters {
     return new CedarWriters(behavior);
   }

@@ -34,5 +34,6 @@ export abstract class JSONAbstractArtifactReader {
     container.schema_schemaVersion = SchemaVersion.forValue(ReaderUtil.getString(sourceObject, JsonSchema.schemaVersion));
     container.pav_version = PavVersion.forValue(ReaderUtil.getString(sourceObject, JsonSchema.pavVersion));
     container.bibo_status = BiboStatus.forValue(ReaderUtil.getString(sourceObject, JsonSchema.biboStatus));
+    container.pav_derivedFrom = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, JsonSchema.pavDerivedFrom));
   }
 }

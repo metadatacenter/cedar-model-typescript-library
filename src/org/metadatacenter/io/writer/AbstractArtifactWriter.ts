@@ -8,9 +8,10 @@ import { TemplateField } from '../../model/cedar/field/TemplateField';
 import { CedarModel } from '../../model/cedar/constants/CedarModel';
 import { JSONWriterBehavior } from '../../behavior/JSONWriterBehavior';
 import { CedarWriters } from './CedarWriters';
+import { CedarArtifactId } from '../../model/cedar/types/cedar-types/CedarArtifactId';
 
 export abstract class AbstractArtifactWriter {
-  private behavior: JSONWriterBehavior;
+  protected behavior: JSONWriterBehavior;
   protected writers: CedarWriters;
   protected atomicWriter: JSONAtomicWriter;
 
@@ -56,5 +57,13 @@ export abstract class AbstractArtifactWriter {
       skosObject[CedarModel.skosPrefLabel] = field.skos_prefLabel;
     }
     return skosObject;
+  }
+
+  protected macroDerivedFrom(artifact: AbstractArtifact) {
+    const derivedFrom: JsonNode = JsonNodeClass.getEmpty();
+    if (artifact.pav_derivedFrom !== CedarArtifactId.NULL) {
+      derivedFrom[JsonSchema.pavDerivedFrom] = this.atomicWriter.write(artifact.pav_derivedFrom);
+    }
+    return derivedFrom;
   }
 }

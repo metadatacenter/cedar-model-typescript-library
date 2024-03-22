@@ -1,5 +1,6 @@
 import { ReaderUtil } from '../../../../io/reader/ReaderUtil';
 import { JsonNode } from '../../types/basic-types/JsonNode';
+import { JsonSchema } from '../../constants/JsonSchema';
 
 export class JSONTemplateFieldContentDynamic {
   // This is a verbatim representation
@@ -161,9 +162,16 @@ export class JSONTemplateFieldContentDynamic {
     format: 'uri',
   };
 
+  public static PROPERTIES_VERBATIM_LITERAL_NO_AT_LANGUAGE: JsonNode;
+
   static {
     ReaderUtil.deepFreeze(this.CONTEXT_VERBATIM);
     ReaderUtil.deepFreeze(this.PROPERTIES_VERBATIM_LITERAL);
+
+    this.PROPERTIES_VERBATIM_LITERAL_NO_AT_LANGUAGE = ReaderUtil.deepClone(this.PROPERTIES_VERBATIM_LITERAL);
+    ReaderUtil.deleteNodeKey(this.PROPERTIES_VERBATIM_LITERAL_NO_AT_LANGUAGE, JsonSchema.atLanguage);
+    ReaderUtil.deepFreeze(this.PROPERTIES_VERBATIM_LITERAL_NO_AT_LANGUAGE);
+
     ReaderUtil.deepFreeze(this.PROPERTIES_VERBATIM_CONTROLLED);
     ReaderUtil.deepFreeze(this.PROPERTIES_VERBATIM_IRI);
     ReaderUtil.deepFreeze(this.PROPERTIES_VERBATIM_NUMERIC);

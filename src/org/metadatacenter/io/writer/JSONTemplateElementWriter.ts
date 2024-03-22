@@ -1,5 +1,4 @@
 import { JSONWriterBehavior } from '../../behavior/JSONWriterBehavior';
-import { Template } from '../../model/cedar/template/Template';
 import { ReaderUtil } from '../reader/ReaderUtil';
 import { JsonSchema } from '../../model/cedar/constants/JsonSchema';
 import { JsonNode } from '../../model/cedar/types/basic-types/JsonNode';
@@ -33,8 +32,12 @@ export class JSONTemplateElementWriter extends JSONAbstractContainerArtifactWrit
       ...element.getChildrenInfo().getNonStaticNonAttributeValueIRIMap(),
     };
 
+    let childNamesForRequired: string[] = [];
+    if (this.behavior.includeChildrenAsRequired()) {
+      childNamesForRequired = element.getChildrenInfo().getChildrenNamesForRequired();
+    }
+
     // Omit required if empty
-    const childNamesForRequired = element.getChildrenInfo().getChildrenNamesForRequired();
     if (childNamesForRequired.length > 0) {
       properties[JsonSchema.atContext][JsonSchema.required] = [
         ...properties[JsonSchema.atContext][JsonSchema.required],
@@ -57,8 +60,8 @@ export class JSONTemplateElementWriter extends JSONAbstractContainerArtifactWrit
     } as JsonNode;
   }
 
-  public getAsJsonString(template: Template, indent: number = 2): string {
-    return JSON.stringify(this.getAsJsonNode(template), null, indent);
+  public getAsJsonString(element: TemplateElement, indent: number = 2): string {
+    return JSON.stringify(this.getAsJsonNode(element), null, indent);
   }
 
   public getAsJsonNode(element: TemplateElement): JsonNode {
@@ -69,9 +72,6 @@ export class JSONTemplateElementWriter extends JSONAbstractContainerArtifactWrit
       [CedarModel.propertyLabels]: element.getChildrenInfo().getPropertyLabelMap(),
       [CedarModel.propertyDescriptions]: element.getChildrenInfo().getPropertyDescriptionMap(),
     };
-    // if (JSONTemplateReader.getBehavior() == JSONTemplateReader.FEBRUARY_2024) {
-    //   templateUI[CedarModel.pages] = [];
-    // }
 
     // build the final object
     return {
@@ -90,6 +90,7 @@ export class JSONTemplateElementWriter extends JSONAbstractContainerArtifactWrit
       [TemplateProperty.additionalProperties]: this.atomicWriter.write(element.getAdditionalProperties()),
       ...this.macroStatusAndVersion(element, this.atomicWriter),
       [CedarModel.schema]: this.atomicWriter.write(ArtifactSchema.CURRENT),
+      ...this.macroDerivedFrom(element),
     };
   }
 }

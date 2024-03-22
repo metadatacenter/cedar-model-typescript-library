@@ -10,7 +10,7 @@
     "build:watch": "tsc --watch",
     "prettier": "prettier --write .",
     "link": "cd dist && npm link",
-    "unlink": "cd dist && npm unlink cedar-model-typescript-library"
+    "unlink": "npm uninstall -g cedar-model-typescript-library"
   },
   "repository": {
     "type": "git",

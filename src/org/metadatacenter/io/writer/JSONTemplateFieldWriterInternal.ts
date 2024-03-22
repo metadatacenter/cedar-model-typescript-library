@@ -23,6 +23,9 @@ export abstract class JSONTemplateFieldWriterInternal extends JSONAbstractArtifa
 
   protected expandPropertiesNodeForJSON(propertiesObject: JsonNode): void {
     propertiesObject[JsonSchema.properties] = JSONTemplateFieldContentDynamic.PROPERTIES_VERBATIM_LITERAL;
+    if (!this.behavior.usePropertiesAtLanguage()) {
+      propertiesObject[JsonSchema.properties] = JSONTemplateFieldContentDynamic.PROPERTIES_VERBATIM_LITERAL_NO_AT_LANGUAGE;
+    }
   }
 
   protected expandRequiredNodeForJSON(requiredObject: JsonNode): void {
@@ -120,6 +123,7 @@ export abstract class JSONTemplateFieldWriterInternal extends JSONAbstractArtifa
       ...this.macroStatusAndVersion(field, this.atomicWriter),
       [CedarModel.schema]: this.atomicWriter.write(ArtifactSchema.CURRENT),
       ...this.macroSkos(field),
+      ...this.macroDerivedFrom(field),
     };
   }
 }

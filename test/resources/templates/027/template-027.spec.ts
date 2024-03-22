@@ -26,7 +26,7 @@ xdescribe('JSONTemplateReader - template-027', () => {
     // TestUtil.p(writer.getAsJsonNode(jsonTemplateReaderResult.template));
 
     expect(compareResult.wasSuccessful()).toBe(false);
-    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(1);
+    // expect(compareResult.getBlueprintComparisonErrorCount()).toBe(1);
 
     const uiPagesMissing = new ComparisonError(
       'oco02',

@@ -7,7 +7,6 @@ import { CedarArtifactType } from '../types/cedar-types/CedarArtifactType';
 export class Template extends AbstractContainerArtifact {
   public header: string | null = null;
   public footer: string | null = null;
-  public schema_identifier: string | null = null;
   public instanceTypeSpecification: string | null = null;
 
   private constructor() {

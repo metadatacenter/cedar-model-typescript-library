@@ -6,7 +6,6 @@ import { ChildDeploymentInfo } from '../deployment/ChildDeploymentInfo';
 export class TemplateBuilder extends AbstractArtifactBuilder {
   private header: string | null = null;
   private footer: string | null = null;
-  private schema_identifier: string | null = null;
   private instanceTypeSpecification: string | null = null;
 
   private children: Array<[TemplateChild, ChildDeploymentInfo]> = [];
@@ -18,11 +17,6 @@ export class TemplateBuilder extends AbstractArtifactBuilder {
 
   public withFooter(footer: string): TemplateBuilder {
     this.footer = footer;
-    return this;
-  }
-
-  public withSchemaIdentifier(schema_identifier: string): TemplateBuilder {
-    this.schema_identifier = schema_identifier;
     return this;
   }
 
@@ -42,7 +36,6 @@ export class TemplateBuilder extends AbstractArtifactBuilder {
 
     template.header = this.header;
     template.footer = this.footer;
-    template.schema_identifier = this.schema_identifier;
     template.instanceTypeSpecification = this.instanceTypeSpecification;
 
     this.children.forEach(([child, deploymentInfo]: [TemplateChild, ChildDeploymentInfo]) => {

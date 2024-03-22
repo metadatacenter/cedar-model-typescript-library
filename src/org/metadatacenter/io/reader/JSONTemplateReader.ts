@@ -72,7 +72,6 @@ export class JSONTemplateReader extends JSONContainerArtifactReader {
   protected readNonReportableAttributes(template: Template, templateSourceObject: JsonNode) {
     super.readNonReportableAttributes(template, templateSourceObject);
     // Read template-only properties
-    template.schema_identifier = ReaderUtil.getString(templateSourceObject, JsonSchema.schemaIdentifier);
     const templateUI: JsonNode = ReaderUtil.getNode(templateSourceObject, CedarModel.ui);
     if (templateUI !== null) {
       template.header = ReaderUtil.getString(templateUI, CedarModel.header);

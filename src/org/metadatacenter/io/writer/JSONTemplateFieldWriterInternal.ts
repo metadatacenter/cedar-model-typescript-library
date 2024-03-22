@@ -123,6 +123,7 @@ export abstract class JSONTemplateFieldWriterInternal extends JSONAbstractArtifa
       ...this.macroStatusAndVersion(field, this.atomicWriter),
       [CedarModel.schema]: this.atomicWriter.write(ArtifactSchema.CURRENT),
       ...this.macroSkos(field),
+      ...this.macroSchemaIdentifier(field),
       ...this.macroDerivedFrom(field),
     };
   }

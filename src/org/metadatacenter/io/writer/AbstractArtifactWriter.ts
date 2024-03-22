@@ -66,4 +66,12 @@ export abstract class AbstractArtifactWriter {
     }
     return derivedFrom;
   }
+
+  protected macroSchemaIdentifier(artifact: AbstractArtifact) {
+    const schemaIdentifier: JsonNode = JsonNodeClass.getEmpty();
+    if (artifact.schema_identifier !== null) {
+      schemaIdentifier[JsonSchema.schemaIdentifier] = artifact.schema_identifier;
+    }
+    return schemaIdentifier;
+  }
 }

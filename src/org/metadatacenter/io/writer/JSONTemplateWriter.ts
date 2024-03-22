@@ -3,7 +3,7 @@ import { Template } from '../../model/cedar/template/Template';
 import { ReaderUtil } from '../reader/ReaderUtil';
 import { JSONTemplateContent } from '../../model/cedar/util/serialization/JSONTemplateContent';
 import { JsonSchema } from '../../model/cedar/constants/JsonSchema';
-import { JsonNode, JsonNodeClass } from '../../model/cedar/types/basic-types/JsonNode';
+import { JsonNode } from '../../model/cedar/types/basic-types/JsonNode';
 import { CedarModel } from '../../model/cedar/constants/CedarModel';
 import { CedarArtifactType } from '../../model/cedar/types/cedar-types/CedarArtifactType';
 import { JavascriptType } from '../../model/cedar/types/wrapped-types/JavascriptType';
@@ -93,11 +93,6 @@ export class JSONTemplateWriter extends JSONAbstractContainerArtifactWriter {
       templateUI[CedarModel.footer] = template.footer;
     }
 
-    const schemaIdentifier: JsonNode = JsonNodeClass.getEmpty();
-    if (template.schema_identifier !== null) {
-      schemaIdentifier[JsonSchema.schemaIdentifier] = template.schema_identifier;
-    }
-
     // build the final object
     return {
       [JsonSchema.atId]: this.atomicWriter.write(template.at_id),
@@ -115,7 +110,7 @@ export class JSONTemplateWriter extends JSONAbstractContainerArtifactWriter {
       [TemplateProperty.additionalProperties]: this.atomicWriter.write(template.getAdditionalProperties()),
       ...this.macroStatusAndVersion(template, this.atomicWriter),
       [CedarModel.schema]: this.atomicWriter.write(ArtifactSchema.CURRENT),
-      ...schemaIdentifier,
+      ...this.macroSchemaIdentifier(template),
       ...this.macroDerivedFrom(template),
     };
   }

@@ -22,6 +22,7 @@ export abstract class AbstractArtifactBuilder {
   // schema name and description
   protected schema_name: string | null = null;
   protected schema_description: string | null = null;
+  protected schema_identifier: string | null = null;
 
   withAtId(at_id: CedarArtifactId | string): this {
     if (at_id instanceof CedarArtifactId) {
@@ -111,6 +112,11 @@ export abstract class AbstractArtifactBuilder {
     return this;
   }
 
+  public withSchemaIdentifier(schema_identifier: string): this {
+    this.schema_identifier = schema_identifier;
+    return this;
+  }
+
   protected buildInternal(artifact: AbstractArtifact): void {
     artifact.at_id = this.at_id;
     artifact.title = this.title;
@@ -127,5 +133,6 @@ export abstract class AbstractArtifactBuilder {
 
     artifact.schema_name = this.schema_name;
     artifact.schema_description = this.schema_description;
+    artifact.schema_identifier = this.schema_identifier;
   }
 }

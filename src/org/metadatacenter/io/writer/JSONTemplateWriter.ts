@@ -33,7 +33,9 @@ export class JSONTemplateWriter extends JSONAbstractContainerArtifactWriter {
     };
 
     let requiredChildren: string[] = [];
-    if (this.behavior.includeChildrenAsRequired()) {
+    if (this.behavior.includeOnlyElementsInPropertiesContextRequired()) {
+      requiredChildren = template.getChildrenInfo().getOnlyElementNamesForPropertiesContextRequired();
+    } else {
       requiredChildren = template.getChildrenInfo().getChildrenNamesForRequired();
     }
 

@@ -6,7 +6,7 @@ import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/ce
 import { JsonPath } from '../../../../src/org/metadatacenter/model/cedar/util/path/JsonPath';
 import { CedarModel } from '../../../../src/org/metadatacenter/model/cedar/constants/CedarModel';
 
-xdescribe('JSONTemplateReader - template-028', () => {
+describe('JSONTemplateReader - template-028', () => {
   test('reads template witch annotations', () => {
     const templateSource = TestUtil.readTestResourceAsString('templates/028', 'template-028.json');
     const reader: JSONTemplateReader = JSONTemplateReader.getFebruary2024();
@@ -20,19 +20,35 @@ xdescribe('JSONTemplateReader - template-028', () => {
     const writers: CedarWriters = CedarWriters.getFebruary2024();
     const writer: JSONTemplateWriter = writers.getJSONTemplateWriter();
 
+    // console.log(jsonTemplateReaderResult.templateSourceObject);
+
     const compareResult: ParsingResult = JSONTemplateReader.getRoundTripComparisonResult(jsonTemplateReaderResult, writer);
 
-    TestUtil.p(compareResult);
-    TestUtil.p(writer.getAsJsonNode(jsonTemplateReaderResult.template));
+    // TestUtil.p(compareResult);
+    // TestUtil.p(writer.getAsJsonNode(jsonTemplateReaderResult.template));
 
     expect(compareResult.wasSuccessful()).toBe(false);
-    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(1);
+    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(3);
 
-    const uiPagesMissing = new ComparisonError(
+    const missingPropDesc1 = new ComparisonError(
       'oco02',
       ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-      new JsonPath(CedarModel.ui, CedarModel.pages),
+      new JsonPath(CedarModel.ui, CedarModel.propertyDescriptions, 'Read & Understood'),
     );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
+    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(missingPropDesc1);
+
+    const missingPropDesc2 = new ComparisonError(
+      'oco02',
+      ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
+      new JsonPath(CedarModel.ui, CedarModel.propertyDescriptions, 'ProjectAdminIntanceID'),
+    );
+    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(missingPropDesc2);
+
+    const missingPropDesc3 = new ComparisonError(
+      'oco02',
+      ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
+      new JsonPath(CedarModel.ui, CedarModel.propertyDescriptions, 'ProjectAdminInstanceIDRT'),
+    );
+    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(missingPropDesc3);
   });
 });

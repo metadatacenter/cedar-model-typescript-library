@@ -39,6 +39,16 @@ export class ContainerArtifactChildrenInfo {
     return result;
   }
 
+  public getOnlyElementNamesForPropertiesContextRequired(): Array<string> {
+    const result: Array<string> = [];
+    for (const [name, childInfo] of this.childMap.entries()) {
+      if (childInfo.atType === CedarArtifactType.TEMPLATE_ELEMENT) {
+        result.push(name);
+      }
+    }
+    return result;
+  }
+
   public getPropertyLabelMap(): Record<string, NullableString> {
     const labelMap: { [key: string]: NullableString } = {};
     this.childNameList.forEach((childName) => {

@@ -32,10 +32,7 @@ export class JSONTemplateElementWriter extends JSONAbstractContainerArtifactWrit
       ...element.getChildrenInfo().getNonStaticNonAttributeValueIRIMap(),
     };
 
-    let childNamesForRequired: string[] = [];
-    if (this.behavior.includeChildrenAsRequired()) {
-      childNamesForRequired = element.getChildrenInfo().getChildrenNamesForRequired();
-    }
+    const childNamesForRequired: string[] = element.getChildrenInfo().getChildrenNamesForRequired();
 
     // Omit required if empty
     if (childNamesForRequired.length > 0) {

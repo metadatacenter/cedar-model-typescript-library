@@ -1,5 +1,6 @@
 import {
   BiboStatus,
+  CedarArtifactId,
   CedarBuilders,
   CedarWriters,
   ISODate,
@@ -62,6 +63,7 @@ describe('Template', () => {
       .withVersion('0.0.2')
       .withBiboStatus(BiboStatus.PUBLISHED)
       .addChild(textField, textFieldDeployment)
+      .withDerivedFrom(CedarArtifactId.forValue('https://repo.metadatacenter.org/template/f38b5ef4-a078-4d82-90c0-a9a721ad5888'))
       .build();
 
     //TestUtil.p(template);
@@ -135,5 +137,7 @@ describe('Template', () => {
     expect(backparsed['pav:version']).toBe('0.0.2');
     expect(backparsed['bibo:status']).toBe('bibo:published');
     expect(backparsed['$schema']).toBe('http://json-schema.org/draft-04/schema#');
+
+    expect(backparsed['pav:derivedFrom']).toBe('https://repo.metadatacenter.org/template/f38b5ef4-a078-4d82-90c0-a9a721ad5888');
   });
 });

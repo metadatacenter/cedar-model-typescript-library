@@ -23,6 +23,8 @@ export abstract class AbstractArtifactBuilder {
   protected schema_name: string | null = null;
   protected schema_description: string | null = null;
   protected schema_identifier: string | null = null;
+  //
+  protected pav_derivedFrom: CedarArtifactId = CedarArtifactId.NULL;
 
   withAtId(at_id: CedarArtifactId | string): this {
     if (at_id instanceof CedarArtifactId) {
@@ -112,6 +114,11 @@ export abstract class AbstractArtifactBuilder {
     return this;
   }
 
+  withDerivedFrom(pav_derivedFrom: CedarArtifactId): this {
+    this.pav_derivedFrom = pav_derivedFrom;
+    return this;
+  }
+
   public withSchemaIdentifier(schema_identifier: string): this {
     this.schema_identifier = schema_identifier;
     return this;
@@ -134,5 +141,7 @@ export abstract class AbstractArtifactBuilder {
     artifact.schema_name = this.schema_name;
     artifact.schema_description = this.schema_description;
     artifact.schema_identifier = this.schema_identifier;
+
+    artifact.pav_derivedFrom = this.pav_derivedFrom;
   }
 }

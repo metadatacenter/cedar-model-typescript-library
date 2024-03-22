@@ -11,7 +11,11 @@ export class JSONFieldWriterLink extends JSONTemplateFieldWriterInternal {
   }
 
   override expandPropertiesNodeForJSON(propertiesObject: JsonNode): void {
-    propertiesObject[JsonSchema.properties] = JSONTemplateFieldContentDynamic.PROPERTIES_VERBATIM_IRI;
+    if (this.behavior.includeSkosNotationForLinksAndControlled()) {
+      propertiesObject[JsonSchema.properties] = JSONTemplateFieldContentDynamic.PROPERTIES_VERBATIM_IRI;
+    } else {
+      propertiesObject[JsonSchema.properties] = JSONTemplateFieldContentDynamic.PROPERTIES_VERBATIM_IRI_NO_SKOS_NOTATION;
+    }
   }
 
   override expandRequiredNodeForJSON(_requiredObject: JsonNode): void {

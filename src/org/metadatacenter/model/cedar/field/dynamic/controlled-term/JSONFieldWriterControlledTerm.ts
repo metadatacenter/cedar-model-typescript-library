@@ -14,7 +14,11 @@ export class JSONFieldWriterControlledTerm extends JSONTemplateFieldWriterIntern
   }
 
   override expandPropertiesNodeForJSON(propertiesObject: JsonNode): void {
-    propertiesObject[JsonSchema.properties] = JSONTemplateFieldContentDynamic.PROPERTIES_VERBATIM_CONTROLLED;
+    if (this.behavior.includeSkosNotationForLinksAndControlled()) {
+      propertiesObject[JsonSchema.properties] = JSONTemplateFieldContentDynamic.PROPERTIES_VERBATIM_CONTROLLED;
+    } else {
+      propertiesObject[JsonSchema.properties] = JSONTemplateFieldContentDynamic.PROPERTIES_VERBATIM_CONTROLLED_NO_SKOS_NOTATION;
+    }
   }
 
   override expandUINodeForJSON(uiNode: JsonNode, field: ControlledTermField, childInfo: ChildDeploymentInfo): void {

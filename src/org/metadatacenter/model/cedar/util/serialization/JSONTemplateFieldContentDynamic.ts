@@ -1,6 +1,7 @@
 import { ReaderUtil } from '../../../../io/reader/ReaderUtil';
 import { JsonNode } from '../../types/basic-types/JsonNode';
 import { JsonSchema } from '../../constants/JsonSchema';
+import { CedarModel } from '../../constants/CedarModel';
 
 export class JSONTemplateFieldContentDynamic {
   // This is a verbatim representation
@@ -163,6 +164,8 @@ export class JSONTemplateFieldContentDynamic {
   };
 
   public static PROPERTIES_VERBATIM_LITERAL_NO_AT_LANGUAGE: JsonNode;
+  public static PROPERTIES_VERBATIM_CONTROLLED_NO_SKOS_NOTATION: JsonNode;
+  public static PROPERTIES_VERBATIM_IRI_NO_SKOS_NOTATION: JsonNode;
 
   static {
     ReaderUtil.deepFreeze(this.CONTEXT_VERBATIM);
@@ -171,6 +174,14 @@ export class JSONTemplateFieldContentDynamic {
     this.PROPERTIES_VERBATIM_LITERAL_NO_AT_LANGUAGE = ReaderUtil.deepClone(this.PROPERTIES_VERBATIM_LITERAL);
     ReaderUtil.deleteNodeKey(this.PROPERTIES_VERBATIM_LITERAL_NO_AT_LANGUAGE, JsonSchema.atLanguage);
     ReaderUtil.deepFreeze(this.PROPERTIES_VERBATIM_LITERAL_NO_AT_LANGUAGE);
+
+    this.PROPERTIES_VERBATIM_CONTROLLED_NO_SKOS_NOTATION = ReaderUtil.deepClone(this.PROPERTIES_VERBATIM_CONTROLLED);
+    ReaderUtil.deleteNodeKey(this.PROPERTIES_VERBATIM_CONTROLLED_NO_SKOS_NOTATION, CedarModel.skosNotation);
+    ReaderUtil.deepFreeze(this.PROPERTIES_VERBATIM_CONTROLLED_NO_SKOS_NOTATION);
+
+    this.PROPERTIES_VERBATIM_IRI_NO_SKOS_NOTATION = ReaderUtil.deepClone(this.PROPERTIES_VERBATIM_IRI);
+    ReaderUtil.deleteNodeKey(this.PROPERTIES_VERBATIM_IRI_NO_SKOS_NOTATION, CedarModel.skosNotation);
+    ReaderUtil.deepFreeze(this.PROPERTIES_VERBATIM_IRI_NO_SKOS_NOTATION);
 
     ReaderUtil.deepFreeze(this.PROPERTIES_VERBATIM_CONTROLLED);
     ReaderUtil.deepFreeze(this.PROPERTIES_VERBATIM_IRI);

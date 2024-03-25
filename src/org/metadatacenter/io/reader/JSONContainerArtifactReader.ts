@@ -15,11 +15,11 @@ import { ComparisonError } from '../../model/cedar/util/compare/ComparisonError'
 import { ComparisonErrorType } from '../../model/cedar/util/compare/ComparisonErrorType';
 import { TemplateElement } from '../../model/cedar/element/TemplateElement';
 import { ObjectComparator } from '../../model/cedar/util/compare/ObjectComparator';
-import { JSONElementContent } from '../../model/cedar/util/serialization/JSONElementContent';
 import { JavascriptType } from '../../model/cedar/types/wrapped-types/JavascriptType';
 import { ArtifactSchema } from '../../model/cedar/types/wrapped-types/ArtifactSchema';
 import { AbstractContainerArtifact } from '../../model/cedar/AbstractContainerArtifact';
 import { JSONElementReader } from './JSONElementReader';
+import { JSONContainerArtifactContent } from '../../model/cedar/util/serialization/JSONContainerArtifactContent';
 
 export abstract class JSONContainerArtifactReader extends JSONAbstractArtifactReader {
   protected fieldReader: JSONFieldReader;
@@ -72,8 +72,15 @@ export abstract class JSONContainerArtifactReader extends JSONAbstractArtifactRe
 
     // Read and validate, but do not store top level @context
     const topContextNode: JsonNode = ReaderUtil.getNode(elementSourceObject, JsonSchema.atContext);
-    const blueprint = JSONElementContent.CONTEXT_VERBATIM;
-    ObjectComparator.compareBothWays(parsingResult, blueprint, topContextNode, path.add(JsonSchema.atContext));
+
+    let blueprintAtContext: JsonNode;
+    if (this.behavior.includeBiboInContext()) {
+      blueprintAtContext = JSONContainerArtifactContent.CONTEXT_VERBATIM;
+    } else {
+      blueprintAtContext = JSONContainerArtifactContent.CONTEXT_VERBATIM_NO_BIBO;
+    }
+
+    ObjectComparator.compareBothWays(parsingResult, blueprintAtContext, topContextNode, path.add(JsonSchema.atContext));
 
     // Read and validate, but do not store top level type
     ObjectComparator.comparePrimitive(

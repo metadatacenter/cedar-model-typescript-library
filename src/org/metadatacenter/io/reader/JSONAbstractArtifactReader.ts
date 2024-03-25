@@ -11,7 +11,6 @@ import { SchemaVersion } from '../../model/cedar/types/wrapped-types/SchemaVersi
 import { PavVersion } from '../../model/cedar/types/wrapped-types/PavVersion';
 import { BiboStatus } from '../../model/cedar/types/wrapped-types/BiboStatus';
 import { CedarArtifactType } from '../../model/cedar/types/cedar-types/CedarArtifactType';
-import { Template } from '../../model/cedar/template/Template';
 import { ParsingResult } from '../../model/cedar/util/compare/ParsingResult';
 import { JsonPath } from '../../model/cedar/util/path/JsonPath';
 import { Annotations } from '../../model/cedar/annotation/Annotations';
@@ -51,8 +50,6 @@ export abstract class JSONAbstractArtifactReader {
     if (annotationsNode !== null) {
       Object.keys(annotationsNode).forEach((key) => {
         const annotationNode: JsonNode = ReaderUtil.getNode(annotationsNode, key);
-        console.log(key);
-        console.log(annotationNode);
         const atId: string | null = ReaderUtil.getString(annotationNode, JsonSchema.atId);
         if (atId !== null) {
           annotations.add(new AnnotationAtId(key, atId));

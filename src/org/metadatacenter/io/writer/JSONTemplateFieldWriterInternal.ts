@@ -108,7 +108,7 @@ export abstract class JSONTemplateFieldWriterInternal extends JSONAbstractArtifa
     return {
       [JsonSchema.atId]: this.atomicWriter.write(field.at_id),
       [JsonSchema.atType]: this.atomicWriter.write(field.cedarArtifactType),
-      [JsonSchema.atContext]: JSONTemplateFieldContentDynamic.CONTEXT_VERBATIM,
+      [JsonSchema.atContext]: this.macroContext(field),
       ...typeNode,
       [TemplateProperty.title]: field.title,
       [TemplateProperty.description]: field.description,
@@ -127,5 +127,13 @@ export abstract class JSONTemplateFieldWriterInternal extends JSONAbstractArtifa
       ...this.macroDerivedFrom(field),
       ...this.macroAnnotations(field),
     };
+  }
+
+  protected macroContext(_field: TemplateField) {
+    if (this.behavior.includeBiboInContext()) {
+      return JSONTemplateFieldContentDynamic.CONTEXT_VERBATIM;
+    } else {
+      return JSONTemplateFieldContentDynamic.CONTEXT_VERBATIM_NO_BIBO;
+    }
   }
 }

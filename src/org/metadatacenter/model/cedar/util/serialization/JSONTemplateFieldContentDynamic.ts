@@ -166,6 +166,7 @@ export class JSONTemplateFieldContentDynamic {
   public static PROPERTIES_VERBATIM_LITERAL_NO_AT_LANGUAGE: JsonNode;
   public static PROPERTIES_VERBATIM_CONTROLLED_NO_SKOS_NOTATION: JsonNode;
   public static PROPERTIES_VERBATIM_IRI_NO_SKOS_NOTATION: JsonNode;
+  public static CONTEXT_VERBATIM_NO_BIBO: JsonNode;
 
   static {
     ReaderUtil.deepFreeze(this.CONTEXT_VERBATIM);
@@ -182,6 +183,10 @@ export class JSONTemplateFieldContentDynamic {
     this.PROPERTIES_VERBATIM_IRI_NO_SKOS_NOTATION = ReaderUtil.deepClone(this.PROPERTIES_VERBATIM_IRI);
     ReaderUtil.deleteNodeKey(this.PROPERTIES_VERBATIM_IRI_NO_SKOS_NOTATION, CedarModel.skosNotation);
     ReaderUtil.deepFreeze(this.PROPERTIES_VERBATIM_IRI_NO_SKOS_NOTATION);
+
+    this.CONTEXT_VERBATIM_NO_BIBO = ReaderUtil.deepClone(this.CONTEXT_VERBATIM);
+    ReaderUtil.deleteNodeKey(this.CONTEXT_VERBATIM_NO_BIBO, 'bibo');
+    ReaderUtil.deepFreeze(this.CONTEXT_VERBATIM_NO_BIBO);
 
     ReaderUtil.deepFreeze(this.PROPERTIES_VERBATIM_CONTROLLED);
     ReaderUtil.deepFreeze(this.PROPERTIES_VERBATIM_IRI);

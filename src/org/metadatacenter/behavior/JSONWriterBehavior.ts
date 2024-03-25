@@ -11,6 +11,7 @@ export class JSONWriterBehavior {
   private readonly _usePropertiesAtLanguage: boolean;
   private readonly _includeSkosNotationForLinksAndControlled: boolean;
   private readonly _includeOnlyElementsInPropertiesContextRequired: boolean;
+  private readonly _includeBiboInContext: boolean;
 
   private constructor(
     value: JSONWriterBehaviorValue,
@@ -18,20 +19,22 @@ export class JSONWriterBehavior {
     usePropertiesAtLanguage: boolean,
     includeSkosNotationForLinksAndControlled: boolean,
     includeOnlyElementsInPropertiesContextRequired: boolean,
+    includeBiboInContext: boolean,
   ) {
     this.value = value;
     this._outputPages = outputPages;
     this._usePropertiesAtLanguage = usePropertiesAtLanguage;
     this._includeSkosNotationForLinksAndControlled = includeSkosNotationForLinksAndControlled;
     this._includeOnlyElementsInPropertiesContextRequired = includeOnlyElementsInPropertiesContextRequired;
+    this._includeBiboInContext = includeBiboInContext;
   }
 
   public getValue(): JSONWriterBehaviorValue {
     return this.value;
   }
 
-  public static STRICT = new JSONWriterBehavior(JSONWriterBehaviorValues.STRICT, false, true, true, false);
-  public static FEBRUARY_2024 = new JSONWriterBehavior(JSONWriterBehaviorValues.FEBRUARY_2024, true, false, false, true);
+  public static STRICT = new JSONWriterBehavior(JSONWriterBehaviorValues.STRICT, false, true, true, false, true);
+  public static FEBRUARY_2024 = new JSONWriterBehavior(JSONWriterBehaviorValues.FEBRUARY_2024, true, false, false, true, true);
 
   public outputPages() {
     return this._outputPages;
@@ -47,5 +50,9 @@ export class JSONWriterBehavior {
 
   includeOnlyElementsInPropertiesContextRequired() {
     return this._includeOnlyElementsInPropertiesContextRequired;
+  }
+
+  includeBiboInContext(): boolean {
+    return this._includeBiboInContext;
   }
 }

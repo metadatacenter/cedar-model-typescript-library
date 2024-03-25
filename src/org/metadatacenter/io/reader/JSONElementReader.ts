@@ -29,9 +29,9 @@ export class JSONElementReader extends JSONContainerArtifactReader {
     return new JSONElementReader(JSONReaderBehavior.STRICT);
   }
 
-  // public static getFebruary2024(): JSONElementReader {
-  //   return new JSONElementReader(JSONReaderBehavior.FEBRUARY_2024);
-  // }
+  public static getFebruary2024(): JSONElementReader {
+    return new JSONElementReader(JSONReaderBehavior.FEBRUARY_2024);
+  }
 
   public static getForBehavior(behavior: JSONReaderBehavior): JSONElementReader {
     return new JSONElementReader(behavior);

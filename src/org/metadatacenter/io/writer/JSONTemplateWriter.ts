@@ -97,7 +97,7 @@ export class JSONTemplateWriter extends JSONAbstractContainerArtifactWriter {
     return {
       [JsonSchema.atId]: this.atomicWriter.write(template.at_id),
       [JsonSchema.atType]: this.atomicWriter.write(CedarArtifactType.TEMPLATE),
-      [JsonSchema.atContext]: JSONTemplateContent.CONTEXT_VERBATIM,
+      [JsonSchema.atContext]: this.macroContext(template),
       [CedarModel.type]: this.atomicWriter.write(JavascriptType.OBJECT),
       [TemplateProperty.title]: template.title,
       [TemplateProperty.description]: template.description,

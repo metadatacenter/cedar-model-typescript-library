@@ -35,7 +35,7 @@ export class JSONStaticFieldWriter extends JSONTemplateFieldWriterInternal {
     return {
       [JsonSchema.atId]: this.atomicWriter.write(field.at_id),
       [JsonSchema.atType]: this.atomicWriter.write(field.cedarArtifactType),
-      [JsonSchema.atContext]: JSONTemplateFieldContentStatic.CONTEXT_VERBATIM,
+      [JsonSchema.atContext]: this.macroContext(field),
       [CedarModel.type]: this.atomicWriter.write(JavascriptType.OBJECT),
       [TemplateProperty.title]: field.title,
       [TemplateProperty.description]: field.description,
@@ -48,5 +48,13 @@ export class JSONStaticFieldWriter extends JSONTemplateFieldWriterInternal {
       [CedarModel.schema]: this.atomicWriter.write(ArtifactSchema.CURRENT),
       ...this.macroSkos(field),
     };
+  }
+
+  protected override macroContext(_field: StaticImageField) {
+    if (this.behavior.includeBiboInContext()) {
+      return JSONTemplateFieldContentStatic.CONTEXT_VERBATIM;
+    } else {
+      return JSONTemplateFieldContentStatic.CONTEXT_VERBATIM_NO_BIBO;
+    }
   }
 }

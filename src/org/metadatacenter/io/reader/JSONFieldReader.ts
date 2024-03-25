@@ -48,9 +48,9 @@ export class JSONFieldReader extends JSONAbstractArtifactReader {
     return new JSONFieldReader(JSONReaderBehavior.STRICT);
   }
 
-  // public static getFebruary2024(): JSONFieldReader {
-  //   return new JSONFieldReader(JSONReaderBehavior.FEBRUARY_2024);
-  // }
+  public static getFebruary2024(): JSONFieldReader {
+    return new JSONFieldReader(JSONReaderBehavior.FEBRUARY_2024);
+  }
 
   public static getForBehavior(behavior: JSONReaderBehavior): JSONFieldReader {
     return new JSONFieldReader(behavior);
@@ -111,9 +111,17 @@ export class JSONFieldReader extends JSONAbstractArtifactReader {
     const topContextNode: JsonNode = ReaderUtil.getNode(fieldSourceObject, JsonSchema.atContext);
     let blueprintAtContext: JsonNode = JsonNodeClass.getEmpty();
     if (field.cedarArtifactType == CedarArtifactType.TEMPLATE_FIELD) {
-      blueprintAtContext = JSONTemplateFieldContentDynamic.CONTEXT_VERBATIM;
+      if (this.behavior.includeBiboInContext()) {
+        blueprintAtContext = JSONTemplateFieldContentDynamic.CONTEXT_VERBATIM;
+      } else {
+        blueprintAtContext = JSONTemplateFieldContentDynamic.CONTEXT_VERBATIM_NO_BIBO;
+      }
     } else if (field.cedarArtifactType == CedarArtifactType.STATIC_TEMPLATE_FIELD) {
-      blueprintAtContext = JSONTemplateFieldContentStatic.CONTEXT_VERBATIM;
+      if (this.behavior.includeBiboInContext()) {
+        blueprintAtContext = JSONTemplateFieldContentStatic.CONTEXT_VERBATIM;
+      } else {
+        blueprintAtContext = JSONTemplateFieldContentStatic.CONTEXT_VERBATIM_NO_BIBO;
+      }
     }
     ObjectComparator.compareBothWays(parsingResult, blueprintAtContext, topContextNode, path.add(JsonSchema.atContext));
 

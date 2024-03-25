@@ -125,6 +125,7 @@ export abstract class JSONTemplateFieldWriterInternal extends JSONAbstractArtifa
       ...this.macroSkos(field),
       ...this.macroSchemaIdentifier(field),
       ...this.macroDerivedFrom(field),
+      ...this.macroAnnotations(field),
     };
   }
 }

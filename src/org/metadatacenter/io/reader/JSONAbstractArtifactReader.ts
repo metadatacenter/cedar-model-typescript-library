@@ -11,6 +11,13 @@ import { SchemaVersion } from '../../model/cedar/types/wrapped-types/SchemaVersi
 import { PavVersion } from '../../model/cedar/types/wrapped-types/PavVersion';
 import { BiboStatus } from '../../model/cedar/types/wrapped-types/BiboStatus';
 import { CedarArtifactType } from '../../model/cedar/types/cedar-types/CedarArtifactType';
+import { Template } from '../../model/cedar/template/Template';
+import { ParsingResult } from '../../model/cedar/util/compare/ParsingResult';
+import { JsonPath } from '../../model/cedar/util/path/JsonPath';
+import { Annotations } from '../../model/cedar/annotation/Annotations';
+import { CedarModel } from '../../model/cedar/constants/CedarModel';
+import { AnnotationAtId } from '../../model/cedar/annotation/AnnotationAtId';
+import { AnnotationAtValue } from '../../model/cedar/annotation/AnnotationAtValue';
 
 export abstract class JSONAbstractArtifactReader {
   protected behavior: JSONReaderBehavior;
@@ -36,5 +43,29 @@ export abstract class JSONAbstractArtifactReader {
     container.bibo_status = BiboStatus.forValue(ReaderUtil.getString(sourceObject, JsonSchema.biboStatus));
     container.pav_derivedFrom = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, JsonSchema.pavDerivedFrom));
     container.schema_identifier = ReaderUtil.getString(sourceObject, JsonSchema.schemaIdentifier);
+  }
+
+  protected readAnnotations(artifact: AbstractArtifact, artifactSourceObject: JsonNode, _parsingResult: ParsingResult, _topPath: JsonPath) {
+    const annotations = new Annotations();
+    const annotationsNode: JsonNode | null = ReaderUtil.getNodeOrNull(artifactSourceObject, CedarModel.annotations);
+    if (annotationsNode !== null) {
+      Object.keys(annotationsNode).forEach((key) => {
+        const annotationNode: JsonNode = ReaderUtil.getNode(annotationsNode, key);
+        console.log(key);
+        console.log(annotationNode);
+        const atId: string | null = ReaderUtil.getString(annotationNode, JsonSchema.atId);
+        if (atId !== null) {
+          annotations.add(new AnnotationAtId(key, atId));
+        } else {
+          const atValue: string | null = ReaderUtil.getString(annotationNode, JsonSchema.atValue);
+          if (atValue !== null) {
+            annotations.add(new AnnotationAtValue(key, atValue));
+          }
+        }
+      });
+    }
+    if (annotations.getSize() > 0) {
+      artifact.annotations = annotations;
+    }
   }
 }

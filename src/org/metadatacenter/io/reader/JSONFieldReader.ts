@@ -94,6 +94,7 @@ export class JSONFieldReader extends JSONAbstractArtifactReader {
     const field: TemplateField = JSONFieldReader.readFieldSpecificAttributes(fieldSourceObject, childInfo, parsingResult, path);
     this.readNonReportableAttributes(field, fieldSourceObject);
     this.readReportableAttributes(field, fieldSourceObject, parsingResult, path);
+    this.readAnnotations(field, fieldSourceObject, parsingResult, path);
     return new JSONFieldReaderResult(field, parsingResult, fieldSourceObject);
   }
 

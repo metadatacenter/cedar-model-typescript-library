@@ -9,16 +9,19 @@ import { CedarModel } from '../../model/cedar/constants/CedarModel';
 import { JSONWriterBehavior } from '../../behavior/JSONWriterBehavior';
 import { CedarWriters } from './CedarWriters';
 import { CedarArtifactId } from '../../model/cedar/types/cedar-types/CedarArtifactId';
+import { JSONAnnotationsWriter } from './JSONAnnotationsWriter';
 
 export abstract class AbstractArtifactWriter {
   protected behavior: JSONWriterBehavior;
   protected writers: CedarWriters;
   protected atomicWriter: JSONAtomicWriter;
+  protected annotationsWriter: JSONAnnotationsWriter;
 
   protected constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
     this.behavior = behavior;
     this.writers = writers;
     this.atomicWriter = writers.getJSONAtomicWriter();
+    this.annotationsWriter = writers.getJSONAnnotationsWriter();
   }
 
   protected macroSchemaNameAndDescription(artifact: AbstractArtifact): JsonNode {
@@ -73,5 +76,9 @@ export abstract class AbstractArtifactWriter {
       schemaIdentifier[JsonSchema.schemaIdentifier] = artifact.schema_identifier;
     }
     return schemaIdentifier;
+  }
+
+  protected macroAnnotations(artifact: AbstractArtifact) {
+    return this.annotationsWriter.write(artifact.annotations);
   }
 }

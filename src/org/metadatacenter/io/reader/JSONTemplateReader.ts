@@ -17,6 +17,9 @@ import { JSONElementReader } from './JSONElementReader';
 import { JSONContainerArtifactReader } from './JSONContainerArtifactReader';
 import { Template } from '../../model/cedar/template/Template';
 import { ChildDeploymentInfo } from '../../model/cedar/deployment/ChildDeploymentInfo';
+import { Annotations } from '../../model/cedar/annotation/Annotations';
+import { AnnotationAtId } from '../../model/cedar/annotation/AnnotationAtId';
+import { AnnotationAtValue } from '../../model/cedar/annotation/AnnotationAtValue';
 
 export class JSONTemplateReader extends JSONContainerArtifactReader {
   private readonly elementReader: JSONElementReader;
@@ -63,6 +66,7 @@ export class JSONTemplateReader extends JSONContainerArtifactReader {
 
     this.readNonReportableAttributes(template, templateSourceObject);
     this.readReportableAttributes(template, templateSourceObject, parsingResult, topPath);
+    this.readAnnotations(template, templateSourceObject, parsingResult, topPath);
     this.readInstanceTypeSpecification(template, templateSourceObject, parsingResult);
     this.readAndValidateChildrenInfo(template, templateSourceObject, parsingResult, topPath);
 

@@ -52,6 +52,8 @@ export class CedarModel {
   static format = 'format';
   static enum = 'enum';
 
+  static annotations = '_annotations';
+
   // static baseTemplateURL = 'https://schema.metadatacenter.org';
   // static templateFieldType = CedarModel.baseTemplateURL + '/core/TemplateField';
   // static templateElementType = CedarModel.baseTemplateURL + '/core/TemplateElement';

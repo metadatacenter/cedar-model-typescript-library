@@ -6,7 +6,7 @@ import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/ce
 import { JsonPath } from '../../../../src/org/metadatacenter/model/cedar/util/path/JsonPath';
 import { CedarModel } from '../../../../src/org/metadatacenter/model/cedar/constants/CedarModel';
 
-xdescribe('JSONTemplateReader - template-027', () => {
+describe('JSONTemplateReader - template-027', () => {
   test('reads template witch annotations', () => {
     const templateSource = TestUtil.readTestResourceAsString('templates/027', 'template-027.json');
     const reader: JSONTemplateReader = JSONTemplateReader.getStrict();
@@ -22,11 +22,11 @@ xdescribe('JSONTemplateReader - template-027', () => {
 
     const compareResult: ParsingResult = JSONTemplateReader.getRoundTripComparisonResult(jsonTemplateReaderResult, writer);
 
-    TestUtil.p(compareResult);
+    // TestUtil.p(compareResult);
     // TestUtil.p(writer.getAsJsonNode(jsonTemplateReaderResult.template));
 
     expect(compareResult.wasSuccessful()).toBe(false);
-    // expect(compareResult.getBlueprintComparisonErrorCount()).toBe(1);
+    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(1);
 
     const uiPagesMissing = new ComparisonError(
       'oco02',

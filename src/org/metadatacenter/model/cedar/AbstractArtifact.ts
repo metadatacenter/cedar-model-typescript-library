@@ -5,6 +5,7 @@ import { BiboStatus } from './types/wrapped-types/BiboStatus';
 import { CedarArtifactId } from './types/cedar-types/CedarArtifactId';
 import { SchemaVersion } from './types/wrapped-types/SchemaVersion';
 import { CedarArtifactType } from './types/cedar-types/CedarArtifactType';
+import { Annotations } from './annotation/Annotations';
 
 export abstract class AbstractArtifact {
   public at_id: CedarArtifactId = CedarArtifactId.NULL;
@@ -27,4 +28,6 @@ export abstract class AbstractArtifact {
   public cedarArtifactType: CedarArtifactType = CedarArtifactType.NULL;
   //
   public pav_derivedFrom: CedarArtifactId = CedarArtifactId.NULL;
+  //
+  public annotations: Annotations | null = null;
 }

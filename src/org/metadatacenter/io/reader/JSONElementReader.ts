@@ -60,6 +60,7 @@ export class JSONElementReader extends JSONContainerArtifactReader {
 
     this.readNonReportableAttributes(element, elementSourceObject);
     this.readReportableAttributes(element, elementSourceObject, parsingResult, topPath);
+    this.readAnnotations(element, elementSourceObject, parsingResult, topPath);
     this.readAndValidateChildrenInfo(element, elementSourceObject, parsingResult, topPath);
 
     return new JSONElementReaderResult(element, parsingResult, elementSourceObject);

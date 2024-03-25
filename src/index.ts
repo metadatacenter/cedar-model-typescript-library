@@ -55,6 +55,7 @@ import { TemplateBuilder } from './org/metadatacenter/model/cedar/template/Templ
 import { JsonNode } from './org/metadatacenter/model/cedar/types/basic-types/JsonNode';
 import { ISODate } from './org/metadatacenter/model/cedar/types/wrapped-types/ISODate';
 import { SchemaVersion } from './org/metadatacenter/model/cedar/types/wrapped-types/SchemaVersion';
+import { JsonPath } from './org/metadatacenter/model/cedar/util/path/JsonPath';
 
 import { TemporalGranularity } from './org/metadatacenter/model/cedar/types/wrapped-types/TemporalGranularity';
 import { TimeFormat } from './org/metadatacenter/model/cedar/types/wrapped-types/TimeFormat';
@@ -110,6 +111,7 @@ export { Template, TemplateBuilder };
 export { JsonNode };
 export { ISODate };
 export { SchemaVersion };
+export { JsonPath };
 
 export { TemporalGranularity };
 export { TimeFormat };

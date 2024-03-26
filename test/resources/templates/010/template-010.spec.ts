@@ -1,14 +1,10 @@
-import { JSONTemplateReader } from '../../../../src';
+import { CedarWriters, ComparisonError, JsonPath, JSONTemplateReader, JSONTemplateWriter } from '../../../../src';
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
-import { JsonPath } from '../../../../src/org/metadatacenter/model/cedar/util/path/JsonPath';
 import { TestUtil } from '../../../TestUtil';
-import { ComparisonError } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonError';
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
 import { CedarModel } from '../../../../src/org/metadatacenter/model/cedar/constants/CedarModel';
 import { JSONTemplateReaderResult } from '../../../../src/org/metadatacenter/io/reader/JSONTemplateReaderResult';
 import { JsonSchema } from '../../../../src/org/metadatacenter/model/cedar/constants/JsonSchema';
-import { CedarWriters } from '../../../../src';
-import { JSONTemplateWriter } from '../../../../src';
 
 describe('JSONTemplateReader - template-010', () => {
   test('reads template with 3 date and time fields', () => {

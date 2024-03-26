@@ -1,4 +1,4 @@
-import { JSONTemplateReader } from '../../../../src/org/metadatacenter/io/reader/JSONTemplateReader';
+import { JSONTemplateReader } from '../../../../src';
 import { TestUtil } from '../../../TestUtil';
 
 describe('JSONTemplateReader - template-001', () => {

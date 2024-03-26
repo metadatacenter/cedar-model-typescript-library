@@ -1,13 +1,9 @@
-import { JSONTemplateReader } from '../../../../src/org/metadatacenter/io/reader/JSONTemplateReader';
+import { CedarWriters, ComparisonError, JsonPath, JSONTemplateReader, JSONTemplateWriter } from '../../../../src';
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
-import { JsonPath } from '../../../../src/org/metadatacenter/model/cedar/util/path/JsonPath';
 import { TestUtil } from '../../../TestUtil';
-import { ComparisonError } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonError';
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
 import { CedarModel } from '../../../../src/org/metadatacenter/model/cedar/constants/CedarModel';
 import { JSONTemplateReaderResult } from '../../../../src/org/metadatacenter/io/reader/JSONTemplateReaderResult';
-import { CedarWriters } from '../../../../src/org/metadatacenter/io/writer/CedarWriters';
-import { JSONTemplateWriter } from '../../../../src/org/metadatacenter/io/writer/JSONTemplateWriter';
 
 describe('JSONTemplateReader - template-009', () => {
   test('reads template with static fields', () => {

@@ -1,9 +1,7 @@
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
 import { TestUtil } from '../../../TestUtil';
-import { ComparisonError } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonError';
+import { CedarWriters, ComparisonError, JSONFieldReader, JsonPath } from '../../../../src';
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
-import { JsonPath } from '../../../../src/org/metadatacenter/model/cedar/util/path/JsonPath';
-import { CedarWriters, JSONFieldReader } from '../../../../src';
 import { CedarModel } from '../../../../src/org/metadatacenter/model/cedar/constants/CedarModel';
 import { JsonSchema } from '../../../../src/org/metadatacenter/model/cedar/constants/JsonSchema';
 

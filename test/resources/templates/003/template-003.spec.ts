@@ -1,6 +1,4 @@
-import { JSONTemplateReader } from '../../../../src/org/metadatacenter/io/reader/JSONTemplateReader';
-import { JsonPath } from '../../../../src/org/metadatacenter/model/cedar/util/path/JsonPath';
-import { ComparisonError } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonError';
+import { ComparisonError, JsonPath, JSONTemplateReader } from '../../../../src';
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
 import { JsonSchema } from '../../../../src/org/metadatacenter/model/cedar/constants/JsonSchema';
 import { CedarModel } from '../../../../src/org/metadatacenter/model/cedar/constants/CedarModel';

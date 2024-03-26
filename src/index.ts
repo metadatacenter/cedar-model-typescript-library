@@ -73,6 +73,7 @@ import { BiboStatus } from './org/metadatacenter/model/cedar/types/wrapped-types
 import { ChildDeploymentInfo } from './org/metadatacenter/model/cedar/deployment/ChildDeploymentInfo';
 import { ChildDeploymentInfoBuilder } from './org/metadatacenter/model/cedar/deployment/ChildDeploymentInfoBuilder';
 import { CedarArtifactId } from './org/metadatacenter/model/cedar/types/cedar-types/CedarArtifactId';
+import { ComparisonError } from './org/metadatacenter/model/cedar/util/compare/ComparisonError';
 
 export { CedarBuilders };
 export { CedarWriters };
@@ -129,3 +130,4 @@ export { ControlledTermValueSetBuilder };
 export { ChildDeploymentInfo, ChildDeploymentInfoBuilder };
 
 export { CedarArtifactId };
+export { ComparisonError };

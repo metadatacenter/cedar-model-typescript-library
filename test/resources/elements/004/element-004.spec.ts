@@ -1,10 +1,8 @@
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
 import { TestUtil } from '../../../TestUtil';
-import { ComparisonError } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonError';
+import { CedarWriters, ComparisonError, JSONElementReader, JsonPath, JSONTemplateElementWriter } from '../../../../src';
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
-import { JsonPath } from '../../../../src/org/metadatacenter/model/cedar/util/path/JsonPath';
 import { JsonSchema } from '../../../../src/org/metadatacenter/model/cedar/constants/JsonSchema';
-import { CedarWriters, JSONElementReader, JSONTemplateElementWriter } from '../../../../src';
 import { CedarModel } from '../../../../src/org/metadatacenter/model/cedar/constants/CedarModel';
 
 describe('JSONElementReader - element-004', () => {

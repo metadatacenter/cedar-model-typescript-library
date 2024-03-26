@@ -1,6 +1,6 @@
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
 import { TestUtil } from '../../../TestUtil';
-import { CedarWriters, JSONElementReader, JSONTemplateElementWriter } from '../../../../src';
+import { CedarWriters, JSONElementReader, JSONTemplateElementWriter, RoundTrip } from '../../../../src';
 
 describe('JSONElementReader - element-001', () => {
   test('reads an element with attribute-value field', () => {
@@ -15,8 +15,7 @@ describe('JSONElementReader - element-001', () => {
     const writers: CedarWriters = CedarWriters.getStrict();
     const writer: JSONTemplateElementWriter = writers.getJSONTemplateElementWriter();
 
-    const compareResult: ParsingResult = JSONElementReader.getRoundTripComparisonResult(jsonElementReaderResult, writer);
-
+    const compareResult: ParsingResult = RoundTrip.compare(jsonElementReaderResult, writer);
     // TestUtil.p(compareResult);
     // TestUtil.p(writer.getAsJsonNode(jsonFieldReaderResult.field));
 

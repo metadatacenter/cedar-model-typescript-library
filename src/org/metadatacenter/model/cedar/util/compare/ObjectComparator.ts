@@ -6,6 +6,7 @@ import { JsonPath } from '../path/JsonPath';
 import { ComparisonErrorType } from './ComparisonErrorType';
 import { JsonSchema } from '../../constants/JsonSchema';
 import { CedarModel } from '../../constants/CedarModel';
+import { ReaderWriterBehavior } from '../../../../behavior/ReaderWriterBehavior';
 
 type ComparableObject = JsonNode;
 
@@ -15,6 +16,7 @@ export class ObjectComparator {
     blueprintObject: ComparableObject,
     realObject: ComparableObject,
     path: JsonPath,
+    behavior: ReaderWriterBehavior,
   ): void {
     function recurse(currentPath: JsonPath, obj1: ComparableObject, obj2: ComparableObject) {
       const isNonOrderSensitive = currentPath.getLastComponent() == JsonSchema.required;
@@ -77,11 +79,21 @@ export class ObjectComparator {
         allKeys.forEach((key) => {
           const newPath = currentPath.add(key);
           if (!(key in obj1)) {
-            comparisonResult.addBlueprintComparisonError(
-              new ComparisonError('oco01', ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT, newPath),
-            );
+            if (behavior.useWarningForKnownIssues() && newPath.endsIn(JsonSchema.properties, JsonSchema.atLanguage)) {
+              comparisonResult.addBlueprintComparisonWarning(
+                new ComparisonError('wco01', ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT, newPath),
+              );
+            } else {
+              comparisonResult.addBlueprintComparisonError(
+                new ComparisonError('oco01', ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT, newPath),
+              );
+            }
           } else if (!(key in obj2)) {
-            if (newPath.endsIn(CedarModel.literals, JsonPath.ANY, CedarModel.selectedByDefault)) {
+            if (
+              behavior.useWarningForKnownIssues() &&
+              (newPath.endsIn(CedarModel.literals, JsonPath.ANY, CedarModel.selectedByDefault) ||
+                newPath.endsIn(CedarModel.ui, CedarModel.pages))
+            ) {
               comparisonResult.addBlueprintComparisonWarning(
                 new ComparisonError('wco02', ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, newPath),
               );
@@ -103,6 +115,7 @@ export class ObjectComparator {
 
     recurse(path, blueprintObject, realObject);
   }
+
   static compareToLeft(
     comparisonResult: ParsingResult,
     blueprintObject: ComparableObject,

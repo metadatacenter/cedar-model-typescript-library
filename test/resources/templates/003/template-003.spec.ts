@@ -1,7 +1,5 @@
-import { ComparisonError, JsonPath, JSONTemplateReader } from '../../../../src';
+import { CedarModel, ComparisonError, JsonPath, JsonSchema, JSONTemplateReader } from '../../../../src';
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
-import { JsonSchema } from '../../../../src/org/metadatacenter/model/cedar/constants/JsonSchema';
-import { CedarModel } from '../../../../src/org/metadatacenter/model/cedar/constants/CedarModel';
 import { TestUtil } from '../../../TestUtil';
 
 describe('JSONTemplateReader - template-003', () => {

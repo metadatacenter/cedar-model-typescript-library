@@ -1,9 +1,16 @@
-import { CedarWriters, ComparisonError, JsonPath, JSONTemplateReader, JSONTemplateWriter } from '../../../../src';
+import {
+  CedarModel,
+  CedarWriters,
+  ComparisonError,
+  JsonPath,
+  JsonSchema,
+  JSONTemplateReader,
+  JSONTemplateWriter,
+  RoundTrip,
+} from '../../../../src';
 import { TestUtil } from '../../../TestUtil';
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
-import { JsonSchema } from '../../../../src/org/metadatacenter/model/cedar/constants/JsonSchema';
-import { CedarModel } from '../../../../src/org/metadatacenter/model/cedar/constants/CedarModel';
 
 describe('JSONTemplateReader - template-005', () => {
   test('reads multi-instance text fields', () => {
@@ -21,7 +28,7 @@ describe('JSONTemplateReader - template-005', () => {
     const writers: CedarWriters = CedarWriters.getStrict();
     const writer: JSONTemplateWriter = writers.getJSONTemplateWriter();
 
-    const compareResult: ParsingResult = JSONTemplateReader.getRoundTripComparisonResult(jsonTemplateReaderResult, writer);
+    const compareResult: ParsingResult = RoundTrip.compare(jsonTemplateReaderResult, writer);
 
     // TestUtil.p(compareResult);
 

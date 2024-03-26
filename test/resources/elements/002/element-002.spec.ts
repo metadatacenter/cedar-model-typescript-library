@@ -1,8 +1,15 @@
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
 import { TestUtil } from '../../../TestUtil';
-import { CedarWriters, ComparisonError, JSONElementReader, JsonPath, JSONTemplateElementWriter } from '../../../../src';
+import {
+  CedarWriters,
+  ComparisonError,
+  JSONElementReader,
+  JsonPath,
+  JsonSchema,
+  JSONTemplateElementWriter,
+  RoundTrip,
+} from '../../../../src';
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
-import { JsonSchema } from '../../../../src/org/metadatacenter/model/cedar/constants/JsonSchema';
 
 describe('JSONElementReader - element-002', () => {
   test('reads an element with three fields', () => {
@@ -17,7 +24,7 @@ describe('JSONElementReader - element-002', () => {
     const writers: CedarWriters = CedarWriters.getStrict();
     const writer: JSONTemplateElementWriter = writers.getJSONTemplateElementWriter();
 
-    const compareResult: ParsingResult = JSONElementReader.getRoundTripComparisonResult(jsonElementReaderResult, writer);
+    const compareResult: ParsingResult = RoundTrip.compare(jsonElementReaderResult, writer);
 
     // TestUtil.p(compareResult);
     // TestUtil.p(writer.getAsJsonNode(jsonFieldReaderResult.field));

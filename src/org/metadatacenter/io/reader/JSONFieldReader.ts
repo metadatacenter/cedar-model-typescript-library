@@ -111,19 +111,11 @@ export class JSONFieldReader extends JSONAbstractArtifactReader {
     const topContextNode: JsonNode = ReaderUtil.getNode(fieldSourceObject, JsonSchema.atContext);
     let blueprintAtContext: JsonNode = JsonNodeClass.getEmpty();
     if (field.cedarArtifactType == CedarArtifactType.TEMPLATE_FIELD) {
-      if (this.behavior.includeBiboInContext()) {
-        blueprintAtContext = JSONTemplateFieldContentDynamic.CONTEXT_VERBATIM;
-      } else {
-        blueprintAtContext = JSONTemplateFieldContentDynamic.CONTEXT_VERBATIM_NO_BIBO;
-      }
+      blueprintAtContext = JSONTemplateFieldContentDynamic.CONTEXT_VERBATIM;
     } else if (field.cedarArtifactType == CedarArtifactType.STATIC_TEMPLATE_FIELD) {
-      if (this.behavior.includeBiboInContext()) {
-        blueprintAtContext = JSONTemplateFieldContentStatic.CONTEXT_VERBATIM;
-      } else {
-        blueprintAtContext = JSONTemplateFieldContentStatic.CONTEXT_VERBATIM_NO_BIBO;
-      }
+      blueprintAtContext = JSONTemplateFieldContentStatic.CONTEXT_VERBATIM;
     }
-    ObjectComparator.compareBothWays(parsingResult, blueprintAtContext, topContextNode, path.add(JsonSchema.atContext));
+    ObjectComparator.compareBothWays(parsingResult, blueprintAtContext, topContextNode, path.add(JsonSchema.atContext), this.behavior);
 
     // Read and validate, but do not store top level type
     // Attribute value requires string, the others object
@@ -222,19 +214,5 @@ export class JSONFieldReader extends JSONAbstractArtifactReader {
       }
     }
     return fieldType;
-  }
-
-  static getRoundTripComparisonResult(
-    jsonFieldReaderResult: JSONFieldReaderResult,
-    writer: JSONTemplateFieldWriterInternal,
-  ): ParsingResult {
-    const compareResult = new ParsingResult();
-    ObjectComparator.compareBothWays(
-      compareResult,
-      jsonFieldReaderResult.fieldSourceObject,
-      writer.getAsJsonNode(jsonFieldReaderResult.field, ChildDeploymentInfo.empty()),
-      new JsonPath(),
-    );
-    return compareResult;
   }
 }

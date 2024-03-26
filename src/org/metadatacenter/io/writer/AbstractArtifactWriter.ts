@@ -24,6 +24,10 @@ export abstract class AbstractArtifactWriter {
     this.annotationsWriter = writers.getJSONAnnotationsWriter();
   }
 
+  public getBehavior(): JSONWriterBehavior {
+    return this.behavior;
+  }
+
   protected macroSchemaNameAndDescription(artifact: AbstractArtifact): JsonNode {
     return {
       [JsonSchema.schemaName]: artifact.schema_name,

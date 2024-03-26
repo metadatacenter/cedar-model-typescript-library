@@ -130,10 +130,6 @@ export abstract class JSONTemplateFieldWriterInternal extends JSONAbstractArtifa
   }
 
   protected macroContext(_field: TemplateField) {
-    if (this.behavior.includeBiboInContext()) {
-      return JSONTemplateFieldContentDynamic.CONTEXT_VERBATIM;
-    } else {
-      return JSONTemplateFieldContentDynamic.CONTEXT_VERBATIM_NO_BIBO;
-    }
+    return JSONTemplateFieldContentDynamic.CONTEXT_VERBATIM;
   }
 }

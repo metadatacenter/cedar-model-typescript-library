@@ -15,7 +15,6 @@ import { JSONElementReaderResult } from './JSONElementReaderResult';
 import { TemplateElement } from '../../model/cedar/element/TemplateElement';
 import { JSONContainerArtifactReader } from './JSONContainerArtifactReader';
 import { JSONElementContent } from '../../model/cedar/util/serialization/JSONElementContent';
-import { JSONTemplateElementWriter } from '../writer/JSONTemplateElementWriter';
 import { ChildDeploymentInfo } from '../../model/cedar/deployment/ChildDeploymentInfo';
 
 export class JSONElementReader extends JSONContainerArtifactReader {
@@ -40,6 +39,7 @@ export class JSONElementReader extends JSONContainerArtifactReader {
   protected override getElementReader(): JSONElementReader {
     return this;
   }
+
   protected override includeInIRIMapping(childInfo: ChildDeploymentInfo): boolean {
     return childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD && childInfo.uiInputType !== UiInputType.ATTRIBUTE_VALUE;
   }
@@ -146,16 +146,5 @@ export class JSONElementReader extends JSONContainerArtifactReader {
       ReaderUtil.deleteNodeKey(atContext, JsonSchema.required);
     }
     ObjectComparator.compareToLeft(parsingResult, blueprint, elementProperties, path.add(JsonSchema.properties));
-  }
-
-  static getRoundTripComparisonResult(jsonElementReaderResult: JSONElementReaderResult, writer: JSONTemplateElementWriter): ParsingResult {
-    const compareResult = new ParsingResult();
-    ObjectComparator.compareBothWays(
-      compareResult,
-      jsonElementReaderResult.elementSourceObject,
-      writer.getAsJsonNode(jsonElementReaderResult.element),
-      new JsonPath(),
-    );
-    return compareResult;
   }
 }

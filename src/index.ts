@@ -7,7 +7,6 @@ import { JSONTemplateReader } from './org/metadatacenter/io/reader/JSONTemplateR
 
 import { JSONTemplateFieldWriterInternal } from './org/metadatacenter/io/writer/JSONTemplateFieldWriterInternal';
 // It is needed, do not remove, even if it looks unused
-import { JSONTemplateFieldWriter } from './org/metadatacenter/io/writer/JSONTemplateFieldWriter';
 import { JSONTemplateElementWriter } from './org/metadatacenter/io/writer/JSONTemplateElementWriter';
 import { JSONTemplateWriter } from './org/metadatacenter/io/writer/JSONTemplateWriter';
 
@@ -74,6 +73,9 @@ import { ChildDeploymentInfo } from './org/metadatacenter/model/cedar/deployment
 import { ChildDeploymentInfoBuilder } from './org/metadatacenter/model/cedar/deployment/ChildDeploymentInfoBuilder';
 import { CedarArtifactId } from './org/metadatacenter/model/cedar/types/cedar-types/CedarArtifactId';
 import { ComparisonError } from './org/metadatacenter/model/cedar/util/compare/ComparisonError';
+import { RoundTrip } from './org/metadatacenter/io/roundtrip/RoundTrip';
+import { JsonSchema } from './org/metadatacenter/model/cedar/constants/JsonSchema';
+import { CedarModel } from './org/metadatacenter/model/cedar/constants/CedarModel';
 
 export { CedarBuilders };
 export { CedarWriters };
@@ -131,3 +133,6 @@ export { ChildDeploymentInfo, ChildDeploymentInfoBuilder };
 
 export { CedarArtifactId };
 export { ComparisonError };
+export { RoundTrip };
+export { JsonSchema };
+export { CedarModel };

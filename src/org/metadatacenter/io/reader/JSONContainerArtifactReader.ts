@@ -73,14 +73,9 @@ export abstract class JSONContainerArtifactReader extends JSONAbstractArtifactRe
     // Read and validate, but do not store top level @context
     const topContextNode: JsonNode = ReaderUtil.getNode(elementSourceObject, JsonSchema.atContext);
 
-    let blueprintAtContext: JsonNode;
-    if (this.behavior.includeBiboInContext()) {
-      blueprintAtContext = JSONContainerArtifactContent.CONTEXT_VERBATIM;
-    } else {
-      blueprintAtContext = JSONContainerArtifactContent.CONTEXT_VERBATIM_NO_BIBO;
-    }
+    const blueprintAtContext: JsonNode = JSONContainerArtifactContent.CONTEXT_VERBATIM;
 
-    ObjectComparator.compareBothWays(parsingResult, blueprintAtContext, topContextNode, path.add(JsonSchema.atContext));
+    ObjectComparator.compareBothWays(parsingResult, blueprintAtContext, topContextNode, path.add(JsonSchema.atContext), this.behavior);
 
     // Read and validate, but do not store top level type
     ObjectComparator.comparePrimitive(

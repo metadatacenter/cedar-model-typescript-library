@@ -11,15 +11,11 @@ import { JSONTemplateReaderResult } from './JSONTemplateReaderResult';
 import { ContainerArtifactChildrenInfo } from '../../model/cedar/deployment/ContainerArtifactChildrenInfo';
 import { JsonPath } from '../../model/cedar/util/path/JsonPath';
 import { JSONReaderBehavior } from '../../behavior/JSONReaderBehavior';
-import { JSONTemplateWriter } from '../writer/JSONTemplateWriter';
 import { JSONTemplateFieldContentDynamic } from '../../model/cedar/util/serialization/JSONTemplateFieldContentDynamic';
 import { JSONElementReader } from './JSONElementReader';
 import { JSONContainerArtifactReader } from './JSONContainerArtifactReader';
 import { Template } from '../../model/cedar/template/Template';
 import { ChildDeploymentInfo } from '../../model/cedar/deployment/ChildDeploymentInfo';
-import { Annotations } from '../../model/cedar/annotation/Annotations';
-import { AnnotationAtId } from '../../model/cedar/annotation/AnnotationAtId';
-import { AnnotationAtValue } from '../../model/cedar/annotation/AnnotationAtValue';
 
 export class JSONTemplateReader extends JSONContainerArtifactReader {
   private readonly elementReader: JSONElementReader;
@@ -167,16 +163,5 @@ export class JSONTemplateReader extends JSONContainerArtifactReader {
         JSONTemplateFieldContentDynamic.ADDITIONAL_PROPERTIES_VERBATIM_ATTRIBUTE_VALUE_INSIDE;
     }
     ObjectComparator.compareToLeft(parsingResult, blueprint, templateProperties, path.add(JsonSchema.properties));
-  }
-
-  static getRoundTripComparisonResult(jsonTemplateReaderResult: JSONTemplateReaderResult, writer: JSONTemplateWriter): ParsingResult {
-    const compareResult = new ParsingResult();
-    ObjectComparator.compareBothWays(
-      compareResult,
-      jsonTemplateReaderResult.templateSourceObject,
-      writer.getAsJsonNode(jsonTemplateReaderResult.template),
-      new JsonPath(),
-    );
-    return compareResult;
   }
 }

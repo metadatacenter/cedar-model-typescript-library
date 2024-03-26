@@ -1,8 +1,7 @@
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
 import { TestUtil } from '../../../TestUtil';
-import { CedarWriters, ComparisonError, JSONFieldReader, JsonPath } from '../../../../src';
+import { CedarWriters, ComparisonError, JSONFieldReader, JsonPath, JsonSchema, RoundTrip } from '../../../../src';
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
-import { JsonSchema } from '../../../../src/org/metadatacenter/model/cedar/constants/JsonSchema';
 
 describe('JSONFieldReader - field-001', () => {
   test('reads a text field with a lot of features', () => {
@@ -16,7 +15,7 @@ describe('JSONFieldReader - field-001', () => {
     const writers: CedarWriters = CedarWriters.getStrict();
     const writer = writers.getJSONFieldWriterForField(jsonFieldReaderResult.field);
 
-    const compareResult: ParsingResult = JSONFieldReader.getRoundTripComparisonResult(jsonFieldReaderResult, writer);
+    const compareResult: ParsingResult = RoundTrip.compare(jsonFieldReaderResult, writer);
 
     // TestUtil.p(compareResult);
     // TestUtil.p(writer.getAsJsonNode(jsonFieldReaderResult.field));

@@ -4,10 +4,6 @@ import { JSONContainerArtifactContent } from '../../model/cedar/util/serializati
 
 export abstract class JSONAbstractContainerArtifactWriter extends JSONAbstractArtifactWriter {
   protected macroContext(_artifact: AbstractContainerArtifact) {
-    if (this.behavior.includeBiboInContext()) {
-      return JSONContainerArtifactContent.CONTEXT_VERBATIM;
-    } else {
-      return JSONContainerArtifactContent.CONTEXT_VERBATIM_NO_BIBO;
-    }
+    return JSONContainerArtifactContent.CONTEXT_VERBATIM;
   }
 }

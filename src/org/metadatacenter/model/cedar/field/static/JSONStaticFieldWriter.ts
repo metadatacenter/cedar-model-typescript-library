@@ -51,10 +51,6 @@ export class JSONStaticFieldWriter extends JSONTemplateFieldWriterInternal {
   }
 
   protected override macroContext(_field: StaticImageField) {
-    if (this.behavior.includeBiboInContext()) {
-      return JSONTemplateFieldContentStatic.CONTEXT_VERBATIM;
-    } else {
-      return JSONTemplateFieldContentStatic.CONTEXT_VERBATIM_NO_BIBO;
-    }
+    return JSONTemplateFieldContentStatic.CONTEXT_VERBATIM;
   }
 }

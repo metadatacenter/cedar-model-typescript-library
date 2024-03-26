@@ -1,6 +1,8 @@
 export class JsonPath {
   private readonly path: Array<string | number>;
 
+  public static ANY: string = '*';
+
   constructor(...pathComponents: Array<string | number>) {
     this.path = pathComponents;
   }
@@ -40,5 +42,23 @@ export class JsonPath {
       return null;
     }
     return this.path[this.path.length - 1];
+  }
+
+  endsIn(...pathComponents: Array<string | number>): boolean {
+    // console.log(this.toString(), pathComponents);
+    for (let i = 1; i <= pathComponents.length; i++) {
+      if (i > this.path.length) {
+        // console.log('RET FALSE 1');
+        return false;
+      }
+      const pc = pathComponents[pathComponents.length - i];
+      // console.log('--> ' + pc);
+      if (this.path[this.path.length - i] !== pc && pc != JsonPath.ANY) {
+        // console.log('RET FALSE 2');
+        return false;
+      }
+    }
+    // console.log('RET TRUE');
+    return true;
   }
 }

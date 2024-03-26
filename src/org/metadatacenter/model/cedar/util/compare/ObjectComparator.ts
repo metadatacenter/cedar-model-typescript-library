@@ -5,6 +5,7 @@ import { Primitive } from '../../types/basic-types/Primitive';
 import { JsonPath } from '../path/JsonPath';
 import { ComparisonErrorType } from './ComparisonErrorType';
 import { JsonSchema } from '../../constants/JsonSchema';
+import { CedarModel } from '../../constants/CedarModel';
 
 type ComparableObject = JsonNode;
 
@@ -80,9 +81,15 @@ export class ObjectComparator {
               new ComparisonError('oco01', ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT, newPath),
             );
           } else if (!(key in obj2)) {
-            comparisonResult.addBlueprintComparisonError(
-              new ComparisonError('oco02', ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, newPath),
-            );
+            if (newPath.endsIn(CedarModel.literals, JsonPath.ANY, CedarModel.selectedByDefault)) {
+              comparisonResult.addBlueprintComparisonWarning(
+                new ComparisonError('wco02', ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, newPath),
+              );
+            } else {
+              comparisonResult.addBlueprintComparisonError(
+                new ComparisonError('oco02', ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, newPath),
+              );
+            }
           } else if (typeof obj1[key] === 'object' && obj1[key] !== null && typeof obj2[key] === 'object' && obj2[key] !== null) {
             recurse(newPath, obj1[key] as ComparableObject, obj2[key] as ComparableObject);
           } else if (obj1[key] !== obj2[key]) {

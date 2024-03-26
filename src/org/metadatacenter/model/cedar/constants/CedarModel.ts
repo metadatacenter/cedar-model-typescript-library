@@ -34,6 +34,7 @@ export class CedarModel {
   static valueSets = 'valueSets';
   static classes = 'classes';
   static branches = 'branches';
+  static actions = 'actions';
 
   static multipleChoice = 'multipleChoice';
   static literals = 'literals';
@@ -73,6 +74,12 @@ export class CedarModel {
     static maxDepth: string = 'maxDepth';
 
     static vsCollection: string = 'vsCollection';
+
+    static termUri: string = 'termUri';
+    static sourceUri: string = 'sourceUri';
+
+    static action: string = 'action';
+    static to: string = 'to';
   };
 
   static Ui = class {

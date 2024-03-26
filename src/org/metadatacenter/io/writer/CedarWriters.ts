@@ -34,6 +34,8 @@ import { ControlledTermValueSet } from '../../model/cedar/field/dynamic/controll
 import { JSONValueConstraintsValueSetWriter } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/value-set/JSONValueConstraintsValueSetWriter';
 import { JSONTemplateElementWriter } from './JSONTemplateElementWriter';
 import { JSONAnnotationsWriter } from './JSONAnnotationsWriter';
+import { ControlledTermAction } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/action/ControlledTermAction';
+import { JSONValueConstraintsActionWriter } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/action/JSONValueConstraintsActionWriter';
 
 export class CedarWriters {
   private readonly behavior: JSONWriterBehavior;
@@ -82,6 +84,7 @@ export class CedarWriters {
       [ControlledTermClass.className, new JSONValueConstraintsClassWriter(behavior, this)],
       [ControlledTermBranch.className, new JSONValueConstraintsBranchWriter(behavior, this)],
       [ControlledTermValueSet.className, new JSONValueConstraintsValueSetWriter(behavior, this)],
+      [ControlledTermAction.className, new JSONValueConstraintsActionWriter(behavior, this)],
     ]);
   }
 

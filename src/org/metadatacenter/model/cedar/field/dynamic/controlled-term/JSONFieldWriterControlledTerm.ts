@@ -65,6 +65,14 @@ export class JSONFieldWriterControlledTerm extends JSONTemplateFieldWriterIntern
     });
     vcNode[CedarModel.valueSets] = valueSetList;
 
+    const actionsList: Array<JsonNode> = JsonNodeClass.getEmptyList();
+    field.valueConstraints.actions.forEach((clazz) => {
+      actionsList.push(this.writers.getJSONWriterForValueConstraint(clazz).getAsJsonNode(clazz));
+    });
+    if (actionsList.length > 0) {
+      vcNode[CedarModel.actions] = actionsList;
+    }
+
     // TODO: this should be not in the model
     vcNode[CedarModel.multipleChoice] = false;
   }

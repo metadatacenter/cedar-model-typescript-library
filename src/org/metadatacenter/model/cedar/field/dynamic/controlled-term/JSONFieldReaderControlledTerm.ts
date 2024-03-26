@@ -12,6 +12,7 @@ import { ControlledTermValueSet } from './value-constraint/value-set/ControlledT
 import { ControlledTermDefaultValue } from './value-constraint/ControlledTermDefaultValue';
 import { JsonSchema } from '../../../constants/JsonSchema';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
+import { ControlledTermAction } from './value-constraint/action/ControlledTermAction';
 
 export class JSONFieldReaderControlledTerm extends JSONFieldTypeSpecificReader {
   override read(
@@ -37,6 +38,7 @@ export class JSONFieldReaderControlledTerm extends JSONFieldTypeSpecificReader {
       field.valueConstraints.branches = this.getBranches(ReaderUtil.getNodeList(valueConstraints, CedarModel.branches));
       field.valueConstraints.valueSets = this.getValueSets(ReaderUtil.getNodeList(valueConstraints, CedarModel.valueSets));
       field.valueConstraints.defaultValue = this.getDefaultValue(ReaderUtil.getNodeOrNull(valueConstraints, CedarModel.defaultValue));
+      field.valueConstraints.actions = this.getActions(ReaderUtil.getNodeList(valueConstraints, CedarModel.actions));
     }
     return field;
   }
@@ -95,6 +97,21 @@ export class JSONFieldReaderControlledTerm extends JSONFieldTypeSpecificReader {
         ReaderUtil.getURI(vs, CedarModel.ValueConstraints.uri),
       );
       ret.push(branch);
+    });
+    return ret;
+  }
+  private getActions(nodeList: Array<JsonNode>): Array<ControlledTermAction> {
+    const ret: Array<ControlledTermAction> = [];
+    nodeList.forEach((vs) => {
+      const action = new ControlledTermAction(
+        ReaderUtil.getNumber(vs, CedarModel.ValueConstraints.to),
+        ReaderUtil.getStringOrEmpty(vs, CedarModel.ValueConstraints.action),
+        ReaderUtil.getURI(vs, CedarModel.ValueConstraints.termUri),
+        ReaderUtil.getURI(vs, CedarModel.ValueConstraints.sourceUri),
+        ReaderUtil.getStringOrEmpty(vs, CedarModel.ValueConstraints.source),
+        ReaderUtil.getStringOrEmpty(vs, CedarModel.ValueConstraints.type),
+      );
+      ret.push(action);
     });
     return ret;
   }

@@ -76,6 +76,7 @@ import { ComparisonError } from './org/metadatacenter/model/cedar/util/compare/C
 import { RoundTrip } from './org/metadatacenter/io/roundtrip/RoundTrip';
 import { JsonSchema } from './org/metadatacenter/model/cedar/constants/JsonSchema';
 import { CedarModel } from './org/metadatacenter/model/cedar/constants/CedarModel';
+import { ControlledTermActionBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/action/ControlledTermActionBuilder';
 
 export { CedarBuilders };
 export { CedarWriters };
@@ -128,6 +129,7 @@ export { ControlledTermBranchBuilder };
 export { ControlledTermClassBuilder };
 export { ControlledTermOntologyBuilder };
 export { ControlledTermValueSetBuilder };
+export { ControlledTermActionBuilder };
 
 export { ChildDeploymentInfo, ChildDeploymentInfoBuilder };
 

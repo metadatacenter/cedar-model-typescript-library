@@ -4,6 +4,7 @@ import { Annotations } from '../../../model/cedar/annotation/Annotations';
 import { AnnotationAtId } from '../../../model/cedar/annotation/AnnotationAtId';
 import { AnnotationAtValue } from '../../../model/cedar/annotation/AnnotationAtValue';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
+import { YamlValues } from '../../../model/cedar/constants/YamlValues';
 
 export class YAMLAnnotationsWriter {
   private behavior: JSONWriterBehavior;
@@ -21,12 +22,14 @@ export class YAMLAnnotationsWriter {
         if (src instanceof AnnotationAtId) {
           const annotation = {
             [YamlKeys.name]: name,
-            [YamlKeys.id]: src.getAtId(),
+            [YamlKeys.type]: YamlValues.id,
+            [YamlKeys.value]: src.getAtId(),
           };
           annotationList.push(annotation);
         } else if (src instanceof AnnotationAtValue) {
           const annotation = {
             [YamlKeys.name]: name,
+            [YamlKeys.type]: YamlValues.value,
             [YamlKeys.value]: src.getAtValue(),
           };
           annotationList.push(annotation);

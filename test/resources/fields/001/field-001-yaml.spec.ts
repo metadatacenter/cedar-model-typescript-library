@@ -15,7 +15,7 @@ describe('YAMLTemplateFieldWriter - field-001', () => {
 
     const stringified = yamlWriter.getAsYamlString(jsonFieldReaderResult.field);
     // console.log(stringified);
-    expect(stringified.length).toBe(805);
+    expect(stringified.length).toBe(837);
     // TODO: YAML: Discuss annotations serialization syntax vs java library
     // TODO: YAML: discuss type serialization
     expect(stringified).toContain('type: templateField');
@@ -43,8 +43,10 @@ describe('YAMLTemplateFieldWriter - field-001', () => {
     expect(stringified).toContain('modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95');
     expect(stringified).toContain('annotations:');
     expect(stringified).toContain('  - name: https://datacite.com/doi');
-    expect(stringified).toContain('    id: https://doi.org/10.82658/8vc1-abcd');
+    expect(stringified).toContain('    type: id');
+    expect(stringified).toContain('    value: https://doi.org/10.82658/8vc1-abcd');
     expect(stringified).toContain('  - name: foo');
+    expect(stringified).toContain('    type: value');
     expect(stringified).toContain('    value: bar');
   });
 });

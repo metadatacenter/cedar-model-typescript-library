@@ -1,0 +1,23 @@
+template: '#024 Template with simple controlled field'
+id: https://repo.metadatacenter.org/templates/d942c27c-8c5f-420d-b540-a6e9400d5f55
+version: 0.0.1
+status: bibo:draft
+modelVersion: 1.6.0
+children:
+- field: Controlled
+  description: Help Text
+  id: https://repo.metadatacenter.org/template-fields/8fbf3e19-5c8a-4b72-9463-c1769fc73f96
+  modelVersion: 1.6.0
+  multiple: true
+  minItems: 4
+  maxItems: 7
+  inputType: textfield
+  datatype: xsd:anyURI
+  required: true
+  valueRecommendationEnabled: true
+  values:
+  - class: Music
+    termUri: http://purl.bioontology.org/ontology/MESH/D009146
+    label: Music
+    inputType: OntologyClass
+    source: MESH

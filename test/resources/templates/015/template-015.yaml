@@ -1,0 +1,20 @@
+template: '#015 Complex number'
+id: https://repo.metadatacenter.org/templates/eafa53b5-220f-4480-ab5f-518e9136b88c
+version: 0.0.1
+status: bibo:draft
+modelVersion: 1.6.0
+children:
+- field: Complex number
+  description: Help Text
+  id: https://repo.metadatacenter.org/template-fields/005c1ca8-0c7f-4114-b647-df9d3af0e35d
+  modelVersion: 1.6.0
+  inputType: numeric
+  datatype: xsd:decimal
+  required: true
+  minValue: 32
+  maxValue: 1024
+  decimalPlaces: 3
+  unit: um.
+  altLabel:
+  - Alt label 1
+  - Alt label 2

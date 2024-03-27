@@ -1,0 +1,26 @@
+template: '#030 Template with actions'
+id: https://repo.metadatacenter.org/templates/7563ef7a-c390-4a31-bcab-bb6ea27bfb7b
+version: 0.0.1
+status: bibo:draft
+modelVersion: 1.6.0
+children:
+- field: Untitled
+  description: Help Text
+  id: https://repo.metadatacenter.org/template-fields/ded5aa1e-b665-4897-b5b3-2084eff12a0c
+  modelVersion: 1.6.0
+  inputType: textfield
+  datatype: xsd:anyURI
+  values:
+  - ontology: Health Ontology for Minority Equity
+    acronym: HOME
+    termUri: https://data.bioontology.org/ontologies/HOME
+  - class: Verbal_Abuse
+    termUri: http://www.semanticweb.org/navyarenjith/ontologies/2021/3/untitled-ontology-5#Verbal_Abuse
+    label: Verbal_Abuse
+    inputType: OntologyClass
+    source: HOME
+  - branch: calories
+    termUri: http://www.semanticweb.org/jbagwell/ontologies/2017/9/untitled-ontology-6#calories
+    acronym: CWD
+    source: undefined (CWD)
+    maxDepth: 0

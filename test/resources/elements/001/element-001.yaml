@@ -1,0 +1,13 @@
+element: '#001 Element with attribute-value'
+id: https://repo.metadatacenter.org/template-elements/8a57aa93-3a95-41c1-97be-1cc43fba1634
+version: 0.0.1
+status: bibo:draft
+modelVersion: 1.6.0
+children:
+- field: Attribute-Value
+  description: Help Text
+  id: https://repo.metadatacenter.org/template-fields/162ab456-e5ec-400c-a713-c46c29adf3b8
+  modelVersion: 1.6.0
+  multiple: true
+  minItems: 0
+  inputType: attribute-value

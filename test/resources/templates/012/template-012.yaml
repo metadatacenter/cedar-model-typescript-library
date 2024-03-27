@@ -1,0 +1,14 @@
+template: '#012 Template with Email field'
+id: https://repo.metadatacenter.org/templates/64817890-6984-4cea-93b0-d97d60f81232
+version: 0.0.1
+status: bibo:draft
+modelVersion: 1.6.0
+children:
+- field: Email field
+  description: Email field help text
+  id: https://repo.metadatacenter.org/template-fields/4cb127ae-2f02-4bb2-8a21-01dcde965066
+  modelVersion: 1.6.0
+  label: Email field preferred
+  inputType: email
+  datatype: xsd:string
+  required: true

@@ -1,0 +1,29 @@
+template: '#021 Template with MultipleChoice'
+id: https://repo.metadatacenter.org/templates/af8dff49-a061-491a-8304-2bc7a5308bb3
+version: 0.0.1
+status: bibo:draft
+modelVersion: 1.6.0
+children:
+- field: Multiple choice with default
+  description: Help Text
+  id: https://repo.metadatacenter.org/template-fields/beda1f11-147e-4e3b-b544-6fe823952382
+  modelVersion: 1.6.0
+  inputType: radio
+  datatype: xsd:string
+  values:
+  - label: Option 1
+  - label: Option 2
+    selected: true
+  - label: Option 3
+  - label: Option 4
+  - label: Option 5
+- field: Multiple choice without default
+  description: Help Text
+  id: https://repo.metadatacenter.org/template-fields/8a0f2936-94c9-4cab-9a55-05afb4538c0f
+  modelVersion: 1.6.0
+  inputType: radio
+  datatype: xsd:string
+  required: true
+  values:
+  - label: Option 1
+  - label: Option2

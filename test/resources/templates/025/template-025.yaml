@@ -1,0 +1,15 @@
+template: '#025 Template with hidden field'
+id: https://repo.metadatacenter.org/templates/295e8d40-f633-4576-9e64-2598947ef002
+version: 0.0.1
+status: bibo:draft
+modelVersion: 1.6.0
+children:
+- field: Hidden field
+  description: Hidden field help text
+  id: https://repo.metadatacenter.org/template-fields/98e1ba09-3792-4831-92d4-f9bd481310ac
+  modelVersion: 1.6.0
+  label: Hidden field preferred
+  inputType: textfield
+  datatype: xsd:string
+  default: default value
+  hidden: true

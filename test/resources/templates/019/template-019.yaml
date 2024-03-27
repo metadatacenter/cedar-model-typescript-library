@@ -1,0 +1,19 @@
+template: '#019 Template with Pick from a list SingleSelect'
+id: https://repo.metadatacenter.org/templates/35f02de3-11ff-43b1-ac9f-0b6ff47844cf
+version: 0.0.1
+status: bibo:draft
+modelVersion: 1.6.0
+children:
+- field: Pick from
+  description: Help Text
+  id: https://repo.metadatacenter.org/template-fields/74d1cdc6-dc3c-4acd-8305-a4ccf9abd9fb
+  modelVersion: 1.6.0
+  label: Pick from a list
+  inputType: list
+  datatype: xsd:string
+  required: true
+  values:
+  - label: Option 1
+  - label: Option 2
+    selected: true
+  - label: Option 3

@@ -1,0 +1,36 @@
+template: '#014 Template with various numbers'
+id: https://repo.metadatacenter.org/templates/e08e0c7a-5a0d-46d7-8430-6ced51296e95
+version: 0.0.1
+status: bibo:draft
+modelVersion: 1.6.0
+children:
+- field: Decimal
+  description: Help Text
+  id: tmp-1709772870674-279341
+  modelVersion: 1.6.0
+  inputType: numeric
+  datatype: xsd:decimal
+- field: Long
+  description: Help Text
+  id: tmp-1709772896270-304937
+  modelVersion: 1.6.0
+  inputType: numeric
+  datatype: xsd:long
+- field: Integer
+  description: Help Text
+  id: tmp-1709772919935-328601
+  modelVersion: 1.6.0
+  inputType: numeric
+  datatype: xsd:int
+- field: Double
+  description: Help Text
+  id: tmp-1709772946038-354705
+  modelVersion: 1.6.0
+  inputType: numeric
+  datatype: xsd:double
+- field: Float
+  description: Help Text
+  id: tmp-1709772964268-372935
+  modelVersion: 1.6.0
+  inputType: numeric
+  datatype: xsd:float

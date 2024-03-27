@@ -1,0 +1,38 @@
+template: '#018 Template with checkbox'
+id: https://repo.metadatacenter.org/templates/cb92ca40-3717-4533-93c4-5efee2aed2fd
+version: 0.0.1
+status: bibo:draft
+modelVersion: 1.6.0
+children:
+- field: My checkbox 1
+  description: Help Text
+  id: https://repo.metadatacenter.org/template-fields/bc68d373-562f-4725-9e67-433999363deb
+  modelVersion: 1.6.0
+  multiple: true
+  minItems: 1
+  label: Required checkbox
+  inputType: checkbox
+  datatype: xsd:string
+  required: true
+  multipleChoice: true
+  values:
+  - label: Option 1
+  - label: Option 2
+    selected: true
+  - label: Option 3
+    selected: true
+  - label: Option 4
+- field: My checkbox 2
+  description: Help Text
+  id: https://repo.metadatacenter.org/template-fields/bd25e554-c588-48ce-824f-8383cd3eafcc
+  modelVersion: 1.6.0
+  multiple: true
+  minItems: 1
+  label: Non-required checkbox
+  inputType: checkbox
+  datatype: xsd:string
+  multipleChoice: true
+  values:
+  - label: Radio 1
+  - label: Radio 2
+  - label: Radio 3

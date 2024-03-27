@@ -1,0 +1,14 @@
+template: Template with extra
+description: Template desc
+id: https://repo.metadatacenter.org/templates/2df0a567-a52c-4df2-aa41-2458b911d3a8
+identifier: template-identifier
+version: 0.0.1
+status: bibo:draft
+modelVersion: 1.6.0
+children:
+- field: Text field
+  description: Help Text
+  id: tmp-1709246251573-870301
+  modelVersion: 1.6.0
+  inputType: textfield
+  datatype: xsd:string

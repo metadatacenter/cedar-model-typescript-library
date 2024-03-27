@@ -4,30 +4,30 @@ version: 0.0.1
 status: bibo:draft
 modelVersion: 1.6.0
 children:
-- field: Controlled 1
-  description: Help Text
-  id: https://repo.metadatacenter.org/template-fields/ca4e4afa-ae85-4ac2-aa9b-5dd003f4ac8c
-  modelVersion: 1.6.0
-  inputType: textfield
-  datatype: xsd:anyURI
-  default: http://purl.bioontology.org/ontology/MESH/C039047
-  altLabel:
-  - ALT label 1
-  - ALT label 2
-  values:
-  - ontology: Medical Subject Headings
-    acronym: MESH
-    termUri: https://data.bioontology.org/ontologies/MESH
-  - valueSet: Progressive Disease
-    collection: CADSR-VS
-    termUri: https://cadsr.nci.nih.gov/metadata/CADSR-VS/ad5886076616ec6c35558648aca5abf942d6147a
-  - class: Music UI Label added in the editor
-    termUri: http://purl.bioontology.org/ontology/MESH/D009146
-    label: Music
-    inputType: OntologyClass
-    source: MESH
-  - branch: Mathematical Concepts
-    termUri: http://purl.bioontology.org/ontology/MESH/D055641
-    acronym: MESH
-    source: Medical Subject Headings (MESH)
-    maxDepth: 0
+  - field: Controlled 1
+    description: Help Text
+    id: https://repo.metadatacenter.org/template-fields/ca4e4afa-ae85-4ac2-aa9b-5dd003f4ac8c
+    modelVersion: 1.6.0
+    inputType: textfield
+    datatype: xsd:anyURI
+    default: http://purl.bioontology.org/ontology/MESH/C039047
+    altLabel:
+      - ALT label 1
+      - ALT label 2
+    values:
+      - ontology: Medical Subject Headings
+        acronym: MESH
+        termUri: https://data.bioontology.org/ontologies/MESH
+      - valueSet: Progressive Disease
+        collection: CADSR-VS
+        termUri: https://cadsr.nci.nih.gov/metadata/CADSR-VS/ad5886076616ec6c35558648aca5abf942d6147a
+      - class: Music UI Label added in the editor
+        termUri: http://purl.bioontology.org/ontology/MESH/D009146
+        label: Music
+        inputType: OntologyClass
+        source: MESH
+      - branch: Mathematical Concepts
+        termUri: http://purl.bioontology.org/ontology/MESH/D055641
+        acronym: MESH
+        source: Medical Subject Headings (MESH)
+        maxDepth: 0

@@ -4,20 +4,20 @@ version: 0.0.1
 status: bibo:draft
 modelVersion: 1.6.0
 children:
-- field: MultiSelect
-  description: Help Text
-  id: https://repo.metadatacenter.org/template-fields/dd01ffec-ab1a-4ae9-b882-d57254d07b57
-  modelVersion: 1.6.0
-  multiple: true
-  minItems: 1
-  label: MultiSelect Pick from a list
-  inputType: list
-  datatype: xsd:string
-  multipleChoice: true
-  values:
-  - label: Option 1
-    selected: true
-  - label: Option 2
-  - label: Option 3
-    selected: true
-  - label: Option 4
+  - field: MultiSelect
+    description: Help Text
+    id: https://repo.metadatacenter.org/template-fields/dd01ffec-ab1a-4ae9-b882-d57254d07b57
+    modelVersion: 1.6.0
+    multiple: true
+    minItems: 1
+    label: MultiSelect Pick from a list
+    inputType: list
+    datatype: xsd:string
+    multipleChoice: true
+    values:
+      - label: Option 1
+        selected: true
+      - label: Option 2
+      - label: Option 3
+        selected: true
+      - label: Option 4

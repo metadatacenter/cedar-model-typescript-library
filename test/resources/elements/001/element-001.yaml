@@ -4,10 +4,10 @@ version: 0.0.1
 status: bibo:draft
 modelVersion: 1.6.0
 children:
-- field: Attribute-Value
-  description: Help Text
-  id: https://repo.metadatacenter.org/template-fields/162ab456-e5ec-400c-a713-c46c29adf3b8
-  modelVersion: 1.6.0
-  multiple: true
-  minItems: 0
-  inputType: attribute-value
+  - field: Attribute-Value
+    description: Help Text
+    id: https://repo.metadatacenter.org/template-fields/162ab456-e5ec-400c-a713-c46c29adf3b8
+    modelVersion: 1.6.0
+    multiple: true
+    minItems: 0
+    inputType: attribute-value

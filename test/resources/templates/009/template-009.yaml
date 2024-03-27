@@ -1,0 +1,50 @@
+template: Template with Static Fields
+id: https://repo.metadatacenter.org/templates/8ebf7294-7ae0-457c-b9c0-99df809176f8
+version: 0.0.1
+status: bibo:draft
+modelVersion: 1.6.0
+children:
+  - field: Page break field
+    description: Help text
+    id: https://repo.metadatacenter.org/template-fields/61882375-7659-49e9-8c07-33f40d6fe4a5
+    modelVersion: 1.6.0
+    label: Preferred label
+    inputType: page-break
+    content:
+      empty: true
+      present: false
+  - field: Section break
+    description: Help Text
+    id: https://repo.metadatacenter.org/template-fields/66d294ce-bdf5-4fa9-b3bb-424d972acd4f
+    modelVersion: 1.6.0
+    label: Preferred label
+    inputType: section-break
+    content:
+      empty: true
+      present: false
+  - field: Image field
+    description: Help Text
+    id: https://repo.metadatacenter.org/template-fields/6d3e4f87-13cd-4c50-bee9-96c269d9f60e
+    modelVersion: 1.6.0
+    label: Preferred label
+    inputType: image
+    content:
+      empty: false
+      present: true
+  - field: Rich text
+    description: Help Text
+    id: https://repo.metadatacenter.org/template-fields/adc5e2fe-a9ba-46b8-aa38-64501fda73e8
+    modelVersion: 1.6.0
+    label: Preferred label
+    inputType: richtext
+    content:
+      empty: false
+      present: true
+  - field: Video name
+    description: Help Text
+    id: https://repo.metadatacenter.org/template-fields/adc5e2fe-a9ba-46b8-aa38-64501fda8888
+    modelVersion: 1.6.0
+    inputType: youtube
+    content:
+      empty: false
+      present: true

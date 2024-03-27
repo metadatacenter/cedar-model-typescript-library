@@ -5,9 +5,9 @@ version: 0.0.1
 status: bibo:draft
 modelVersion: 1.6.0
 children:
-- field: Textfield
-  description: Help Text
-  id: https://repo.metadatacenter.org/template-fields/9efde92f-63b9-427f-b071-36ea57de1b7e
-  modelVersion: 1.6.0
-  inputType: textfield
-  datatype: xsd:string
+  - field: Textfield
+    description: Help Text
+    id: https://repo.metadatacenter.org/template-fields/9efde92f-63b9-427f-b071-36ea57de1b7e
+    modelVersion: 1.6.0
+    inputType: textfield
+    datatype: xsd:string

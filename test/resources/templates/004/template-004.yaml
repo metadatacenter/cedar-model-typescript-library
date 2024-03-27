@@ -1,0 +1,40 @@
+template: Template with page breaks
+id: https://repo.metadatacenter.org/templates/96e25233-2b5a-42a2-a78b-65921f7ef308
+version: 0.0.1
+status: bibo:draft
+modelVersion: 1.6.0
+children:
+  - field: Field 1
+    description: Help Text
+    id: https://repo.metadatacenter.org/template-fields/60314dfd-fbe6-43ad-8e94-bc6263b5ac8a
+    modelVersion: 1.6.0
+    inputType: textfield
+    datatype: xsd:string
+  - field: Page break 1
+    description: Help Text
+    id: https://repo.metadatacenter.org/template-fields/f5b6e0a6-d7f5-456c-a622-2c083fa240ec
+    modelVersion: 1.6.0
+    inputType: page-break
+    content:
+      empty: true
+      present: false
+  - field: Field 2
+    description: Help Text
+    id: https://repo.metadatacenter.org/template-fields/77930e4a-2f45-4552-a2d3-4e8dbd3b0883
+    modelVersion: 1.6.0
+    inputType: textfield
+    datatype: xsd:string
+  - field: Page break 2
+    description: Help Text
+    id: https://repo.metadatacenter.org/template-fields/df0b0bfb-f262-49dd-8b99-30cc00701af8
+    modelVersion: 1.6.0
+    inputType: page-break
+    content:
+      empty: true
+      present: false
+  - field: Field 3
+    description: Help Text
+    id: https://repo.metadatacenter.org/template-fields/cbfb3c2a-e1a9-44c8-a97a-186a558a02a5
+    modelVersion: 1.6.0
+    inputType: textfield
+    datatype: xsd:string

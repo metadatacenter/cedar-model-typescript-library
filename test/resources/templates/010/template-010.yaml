@@ -4,39 +4,39 @@ version: 0.0.1
 status: bibo:draft
 modelVersion: 1.6.0
 children:
-- field: Simple date
-  description: Help text
-  id: https://repo.metadatacenter.org/template-fields/d44a1d82-5457-4dce-95f9-0400c7b4cb80
-  modelVersion: 1.6.0
-  label: Simple date preferred
-  inputType: temporal
-  datatype: xsd:date
-  timeZone: false
-  granularity: day
-  timeFormat: 12h
-- field: Simple time
-  description: Help Text
-  id: https://repo.metadatacenter.org/template-fields/40db78e1-834d-46f8-92c3-d8a57571bf0a
-  modelVersion: 1.6.0
-  label: Simple time preferred
-  inputType: temporal
-  datatype: xsd:time
-  timeZone: true
-  granularity: second
-  timeFormat: 12h
-- field: Complex datetime
-  description: Help Text 2
-  id: https://repo.metadatacenter.org/template-fields/2d2a43fc-c599-4852-a996-333a1b998a6f
-  modelVersion: 1.6.0
-  multiple: true
-  minItems: 1
-  label: Complex datetime preferred
-  inputType: temporal
-  datatype: xsd:dateTime
-  required: true
-  altLabel:
-  - Alt label 1
-  - Alt label 2
-  timeZone: true
-  granularity: decimalSecond
-  timeFormat: 12h
+  - field: Simple date
+    description: Help text
+    id: https://repo.metadatacenter.org/template-fields/d44a1d82-5457-4dce-95f9-0400c7b4cb80
+    modelVersion: 1.6.0
+    label: Simple date preferred
+    inputType: temporal
+    datatype: xsd:date
+    timeZone: false
+    granularity: day
+    timeFormat: 12h
+  - field: Simple time
+    description: Help Text
+    id: https://repo.metadatacenter.org/template-fields/40db78e1-834d-46f8-92c3-d8a57571bf0a
+    modelVersion: 1.6.0
+    label: Simple time preferred
+    inputType: temporal
+    datatype: xsd:time
+    timeZone: true
+    granularity: second
+    timeFormat: 12h
+  - field: Complex datetime
+    description: Help Text 2
+    id: https://repo.metadatacenter.org/template-fields/2d2a43fc-c599-4852-a996-333a1b998a6f
+    modelVersion: 1.6.0
+    multiple: true
+    minItems: 1
+    label: Complex datetime preferred
+    inputType: temporal
+    datatype: xsd:dateTime
+    required: true
+    altLabel:
+      - Alt label 1
+      - Alt label 2
+    timeZone: true
+    granularity: decimalSecond
+    timeFormat: 12h

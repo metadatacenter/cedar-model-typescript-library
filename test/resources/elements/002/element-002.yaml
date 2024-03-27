@@ -4,21 +4,21 @@ version: 0.0.1
 status: bibo:draft
 modelVersion: 1.6.0
 children:
-- field: Text field
-  description: Help Text
-  id: https://repo.metadatacenter.org/template-fields/fae6da00-d104-4787-bf62-1506a79ce4f8
-  modelVersion: 1.6.0
-  inputType: textfield
-  datatype: xsd:string
-- field: Email
-  description: Help Text
-  id: https://repo.metadatacenter.org/template-fields/d1da1935-5bb8-4800-92f3-bd1020e551d0
-  modelVersion: 1.6.0
-  inputType: email
-  datatype: xsd:string
-- field: Numeric
-  description: Help Text
-  id: https://repo.metadatacenter.org/template-fields/c200faae-8a7c-40a1-88ea-5d385230f242
-  modelVersion: 1.6.0
-  inputType: numeric
-  datatype: xsd:decimal
+  - field: Text field
+    description: Help Text
+    id: https://repo.metadatacenter.org/template-fields/fae6da00-d104-4787-bf62-1506a79ce4f8
+    modelVersion: 1.6.0
+    inputType: textfield
+    datatype: xsd:string
+  - field: Email
+    description: Help Text
+    id: https://repo.metadatacenter.org/template-fields/d1da1935-5bb8-4800-92f3-bd1020e551d0
+    modelVersion: 1.6.0
+    inputType: email
+    datatype: xsd:string
+  - field: Numeric
+    description: Help Text
+    id: https://repo.metadatacenter.org/template-fields/c200faae-8a7c-40a1-88ea-5d385230f242
+    modelVersion: 1.6.0
+    inputType: numeric
+    datatype: xsd:decimal

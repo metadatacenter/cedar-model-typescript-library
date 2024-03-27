@@ -4,9 +4,9 @@ version: 0.0.1
 status: bibo:draft
 modelVersion: 1.6.0
 children:
-- field: Textfield
-  description: Help Text
-  id: tmp-1708998934299-6744386
-  modelVersion: 1.6.0
-  inputType: textfield
-  datatype: xsd:string
+  - field: Textfield
+    description: Help Text
+    id: tmp-1708998934299-6744386
+    modelVersion: 1.6.0
+    inputType: textfield
+    datatype: xsd:string

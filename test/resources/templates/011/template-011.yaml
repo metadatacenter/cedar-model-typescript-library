@@ -4,15 +4,15 @@ version: 0.0.1
 status: bibo:draft
 modelVersion: 1.6.0
 children:
-- field: TextField1
-  description: Help Text
-  id: https://repo.metadatacenter.org/template-fields/372bc0d4-3ca4-46b6-b09b-04d4df12a0e1
-  modelVersion: 1.6.0
-  multiple: true
-  minItems: 0
-  label: TextField 1 preferred label
-  inputType: textfield
-  datatype: xsd:string
-  altLabel:
-  - TextField1 Alt1
-  - TextField1 Alt2
+  - field: TextField1
+    description: Help Text
+    id: https://repo.metadatacenter.org/template-fields/372bc0d4-3ca4-46b6-b09b-04d4df12a0e1
+    modelVersion: 1.6.0
+    multiple: true
+    minItems: 0
+    label: TextField 1 preferred label
+    inputType: textfield
+    datatype: xsd:string
+    altLabel:
+      - TextField1 Alt1
+      - TextField1 Alt2

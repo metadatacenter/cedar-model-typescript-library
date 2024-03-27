@@ -11,7 +11,7 @@ default: default value
 minLength: 10
 maxLength: 100
 altLabel:
-- alt label1
-- alt label 2
-- alt label 3
+  - alt label1
+  - alt label 2
+  - alt label 3
 valueRecommendationEnabled: true

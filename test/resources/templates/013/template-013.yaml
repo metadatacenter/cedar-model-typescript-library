@@ -4,9 +4,9 @@ version: 0.0.1
 status: bibo:draft
 modelVersion: 1.6.0
 children:
-- field: Numeric field
-  description: Help Text
-  id: https://repo.metadatacenter.org/template-fields/66140bb4-8165-463a-8399-ea7d516cd0cd
-  modelVersion: 1.6.0
-  inputType: numeric
-  datatype: xsd:decimal
+  - field: Numeric field
+    description: Help Text
+    id: https://repo.metadatacenter.org/template-fields/66140bb4-8165-463a-8399-ea7d516cd0cd
+    modelVersion: 1.6.0
+    inputType: numeric
+    datatype: xsd:decimal

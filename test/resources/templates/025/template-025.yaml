@@ -4,12 +4,12 @@ version: 0.0.1
 status: bibo:draft
 modelVersion: 1.6.0
 children:
-- field: Hidden field
-  description: Hidden field help text
-  id: https://repo.metadatacenter.org/template-fields/98e1ba09-3792-4831-92d4-f9bd481310ac
-  modelVersion: 1.6.0
-  label: Hidden field preferred
-  inputType: textfield
-  datatype: xsd:string
-  default: default value
-  hidden: true
+  - field: Hidden field
+    description: Hidden field help text
+    id: https://repo.metadatacenter.org/template-fields/98e1ba09-3792-4831-92d4-f9bd481310ac
+    modelVersion: 1.6.0
+    label: Hidden field preferred
+    inputType: textfield
+    datatype: xsd:string
+    default: default value
+    hidden: true

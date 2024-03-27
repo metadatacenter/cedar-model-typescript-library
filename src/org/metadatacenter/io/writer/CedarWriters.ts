@@ -43,6 +43,7 @@ import { YAMLAnnotationsWriter } from './yaml/YAMLAnnotationsWriter';
 import { YAMLFieldWriterTextArea } from '../../model/cedar/field/dynamic/textarea/YAMLFieldWriterTextArea';
 import { YAMLFieldWriterTemporal } from '../../model/cedar/field/dynamic/temporal/YAMLFieldWriterTemporal';
 import { YAMLFieldWriterStaticPageBreak } from '../../model/cedar/field/static/page-break/YAMLFieldWriterStaticPageBreak';
+import { YAMLFieldWriterLink } from '../../model/cedar/field/dynamic/link/YAMLFieldWriterLink';
 
 export class CedarWriters {
   private readonly behavior: JSONWriterBehavior;
@@ -107,6 +108,7 @@ export class CedarWriters {
       [CedarFieldType.TEXT, new YAMLFieldWriterTextField(behavior, this)],
       [CedarFieldType.TEXTAREA, new YAMLFieldWriterTextArea(behavior, this)],
       [CedarFieldType.TEMPORAL, new YAMLFieldWriterTemporal(behavior, this)],
+      [CedarFieldType.LINK, new YAMLFieldWriterLink(behavior, this)],
     ]);
 
     this.yamlStaticFieldWriters = new Map<CedarFieldType, YAMLTemplateFieldWriterInternal>([

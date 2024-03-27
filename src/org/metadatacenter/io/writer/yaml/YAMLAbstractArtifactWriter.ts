@@ -24,10 +24,12 @@ export abstract class YAMLAbstractArtifactWriter extends AbstractArtifactWriter 
   }
 
   protected macroNameAndDescription(artifact: AbstractArtifact): JsonNode {
-    return {
-      [YamlKeys.name]: artifact.schema_name,
-      [YamlKeys.description]: artifact.schema_description,
-    } as JsonNode;
+    const node: JsonNode = JsonNodeClass.getEmpty();
+    node[YamlKeys.name] = artifact.schema_name;
+    if (artifact.schema_description !== null && artifact.schema_description !== '') {
+      node[YamlKeys.description] = artifact.schema_description;
+    }
+    return node;
   }
 
   protected macroStatusAndVersion(artifact: AbstractArtifact): JsonNode {

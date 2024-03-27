@@ -40,4 +40,8 @@ export class YamlKeys {
   static footer: string = 'footer';
 
   static children: string = 'children';
+
+  static multiple: string = 'multiple';
+  static minItems: string = 'minItems';
+  static maxItems: string = 'maxItems';
 }

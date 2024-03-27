@@ -1,23 +1,23 @@
-import { JSONWriterBehavior } from '../../behavior/JSONWriterBehavior';
-import { CedarArtifactId } from '../../model/cedar/types/cedar-types/CedarArtifactId';
-import { CedarArtifactType } from '../../model/cedar/types/cedar-types/CedarArtifactType';
-import { JavascriptType } from '../../model/cedar/types/wrapped-types/JavascriptType';
-import { ISODate } from '../../model/cedar/types/wrapped-types/ISODate';
-import { CedarUser } from '../../model/cedar/types/cedar-types/CedarUser';
-import { BiboStatus } from '../../model/cedar/types/wrapped-types/BiboStatus';
-import { PavVersion } from '../../model/cedar/types/wrapped-types/PavVersion';
-import { ArtifactSchema } from '../../model/cedar/types/wrapped-types/ArtifactSchema';
-import { SchemaVersion } from '../../model/cedar/types/wrapped-types/SchemaVersion';
-import { NumberType, NumberTypeValue } from '../../model/cedar/types/wrapped-types/NumberType';
-import { TemporalType, TemporalTypeValue } from '../../model/cedar/types/wrapped-types/TemporalType';
-import { TemporalGranularity, TemporalGranularityValue } from '../../model/cedar/types/wrapped-types/TemporalGranularity';
-import { TimeFormat, TimeFormatValue } from '../../model/cedar/types/wrapped-types/TimeFormat';
-import { UiInputType, UiInputTypeValue } from '../../model/cedar/types/wrapped-types/UiInputType';
-import { AdditionalProperties } from '../../model/cedar/types/wrapped-types/AdditionalProperties';
-import { NullableString } from '../../model/cedar/types/basic-types/NullableString';
-import { JsonNode } from '../../model/cedar/types/basic-types/JsonNode';
-import { JSONTemplateFieldContentDynamic } from '../../model/cedar/util/serialization/JSONTemplateFieldContentDynamic';
-import { URI } from '../../model/cedar/types/wrapped-types/URI';
+import { JSONWriterBehavior } from '../../../behavior/JSONWriterBehavior';
+import { CedarArtifactId } from '../../../model/cedar/types/cedar-types/CedarArtifactId';
+import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
+import { JavascriptType } from '../../../model/cedar/types/wrapped-types/JavascriptType';
+import { ISODate } from '../../../model/cedar/types/wrapped-types/ISODate';
+import { CedarUser } from '../../../model/cedar/types/cedar-types/CedarUser';
+import { BiboStatus } from '../../../model/cedar/types/wrapped-types/BiboStatus';
+import { PavVersion } from '../../../model/cedar/types/wrapped-types/PavVersion';
+import { ArtifactSchema } from '../../../model/cedar/types/wrapped-types/ArtifactSchema';
+import { SchemaVersion } from '../../../model/cedar/types/wrapped-types/SchemaVersion';
+import { NumberType, NumberTypeValue } from '../../../model/cedar/types/wrapped-types/NumberType';
+import { TemporalType, TemporalTypeValue } from '../../../model/cedar/types/wrapped-types/TemporalType';
+import { TemporalGranularity, TemporalGranularityValue } from '../../../model/cedar/types/wrapped-types/TemporalGranularity';
+import { TimeFormat, TimeFormatValue } from '../../../model/cedar/types/wrapped-types/TimeFormat';
+import { UiInputType, UiInputTypeValue } from '../../../model/cedar/types/wrapped-types/UiInputType';
+import { AdditionalProperties } from '../../../model/cedar/types/wrapped-types/AdditionalProperties';
+import { NullableString } from '../../../model/cedar/types/basic-types/NullableString';
+import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
+import { JSONTemplateFieldContentDynamic } from '../../../model/cedar/util/serialization/JSONTemplateFieldContentDynamic';
+import { URI } from '../../../model/cedar/types/wrapped-types/URI';
 
 export class JSONAtomicWriter {
   private behavior: JSONWriterBehavior;
@@ -90,7 +90,7 @@ export class JSONAtomicWriter {
     return id.getValue();
   }
 
-  private writeCedarArtifactType(type: CedarArtifactType): NullableString {
+  protected writeCedarArtifactType(type: CedarArtifactType): NullableString {
     return type.getValue();
   }
 

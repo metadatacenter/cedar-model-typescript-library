@@ -34,7 +34,7 @@ import { CedarFieldType } from '../../model/cedar/types/cedar-types/CedarFieldTy
 import { JSONFieldReaderControlledTerm } from '../../model/cedar/field/dynamic/controlled-term/JSONFieldReaderControlledTerm';
 import { JSONReaderBehavior } from '../../behavior/JSONReaderBehavior';
 import { JSONFieldReaderResult } from './JSONFieldReaderResult';
-import { JSONTemplateFieldWriterInternal } from '../writer/JSONTemplateFieldWriterInternal';
+import { JSONTemplateFieldWriterInternal } from '../writer/json/JSONTemplateFieldWriterInternal';
 import { UnknownTemplateField } from '../../model/cedar/field/UnknownTemplateField';
 import { JSONAbstractArtifactReader } from './JSONAbstractArtifactReader';
 import { ChildDeploymentInfo } from '../../model/cedar/deployment/ChildDeploymentInfo';

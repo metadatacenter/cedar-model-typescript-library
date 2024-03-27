@@ -1,3 +1,3 @@
-import { AbstractArtifactWriter } from '../../../io/writer/AbstractArtifactWriter';
+import { JSONAbstractArtifactWriter } from '../../../io/writer/json/JSONAbstractArtifactWriter';
 
-export abstract class JSONValueConstraintsWriter extends AbstractArtifactWriter {}
+export abstract class JSONValueConstraintsWriter extends JSONAbstractArtifactWriter {}

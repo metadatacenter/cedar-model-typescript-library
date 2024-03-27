@@ -97,5 +97,13 @@
     "alt label 2",
     "alt label 3"
   ],
-  "$schema": "http://json-schema.org/draft-04/schema#"
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "_annotations" : {
+    "https://datacite.com/doi" : {
+      "@id" : "https://doi.org/10.82658/8vc1-abcd"
+    },
+    "foo" : {
+      "@value" : "bar"
+    }
+  }
 }

@@ -5,9 +5,9 @@ import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/ce
 
 describe('JSONFieldReader - field-001', () => {
   test('reads a text field with a lot of features', () => {
-    const templateSource = TestUtil.readTestResourceAsString('fields/001', 'field-001.json');
+    const artifactSource = TestUtil.readTestResourceAsString('fields/001', 'field-001.json');
     const reader: JSONFieldReader = JSONFieldReader.getStrict();
-    const jsonFieldReaderResult = reader.readFromString(templateSource);
+    const jsonFieldReaderResult = reader.readFromString(artifactSource);
     expect(jsonFieldReaderResult).not.toBeNull();
     const parsingResult = jsonFieldReaderResult.parsingResult;
     expect(parsingResult.wasSuccessful()).toBe(true);

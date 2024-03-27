@@ -1,0 +1,17 @@
+    field: '#001 Text Field'
+    description: Text field help text
+    id: https://repo.metadatacenter.org/template-fields/f38b5ef4-a078-4d82-90c0-a9a721ad5ecf
+    version: 0.0.1
+    status: bibo:draft
+    modelVersion: 1.6.0
+    label: Text field preferred
+    inputType: textfield
+datatype: xsd:string
+    default: default value
+    minLength: 10
+    maxLength: 100
+    altLabel:
+    - alt label1
+    - alt label 2
+    - alt label 3
+    valueRecommendationEnabled: true

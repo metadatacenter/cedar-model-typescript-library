@@ -1,7 +1,7 @@
 import { JSONWriterBehavior } from '../../behavior/JSONWriterBehavior';
-import { JSONAtomicWriter } from './JSONAtomicWriter';
-import { JSONTemplateFieldWriterInternal } from './JSONTemplateFieldWriterInternal';
-import { JSONTemplateWriter } from './JSONTemplateWriter';
+import { JSONAtomicWriter } from './json/JSONAtomicWriter';
+import { JSONTemplateFieldWriterInternal } from './json/JSONTemplateFieldWriterInternal';
+import { JSONTemplateWriter } from './json/JSONTemplateWriter';
 import { CedarFieldType } from '../../model/cedar/types/cedar-types/CedarFieldType';
 import { JSONFieldWriterTextField } from '../../model/cedar/field/dynamic/textfield/JSONFieldWriterTextField';
 import { JSONFieldWriterLink } from '../../model/cedar/field/dynamic/link/JSONFieldWriterLink';
@@ -14,7 +14,7 @@ import { JSONFieldWriterStaticRichText } from '../../model/cedar/field/static/ri
 import { JSONFieldWriterStaticYoutube } from '../../model/cedar/field/static/youtube/JSONFieldWriterStaticYoutube';
 import { JSONFieldWriterRadio } from '../../model/cedar/field/dynamic/radio/JSONFieldWriterRadio';
 import { JSONFieldWriterCheckbox } from '../../model/cedar/field/dynamic/checkbox/JSONFieldWriterCheckbox';
-import { YAMLTemplateWriter } from './YAMLTemplateWriter';
+import { YAMLTemplateWriter } from './yaml/YAMLTemplateWriter';
 import { JSONFieldWriterList } from '../../model/cedar/field/dynamic/list/JSONFieldWriterList';
 import { JSONFieldWriterTextArea } from '../../model/cedar/field/dynamic/textarea/JSONFieldWriterTextArea';
 import { JSONFieldWriterPhoneNumber } from '../../model/cedar/field/dynamic/phone-number/JSONFieldWriterPhoneNumber';
@@ -32,21 +32,30 @@ import { ControlledTermBranch } from '../../model/cedar/field/dynamic/controlled
 import { JSONValueConstraintsBranchWriter } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/branch/JSONValueConstraintsBranchWriter';
 import { ControlledTermValueSet } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/value-set/ControlledTermValueSet';
 import { JSONValueConstraintsValueSetWriter } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/value-set/JSONValueConstraintsValueSetWriter';
-import { JSONTemplateElementWriter } from './JSONTemplateElementWriter';
-import { JSONAnnotationsWriter } from './JSONAnnotationsWriter';
+import { JSONTemplateElementWriter } from './json/JSONTemplateElementWriter';
+import { JSONAnnotationsWriter } from './json/JSONAnnotationsWriter';
 import { ControlledTermAction } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/action/ControlledTermAction';
 import { JSONValueConstraintsActionWriter } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/action/JSONValueConstraintsActionWriter';
+import { YAMLTemplateFieldWriterInternal } from './yaml/YAMLTemplateFieldWriterInternal';
+import { YAMLFieldWriterTextField } from '../../model/cedar/field/dynamic/textfield/YAMLFieldWriterTextField';
+import { YAMLAtomicWriter } from './yaml/YAMLAtomicWriter';
+import { YAMLAnnotationsWriter } from './yaml/YAMLAnnotationsWriter';
 
 export class CedarWriters {
   private readonly behavior: JSONWriterBehavior;
-  private readonly dynamicFieldWriters: Map<CedarFieldType, JSONTemplateFieldWriterInternal>;
-  private readonly staticFieldWriters: Map<CedarFieldType, JSONTemplateFieldWriterInternal>;
-  private readonly valueConstraintsWriters: Map<string, AbstractJSONControlledTermValueConstraintWriter>;
+  private readonly jsonDynamicFieldWriters: Map<CedarFieldType, JSONTemplateFieldWriterInternal>;
+  private readonly jsonStaticFieldWriters: Map<CedarFieldType, JSONTemplateFieldWriterInternal>;
+  private readonly jsonValueConstraintsWriters: Map<string, AbstractJSONControlledTermValueConstraintWriter>;
   private readonly jsonAtomicWriter: JSONAtomicWriter;
   private readonly jsonAnnotationsWriter: JSONAnnotationsWriter;
   private readonly jsonTemplateWriter: JSONTemplateWriter;
   private readonly jsonTemplateElementWriter: JSONTemplateElementWriter;
   private readonly yamlTemplateWriter: YAMLTemplateWriter;
+
+  private readonly yamlDynamicFieldWriters: Map<CedarFieldType, YAMLTemplateFieldWriterInternal>;
+  private readonly yamlStaticFieldWriters: Map<CedarFieldType, YAMLTemplateFieldWriterInternal>;
+  private readonly yamlAtomicWriter: YAMLAtomicWriter;
+  private readonly yamlAnnotationsWriter: YAMLAnnotationsWriter;
 
   private constructor(behavior: JSONWriterBehavior) {
     this.behavior = behavior;
@@ -55,8 +64,10 @@ export class CedarWriters {
     this.jsonTemplateWriter = JSONTemplateWriter.getFor(behavior, this);
     this.jsonTemplateElementWriter = JSONTemplateElementWriter.getFor(behavior, this);
     this.yamlTemplateWriter = YAMLTemplateWriter.getFor(behavior, this);
+    this.yamlAtomicWriter = new YAMLAtomicWriter(behavior);
+    this.yamlAnnotationsWriter = new YAMLAnnotationsWriter(behavior);
 
-    this.dynamicFieldWriters = new Map<CedarFieldType, JSONTemplateFieldWriterInternal>([
+    this.jsonDynamicFieldWriters = new Map<CedarFieldType, JSONTemplateFieldWriterInternal>([
       [CedarFieldType.TEXT, new JSONFieldWriterTextField(behavior, this)],
       [CedarFieldType.TEXTAREA, new JSONFieldWriterTextArea(behavior, this)],
       [CedarFieldType.CONTROLLED_TERM, new JSONFieldWriterControlledTerm(behavior, this)],
@@ -71,7 +82,7 @@ export class CedarWriters {
       [CedarFieldType.ATTRIBUTE_VALUE, new JSONFieldWriterAttributeValue(behavior, this)],
     ]);
 
-    this.staticFieldWriters = new Map<CedarFieldType, JSONTemplateFieldWriterInternal>([
+    this.jsonStaticFieldWriters = new Map<CedarFieldType, JSONTemplateFieldWriterInternal>([
       [CedarFieldType.STATIC_PAGE_BREAK, new JSONFieldWriterStaticPageBreak(behavior, this)],
       [CedarFieldType.STATIC_SECTION_BREAK, new JSONFieldWriterStaticSectionsBreak(behavior, this)],
       [CedarFieldType.STATIC_IMAGE, new JSONFieldWriterStaticImage(behavior, this)],
@@ -79,13 +90,18 @@ export class CedarWriters {
       [CedarFieldType.STATIC_YOUTUBE, new JSONFieldWriterStaticYoutube(behavior, this)],
     ]);
 
-    this.valueConstraintsWriters = new Map<string, AbstractJSONControlledTermValueConstraintWriter>([
+    this.jsonValueConstraintsWriters = new Map<string, AbstractJSONControlledTermValueConstraintWriter>([
       [ControlledTermOntology.className, new JSONValueConstraintsOntologyWriter(behavior, this)],
       [ControlledTermClass.className, new JSONValueConstraintsClassWriter(behavior, this)],
       [ControlledTermBranch.className, new JSONValueConstraintsBranchWriter(behavior, this)],
       [ControlledTermValueSet.className, new JSONValueConstraintsValueSetWriter(behavior, this)],
       [ControlledTermAction.className, new JSONValueConstraintsActionWriter(behavior, this)],
     ]);
+
+    this.yamlDynamicFieldWriters = new Map<CedarFieldType, YAMLTemplateFieldWriterInternal>([
+      [CedarFieldType.TEXT, new YAMLFieldWriterTextField(behavior, this)],
+    ]);
+    this.yamlStaticFieldWriters = new Map<CedarFieldType, YAMLTemplateFieldWriterInternal>([]);
   }
 
   public static getStrict(): CedarWriters {
@@ -115,34 +131,55 @@ export class CedarWriters {
   public getJSONFieldWriterForType(cedarFieldType: CedarFieldType): JSONTemplateFieldWriterInternal {
     let writer: JSONTemplateFieldWriterInternal | undefined;
     if (cedarFieldType.isStaticField) {
-      writer = this.staticFieldWriters.get(cedarFieldType);
+      writer = this.jsonStaticFieldWriters.get(cedarFieldType);
     } else {
-      writer = this.dynamicFieldWriters.get(cedarFieldType);
+      writer = this.jsonDynamicFieldWriters.get(cedarFieldType);
     }
     if (writer) {
       return writer;
     }
-    throw new Error(`No writer found for field type: ${cedarFieldType.getValue()}`);
+    throw new Error(`No JSON writer found for field type: ${cedarFieldType.getValue()}`);
   }
 
-  // public getYAMLTemplateWriter(): YAMLTemplateWriter {
-  //   return this.yamlTemplateWriter;
-  // }
+  public getYAMLFieldWriterForType(cedarFieldType: CedarFieldType): YAMLTemplateFieldWriterInternal {
+    let writer: YAMLTemplateFieldWriterInternal | undefined;
+    if (cedarFieldType.isStaticField) {
+      writer = this.yamlStaticFieldWriters.get(cedarFieldType);
+    } else {
+      writer = this.yamlDynamicFieldWriters.get(cedarFieldType);
+    }
+    if (writer) {
+      return writer;
+    }
+    throw new Error(`No YAML writer found for field type: ${cedarFieldType.getValue()}`);
+  }
 
   public getJSONWriterForValueConstraint(object: ControlledTermAbstractValueConstraint): AbstractJSONControlledTermValueConstraintWriter {
     const className = object.className;
-    const writer = this.valueConstraintsWriters.get(className);
+    const writer = this.jsonValueConstraintsWriters.get(className);
     if (writer) {
       return writer;
     }
-    throw new Error(`No writer found for class type: ${className}`);
+    throw new Error(`No JSON writer found for class type: ${className}`);
   }
 
   public getJSONFieldWriterForField(field: TemplateField): JSONTemplateFieldWriterInternal {
     return this.getJSONFieldWriterForType(field.cedarFieldType);
   }
 
+  public getYAMLFieldWriterForField(field: TemplateField): YAMLTemplateFieldWriterInternal {
+    return this.getYAMLFieldWriterForType(field.cedarFieldType);
+  }
+
   getJSONAnnotationsWriter(): JSONAnnotationsWriter {
     return this.jsonAnnotationsWriter;
+  }
+
+  getYAMLAtomicWriter(): YAMLAtomicWriter {
+    return this.yamlAtomicWriter;
+  }
+
+  getYAMLAnnotationsWriter() {
+    return this.yamlAnnotationsWriter;
   }
 }

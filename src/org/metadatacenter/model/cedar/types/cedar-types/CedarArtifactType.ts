@@ -5,24 +5,44 @@ export const CedarArtifactTypeValues = {
   STATIC_TEMPLATE_FIELD: 'https://schema.metadatacenter.org/core/StaticTemplateField',
 } as const;
 
+export const CedarArtifactTypeYamlValues = {
+  TEMPLATE: 'template',
+  TEMPLATE_ELEMENT: 'templateElement',
+  TEMPLATE_FIELD: 'templateField',
+  STATIC_TEMPLATE_FIELD: 'staticTemplateField',
+} as const;
+
 export type CedarArtifactTypeValue = (typeof CedarArtifactTypeValues)[keyof typeof CedarArtifactTypeValues] | null;
+export type CedarArtifactTypeYamlValue = (typeof CedarArtifactTypeYamlValues)[keyof typeof CedarArtifactTypeYamlValues] | null;
 
 export class CedarArtifactType {
   private readonly value: CedarArtifactTypeValue | null;
+  private readonly yamlValue: CedarArtifactTypeYamlValue | null;
 
-  private constructor(value: CedarArtifactTypeValue) {
+  private constructor(value: CedarArtifactTypeValue, yamlValue: CedarArtifactTypeYamlValue) {
     this.value = value;
+    this.yamlValue = yamlValue;
   }
 
   public getValue(): CedarArtifactTypeValue {
     return this.value;
   }
 
-  public static TEMPLATE = new CedarArtifactType(CedarArtifactTypeValues.TEMPLATE);
-  public static TEMPLATE_ELEMENT = new CedarArtifactType(CedarArtifactTypeValues.TEMPLATE_ELEMENT);
-  public static TEMPLATE_FIELD = new CedarArtifactType(CedarArtifactTypeValues.TEMPLATE_FIELD);
-  public static STATIC_TEMPLATE_FIELD = new CedarArtifactType(CedarArtifactTypeValues.STATIC_TEMPLATE_FIELD);
-  public static NULL = new CedarArtifactType(null);
+  getYamlValue() {
+    return this.yamlValue;
+  }
+
+  public static TEMPLATE = new CedarArtifactType(CedarArtifactTypeValues.TEMPLATE, CedarArtifactTypeYamlValues.TEMPLATE);
+  public static TEMPLATE_ELEMENT = new CedarArtifactType(
+    CedarArtifactTypeValues.TEMPLATE_ELEMENT,
+    CedarArtifactTypeYamlValues.TEMPLATE_ELEMENT,
+  );
+  public static TEMPLATE_FIELD = new CedarArtifactType(CedarArtifactTypeValues.TEMPLATE_FIELD, CedarArtifactTypeYamlValues.TEMPLATE_FIELD);
+  public static STATIC_TEMPLATE_FIELD = new CedarArtifactType(
+    CedarArtifactTypeValues.STATIC_TEMPLATE_FIELD,
+    CedarArtifactTypeYamlValues.STATIC_TEMPLATE_FIELD,
+  );
+  public static NULL = new CedarArtifactType(null, null);
 
   public static values(): CedarArtifactType[] {
     return [

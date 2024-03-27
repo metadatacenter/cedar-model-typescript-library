@@ -1,7 +1,7 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
 import { CedarModel } from '../../../constants/CedarModel';
 import { TextField } from './TextField';
-import { JSONTemplateFieldWriterInternal } from '../../../../../io/writer/JSONTemplateFieldWriterInternal';
+import { JSONTemplateFieldWriterInternal } from '../../../../../io/writer/json/JSONTemplateFieldWriterInternal';
 import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
 import { CedarWriters } from '../../../../../io/writer/CedarWriters';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';

@@ -1,20 +1,20 @@
-import { JSONWriterBehavior } from '../../behavior/JSONWriterBehavior';
-import { JsonNode, JsonNodeClass } from '../../model/cedar/types/basic-types/JsonNode';
-import { TemplateField } from '../../model/cedar/field/TemplateField';
-import { CedarModel } from '../../model/cedar/constants/CedarModel';
-import { JsonSchema } from '../../model/cedar/constants/JsonSchema';
-import { JSONTemplateFieldContentDynamic } from '../../model/cedar/util/serialization/JSONTemplateFieldContentDynamic';
-import { JavascriptType } from '../../model/cedar/types/wrapped-types/JavascriptType';
-import { TemplateProperty } from '../../model/cedar/constants/TemplateProperty';
-import { ArtifactSchema } from '../../model/cedar/types/wrapped-types/ArtifactSchema';
-import { CedarWriters } from './CedarWriters';
+import { JSONWriterBehavior } from '../../../behavior/JSONWriterBehavior';
+import { JsonNode, JsonNodeClass } from '../../../model/cedar/types/basic-types/JsonNode';
+import { TemplateField } from '../../../model/cedar/field/TemplateField';
+import { CedarModel } from '../../../model/cedar/constants/CedarModel';
+import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
+import { JSONTemplateFieldContentDynamic } from '../../../model/cedar/util/serialization/JSONTemplateFieldContentDynamic';
+import { JavascriptType } from '../../../model/cedar/types/wrapped-types/JavascriptType';
+import { TemplateProperty } from '../../../model/cedar/constants/TemplateProperty';
+import { ArtifactSchema } from '../../../model/cedar/types/wrapped-types/ArtifactSchema';
+import { CedarWriters } from '../CedarWriters';
 import { JSONAbstractArtifactWriter } from './JSONAbstractArtifactWriter';
-import { AdditionalProperties } from '../../model/cedar/types/wrapped-types/AdditionalProperties';
-import { ChildDeploymentInfo } from '../../model/cedar/deployment/ChildDeploymentInfo';
-import { CheckboxField } from '../../model/cedar/field/dynamic/checkbox/CheckboxField';
-import { ListField } from '../../model/cedar/field/dynamic/list/ListField';
-import { RadioField } from '../../model/cedar/field/dynamic/radio/RadioField';
-import { ChoiceOptionEntity } from '../../model/cedar/field/ChoiceOptionEntity';
+import { AdditionalProperties } from '../../../model/cedar/types/wrapped-types/AdditionalProperties';
+import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
+import { CheckboxField } from '../../../model/cedar/field/dynamic/checkbox/CheckboxField';
+import { ListField } from '../../../model/cedar/field/dynamic/list/ListField';
+import { RadioField } from '../../../model/cedar/field/dynamic/radio/RadioField';
+import { ChoiceOptionEntity } from '../../../model/cedar/field/ChoiceOptionEntity';
 
 export abstract class JSONTemplateFieldWriterInternal extends JSONAbstractArtifactWriter {
   protected constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {

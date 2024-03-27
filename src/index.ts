@@ -5,10 +5,10 @@ import { JSONFieldReader } from './org/metadatacenter/io/reader/JSONFieldReader'
 import { JSONElementReader } from './org/metadatacenter/io/reader/JSONElementReader';
 import { JSONTemplateReader } from './org/metadatacenter/io/reader/JSONTemplateReader';
 
-import { JSONTemplateFieldWriterInternal } from './org/metadatacenter/io/writer/JSONTemplateFieldWriterInternal';
+import { JSONTemplateFieldWriterInternal } from './org/metadatacenter/io/writer/json/JSONTemplateFieldWriterInternal';
 // It is needed, do not remove, even if it looks unused
-import { JSONTemplateElementWriter } from './org/metadatacenter/io/writer/JSONTemplateElementWriter';
-import { JSONTemplateWriter } from './org/metadatacenter/io/writer/JSONTemplateWriter';
+import { JSONTemplateElementWriter } from './org/metadatacenter/io/writer/json/JSONTemplateElementWriter';
+import { JSONTemplateWriter } from './org/metadatacenter/io/writer/json/JSONTemplateWriter';
 
 import { TemplateField } from './org/metadatacenter/model/cedar/field/TemplateField';
 import { AttributeValueField } from './org/metadatacenter/model/cedar/field/dynamic/attribute-value/AttributeValueField';
@@ -77,6 +77,7 @@ import { RoundTrip } from './org/metadatacenter/io/roundtrip/RoundTrip';
 import { JsonSchema } from './org/metadatacenter/model/cedar/constants/JsonSchema';
 import { CedarModel } from './org/metadatacenter/model/cedar/constants/CedarModel';
 import { ControlledTermActionBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/action/ControlledTermActionBuilder';
+import { YamlKeys } from './org/metadatacenter/model/cedar/constants/YamlKeys';
 
 export { CedarBuilders };
 export { CedarWriters };
@@ -138,3 +139,4 @@ export { ComparisonError };
 export { RoundTrip };
 export { JsonSchema };
 export { CedarModel };
+export { YamlKeys };

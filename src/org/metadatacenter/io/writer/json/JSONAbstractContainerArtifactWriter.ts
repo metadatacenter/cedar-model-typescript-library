@@ -1,13 +1,18 @@
-import { AbstractArtifactWriter } from './AbstractArtifactWriter';
-import { JsonNode, JsonNodeClass } from '../../model/cedar/types/basic-types/JsonNode';
-import { ChildDeploymentInfo } from '../../model/cedar/deployment/ChildDeploymentInfo';
-import { JsonSchema } from '../../model/cedar/constants/JsonSchema';
-import { CedarModel } from '../../model/cedar/constants/CedarModel';
-import { TemplateField } from '../../model/cedar/field/TemplateField';
-import { AbstractContainerArtifact } from '../../model/cedar/AbstractContainerArtifact';
-import { TemplateChild } from '../../model/cedar/types/basic-types/TemplateChild';
+import { JSONAbstractArtifactWriter } from './JSONAbstractArtifactWriter';
+import { AbstractContainerArtifact } from '../../../model/cedar/AbstractContainerArtifact';
+import { JSONContainerArtifactContent } from '../../../model/cedar/util/serialization/JSONContainerArtifactContent';
+import { JsonNode, JsonNodeClass } from '../../../model/cedar/types/basic-types/JsonNode';
+import { TemplateChild } from '../../../model/cedar/types/basic-types/TemplateChild';
+import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
+import { TemplateField } from '../../../model/cedar/field/TemplateField';
+import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
+import { CedarModel } from '../../../model/cedar/constants/CedarModel';
 
-export abstract class JSONAbstractArtifactWriter extends AbstractArtifactWriter {
+export abstract class JSONAbstractContainerArtifactWriter extends JSONAbstractArtifactWriter {
+  protected macroContext(_artifact: AbstractContainerArtifact) {
+    return JSONContainerArtifactContent.CONTEXT_VERBATIM;
+  }
+
   protected getChildMapAsJSON(container: AbstractContainerArtifact): JsonNode {
     const childMap: JsonNode = JsonNodeClass.getEmpty();
 

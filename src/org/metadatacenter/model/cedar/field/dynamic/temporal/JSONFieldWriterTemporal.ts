@@ -3,7 +3,7 @@ import { CedarModel } from '../../../constants/CedarModel';
 import { TimeFormat } from '../../../types/wrapped-types/TimeFormat';
 import { TemporalGranularity } from '../../../types/wrapped-types/TemporalGranularity';
 import { TemporalField } from './TemporalField';
-import { JSONTemplateFieldWriterInternal } from '../../../../../io/writer/JSONTemplateFieldWriterInternal';
+import { JSONTemplateFieldWriterInternal } from '../../../../../io/writer/json/JSONTemplateFieldWriterInternal';
 import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
 import { CedarWriters } from '../../../../../io/writer/CedarWriters';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';

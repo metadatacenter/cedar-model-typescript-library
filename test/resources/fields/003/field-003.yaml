@@ -1,0 +1,17 @@
+field: Study Start Date
+description: |-
+  The official start date for the study for which this data file was created. This date must be in the ISO-8601 format of yyyy-mm-dd. For example, 2022-10-05 specifies October 5, 2022.
+
+  This field is considered auxiliary information to the initially registered Study Start Date. It will not update the registered information, but may trigger a verification that the registered Start Date has not changed.
+id: https://repo.metadatacenter.org/template-fields/ddd47aa9-923e-4b00-bff3-aea907a95ed2
+identifier: study_start_date
+version: 0.9.1
+status: bibo:draft
+modelVersion: 1.6.0
+derivedFrom: ""
+label: Study Start Date
+inputType: temporal
+datatype: xsd:date
+timeZone: false
+granularity: day
+timeFormat: 12h

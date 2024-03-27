@@ -31,4 +31,8 @@ export class YamlKeys {
 
   static annotations: string = 'annotations';
   static value: string = 'value';
+
+  static granularity: string = 'granularity';
+  static timeZone: string = 'timeZone';
+  static timeFormat: string = 'timeFormat';
 }

@@ -42,14 +42,23 @@ export class SimpleYamlSerializer {
   }
 
   private static serializePrimitive(value: any): string {
-    switch (typeof value) {
-      case 'string':
-        return value.includes(':') || value.startsWith(' ') ? `"${value}"` : value;
-      case 'number':
-      case 'boolean':
-        return String(value);
-      default:
-        return 'null';
+    if (typeof value === 'string') {
+      if (value === '') {
+        return '""';
+      } else if (value.includes('\n')) {
+        // Multiline string formatting
+        return `|-\n  ${value.split('\n').join('\n  ')}`;
+      } else if (value.startsWith(' ')) {
+        // Single-line strings that need quoting
+        return `"${value}"`;
+      } else {
+        // Regular single-line strings
+        return value;
+      }
+    } else if (typeof value === 'number' || typeof value === 'boolean') {
+      return String(value);
+    } else {
+      return 'null';
     }
   }
 }

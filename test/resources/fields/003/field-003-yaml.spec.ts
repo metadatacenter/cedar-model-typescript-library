@@ -1,9 +1,9 @@
 import { CedarWriters, JSONFieldReader } from '../../../../src';
 import { TestUtil } from '../../../TestUtil';
 
-describe('YAMLTemplateFieldWriter - field-004', () => {
+describe('YAMLTemplateFieldWriter - field-003', () => {
   test('read a JSON field, and writes it as YAML', () => {
-    const artifactSource = TestUtil.readTestResourceAsString('fields/004', 'field-004.json');
+    const artifactSource = TestUtil.readTestResourceAsString('fields/003', 'field-003.json');
     const reader: JSONFieldReader = JSONFieldReader.getStrict();
     const jsonFieldReaderResult = reader.readFromString(artifactSource);
     expect(jsonFieldReaderResult).not.toBeNull();
@@ -15,6 +15,7 @@ describe('YAMLTemplateFieldWriter - field-004', () => {
 
     const stringified = yamlWriter.getAsYamlString(jsonFieldReaderResult.field);
     // console.log(stringified);
-    expect(stringified.length).toBe(647);
+    // TODO: YAML: timeFormat is not serialized, if default, but java library renders it
+    expect(stringified.length).toBe(977);
   });
 });

@@ -1,0 +1,9 @@
+field: '#002 TextArea name'
+description: TextArea help
+id: https://repo.metadatacenter.org/template-fields/a12db879-311a-41d6-91de-595ac45e835a
+version: 0.0.1
+status: bibo:draft
+modelVersion: 1.6.0
+label: TextArea preferred
+inputType: textarea
+datatype: xsd:string

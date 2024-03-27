@@ -13,6 +13,7 @@ export class YAMLAnnotationsWriter {
   }
 
   public write(annotations: Annotations | null): JsonNode {
+    const annotationsJson: JsonNode = JsonNodeClass.getEmpty();
     const annotationList: JsonNode[] = JsonNodeClass.getEmptyList();
     if (annotations !== null && annotations.getSize() > 0) {
       annotations.getAnnotationNames().forEach((name) => {
@@ -31,9 +32,8 @@ export class YAMLAnnotationsWriter {
           annotationList.push(annotation);
         }
       });
+      annotationsJson[YamlKeys.annotations] = annotationList;
     }
-    const annotationsJson: JsonNode = JsonNodeClass.getEmpty();
-    annotationsJson[YamlKeys.annotations] = annotationList;
     return annotationsJson;
   }
 }

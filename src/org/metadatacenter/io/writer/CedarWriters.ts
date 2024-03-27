@@ -42,6 +42,7 @@ import { YAMLAtomicWriter } from './yaml/YAMLAtomicWriter';
 import { YAMLAnnotationsWriter } from './yaml/YAMLAnnotationsWriter';
 import { YAMLFieldWriterTextArea } from '../../model/cedar/field/dynamic/textarea/YAMLFieldWriterTextArea';
 import { YAMLFieldWriterTemporal } from '../../model/cedar/field/dynamic/temporal/YAMLFieldWriterTemporal';
+import { YAMLFieldWriterStaticPageBreak } from '../../model/cedar/field/static/page-break/YAMLFieldWriterStaticPageBreak';
 
 export class CedarWriters {
   private readonly behavior: JSONWriterBehavior;
@@ -61,13 +62,15 @@ export class CedarWriters {
 
   private constructor(behavior: JSONWriterBehavior) {
     this.behavior = behavior;
+    // JSON writers. Order is important
     this.jsonAtomicWriter = new JSONAtomicWriter(behavior);
     this.jsonAnnotationsWriter = new JSONAnnotationsWriter(behavior);
     this.jsonTemplateWriter = JSONTemplateWriter.getFor(behavior, this);
     this.jsonTemplateElementWriter = JSONTemplateElementWriter.getFor(behavior, this);
-    this.yamlTemplateWriter = YAMLTemplateWriter.getFor(behavior, this);
+    // YAML writers. Order is important
     this.yamlAtomicWriter = new YAMLAtomicWriter(behavior);
     this.yamlAnnotationsWriter = new YAMLAnnotationsWriter(behavior);
+    this.yamlTemplateWriter = YAMLTemplateWriter.getFor(behavior, this);
 
     this.jsonDynamicFieldWriters = new Map<CedarFieldType, JSONTemplateFieldWriterInternal>([
       [CedarFieldType.TEXT, new JSONFieldWriterTextField(behavior, this)],
@@ -105,7 +108,10 @@ export class CedarWriters {
       [CedarFieldType.TEXTAREA, new YAMLFieldWriterTextArea(behavior, this)],
       [CedarFieldType.TEMPORAL, new YAMLFieldWriterTemporal(behavior, this)],
     ]);
-    this.yamlStaticFieldWriters = new Map<CedarFieldType, YAMLTemplateFieldWriterInternal>([]);
+
+    this.yamlStaticFieldWriters = new Map<CedarFieldType, YAMLTemplateFieldWriterInternal>([
+      [CedarFieldType.STATIC_PAGE_BREAK, new YAMLFieldWriterStaticPageBreak(behavior, this)],
+    ]);
   }
 
   public static getStrict(): CedarWriters {
@@ -183,7 +189,11 @@ export class CedarWriters {
     return this.yamlAtomicWriter;
   }
 
-  getYAMLAnnotationsWriter() {
+  getYAMLAnnotationsWriter(): YAMLAnnotationsWriter {
     return this.yamlAnnotationsWriter;
+  }
+
+  getYAMLTemplateWriter(): YAMLTemplateWriter {
+    return this.yamlTemplateWriter;
   }
 }

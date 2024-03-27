@@ -15,7 +15,7 @@ describe('YAMLTemplateFieldWriter - field-001', () => {
 
     const stringified = yamlWriter.getAsYamlString(jsonFieldReaderResult.field);
     // console.log(stringified);
-    expect(stringified.length).toBe(837);
+    expect(stringified.length).toBe(836);
     // TODO: YAML: Discuss annotations serialization syntax vs java library
     // TODO: YAML: discuss type serialization
     expect(stringified).toContain('type: templateField');

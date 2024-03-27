@@ -1,14 +1,12 @@
 import { JSONWriterBehavior } from '../../../behavior/JSONWriterBehavior';
 import { Template } from '../../../model/cedar/template/Template';
-import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
-import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
-import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
-import { TemplateProperty } from '../../../model/cedar/constants/TemplateProperty';
+import { JsonNode, JsonNodeClass } from '../../../model/cedar/types/basic-types/JsonNode';
 import { CedarWriters } from '../CedarWriters';
 import { SimpleYamlSerializer } from './SimpleYamlSerializer';
-import { YAMLAbstractArtifactWriter } from './YAMLAbstractArtifactWriter';
+import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
+import { YAMLAbstractContainerArtifactWriter } from './YAMLAbstractContainerArtifactWriter';
 
-export class YAMLTemplateWriter extends YAMLAbstractArtifactWriter {
+export class YAMLTemplateWriter extends YAMLAbstractContainerArtifactWriter {
   private constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
     super(behavior, writers);
   }
@@ -18,20 +16,28 @@ export class YAMLTemplateWriter extends YAMLAbstractArtifactWriter {
   }
 
   public getAsYamlNode(template: Template): JsonNode {
+    const uiObject: JsonNode = JsonNodeClass.getEmpty();
+    if (template.header !== null) {
+      uiObject[YamlKeys.header] = template.header;
+    }
+    if (template.footer !== null) {
+      uiObject[YamlKeys.footer] = template.footer;
+    }
     // build the final object
     return {
-      [JsonSchema.atId]: this.atomicWriter.write(template.at_id),
-      [JsonSchema.atType]: this.atomicWriter.write(CedarArtifactType.TEMPLATE),
-      [TemplateProperty.title]: template.title,
-      [TemplateProperty.description]: template.description,
-      // ...this.macroSchemaNameAndDescription(template),
-      // ...this.macroProvenance(template, this.atomicWriter),
-      [JsonSchema.schemaVersion]: this.atomicWriter.write(template.schema_schemaVersion),
-      // ...this.macroStatusAndVersion(template, this.atomicWriter),
+      ...this.macroTypeAndId(template),
+      ...this.macroSchemaIdentifier(template),
+      ...this.macroNameAndDescription(template),
+      ...this.macroStatusAndVersion(template),
+      ...uiObject,
+      ...this.macroProvenance(template),
+      ...this.macroDerivedFrom(template),
+      ...this.macroAnnotations(template),
+      [YamlKeys.children]: this.getChildListAsJSON(template),
     };
   }
 
   public getAsYamlString(template: Template): string {
-    return SimpleYamlSerializer.serialize(this.getAsYamlNode(template));
+    return SimpleYamlSerializer.serialize(this.getAsYamlNode(template)).trim();
   }
 }

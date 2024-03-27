@@ -2,7 +2,6 @@ import { JSONWriterBehavior } from '../../../behavior/JSONWriterBehavior';
 import { JsonNode, JsonNodeClass } from '../../../model/cedar/types/basic-types/JsonNode';
 import { TemplateField } from '../../../model/cedar/field/TemplateField';
 import { CedarModel } from '../../../model/cedar/constants/CedarModel';
-import { JSONTemplateFieldContentDynamic } from '../../../model/cedar/util/serialization/JSONTemplateFieldContentDynamic';
 import { CedarWriters } from '../CedarWriters';
 import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
 import { CheckboxField } from '../../../model/cedar/field/dynamic/checkbox/CheckboxField';
@@ -19,7 +18,7 @@ export abstract class YAMLTemplateFieldWriterInternal extends YAMLAbstractArtifa
   }
 
   public getAsYamlString(field: TemplateField, indent: number = 2): string {
-    return SimpleYamlSerializer.serialize(this.getYamlAsJsonNode(field, ChildDeploymentInfo.empty()), indent);
+    return SimpleYamlSerializer.serialize(this.getYamlAsJsonNode(field, ChildDeploymentInfo.empty()), indent).trim();
   }
 
   public getYamlAsJsonNode(field: TemplateField): JsonNode;
@@ -35,16 +34,14 @@ export abstract class YAMLTemplateFieldWriterInternal extends YAMLAbstractArtifa
 
     // build the final object
     return {
-      [YamlKeys.type]: this.atomicWriter.write(field.cedarArtifactType),
-      [YamlKeys.id]: this.atomicWriter.write(field.at_id),
+      ...this.macroTypeAndId(field),
       ...this.macroSchemaIdentifier(field),
       ...this.macroNameAndDescription(field),
-      ...this.macroStatusAndVersion(field, this.atomicWriter),
-      [YamlKeys.modelVersion]: this.atomicWriter.write(field.schema_schemaVersion),
+      ...this.macroStatusAndVersion(field),
       ...this.macroSkos(field),
       ...uiObject,
       ...vcObject,
-      ...this.macroProvenance(field, this.atomicWriter),
+      ...this.macroProvenance(field),
       ...this.macroDerivedFrom(field),
       ...this.macroAnnotations(field),
     };
@@ -89,9 +86,5 @@ export abstract class YAMLTemplateFieldWriterInternal extends YAMLAbstractArtifa
     };
     this.expandUINodeForYAML(uiNode, field, childInfo);
     return uiNode;
-  }
-
-  protected macroContext(_field: TemplateField) {
-    return JSONTemplateFieldContentDynamic.CONTEXT_VERBATIM;
   }
 }

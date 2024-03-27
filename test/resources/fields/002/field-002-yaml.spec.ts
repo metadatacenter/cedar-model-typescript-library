@@ -15,7 +15,7 @@ describe('YAMLTemplateFieldWriter - field-002', () => {
 
     const stringified = yamlWriter.getAsYamlString(jsonFieldReaderResult.field);
     // console.log(stringified);
-    expect(stringified.length).toBe(523);
+    expect(stringified.length).toBe(522);
     expect(stringified).toContain('type: templateField');
     expect(stringified).toContain('id: https://repo.metadatacenter.org/template-fields/a12db879-311a-41d6-91de-595ac45e835a');
     expect(stringified).toContain('name: #002 TextArea name');

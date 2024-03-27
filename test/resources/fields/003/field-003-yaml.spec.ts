@@ -16,7 +16,7 @@ describe('YAMLTemplateFieldWriter - field-003', () => {
     const stringified = yamlWriter.getAsYamlString(jsonFieldReaderResult.field);
     // console.log(stringified);
     // TODO: YAML: timeFormat is not serialized, if default, but java library renders it
-    expect(stringified.length).toBe(975);
+    expect(stringified.length).toBe(974);
     expect(stringified).toContain('type: templateField');
     expect(stringified).toContain('id: https://repo.metadatacenter.org/template-fields/ddd47aa9-923e-4b00-bff3-aea907a95ed2');
     expect(stringified).toContain('identifier: study_start_date');

@@ -9,7 +9,13 @@ export class CedarUser {
     return this.value;
   }
 
+  public static NULL = new CedarUser(null);
+
   public static forValue(value: string | null): CedarUser {
-    return new CedarUser(value);
+    if (value === null) {
+      return CedarUser.NULL;
+    } else {
+      return new CedarUser(value);
+    }
   }
 }

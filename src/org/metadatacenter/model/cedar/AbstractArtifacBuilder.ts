@@ -12,10 +12,10 @@ export abstract class AbstractArtifactBuilder {
   protected description: string | null = null;
   protected schema_schemaVersion: SchemaVersion = SchemaVersion.CURRENT;
   // provenance
-  protected pav_createdOn: ISODate | null = ISODate.forValue(null);
-  protected pav_createdBy: CedarUser = CedarUser.forValue(null);
-  protected pav_lastUpdatedOn: ISODate | null = ISODate.forValue(null);
-  protected oslc_modifiedBy: CedarUser = CedarUser.forValue(null);
+  protected pav_createdOn: ISODate = ISODate.NULL;
+  protected pav_createdBy: CedarUser = CedarUser.NULL;
+  protected pav_lastUpdatedOn: ISODate = ISODate.NULL;
+  protected oslc_modifiedBy: CedarUser = CedarUser.NULL;
   // status and version
   protected pav_version: PavVersion = PavVersion.DEFAULT;
   protected bibo_status: BiboStatus = BiboStatus.DRAFT;
@@ -50,7 +50,7 @@ export abstract class AbstractArtifactBuilder {
     return this;
   }
 
-  withCreatedOn(createdOn: ISODate | string): this {
+  withCreatedOn(createdOn: ISODate | string | null): this {
     if (createdOn instanceof ISODate) {
       this.pav_createdOn = createdOn;
     } else {
@@ -68,7 +68,7 @@ export abstract class AbstractArtifactBuilder {
     return this;
   }
 
-  withLastUpdatedOn(lastUpdatedOn: ISODate | string): this {
+  withLastUpdatedOn(lastUpdatedOn: ISODate | string | null): this {
     if (lastUpdatedOn instanceof ISODate) {
       this.pav_lastUpdatedOn = lastUpdatedOn;
     } else {

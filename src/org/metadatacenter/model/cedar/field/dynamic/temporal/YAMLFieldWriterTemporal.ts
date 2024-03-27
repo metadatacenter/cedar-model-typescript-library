@@ -1,5 +1,4 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
-import { CedarModel } from '../../../constants/CedarModel';
 import { TimeFormat } from '../../../types/wrapped-types/TimeFormat';
 import { TemporalGranularity } from '../../../types/wrapped-types/TemporalGranularity';
 import { TemporalField } from './TemporalField';
@@ -20,7 +19,7 @@ export class YAMLFieldWriterTemporal extends YAMLTemplateFieldWriterInternal {
       uiNode[YamlKeys.timeZone] = field.timezoneEnabled;
     }
     if (field.inputTimeFormat !== TimeFormat.NULL) {
-      uiNode[CedarModel.inputTimeFormat] = this.atomicWriter.write(field.inputTimeFormat);
+      uiNode[YamlKeys.timeFormat] = this.atomicWriter.write(field.inputTimeFormat);
     }
     if (field.temporalGranularity !== TemporalGranularity.NULL) {
       uiNode[YamlKeys.granularity] = this.atomicWriter.write(field.temporalGranularity);

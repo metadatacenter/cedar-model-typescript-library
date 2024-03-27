@@ -10,6 +10,8 @@ import { PavVersion } from '../../../model/cedar/types/wrapped-types/PavVersion'
 import { TemplateField } from '../../../model/cedar/field/TemplateField';
 import { CedarArtifactId } from '../../../model/cedar/types/cedar-types/CedarArtifactId';
 import { YAMLAnnotationsWriter } from './YAMLAnnotationsWriter';
+import { CedarUser } from '../../../model/cedar/types/cedar-types/CedarUser';
+import { ISODate } from '../../../model/cedar/types/wrapped-types/ISODate';
 
 export abstract class YAMLAbstractArtifactWriter extends AbstractArtifactWriter {
   protected atomicWriter: YAMLAtomicWriter;
@@ -28,14 +30,15 @@ export abstract class YAMLAbstractArtifactWriter extends AbstractArtifactWriter 
     } as JsonNode;
   }
 
-  protected macroStatusAndVersion(artifact: AbstractArtifact, atomicWriter: YAMLAtomicWriter): JsonNode {
+  protected macroStatusAndVersion(artifact: AbstractArtifact): JsonNode {
     const svObject: JsonNode = JsonNodeClass.getEmpty();
     if (artifact.bibo_status !== BiboStatus.NULL) {
-      svObject[YamlKeys.status] = atomicWriter.write(artifact.bibo_status);
+      svObject[YamlKeys.status] = this.atomicWriter.write(artifact.bibo_status);
     }
     if (artifact.pav_version !== PavVersion.NULL) {
-      svObject[YamlKeys.version] = atomicWriter.write(artifact.pav_version);
+      svObject[YamlKeys.version] = this.atomicWriter.write(artifact.pav_version);
     }
+    svObject[YamlKeys.modelVersion] = this.atomicWriter.write(artifact.schema_schemaVersion);
     return svObject;
   }
 
@@ -50,13 +53,21 @@ export abstract class YAMLAbstractArtifactWriter extends AbstractArtifactWriter 
     return skosObject;
   }
 
-  protected macroProvenance(artifact: AbstractArtifact, atomicWriter: YAMLAtomicWriter): JsonNode {
-    return {
-      [YamlKeys.createdOn]: atomicWriter.write(artifact.pav_createdOn),
-      [YamlKeys.createdBy]: atomicWriter.write(artifact.pav_createdBy),
-      [YamlKeys.lastUpdatedOn]: atomicWriter.write(artifact.pav_lastUpdatedOn),
-      [YamlKeys.modifiedBy]: atomicWriter.write(artifact.oslc_modifiedBy),
-    } as JsonNode;
+  protected macroProvenance(artifact: AbstractArtifact): JsonNode {
+    const prov = JsonNodeClass.getEmpty();
+    if (artifact.pav_createdOn !== ISODate.NULL) {
+      prov[YamlKeys.createdOn] = this.atomicWriter.write(artifact.pav_createdOn);
+    }
+    if (artifact.pav_createdBy !== CedarUser.NULL) {
+      prov[YamlKeys.createdBy] = this.atomicWriter.write(artifact.pav_createdBy);
+    }
+    if (artifact.pav_lastUpdatedOn !== ISODate.NULL) {
+      prov[YamlKeys.lastUpdatedOn] = this.atomicWriter.write(artifact.pav_lastUpdatedOn);
+    }
+    if (artifact.oslc_modifiedBy !== CedarUser.NULL) {
+      prov[YamlKeys.modifiedBy] = this.atomicWriter.write(artifact.oslc_modifiedBy);
+    }
+    return prov;
   }
 
   protected macroSchemaIdentifier(artifact: AbstractArtifact): JsonNode {
@@ -65,6 +76,15 @@ export abstract class YAMLAbstractArtifactWriter extends AbstractArtifactWriter 
       schemaIdentifier[YamlKeys.identifier] = artifact.schema_identifier;
     }
     return schemaIdentifier;
+  }
+
+  protected macroTypeAndId(artifact: AbstractArtifact): JsonNode {
+    const typeAndId: JsonNode = JsonNodeClass.getEmpty();
+    typeAndId[YamlKeys.type] = this.atomicWriter.write(artifact.cedarArtifactType);
+    if (artifact.at_id !== CedarArtifactId.NULL) {
+      typeAndId[YamlKeys.id] = this.atomicWriter.write(artifact.at_id);
+    }
+    return typeAndId;
   }
 
   protected macroDerivedFrom(artifact: AbstractArtifact): JsonNode {

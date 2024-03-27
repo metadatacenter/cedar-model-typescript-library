@@ -1,29 +1,35 @@
 export class ISODate {
-  private readonly date: Date;
-  private readonly timezoneOffset: string;
+  private readonly date: Date | null;
+  private readonly timezoneOffset: string | null;
 
-  private constructor(date: Date, timezoneOffset: string) {
+  private constructor(date: Date | null, timezoneOffset: string | null) {
     this.date = date;
     this.timezoneOffset = timezoneOffset;
   }
 
+  public static NULL = new ISODate(null, null);
+
   // Returns the date as an ISO string with the original time zone offset without partial seconds.
-  public getValue(): string {
-    const year = this.date.getFullYear();
-    const month = this.date.getMonth() + 1;
-    const day = this.date.getDate();
-    const hour = this.date.getHours();
-    const minute = this.date.getMinutes();
-    const second = this.date.getSeconds();
+  public getValue(): string | null {
+    if (this.date != null) {
+      const year = this.date.getFullYear();
+      const month = this.date.getMonth() + 1;
+      const day = this.date.getDate();
+      const hour = this.date.getHours();
+      const minute = this.date.getMinutes();
+      const second = this.date.getSeconds();
 
-    const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}T${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:${second.toString().padStart(2, '0')}`;
+      const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}T${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:${second.toString().padStart(2, '0')}`;
 
-    return `${formattedDate}${this.timezoneOffset}`;
+      return `${formattedDate}${this.timezoneOffset}`;
+    } else {
+      return null;
+    }
   }
 
-  public static forValue(isoDateString: string | null): ISODate | null {
+  public static forValue(isoDateString: string | null): ISODate {
     if (!isoDateString) {
-      return null;
+      return ISODate.NULL;
     }
 
     const date = new Date(isoDateString);

@@ -78,6 +78,7 @@ import { JsonSchema } from './org/metadatacenter/model/cedar/constants/JsonSchem
 import { CedarModel } from './org/metadatacenter/model/cedar/constants/CedarModel';
 import { ControlledTermActionBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/action/ControlledTermActionBuilder';
 import { YamlKeys } from './org/metadatacenter/model/cedar/constants/YamlKeys';
+import { YAMLTemplateWriter } from './org/metadatacenter/io/writer/yaml/YAMLTemplateWriter';
 
 export { CedarBuilders };
 export { CedarWriters };
@@ -89,7 +90,7 @@ export { JSONTemplateReader };
 // It is needed, do not remove, even if it looks unused
 export { JSONTemplateFieldWriterInternal as JSONTemplateFieldWriter };
 export { JSONTemplateElementWriter };
-export { JSONTemplateWriter };
+export { JSONTemplateWriter, YAMLTemplateWriter };
 
 export { TemplateField };
 export { AttributeValueField, AttributeValueFieldBuilder };

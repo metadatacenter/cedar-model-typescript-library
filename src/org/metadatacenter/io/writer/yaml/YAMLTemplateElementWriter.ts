@@ -1,5 +1,5 @@
 import { JSONWriterBehavior } from '../../../behavior/JSONWriterBehavior';
-import { JsonNode, JsonNodeClass } from '../../../model/cedar/types/basic-types/JsonNode';
+import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { CedarWriters } from '../CedarWriters';
 import { SimpleYamlSerializer } from './SimpleYamlSerializer';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
@@ -16,19 +16,21 @@ export class YAMLTemplateElementWriter extends YAMLAbstractContainerArtifactWrit
   }
 
   public getYamlAsJsonNode(element: TemplateElement): JsonNode {
-    const uiObject: JsonNode = JsonNodeClass.getEmpty();
     // build the final object
-    return {
+    const template: JsonNode = {
       ...this.macroTypeAndId(element),
       ...this.macroSchemaIdentifier(element),
       ...this.macroNameAndDescription(element),
       ...this.macroStatusAndVersion(element),
-      ...uiObject,
       ...this.macroProvenance(element),
       ...this.macroDerivedFrom(element),
       ...this.macroAnnotations(element),
-      [YamlKeys.children]: this.getChildListAsJSON(element),
     };
+    const children: JsonNode[] = this.getChildListAsJSON(element);
+    if (children.length > 0) {
+      template[YamlKeys.children] = children;
+    }
+    return template;
   }
 
   public getAsYamlString(element: TemplateElement): string {

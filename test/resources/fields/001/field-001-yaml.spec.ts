@@ -15,38 +15,38 @@ describe('YAMLTemplateFieldWriter - field-001', () => {
 
     const stringified = yamlWriter.getAsYamlString(jsonFieldReaderResult.field);
     // console.log(stringified);
-    expect(stringified.length).toBe(836);
-    // TODO: YAML: Discuss annotations serialization syntax vs java library
-    // TODO: YAML: discuss type serialization
-    expect(stringified).toContain('type: templateField');
-    expect(stringified).toContain('id: https://repo.metadatacenter.org/template-fields/f38b5ef4-a078-4d82-90c0-a9a721ad5ecf');
-    expect(stringified).toContain('name: #001 Text Field');
-    expect(stringified).toContain('description: Text field help text');
-    expect(stringified).toContain('status: bibo:draft');
-    expect(stringified).toContain('version: 0.0.1');
-    expect(stringified).toContain('modelVersion: 1.6.0');
-    expect(stringified).toContain('label: Text field preferred');
-    expect(stringified).toContain('altLabel:');
-    expect(stringified).toContain('  - alt label1');
-    expect(stringified).toContain('  - alt label 2');
-    expect(stringified).toContain('  - alt label 3');
-    expect(stringified).toContain('inputType: textfield');
-    expect(stringified).toContain('valueRecommendationEnabled: true');
-    expect(stringified).toContain('datatype: xsd:string');
-    expect(stringified).toContain('default: default value');
-    expect(stringified).toContain('minLength: 10');
-    expect(stringified).toContain('maxLength: 100');
-    expect(stringified).toContain('regex: regex');
-    expect(stringified).toContain('createdOn: 2024-03-12T10:03:57-07:00');
-    expect(stringified).toContain('createdBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95');
-    expect(stringified).toContain('lastUpdatedOn: 2024-03-12T10:05:02-07:00');
-    expect(stringified).toContain('modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95');
-    expect(stringified).toContain('annotations:');
-    expect(stringified).toContain('  - name: https://datacite.com/doi');
-    expect(stringified).toContain('    type: id');
-    expect(stringified).toContain('    value: https://doi.org/10.82658/8vc1-abcd');
-    expect(stringified).toContain('  - name: foo');
-    expect(stringified).toContain('    type: value');
-    expect(stringified).toContain('    value: bar');
+    const expectedSerialization = `
+type: templateField
+id: https://repo.metadatacenter.org/template-fields/f38b5ef4-a078-4d82-90c0-a9a721ad5ecf
+name: #001 Text Field
+description: Text field help text
+status: bibo:draft
+version: 0.0.1
+modelVersion: 1.6.0
+label: Text field preferred
+altLabel:
+  - alt label1
+  - alt label 2
+  - alt label 3
+inputType: textfield
+valueRecommendationEnabled: true
+datatype: xsd:string
+default: default value
+minLength: 10
+maxLength: 100
+regex: regex
+createdOn: 2024-03-12T10:03:57-07:00
+createdBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
+lastUpdatedOn: 2024-03-12T10:05:02-07:00
+modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
+annotations:
+  - name: https://datacite.com/doi
+    type: id
+    value: https://doi.org/10.82658/8vc1-abcd
+  - name: foo
+    type: value
+    value: bar
+`.trim();
+    expect(stringified).toEqual(expectedSerialization);
   });
 });

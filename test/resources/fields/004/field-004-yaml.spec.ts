@@ -15,22 +15,24 @@ describe('YAMLTemplateFieldWriter - field-004', () => {
 
     const stringified = yamlWriter.getAsYamlString(jsonFieldReaderResult.field);
     // console.log(stringified);
-    expect(stringified.length).toBe(646);
-    expect(stringified).toContain('type: templateField');
-    expect(stringified).toContain('id: https://repo.metadatacenter.org/template-fields/de2525eb-3b58-4aaf-9f99-5bd140145303');
-    expect(stringified).toContain('identifier: subject_identifier_scheme');
-    expect(stringified).toContain('name: Subject Identifier Scheme');
-    expect(stringified).toContain('description: The name of the scheme or authority used for the Subject Identifier.');
-    expect(stringified).toContain('status: bibo:draft');
-    expect(stringified).toContain('version: 0.9.1');
-    expect(stringified).toContain('modelVersion: 1.6.0');
-    expect(stringified).toContain('label: Subject Identifier Scheme');
-    expect(stringified).toContain('inputType: textfield');
-    expect(stringified).toContain('datatype: xsd:string');
-    expect(stringified).toContain('createdOn: 2022-10-13T12:44:16-07:00');
-    expect(stringified).toContain('createdBy: https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014');
-    expect(stringified).toContain('lastUpdatedOn: 2022-10-13T12:44:16-07:00');
-    expect(stringified).toContain('modifiedBy: https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014');
-    expect(stringified).toContain('derivedFrom: ""');
+    const expectedSerialization = `
+type: templateField
+id: https://repo.metadatacenter.org/template-fields/de2525eb-3b58-4aaf-9f99-5bd140145303
+identifier: subject_identifier_scheme
+name: Subject Identifier Scheme
+description: The name of the scheme or authority used for the Subject Identifier.
+status: bibo:draft
+version: 0.9.1
+modelVersion: 1.6.0
+label: Subject Identifier Scheme
+inputType: textfield
+datatype: xsd:string
+createdOn: 2022-10-13T12:44:16-07:00
+createdBy: https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014
+lastUpdatedOn: 2022-10-13T12:44:16-07:00
+modifiedBy: https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014
+derivedFrom: ""
+`.trim();
+    expect(stringified).toEqual(expectedSerialization);
   });
 });

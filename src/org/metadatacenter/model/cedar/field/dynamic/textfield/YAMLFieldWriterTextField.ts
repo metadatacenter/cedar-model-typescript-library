@@ -5,6 +5,7 @@ import { CedarWriters } from '../../../../../io/writer/CedarWriters';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { YAMLTemplateFieldWriterInternal } from '../../../../../io/writer/yaml/YAMLTemplateFieldWriterInternal';
 import { YamlKeys } from '../../../constants/YamlKeys';
+import { XsdDatatype } from '../../../constants/XsdDatatype';
 
 export class YAMLFieldWriterTextField extends YAMLTemplateFieldWriterInternal {
   constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
@@ -16,8 +17,7 @@ export class YAMLFieldWriterTextField extends YAMLTemplateFieldWriterInternal {
     if (field.valueRecommendationEnabled) {
       uiNode[YamlKeys.valueRecommendationEnabled] = field.valueRecommendationEnabled;
     }
-    // TODO: elevate this constant
-    uiNode[YamlKeys.datatype] = 'xsd:string';
+    uiNode[YamlKeys.datatype] = XsdDatatype.STRING;
   }
 
   override expandValueConstraintsNodeForYAML(vcNode: JsonNode, field: TextField, childInfo: ChildDeploymentInfo): void {

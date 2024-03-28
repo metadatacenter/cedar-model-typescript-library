@@ -24,7 +24,7 @@ export class YAMLTemplateWriter extends YAMLAbstractContainerArtifactWriter {
       uiObject[YamlKeys.footer] = template.footer;
     }
     // build the final object
-    return {
+    const element: JsonNode = {
       ...this.macroTypeAndId(template),
       ...this.macroSchemaIdentifier(template),
       ...this.macroNameAndDescription(template),
@@ -33,8 +33,13 @@ export class YAMLTemplateWriter extends YAMLAbstractContainerArtifactWriter {
       ...this.macroProvenance(template),
       ...this.macroDerivedFrom(template),
       ...this.macroAnnotations(template),
-      [YamlKeys.children]: this.getChildListAsJSON(template),
     };
+    const children: JsonNode[] = this.getChildListAsJSON(template);
+    if (children.length > 0) {
+      element[YamlKeys.children] = children;
+    }
+
+    return element;
   }
 
   public getAsYamlString(template: Template): string {

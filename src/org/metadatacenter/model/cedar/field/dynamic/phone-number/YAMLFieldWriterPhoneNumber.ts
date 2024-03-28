@@ -1,13 +1,13 @@
+import { YAMLTemplateFieldWriterInternal } from '../../../../../io/writer/yaml/YAMLTemplateFieldWriterInternal';
 import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
 import { CedarWriters } from '../../../../../io/writer/CedarWriters';
-import { YAMLTemplateFieldWriterInternal } from '../../../../../io/writer/yaml/YAMLTemplateFieldWriterInternal';
 import { JsonNode } from '../../../types/basic-types/JsonNode';
 import { TextField } from '../textfield/TextField';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { YamlKeys } from '../../../constants/YamlKeys';
 import { XsdDatatype } from '../../../constants/XsdDatatype';
 
-export class YAMLFieldWriterEmail extends YAMLTemplateFieldWriterInternal {
+export class YAMLFieldWriterPhoneNumber extends YAMLTemplateFieldWriterInternal {
   constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
     super(behavior, writers);
   }

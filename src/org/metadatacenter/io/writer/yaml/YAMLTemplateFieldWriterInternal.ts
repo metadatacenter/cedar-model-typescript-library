@@ -73,11 +73,11 @@ export abstract class YAMLTemplateFieldWriterInternal extends YAMLAbstractArtifa
       const literal = JsonNodeClass.getEmpty();
       literal[CedarModel.label] = option.label;
       if (option.selectedByDefault) {
-        literal[CedarModel.selectedByDefault] = option.selectedByDefault;
+        literal[YamlKeys.selected] = option.selectedByDefault;
       }
       literals.push(literal);
     });
-    vcNode[CedarModel.literals] = literals;
+    vcNode[YamlKeys.values] = literals;
   }
 
   protected buildUIObject(field: TemplateField, childInfo: ChildDeploymentInfo): JsonNode {

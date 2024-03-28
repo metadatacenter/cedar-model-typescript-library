@@ -55,4 +55,15 @@ export class YamlKeys {
   static maxValue: string = 'maxValue';
   static decimalPlace: string = 'decimalPlace';
   static unit: string = 'unit';
+
+  static multipleChoice: string = 'multipleChoice';
+
+  static values: string = 'values';
+  static selected: string = 'selected';
+  static valueType: string = 'valueType';
+
+  static actions: string = 'actions';
+
+  static defaultValue: string = 'defaultValue';
+  static defaultLabel: string = 'defaultLabel';
 }

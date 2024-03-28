@@ -53,6 +53,16 @@ import { YAMLFieldWriterAttributeValue } from '../../model/cedar/field/dynamic/a
 import { AbstractYAMLControlledTermValueConstraintWriter } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/AbstractYAMLControlledTermValueConstraintWriter';
 import { YAMLFieldWriterEmail } from '../../model/cedar/field/dynamic/email/YAMLFieldWriterEmail';
 import { YAMLFieldWriterNumeric } from '../../model/cedar/field/dynamic/numeric/YAMLFieldWriterNumeric';
+import { YAMLFieldWriterPhoneNumber } from '../../model/cedar/field/dynamic/phone-number/YAMLFieldWriterPhoneNumber';
+import { YAMLFieldWriterCheckbox } from '../../model/cedar/field/dynamic/checkbox/YAMLFieldWriterCheckbox';
+import { YAMLFieldWriterList } from '../../model/cedar/field/dynamic/list/YAMLFieldWriterList';
+import { YAMLFieldWriterRadio } from '../../model/cedar/field/dynamic/radio/YAMLFieldWriterRadio';
+import { YAMLFieldWriterControlledTerm } from '../../model/cedar/field/dynamic/controlled-term/YAMLFieldWriterControlledTerm';
+import { YAMLValueConstraintsOntologyWriter } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/ontology/YAMLValueConstraintsOntologyWriter';
+import { YAMLValueConstraintsClassWriter } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/class/YAMLValueConstraintsClassWriter';
+import { YAMLValueConstraintsBranchWriter } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/branch/YAMLValueConstraintsBranchWriter';
+import { YAMLValueConstraintsValueSetWriter } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/value-set/YAMLValueConstraintsValueSetWriter';
+import { YAMLValueConstraintsActionWriter } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/action/YAMLValueConstraintsActionWriter';
 
 export class CedarWriters {
   private readonly behavior: JSONWriterBehavior;
@@ -119,15 +129,15 @@ export class CedarWriters {
     this.yamlDynamicFieldWriters = new Map<CedarFieldType, YAMLTemplateFieldWriterInternal>([
       [CedarFieldType.TEXT, new YAMLFieldWriterTextField(behavior, this)],
       [CedarFieldType.TEXTAREA, new YAMLFieldWriterTextArea(behavior, this)],
-      // [CedarFieldType.CONTROLLED_TERM, new YAMLFieldWriterControlledTerm(behavior, this)]
-      // [CedarFieldType.PHONE_NUMBER, new YAMLFieldWriterPhoneNumber(behavior, this)]
+      [CedarFieldType.CONTROLLED_TERM, new YAMLFieldWriterControlledTerm(behavior, this)],
+      [CedarFieldType.PHONE_NUMBER, new YAMLFieldWriterPhoneNumber(behavior, this)],
       [CedarFieldType.EMAIL, new YAMLFieldWriterEmail(behavior, this)],
       [CedarFieldType.LINK, new YAMLFieldWriterLink(behavior, this)],
       [CedarFieldType.NUMERIC, new YAMLFieldWriterNumeric(behavior, this)],
       [CedarFieldType.TEMPORAL, new YAMLFieldWriterTemporal(behavior, this)],
-      // [CedarFieldType.RADIO, new YAMLFieldWriterRadio(behavior, this)]
-      // [CedarFieldType.CHECKBOX, new YAMLFieldWriterCheckbox(behavior, this)]
-      // [CedarFieldType.LIST, new YAMLFieldWriterList(behavior, this)]
+      [CedarFieldType.RADIO, new YAMLFieldWriterRadio(behavior, this)],
+      [CedarFieldType.CHECKBOX, new YAMLFieldWriterCheckbox(behavior, this)],
+      [CedarFieldType.LIST, new YAMLFieldWriterList(behavior, this)],
       [CedarFieldType.ATTRIBUTE_VALUE, new YAMLFieldWriterAttributeValue(behavior, this)],
     ]);
 
@@ -140,11 +150,11 @@ export class CedarWriters {
     ]);
 
     this.yamlValueConstraintsWriters = new Map<string, AbstractYAMLControlledTermValueConstraintWriter>([
-      // [ControlledTermOntology.className, new YAMLValueConstraintsOntologyWriter(behavior, this)],
-      // [ControlledTermClass.className, new YAMLValueConstraintsClassWriter(behavior, this)],
-      // [ControlledTermBranch.className, new YAMLValueConstraintsBranchWriter(behavior, this)],
-      // [ControlledTermValueSet.className, new YAMLValueConstraintsValueSetWriter(behavior, this)],
-      // [ControlledTermAction.className, new YAMLValueConstraintsActionWriter(behavior, this)],
+      [ControlledTermOntology.className, new YAMLValueConstraintsOntologyWriter(behavior, this)],
+      [ControlledTermClass.className, new YAMLValueConstraintsClassWriter(behavior, this)],
+      [ControlledTermBranch.className, new YAMLValueConstraintsBranchWriter(behavior, this)],
+      [ControlledTermValueSet.className, new YAMLValueConstraintsValueSetWriter(behavior, this)],
+      [ControlledTermAction.className, new YAMLValueConstraintsActionWriter(behavior, this)],
     ]);
   }
 
@@ -233,5 +243,14 @@ export class CedarWriters {
 
   getYAMLTemplateElementWriter(): YAMLTemplateElementWriter {
     return this.yamlTemplateElementWriter;
+  }
+
+  public getYAMLWriterForValueConstraint(object: ControlledTermAbstractValueConstraint): AbstractYAMLControlledTermValueConstraintWriter {
+    const className = object.className;
+    const writer = this.yamlValueConstraintsWriters.get(className);
+    if (writer) {
+      return writer;
+    }
+    throw new Error(`No YAML writer found for class type: ${className}`);
   }
 }

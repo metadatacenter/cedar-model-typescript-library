@@ -1,7 +1,6 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
 import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
 import { CedarWriters } from '../../../../../io/writer/CedarWriters';
-import { CedarModel } from '../../../constants/CedarModel';
 import { NumericField } from './NumericField';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { YAMLTemplateFieldWriterInternal } from '../../../../../io/writer/yaml/YAMLTemplateFieldWriterInternal';

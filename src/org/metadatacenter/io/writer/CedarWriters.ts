@@ -48,6 +48,8 @@ import { YAMLFieldWriterStaticSectionsBreak } from '../../model/cedar/field/stat
 import { YAMLFieldWriterStaticImage } from '../../model/cedar/field/static/image/YAMLFieldWriterStaticImage';
 import { YAMLFieldWriterStaticRichText } from '../../model/cedar/field/static/rich-text/YAMLFieldWriterStaticRichText';
 import { YAMLFieldWriterStaticYoutube } from '../../model/cedar/field/static/youtube/YAMLFieldWriterStaticYoutube';
+import { YAMLTemplateElementWriter } from './yaml/YAMLTemplateElementWriter';
+import { YAMLFieldWriterAttributeValue } from '../../model/cedar/field/dynamic/attribute-value/YAMLFieldWriterAttributeValue';
 
 export class CedarWriters {
   private readonly behavior: JSONWriterBehavior;
@@ -58,12 +60,13 @@ export class CedarWriters {
   private readonly jsonAnnotationsWriter: JSONAnnotationsWriter;
   private readonly jsonTemplateWriter: JSONTemplateWriter;
   private readonly jsonTemplateElementWriter: JSONTemplateElementWriter;
-  private readonly yamlTemplateWriter: YAMLTemplateWriter;
 
   private readonly yamlDynamicFieldWriters: Map<CedarFieldType, YAMLTemplateFieldWriterInternal>;
   private readonly yamlStaticFieldWriters: Map<CedarFieldType, YAMLTemplateFieldWriterInternal>;
   private readonly yamlAtomicWriter: YAMLAtomicWriter;
   private readonly yamlAnnotationsWriter: YAMLAnnotationsWriter;
+  private readonly yamlTemplateWriter: YAMLTemplateWriter;
+  private readonly yamlTemplateElementWriter: YAMLTemplateElementWriter;
 
   private constructor(behavior: JSONWriterBehavior) {
     this.behavior = behavior;
@@ -76,6 +79,7 @@ export class CedarWriters {
     this.yamlAtomicWriter = new YAMLAtomicWriter(behavior);
     this.yamlAnnotationsWriter = new YAMLAnnotationsWriter(behavior);
     this.yamlTemplateWriter = YAMLTemplateWriter.getFor(behavior, this);
+    this.yamlTemplateElementWriter = YAMLTemplateElementWriter.getFor(behavior, this);
 
     this.jsonDynamicFieldWriters = new Map<CedarFieldType, JSONTemplateFieldWriterInternal>([
       [CedarFieldType.TEXT, new JSONFieldWriterTextField(behavior, this)],
@@ -113,6 +117,7 @@ export class CedarWriters {
       [CedarFieldType.TEXTAREA, new YAMLFieldWriterTextArea(behavior, this)],
       [CedarFieldType.TEMPORAL, new YAMLFieldWriterTemporal(behavior, this)],
       [CedarFieldType.LINK, new YAMLFieldWriterLink(behavior, this)],
+      [CedarFieldType.ATTRIBUTE_VALUE, new YAMLFieldWriterAttributeValue(behavior, this)],
     ]);
 
     this.yamlStaticFieldWriters = new Map<CedarFieldType, YAMLTemplateFieldWriterInternal>([
@@ -205,5 +210,9 @@ export class CedarWriters {
 
   getYAMLTemplateWriter(): YAMLTemplateWriter {
     return this.yamlTemplateWriter;
+  }
+
+  getYAMLTemplateElementWriter(): YAMLTemplateElementWriter {
+    return this.yamlTemplateElementWriter;
   }
 }

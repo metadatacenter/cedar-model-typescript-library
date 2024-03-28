@@ -5,10 +5,15 @@ import { JSONFieldReader } from './org/metadatacenter/io/reader/JSONFieldReader'
 import { JSONElementReader } from './org/metadatacenter/io/reader/JSONElementReader';
 import { JSONTemplateReader } from './org/metadatacenter/io/reader/JSONTemplateReader';
 
-import { JSONTemplateFieldWriterInternal } from './org/metadatacenter/io/writer/json/JSONTemplateFieldWriterInternal';
 // It is needed, do not remove, even if it looks unused
+import { JSONTemplateFieldWriterInternal } from './org/metadatacenter/io/writer/json/JSONTemplateFieldWriterInternal';
+import { YAMLTemplateFieldWriterInternal } from './org/metadatacenter/io/writer/yaml/YAMLTemplateFieldWriterInternal';
+
 import { JSONTemplateElementWriter } from './org/metadatacenter/io/writer/json/JSONTemplateElementWriter';
 import { JSONTemplateWriter } from './org/metadatacenter/io/writer/json/JSONTemplateWriter';
+
+import { YAMLTemplateElementWriter } from './org/metadatacenter/io/writer/yaml/YAMLTemplateElementWriter';
+import { YAMLTemplateWriter } from './org/metadatacenter/io/writer/yaml/YAMLTemplateWriter';
 
 import { TemplateField } from './org/metadatacenter/model/cedar/field/TemplateField';
 import { AttributeValueField } from './org/metadatacenter/model/cedar/field/dynamic/attribute-value/AttributeValueField';
@@ -78,7 +83,6 @@ import { JsonSchema } from './org/metadatacenter/model/cedar/constants/JsonSchem
 import { CedarModel } from './org/metadatacenter/model/cedar/constants/CedarModel';
 import { ControlledTermActionBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/action/ControlledTermActionBuilder';
 import { YamlKeys } from './org/metadatacenter/model/cedar/constants/YamlKeys';
-import { YAMLTemplateWriter } from './org/metadatacenter/io/writer/yaml/YAMLTemplateWriter';
 
 export { CedarBuilders };
 export { CedarWriters };
@@ -89,7 +93,9 @@ export { JSONTemplateReader };
 
 // It is needed, do not remove, even if it looks unused
 export { JSONTemplateFieldWriterInternal as JSONTemplateFieldWriter };
-export { JSONTemplateElementWriter };
+export { YAMLTemplateFieldWriterInternal as YAMLTemplateFieldWriter };
+
+export { JSONTemplateElementWriter, YAMLTemplateElementWriter };
 export { JSONTemplateWriter, YAMLTemplateWriter };
 
 export { TemplateField };
@@ -114,6 +120,15 @@ export { StaticYoutubeField, StaticYoutubeFieldBuilder };
 export { TemplateElement, TemplateElementBuilder };
 export { Template, TemplateBuilder };
 
+export { ControlledTermDefaultValueBuilder };
+export { ControlledTermBranchBuilder };
+export { ControlledTermClassBuilder };
+export { ControlledTermOntologyBuilder };
+export { ControlledTermValueSetBuilder };
+export { ControlledTermActionBuilder };
+
+export { ChildDeploymentInfo, ChildDeploymentInfoBuilder };
+
 export { JsonNode };
 export { ISODate };
 export { SchemaVersion };
@@ -125,15 +140,6 @@ export { TemporalType };
 export { NumberType };
 export { URI };
 export { BiboStatus };
-
-export { ControlledTermDefaultValueBuilder };
-export { ControlledTermBranchBuilder };
-export { ControlledTermClassBuilder };
-export { ControlledTermOntologyBuilder };
-export { ControlledTermValueSetBuilder };
-export { ControlledTermActionBuilder };
-
-export { ChildDeploymentInfo, ChildDeploymentInfoBuilder };
 
 export { CedarArtifactId };
 export { ComparisonError };

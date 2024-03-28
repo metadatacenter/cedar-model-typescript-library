@@ -44,6 +44,10 @@ import { YAMLFieldWriterTextArea } from '../../model/cedar/field/dynamic/textare
 import { YAMLFieldWriterTemporal } from '../../model/cedar/field/dynamic/temporal/YAMLFieldWriterTemporal';
 import { YAMLFieldWriterStaticPageBreak } from '../../model/cedar/field/static/page-break/YAMLFieldWriterStaticPageBreak';
 import { YAMLFieldWriterLink } from '../../model/cedar/field/dynamic/link/YAMLFieldWriterLink';
+import { YAMLFieldWriterStaticSectionsBreak } from '../../model/cedar/field/static/section-break/YAMLFieldWriterStaticSectionBreak';
+import { YAMLFieldWriterStaticImage } from '../../model/cedar/field/static/image/YAMLFieldWriterStaticImage';
+import { YAMLFieldWriterStaticRichText } from '../../model/cedar/field/static/rich-text/YAMLFieldWriterStaticRichText';
+import { YAMLFieldWriterStaticYoutube } from '../../model/cedar/field/static/youtube/YAMLFieldWriterStaticYoutube';
 
 export class CedarWriters {
   private readonly behavior: JSONWriterBehavior;
@@ -113,6 +117,10 @@ export class CedarWriters {
 
     this.yamlStaticFieldWriters = new Map<CedarFieldType, YAMLTemplateFieldWriterInternal>([
       [CedarFieldType.STATIC_PAGE_BREAK, new YAMLFieldWriterStaticPageBreak(behavior, this)],
+      [CedarFieldType.STATIC_SECTION_BREAK, new YAMLFieldWriterStaticSectionsBreak(behavior, this)],
+      [CedarFieldType.STATIC_IMAGE, new YAMLFieldWriterStaticImage(behavior, this)],
+      [CedarFieldType.STATIC_RICH_TEXT, new YAMLFieldWriterStaticRichText(behavior, this)],
+      [CedarFieldType.STATIC_YOUTUBE, new YAMLFieldWriterStaticYoutube(behavior, this)],
     ]);
   }
 

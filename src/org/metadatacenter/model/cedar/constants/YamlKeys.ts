@@ -44,4 +44,8 @@ export class YamlKeys {
   static multiple: string = 'multiple';
   static minItems: string = 'minItems';
   static maxItems: string = 'maxItems';
+
+  static content: string = 'content';
+  static height: string = 'height';
+  static width: string = 'width';
 }

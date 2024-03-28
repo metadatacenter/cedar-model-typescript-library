@@ -2,12 +2,15 @@ import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/ut
 import { TestUtil } from '../../../TestUtil';
 import { CedarWriters, ComparisonError, JSONFieldReader, JsonPath, JsonSchema, RoundTrip } from '../../../../src';
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
+import { TestResource } from '../../../TestResource';
 
-describe('JSONFieldReader - field-002', () => {
+const testResource: TestResource = TestResource.field(1);
+
+describe('JSONFieldReader - field-001', () => {
   test('reads a text field with a lot of features', () => {
-    const templateSource = TestUtil.readTestResourceAsString('fields/002', 'field-002.json');
+    const artifactSource = TestUtil.readTestJson(testResource);
     const reader: JSONFieldReader = JSONFieldReader.getStrict();
-    const jsonFieldReaderResult = reader.readFromString(templateSource);
+    const jsonFieldReaderResult = reader.readFromString(artifactSource);
     expect(jsonFieldReaderResult).not.toBeNull();
     const parsingResult = jsonFieldReaderResult.parsingResult;
     expect(parsingResult.wasSuccessful()).toBe(true);

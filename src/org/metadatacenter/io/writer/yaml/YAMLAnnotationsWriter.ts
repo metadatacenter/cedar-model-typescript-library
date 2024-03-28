@@ -22,14 +22,14 @@ export class YAMLAnnotationsWriter {
         if (src instanceof AnnotationAtId) {
           const annotation = {
             [YamlKeys.name]: name,
-            [YamlKeys.type]: YamlValues.id,
+            [YamlKeys.type]: YamlValues.iri,
             [YamlKeys.value]: src.getAtId(),
           };
           annotationList.push(annotation);
         } else if (src instanceof AnnotationAtValue) {
           const annotation = {
             [YamlKeys.name]: name,
-            [YamlKeys.type]: YamlValues.value,
+            [YamlKeys.type]: YamlValues.string,
             [YamlKeys.value]: src.getAtValue(),
           };
           annotationList.push(annotation);

@@ -2,6 +2,9 @@ import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/ut
 import { TestUtil } from '../../../TestUtil';
 import { CedarModel, CedarWriters, ComparisonError, JSONFieldReader, JsonPath, JsonSchema, RoundTrip } from '../../../../src';
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
+import { TestResource } from '../../../TestResource';
+
+const testResource: TestResource = TestResource.field(4);
 
 describe('JSONFieldReader - field-004', () => {
   test('reads a text field with a lot of features', () => {

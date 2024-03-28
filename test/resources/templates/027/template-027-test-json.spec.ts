@@ -2,12 +2,14 @@ import { CedarModel, CedarWriters, ComparisonError, JsonPath, JSONTemplateReader
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
 import { TestUtil } from '../../../TestUtil';
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
+import { TestResource } from '../../../TestResource';
 
+const testResource: TestResource = TestResource.template(27);
 describe('JSONTemplateReader - template-027', () => {
   test('reads template witch annotations', () => {
-    const templateSource = TestUtil.readTestResourceAsString('templates/027', 'template-027.json');
+    const artifactSource = TestUtil.readTestJson(testResource);
     const reader: JSONTemplateReader = JSONTemplateReader.getStrict();
-    const jsonTemplateReaderResult = reader.readFromString(templateSource);
+    const jsonTemplateReaderResult = reader.readFromString(artifactSource);
     expect(jsonTemplateReaderResult).not.toBeNull();
     const parsingResult = jsonTemplateReaderResult.parsingResult;
     expect(parsingResult.wasSuccessful()).toBe(true);

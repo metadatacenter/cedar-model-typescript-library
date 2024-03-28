@@ -50,6 +50,7 @@ import { YAMLFieldWriterStaticRichText } from '../../model/cedar/field/static/ri
 import { YAMLFieldWriterStaticYoutube } from '../../model/cedar/field/static/youtube/YAMLFieldWriterStaticYoutube';
 import { YAMLTemplateElementWriter } from './yaml/YAMLTemplateElementWriter';
 import { YAMLFieldWriterAttributeValue } from '../../model/cedar/field/dynamic/attribute-value/YAMLFieldWriterAttributeValue';
+import { AbstractYAMLControlledTermValueConstraintWriter } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/AbstractYAMLControlledTermValueConstraintWriter';
 
 export class CedarWriters {
   private readonly behavior: JSONWriterBehavior;
@@ -63,6 +64,7 @@ export class CedarWriters {
 
   private readonly yamlDynamicFieldWriters: Map<CedarFieldType, YAMLTemplateFieldWriterInternal>;
   private readonly yamlStaticFieldWriters: Map<CedarFieldType, YAMLTemplateFieldWriterInternal>;
+  private readonly yamlValueConstraintsWriters: Map<string, AbstractYAMLControlledTermValueConstraintWriter>;
   private readonly yamlAtomicWriter: YAMLAtomicWriter;
   private readonly yamlAnnotationsWriter: YAMLAnnotationsWriter;
   private readonly yamlTemplateWriter: YAMLTemplateWriter;
@@ -115,8 +117,15 @@ export class CedarWriters {
     this.yamlDynamicFieldWriters = new Map<CedarFieldType, YAMLTemplateFieldWriterInternal>([
       [CedarFieldType.TEXT, new YAMLFieldWriterTextField(behavior, this)],
       [CedarFieldType.TEXTAREA, new YAMLFieldWriterTextArea(behavior, this)],
-      [CedarFieldType.TEMPORAL, new YAMLFieldWriterTemporal(behavior, this)],
+      // [CedarFieldType.CONTROLLED_TERM, new YAMLFieldWriterControlledTerm(behavior, this)]
+      // [CedarFieldType.PHONE_NUMBER, new YAMLFieldWriterPhoneNumber(behavior, this)]
+      // [CedarFieldType.EMAIL, new YAMLFieldWriterEmail(behavior, this)]
       [CedarFieldType.LINK, new YAMLFieldWriterLink(behavior, this)],
+      // [CedarFieldType.NUMERIC, new YAMLFieldWriterNumeric(behavior, this)]
+      [CedarFieldType.TEMPORAL, new YAMLFieldWriterTemporal(behavior, this)],
+      // [CedarFieldType.RADIO, new YAMLFieldWriterRadio(behavior, this)]
+      // [CedarFieldType.CHECKBOX, new YAMLFieldWriterCheckbox(behavior, this)]
+      // [CedarFieldType.LIST, new YAMLFieldWriterList(behavior, this)]
       [CedarFieldType.ATTRIBUTE_VALUE, new YAMLFieldWriterAttributeValue(behavior, this)],
     ]);
 
@@ -126,6 +135,14 @@ export class CedarWriters {
       [CedarFieldType.STATIC_IMAGE, new YAMLFieldWriterStaticImage(behavior, this)],
       [CedarFieldType.STATIC_RICH_TEXT, new YAMLFieldWriterStaticRichText(behavior, this)],
       [CedarFieldType.STATIC_YOUTUBE, new YAMLFieldWriterStaticYoutube(behavior, this)],
+    ]);
+
+    this.yamlValueConstraintsWriters = new Map<string, AbstractYAMLControlledTermValueConstraintWriter>([
+      // [ControlledTermOntology.className, new YAMLValueConstraintsOntologyWriter(behavior, this)],
+      // [ControlledTermClass.className, new YAMLValueConstraintsClassWriter(behavior, this)],
+      // [ControlledTermBranch.className, new YAMLValueConstraintsBranchWriter(behavior, this)],
+      // [ControlledTermValueSet.className, new YAMLValueConstraintsValueSetWriter(behavior, this)],
+      // [ControlledTermAction.className, new YAMLValueConstraintsActionWriter(behavior, this)],
     ]);
   }
 

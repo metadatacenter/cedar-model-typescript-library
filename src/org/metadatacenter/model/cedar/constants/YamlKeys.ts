@@ -48,4 +48,6 @@ export class YamlKeys {
   static content: string = 'content';
   static height: string = 'height';
   static width: string = 'width';
+
+  static key: string = 'key';
 }

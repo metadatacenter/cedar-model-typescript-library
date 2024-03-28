@@ -19,6 +19,8 @@ export abstract class YAMLAbstractContainerArtifactWriter extends YAMLAbstractAr
           const childMeta: ChildDeploymentInfo | null = container.getChildrenInfo().get(childName);
           if (childMeta !== null) {
             let childDefinition: JsonNode = JsonNodeClass.getEmpty();
+            // Put child deployment name
+            childDefinition[YamlKeys.key] = childName;
             // If multi-instance, add info
             if (childMeta.multiInstance) {
               // TODO: handle maxItems, minItems inconsistencies

@@ -27,7 +27,8 @@ createdBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
 lastUpdatedOn: 2024-02-29T00:03:54-08:00
 modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
 children:
-  - multiple: true
+  - key: Textfield
+    multiple: true
     minItems: 0
     maxItems: 7
     type: templateField

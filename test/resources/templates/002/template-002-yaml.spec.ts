@@ -15,7 +15,7 @@ describe('YAMLTemplateWriter - template-002', () => {
 
     const stringified = yamlWriter.getAsYamlString(jsonTemplateReaderResult.template);
     // console.log(stringified);
-    expect(stringified.length).toBe(946);
+    expect(stringified.length).toBe(965);
     const expectedSerialization = `
 type: template
 id: https://repo.metadatacenter.org/templates/bc8c543f-ed3f-4420-9b52-1cdbcc55f983
@@ -29,7 +29,8 @@ createdBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
 lastUpdatedOn: 2024-02-26T17:56:13-08:00
 modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
 children:
-  - type: templateField
+  - key: Textfield
+    type: templateField
     id: https://repo.metadatacenter.org/template-fields/9efde92f-63b9-427f-b071-36ea57de1b7e
     name: Textfield
     description: Help Text

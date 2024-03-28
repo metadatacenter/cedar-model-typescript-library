@@ -27,7 +27,8 @@ createdBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
 lastUpdatedOn: 2024-02-29T00:22:05-08:00
 modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
 children:
-  - type: templateField
+  - key: Linkfield
+    type: templateField
     id: https://repo.metadatacenter.org/template-fields/c10d0f70-0e5d-405c-9f84-fafa7693cc63
     name: Linkfield
     description: Help Text

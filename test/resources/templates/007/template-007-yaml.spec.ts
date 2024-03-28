@@ -31,7 +31,8 @@ createdBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
 lastUpdatedOn: 2024-02-29T14:26:44-08:00
 modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
 children:
-  - type: templateField
+  - key: Text field
+    type: templateField
     id: tmp-1709246251573-870301
     name: Text field
     description: Help Text

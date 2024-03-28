@@ -27,7 +27,8 @@ createdBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
 lastUpdatedOn: 2024-03-04T12:26:33-08:00
 modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
 children:
-  - type: staticTemplateField
+  - key: Page break field
+    type: staticTemplateField
     id: https://repo.metadatacenter.org/template-fields/61882375-7659-49e9-8c07-33f40d6fe4a5
     name: Page break field
     description: Help text
@@ -38,7 +39,8 @@ children:
     createdBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
     lastUpdatedOn: 2024-03-04T12:26:33-08:00
     modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
-  - type: staticTemplateField
+  - key: Section break
+    type: staticTemplateField
     id: https://repo.metadatacenter.org/template-fields/66d294ce-bdf5-4fa9-b3bb-424d972acd4f
     name: Section break
     description: Help Text
@@ -49,7 +51,8 @@ children:
     createdBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
     lastUpdatedOn: 2024-03-04T12:26:33-08:00
     modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
-  - type: staticTemplateField
+  - key: Image field
+    type: staticTemplateField
     id: https://repo.metadatacenter.org/template-fields/6d3e4f87-13cd-4c50-bee9-96c269d9f60e
     name: Image field
     description: Help Text
@@ -61,7 +64,8 @@ children:
     createdBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
     lastUpdatedOn: 2024-03-04T12:26:33-08:00
     modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
-  - type: staticTemplateField
+  - key: Rich text
+    type: staticTemplateField
     id: https://repo.metadatacenter.org/template-fields/adc5e2fe-a9ba-46b8-aa38-64501fda73e8
     name: Rich text
     description: Help Text
@@ -75,7 +79,8 @@ children:
     createdBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
     lastUpdatedOn: 2024-03-04T12:26:33-08:00
     modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
-  - type: staticTemplateField
+  - key: Video name
+    type: staticTemplateField
     id: https://repo.metadatacenter.org/template-fields/adc5e2fe-a9ba-46b8-aa38-64501fda8888
     name: Video name
     description: Help Text

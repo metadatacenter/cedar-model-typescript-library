@@ -15,6 +15,6 @@ describe('YAMLTemplateWriter - template-004', () => {
 
     const stringified = yamlWriter.getAsYamlString(jsonTemplateReaderResult.template);
     // console.log(stringified);
-    expect(stringified.length).toBe(2873);
+    expect(stringified.length).toBe(2968);
   });
 });

@@ -15,7 +15,7 @@ describe('YAMLTemplateWriter - template-001', () => {
 
     const stringified = yamlWriter.getAsYamlString(jsonTemplateReaderResult.template);
     // console.log(stringified);
-    expect(stringified.length).toBe(306);
+    expect(stringified.length).toBe(325);
     const expectedSerialization = `
 type: template
 name: Untitled
@@ -24,7 +24,8 @@ status: bibo:draft
 version: 0.0.1
 modelVersion: 1.6.0
 children:
-  - type: templateField
+  - key: Textfield
+    type: templateField
     id: tmp-1708998934299-6744386
     name: Textfield
     description: Help Text

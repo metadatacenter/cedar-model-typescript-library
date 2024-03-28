@@ -50,4 +50,9 @@ export class YamlKeys {
   static width: string = 'width';
 
   static key: string = 'key';
+
+  static minValue: string = 'minValue';
+  static maxValue: string = 'maxValue';
+  static decimalPlace: string = 'decimalPlace';
+  static unit: string = 'unit';
 }

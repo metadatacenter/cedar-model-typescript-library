@@ -51,6 +51,8 @@ import { YAMLFieldWriterStaticYoutube } from '../../model/cedar/field/static/you
 import { YAMLTemplateElementWriter } from './yaml/YAMLTemplateElementWriter';
 import { YAMLFieldWriterAttributeValue } from '../../model/cedar/field/dynamic/attribute-value/YAMLFieldWriterAttributeValue';
 import { AbstractYAMLControlledTermValueConstraintWriter } from '../../model/cedar/field/dynamic/controlled-term/value-constraint/AbstractYAMLControlledTermValueConstraintWriter';
+import { YAMLFieldWriterEmail } from '../../model/cedar/field/dynamic/email/YAMLFieldWriterEmail';
+import { YAMLFieldWriterNumeric } from '../../model/cedar/field/dynamic/numeric/YAMLFieldWriterNumeric';
 
 export class CedarWriters {
   private readonly behavior: JSONWriterBehavior;
@@ -119,9 +121,9 @@ export class CedarWriters {
       [CedarFieldType.TEXTAREA, new YAMLFieldWriterTextArea(behavior, this)],
       // [CedarFieldType.CONTROLLED_TERM, new YAMLFieldWriterControlledTerm(behavior, this)]
       // [CedarFieldType.PHONE_NUMBER, new YAMLFieldWriterPhoneNumber(behavior, this)]
-      // [CedarFieldType.EMAIL, new YAMLFieldWriterEmail(behavior, this)]
+      [CedarFieldType.EMAIL, new YAMLFieldWriterEmail(behavior, this)],
       [CedarFieldType.LINK, new YAMLFieldWriterLink(behavior, this)],
-      // [CedarFieldType.NUMERIC, new YAMLFieldWriterNumeric(behavior, this)]
+      [CedarFieldType.NUMERIC, new YAMLFieldWriterNumeric(behavior, this)],
       [CedarFieldType.TEMPORAL, new YAMLFieldWriterTemporal(behavior, this)],
       // [CedarFieldType.RADIO, new YAMLFieldWriterRadio(behavior, this)]
       // [CedarFieldType.CHECKBOX, new YAMLFieldWriterCheckbox(behavior, this)]

@@ -15,7 +15,7 @@ export class YAMLTemplateElementWriter extends YAMLAbstractContainerArtifactWrit
     return new YAMLTemplateElementWriter(behavior, writers);
   }
 
-  public getAsYamlNode(element: TemplateElement): JsonNode {
+  public getYamlAsJsonNode(element: TemplateElement): JsonNode {
     const uiObject: JsonNode = JsonNodeClass.getEmpty();
     // build the final object
     return {
@@ -32,6 +32,6 @@ export class YAMLTemplateElementWriter extends YAMLAbstractContainerArtifactWrit
   }
 
   public getAsYamlString(element: TemplateElement): string {
-    return SimpleYamlSerializer.serialize(this.getAsYamlNode(element)).trim();
+    return SimpleYamlSerializer.serialize(this.getYamlAsJsonNode(element)).trim();
   }
 }

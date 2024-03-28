@@ -1,7 +1,7 @@
 import { CedarWriters, JSONElementReader } from '../../../../src';
 import { TestUtil } from '../../../TestUtil';
 
-describe('YAMLTemplateFieldWriter - element-001', () => {
+describe('YAMLTemplateElementWriter - element-001', () => {
   test('read a JSON element, and writes it as YAML', () => {
     const artifactSource = TestUtil.readTestResourceAsString('elements/001', 'element-001.json');
     const reader: JSONElementReader = JSONElementReader.getStrict();

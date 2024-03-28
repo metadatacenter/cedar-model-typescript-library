@@ -38,7 +38,7 @@ export abstract class YAMLAbstractContainerArtifactWriter extends YAMLAbstractAr
             } else {
               childDefinition = {
                 ...childDefinition,
-                ...this.writers.getJSONTemplateElementWriter().getAsJsonNode(child),
+                ...this.writers.getYAMLTemplateElementWriter().getYamlAsJsonNode(child),
               };
             }
             childList.push(childDefinition);

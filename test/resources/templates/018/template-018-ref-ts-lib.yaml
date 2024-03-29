@@ -1,6 +1,6 @@
 type: template
 id: https://repo.metadatacenter.org/templates/cb92ca40-3717-4533-93c4-5efee2aed2fd
-name: #018 Template with checkbox
+label: #018 Template with checkbox
 status: draft
 version: 0.0.1
 modelVersion: 1.6.0
@@ -9,13 +9,13 @@ createdBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
 lastUpdatedOn: 2024-03-07T20:58:30-08:00
 modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
 children:
-  - key: My checkbox 1
+  - name: My checkbox 1
     type: templateField
     id: https://repo.metadatacenter.org/template-fields/bc68d373-562f-4725-9e67-433999363deb
-    name: My checkbox 1
+    label: My checkbox 1
     description: Help Text
     modelVersion: 1.6.0
-    label: Required checkbox
+    prefLabel: Required checkbox
     inputType: checkbox
     datatype: xsd:string
     required: true
@@ -30,13 +30,18 @@ children:
     createdBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
     lastUpdatedOn: 2024-03-07T20:58:30-08:00
     modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
-  - key: My checkbox 2
+    configuration:
+      required: true
+      propertyIRI: https://schema.metadatacenter.org/properties/2930dd2f-ba5e-4b8f-ba92-09fb8f7ab0c2
+      overrideLabel: My checkbox 1
+      overrideDescription: Help Text
+  - name: My checkbox 2
     type: templateField
     id: https://repo.metadatacenter.org/template-fields/bd25e554-c588-48ce-824f-8383cd3eafcc
-    name: My checkbox 2
+    label: My checkbox 2
     description: Help Text
     modelVersion: 1.6.0
-    label: Non-required checkbox
+    prefLabel: Non-required checkbox
     inputType: checkbox
     datatype: xsd:string
     values:
@@ -47,3 +52,7 @@ children:
     createdBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
     lastUpdatedOn: 2024-03-07T20:58:30-08:00
     modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
+    configuration:
+      propertyIRI: https://schema.metadatacenter.org/properties/ec9ef44d-7d97-4531-ae39-7e880880cfe7
+      overrideLabel: My checkbox 2
+      overrideDescription: Help Text

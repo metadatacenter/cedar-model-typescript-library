@@ -1,11 +1,11 @@
 type: templateField
 id: https://repo.metadatacenter.org/template-fields/a12db879-311a-41d6-91de-595ac45e835a
-name: #002 TextArea name
+label: #002 TextArea name
 description: TextArea help
 status: draft
 version: 0.0.1
 modelVersion: 1.6.0
-label: TextArea preferred
+prefLabel: TextArea preferred
 inputType: textarea
 datatype: xsd:string
 createdOn: 2024-03-13T18:32:24-07:00

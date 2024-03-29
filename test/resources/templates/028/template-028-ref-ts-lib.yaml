@@ -1,6 +1,6 @@
 type: template
 id: https://repo.metadatacenter.org/templates/5a1651a1-7f30-497d-a1be-1ac62c92734f
-name: Catalog
+label: Catalog
 description: DCAT v3 template for data catalog metadata
 status: published
 version: 0.0.1
@@ -11,10 +11,10 @@ lastUpdatedOn: 2022-06-19T21:59:19-07:00
 modifiedBy: https://metadatacenter.org/users/ffbb4dc6-7829-4a3c-8708-a2e4c386997b
 derivedFrom: https://repo.metadatacenter.org/templates/2ef5e58f-0770-484d-80ae-23768cc1fda2
 children:
-  - key: Read & Understood Catalog
+  - name: Read & Understood Catalog
     type: templateElement
     id: https://repo.metadatacenter.org/template-elements/b6f69a07-365a-43ce-b7b0-b74835a7d8af
-    name: Read & Understood Catalog
+    label: Read & Understood Catalog
     status: draft
     version: 0.0.1
     modelVersion: 1.6.0
@@ -24,10 +24,10 @@ children:
     modifiedBy: https://metadatacenter.org/users/ffbb4dc6-7829-4a3c-8708-a2e4c386997b
     derivedFrom: https://repo.metadatacenter.org/template-elements/0f91041a-b334-41d2-abb4-ec1b5da6d180
     children:
-      - key: Read & Understood - RT
+      - name: Read & Understood - RT
         type: staticTemplateField
         id: https://repo.metadatacenter.org/template-fields/2e8e7338-5ecd-4028-a36f-aa34858bc505
-        name: Read & Understood - RT
+        label: Read & Understood - RT
         modelVersion: 1.6.0
         inputType: richtext
         content: |-
@@ -49,12 +49,16 @@ children:
         createdBy: https://metadatacenter.org/users/ffbb4dc6-7829-4a3c-8708-a2e4c386997b
         lastUpdatedOn: 2022-06-19T17:25:06-07:00
         modifiedBy: https://metadatacenter.org/users/ffbb4dc6-7829-4a3c-8708-a2e4c386997b
-      - key: Read & Understood
+        configuration:
+          propertyIRI: null
+          overrideLabel: Read & Understood - RT
+          overrideDescription: ""
+      - name: Read & Understood
         type: templateField
         id: https://repo.metadatacenter.org/template-fields/67455702-fee8-441d-b013-2975d1e719a1
-        name: Read & Understood
-        modelVersion: 1.6.0
         label: Read & Understood
+        modelVersion: 1.6.0
+        prefLabel: Read & Understood
         inputType: checkbox
         datatype: xsd:string
         required: true
@@ -64,12 +68,21 @@ children:
         createdBy: https://metadatacenter.org/users/ffbb4dc6-7829-4a3c-8708-a2e4c386997b
         lastUpdatedOn: 2022-06-19T17:25:06-07:00
         modifiedBy: https://metadatacenter.org/users/ffbb4dc6-7829-4a3c-8708-a2e4c386997b
-  - key: catalogTitleRT
+        configuration:
+          required: true
+          propertyIRI: https://schema.metadatacenter.org/properties/95fb84a4-78bc-4922-9fa5-485ec44638af
+          overrideLabel: Read & Understood
+          overrideDescription: ""
+    configuration:
+      propertyIRI: https://schema.metadatacenter.org/properties/a61ce8cd-37e7-4a0f-9035-5cd0e5f6756c
+      overrideLabel: Read & Understood Catalog
+      overrideDescription: ""
+  - name: catalogTitleRT
     type: staticTemplateField
     id: https://repo.metadatacenter.org/template-fields/4ea2fcc8-6d20-4376-b9e2-1655a946081b
-    name: catalogTitleRT
+    label: catalogTitleRT
     modelVersion: 1.6.0
-    label: Catalog Title RT
+    prefLabel: Catalog Title RT
     inputType: richtext
     content: |-
       <p><span style="font-size: 16px; background-color: rgb(238, 238, 238);">Please provide a title of the catalog.</span></p>
@@ -78,12 +91,16 @@ children:
     createdBy: https://metadatacenter.org/users/ffbb4dc6-7829-4a3c-8708-a2e4c386997b
     lastUpdatedOn: 2022-06-19T21:59:19-07:00
     modifiedBy: https://metadatacenter.org/users/ffbb4dc6-7829-4a3c-8708-a2e4c386997b
-  - key: catalogTitle
+    configuration:
+      propertyIRI: null
+      overrideLabel: catalogTitleRT
+      overrideDescription: ""
+  - name: catalogTitle
     type: templateField
     id: https://repo.metadatacenter.org/template-fields/2b0906ae-2761-4a4c-b85c-78c9275426f6
-    name: catalogTitle
+    label: catalogTitle
     modelVersion: 1.6.0
-    label: Catalog Title
+    prefLabel: Catalog Title
     inputType: textfield
     datatype: xsd:string
     required: true
@@ -91,12 +108,17 @@ children:
     createdBy: https://metadatacenter.org/users/ffbb4dc6-7829-4a3c-8708-a2e4c386997b
     lastUpdatedOn: 2022-06-19T21:59:19-07:00
     modifiedBy: https://metadatacenter.org/users/ffbb4dc6-7829-4a3c-8708-a2e4c386997b
-  - key: catalogDescriptionRT
+    configuration:
+      required: true
+      propertyIRI: http://purl.org/dc/terms/title
+      overrideLabel: catalogTitle
+      overrideDescription: ""
+  - name: catalogDescriptionRT
     type: staticTemplateField
     id: https://repo.metadatacenter.org/template-fields/412039ca-6049-4d17-ab19-ccbd1b7fd189
-    name: catalogDescriptionRT
+    label: catalogDescriptionRT
     modelVersion: 1.6.0
-    label: Catalog Description RT
+    prefLabel: Catalog Description RT
     inputType: richtext
     content: |-
       <p>Please provide a description of the catalog.</p>
@@ -105,12 +127,16 @@ children:
     createdBy: https://metadatacenter.org/users/ffbb4dc6-7829-4a3c-8708-a2e4c386997b
     lastUpdatedOn: 2022-06-19T21:59:19-07:00
     modifiedBy: https://metadatacenter.org/users/ffbb4dc6-7829-4a3c-8708-a2e4c386997b
-  - key: catalogDescription
+    configuration:
+      propertyIRI: null
+      overrideLabel: catalogDescriptionRT
+      overrideDescription: ""
+  - name: catalogDescription
     type: templateField
     id: https://repo.metadatacenter.org/template-fields/2a3a851f-2e9c-4b22-8923-4f24c6bd977e
-    name: catalogDescription
+    label: catalogDescription
     modelVersion: 1.6.0
-    label: Catalog Description
+    prefLabel: Catalog Description
     inputType: textfield
     datatype: xsd:string
     required: true
@@ -118,12 +144,17 @@ children:
     createdBy: https://metadatacenter.org/users/ffbb4dc6-7829-4a3c-8708-a2e4c386997b
     lastUpdatedOn: 2022-06-19T21:59:19-07:00
     modifiedBy: https://metadatacenter.org/users/ffbb4dc6-7829-4a3c-8708-a2e4c386997b
-  - key: publisherRT
+    configuration:
+      required: true
+      propertyIRI: http://purl.org/dc/terms/description
+      overrideLabel: catalogDescription
+      overrideDescription: ""
+  - name: publisherRT
     type: staticTemplateField
     id: https://repo.metadatacenter.org/template-fields/ae2c88e6-6e72-4257-8a1c-5b41e31a98d4
-    name: publisherRT
+    label: publisherRT
     modelVersion: 1.6.0
-    label: Publisher RT
+    prefLabel: Publisher RT
     inputType: richtext
     content: |-
       <p>Please provide a URI (globally unique, persistent and resolvable identifier) of the entity that holds, archives, publishes prints, distributes, releases, issues, or produces the catalog being described.</p>
@@ -132,12 +163,16 @@ children:
     createdBy: https://metadatacenter.org/users/ffbb4dc6-7829-4a3c-8708-a2e4c386997b
     lastUpdatedOn: 2022-06-19T21:59:19-07:00
     modifiedBy: https://metadatacenter.org/users/ffbb4dc6-7829-4a3c-8708-a2e4c386997b
-  - key: publisher
+    configuration:
+      propertyIRI: null
+      overrideLabel: publisherRT
+      overrideDescription: ""
+  - name: publisher
     type: templateField
     id: https://repo.metadatacenter.org/template-fields/64f8b236-9127-41fb-9b2a-dacecfa9ee37
-    name: publisher
+    label: publisher
     modelVersion: 1.6.0
-    label: Publisher
+    prefLabel: Publisher
     inputType: link
     datatype: xsd:string
     required: true
@@ -145,13 +180,18 @@ children:
     createdBy: https://metadatacenter.org/users/ffbb4dc6-7829-4a3c-8708-a2e4c386997b
     lastUpdatedOn: 2022-06-19T21:59:19-07:00
     modifiedBy: https://metadatacenter.org/users/ffbb4dc6-7829-4a3c-8708-a2e4c386997b
-  - key: licenseRT
+    configuration:
+      required: true
+      propertyIRI: http://purl.org/dc/terms/publisher
+      overrideLabel: publisher
+      overrideDescription: ""
+  - name: licenseRT
     type: staticTemplateField
     id: https://repo.metadatacenter.org/template-fields/11983fc0-9bac-426c-8e8a-847191c996e5
-    name: licenseRT
+    label: licenseRT
     description: Help Text
     modelVersion: 1.6.0
-    label: License RT
+    prefLabel: License RT
     inputType: richtext
     content: |-
       <p><span style="background-color: rgb(255, 255, 255);">Please select a legal document under which the dataset is made reusable.</span></p>
@@ -160,12 +200,16 @@ children:
     createdBy: https://metadatacenter.org/users/ffbb4dc6-7829-4a3c-8708-a2e4c386997b
     lastUpdatedOn: 2022-06-19T21:59:19-07:00
     modifiedBy: https://metadatacenter.org/users/ffbb4dc6-7829-4a3c-8708-a2e4c386997b
-  - key: license
+    configuration:
+      propertyIRI: null
+      overrideLabel: licenseRT
+      overrideDescription: Help Text
+  - name: license
     type: templateField
     id: https://repo.metadatacenter.org/template-fields/54d38f5c-dd5b-4b3e-82ef-7c2e577b1fba
-    name: license
+    label: license
     modelVersion: 1.6.0
-    label: License
+    prefLabel: License
     inputType: textfield
     datatype: xsd:anyURI
     values:
@@ -179,13 +223,17 @@ children:
     createdBy: https://metadatacenter.org/users/ffbb4dc6-7829-4a3c-8708-a2e4c386997b
     lastUpdatedOn: 2022-06-19T21:59:19-07:00
     modifiedBy: https://metadatacenter.org/users/ffbb4dc6-7829-4a3c-8708-a2e4c386997b
-  - key: datasetMetadataInstanceIDRT
+    configuration:
+      propertyIRI: https://schema.metadatacenter.org/properties/1872f17a-7791-4b24-b1cb-3de7ef4c31e6
+      overrideLabel: license
+      overrideDescription: ""
+  - name: datasetMetadataInstanceIDRT
     type: staticTemplateField
     id: https://repo.metadatacenter.org/template-fields/5d16c3a5-547b-4803-ae9d-6811badf1906
-    name: datasetMetadataInstanceIDRT
+    label: datasetMetadataInstanceIDRT
     description: Help Text
     modelVersion: 1.6.0
-    label: Dataset Metadata Instance ID RT
+    prefLabel: Dataset Metadata Instance ID RT
     inputType: richtext
     content: |-
       <p>Please provide the ID(s) of Dataset metadata instance(s). They can be found, only after you have created these instances. If you have not yet created them, or should more dataset be created in the future, you can return to this field later and update. Once Dataset metadata Instances are created, you will find them in your personal CEDAR workspace. After opening a Dataset metadata instance, you should&nbsp;copy the URL in the address bar of your web browser, taking only the part after &quot;..edit/&quot; but before the &quot;?&quot;.&nbsp;</p>
@@ -194,14 +242,16 @@ children:
     createdBy: https://metadatacenter.org/users/ffbb4dc6-7829-4a3c-8708-a2e4c386997b
     lastUpdatedOn: 2022-06-19T21:59:19-07:00
     modifiedBy: https://metadatacenter.org/users/ffbb4dc6-7829-4a3c-8708-a2e4c386997b
-  - key: datasetMetadataInstanceIdentifier
-    multiple: true
-    minItems: 1
+    configuration:
+      propertyIRI: null
+      overrideLabel: datasetMetadataInstanceIDRT
+      overrideDescription: Help Text
+  - name: datasetMetadataInstanceIdentifier
     type: templateField
     id: https://repo.metadatacenter.org/template-fields/c72c114b-7b44-4e29-884f-322406de06fe
-    name: datasetMetadataInstanceIdentifier
+    label: datasetMetadataInstanceIdentifier
     modelVersion: 1.6.0
-    label: Dataset Metadata Instance ID (1..N)
+    prefLabel: Dataset Metadata Instance ID (1..N)
     inputType: link
     datatype: xsd:string
     required: true
@@ -209,3 +259,10 @@ children:
     createdBy: https://metadatacenter.org/users/ffbb4dc6-7829-4a3c-8708-a2e4c386997b
     lastUpdatedOn: 2022-06-19T21:59:19-07:00
     modifiedBy: https://metadatacenter.org/users/ffbb4dc6-7829-4a3c-8708-a2e4c386997b
+    configuration:
+      required: true
+      propertyIRI: http://www.w3.org/ns/dcat#dataset
+      overrideLabel: datasetMetadataInstanceIdentifier
+      overrideDescription: ""
+      multiple: true
+      minItems: 1

@@ -1,6 +1,6 @@
 type: templateElement
 id: https://repo.metadatacenter.net/template-elements/59157574-4b8a-4f45-8ee1-9081c3ab24c8
-name: BioSample Descriptor
+label: BioSample Descriptor
 description: BioSample Descriptor
 status: draft
 version: 0.0.1
@@ -10,10 +10,10 @@ createdBy: https://repo.metadatacenter.net/users/6d21a887-b704-49a9-922a-aa71632
 lastUpdatedOn: 2016-09-13T10:32:26-07:00
 modifiedBy: https://repo.metadatacenter.net/users/6d21a887-b704-49a9-922a-aa71632f3232
 children:
-  - key: title
+  - name: title
     type: templateField
     id: https://repo.metadatacenter.net/template-fields/34f6c221-667d-4255-93a8-dcabe46939d8
-    name: Title
+    label: Title
     modelVersion: 1.6.0
     inputType: textfield
     datatype: xsd:string
@@ -21,10 +21,14 @@ children:
     createdBy: https://repo.metadatacenter.net/users/6d21a887-b704-49a9-922a-aa71632f3232
     lastUpdatedOn: 2016-09-13T10:32:26-07:00
     modifiedBy: https://repo.metadatacenter.net/users/6d21a887-b704-49a9-922a-aa71632f3232
-  - key: description
+    configuration:
+      propertyIRI: https://schema.metadatacenter.net/properties/title
+      overrideLabel: Title
+      overrideDescription: null
+  - name: description
     type: templateField
     id: https://repo.metadatacenter.net/template-fields/fb9e046f-e9ac-4e54-bc78-2603c9338152
-    name: Description
+    label: Description
     modelVersion: 1.6.0
     inputType: textfield
     datatype: xsd:string
@@ -32,10 +36,14 @@ children:
     createdBy: https://repo.metadatacenter.net/users/6d21a887-b704-49a9-922a-aa71632f3232
     lastUpdatedOn: 2016-09-13T10:32:26-07:00
     modifiedBy: https://repo.metadatacenter.net/users/6d21a887-b704-49a9-922a-aa71632f3232
-  - key: externalLink
+    configuration:
+      propertyIRI: https://schema.metadatacenter.net/properties/description
+      overrideLabel: Description
+      overrideDescription: null
+  - name: externalLink
     type: templateField
     id: https://repo.metadatacenter.net/template-fields/47d7a72d-e578-4106-8e9b-40a5a6f3ef84
-    name: External Link
+    label: External Link
     modelVersion: 1.6.0
     inputType: textfield
     datatype: xsd:string
@@ -43,3 +51,7 @@ children:
     createdBy: https://repo.metadatacenter.net/users/6d21a887-b704-49a9-922a-aa71632f3232
     lastUpdatedOn: 2016-09-13T10:32:26-07:00
     modifiedBy: https://repo.metadatacenter.net/users/6d21a887-b704-49a9-922a-aa71632f3232
+    configuration:
+      propertyIRI: https://schema.metadatacenter.net/properties/externalLink
+      overrideLabel: External Link
+      overrideDescription: null

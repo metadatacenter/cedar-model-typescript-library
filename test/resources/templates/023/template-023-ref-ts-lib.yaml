@@ -1,6 +1,6 @@
 type: template
 id: https://repo.metadatacenter.org/templates/a35e97be-a5e7-4a28-a3c4-3ba62bf980e5
-name: #023 Template with controlled field
+label: #023 Template with controlled field
 status: draft
 version: 0.0.1
 modelVersion: 1.6.0
@@ -9,10 +9,10 @@ createdBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
 lastUpdatedOn: 2024-03-11T15:26:26-07:00
 modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
 children:
-  - key: Controlled 1
+  - name: Controlled 1
     type: templateField
     id: https://repo.metadatacenter.org/template-fields/ca4e4afa-ae85-4ac2-aa9b-5dd003f4ac8c
-    name: Controlled 1
+    label: Controlled 1
     description: Help Text
     modelVersion: 1.6.0
     altLabel:
@@ -50,3 +50,7 @@ children:
     createdBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
     lastUpdatedOn: 2024-03-11T15:26:26-07:00
     modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
+    configuration:
+      propertyIRI: https://schema.metadatacenter.org/properties/daa43c6f-8892-43fd-8877-63418aabf8c9
+      overrideLabel: Controlled 1
+      overrideDescription: Help Text

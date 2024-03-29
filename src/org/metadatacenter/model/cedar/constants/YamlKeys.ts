@@ -8,6 +8,7 @@ export class YamlKeys {
   static version: string = 'version';
 
   static label: string = 'label';
+  static prefLabel: string = 'prefLabel';
   static altLabel: string = 'altLabel';
 
   static inputType: string = 'inputType';
@@ -15,6 +16,10 @@ export class YamlKeys {
   static valueRecommendationEnabled: string = 'valueRecommendationEnabled';
 
   static required: string = 'required';
+  static hidden: string = 'hidden';
+  static propertyIRI: string = 'propertyIRI';
+  static overrideLabel: string = 'overrideLabel';
+  static overrideDescription: string = 'overrideDescription';
 
   static default: string = 'default';
   static minLength: string = 'minLength';
@@ -63,6 +68,8 @@ export class YamlKeys {
 
   static actions: string = 'actions';
   static action: string = 'action';
+
+  static configuration: string = 'configuration';
 
   static Controlled = class {
     static label: string = 'label';

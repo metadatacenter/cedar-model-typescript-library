@@ -25,7 +25,7 @@ export abstract class YAMLAbstractArtifactWriter extends AbstractArtifactWriter 
 
   protected macroNameAndDescription(artifact: AbstractArtifact): JsonNode {
     const node: JsonNode = JsonNodeClass.getEmpty();
-    node[YamlKeys.name] = artifact.schema_name;
+    node[YamlKeys.label] = artifact.schema_name;
     if (artifact.schema_description !== null && artifact.schema_description !== '') {
       node[YamlKeys.description] = artifact.schema_description;
     }
@@ -47,7 +47,7 @@ export abstract class YAMLAbstractArtifactWriter extends AbstractArtifactWriter 
   protected macroSkos(field: TemplateField): JsonNode {
     const skosObject: JsonNode = JsonNodeClass.getEmpty();
     if (field.skos_prefLabel !== null) {
-      skosObject[YamlKeys.label] = field.skos_prefLabel;
+      skosObject[YamlKeys.prefLabel] = field.skos_prefLabel;
     }
     if (field.skos_altLabel !== null && field.skos_altLabel.length > 0) {
       skosObject[YamlKeys.altLabel] = field.skos_altLabel;

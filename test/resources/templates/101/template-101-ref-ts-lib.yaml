@@ -1,6 +1,6 @@
 type: template
 id: https://repo.metadatacenter.org/templates/d4660935-6488-46ea-9074-68815f88b271
-name: #101 Template with one elements
+label: #101 Template with one elements
 status: draft
 version: 0.0.1
 modelVersion: 1.6.0
@@ -9,10 +9,10 @@ createdBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
 lastUpdatedOn: 2024-03-12T12:24:23-07:00
 modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
 children:
-  - key: #002 Element with three fields
+  - name: #002 Element with three fields
     type: templateElement
     id: https://repo.metadatacenter.org/template-elements/bdb047d1-0713-4ee9-9cf6-c09bb48022f5
-    name: #002 Element with three fields
+    label: #002 Element with three fields
     status: draft
     version: 0.0.1
     modelVersion: 1.6.0
@@ -21,10 +21,10 @@ children:
     lastUpdatedOn: 2024-03-12T12:24:23-07:00
     modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
     children:
-      - key: Text field
+      - name: Text field
         type: templateField
         id: https://repo.metadatacenter.org/template-fields/fae6da00-d104-4787-bf62-1506a79ce4f8
-        name: Text field
+        label: Text field
         description: Help Text
         modelVersion: 1.6.0
         inputType: textfield
@@ -33,10 +33,14 @@ children:
         createdBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
         lastUpdatedOn: 2024-03-12T12:23:36-07:00
         modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
-      - key: Email
+        configuration:
+          propertyIRI: https://schema.metadatacenter.org/properties/567002c1-5ce2-4c12-b468-86cb585e474a
+          overrideLabel: Text field
+          overrideDescription: Help Text
+      - name: Email
         type: templateField
         id: https://repo.metadatacenter.org/template-fields/d1da1935-5bb8-4800-92f3-bd1020e551d0
-        name: Email
+        label: Email
         description: Help Text
         modelVersion: 1.6.0
         inputType: email
@@ -45,10 +49,14 @@ children:
         createdBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
         lastUpdatedOn: 2024-03-12T12:23:36-07:00
         modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
-      - key: Numeric
+        configuration:
+          propertyIRI: https://schema.metadatacenter.org/properties/148c1250-5416-45d5-852f-dc563939bd20
+          overrideLabel: Email
+          overrideDescription: Help Text
+      - name: Numeric
         type: templateField
         id: https://repo.metadatacenter.org/template-fields/c200faae-8a7c-40a1-88ea-5d385230f242
-        name: Numeric
+        label: Numeric
         description: Help Text
         modelVersion: 1.6.0
         inputType: numeric
@@ -57,3 +65,11 @@ children:
         createdBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
         lastUpdatedOn: 2024-03-12T12:23:36-07:00
         modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
+        configuration:
+          propertyIRI: https://schema.metadatacenter.org/properties/4550b03e-9e19-4f33-894c-2ad0e8e02f54
+          overrideLabel: Numeric
+          overrideDescription: Help Text
+    configuration:
+      propertyIRI: https://schema.metadatacenter.org/properties/cbe4be5a-c12c-4eea-832b-b081cf8453ae
+      overrideLabel: #002 Element with three fields
+      overrideDescription: ""

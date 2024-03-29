@@ -1,6 +1,6 @@
 type: template
 id: https://repo.metadatacenter.org/templates/7563ef7a-c390-4a31-bcab-bb6ea27bfb7b
-name: #030 Template with actions
+label: #030 Template with actions
 status: draft
 version: 0.0.1
 modelVersion: 1.6.0
@@ -9,10 +9,10 @@ createdBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
 lastUpdatedOn: 2024-03-26T13:22:10-07:00
 modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
 children:
-  - key: Untitled
+  - name: Untitled
     type: templateField
     id: https://repo.metadatacenter.org/template-fields/ded5aa1e-b665-4897-b5b3-2084eff12a0c
-    name: Untitled
+    label: Untitled
     description: Help Text
     modelVersion: 1.6.0
     inputType: textfield
@@ -71,3 +71,7 @@ children:
     createdBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
     lastUpdatedOn: 2024-03-26T13:22:10-07:00
     modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
+    configuration:
+      propertyIRI: https://schema.metadatacenter.org/properties/8f943150-91ed-4fb1-b766-f20efa0da516
+      overrideLabel: Untitled
+      overrideDescription: Help Text

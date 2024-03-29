@@ -21,21 +21,8 @@ export abstract class YAMLAbstractContainerArtifactWriter extends YAMLAbstractAr
           if (childMeta !== null) {
             let childDefinition: JsonNode = JsonNodeClass.getEmpty();
             // Put child deployment name
-            childDefinition[YamlKeys.key] = childName;
-            // If multi-instance, add info
-            if (
-              childMeta.multiInstance &&
-              childMeta.uiInputType != UiInputType.CHECKBOX &&
-              childMeta.uiInputType != UiInputType.LIST &&
-              childMeta.uiInputType != UiInputType.ATTRIBUTE_VALUE
-            ) {
-              // TODO: handle maxItems, minItems inconsistencies
-              childDefinition[YamlKeys.multiple] = true;
-              childDefinition[YamlKeys.minItems] = childMeta.minItems;
-              if (childMeta.maxItems !== null) {
-                childDefinition[YamlKeys.maxItems] = childMeta.maxItems;
-              }
-            }
+            childDefinition[YamlKeys.name] = childName;
+
             if (child instanceof TemplateField) {
               childDefinition = {
                 ...childDefinition,
@@ -47,11 +34,42 @@ export abstract class YAMLAbstractContainerArtifactWriter extends YAMLAbstractAr
                 ...this.writers.getYAMLTemplateElementWriter().getYamlAsJsonNode(child),
               };
             }
+            childDefinition[YamlKeys.configuration] = this.getDeploymentInfo(childMeta);
             childList.push(childDefinition);
           }
         }
       });
 
     return childList;
+  }
+
+  private getDeploymentInfo(childMeta: ChildDeploymentInfo): JsonNode {
+    const childConfiguration: JsonNode = JsonNodeClass.getEmpty();
+    if (childMeta.requiredValue) {
+      childConfiguration[YamlKeys.required] = true;
+    }
+    if (childMeta.hidden) {
+      childConfiguration[YamlKeys.hidden] = true;
+    }
+    if (childMeta.uiInputType != UiInputType.ATTRIBUTE_VALUE) {
+      childConfiguration[YamlKeys.propertyIRI] = childMeta.iri;
+    }
+    childConfiguration[YamlKeys.overrideLabel] = childMeta.label;
+    childConfiguration[YamlKeys.overrideDescription] = childMeta.description;
+    // If multi-instance, add info
+    if (
+      childMeta.multiInstance &&
+      childMeta.uiInputType != UiInputType.CHECKBOX &&
+      childMeta.uiInputType != UiInputType.LIST &&
+      childMeta.uiInputType != UiInputType.ATTRIBUTE_VALUE
+    ) {
+      // TODO: handle maxItems, minItems inconsistencies
+      childConfiguration[YamlKeys.multiple] = true;
+      childConfiguration[YamlKeys.minItems] = childMeta.minItems;
+      if (childMeta.maxItems !== null) {
+        childConfiguration[YamlKeys.maxItems] = childMeta.maxItems;
+      }
+    }
+    return childConfiguration;
   }
 }

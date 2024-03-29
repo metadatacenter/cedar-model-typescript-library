@@ -69,6 +69,7 @@ export class CedarModel {
     static label = 'label';
     static source = 'source';
     static type = 'type';
+    static termType = 'termType';
     static prefLabel: string = 'prefLabel';
 
     static maxDepth: string = 'maxDepth';

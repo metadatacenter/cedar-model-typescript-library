@@ -1,10 +1,10 @@
 import { JsonNode, JsonNodeClass } from '../../../../../types/basic-types/JsonNode';
-import { CedarModel } from '../../../../../constants/CedarModel';
 import { ControlledTermOntology } from './ControlledTermOntology';
 import { JSONWriterBehavior } from '../../../../../../../behavior/JSONWriterBehavior';
 import { CedarWriters } from '../../../../../../../io/writer/CedarWriters';
 import { AbstractYAMLControlledTermValueConstraintWriter } from '../AbstractYAMLControlledTermValueConstraintWriter';
 import { YamlKeys } from '../../../../../constants/YamlKeys';
+import { YamlValues } from '../../../../../constants/YamlValues';
 
 export class YAMLValueConstraintsOntologyWriter extends AbstractYAMLControlledTermValueConstraintWriter {
   public constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
@@ -13,12 +13,11 @@ export class YAMLValueConstraintsOntologyWriter extends AbstractYAMLControlledTe
 
   override getAsJsonNode(ontology: ControlledTermOntology): JsonNode {
     const ret = JsonNodeClass.getEmpty();
-    // TODO: extract constant
-    ret[YamlKeys.valueType] = 'ontology';
-    ret[CedarModel.ValueConstraints.acronym] = ontology.acronym;
-    ret[CedarModel.ValueConstraints.name] = ontology.name;
-    ret[CedarModel.ValueConstraints.uri] = this.atomicWriter.write(ontology.uri);
-    ret[CedarModel.ValueConstraints.numTerms] = ontology.numTerms;
+    ret[YamlKeys.type] = YamlValues.Controlled.ontology;
+    ret[YamlKeys.Controlled.acronym] = ontology.acronym;
+    ret[YamlKeys.Controlled.ontologyName] = ontology.name;
+    ret[YamlKeys.Controlled.iri] = this.atomicWriter.write(ontology.uri);
+    ret[YamlKeys.Controlled.numTerms] = ontology.numTerms;
     return ret;
   }
 }

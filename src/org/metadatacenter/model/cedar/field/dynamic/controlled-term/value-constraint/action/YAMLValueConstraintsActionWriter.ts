@@ -1,9 +1,9 @@
 import { JsonNode, JsonNodeClass } from '../../../../../types/basic-types/JsonNode';
-import { CedarModel } from '../../../../../constants/CedarModel';
 import { JSONWriterBehavior } from '../../../../../../../behavior/JSONWriterBehavior';
 import { CedarWriters } from '../../../../../../../io/writer/CedarWriters';
 import { ControlledTermAction } from './ControlledTermAction';
 import { AbstractYAMLControlledTermValueConstraintWriter } from '../AbstractYAMLControlledTermValueConstraintWriter';
+import { YamlKeys } from '../../../../../constants/YamlKeys';
 
 export class YAMLValueConstraintsActionWriter extends AbstractYAMLControlledTermValueConstraintWriter {
   public constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
@@ -12,13 +12,13 @@ export class YAMLValueConstraintsActionWriter extends AbstractYAMLControlledTerm
 
   override getAsJsonNode(action: ControlledTermAction): JsonNode {
     const ret = JsonNodeClass.getEmpty();
-    ret[CedarModel.ValueConstraints.action] = action.action;
+    ret[YamlKeys.action] = action.action;
     if (action.to !== null) {
-      ret[CedarModel.ValueConstraints.to] = action.to;
+      ret[YamlKeys.Controlled.to] = action.to;
     }
-    ret[CedarModel.ValueConstraints.termUri] = this.atomicWriter.write(action.termUri);
-    ret[CedarModel.ValueConstraints.sourceUri] = this.atomicWriter.write(action.sourceUri);
-    ret[CedarModel.ValueConstraints.source] = action.source;
+    ret[YamlKeys.Controlled.termIri] = this.atomicWriter.write(action.termUri);
+    ret[YamlKeys.Controlled.sourceIri] = this.atomicWriter.write(action.sourceUri);
+    ret[YamlKeys.Controlled.sourceAcronym] = action.source;
     return ret;
   }
 }

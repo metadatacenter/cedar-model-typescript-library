@@ -169,11 +169,11 @@ children:
     inputType: textfield
     datatype: xsd:anyURI
     values:
-      - valueType: branch
-        source: Ontology for Generic Dataset Metadata Template (FDC-GDMT)
+      - type: branch
+        ontologyName: Ontology for Generic Dataset Metadata Template (FDC-GDMT)
         acronym: FDC-GDMT
-        name: License Identifier
-        uri: http://vocab.fairdatacollective.org/gdmt/LicenseIdentifier
+        termLabel: License Identifier
+        iri: http://vocab.fairdatacollective.org/gdmt/LicenseIdentifier
         maxDepth: 0
     createdOn: 2022-06-19T21:59:19-07:00
     createdBy: https://metadatacenter.org/users/ffbb4dc6-7829-4a3c-8708-a2e4c386997b

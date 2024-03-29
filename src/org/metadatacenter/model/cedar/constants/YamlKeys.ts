@@ -60,7 +60,24 @@ export class YamlKeys {
 
   static values: string = 'values';
   static selected: string = 'selected';
-  static valueType: string = 'valueType';
 
   static actions: string = 'actions';
+  static action: string = 'action';
+
+  static Controlled = class {
+    static label: string = 'label';
+    static acronym: string = 'acronym';
+    static ontologyName: string = 'ontologyName';
+    static iri: string = 'iri';
+    static numTerms: string = 'numTerms';
+    static termType: string = 'termType';
+    static termLabel: string = 'termLabel';
+    static maxDepth: string = 'maxDepth';
+    static valueSetName: string = 'valueSetName';
+
+    static to: string = 'to';
+    static termIri: string = 'termIri';
+    static sourceIri: string = 'sourceIri';
+    static sourceAcronym: string = 'sourceAcronym';
+  };
 }

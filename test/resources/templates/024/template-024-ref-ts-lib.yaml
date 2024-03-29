@@ -23,12 +23,12 @@ children:
     valueRecommendationEnabled: true
     required: true
     values:
-      - valueType: class
+      - type: class
         label: Music
-        source: MESH
-        type: OntologyClass
-        prefLabel: Music
-        uri: http://purl.bioontology.org/ontology/MESH/D009146
+        acronym: MESH
+        termType: OntologyClass
+        termLabel: Music
+        iri: http://purl.bioontology.org/ontology/MESH/D009146
     createdOn: 2024-03-11T16:27:51-07:00
     createdBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
     lastUpdatedOn: 2024-03-11T16:27:51-07:00

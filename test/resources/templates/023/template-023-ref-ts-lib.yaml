@@ -24,27 +24,27 @@ children:
       value: http://purl.bioontology.org/ontology/MESH/C039047
       label: 2,3,6-trichlorotoluene
     values:
-      - valueType: ontology
+      - type: ontology
         acronym: MESH
-        name: Medical Subject Headings
-        uri: https://data.bioontology.org/ontologies/MESH
+        ontologyName: Medical Subject Headings
+        iri: https://data.bioontology.org/ontologies/MESH
         numTerms: 353825
-      - valueType: class
+      - type: class
         label: Music UI Label added in the editor
-        source: MESH
-        type: OntologyClass
-        prefLabel: Music
-        uri: http://purl.bioontology.org/ontology/MESH/D009146
-      - valueType: branch
-        source: Medical Subject Headings (MESH)
         acronym: MESH
-        name: Mathematical Concepts
-        uri: http://purl.bioontology.org/ontology/MESH/D055641
+        termType: OntologyClass
+        termLabel: Music
+        iri: http://purl.bioontology.org/ontology/MESH/D009146
+      - type: branch
+        ontologyName: Medical Subject Headings (MESH)
+        acronym: MESH
+        termLabel: Mathematical Concepts
+        iri: http://purl.bioontology.org/ontology/MESH/D055641
         maxDepth: 0
-      - valueType: valueSet
-        vsCollection: CADSR-VS
-        name: Progressive Disease
-        uri: https://cadsr.nci.nih.gov/metadata/CADSR-VS/ad5886076616ec6c35558648aca5abf942d6147a
+      - type: valueSet
+        acronym: CADSR-VS
+        valueSetName: Progressive Disease
+        iri: https://cadsr.nci.nih.gov/metadata/CADSR-VS/ad5886076616ec6c35558648aca5abf942d6147a
         numTerms: 0
     createdOn: 2024-03-11T15:26:26-07:00
     createdBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95

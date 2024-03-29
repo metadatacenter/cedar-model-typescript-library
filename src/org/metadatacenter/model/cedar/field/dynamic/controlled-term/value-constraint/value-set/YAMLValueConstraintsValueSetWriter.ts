@@ -1,10 +1,10 @@
 import { JsonNode, JsonNodeClass } from '../../../../../types/basic-types/JsonNode';
-import { CedarModel } from '../../../../../constants/CedarModel';
 import { JSONWriterBehavior } from '../../../../../../../behavior/JSONWriterBehavior';
 import { CedarWriters } from '../../../../../../../io/writer/CedarWriters';
 import { ControlledTermValueSet } from './ControlledTermValueSet';
 import { AbstractYAMLControlledTermValueConstraintWriter } from '../AbstractYAMLControlledTermValueConstraintWriter';
 import { YamlKeys } from '../../../../../constants/YamlKeys';
+import { YamlValues } from '../../../../../constants/YamlValues';
 
 export class YAMLValueConstraintsValueSetWriter extends AbstractYAMLControlledTermValueConstraintWriter {
   public constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
@@ -13,12 +13,11 @@ export class YAMLValueConstraintsValueSetWriter extends AbstractYAMLControlledTe
 
   override getAsJsonNode(valueSet: ControlledTermValueSet): JsonNode {
     const ret = JsonNodeClass.getEmpty();
-    // TODO: extract constant
-    ret[YamlKeys.valueType] = 'valueSet';
-    ret[CedarModel.ValueConstraints.vsCollection] = valueSet.vsCollection;
-    ret[CedarModel.ValueConstraints.name] = valueSet.name;
-    ret[CedarModel.ValueConstraints.uri] = this.atomicWriter.write(valueSet.uri);
-    ret[CedarModel.ValueConstraints.numTerms] = valueSet.numTerms;
+    ret[YamlKeys.type] = YamlValues.Controlled.valueSet;
+    ret[YamlKeys.Controlled.acronym] = valueSet.vsCollection;
+    ret[YamlKeys.Controlled.valueSetName] = valueSet.name;
+    ret[YamlKeys.Controlled.iri] = this.atomicWriter.write(valueSet.uri);
+    ret[YamlKeys.Controlled.numTerms] = valueSet.numTerms;
     return ret;
   }
 }

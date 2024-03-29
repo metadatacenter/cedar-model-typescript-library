@@ -1,10 +1,10 @@
 import { JsonNode, JsonNodeClass } from '../../../../../types/basic-types/JsonNode';
-import { CedarModel } from '../../../../../constants/CedarModel';
 import { JSONWriterBehavior } from '../../../../../../../behavior/JSONWriterBehavior';
 import { CedarWriters } from '../../../../../../../io/writer/CedarWriters';
 import { ControlledTermBranch } from './ControlledTermBranch';
 import { AbstractYAMLControlledTermValueConstraintWriter } from '../AbstractYAMLControlledTermValueConstraintWriter';
 import { YamlKeys } from '../../../../../constants/YamlKeys';
+import { YamlValues } from '../../../../../constants/YamlValues';
 
 export class YAMLValueConstraintsBranchWriter extends AbstractYAMLControlledTermValueConstraintWriter {
   public constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
@@ -13,13 +13,12 @@ export class YAMLValueConstraintsBranchWriter extends AbstractYAMLControlledTerm
 
   override getAsJsonNode(branch: ControlledTermBranch): JsonNode {
     const ret = JsonNodeClass.getEmpty();
-    // TODO: extract constant
-    ret[YamlKeys.valueType] = 'branch';
-    ret[CedarModel.ValueConstraints.source] = branch.source;
-    ret[CedarModel.ValueConstraints.acronym] = branch.acronym;
-    ret[CedarModel.ValueConstraints.name] = branch.name;
-    ret[CedarModel.ValueConstraints.uri] = this.atomicWriter.write(branch.uri);
-    ret[CedarModel.ValueConstraints.maxDepth] = branch.maxDepth;
+    ret[YamlKeys.type] = YamlValues.Controlled.branch;
+    ret[YamlKeys.Controlled.ontologyName] = branch.source;
+    ret[YamlKeys.Controlled.acronym] = branch.acronym;
+    ret[YamlKeys.Controlled.termLabel] = branch.name;
+    ret[YamlKeys.Controlled.iri] = this.atomicWriter.write(branch.uri);
+    ret[YamlKeys.Controlled.maxDepth] = branch.maxDepth;
     return ret;
   }
 }

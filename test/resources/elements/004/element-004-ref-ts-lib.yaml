@@ -2,7 +2,7 @@ type: templateElement
 id: https://repo.metadatacenter.net/template-elements/59157574-4b8a-4f45-8ee1-9081c3ab24c8
 name: BioSample Descriptor
 description: BioSample Descriptor
-status: bibo:draft
+status: draft
 version: 0.0.1
 modelVersion: 1.6.0
 createdOn: 2016-09-13T10:27:40-07:00

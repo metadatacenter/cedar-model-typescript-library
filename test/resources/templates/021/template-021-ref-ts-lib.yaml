@@ -1,7 +1,7 @@
 type: template
 id: https://repo.metadatacenter.org/templates/af8dff49-a061-491a-8304-2bc7a5308bb3
 name: #021 Template with MultipleChoice
-status: bibo:draft
+status: draft
 version: 0.0.1
 modelVersion: 1.6.0
 createdOn: 2024-03-07T13:51:41-08:00

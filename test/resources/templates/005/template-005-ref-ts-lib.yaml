@@ -1,7 +1,7 @@
 type: template
 id: https://repo.metadatacenter.org/templates/a4b6bc3a-dc47-4af1-9b7b-61fbdf1c4dce
 name: Template with multi field
-status: bibo:draft
+status: draft
 version: 0.0.1
 modelVersion: 1.6.0
 createdOn: 2024-02-29T00:03:54-08:00

@@ -1,7 +1,7 @@
 type: template
 id: https://repo.metadatacenter.org/templates/17953945-2ff3-4eaa-ad52-f1dc41228b65
 name: #020 Template with Pick from a list MultiSelect
-status: bibo:draft
+status: draft
 version: 0.0.1
 modelVersion: 1.6.0
 createdOn: 2024-03-07T13:40:29-08:00

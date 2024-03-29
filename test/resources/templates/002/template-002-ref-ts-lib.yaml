@@ -2,7 +2,7 @@ type: template
 id: https://repo.metadatacenter.org/templates/bc8c543f-ed3f-4420-9b52-1cdbcc55f983
 name: Untitled
 description: Untitled description
-status: bibo:draft
+status: draft
 version: 0.0.1
 modelVersion: 1.6.0
 createdOn: 2024-02-26T17:56:13-08:00

@@ -18,6 +18,7 @@ import { NullableString } from '../../../model/cedar/types/basic-types/NullableS
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { JSONTemplateFieldContentDynamic } from '../../../model/cedar/util/serialization/JSONTemplateFieldContentDynamic';
 import { URI } from '../../../model/cedar/types/wrapped-types/URI';
+import { BioportalTermType, BioportalTermTypeJsonValue } from '../../../model/cedar/types/bioportal-types/BioportalTermType';
 
 export class JSONAtomicWriter {
   private behavior: JSONWriterBehavior;
@@ -44,6 +45,7 @@ export class JSONAtomicWriter {
       | UiInputType
       | AdditionalProperties
       | URI
+      | BioportalTermType
       | null,
   ): string | number | boolean | JsonNode | null {
     if (arg == null) {
@@ -60,7 +62,7 @@ export class JSONAtomicWriter {
     } else if (arg instanceof CedarUser) {
       return this.writeCedarUser(arg);
     } else if (arg instanceof BiboStatus) {
-      return this.writeBiboStatus(arg);
+      return this.writeBiboStatusJson(arg);
     } else if (arg instanceof PavVersion) {
       return this.writePavVersion(arg);
     } else if (arg instanceof ArtifactSchema) {
@@ -81,6 +83,8 @@ export class JSONAtomicWriter {
       return this.writeAdditionalProperties(arg);
     } else if (arg instanceof URI) {
       return this.writeURI(arg);
+    } else if (arg instanceof BioportalTermType) {
+      return this.writeBioportalTermTypeJson(arg);
     } else {
       throw new Error('Unsupported type');
     }
@@ -106,8 +110,8 @@ export class JSONAtomicWriter {
     return user.getValue();
   }
 
-  private writeBiboStatus(status: BiboStatus): NullableString {
-    return status.getValue();
+  private writeBiboStatusJson(status: BiboStatus): NullableString {
+    return status.getJsonValue();
   }
 
   private writePavVersion(version: PavVersion): NullableString {
@@ -153,5 +157,9 @@ export class JSONAtomicWriter {
 
   private writeURI(uri: URI): string {
     return uri.getValue();
+  }
+
+  private writeBioportalTermTypeJson(termType: BioportalTermType): BioportalTermTypeJsonValue {
+    return termType.getJsonValue();
   }
 }

@@ -99,7 +99,7 @@ export abstract class AbstractArtifactBuilder {
     if (bibo_status instanceof BiboStatus) {
       this.bibo_status = bibo_status;
     } else {
-      this.bibo_status = BiboStatus.forValue(bibo_status);
+      this.bibo_status = BiboStatus.forJsonValue(bibo_status);
     }
     return this;
   }

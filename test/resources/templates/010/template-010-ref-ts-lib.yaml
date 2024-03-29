@@ -1,7 +1,7 @@
 type: template
 id: https://repo.metadatacenter.org/templates/d58504c7-6926-4b12-a42e-776f99c7df60
 name: #010 Template with DateTime field
-status: bibo:draft
+status: draft
 version: 0.0.1
 modelVersion: 1.6.0
 createdOn: 2024-03-06T10:55:26-08:00

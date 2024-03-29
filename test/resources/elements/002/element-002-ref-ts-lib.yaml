@@ -1,7 +1,7 @@
 type: templateElement
 id: https://repo.metadatacenter.org/template-elements/bdb047d1-0713-4ee9-9cf6-c09bb48022f5
 name: #002 Element with three fields
-status: bibo:draft
+status: draft
 version: 0.0.1
 modelVersion: 1.6.0
 createdOn: 2024-03-12T12:22:22-07:00

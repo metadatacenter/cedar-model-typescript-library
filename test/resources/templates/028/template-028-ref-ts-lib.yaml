@@ -2,7 +2,7 @@ type: template
 id: https://repo.metadatacenter.org/templates/5a1651a1-7f30-497d-a1be-1ac62c92734f
 name: Catalog
 description: DCAT v3 template for data catalog metadata
-status: bibo:published
+status: published
 version: 0.0.1
 modelVersion: 1.6.0
 createdOn: 2022-06-19T09:15:48-07:00
@@ -15,7 +15,7 @@ children:
     type: templateElement
     id: https://repo.metadatacenter.org/template-elements/b6f69a07-365a-43ce-b7b0-b74835a7d8af
     name: Read & Understood Catalog
-    status: bibo:draft
+    status: draft
     version: 0.0.1
     modelVersion: 1.6.0
     createdOn: 2022-06-19T21:59:19-07:00

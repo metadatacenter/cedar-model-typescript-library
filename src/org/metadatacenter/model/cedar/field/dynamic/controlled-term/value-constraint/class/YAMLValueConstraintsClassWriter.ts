@@ -16,7 +16,7 @@ export class YAMLValueConstraintsClassWriter extends AbstractYAMLControlledTermV
     ret[YamlKeys.type] = YamlValues.Controlled.class;
     ret[YamlKeys.Controlled.label] = clazz.label;
     ret[YamlKeys.Controlled.acronym] = clazz.source;
-    ret[YamlKeys.Controlled.termType] = clazz.type;
+    ret[YamlKeys.Controlled.termType] = this.atomicWriter.write(clazz.type);
     ret[YamlKeys.Controlled.termLabel] = clazz.prefLabel;
     ret[YamlKeys.Controlled.iri] = this.atomicWriter.write(clazz.uri);
     return ret;

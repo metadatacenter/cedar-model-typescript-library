@@ -1,7 +1,7 @@
 type: template
 id: https://repo.metadatacenter.org/templates/7253af07-3704-466c-8ba5-249659faf7ca
 name: #022 Template with AttributeValue
-status: bibo:draft
+status: draft
 version: 0.0.1
 modelVersion: 1.6.0
 createdOn: 2024-03-07T23:22:06-08:00

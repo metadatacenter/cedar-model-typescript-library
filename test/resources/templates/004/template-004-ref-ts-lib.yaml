@@ -1,7 +1,7 @@
 type: template
 id: https://repo.metadatacenter.org/templates/96e25233-2b5a-42a2-a78b-65921f7ef308
 name: Template with page breaks
-status: bibo:draft
+status: draft
 version: 0.0.1
 modelVersion: 1.6.0
 createdOn: 2024-02-27T11:42:36-08:00

@@ -6,7 +6,7 @@ description: |-
   The official start date for the study for which this data file was created. This date must be in the ISO-8601 format of yyyy-mm-dd. For example, 2022-10-05 specifies October 5, 2022.
 
   This field is considered auxiliary information to the initially registered Study Start Date. It will not update the registered information, but may trigger a verification that the registered Start Date has not changed.
-status: bibo:draft
+status: draft
 version: 0.9.1
 modelVersion: 1.6.0
 label: Study Start Date

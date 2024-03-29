@@ -83,6 +83,8 @@ import { JsonSchema } from './org/metadatacenter/model/cedar/constants/JsonSchem
 import { CedarModel } from './org/metadatacenter/model/cedar/constants/CedarModel';
 import { ControlledTermActionBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/action/ControlledTermActionBuilder';
 import { YamlKeys } from './org/metadatacenter/model/cedar/constants/YamlKeys';
+import { YamlValues } from './org/metadatacenter/model/cedar/constants/YamlValues';
+import { BioportalTermType } from './org/metadatacenter/model/cedar/types/bioportal-types/BioportalTermType';
 
 export { CedarBuilders };
 export { CedarWriters };
@@ -140,6 +142,7 @@ export { TemporalType };
 export { NumberType };
 export { URI };
 export { BiboStatus };
+export { BioportalTermType };
 
 export { CedarArtifactId };
 export { ComparisonError };
@@ -147,3 +150,4 @@ export { RoundTrip };
 export { JsonSchema };
 export { CedarModel };
 export { YamlKeys };
+export { YamlValues };

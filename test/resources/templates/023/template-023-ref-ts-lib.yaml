@@ -1,7 +1,7 @@
 type: template
 id: https://repo.metadatacenter.org/templates/a35e97be-a5e7-4a28-a3c4-3ba62bf980e5
 name: #023 Template with controlled field
-status: bibo:draft
+status: draft
 version: 0.0.1
 modelVersion: 1.6.0
 createdOn: 2024-03-11T15:20:18-07:00
@@ -32,7 +32,7 @@ children:
       - type: class
         label: Music UI Label added in the editor
         acronym: MESH
-        termType: OntologyClass
+        termType: class
         termLabel: Music
         iri: http://purl.bioontology.org/ontology/MESH/D009146
       - type: branch

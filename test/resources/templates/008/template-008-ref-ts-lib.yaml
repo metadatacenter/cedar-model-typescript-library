@@ -1,7 +1,7 @@
 type: template
 id: https://repo.metadatacenter.org/templates/725246e2-346e-4d34-be49-43c110a30a7b
 name: Template with Text Field 1
-status: bibo:draft
+status: draft
 version: 0.0.1
 modelVersion: 1.6.0
 createdOn: 2024-03-01T13:44:25-08:00
@@ -14,7 +14,7 @@ children:
     id: https://repo.metadatacenter.org/template-fields/e8a18dda-c0ba-443a-9fb9-18fa3f08c7bc
     name: Text Field 1
     description: Help text for this field
-    status: bibo:draft
+    status: draft
     version: 0.0.1
     modelVersion: 1.6.0
     label: Preferred label value

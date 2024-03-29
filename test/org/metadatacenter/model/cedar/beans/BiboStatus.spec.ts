@@ -1,37 +1,37 @@
-import { BiboStatus, BiboStatusValues } from '../../../../../../src/org/metadatacenter/model/cedar/types/wrapped-types/BiboStatus';
+import { BiboStatus, BiboStatusJsonValues } from '../../../../../../src/org/metadatacenter/model/cedar/types/wrapped-types/BiboStatus';
 
 describe('BiboStatus', () => {
   test('creates draft status', () => {
     const draftByReference = BiboStatus.DRAFT;
     expect(draftByReference).not.toBeNull();
-    expect(draftByReference.getValue()).toBe(BiboStatusValues.DRAFT);
+    expect(draftByReference.getJsonValue()).toBe(BiboStatusJsonValues.DRAFT);
 
-    const draftByValue = BiboStatus.forValue(BiboStatusValues.DRAFT);
+    const draftByValue = BiboStatus.forJsonValue(BiboStatusJsonValues.DRAFT);
     expect(draftByValue).not.toBeNull();
-    expect(draftByValue.getValue()).toBe(BiboStatusValues.DRAFT);
+    expect(draftByValue.getJsonValue()).toBe(BiboStatusJsonValues.DRAFT);
   });
 
   test('creates published status', () => {
     const publishedByReference = BiboStatus.PUBLISHED;
     expect(publishedByReference).not.toBeNull();
-    expect(publishedByReference.getValue()).toBe(BiboStatusValues.PUBLISHED);
+    expect(publishedByReference.getJsonValue()).toBe(BiboStatusJsonValues.PUBLISHED);
 
-    const publishedByValue = BiboStatus.forValue(BiboStatusValues.PUBLISHED);
+    const publishedByValue = BiboStatus.forJsonValue(BiboStatusJsonValues.PUBLISHED);
     expect(publishedByValue).not.toBeNull();
-    expect(publishedByValue.getValue()).toBe(BiboStatusValues.PUBLISHED);
+    expect(publishedByValue.getJsonValue()).toBe(BiboStatusJsonValues.PUBLISHED);
   });
 
   test('creates unknown status', () => {
     const unknownByReference = BiboStatus.NULL;
     expect(unknownByReference).not.toBeNull();
-    expect(unknownByReference.getValue()).toBeNull();
+    expect(unknownByReference.getJsonValue()).toBeNull();
 
-    const unknownByValue = BiboStatus.forValue('unknown-string');
+    const unknownByValue = BiboStatus.forJsonValue('unknown-string');
     expect(unknownByValue).not.toBeNull();
-    expect(unknownByValue.getValue()).toBeNull();
+    expect(unknownByValue.getJsonValue()).toBeNull();
 
-    const unknownByNull = BiboStatus.forValue(null);
+    const unknownByNull = BiboStatus.forJsonValue(null);
     expect(unknownByNull).not.toBeNull();
-    expect(unknownByNull.getValue()).toBeNull();
+    expect(unknownByNull.getJsonValue()).toBeNull();
   });
 });

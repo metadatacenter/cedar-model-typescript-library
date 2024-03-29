@@ -1,7 +1,7 @@
 type: template
 id: https://repo.metadatacenter.org/templates/35f02de3-11ff-43b1-ac9f-0b6ff47844cf
 name: #019 Template with Pick from a list SingleSelect
-status: bibo:draft
+status: draft
 version: 0.0.1
 modelVersion: 1.6.0
 createdOn: 2024-03-07T13:35:07-08:00

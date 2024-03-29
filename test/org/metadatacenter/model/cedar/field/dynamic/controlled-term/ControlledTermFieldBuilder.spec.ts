@@ -1,4 +1,5 @@
 import {
+  BioportalTermType,
   CedarBuilders,
   CedarWriters,
   ControlledTermBranchBuilder,
@@ -54,7 +55,7 @@ describe('ControlledTermFieldBuilder', () => {
           .withLabel('Music UI Label added in the editor')
           .withPrefLabel('Music')
           .withSource('MESH')
-          .withType('OntologyClass')
+          .withType(BioportalTermType.ONTOLOGY_CLASS)
           .withUri(new URI('http://purl.bioontology.org/ontology/MESH/D009146'))
           .build(),
       )

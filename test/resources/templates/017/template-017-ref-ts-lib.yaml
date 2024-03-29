@@ -1,7 +1,7 @@
 type: template
 id: https://repo.metadatacenter.org/templates/76896fff-f2a9-4c68-ae98-0e506e398cc7
 name: #017 Template with phone
-status: bibo:draft
+status: draft
 version: 0.0.1
 modelVersion: 1.6.0
 createdOn: 2024-03-07T13:09:55-08:00

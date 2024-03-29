@@ -1,7 +1,7 @@
 type: template
 id: https://repo.metadatacenter.org/templates/7563ef7a-c390-4a31-bcab-bb6ea27bfb7b
 name: #030 Template with actions
-status: bibo:draft
+status: draft
 version: 0.0.1
 modelVersion: 1.6.0
 createdOn: 2024-03-26T13:22:10-07:00
@@ -26,7 +26,7 @@ children:
       - type: class
         label: Verbal_Abuse
         acronym: HOME
-        termType: OntologyClass
+        termType: class
         termLabel: Verbal_Abuse
         iri: http://www.semanticweb.org/navyarenjith/ontologies/2021/3/untitled-ontology-5#Verbal_Abuse
       - type: branch

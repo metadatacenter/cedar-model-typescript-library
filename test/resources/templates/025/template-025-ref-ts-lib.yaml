@@ -1,7 +1,7 @@
 type: template
 id: https://repo.metadatacenter.org/templates/295e8d40-f633-4576-9e64-2598947ef002
 name: #025 Template with hidden field
-status: bibo:draft
+status: draft
 version: 0.0.1
 modelVersion: 1.6.0
 createdOn: 2024-03-14T11:33:45-07:00

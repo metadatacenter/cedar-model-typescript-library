@@ -1,7 +1,7 @@
 type: template
 id: https://repo.metadatacenter.org/templates/71ab8aa7-84fb-4f42-a863-25ae82146fca
 name: #11 Template with multi field with pref and alt labels
-status: bibo:draft
+status: draft
 version: 0.0.1
 modelVersion: 1.6.0
 createdOn: 2024-03-06T12:46:44-08:00

@@ -1,7 +1,7 @@
 type: template
 id: https://repo.metadatacenter.org/templates/e08e0c7a-5a0d-46d7-8430-6ced51296e95
 name: #014 Template with various numbers
-status: bibo:draft
+status: draft
 version: 0.0.1
 modelVersion: 1.6.0
 createdOn: 2024-03-06T16:54:29-08:00

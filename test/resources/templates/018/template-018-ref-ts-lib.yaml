@@ -1,7 +1,7 @@
 type: template
 id: https://repo.metadatacenter.org/templates/cb92ca40-3717-4533-93c4-5efee2aed2fd
 name: #018 Template with checkbox
-status: bibo:draft
+status: draft
 version: 0.0.1
 modelVersion: 1.6.0
 createdOn: 2024-03-07T13:30:30-08:00

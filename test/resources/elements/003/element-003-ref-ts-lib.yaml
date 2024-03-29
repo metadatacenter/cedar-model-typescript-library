@@ -1,7 +1,7 @@
 type: templateElement
 id: https://repo.metadatacenter.org/template-elements/34c95bb0-d51a-416e-a6a8-08fa10f7c6eb
 name: #003 Element with another element
-status: bibo:draft
+status: draft
 version: 0.0.1
 modelVersion: 1.6.0
 createdOn: 2024-03-12T12:23:16-07:00
@@ -13,7 +13,7 @@ children:
     type: templateElement
     id: https://repo.metadatacenter.org/template-elements/bdb047d1-0713-4ee9-9cf6-c09bb48022f5
     name: #002 Element with three fields
-    status: bibo:draft
+    status: draft
     version: 0.0.1
     modelVersion: 1.6.0
     createdOn: 2024-03-12T12:23:53-07:00

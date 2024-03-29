@@ -1,7 +1,7 @@
 type: template
 id: https://repo.metadatacenter.org/templates/d942c27c-8c5f-420d-b540-a6e9400d5f55
 name: #024 Template with simple controlled field
-status: bibo:draft
+status: draft
 version: 0.0.1
 modelVersion: 1.6.0
 createdOn: 2024-03-11T16:27:51-07:00
@@ -26,7 +26,7 @@ children:
       - type: class
         label: Music
         acronym: MESH
-        termType: OntologyClass
+        termType: class
         termLabel: Music
         iri: http://purl.bioontology.org/ontology/MESH/D009146
     createdOn: 2024-03-11T16:27:51-07:00

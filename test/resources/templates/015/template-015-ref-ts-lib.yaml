@@ -1,7 +1,7 @@
 type: template
 id: https://repo.metadatacenter.org/templates/eafa53b5-220f-4480-ab5f-518e9136b88c
 name: #015 Complex number
-status: bibo:draft
+status: draft
 version: 0.0.1
 modelVersion: 1.6.0
 createdOn: 2024-03-06T17:49:03-08:00

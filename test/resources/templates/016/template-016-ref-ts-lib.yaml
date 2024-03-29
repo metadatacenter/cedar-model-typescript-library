@@ -1,7 +1,7 @@
 type: template
 id: https://repo.metadatacenter.org/templates/63a90e2a-eb03-40b8-a588-676909f45823
 name: #016 Template with Paragraph
-status: bibo:draft
+status: draft
 version: 0.0.1
 modelVersion: 1.6.0
 createdOn: 2024-03-07T11:45:47-08:00

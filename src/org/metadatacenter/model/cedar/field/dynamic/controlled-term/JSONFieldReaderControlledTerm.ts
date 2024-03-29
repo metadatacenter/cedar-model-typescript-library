@@ -13,6 +13,7 @@ import { ControlledTermDefaultValue } from './value-constraint/ControlledTermDef
 import { JsonSchema } from '../../../constants/JsonSchema';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { ControlledTermAction } from './value-constraint/action/ControlledTermAction';
+import { BioportalTermType } from '../../../types/bioportal-types/BioportalTermType';
 
 export class JSONFieldReaderControlledTerm extends JSONFieldTypeSpecificReader {
   override read(
@@ -63,7 +64,7 @@ export class JSONFieldReaderControlledTerm extends JSONFieldTypeSpecificReader {
       const clazz = new ControlledTermClass(
         ReaderUtil.getStringOrEmpty(c, CedarModel.ValueConstraints.label),
         ReaderUtil.getStringOrEmpty(c, CedarModel.ValueConstraints.source),
-        ReaderUtil.getStringOrEmpty(c, CedarModel.ValueConstraints.type),
+        BioportalTermType.forJsonValue(ReaderUtil.getStringOrEmpty(c, CedarModel.ValueConstraints.type)),
         ReaderUtil.getStringOrEmpty(c, CedarModel.ValueConstraints.prefLabel),
         ReaderUtil.getURI(c, CedarModel.ValueConstraints.uri),
       );

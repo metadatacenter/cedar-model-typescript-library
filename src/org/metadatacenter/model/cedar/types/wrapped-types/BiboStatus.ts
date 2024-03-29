@@ -1,32 +1,44 @@
-export const BiboStatusValues = {
+export const BiboStatusJsonValues = {
   DRAFT: 'bibo:draft',
   PUBLISHED: 'bibo:published',
 } as const;
 
-export type BiboStatusValue = (typeof BiboStatusValues)[keyof typeof BiboStatusValues] | null;
+export const BiboStatusYamlValues = {
+  DRAFT: 'draft',
+  PUBLISHED: 'published',
+} as const;
+
+export type BiboStatusJsonValue = (typeof BiboStatusJsonValues)[keyof typeof BiboStatusJsonValues] | null;
+export type BiboStatusYamlValue = (typeof BiboStatusYamlValues)[keyof typeof BiboStatusYamlValues] | null;
 
 export class BiboStatus {
-  private readonly value: BiboStatusValue | null;
+  private readonly jsonValue: BiboStatusJsonValue | null;
+  private readonly yamlValue: BiboStatusYamlValue | null;
 
-  private constructor(value: BiboStatusValue) {
-    this.value = value;
+  private constructor(jsonValue: BiboStatusJsonValue, yamlValue: BiboStatusYamlValue) {
+    this.jsonValue = jsonValue;
+    this.yamlValue = yamlValue;
   }
 
-  public getValue(): BiboStatusValue {
-    return this.value;
+  public getJsonValue(): BiboStatusJsonValue {
+    return this.jsonValue;
   }
 
-  public static DRAFT = new BiboStatus(BiboStatusValues.DRAFT);
-  public static PUBLISHED = new BiboStatus(BiboStatusValues.PUBLISHED);
-  public static NULL = new BiboStatus(null);
+  getYamlValue(): BiboStatusYamlValue {
+    return this.yamlValue;
+  }
+
+  public static DRAFT = new BiboStatus(BiboStatusJsonValues.DRAFT, BiboStatusYamlValues.DRAFT);
+  public static PUBLISHED = new BiboStatus(BiboStatusJsonValues.PUBLISHED, BiboStatusYamlValues.PUBLISHED);
+  public static NULL = new BiboStatus(null, null);
 
   public static values(): BiboStatus[] {
     return [BiboStatus.DRAFT, BiboStatus.PUBLISHED];
   }
 
-  public static forValue(value: string | null): BiboStatus {
+  public static forJsonValue(value: string | null): BiboStatus {
     for (const status of BiboStatus.values()) {
-      if (status.getValue() === value) {
+      if (status.getJsonValue() === value) {
         return status;
       }
     }

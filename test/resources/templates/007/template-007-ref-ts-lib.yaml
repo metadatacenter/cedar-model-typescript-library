@@ -3,7 +3,7 @@ id: https://repo.metadatacenter.org/templates/2df0a567-a52c-4df2-aa41-2458b911d3
 identifier: template-identifier
 name: Template with extra
 description: Template desc
-status: bibo:draft
+status: draft
 version: 0.0.1
 modelVersion: 1.6.0
 header: Template header

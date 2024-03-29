@@ -6,7 +6,7 @@ import { TestResource } from '../../../TestResource';
 
 const testResource: TestResource = TestResource.field(1);
 
-describe('JSONFieldReader - field-001', () => {
+describe('JSONFieldReader' + testResource.toString(), () => {
   test('reads a text field with a lot of features', () => {
     const artifactSource = TestUtil.readTestJson(testResource);
     const reader: JSONFieldReader = JSONFieldReader.getStrict();

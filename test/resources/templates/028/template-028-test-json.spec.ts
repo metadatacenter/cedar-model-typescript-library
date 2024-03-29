@@ -4,12 +4,12 @@ import { TestUtil } from '../../../TestUtil';
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
 import { TestResource } from '../../../TestResource';
 
-const testResource: TestResource = TestResource.template(27);
+const testResource: TestResource = TestResource.template(28);
 
 describe('JSONTemplateReader' + testResource.toString(), () => {
   test('reads template witch annotations', () => {
     const artifactSource = TestUtil.readTestJson(testResource);
-    const reader: JSONTemplateReader = JSONTemplateReader.getStrict();
+    const reader: JSONTemplateReader = JSONTemplateReader.getFebruary2024();
     const jsonTemplateReaderResult = reader.readFromString(artifactSource);
     expect(jsonTemplateReaderResult).not.toBeNull();
     const parsingResult = jsonTemplateReaderResult.parsingResult;
@@ -17,8 +17,10 @@ describe('JSONTemplateReader' + testResource.toString(), () => {
 
     // TestUtil.p(jsonTemplateReaderResult.template);
 
-    const writers: CedarWriters = CedarWriters.getStrict();
+    const writers: CedarWriters = CedarWriters.getFebruary2024();
     const writer: JSONTemplateWriter = writers.getJSONTemplateWriter();
+
+    // console.log(jsonTemplateReaderResult.templateSourceObject);
 
     const compareResult: ParsingResult = RoundTrip.compare(jsonTemplateReaderResult, writer);
 
@@ -26,13 +28,27 @@ describe('JSONTemplateReader' + testResource.toString(), () => {
     // TestUtil.p(writer.getAsJsonNode(jsonTemplateReaderResult.template));
 
     expect(compareResult.wasSuccessful()).toBe(false);
-    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(1);
+    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(3);
 
-    const uiPagesMissing = new ComparisonError(
+    const missingPropDesc1 = new ComparisonError(
       'oco02',
       ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-      new JsonPath(CedarModel.ui, CedarModel.pages),
+      new JsonPath(CedarModel.ui, CedarModel.propertyDescriptions, 'Read & Understood'),
     );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
+    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(missingPropDesc1);
+
+    const missingPropDesc2 = new ComparisonError(
+      'oco02',
+      ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
+      new JsonPath(CedarModel.ui, CedarModel.propertyDescriptions, 'ProjectAdminIntanceID'),
+    );
+    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(missingPropDesc2);
+
+    const missingPropDesc3 = new ComparisonError(
+      'oco02',
+      ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
+      new JsonPath(CedarModel.ui, CedarModel.propertyDescriptions, 'ProjectAdminInstanceIDRT'),
+    );
+    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(missingPropDesc3);
   });
 });

@@ -1,0 +1,16 @@
+type: templateField
+id: https://repo.metadatacenter.org/template-fields/de2525eb-3b58-4aaf-9f99-5bd140145303
+identifier: subject_identifier_scheme
+name: Subject Identifier Scheme
+description: The name of the scheme or authority used for the Subject Identifier.
+status: bibo:draft
+version: 0.9.1
+modelVersion: 1.6.0
+label: Subject Identifier Scheme
+inputType: textfield
+datatype: xsd:string
+createdOn: 2022-10-13T12:44:16-07:00
+createdBy: https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014
+lastUpdatedOn: 2022-10-13T12:44:16-07:00
+modifiedBy: https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014
+derivedFrom: ""

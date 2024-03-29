@@ -1,0 +1,15 @@
+type: template
+name: Untitled
+description: Untitled description
+status: bibo:draft
+version: 0.0.1
+modelVersion: 1.6.0
+children:
+  - key: Textfield
+    type: templateField
+    id: tmp-1708998934299-6744386
+    name: Textfield
+    description: Help Text
+    modelVersion: 1.6.0
+    inputType: textfield
+    datatype: xsd:string

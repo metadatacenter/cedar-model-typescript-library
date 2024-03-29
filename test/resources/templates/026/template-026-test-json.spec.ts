@@ -1,13 +1,22 @@
-import { CedarModel, CedarWriters, ComparisonError, JsonPath, JSONTemplateReader, JSONTemplateWriter, RoundTrip } from '../../../../src';
+import {
+  CedarModel,
+  CedarWriters,
+  ComparisonError,
+  JsonPath,
+  JsonSchema,
+  JSONTemplateReader,
+  JSONTemplateWriter,
+  RoundTrip,
+} from '../../../../src';
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
 import { TestUtil } from '../../../TestUtil';
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
 import { TestResource } from '../../../TestResource';
 
-const testResource: TestResource = TestResource.template(27);
+const testResource: TestResource = TestResource.template(26);
 
 describe('JSONTemplateReader' + testResource.toString(), () => {
-  test('reads template witch annotations', () => {
+  test('reads simple template witch changed child name', () => {
     const artifactSource = TestUtil.readTestJson(testResource);
     const reader: JSONTemplateReader = JSONTemplateReader.getStrict();
     const jsonTemplateReaderResult = reader.readFromString(artifactSource);
@@ -26,7 +35,7 @@ describe('JSONTemplateReader' + testResource.toString(), () => {
     // TestUtil.p(writer.getAsJsonNode(jsonTemplateReaderResult.template));
 
     expect(compareResult.wasSuccessful()).toBe(false);
-    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(1);
+    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(3);
 
     const uiPagesMissing = new ComparisonError(
       'oco02',
@@ -34,5 +43,21 @@ describe('JSONTemplateReader' + testResource.toString(), () => {
       new JsonPath(CedarModel.ui, CedarModel.pages),
     );
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
+
+    const requiredTextfieldUnexpected = new ComparisonError(
+      'oca02',
+      ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
+      new JsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 11),
+      undefined,
+      '_text_field_',
+    );
+    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredTextfieldUnexpected);
+
+    const languageTextfieldUnexpected = new ComparisonError(
+      'oco01',
+      ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
+      new JsonPath(JsonSchema.properties, '_text_field_', JsonSchema.properties, JsonSchema.atLanguage),
+    );
+    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageTextfieldUnexpected);
   });
 });

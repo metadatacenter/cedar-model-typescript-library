@@ -1,0 +1,69 @@
+type: template
+id: https://repo.metadatacenter.org/templates/96e25233-2b5a-42a2-a78b-65921f7ef308
+name: Template with page breaks
+status: bibo:draft
+version: 0.0.1
+modelVersion: 1.6.0
+createdOn: 2024-02-27T11:42:36-08:00
+createdBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
+lastUpdatedOn: 2024-02-27T11:42:36-08:00
+modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
+children:
+  - key: Field 1
+    type: templateField
+    id: https://repo.metadatacenter.org/template-fields/60314dfd-fbe6-43ad-8e94-bc6263b5ac8a
+    name: Field 1
+    description: Help Text
+    modelVersion: 1.6.0
+    inputType: textfield
+    datatype: xsd:string
+    createdOn: 2024-02-27T11:42:36-08:00
+    createdBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
+    lastUpdatedOn: 2024-02-27T11:42:36-08:00
+    modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
+  - key: Page break 1
+    type: staticTemplateField
+    id: https://repo.metadatacenter.org/template-fields/f5b6e0a6-d7f5-456c-a622-2c083fa240ec
+    name: Page break 1
+    description: Help Text
+    modelVersion: 1.6.0
+    inputType: page-break
+    createdOn: 2024-02-27T11:42:36-08:00
+    createdBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
+    lastUpdatedOn: 2024-02-27T11:42:36-08:00
+    modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
+  - key: Field 2
+    type: templateField
+    id: https://repo.metadatacenter.org/template-fields/77930e4a-2f45-4552-a2d3-4e8dbd3b0883
+    name: Field 2
+    description: Help Text
+    modelVersion: 1.6.0
+    inputType: textfield
+    datatype: xsd:string
+    createdOn: 2024-02-27T11:42:36-08:00
+    createdBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
+    lastUpdatedOn: 2024-02-27T11:42:36-08:00
+    modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
+  - key: Page break 2
+    type: staticTemplateField
+    id: https://repo.metadatacenter.org/template-fields/df0b0bfb-f262-49dd-8b99-30cc00701af8
+    name: Page break 2
+    description: Help Text
+    modelVersion: 1.6.0
+    inputType: page-break
+    createdOn: 2024-02-27T11:42:36-08:00
+    createdBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
+    lastUpdatedOn: 2024-02-27T11:42:36-08:00
+    modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
+  - key: Field 3
+    type: templateField
+    id: https://repo.metadatacenter.org/template-fields/cbfb3c2a-e1a9-44c8-a97a-186a558a02a5
+    name: Field 3
+    description: Help Text
+    modelVersion: 1.6.0
+    inputType: textfield
+    datatype: xsd:string
+    createdOn: 2024-02-27T11:42:36-08:00
+    createdBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
+    lastUpdatedOn: 2024-02-27T11:42:36-08:00
+    modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95

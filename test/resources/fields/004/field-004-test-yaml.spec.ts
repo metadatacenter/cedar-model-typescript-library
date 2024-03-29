@@ -2,7 +2,7 @@ import { CedarWriters, JSONFieldReader } from '../../../../src';
 import { TestUtil } from '../../../TestUtil';
 import { TestResource } from '../../../TestResource';
 
-const testResource: TestResource = TestResource.field(2);
+const testResource: TestResource = TestResource.field(4);
 
 describe('YAMLTemplateFieldWriter' + testResource.toString(), () => {
   test('read a JSON field, and writes it as YAML', () => {

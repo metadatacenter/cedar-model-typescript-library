@@ -2,20 +2,19 @@ import { CedarModel, CedarWriters, ComparisonError, JsonPath, JSONTemplateReader
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
 import { TestUtil } from '../../../TestUtil';
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
+import { JSONTemplateReaderResult } from '../../../../src/org/metadatacenter/io/reader/JSONTemplateReaderResult';
 import { TestResource } from '../../../TestResource';
 
-const testResource: TestResource = TestResource.template(27);
+const testResource: TestResource = TestResource.template(9);
 
 describe('JSONTemplateReader' + testResource.toString(), () => {
-  test('reads template witch annotations', () => {
+  test('reads template with static fields', () => {
     const artifactSource = TestUtil.readTestJson(testResource);
     const reader: JSONTemplateReader = JSONTemplateReader.getStrict();
-    const jsonTemplateReaderResult = reader.readFromString(artifactSource);
+    const jsonTemplateReaderResult: JSONTemplateReaderResult = reader.readFromString(artifactSource);
     expect(jsonTemplateReaderResult).not.toBeNull();
-    const parsingResult = jsonTemplateReaderResult.parsingResult;
+    const parsingResult: ParsingResult = jsonTemplateReaderResult.parsingResult;
     expect(parsingResult.wasSuccessful()).toBe(true);
-
-    // TestUtil.p(jsonTemplateReaderResult.template);
 
     const writers: CedarWriters = CedarWriters.getStrict();
     const writer: JSONTemplateWriter = writers.getJSONTemplateWriter();

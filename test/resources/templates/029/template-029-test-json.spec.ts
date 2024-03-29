@@ -1,10 +1,9 @@
-import { CedarModel, CedarWriters, ComparisonError, JsonPath, JSONTemplateReader, JSONTemplateWriter, RoundTrip } from '../../../../src';
+import { CedarWriters, JSONTemplateReader, JSONTemplateWriter, RoundTrip } from '../../../../src';
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
 import { TestUtil } from '../../../TestUtil';
-import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
 import { TestResource } from '../../../TestResource';
 
-const testResource: TestResource = TestResource.template(27);
+const testResource: TestResource = TestResource.template(29);
 
 describe('JSONTemplateReader' + testResource.toString(), () => {
   test('reads template witch annotations', () => {
@@ -13,26 +12,23 @@ describe('JSONTemplateReader' + testResource.toString(), () => {
     const jsonTemplateReaderResult = reader.readFromString(artifactSource);
     expect(jsonTemplateReaderResult).not.toBeNull();
     const parsingResult = jsonTemplateReaderResult.parsingResult;
-    expect(parsingResult.wasSuccessful()).toBe(true);
+    expect(parsingResult.wasSuccessful()).toBe(false);
+    // TestUtil.p(parsingResult.getBlueprintComparisonErrors());
 
     // TestUtil.p(jsonTemplateReaderResult.template);
 
-    const writers: CedarWriters = CedarWriters.getStrict();
+    const writers: CedarWriters = CedarWriters.getFebruary2024();
     const writer: JSONTemplateWriter = writers.getJSONTemplateWriter();
+
+    // console.log(jsonTemplateReaderResult.templateSourceObject);
 
     const compareResult: ParsingResult = RoundTrip.compare(jsonTemplateReaderResult, writer);
 
-    // TestUtil.p(compareResult);
+    // TestUtil.p(compareResult.getBlueprintComparisonErrors());
     // TestUtil.p(writer.getAsJsonNode(jsonTemplateReaderResult.template));
 
     expect(compareResult.wasSuccessful()).toBe(false);
-    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(1);
-
-    const uiPagesMissing = new ComparisonError(
-      'oco02',
-      ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-      new JsonPath(CedarModel.ui, CedarModel.pages),
-    );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
+    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(504);
+    expect(compareResult.getBlueprintComparisonWarningCount()).toBe(982);
   });
 });

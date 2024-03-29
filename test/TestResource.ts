@@ -15,6 +15,10 @@ export class TestResource {
     return new TestResource('field', num);
   }
 
+  static element(num: number): TestResource {
+    return new TestResource('element', num);
+  }
+
   public toString(): string {
     return ' - ' + this.type + '-' + this.num;
   }

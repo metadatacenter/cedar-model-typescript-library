@@ -20,8 +20,9 @@ children:
       - ALT label 2
     inputType: textfield
     datatype: xsd:anyURI
-    defaultValue: http://purl.bioontology.org/ontology/MESH/C039047
-    defaultLabel: 2,3,6-trichlorotoluene
+    default:
+      value: http://purl.bioontology.org/ontology/MESH/C039047
+      label: 2,3,6-trichlorotoluene
     values:
       - valueType: ontology
         acronym: MESH

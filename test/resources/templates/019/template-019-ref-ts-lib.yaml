@@ -19,6 +19,7 @@ children:
     inputType: list
     datatype: xsd:string
     required: true
+    multipleChoice: false
     values:
       - label: Option 1
       - label: Option 2

@@ -63,7 +63,4 @@ export class YamlKeys {
   static valueType: string = 'valueType';
 
   static actions: string = 'actions';
-
-  static defaultValue: string = 'defaultValue';
-  static defaultLabel: string = 'defaultLabel';
 }

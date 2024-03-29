@@ -50,8 +50,6 @@ children:
         lastUpdatedOn: 2022-06-19T17:25:06-07:00
         modifiedBy: https://metadatacenter.org/users/ffbb4dc6-7829-4a3c-8708-a2e4c386997b
       - key: Read & Understood
-        multiple: true
-        minItems: 1
         type: templateField
         id: https://repo.metadatacenter.org/template-fields/67455702-fee8-441d-b013-2975d1e719a1
         name: Read & Understood
@@ -60,7 +58,6 @@ children:
         inputType: checkbox
         datatype: xsd:string
         required: true
-        multipleChoice: true
         values:
           - label: I have read & understood
         createdOn: 2022-06-19T17:25:06-07:00

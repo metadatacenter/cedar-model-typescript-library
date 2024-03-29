@@ -19,9 +19,7 @@ export class YAMLFieldWriterList extends YAMLTemplateFieldWriterInternal {
 
   override expandValueConstraintsNodeForYAML(vcNode: JsonNode, field: ListField, childInfo: ChildDeploymentInfo): void {
     super.expandValueConstraintsNodeForYAML(vcNode, field, childInfo);
-    if (field.multipleChoice) {
-      vcNode[YamlKeys.multipleChoice] = field.multipleChoice;
-    }
+    vcNode[YamlKeys.multipleChoice] = field.multipleChoice;
     this.expandLiterals(field, vcNode);
   }
 }

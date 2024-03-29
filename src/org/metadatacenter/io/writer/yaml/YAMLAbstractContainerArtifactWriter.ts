@@ -5,6 +5,7 @@ import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploy
 import { TemplateField } from '../../../model/cedar/field/TemplateField';
 import { YAMLAbstractArtifactWriter } from './YAMLAbstractArtifactWriter';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
+import { UiInputType } from '../../../model/cedar/types/wrapped-types/UiInputType';
 
 export abstract class YAMLAbstractContainerArtifactWriter extends YAMLAbstractArtifactWriter {
   protected getChildListAsJSON(container: AbstractContainerArtifact): JsonNode[] {
@@ -22,7 +23,12 @@ export abstract class YAMLAbstractContainerArtifactWriter extends YAMLAbstractAr
             // Put child deployment name
             childDefinition[YamlKeys.key] = childName;
             // If multi-instance, add info
-            if (childMeta.multiInstance) {
+            if (
+              childMeta.multiInstance &&
+              childMeta.uiInputType != UiInputType.CHECKBOX &&
+              childMeta.uiInputType != UiInputType.LIST &&
+              childMeta.uiInputType != UiInputType.ATTRIBUTE_VALUE
+            ) {
               // TODO: handle maxItems, minItems inconsistencies
               childDefinition[YamlKeys.multiple] = true;
               childDefinition[YamlKeys.minItems] = childMeta.minItems;

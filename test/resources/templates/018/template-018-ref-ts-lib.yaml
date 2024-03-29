@@ -10,8 +10,6 @@ lastUpdatedOn: 2024-03-07T20:58:30-08:00
 modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
 children:
   - key: My checkbox 1
-    multiple: true
-    minItems: 1
     type: templateField
     id: https://repo.metadatacenter.org/template-fields/bc68d373-562f-4725-9e67-433999363deb
     name: My checkbox 1
@@ -21,7 +19,6 @@ children:
     inputType: checkbox
     datatype: xsd:string
     required: true
-    multipleChoice: true
     values:
       - label: Option 1
       - label: Option 2
@@ -34,8 +31,6 @@ children:
     lastUpdatedOn: 2024-03-07T20:58:30-08:00
     modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
   - key: My checkbox 2
-    multiple: true
-    minItems: 1
     type: templateField
     id: https://repo.metadatacenter.org/template-fields/bd25e554-c588-48ce-824f-8383cd3eafcc
     name: My checkbox 2
@@ -44,7 +39,6 @@ children:
     label: Non-required checkbox
     inputType: checkbox
     datatype: xsd:string
-    multipleChoice: true
     values:
       - label: Radio 1
       - label: Radio 2

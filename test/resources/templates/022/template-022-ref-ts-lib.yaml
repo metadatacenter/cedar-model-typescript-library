@@ -10,8 +10,6 @@ lastUpdatedOn: 2024-03-07T23:22:25-08:00
 modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
 children:
   - key: ATTR-Value
-    multiple: true
-    minItems: 0
     type: templateField
     id: https://repo.metadatacenter.org/template-fields/bb91de17-9fa7-4cb2-885d-13617e7b3f08
     name: ATTR-Value

@@ -10,8 +10,6 @@ lastUpdatedOn: 2024-03-08T12:32:06-08:00
 modifiedBy: https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95
 children:
   - key: Attribute-Value
-    multiple: true
-    minItems: 0
     type: templateField
     id: https://repo.metadatacenter.org/template-fields/162ab456-e5ec-400c-a713-c46c29adf3b8
     name: Attribute-Value

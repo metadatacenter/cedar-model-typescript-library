@@ -4,7 +4,6 @@ import { StaticImageField } from './image/StaticImageField';
 import { JsonNode } from '../../types/basic-types/JsonNode';
 import { TemplateField } from '../TemplateField';
 import { YAMLTemplateFieldWriterInternal } from '../../../../io/writer/yaml/YAMLTemplateFieldWriterInternal';
-import { YamlKeys } from '../../constants/YamlKeys';
 
 export class YAMLStaticFieldWriter extends YAMLTemplateFieldWriterInternal {
   constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
@@ -14,10 +13,7 @@ export class YAMLStaticFieldWriter extends YAMLTemplateFieldWriterInternal {
   protected expandUINodeForYAML(_uiNode: JsonNode, _field: TemplateField): void {}
 
   protected buildUIObject(field: TemplateField): JsonNode {
-    // TODO: YAML: In case of a static field, the inputType might be misleading
-    const uiNode: JsonNode = {
-      [YamlKeys.inputType]: this.atomicWriter.write(field.cedarFieldType.getUiInputType()),
-    };
+    const uiNode: JsonNode = {};
     this.expandUINodeForYAML(uiNode, field);
     return uiNode;
   }

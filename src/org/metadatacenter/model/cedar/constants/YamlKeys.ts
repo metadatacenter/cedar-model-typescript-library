@@ -11,7 +11,6 @@ export class YamlKeys {
   static prefLabel: string = 'prefLabel';
   static altLabel: string = 'altLabel';
 
-  static inputType: string = 'inputType';
   static datatype: string = 'datatype';
   static valueRecommendationEnabled: string = 'valueRecommendationEnabled';
 

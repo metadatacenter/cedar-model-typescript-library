@@ -81,9 +81,7 @@ export abstract class YAMLTemplateFieldWriterInternal extends YAMLAbstractArtifa
   }
 
   protected buildUIObject(field: TemplateField, childInfo: ChildDeploymentInfo): JsonNode {
-    const uiNode: JsonNode = {
-      [YamlKeys.inputType]: this.atomicWriter.write(field.cedarFieldType.getUiInputType()),
-    };
+    const uiNode: JsonNode = {};
     this.expandUINodeForYAML(uiNode, field, childInfo);
     return uiNode;
   }

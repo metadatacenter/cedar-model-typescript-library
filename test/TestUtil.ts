@@ -30,10 +30,10 @@ export class TestUtil {
   }
 
   static readTestJson(testResource: TestResource): string {
-    return this.readTestResourceAsString(testResource.getDirectory(), testResource.getFile('-input.json'));
+    return this.readTestResourceAsString(testResource.getDirectory(), testResource.getFile('.json'));
   }
 
   static readReferenceYaml(testResource: TestResource): string {
-    return this.readTestResourceAsString(testResource.getDirectory(), testResource.getFile('-ref-ts-lib.yaml'));
+    return this.readTestResourceAsString(testResource.getDirectory(), testResource.getFile('-ts-model-lib.yml'));
   }
 }

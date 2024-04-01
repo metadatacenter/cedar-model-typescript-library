@@ -12,6 +12,9 @@ import { CedarArtifactId } from '../../../model/cedar/types/cedar-types/CedarArt
 import { YAMLAnnotationsWriter } from './YAMLAnnotationsWriter';
 import { CedarUser } from '../../../model/cedar/types/cedar-types/CedarUser';
 import { ISODate } from '../../../model/cedar/types/wrapped-types/ISODate';
+import { TemplateElement } from '../../../model/cedar/element/TemplateElement';
+import { YamlArtifactType } from '../../../model/cedar/types/wrapped-types/YamlArtifactType';
+import { Template } from '../../../model/cedar/template/Template';
 
 export abstract class YAMLAbstractArtifactWriter extends AbstractArtifactWriter {
   protected atomicWriter: YAMLAtomicWriter;
@@ -82,7 +85,7 @@ export abstract class YAMLAbstractArtifactWriter extends AbstractArtifactWriter 
 
   protected macroTypeAndId(artifact: AbstractArtifact): JsonNode {
     const typeAndId: JsonNode = JsonNodeClass.getEmpty();
-    typeAndId[YamlKeys.type] = this.atomicWriter.write(artifact.cedarArtifactType);
+    typeAndId[YamlKeys.type] = this.macroType(artifact);
     if (artifact.at_id !== CedarArtifactId.NULL) {
       typeAndId[YamlKeys.id] = this.atomicWriter.write(artifact.at_id);
     }
@@ -99,5 +102,16 @@ export abstract class YAMLAbstractArtifactWriter extends AbstractArtifactWriter 
 
   protected macroAnnotations(artifact: AbstractArtifact): JsonNode {
     return this.annotationsWriter.write(artifact.annotations);
+  }
+
+  protected macroType(artifact: AbstractArtifact) {
+    if (artifact instanceof Template) {
+      return YamlArtifactType.TEMPLATE.getValue();
+    } else if (artifact instanceof TemplateElement) {
+      return YamlArtifactType.ELEMENT.getValue();
+    } else if (artifact instanceof TemplateField) {
+      return artifact.cedarFieldType.getYamlType().getValue();
+    }
+    return undefined;
   }
 }

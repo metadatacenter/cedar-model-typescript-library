@@ -1,4 +1,5 @@
 import { UiInputType } from '../wrapped-types/UiInputType';
+import { YamlArtifactType } from '../wrapped-types/YamlArtifactType';
 
 export const CedarFieldTypeValues = {
   TEXTFIELD: 'DYNAMIC-textfield',
@@ -26,11 +27,13 @@ export type CedarFieldTypeValue = (typeof CedarFieldTypeValues)[keyof typeof Ced
 export class CedarFieldType {
   private readonly value: CedarFieldTypeValue | null;
   private readonly _uiInputType: UiInputType;
+  private readonly _yamlType: YamlArtifactType;
   private readonly staticField;
 
-  private constructor(value: CedarFieldTypeValue, uiInputType: UiInputType, staticField: boolean) {
+  private constructor(value: CedarFieldTypeValue, uiInputType: UiInputType, yamlType: YamlArtifactType, staticField: boolean) {
     this.value = value;
     this._uiInputType = uiInputType;
+    this._yamlType = yamlType;
     this.staticField = staticField;
   }
 
@@ -40,6 +43,10 @@ export class CedarFieldType {
 
   public getUiInputType(): UiInputType {
     return this._uiInputType;
+  }
+
+  public getYamlType(): YamlArtifactType {
+    return this._yamlType;
   }
 
   get isStaticField() {
@@ -68,26 +75,61 @@ export class CedarFieldType {
     ];
   }
 
-  public static TEXT = new CedarFieldType(CedarFieldTypeValues.TEXTFIELD, UiInputType.TEXTFIELD, false);
-  public static TEXTAREA = new CedarFieldType(CedarFieldTypeValues.TEXTAREA, UiInputType.TEXTAREA, false);
-  public static CONTROLLED_TERM = new CedarFieldType(CedarFieldTypeValues.CONTROLLED_TERM, UiInputType.TEXTFIELD, false);
-  public static LINK = new CedarFieldType(CedarFieldTypeValues.LINK, UiInputType.LINK, false);
-  public static TEMPORAL = new CedarFieldType(CedarFieldTypeValues.TEMPORAL, UiInputType.TEMPORAL, false);
-  public static EMAIL = new CedarFieldType(CedarFieldTypeValues.EMAIL, UiInputType.EMAIL, false);
-  public static NUMERIC = new CedarFieldType(CedarFieldTypeValues.NUMERIC, UiInputType.NUMERIC, false);
-  public static PHONE_NUMBER = new CedarFieldType(CedarFieldTypeValues.PHONE_NUMBER, UiInputType.PHONE_NUMBER, false);
-  public static RADIO = new CedarFieldType(CedarFieldTypeValues.RADIO, UiInputType.RADIO, false);
-  public static CHECKBOX = new CedarFieldType(CedarFieldTypeValues.CHECKBOX, UiInputType.CHECKBOX, false);
-  public static LIST = new CedarFieldType(CedarFieldTypeValues.LIST, UiInputType.LIST, false);
-  public static ATTRIBUTE_VALUE = new CedarFieldType(CedarFieldTypeValues.ATTRIBUTE_VALUE, UiInputType.ATTRIBUTE_VALUE, false);
+  public static TEXT = new CedarFieldType(CedarFieldTypeValues.TEXTFIELD, UiInputType.TEXTFIELD, YamlArtifactType.TEXTFIELD, false);
+  public static TEXTAREA = new CedarFieldType(CedarFieldTypeValues.TEXTAREA, UiInputType.TEXTAREA, YamlArtifactType.TEXTAREA, false);
+  public static CONTROLLED_TERM = new CedarFieldType(
+    CedarFieldTypeValues.CONTROLLED_TERM,
+    UiInputType.TEXTFIELD,
+    YamlArtifactType.CONTROLLED_TERM,
+    false,
+  );
+  public static LINK = new CedarFieldType(CedarFieldTypeValues.LINK, UiInputType.LINK, YamlArtifactType.LINK, false);
+  public static TEMPORAL = new CedarFieldType(CedarFieldTypeValues.TEMPORAL, UiInputType.TEMPORAL, YamlArtifactType.TEMPORAL, false);
+  public static EMAIL = new CedarFieldType(CedarFieldTypeValues.EMAIL, UiInputType.EMAIL, YamlArtifactType.EMAIL, false);
+  public static NUMERIC = new CedarFieldType(CedarFieldTypeValues.NUMERIC, UiInputType.NUMERIC, YamlArtifactType.NUMERIC, false);
+  public static PHONE_NUMBER = new CedarFieldType(
+    CedarFieldTypeValues.PHONE_NUMBER,
+    UiInputType.PHONE_NUMBER,
+    YamlArtifactType.PHONE_NUMBER,
+    false,
+  );
+  public static RADIO = new CedarFieldType(CedarFieldTypeValues.RADIO, UiInputType.RADIO, YamlArtifactType.RADIO, false);
+  public static CHECKBOX = new CedarFieldType(CedarFieldTypeValues.CHECKBOX, UiInputType.CHECKBOX, YamlArtifactType.CHECKBOX, false);
+  public static LIST = new CedarFieldType(CedarFieldTypeValues.LIST, UiInputType.LIST, YamlArtifactType.SINGLE_SELECT_LIST, false);
+  public static ATTRIBUTE_VALUE = new CedarFieldType(
+    CedarFieldTypeValues.ATTRIBUTE_VALUE,
+    UiInputType.ATTRIBUTE_VALUE,
+    YamlArtifactType.ATTRIBUTE_VALUE,
+    false,
+  );
 
-  public static STATIC_PAGE_BREAK = new CedarFieldType(CedarFieldTypeValues.STATIC_PAGE_BREAK, UiInputType.PAGE_BREAK, true);
-  public static STATIC_SECTION_BREAK = new CedarFieldType(CedarFieldTypeValues.STATIC_SECTION_BREAK, UiInputType.SECTION_BREAK, true);
-  public static STATIC_IMAGE = new CedarFieldType(CedarFieldTypeValues.STATIC_IMAGE, UiInputType.IMAGE, true);
-  public static STATIC_RICH_TEXT = new CedarFieldType(CedarFieldTypeValues.STATIC_RICH_TEXT, UiInputType.RICH_TEXT, true);
-  public static STATIC_YOUTUBE = new CedarFieldType(CedarFieldTypeValues.STATIC_YOUTUBE, UiInputType.YOUTUBE, true);
+  public static STATIC_PAGE_BREAK = new CedarFieldType(
+    CedarFieldTypeValues.STATIC_PAGE_BREAK,
+    UiInputType.PAGE_BREAK,
+    YamlArtifactType.PAGE_BREAK,
+    true,
+  );
+  public static STATIC_SECTION_BREAK = new CedarFieldType(
+    CedarFieldTypeValues.STATIC_SECTION_BREAK,
+    UiInputType.SECTION_BREAK,
+    YamlArtifactType.SECTION_BREAK,
+    true,
+  );
+  public static STATIC_IMAGE = new CedarFieldType(CedarFieldTypeValues.STATIC_IMAGE, UiInputType.IMAGE, YamlArtifactType.IMAGE, true);
+  public static STATIC_RICH_TEXT = new CedarFieldType(
+    CedarFieldTypeValues.STATIC_RICH_TEXT,
+    UiInputType.RICH_TEXT,
+    YamlArtifactType.RICH_TEXT,
+    true,
+  );
+  public static STATIC_YOUTUBE = new CedarFieldType(
+    CedarFieldTypeValues.STATIC_YOUTUBE,
+    UiInputType.YOUTUBE,
+    YamlArtifactType.YOUTUBE,
+    true,
+  );
 
-  public static NULL = new CedarFieldType(null, UiInputType.NULL, true);
+  public static NULL = new CedarFieldType(null, UiInputType.NULL, YamlArtifactType.NULL, true);
 
   static forUiInputType(uiInputType: UiInputType): CedarFieldType {
     for (const fieldType of CedarFieldType.values()) {

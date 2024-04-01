@@ -7,6 +7,7 @@ import { YAMLTemplateFieldWriterInternal } from '../../../../../io/writer/yaml/Y
 import { YamlKeys } from '../../../constants/YamlKeys';
 import { TextField } from '../textfield/TextField';
 import { XsdDatatype } from '../../../constants/XsdDatatype';
+import { YamlArtifactType } from '../../../types/wrapped-types/YamlArtifactType';
 
 export class YAMLFieldWriterList extends YAMLTemplateFieldWriterInternal {
   constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
@@ -19,7 +20,15 @@ export class YAMLFieldWriterList extends YAMLTemplateFieldWriterInternal {
 
   override expandValueConstraintsNodeForYAML(vcNode: JsonNode, field: ListField, childInfo: ChildDeploymentInfo): void {
     super.expandValueConstraintsNodeForYAML(vcNode, field, childInfo);
-    vcNode[YamlKeys.multipleChoice] = field.multipleChoice;
+    //vcNode[YamlKeys.multipleChoice] = field.multipleChoice;
     this.expandLiterals(field, vcNode);
+  }
+
+  protected override macroType(field: ListField) {
+    if (field.multipleChoice) {
+      return YamlArtifactType.MULTI_SELECT_LIST.getValue();
+    } else {
+      return YamlArtifactType.SINGLE_SELECT_LIST.getValue();
+    }
   }
 }

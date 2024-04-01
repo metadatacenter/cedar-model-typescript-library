@@ -14,7 +14,7 @@ import { JSONTemplateReaderResult } from '../../../../src/org/metadatacenter/io/
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
 import { TestResource } from '../../../TestResource';
 
-const testResource: TestResource = TestResource.template(101);
+const testResource: TestResource = TestResource.template(31);
 
 describe('JSONTemplateReader' + testResource.toString(), () => {
   test('reads template with one element with three fields', () => {

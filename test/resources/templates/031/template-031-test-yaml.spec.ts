@@ -2,7 +2,7 @@ import { CedarWriters, JSONTemplateReader, YAMLTemplateWriter } from '../../../.
 import { TestUtil } from '../../../TestUtil';
 import { TestResource } from '../../../TestResource';
 
-const testResource: TestResource = TestResource.template(101);
+const testResource: TestResource = TestResource.template(31);
 
 describe('YAMLTemplateWriter' + testResource.toString(), () => {
   test('read a JSON template, and writes it as YAML', () => {

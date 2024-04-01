@@ -24,7 +24,7 @@ export class TestResource {
   }
 
   public getDirectory() {
-    return this.type + 's' + '/' + this.getPadNum();
+    return '../../../cedar-test-artifacts/artifacts/' + this.type + 's' + '/' + this.getPadNum();
   }
 
   private getPadNum() {

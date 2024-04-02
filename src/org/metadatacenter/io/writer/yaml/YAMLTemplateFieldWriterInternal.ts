@@ -17,8 +17,8 @@ export abstract class YAMLTemplateFieldWriterInternal extends YAMLAbstractArtifa
     super(behavior, writers);
   }
 
-  public getAsYamlString(field: TemplateField, indent: number = 2): string {
-    return SimpleYamlSerializer.serialize(this.getYamlAsJsonNode(field, ChildDeploymentInfo.empty()), indent).trim();
+  public getAsYamlString(field: TemplateField): string {
+    return SimpleYamlSerializer.serialize(this.getYamlAsJsonNode(field, ChildDeploymentInfo.empty())).trim();
   }
 
   public getYamlAsJsonNode(field: TemplateField): JsonNode;

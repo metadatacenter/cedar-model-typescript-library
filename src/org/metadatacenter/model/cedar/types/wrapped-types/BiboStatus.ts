@@ -44,4 +44,13 @@ export class BiboStatus {
     }
     return this.NULL;
   }
+
+  public static forYamlValue(value: string | null): BiboStatus {
+    for (const status of BiboStatus.values()) {
+      if (status.getYamlValue() === value) {
+        return status;
+      }
+    }
+    return this.NULL;
+  }
 }

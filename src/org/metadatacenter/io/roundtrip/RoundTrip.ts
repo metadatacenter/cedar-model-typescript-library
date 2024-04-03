@@ -1,12 +1,12 @@
-import { JSONFieldReaderResult } from '../reader/JSONFieldReaderResult';
+import { JSONFieldReaderResult } from '../reader/json/JSONFieldReaderResult';
 import { JSONTemplateFieldWriterInternal } from '../writer/json/JSONTemplateFieldWriterInternal';
 import { ParsingResult } from '../../model/cedar/util/compare/ParsingResult';
 import { ObjectComparator } from '../../model/cedar/util/compare/ObjectComparator';
 import { ChildDeploymentInfo } from '../../model/cedar/deployment/ChildDeploymentInfo';
 import { JsonPath } from '../../model/cedar/util/path/JsonPath';
-import { JSONTemplateReaderResult } from '../reader/JSONTemplateReaderResult';
+import { JSONTemplateReaderResult } from '../reader/json/JSONTemplateReaderResult';
 import { JSONTemplateWriter } from '../writer/json/JSONTemplateWriter';
-import { JSONElementReaderResult } from '../reader/JSONElementReaderResult';
+import { JSONElementReaderResult } from '../reader/json/JSONElementReaderResult';
 import { JSONTemplateElementWriter } from '../writer/json/JSONTemplateElementWriter';
 
 export class RoundTrip {

@@ -4,7 +4,7 @@ import { JsonPath } from '../../../util/path/JsonPath';
 import { ControlledTermField } from './ControlledTermField';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { CedarModel } from '../../../constants/CedarModel';
-import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
+import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/json/JSONFieldTypeSpecificReader';
 import { ControlledTermOntology } from './value-constraint/ontology/ControlledTermOntology';
 import { ControlledTermClass } from './value-constraint/class/ControlledTermClass';
 import { ControlledTermBranch } from './value-constraint/branch/ControlledTermBranch';
@@ -30,7 +30,7 @@ export class JSONFieldReaderControlledTerm extends JSONFieldTypeSpecificReader {
       field.valueRecommendationEnabled = ReaderUtil.getBoolean(uiNode, CedarModel.valueRecommendationEnabled);
     }
 
-    field.skos_altLabel = ReaderUtil.getStringList(fieldSourceObject, CedarModel.skosAltLabel);
+    //field.skos_altLabel = ReaderUtil.getStringList(fieldSourceObject, CedarModel.skosAltLabel);
 
     const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
     if (valueConstraints != null) {

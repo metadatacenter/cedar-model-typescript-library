@@ -38,5 +38,6 @@ export class ParsingResult {
 
   merge(otherResult: ParsingResult) {
     this.blueprintComparisonErrors.push(...otherResult.blueprintComparisonErrors);
+    this.blueprintComparisonWarnings.push(...otherResult.blueprintComparisonWarnings);
   }
 }

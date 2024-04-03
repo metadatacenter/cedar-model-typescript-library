@@ -15,7 +15,7 @@ export class YAMLTemplateWriter extends YAMLAbstractContainerArtifactWriter {
     return new YAMLTemplateWriter(behavior, writers);
   }
 
-  public getAsYamlNode(template: Template): JsonNode {
+  public getYamlAsJsonNode(template: Template): JsonNode {
     const uiObject: JsonNode = JsonNodeClass.getEmpty();
     if (template.header !== null) {
       uiObject[YamlKeys.header] = template.header;
@@ -43,6 +43,6 @@ export class YAMLTemplateWriter extends YAMLAbstractContainerArtifactWriter {
   }
 
   public getAsYamlString(template: Template): string {
-    return SimpleYamlSerializer.serialize(this.getAsYamlNode(template)).trim();
+    return SimpleYamlSerializer.serialize(this.getYamlAsJsonNode(template)).trim();
   }
 }

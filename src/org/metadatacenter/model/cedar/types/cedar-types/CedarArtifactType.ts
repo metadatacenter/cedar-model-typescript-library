@@ -1,3 +1,5 @@
+import { YamlArtifactType } from '../wrapped-types/YamlArtifactType';
+
 export const CedarArtifactTypeValues = {
   TEMPLATE: 'https://schema.metadatacenter.org/core/Template',
   TEMPLATE_ELEMENT: 'https://schema.metadatacenter.org/core/TemplateElement',
@@ -60,5 +62,18 @@ export class CedarArtifactType {
       }
     }
     return this.NULL;
+  }
+
+  static forYamlArtifactType(yamlArtifactType: YamlArtifactType): CedarArtifactType {
+    if (yamlArtifactType.isTemplate()) {
+      return CedarArtifactType.TEMPLATE;
+    } else if (yamlArtifactType.isElement()) {
+      return CedarArtifactType.TEMPLATE_ELEMENT;
+    } else if (yamlArtifactType.isDynamicField()) {
+      return CedarArtifactType.TEMPLATE_FIELD;
+    } else if (yamlArtifactType.isStaticField()) {
+      return CedarArtifactType.STATIC_TEMPLATE_FIELD;
+    }
+    return CedarArtifactType.NULL;
   }
 }

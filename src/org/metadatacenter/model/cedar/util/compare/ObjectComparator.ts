@@ -1,4 +1,3 @@
-import { JsonNode } from '../../types/basic-types/JsonNode';
 import { ParsingResult } from './ParsingResult';
 import { ComparisonError } from './ComparisonError';
 import { Primitive } from '../../types/basic-types/Primitive';
@@ -7,8 +6,7 @@ import { ComparisonErrorType } from './ComparisonErrorType';
 import { JsonSchema } from '../../constants/JsonSchema';
 import { CedarModel } from '../../constants/CedarModel';
 import { ReaderWriterBehavior } from '../../../../behavior/ReaderWriterBehavior';
-
-type ComparableObject = JsonNode;
+import { ComparableObject } from './ComparableObject';
 
 export class ObjectComparator {
   static compareBothWays(

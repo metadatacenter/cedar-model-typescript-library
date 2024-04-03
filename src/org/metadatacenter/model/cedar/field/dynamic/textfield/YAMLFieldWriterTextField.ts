@@ -20,8 +20,7 @@ export class YAMLFieldWriterTextField extends YAMLTemplateFieldWriterInternal {
     uiNode[YamlKeys.datatype] = XsdDatatype.STRING;
   }
 
-  override expandValueConstraintsNodeForYAML(vcNode: JsonNode, field: TextField, childInfo: ChildDeploymentInfo): void {
-    super.expandValueConstraintsNodeForYAML(vcNode, field, childInfo);
+  override expandValueConstraintsNodeForYAML(vcNode: JsonNode, field: TextField, _childInfo: ChildDeploymentInfo): void {
     if (field.valueConstraints.defaultValue != null && field.valueConstraints.defaultValue !== '') {
       vcNode[YamlKeys.default] = field.valueConstraints.defaultValue;
     }

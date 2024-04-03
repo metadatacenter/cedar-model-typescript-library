@@ -18,7 +18,6 @@ export class YAMLFieldWriterRadio extends YAMLTemplateFieldWriterInternal {
   }
 
   override expandValueConstraintsNodeForYAML(vcNode: JsonNode, field: RadioField, childInfo: ChildDeploymentInfo): void {
-    super.expandValueConstraintsNodeForYAML(vcNode, field, childInfo);
     this.expandLiterals(field, vcNode);
   }
 }

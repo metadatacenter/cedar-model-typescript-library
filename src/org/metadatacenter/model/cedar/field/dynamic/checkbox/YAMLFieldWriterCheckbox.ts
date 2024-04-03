@@ -18,7 +18,6 @@ export class YAMLFieldWriterCheckbox extends YAMLTemplateFieldWriterInternal {
   }
 
   override expandValueConstraintsNodeForYAML(vcNode: JsonNode, field: CheckboxField, childInfo: ChildDeploymentInfo): void {
-    super.expandValueConstraintsNodeForYAML(vcNode, field, childInfo);
     this.expandLiterals(field, vcNode);
   }
 }

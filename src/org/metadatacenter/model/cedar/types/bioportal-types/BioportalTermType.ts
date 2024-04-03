@@ -47,4 +47,13 @@ export class BioportalTermType {
     }
     return this.NULL;
   }
+
+  public static forYamlValue(value: string | null): BioportalTermType {
+    for (const termType of BioportalTermType.values()) {
+      if (termType.getYamlValue() === value) {
+        return termType;
+      }
+    }
+    return this.NULL;
+  }
 }

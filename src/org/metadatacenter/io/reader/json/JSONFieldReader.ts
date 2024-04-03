@@ -1,43 +1,42 @@
-import { JsonNode, JsonNodeClass } from '../../model/cedar/types/basic-types/JsonNode';
-import { ParsingResult } from '../../model/cedar/util/compare/ParsingResult';
-import { JsonPath } from '../../model/cedar/util/path/JsonPath';
-import { TemplateField } from '../../model/cedar/field/TemplateField';
-import { ReaderUtil } from './ReaderUtil';
-import { JsonSchema } from '../../model/cedar/constants/JsonSchema';
-import { TemplateProperty } from '../../model/cedar/constants/TemplateProperty';
-import { ObjectComparator } from '../../model/cedar/util/compare/ObjectComparator';
-import { CedarArtifactType } from '../../model/cedar/types/cedar-types/CedarArtifactType';
-import { JavascriptType } from '../../model/cedar/types/wrapped-types/JavascriptType';
-import { CedarModel } from '../../model/cedar/constants/CedarModel';
-import { ArtifactSchema } from '../../model/cedar/types/wrapped-types/ArtifactSchema';
-import { JSONTemplateFieldContentDynamic } from '../../model/cedar/util/serialization/JSONTemplateFieldContentDynamic';
-import { JSONFieldReaderTextField } from '../../model/cedar/field/dynamic/textfield/JSONFieldReaderTextField';
-import { JSONFieldReaderPageBreak } from '../../model/cedar/field/static/page-break/JSONFieldReaderPageBreak';
-import { JSONFieldReaderSectionBreak } from '../../model/cedar/field/static/section-break/JSONFieldReaderSectionBreak';
-import { JSONFieldReaderImage } from '../../model/cedar/field/static/image/JSONFieldReaderImage';
-import { JSONFieldReaderRichText } from '../../model/cedar/field/static/rich-text/JSONFieldReaderRichText';
-import { JSONFieldReaderYoutube } from '../../model/cedar/field/static/youtube/JSONFieldReaderYoutube';
-import { JSONFieldReaderLink } from '../../model/cedar/field/dynamic/link/JSONFieldReaderLink';
-import { JSONTemplateFieldContentStatic } from '../../model/cedar/util/serialization/JSONTemplateFieldContentStatic';
-import { JSONFieldReaderTemporal } from '../../model/cedar/field/dynamic/temporal/JSONFieldReaderTemporal';
-import { JSONFieldReaderEmail } from '../../model/cedar/field/dynamic/email/JSONFieldReaderEmail';
-import { JSONFieldReaderNumeric } from '../../model/cedar/field/dynamic/numeric/JSONFieldReaderNumeric';
-import { JSONFieldReaderTextArea } from '../../model/cedar/field/dynamic/textarea/JSONFieldReaderTextArea';
-import { JSONFieldReaderPhoneNumber } from '../../model/cedar/field/dynamic/phone-number/JSONFieldReaderPhoneNumber';
-import { JSONFieldReaderRadio } from '../../model/cedar/field/dynamic/radio/JSONFieldReaderRadio';
+import { JsonNode, JsonNodeClass } from '../../../model/cedar/types/basic-types/JsonNode';
+import { ParsingResult } from '../../../model/cedar/util/compare/ParsingResult';
+import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
+import { TemplateField } from '../../../model/cedar/field/TemplateField';
+import { ReaderUtil } from '../ReaderUtil';
+import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
+import { TemplateProperty } from '../../../model/cedar/constants/TemplateProperty';
+import { ObjectComparator } from '../../../model/cedar/util/compare/ObjectComparator';
+import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
+import { JavascriptType } from '../../../model/cedar/types/wrapped-types/JavascriptType';
+import { CedarModel } from '../../../model/cedar/constants/CedarModel';
+import { ArtifactSchema } from '../../../model/cedar/types/wrapped-types/ArtifactSchema';
+import { JSONTemplateFieldContentDynamic } from '../../../model/cedar/util/serialization/JSONTemplateFieldContentDynamic';
+import { JSONFieldReaderTextField } from '../../../model/cedar/field/dynamic/textfield/JSONFieldReaderTextField';
+import { JSONFieldReaderPageBreak } from '../../../model/cedar/field/static/page-break/JSONFieldReaderPageBreak';
+import { JSONFieldReaderSectionBreak } from '../../../model/cedar/field/static/section-break/JSONFieldReaderSectionBreak';
+import { JSONFieldReaderImage } from '../../../model/cedar/field/static/image/JSONFieldReaderImage';
+import { JSONFieldReaderRichText } from '../../../model/cedar/field/static/rich-text/JSONFieldReaderRichText';
+import { JSONFieldReaderYoutube } from '../../../model/cedar/field/static/youtube/JSONFieldReaderYoutube';
+import { JSONFieldReaderLink } from '../../../model/cedar/field/dynamic/link/JSONFieldReaderLink';
+import { JSONTemplateFieldContentStatic } from '../../../model/cedar/util/serialization/JSONTemplateFieldContentStatic';
+import { JSONFieldReaderTemporal } from '../../../model/cedar/field/dynamic/temporal/JSONFieldReaderTemporal';
+import { JSONFieldReaderEmail } from '../../../model/cedar/field/dynamic/email/JSONFieldReaderEmail';
+import { JSONFieldReaderNumeric } from '../../../model/cedar/field/dynamic/numeric/JSONFieldReaderNumeric';
+import { JSONFieldReaderTextArea } from '../../../model/cedar/field/dynamic/textarea/JSONFieldReaderTextArea';
+import { JSONFieldReaderPhoneNumber } from '../../../model/cedar/field/dynamic/phone-number/JSONFieldReaderPhoneNumber';
+import { JSONFieldReaderRadio } from '../../../model/cedar/field/dynamic/radio/JSONFieldReaderRadio';
 import { JSONFieldTypeSpecificReader } from './JSONFieldTypeSpecificReader';
-import { UiInputType } from '../../model/cedar/types/wrapped-types/UiInputType';
-import { JSONFieldReaderCheckbox } from '../../model/cedar/field/dynamic/checkbox/JSONFieldReaderCheckbox';
-import { JSONFieldReaderList } from '../../model/cedar/field/dynamic/list/JSONFieldReaderList';
-import { JSONFieldReaderAttributeValue } from '../../model/cedar/field/dynamic/attribute-value/JSONFieldReaderAttributeValue';
-import { CedarFieldType } from '../../model/cedar/types/cedar-types/CedarFieldType';
-import { JSONFieldReaderControlledTerm } from '../../model/cedar/field/dynamic/controlled-term/JSONFieldReaderControlledTerm';
-import { JSONReaderBehavior } from '../../behavior/JSONReaderBehavior';
+import { UiInputType } from '../../../model/cedar/types/wrapped-types/UiInputType';
+import { JSONFieldReaderCheckbox } from '../../../model/cedar/field/dynamic/checkbox/JSONFieldReaderCheckbox';
+import { JSONFieldReaderList } from '../../../model/cedar/field/dynamic/list/JSONFieldReaderList';
+import { JSONFieldReaderAttributeValue } from '../../../model/cedar/field/dynamic/attribute-value/JSONFieldReaderAttributeValue';
+import { CedarFieldType } from '../../../model/cedar/types/cedar-types/CedarFieldType';
+import { JSONFieldReaderControlledTerm } from '../../../model/cedar/field/dynamic/controlled-term/JSONFieldReaderControlledTerm';
+import { JSONReaderBehavior } from '../../../behavior/JSONReaderBehavior';
 import { JSONFieldReaderResult } from './JSONFieldReaderResult';
-import { JSONTemplateFieldWriterInternal } from '../writer/json/JSONTemplateFieldWriterInternal';
-import { UnknownTemplateField } from '../../model/cedar/field/UnknownTemplateField';
+import { UnknownTemplateField } from '../../../model/cedar/field/UnknownTemplateField';
 import { JSONAbstractArtifactReader } from './JSONAbstractArtifactReader';
-import { ChildDeploymentInfo } from '../../model/cedar/deployment/ChildDeploymentInfo';
+import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
 
 export class JSONFieldReader extends JSONAbstractArtifactReader {
   private constructor(behavior: JSONReaderBehavior) {
@@ -102,6 +101,7 @@ export class JSONFieldReader extends JSONAbstractArtifactReader {
     super.readNonReportableAttributes(field, fieldSourceObject);
     // Read field-specific nodes
     field.skos_prefLabel = ReaderUtil.getString(fieldSourceObject, CedarModel.skosPrefLabel);
+    field.skos_altLabel = ReaderUtil.getStringList(fieldSourceObject, CedarModel.skosAltLabel);
   }
 
   private readReportableAttributes(field: TemplateField, fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: JsonPath) {

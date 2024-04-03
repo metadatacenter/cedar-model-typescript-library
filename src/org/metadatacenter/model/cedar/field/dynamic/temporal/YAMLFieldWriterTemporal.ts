@@ -26,8 +26,7 @@ export class YAMLFieldWriterTemporal extends YAMLTemplateFieldWriterInternal {
     }
   }
 
-  override expandValueConstraintsNodeForYAML(vcNode: JsonNode, field: TemporalField, childInfo: ChildDeploymentInfo): void {
-    super.expandValueConstraintsNodeForYAML(vcNode, field, childInfo);
+  override expandValueConstraintsNodeForYAML(vcNode: JsonNode, field: TemporalField, _childInfo: ChildDeploymentInfo): void {
     vcNode[YamlKeys.datatype] = this.atomicWriter.write(field.valueConstraints.temporalType);
   }
 }

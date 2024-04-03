@@ -33,7 +33,7 @@ export class ComparisonErrorType {
   public static values(): ComparisonErrorType[] {
     return [
       ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-      ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
+      ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
       ComparisonErrorType.VALUE_MISMATCH,
       ComparisonErrorType.MISSING_INDEX_IN_REAL_OBJECT,
       ComparisonErrorType.UNEXPECTED_INDEX_IN_REAL_OBJECT,

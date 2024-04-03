@@ -139,4 +139,16 @@ export class CedarFieldType {
     }
     return this.NULL;
   }
+
+  static forYamlArtifactType(yamlArtifactType: YamlArtifactType): CedarFieldType {
+    if (yamlArtifactType === YamlArtifactType.SINGLE_SELECT_LIST) {
+      return CedarFieldType.LIST;
+    }
+    for (const fieldType of CedarFieldType.values()) {
+      if (fieldType.getYamlType() === yamlArtifactType) {
+        return fieldType;
+      }
+    }
+    return this.NULL;
+  }
 }

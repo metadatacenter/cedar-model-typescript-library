@@ -1,5 +1,6 @@
 import { JsonNode, JsonNodeClass } from '../../model/cedar/types/basic-types/JsonNode';
 import { URI } from '../../model/cedar/types/wrapped-types/URI';
+import { NullableNumber } from '../../model/cedar/types/basic-types/NullableNumber';
 
 export class ReaderUtil {
   public static getString(node: JsonNode, key: string): string | null {
@@ -26,7 +27,7 @@ export class ReaderUtil {
     }
   }
 
-  static getNumber(node: JsonNode, key: string): number | null {
+  static getNumber(node: JsonNode, key: string): NullableNumber {
     if (Object.hasOwn(node, key)) {
       return node[key] as number;
     } else {

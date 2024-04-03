@@ -1,10 +1,11 @@
 import { Primitive } from '../../types/basic-types/Primitive';
 import { JsonPath } from '../path/JsonPath';
 import { ComparisonErrorType } from './ComparisonErrorType';
+import { YamlComparisonErrorType } from './YamlComparisonErrorType';
 
 export class ComparisonError {
   public readonly errorLocation: string;
-  public readonly errorType: ComparisonErrorType;
+  public readonly errorType: ComparisonErrorType | YamlComparisonErrorType;
   public readonly errorPath: JsonPath;
   public readonly expectedValue?: Primitive;
   public readonly encounteredValue?: Primitive;
@@ -12,7 +13,7 @@ export class ComparisonError {
 
   constructor(
     errorLocation: string,
-    errorType: ComparisonErrorType,
+    errorType: ComparisonErrorType | YamlComparisonErrorType,
     errorPath: JsonPath,
     expectedValue?: Primitive,
     encounteredValue?: Primitive,

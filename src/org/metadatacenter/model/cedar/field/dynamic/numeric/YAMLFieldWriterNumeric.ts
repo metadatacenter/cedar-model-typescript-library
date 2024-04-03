@@ -11,8 +11,7 @@ export class YAMLFieldWriterNumeric extends YAMLTemplateFieldWriterInternal {
     super(behavior, writers);
   }
 
-  override expandValueConstraintsNodeForYAML(vcNode: JsonNode, field: NumericField, childInfo: ChildDeploymentInfo): void {
-    super.expandValueConstraintsNodeForYAML(vcNode, field, childInfo);
+  override expandValueConstraintsNodeForYAML(vcNode: JsonNode, field: NumericField, _childInfo: ChildDeploymentInfo): void {
     vcNode[YamlKeys.datatype] = this.atomicWriter.write(field.valueConstraints.numberType);
     if (field.valueConstraints.minValue != null) {
       vcNode[YamlKeys.minValue] = field.valueConstraints.minValue;

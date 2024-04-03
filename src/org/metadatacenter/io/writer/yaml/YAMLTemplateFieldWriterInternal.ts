@@ -47,19 +47,11 @@ export abstract class YAMLTemplateFieldWriterInternal extends YAMLAbstractArtifa
     };
   }
 
-  protected expandUINodeForYAML(uiNode: JsonNode, _field: TemplateField, childInfo: ChildDeploymentInfo): void {
-    if (childInfo.hidden) {
-      uiNode[CedarModel.Ui.hidden] = childInfo.hidden;
-    }
-  }
+  protected expandUINodeForYAML(_uiNode: JsonNode, _field: TemplateField, _childInfo: ChildDeploymentInfo): void {}
 
   protected expandTypeNodeForYAML(_typeNode: JsonNode, _field: TemplateField): void {}
 
-  protected expandValueConstraintsNodeForYAML(vcNode: JsonNode, field: TemplateField, childInfo: ChildDeploymentInfo): void {
-    if (childInfo.requiredValue) {
-      vcNode[YamlKeys.required] = childInfo.requiredValue;
-    }
-  }
+  protected expandValueConstraintsNodeForYAML(_vcNode: JsonNode, _field: TemplateField, _childInfo: ChildDeploymentInfo): void {}
 
   protected buildValueConstraintsObject(field: TemplateField, childInfo: ChildDeploymentInfo): JsonNode {
     const vcNode: JsonNode = JsonNodeClass.getEmpty();

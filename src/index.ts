@@ -1,9 +1,9 @@
 import { CedarWriters } from './org/metadatacenter/io/writer/CedarWriters';
 import { CedarBuilders } from './org/metadatacenter/io/builder/CedarBuilders';
 
-import { JSONFieldReader } from './org/metadatacenter/io/reader/JSONFieldReader';
-import { JSONElementReader } from './org/metadatacenter/io/reader/JSONElementReader';
-import { JSONTemplateReader } from './org/metadatacenter/io/reader/JSONTemplateReader';
+import { JSONFieldReader } from './org/metadatacenter/io/reader/json/JSONFieldReader';
+import { JSONElementReader } from './org/metadatacenter/io/reader/json/JSONElementReader';
+import { JSONTemplateReader } from './org/metadatacenter/io/reader/json/JSONTemplateReader';
 
 // It is needed, do not remove, even if it looks unused
 import { JSONTemplateFieldWriterInternal } from './org/metadatacenter/io/writer/json/JSONTemplateFieldWriterInternal';
@@ -85,13 +85,17 @@ import { ControlledTermActionBuilder } from './org/metadatacenter/model/cedar/fi
 import { YamlKeys } from './org/metadatacenter/model/cedar/constants/YamlKeys';
 import { YamlValues } from './org/metadatacenter/model/cedar/constants/YamlValues';
 import { BioportalTermType } from './org/metadatacenter/model/cedar/types/bioportal-types/BioportalTermType';
+import { CedarFieldCategory } from './org/metadatacenter/model/cedar/types/cedar-types/CedarFieldCategory';
+import { YAMLFieldReader } from './org/metadatacenter/io/reader/yaml/YAMLFieldReader';
+import { YAMLElementReader } from './org/metadatacenter/io/reader/yaml/YAMLElementReader';
+import { YAMLTemplateReader } from './org/metadatacenter/io/reader/yaml/YAMLTemplateReader';
 
 export { CedarBuilders };
 export { CedarWriters };
 
-export { JSONFieldReader };
-export { JSONElementReader };
-export { JSONTemplateReader };
+export { JSONFieldReader, YAMLFieldReader };
+export { JSONElementReader, YAMLElementReader };
+export { JSONTemplateReader, YAMLTemplateReader };
 
 // It is needed, do not remove, even if it looks unused
 export { JSONTemplateFieldWriterInternal as JSONTemplateFieldWriter };
@@ -151,3 +155,4 @@ export { JsonSchema };
 export { CedarModel };
 export { YamlKeys };
 export { YamlValues };
+export { CedarFieldCategory };

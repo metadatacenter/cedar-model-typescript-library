@@ -21,7 +21,6 @@ export class YAMLFieldWriterControlledTerm extends YAMLTemplateFieldWriterIntern
   }
 
   override expandValueConstraintsNodeForYAML(vcNode: JsonNode, field: ControlledTermField, childInfo: ChildDeploymentInfo): void {
-    super.expandValueConstraintsNodeForYAML(vcNode, field, childInfo);
     if (field.valueConstraints.defaultValue != null) {
       const defaultNode = {
         [YamlKeys.value]: this.atomicWriter.write(field.valueConstraints.defaultValue.termUri),

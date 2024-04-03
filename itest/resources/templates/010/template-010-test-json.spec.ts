@@ -3,7 +3,7 @@ import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/ut
 import { TestUtil } from '../../../TestUtil';
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
 import { CedarModel } from '../../../../src';
-import { JSONTemplateReaderResult } from '../../../../src/org/metadatacenter/io/reader/JSONTemplateReaderResult';
+import { JSONTemplateReaderResult } from '../../../../src/org/metadatacenter/io/reader/json/JSONTemplateReaderResult';
 import { JsonSchema } from '../../../../src';
 import { TestResource } from '../../../TestResource';
 

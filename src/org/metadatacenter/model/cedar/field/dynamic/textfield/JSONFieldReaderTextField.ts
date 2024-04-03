@@ -4,7 +4,7 @@ import { JsonPath } from '../../../util/path/JsonPath';
 import { TextField } from './TextField';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { CedarModel } from '../../../constants/CedarModel';
-import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/JSONFieldTypeSpecificReader';
+import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/json/JSONFieldTypeSpecificReader';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 
 export class JSONFieldReaderTextField extends JSONFieldTypeSpecificReader {
@@ -14,8 +14,6 @@ export class JSONFieldReaderTextField extends JSONFieldTypeSpecificReader {
 
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
     field.valueRecommendationEnabled = ReaderUtil.getBoolean(uiNode, CedarModel.valueRecommendationEnabled);
-
-    field.skos_altLabel = ReaderUtil.getStringList(fieldSourceObject, CedarModel.skosAltLabel);
 
     const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
     if (valueConstraints != null) {

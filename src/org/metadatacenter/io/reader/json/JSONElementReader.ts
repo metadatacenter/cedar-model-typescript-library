@@ -1,21 +1,21 @@
-import { CedarModel } from '../../model/cedar/constants/CedarModel';
-import { JsonSchema } from '../../model/cedar/constants/JsonSchema';
-import { CedarArtifactType } from '../../model/cedar/types/cedar-types/CedarArtifactType';
-import { TemplateProperty } from '../../model/cedar/constants/TemplateProperty';
-import { ReaderUtil } from './ReaderUtil';
-import { JsonNode } from '../../model/cedar/types/basic-types/JsonNode';
-import { ObjectComparator } from '../../model/cedar/util/compare/ObjectComparator';
-import { ParsingResult } from '../../model/cedar/util/compare/ParsingResult';
-import { ContainerArtifactChildrenInfo } from '../../model/cedar/deployment/ContainerArtifactChildrenInfo';
-import { JsonPath } from '../../model/cedar/util/path/JsonPath';
-import { JSONReaderBehavior } from '../../behavior/JSONReaderBehavior';
-import { UiInputType } from '../../model/cedar/types/wrapped-types/UiInputType';
-import { JSONTemplateFieldContentDynamic } from '../../model/cedar/util/serialization/JSONTemplateFieldContentDynamic';
+import { CedarModel } from '../../../model/cedar/constants/CedarModel';
+import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
+import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
+import { TemplateProperty } from '../../../model/cedar/constants/TemplateProperty';
+import { ReaderUtil } from '../ReaderUtil';
+import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
+import { ObjectComparator } from '../../../model/cedar/util/compare/ObjectComparator';
+import { ParsingResult } from '../../../model/cedar/util/compare/ParsingResult';
+import { ContainerArtifactChildrenInfo } from '../../../model/cedar/deployment/ContainerArtifactChildrenInfo';
+import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
+import { JSONReaderBehavior } from '../../../behavior/JSONReaderBehavior';
+import { UiInputType } from '../../../model/cedar/types/wrapped-types/UiInputType';
+import { JSONTemplateFieldContentDynamic } from '../../../model/cedar/util/serialization/JSONTemplateFieldContentDynamic';
 import { JSONElementReaderResult } from './JSONElementReaderResult';
-import { TemplateElement } from '../../model/cedar/element/TemplateElement';
+import { TemplateElement } from '../../../model/cedar/element/TemplateElement';
 import { JSONContainerArtifactReader } from './JSONContainerArtifactReader';
-import { JSONElementContent } from '../../model/cedar/util/serialization/JSONElementContent';
-import { ChildDeploymentInfo } from '../../model/cedar/deployment/ChildDeploymentInfo';
+import { JSONElementContent } from '../../../model/cedar/util/serialization/JSONElementContent';
+import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
 
 export class JSONElementReader extends JSONContainerArtifactReader {
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.TEMPLATE_ELEMENT;

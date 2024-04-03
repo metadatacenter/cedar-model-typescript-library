@@ -1,11 +1,11 @@
-import { JsonNode } from '../../model/cedar/types/basic-types/JsonNode';
-import { ParsingResult } from '../../model/cedar/util/compare/ParsingResult';
-import { JsonPath } from '../../model/cedar/util/path/JsonPath';
-import { TemplateField } from '../../model/cedar/field/TemplateField';
-import { UnknownTemplateField } from '../../model/cedar/field/UnknownTemplateField';
-import { ChildDeploymentInfo } from '../../model/cedar/deployment/ChildDeploymentInfo';
-import { ReaderUtil } from './ReaderUtil';
-import { CedarModel } from '../../model/cedar/constants/CedarModel';
+import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
+import { ParsingResult } from '../../../model/cedar/util/compare/ParsingResult';
+import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
+import { TemplateField } from '../../../model/cedar/field/TemplateField';
+import { UnknownTemplateField } from '../../../model/cedar/field/UnknownTemplateField';
+import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
+import { ReaderUtil } from '../ReaderUtil';
+import { CedarModel } from '../../../model/cedar/constants/CedarModel';
 
 export abstract class JSONFieldTypeSpecificReader {
   public read(

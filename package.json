@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
+    "pretest": "node pretest.js",
     "test": "jest",
     "build": "tsc && cp package-dist.json dist/package.json",
     "build:watch": "tsc --watch",

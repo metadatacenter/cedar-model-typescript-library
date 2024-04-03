@@ -14,8 +14,4 @@ export abstract class YAMLFieldTypeSpecificReader {
   ): TemplateField {
     return UnknownTemplateField.build();
   }
-
-  protected readRequiredAndHidden(_fieldSourceObject: JsonNode, _childInfo: ChildDeploymentInfo): void {
-    // TODO: should be removed;
-  }
 }

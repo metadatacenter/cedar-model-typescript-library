@@ -1,4 +1,4 @@
-import { JsonNode } from '../../../types/basic-types/JsonNode';
+import { JsonNode, JsonNodeClass } from '../../../types/basic-types/JsonNode';
 import { TimeFormat } from '../../../types/wrapped-types/TimeFormat';
 import { TemporalGranularity } from '../../../types/wrapped-types/TemporalGranularity';
 import { TemporalField } from './TemporalField';
@@ -13,17 +13,18 @@ export class YAMLFieldWriterTemporal extends YAMLTemplateFieldWriterInternal {
     super(behavior, writers);
   }
 
-  override expandUINodeForYAML(uiNode: JsonNode, field: TemporalField, childInfo: ChildDeploymentInfo): void {
-    super.expandUINodeForYAML(uiNode, field, childInfo);
+  override expandUINodeForYAML(field: TemporalField): JsonNode {
+    const ret = JsonNodeClass.getEmpty();
     if (field.timezoneEnabled) {
-      uiNode[YamlKeys.timeZone] = field.timezoneEnabled;
+      ret[YamlKeys.timeZone] = field.timezoneEnabled;
     }
     if (field.inputTimeFormat !== TimeFormat.NULL) {
-      uiNode[YamlKeys.timeFormat] = this.atomicWriter.write(field.inputTimeFormat);
+      ret[YamlKeys.timeFormat] = this.atomicWriter.write(field.inputTimeFormat);
     }
     if (field.temporalGranularity !== TemporalGranularity.NULL) {
-      uiNode[YamlKeys.granularity] = this.atomicWriter.write(field.temporalGranularity);
+      ret[YamlKeys.granularity] = this.atomicWriter.write(field.temporalGranularity);
     }
+    return ret;
   }
 
   override expandValueConstraintsNodeForYAML(vcNode: JsonNode, field: TemporalField, _childInfo: ChildDeploymentInfo): void {

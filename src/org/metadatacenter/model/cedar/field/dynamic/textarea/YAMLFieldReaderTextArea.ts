@@ -6,9 +6,8 @@ import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { YAMLFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YAMLFieldTypeSpecificReader';
 
 export class YAMLFieldReaderTextArea extends YAMLFieldTypeSpecificReader {
-  override read(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, _parsingResult: ParsingResult, _path: JsonPath): TextArea {
+  override read(_fieldSourceObject: JsonNode, _childInfo: ChildDeploymentInfo, _parsingResult: ParsingResult, _path: JsonPath): TextArea {
     const field = TextArea.buildEmptyWithNullValues();
-    this.readRequiredAndHidden(fieldSourceObject, childInfo);
     return field;
   }
 }

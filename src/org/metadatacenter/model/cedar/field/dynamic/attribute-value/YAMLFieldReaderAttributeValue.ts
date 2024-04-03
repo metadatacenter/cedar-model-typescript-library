@@ -7,13 +7,12 @@ import { YAMLFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YAMLF
 
 export class YAMLFieldReaderAttributeValue extends YAMLFieldTypeSpecificReader {
   override read(
-    fieldSourceObject: JsonNode,
-    childInfo: ChildDeploymentInfo,
+    _fieldSourceObject: JsonNode,
+    _childInfo: ChildDeploymentInfo,
     _parsingResult: ParsingResult,
     _path: JsonPath,
   ): AttributeValueField {
     const field = AttributeValueField.buildEmptyWithNullValues();
-    this.readRequiredAndHidden(fieldSourceObject, childInfo);
     return field;
   }
 }

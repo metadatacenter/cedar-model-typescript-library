@@ -13,11 +13,11 @@ export class YAMLFieldWriterRadio extends YAMLTemplateFieldWriterInternal {
     super(behavior, writers);
   }
 
-  override expandUINodeForYAML(uiNode: JsonNode, _field: TextField, _childInfo: ChildDeploymentInfo): void {
-    uiNode[YamlKeys.datatype] = XsdDatatype.STRING;
+  override expandUINodeForYAML(_field: TextField): JsonNode {
+    return { [YamlKeys.datatype]: XsdDatatype.STRING };
   }
 
-  override expandValueConstraintsNodeForYAML(vcNode: JsonNode, field: RadioField, childInfo: ChildDeploymentInfo): void {
+  override expandValueConstraintsNodeForYAML(vcNode: JsonNode, field: RadioField, _childInfo: ChildDeploymentInfo): void {
     this.expandLiterals(field, vcNode);
   }
 }

@@ -12,12 +12,14 @@ export class YAMLFieldWriterControlledTerm extends YAMLTemplateFieldWriterIntern
     super(behavior, writers);
   }
 
-  override expandUINodeForYAML(uiNode: JsonNode, field: ControlledTermField, childInfo: ChildDeploymentInfo): void {
-    super.expandUINodeForYAML(uiNode, field, childInfo);
-    uiNode[YamlKeys.datatype] = XsdDatatype.ANY_URI;
+  override expandUINodeForYAML(field: ControlledTermField): JsonNode {
+    const ret: JsonNode = {
+      [YamlKeys.datatype]: XsdDatatype.ANY_URI,
+    };
     if (field.valueRecommendationEnabled) {
-      uiNode[YamlKeys.valueRecommendationEnabled] = field.valueRecommendationEnabled;
+      ret[YamlKeys.valueRecommendationEnabled] = field.valueRecommendationEnabled;
     }
+    return ret;
   }
 
   override expandValueConstraintsNodeForYAML(vcNode: JsonNode, field: ControlledTermField, childInfo: ChildDeploymentInfo): void {

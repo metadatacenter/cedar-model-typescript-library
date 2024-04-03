@@ -13,12 +13,11 @@ import { YamlKeys } from '../../../constants/YamlKeys';
 export class YAMLFieldReaderTemporal extends YAMLFieldTypeSpecificReader {
   override read(
     fieldSourceObject: JsonNode,
-    childInfo: ChildDeploymentInfo,
+    _childInfo: ChildDeploymentInfo,
     _parsingResult: ParsingResult,
     _path: JsonPath,
   ): TemporalField {
     const field = TemporalField.buildEmptyWithNullValues();
-    this.readRequiredAndHidden(fieldSourceObject, childInfo);
 
     field.temporalGranularity = TemporalGranularity.forValue(ReaderUtil.getString(fieldSourceObject, YamlKeys.granularity));
     field.inputTimeFormat = TimeFormat.forValue(ReaderUtil.getString(fieldSourceObject, YamlKeys.timeFormat));

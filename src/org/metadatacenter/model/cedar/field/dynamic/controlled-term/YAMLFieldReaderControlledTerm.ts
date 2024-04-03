@@ -25,12 +25,11 @@ import { ControlledTermActionBuilder } from './value-constraint/action/Controlle
 export class YAMLFieldReaderControlledTerm extends YAMLFieldTypeSpecificReader {
   override read(
     fieldSourceObject: JsonNode,
-    childInfo: ChildDeploymentInfo,
+    _childInfo: ChildDeploymentInfo,
     _parsingResult: ParsingResult,
     _path: JsonPath,
   ): ControlledTermField {
     const field = ControlledTermField.buildEmptyWithNullValues();
-    this.readRequiredAndHidden(fieldSourceObject, childInfo);
 
     field.valueRecommendationEnabled = ReaderUtil.getBoolean(fieldSourceObject, YamlKeys.valueRecommendationEnabled);
 

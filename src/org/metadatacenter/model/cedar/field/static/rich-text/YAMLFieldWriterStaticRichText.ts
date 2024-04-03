@@ -10,7 +10,7 @@ export class YAMLFieldWriterStaticRichText extends YAMLStaticFieldWriter {
     super(behavior, writers);
   }
 
-  protected override expandUINodeForYAML(uiNode: JsonNode, field: StaticRichTextField): void {
-    uiNode[YamlKeys.content] = field.content;
+  protected override expandUINodeForYAML(field: StaticRichTextField): JsonNode {
+    return { [YamlKeys.content]: field.content };
   }
 }

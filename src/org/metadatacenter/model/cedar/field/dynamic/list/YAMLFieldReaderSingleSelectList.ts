@@ -9,9 +9,8 @@ import { YAMLFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YAMLF
 import { YamlKeys } from '../../../constants/YamlKeys';
 
 export class YAMLFieldReaderSingleSelectList extends YAMLFieldTypeSpecificReader {
-  override read(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, _parsingResult: ParsingResult, _path: JsonPath): ListField {
+  override read(fieldSourceObject: JsonNode, _childInfo: ChildDeploymentInfo, _parsingResult: ParsingResult, _path: JsonPath): ListField {
     const field = ListField.buildEmptyWithNullValues();
-    this.readRequiredAndHidden(fieldSourceObject, childInfo);
 
     field.multipleChoice = false;
     const literals: Array<JsonNode> = ReaderUtil.getNodeList(fieldSourceObject, YamlKeys.values);

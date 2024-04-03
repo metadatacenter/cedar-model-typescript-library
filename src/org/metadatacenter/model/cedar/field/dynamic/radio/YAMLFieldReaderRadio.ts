@@ -9,9 +9,8 @@ import { YAMLFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YAMLF
 import { YamlKeys } from '../../../constants/YamlKeys';
 
 export class YAMLFieldReaderRadio extends YAMLFieldTypeSpecificReader {
-  override read(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, _parsingResult: ParsingResult, _path: JsonPath): RadioField {
+  override read(fieldSourceObject: JsonNode, _childInfo: ChildDeploymentInfo, _parsingResult: ParsingResult, _path: JsonPath): RadioField {
     const field = RadioField.buildEmptyWithNullValues();
-    this.readRequiredAndHidden(fieldSourceObject, childInfo);
 
     const literals: Array<JsonNode> = ReaderUtil.getNodeList(fieldSourceObject, YamlKeys.values);
     if (literals !== null) {

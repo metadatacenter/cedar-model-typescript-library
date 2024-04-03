@@ -47,9 +47,9 @@ export abstract class YAMLTemplateFieldWriterInternal extends YAMLAbstractArtifa
     };
   }
 
-  protected expandUINodeForYAML(_uiNode: JsonNode, _field: TemplateField, _childInfo: ChildDeploymentInfo): void {}
-
-  protected expandTypeNodeForYAML(_typeNode: JsonNode, _field: TemplateField): void {}
+  protected expandUINodeForYAML(_field: TemplateField): JsonNode {
+    return JsonNodeClass.getEmpty();
+  }
 
   protected expandValueConstraintsNodeForYAML(_vcNode: JsonNode, _field: TemplateField, _childInfo: ChildDeploymentInfo): void {}
 
@@ -72,9 +72,7 @@ export abstract class YAMLTemplateFieldWriterInternal extends YAMLAbstractArtifa
     vcNode[YamlKeys.values] = literals;
   }
 
-  protected buildUIObject(field: TemplateField, childInfo: ChildDeploymentInfo): JsonNode {
-    const uiNode: JsonNode = {};
-    this.expandUINodeForYAML(uiNode, field, childInfo);
-    return uiNode;
+  protected buildUIObject(field: TemplateField, _childInfo: ChildDeploymentInfo): JsonNode {
+    return this.expandUINodeForYAML(field);
   }
 }

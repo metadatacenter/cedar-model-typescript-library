@@ -1,4 +1,3 @@
-import { CedarModel } from '../../../model/cedar/constants/CedarModel';
 import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
 import { ReaderUtil } from '../ReaderUtil';
@@ -11,7 +10,6 @@ import { YAMLElementReader } from './YAMLElementReader';
 import { Template } from '../../../model/cedar/template/Template';
 import YAML from 'yaml';
 import { YAMLContainerArtifactReader } from './YAMLContainerArtifactReader';
-import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 
 export class YAMLTemplateReader extends YAMLContainerArtifactReader {
@@ -34,10 +32,6 @@ export class YAMLTemplateReader extends YAMLContainerArtifactReader {
   protected override getElementReader(): YAMLElementReader {
     return this.elementReader;
   }
-
-  // protected override includeInIRIMapping(childInfo: ChildDeploymentInfo): boolean {
-  //   return childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD;
-  // }
 
   public readFromString(templateSourceString: string): YAMLTemplateReaderResult {
     let templateObject;

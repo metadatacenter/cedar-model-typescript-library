@@ -11,12 +11,11 @@ import { YamlKeys } from '../../../constants/YamlKeys';
 export class YAMLFieldReaderCheckbox extends YAMLFieldTypeSpecificReader {
   override read(
     fieldSourceObject: JsonNode,
-    childInfo: ChildDeploymentInfo,
+    _childInfo: ChildDeploymentInfo,
     _parsingResult: ParsingResult,
     _path: JsonPath,
   ): CheckboxField {
     const field = CheckboxField.buildEmptyWithNullValues();
-    this.readRequiredAndHidden(fieldSourceObject, childInfo);
     const literals: Array<JsonNode> = ReaderUtil.getNodeList(fieldSourceObject, YamlKeys.values);
     if (literals !== null) {
       literals.forEach((literal) => {

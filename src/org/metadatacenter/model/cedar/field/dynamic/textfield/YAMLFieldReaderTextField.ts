@@ -8,9 +8,8 @@ import { YAMLFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YAMLF
 import { YamlKeys } from '../../../constants/YamlKeys';
 
 export class YAMLFieldReaderTextField extends YAMLFieldTypeSpecificReader {
-  override read(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, _parsingResult: ParsingResult, _path: JsonPath): TextField {
+  override read(fieldSourceObject: JsonNode, _childInfo: ChildDeploymentInfo, _parsingResult: ParsingResult, _path: JsonPath): TextField {
     const field = TextField.buildEmptyWithNullValues();
-    this.readRequiredAndHidden(fieldSourceObject, childInfo);
 
     field.valueRecommendationEnabled = ReaderUtil.getBoolean(fieldSourceObject, YamlKeys.valueRecommendationEnabled);
 

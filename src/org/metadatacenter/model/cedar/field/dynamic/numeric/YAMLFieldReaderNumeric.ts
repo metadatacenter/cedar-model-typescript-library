@@ -9,9 +9,13 @@ import { YAMLFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YAMLF
 import { YamlKeys } from '../../../constants/YamlKeys';
 
 export class YAMLFieldReaderNumeric extends YAMLFieldTypeSpecificReader {
-  override read(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, _parsingResult: ParsingResult, _path: JsonPath): NumericField {
+  override read(
+    fieldSourceObject: JsonNode,
+    _childInfo: ChildDeploymentInfo,
+    _parsingResult: ParsingResult,
+    _path: JsonPath,
+  ): NumericField {
     const field = NumericField.buildEmptyWithNullValues();
-    this.readRequiredAndHidden(fieldSourceObject, childInfo);
 
     field.valueConstraints.numberType = NumberType.forValue(ReaderUtil.getString(fieldSourceObject, YamlKeys.datatype));
     field.valueConstraints.minValue = ReaderUtil.getNumber(fieldSourceObject, YamlKeys.minValue);

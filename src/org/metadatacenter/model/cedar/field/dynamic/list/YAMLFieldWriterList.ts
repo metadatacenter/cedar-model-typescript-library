@@ -14,12 +14,11 @@ export class YAMLFieldWriterList extends YAMLTemplateFieldWriterInternal {
     super(behavior, writers);
   }
 
-  override expandUINodeForYAML(uiNode: JsonNode, _field: TextField, _childInfo: ChildDeploymentInfo): void {
-    uiNode[YamlKeys.datatype] = XsdDatatype.STRING;
+  override expandUINodeForYAML(_field: TextField): JsonNode {
+    return { [YamlKeys.datatype]: XsdDatatype.STRING };
   }
 
-  override expandValueConstraintsNodeForYAML(vcNode: JsonNode, field: ListField, childInfo: ChildDeploymentInfo): void {
-    //vcNode[YamlKeys.multipleChoice] = field.multipleChoice;
+  override expandValueConstraintsNodeForYAML(vcNode: JsonNode, field: ListField, _childInfo: ChildDeploymentInfo): void {
     this.expandLiterals(field, vcNode);
   }
 

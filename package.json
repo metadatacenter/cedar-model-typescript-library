@@ -7,7 +7,7 @@
   "scripts": {
     "pretest": "node pretest.js",
     "test": "jest",
-    "build": "tsc && cp package-dist.json dist/package.json",
+    "build": "tsc && cp package-dist.json dist/package.json && cp README-dist.md dist/README.md",
     "build:watch": "tsc --watch",
     "prettier": "prettier --write .",
     "link": "cd dist && npm link",

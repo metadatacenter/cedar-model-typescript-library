@@ -21,38 +21,20 @@ import { JSONFieldWriterEmail } from '../../../model/cedar/field/dynamic/email/J
 import { TemplateField } from '../../../model/cedar/field/TemplateField';
 import { JSONFieldWriterAttributeValue } from '../../../model/cedar/field/dynamic/attribute-value/JSONFieldWriterAttributeValue';
 import { JSONFieldWriterControlledTerm } from '../../../model/cedar/field/dynamic/controlled-term/JSONFieldWriterControlledTerm';
-import {
-  ControlledTermOntology,
-} from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/ontology/ControlledTermOntology';
-import {
-  JSONValueConstraintsOntologyWriter,
-} from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/ontology/JSONValueConstraintsOntologyWriter';
-import {
-  AbstractJSONControlledTermValueConstraintWriter,
-} from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/AbstractJSONControlledTermValueConstraintWriter';
-import {
-  ControlledTermAbstractValueConstraint,
-} from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/ControlledTermAbstractValueConstraint';
+import { ControlledTermOntology } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/ontology/ControlledTermOntology';
+import { JSONValueConstraintsOntologyWriter } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/ontology/JSONValueConstraintsOntologyWriter';
+import { AbstractJSONControlledTermValueConstraintWriter } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/AbstractJSONControlledTermValueConstraintWriter';
+import { ControlledTermAbstractValueConstraint } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/ControlledTermAbstractValueConstraint';
 import { ControlledTermClass } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/class/ControlledTermClass';
-import {
-  JSONValueConstraintsClassWriter,
-} from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/class/JSONValueConstraintsClassWriter';
+import { JSONValueConstraintsClassWriter } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/class/JSONValueConstraintsClassWriter';
 import { ControlledTermBranch } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/branch/ControlledTermBranch';
-import {
-  JSONValueConstraintsBranchWriter,
-} from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/branch/JSONValueConstraintsBranchWriter';
-import {
-  ControlledTermValueSet,
-} from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/value-set/ControlledTermValueSet';
-import {
-  JSONValueConstraintsValueSetWriter,
-} from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/value-set/JSONValueConstraintsValueSetWriter';
+import { JSONValueConstraintsBranchWriter } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/branch/JSONValueConstraintsBranchWriter';
+import { ControlledTermValueSet } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/value-set/ControlledTermValueSet';
+import { JSONValueConstraintsValueSetWriter } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/value-set/JSONValueConstraintsValueSetWriter';
 import { JSONTemplateElementWriter } from './JSONTemplateElementWriter';
 import { JSONAnnotationsWriter } from './JSONAnnotationsWriter';
 import { ControlledTermAction } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/action/ControlledTermAction';
-import {
-  JSONValueConstraintsActionWriter,
-} from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/action/JSONValueConstraintsActionWriter';
+import { JSONValueConstraintsActionWriter } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/action/JSONValueConstraintsActionWriter';
 import { JSONAbstractArtifactWriter } from './JSONAbstractArtifactWriter';
 import { AbstractArtifact } from '../../../model/cedar/AbstractArtifact';
 import { Template } from '../../../model/cedar/template/Template';

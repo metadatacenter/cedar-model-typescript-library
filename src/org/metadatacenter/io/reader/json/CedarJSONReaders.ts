@@ -47,4 +47,15 @@ export class CedarJSONReaders {
         throw new Error(`No JSON reader available for CedarArtifactType: ${cedarArtifactType}`);
     }
   }
+
+  public getTemplateReader(): JSONTemplateReader {
+    return JSONTemplateReader.getForBehavior(this.behavior);
+  }
+
+  public getTemplateElementReader(): JSONTemplateElementReader {
+    return JSONTemplateElementReader.getForBehavior(this.behavior);
+  }
+  public getTemplateFieldReader(): JSONTemplateFieldReader {
+    return JSONTemplateFieldReader.getForBehavior(this.behavior);
+  }
 }

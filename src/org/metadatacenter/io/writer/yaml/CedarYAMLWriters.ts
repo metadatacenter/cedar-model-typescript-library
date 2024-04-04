@@ -1,17 +1,11 @@
 import { CedarFieldType } from '../../../model/cedar/types/cedar-types/CedarFieldType';
 import { YAMLTemplateWriter } from './YAMLTemplateWriter';
 import { TemplateField } from '../../../model/cedar/field/TemplateField';
-import {
-  ControlledTermOntology,
-} from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/ontology/ControlledTermOntology';
-import {
-  ControlledTermAbstractValueConstraint,
-} from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/ControlledTermAbstractValueConstraint';
+import { ControlledTermOntology } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/ontology/ControlledTermOntology';
+import { ControlledTermAbstractValueConstraint } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/ControlledTermAbstractValueConstraint';
 import { ControlledTermClass } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/class/ControlledTermClass';
 import { ControlledTermBranch } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/branch/ControlledTermBranch';
-import {
-  ControlledTermValueSet,
-} from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/value-set/ControlledTermValueSet';
+import { ControlledTermValueSet } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/value-set/ControlledTermValueSet';
 import { ControlledTermAction } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/action/ControlledTermAction';
 import { YAMLTemplateFieldWriterInternal } from './YAMLTemplateFieldWriterInternal';
 import { YAMLFieldWriterTextField } from '../../../model/cedar/field/dynamic/textfield/YAMLFieldWriterTextField';
@@ -27,9 +21,7 @@ import { YAMLFieldWriterStaticRichText } from '../../../model/cedar/field/static
 import { YAMLFieldWriterStaticYoutube } from '../../../model/cedar/field/static/youtube/YAMLFieldWriterStaticYoutube';
 import { YAMLTemplateElementWriter } from './YAMLTemplateElementWriter';
 import { YAMLFieldWriterAttributeValue } from '../../../model/cedar/field/dynamic/attribute-value/YAMLFieldWriterAttributeValue';
-import {
-  AbstractYAMLControlledTermValueConstraintWriter,
-} from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/AbstractYAMLControlledTermValueConstraintWriter';
+import { AbstractYAMLControlledTermValueConstraintWriter } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/AbstractYAMLControlledTermValueConstraintWriter';
 import { YAMLFieldWriterEmail } from '../../../model/cedar/field/dynamic/email/YAMLFieldWriterEmail';
 import { YAMLFieldWriterNumeric } from '../../../model/cedar/field/dynamic/numeric/YAMLFieldWriterNumeric';
 import { YAMLFieldWriterPhoneNumber } from '../../../model/cedar/field/dynamic/phone-number/YAMLFieldWriterPhoneNumber';
@@ -37,21 +29,11 @@ import { YAMLFieldWriterCheckbox } from '../../../model/cedar/field/dynamic/chec
 import { YAMLFieldWriterList } from '../../../model/cedar/field/dynamic/list/YAMLFieldWriterList';
 import { YAMLFieldWriterRadio } from '../../../model/cedar/field/dynamic/radio/YAMLFieldWriterRadio';
 import { YAMLFieldWriterControlledTerm } from '../../../model/cedar/field/dynamic/controlled-term/YAMLFieldWriterControlledTerm';
-import {
-  YAMLValueConstraintsOntologyWriter,
-} from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/ontology/YAMLValueConstraintsOntologyWriter';
-import {
-  YAMLValueConstraintsClassWriter,
-} from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/class/YAMLValueConstraintsClassWriter';
-import {
-  YAMLValueConstraintsBranchWriter,
-} from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/branch/YAMLValueConstraintsBranchWriter';
-import {
-  YAMLValueConstraintsValueSetWriter,
-} from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/value-set/YAMLValueConstraintsValueSetWriter';
-import {
-  YAMLValueConstraintsActionWriter,
-} from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/action/YAMLValueConstraintsActionWriter';
+import { YAMLValueConstraintsOntologyWriter } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/ontology/YAMLValueConstraintsOntologyWriter';
+import { YAMLValueConstraintsClassWriter } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/class/YAMLValueConstraintsClassWriter';
+import { YAMLValueConstraintsBranchWriter } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/branch/YAMLValueConstraintsBranchWriter';
+import { YAMLValueConstraintsValueSetWriter } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/value-set/YAMLValueConstraintsValueSetWriter';
+import { YAMLValueConstraintsActionWriter } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/action/YAMLValueConstraintsActionWriter';
 import { YAMLWriterBehavior } from '../../../behavior/YAMLWriterBehavior';
 
 export class CedarYAMLWriters {

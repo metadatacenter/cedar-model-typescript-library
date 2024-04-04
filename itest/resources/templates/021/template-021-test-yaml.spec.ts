@@ -1,4 +1,4 @@
-import { CedarWriters, CedarYAMLWriters, JSONTemplateReader, YAMLTemplateWriter } from '../../../../src';
+import { CedarWriters, CedarYAMLWriters, JsonTemplateReader, YAMLTemplateWriter } from '../../../../src';
 import { TestUtil } from '../../../TestUtil';
 import { TestResource } from '../../../TestResource';
 
@@ -8,7 +8,7 @@ describe('YAMLTemplateWriter' + testResource.toString(), () => {
   test('read a JSON template, and writes it as YAML', () => {
     const artifactSource = TestUtil.readTestJson(testResource);
     const referenceYaml = TestUtil.readReferenceYaml(testResource);
-    const reader: JSONTemplateReader = JSONTemplateReader.getStrict();
+    const reader: JsonTemplateReader = JsonTemplateReader.getStrict();
     const jsonTemplateReaderResult = reader.readFromString(artifactSource);
     expect(jsonTemplateReaderResult).not.toBeNull();
     const parsingResult = jsonTemplateReaderResult.parsingResult;

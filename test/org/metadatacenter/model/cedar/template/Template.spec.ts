@@ -2,10 +2,10 @@ import {
   BiboStatus,
   CedarArtifactId,
   CedarBuilders,
-  CedarJSONWriters,
+  CedarJsonWriters,
   CedarWriters,
   ISODate,
-  JSONTemplateWriter,
+  JsonTemplateWriter,
   SchemaVersion,
   Template,
   TemplateBuilder,
@@ -69,8 +69,8 @@ describe('Template', () => {
 
     //TestUtil.p(template);
 
-    const writers: CedarJSONWriters = CedarWriters.json().getStrict();
-    const writer: JSONTemplateWriter = writers.getJSONTemplateWriter();
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const writer: JsonTemplateWriter = writers.getTemplateWriter();
 
     const stringified = JSON.stringify(writer.getAsJsonNode(template), null, 2);
     const backparsed = JSON.parse(stringified);

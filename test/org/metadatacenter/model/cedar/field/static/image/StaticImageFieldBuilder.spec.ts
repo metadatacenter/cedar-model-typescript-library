@@ -1,6 +1,6 @@
 import {
   CedarBuilders,
-  CedarJSONWriters,
+  CedarJsonWriters,
   CedarWriters,
   ISODate,
   SchemaVersion,
@@ -30,8 +30,8 @@ describe('StaticImageFieldBuilder', () => {
       .withContent('https://upload.wikimedia.org/wikipedia/en/3/34/RickAstleyNeverGonnaGiveYouUp7InchSingleCover.jpg')
       .build();
 
-    const writers: CedarJSONWriters = CedarWriters.json().getStrict();
-    const jsonWriter = writers.getJSONFieldWriterForField(field);
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const jsonWriter = writers.getFieldWriterForField(field);
 
     const stringified = jsonWriter.getAsJsonString(field);
     const backparsed = JSON.parse(stringified);

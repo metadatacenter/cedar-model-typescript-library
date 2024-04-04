@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { CedarWriters, CedarYAMLWriters, JSONTemplateReader, YAMLTemplateReader } from '../../src';
+import { CedarWriters, CedarYAMLWriters, JsonTemplateReader, YAMLTemplateReader } from '../../src';
 import { TestUtil } from '../TestUtil';
 import { ComparisonResult } from '../../src/org/metadatacenter/model/cedar/util/compare/ComparisonResult';
 import { YamlObjectComparator } from '../../src/org/metadatacenter/model/cedar/util/compare/YamlObjectComparator';
@@ -18,7 +18,7 @@ describe('YAMLReader-references', () => {
         // console.log(sourcePath);
         const templateSourceJSONString = await fs.readFile(sourcePath, 'utf8');
 
-        const templateJSONReader: JSONTemplateReader = JSONTemplateReader.getStrict();
+        const templateJSONReader: JsonTemplateReader = JsonTemplateReader.getStrict();
         const templateJSONReaderResult = templateJSONReader.readFromString(templateSourceJSONString);
         const jsonReadTemplate = templateJSONReaderResult.template;
 

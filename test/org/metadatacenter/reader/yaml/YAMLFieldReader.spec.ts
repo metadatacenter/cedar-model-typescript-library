@@ -1,12 +1,12 @@
 import {
   CedarBuilders,
-  CedarJSONWriters,
+  CedarJsonWriters,
   CedarWriters,
   CedarYAMLWriters,
   EmailField,
   EmailFieldBuilder,
   ISODate,
-  JSONTemplateFieldReader,
+  JsonTemplateFieldReader,
   SchemaVersion,
   YAMLTemplateFieldReader,
 } from '../../../../../src';
@@ -34,8 +34,8 @@ describe('YAMLFieldReader', () => {
       .withAlternateLabels(['Email', 'Contact Email'])
       .build();
 
-    const jsonWriters: CedarJSONWriters = CedarWriters.json().getStrict();
-    const jsonWriter = jsonWriters.getJSONFieldWriterForField(field);
+    const jsonWriters: CedarJsonWriters = CedarWriters.json().getStrict();
+    const jsonWriter = jsonWriters.getFieldWriterForField(field);
 
     const fieldSourceJSONString = jsonWriter.getAsJsonString(field);
     // console.log('JSON generated from BUILDER', fieldSourceJSONString);
@@ -48,7 +48,7 @@ describe('YAMLFieldReader', () => {
 
     // console.log('YAML generated from JSON', fieldSourceYAMLString);
 
-    const fieldJSONReader: JSONTemplateFieldReader = JSONTemplateFieldReader.getStrict();
+    const fieldJSONReader: JsonTemplateFieldReader = JsonTemplateFieldReader.getStrict();
     const fieldJSONReaderResult = fieldJSONReader.readFromString(fieldSourceJSONString);
 
     expect(fieldJSONReaderResult.parsingResult.wasSuccessful()).toBe(true);

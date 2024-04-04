@@ -1,5 +1,5 @@
-import { JSONWriterBehavior } from '../../../behavior/JSONWriterBehavior';
-import { JSONAtomicWriter } from '../json/JSONAtomicWriter';
+import { JsonWriterBehavior } from '../../../behavior/JsonWriterBehavior';
+import { JsonAtomicWriter } from '../json/JsonAtomicWriter';
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
 import { NullableString } from '../../../model/cedar/types/basic-types/NullableString';
 import { BioportalTermType, BioportalTermTypeYamlValue } from '../../../model/cedar/types/bioportal-types/BioportalTermType';
@@ -21,9 +21,9 @@ import { AdditionalProperties } from '../../../model/cedar/types/wrapped-types/A
 import { URI } from '../../../model/cedar/types/wrapped-types/URI';
 import { YAMLWriterBehavior } from '../../../behavior/YAMLWriterBehavior';
 
-export class YAMLAtomicWriter extends JSONAtomicWriter {
+export class YAMLAtomicWriter extends JsonAtomicWriter {
   public constructor(_behavior: YAMLWriterBehavior) {
-    super(JSONWriterBehavior.STRICT);
+    super(JsonWriterBehavior.STRICT);
   }
 
   protected override writeCedarArtifactType(type: CedarArtifactType): NullableString {

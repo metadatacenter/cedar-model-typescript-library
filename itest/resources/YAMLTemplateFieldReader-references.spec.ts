@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { CedarWriters, CedarYAMLWriters, JSONTemplateFieldReader, YAMLTemplateFieldReader } from '../../src';
+import { CedarWriters, CedarYAMLWriters, JsonTemplateFieldReader, YAMLTemplateFieldReader } from '../../src';
 import { TestUtil } from '../TestUtil';
 import { ComparisonResult } from '../../src/org/metadatacenter/model/cedar/util/compare/ComparisonResult';
 import { YamlObjectComparator } from '../../src/org/metadatacenter/model/cedar/util/compare/YamlObjectComparator';
@@ -18,7 +18,7 @@ describe('YAMLTemplateFieldReader-references', () => {
         // console.log(sourcePath);
         const fieldSourceJSONString = await fs.readFile(sourcePath, 'utf8');
 
-        const fieldJSONReader: JSONTemplateFieldReader = JSONTemplateFieldReader.getStrict();
+        const fieldJSONReader: JsonTemplateFieldReader = JsonTemplateFieldReader.getStrict();
         const fieldJSONReaderResult = fieldJSONReader.readFromString(fieldSourceJSONString);
         const jsonReadField = fieldJSONReaderResult.field;
 

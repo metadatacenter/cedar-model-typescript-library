@@ -1,16 +1,16 @@
 import { CedarWriters } from './org/metadatacenter/io/writer/CedarWriters';
 import { CedarBuilders } from './org/metadatacenter/io/builder/CedarBuilders';
 
-import { JSONTemplateFieldReader } from './org/metadatacenter/io/reader/json/JSONTemplateFieldReader';
-import { JSONTemplateElementReader } from './org/metadatacenter/io/reader/json/JSONTemplateElementReader';
-import { JSONTemplateReader } from './org/metadatacenter/io/reader/json/JSONTemplateReader';
+import { JsonTemplateFieldReader } from './org/metadatacenter/io/reader/json/JsonTemplateFieldReader';
+import { JsonTemplateElementReader } from './org/metadatacenter/io/reader/json/JsonTemplateElementReader';
+import { JsonTemplateReader } from './org/metadatacenter/io/reader/json/JsonTemplateReader';
 
 // It is needed, do not remove, even if it looks unused
-import { JSONTemplateFieldWriterInternal } from './org/metadatacenter/io/writer/json/JSONTemplateFieldWriterInternal';
+import { JsonTemplateFieldWriterInternal } from './org/metadatacenter/io/writer/json/JsonTemplateFieldWriterInternal';
 import { YAMLTemplateFieldWriterInternal } from './org/metadatacenter/io/writer/yaml/YAMLTemplateFieldWriterInternal';
 
-import { JSONTemplateElementWriter } from './org/metadatacenter/io/writer/json/JSONTemplateElementWriter';
-import { JSONTemplateWriter } from './org/metadatacenter/io/writer/json/JSONTemplateWriter';
+import { JsonTemplateElementWriter } from './org/metadatacenter/io/writer/json/JsonTemplateElementWriter';
+import { JsonTemplateWriter } from './org/metadatacenter/io/writer/json/JsonTemplateWriter';
 
 import { YAMLTemplateElementWriter } from './org/metadatacenter/io/writer/yaml/YAMLTemplateElementWriter';
 import { YAMLTemplateWriter } from './org/metadatacenter/io/writer/yaml/YAMLTemplateWriter';
@@ -90,51 +90,51 @@ import { YAMLTemplateFieldReader } from './org/metadatacenter/io/reader/yaml/YAM
 import { YAMLTemplateElementReader } from './org/metadatacenter/io/reader/yaml/YAMLTemplateElementReader';
 import { YAMLTemplateReader } from './org/metadatacenter/io/reader/yaml/YAMLTemplateReader';
 import { CedarArtifactType } from './org/metadatacenter/model/cedar/types/cedar-types/CedarArtifactType';
-import { JSONAbstractSchemaArtifactReader } from './org/metadatacenter/io/reader/json/JSONAbstractSchemaArtifactReader';
+import { JsonAbstractSchemaArtifactReader } from './org/metadatacenter/io/reader/json/JsonAbstractSchemaArtifactReader';
 import { CedarReaders } from './org/metadatacenter/io/reader/CedarReaders';
 import { AbstractSchemaArtifact } from './org/metadatacenter/model/cedar/AbstractSchemaArtifact';
-import { JSONAbstractArtifactWriter } from './org/metadatacenter/io/writer/json/JSONAbstractArtifactWriter';
+import { JsonAbstractArtifactWriter } from './org/metadatacenter/io/writer/json/JsonAbstractArtifactWriter';
 import { ComparisonErrorType } from './org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
-import { CedarJSONWriters } from './org/metadatacenter/io/writer/json/CedarJSONWriters';
-import { CedarJSONReaders } from './org/metadatacenter/io/reader/json/CedarJSONReaders';
+import { CedarJsonWriters } from './org/metadatacenter/io/writer/json/CedarJsonWriters';
+import { CedarJsonReaders } from './org/metadatacenter/io/reader/json/CedarJsonReaders';
 import { CedarYAMLWriters } from './org/metadatacenter/io/writer/yaml/CedarYAMLWriters';
 import { CedarYAMLReaders } from './org/metadatacenter/io/reader/yaml/CedarYAMLReaders';
 import { AbstractInstanceArtifact } from './org/metadatacenter/model/cedar/AbstractInstanceArtifact';
 import { AbstractArtifact } from './org/metadatacenter/model/cedar/AbstractArtifact';
 import { TemplateInstance } from './org/metadatacenter/model/cedar/template-instance/TemplateInstance';
-import { JSONTemplateInstanceReader } from './org/metadatacenter/io/reader/json/JSONTemplateInstancetReader';
-import { JSONAbstractInstanceArtifactReader } from './org/metadatacenter/io/reader/json/JSONAbstractInstanceArtifactReader';
-import { JSONAbstractArtifactReader } from './org/metadatacenter/io/reader/json/JSONAbstractArtifactReader';
-import { JSONTemplateReaderResult } from './org/metadatacenter/io/reader/json/JSONTemplateReaderResult';
+import { JsonTemplateInstanceReader } from './org/metadatacenter/io/reader/json/JsonTemplateInstancetReader';
+import { JsonAbstractInstanceArtifactReader } from './org/metadatacenter/io/reader/json/JsonAbstractInstanceArtifactReader';
+import { JsonAbstractArtifactReader } from './org/metadatacenter/io/reader/json/JsonAbstractArtifactReader';
+import { JsonTemplateReaderResult } from './org/metadatacenter/io/reader/json/JsonTemplateReaderResult';
 import { CedarUser } from './org/metadatacenter/model/cedar/types/cedar-types/CedarUser';
-import { JSONArtifactReaderResult } from './org/metadatacenter/io/reader/json/JSONArtifactReaderResult';
-import { JSONTemplateElementReaderResult } from './org/metadatacenter/io/reader/json/JSONTemplateElementReaderResult';
-import { JSONTemplateFieldReaderResult } from './org/metadatacenter/io/reader/json/JSONTemplateFieldReaderResult';
-import { JSONTemplateInstanceReaderResult } from './org/metadatacenter/io/reader/json/JSONTemplateInstanceReaderResult';
+import { JsonArtifactReaderResult } from './org/metadatacenter/io/reader/json/JsonArtifactReaderResult';
+import { JsonTemplateElementReaderResult } from './org/metadatacenter/io/reader/json/JsonTemplateElementReaderResult';
+import { JsonTemplateFieldReaderResult } from './org/metadatacenter/io/reader/json/JsonTemplateFieldReaderResult';
+import { JsonTemplateInstanceReaderResult } from './org/metadatacenter/io/reader/json/JsonTemplateInstanceReaderResult';
 
 export { CedarBuilders };
 export { CedarWriters };
 export { CedarReaders };
 
-export { CedarJSONReaders, CedarJSONWriters };
+export { CedarJsonReaders, CedarJsonWriters };
 export { CedarYAMLReaders, CedarYAMLWriters };
 
-export { JSONAbstractSchemaArtifactReader };
-export { JSONAbstractInstanceArtifactReader };
-export { JSONAbstractArtifactReader };
-export { JSONAbstractArtifactWriter };
+export { JsonAbstractSchemaArtifactReader };
+export { JsonAbstractInstanceArtifactReader };
+export { JsonAbstractArtifactReader };
+export { JsonAbstractArtifactWriter };
 
-export { JSONTemplateFieldReader, YAMLTemplateFieldReader };
-export { JSONTemplateElementReader, YAMLTemplateElementReader };
-export { JSONTemplateReader, YAMLTemplateReader };
-export { JSONTemplateInstanceReader };
+export { JsonTemplateFieldReader, YAMLTemplateFieldReader };
+export { JsonTemplateElementReader, YAMLTemplateElementReader };
+export { JsonTemplateReader, YAMLTemplateReader };
+export { JsonTemplateInstanceReader };
 
 // It is needed, do not remove, even if it looks unused
-export { JSONTemplateFieldWriterInternal as JSONTemplateFieldWriter };
+export { JsonTemplateFieldWriterInternal as JSONTemplateFieldWriter };
 export { YAMLTemplateFieldWriterInternal as YAMLTemplateFieldWriter };
 
-export { JSONTemplateElementWriter, YAMLTemplateElementWriter };
-export { JSONTemplateWriter, YAMLTemplateWriter };
+export { JsonTemplateElementWriter, YAMLTemplateElementWriter };
+export { JsonTemplateWriter, YAMLTemplateWriter };
 
 export { AbstractSchemaArtifact };
 export { AbstractInstanceArtifact };
@@ -199,8 +199,8 @@ export { CedarUser };
 
 export { ComparisonErrorType };
 
-export { JSONTemplateFieldReaderResult };
-export { JSONTemplateElementReaderResult };
-export { JSONTemplateReaderResult };
-export { JSONTemplateInstanceReaderResult };
-export { JSONArtifactReaderResult };
+export { JsonTemplateFieldReaderResult };
+export { JsonTemplateElementReaderResult };
+export { JsonTemplateReaderResult };
+export { JsonTemplateInstanceReaderResult };
+export { JsonArtifactReaderResult };

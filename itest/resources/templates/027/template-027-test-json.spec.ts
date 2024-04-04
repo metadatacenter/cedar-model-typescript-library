@@ -1,11 +1,11 @@
 import {
-  CedarJSONWriters,
+  CedarJsonWriters,
   CedarModel,
   CedarWriters,
   ComparisonError,
   JsonPath,
-  JSONTemplateReader,
-  JSONTemplateWriter,
+  JsonTemplateReader,
+  JsonTemplateWriter,
   RoundTrip,
 } from '../../../../src';
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
@@ -18,7 +18,7 @@ const testResource: TestResource = TestResource.template(27);
 describe('JSONTemplateReader' + testResource.toString(), () => {
   test('reads template witch annotations', () => {
     const artifactSource = TestUtil.readTestJson(testResource);
-    const reader: JSONTemplateReader = JSONTemplateReader.getStrict();
+    const reader: JsonTemplateReader = JsonTemplateReader.getStrict();
     const jsonTemplateReaderResult = reader.readFromString(artifactSource);
     expect(jsonTemplateReaderResult).not.toBeNull();
     const parsingResult = jsonTemplateReaderResult.parsingResult;
@@ -26,8 +26,8 @@ describe('JSONTemplateReader' + testResource.toString(), () => {
 
     // TestUtil.p(jsonTemplateReaderResult.template);
 
-    const writers: CedarJSONWriters = CedarWriters.json().getStrict();
-    const writer: JSONTemplateWriter = writers.getJSONTemplateWriter();
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const writer: JsonTemplateWriter = writers.getTemplateWriter();
 
     const compareResult: ParsingResult = RoundTrip.compare(jsonTemplateReaderResult, writer);
 

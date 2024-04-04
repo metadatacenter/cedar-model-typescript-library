@@ -1,4 +1,4 @@
-import { CedarModel, ComparisonError, JsonPath, JsonSchema, JSONTemplateReader } from '../../../../src';
+import { CedarModel, ComparisonError, JsonPath, JsonSchema, JsonTemplateReader } from '../../../../src';
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
 import { TestUtil } from '../../../TestUtil';
 import { TestResource } from '../../../TestResource';
@@ -8,7 +8,7 @@ const testResource: TestResource = TestResource.template(3);
 describe('JSONTemplateReader' + testResource.toString(), () => {
   test('reads very simple template as object, with various mismatches', () => {
     const artifactSource = TestUtil.readTestJson(testResource);
-    const reader: JSONTemplateReader = JSONTemplateReader.getStrict();
+    const reader: JsonTemplateReader = JsonTemplateReader.getStrict();
     const jsonTemplateReaderResult = reader.readFromString(artifactSource);
     expect(jsonTemplateReaderResult).not.toBeNull();
     const parsingResult = jsonTemplateReaderResult.parsingResult;

@@ -1,18 +1,18 @@
 import {
-  CedarJSONWriters,
+  CedarJsonWriters,
   CedarModel,
   CedarWriters,
   ComparisonError,
   JsonPath,
   JsonSchema,
-  JSONTemplateReader,
-  JSONTemplateWriter,
+  JsonTemplateReader,
+  JsonTemplateWriter,
   RoundTrip,
 } from '../../../../src';
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
 import { TestUtil } from '../../../TestUtil';
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
-import { JSONTemplateReaderResult } from '../../../../src/org/metadatacenter/io/reader/json/JSONTemplateReaderResult';
+import { JsonTemplateReaderResult } from '../../../../src/org/metadatacenter/io/reader/json/JsonTemplateReaderResult';
 import { TestResource } from '../../../TestResource';
 
 const testResource: TestResource = TestResource.template(20);
@@ -20,14 +20,14 @@ const testResource: TestResource = TestResource.template(20);
 describe('JSONTemplateReader' + testResource.toString(), () => {
   test('reads template with Pick from a list MultiSelect', () => {
     const artifactSource = TestUtil.readTestJson(testResource);
-    const reader: JSONTemplateReader = JSONTemplateReader.getStrict();
-    const jsonTemplateReaderResult: JSONTemplateReaderResult = reader.readFromString(artifactSource);
+    const reader: JsonTemplateReader = JsonTemplateReader.getStrict();
+    const jsonTemplateReaderResult: JsonTemplateReaderResult = reader.readFromString(artifactSource);
     expect(jsonTemplateReaderResult).not.toBeNull();
     const parsingResult: ParsingResult = jsonTemplateReaderResult.parsingResult;
     expect(parsingResult.wasSuccessful()).toBe(true);
 
-    const writers: CedarJSONWriters = CedarWriters.json().getStrict();
-    const writer: JSONTemplateWriter = writers.getJSONTemplateWriter();
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const writer: JsonTemplateWriter = writers.getTemplateWriter();
 
     const compareResult: ParsingResult = RoundTrip.compare(jsonTemplateReaderResult, writer);
 

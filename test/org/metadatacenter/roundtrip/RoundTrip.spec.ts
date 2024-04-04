@@ -2,7 +2,7 @@ import {
   AbstractArtifact,
   CedarArtifactType,
   CedarBuilders,
-  CedarJSONWriters,
+  CedarJsonWriters,
   CedarReaders,
   CedarWriters,
   ComparisonError,
@@ -10,7 +10,7 @@ import {
   EmailField,
   EmailFieldBuilder,
   ISODate,
-  JSONAbstractArtifactReader,
+  JsonAbstractArtifactReader,
   JsonPath,
   JsonSchema,
   RoundTrip,
@@ -38,15 +38,15 @@ describe('RoundTrip', () => {
       .withAlternateLabels(['Email', 'Contact Email'])
       .build();
 
-    const writers: CedarJSONWriters = CedarWriters.json().getStrict();
-    const jsonWriter = writers.getJSONWriterForArtifact(field);
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const jsonWriter = writers.getWriterForArtifact(field);
 
     const fieldSourceJSONString = jsonWriter.getAsJsonString(field);
 
     const cedarArtifactType: CedarArtifactType = CedarReaders.json().detectArtifactType(fieldSourceJSONString);
     const jsonReaders = CedarReaders.json().getStrict();
 
-    const artifactReader: JSONAbstractArtifactReader = jsonReaders.getReaderForArtifactType(cedarArtifactType);
+    const artifactReader: JsonAbstractArtifactReader = jsonReaders.getReaderForArtifactType(cedarArtifactType);
 
     const jsonArtifactReaderResult = artifactReader.readFromString(fieldSourceJSONString);
     expect(jsonArtifactReaderResult.parsingResult.getBlueprintComparisonErrorCount()).toBe(0);

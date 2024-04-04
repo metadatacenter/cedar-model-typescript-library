@@ -1,6 +1,6 @@
 import {
   CedarBuilders,
-  CedarJSONWriters,
+  CedarJsonWriters,
   CedarWriters,
   ISODate,
   RadioField,
@@ -32,8 +32,8 @@ describe('RadioFieldBuilder', () => {
       .addRadioOption('option 3', true)
       .build();
 
-    const writers: CedarJSONWriters = CedarWriters.json().getStrict();
-    const jsonWriter = writers.getJSONFieldWriterForField(field);
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const jsonWriter = writers.getFieldWriterForField(field);
 
     const stringified = jsonWriter.getAsJsonString(field);
     const backparsed = JSON.parse(stringified);

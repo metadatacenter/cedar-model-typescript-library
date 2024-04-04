@@ -1,13 +1,13 @@
 import {
-  CedarJSONWriters,
+  CedarJsonWriters,
   CedarModel,
   CedarWriters,
   ComparisonError,
   ComparisonErrorType,
   JsonPath,
   JsonSchema,
-  JSONTemplateReader,
-  JSONTemplateWriter,
+  JsonTemplateReader,
+  JsonTemplateWriter,
   RoundTrip,
 } from '../../../../src';
 import { TestUtil } from '../../../TestUtil';
@@ -19,7 +19,7 @@ const testResource: TestResource = TestResource.template(5);
 describe('JSONTemplateReader' + testResource.toString(), () => {
   test('reads multi-instance text fields', () => {
     const artifactSource = TestUtil.readTestJson(testResource);
-    const reader: JSONTemplateReader = JSONTemplateReader.getStrict();
+    const reader: JsonTemplateReader = JsonTemplateReader.getStrict();
     const jsonTemplateReaderResult = reader.readFromString(artifactSource);
     expect(jsonTemplateReaderResult).not.toBeNull();
     const parsingResult = jsonTemplateReaderResult.parsingResult;
@@ -29,8 +29,8 @@ describe('JSONTemplateReader' + testResource.toString(), () => {
     expect(parsingResult.wasSuccessful()).toBe(true);
 
     // TestUtil.p(jsonTemplateReaderResult.template.asCedarNode());
-    const writers: CedarJSONWriters = CedarWriters.json().getStrict();
-    const writer: JSONTemplateWriter = writers.getJSONTemplateWriter();
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const writer: JsonTemplateWriter = writers.getTemplateWriter();
 
     const compareResult: ParsingResult = RoundTrip.compare(jsonTemplateReaderResult, writer);
 

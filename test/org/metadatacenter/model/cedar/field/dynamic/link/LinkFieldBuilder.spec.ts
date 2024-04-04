@@ -1,6 +1,6 @@
 import {
   CedarBuilders,
-  CedarJSONWriters,
+  CedarJsonWriters,
   CedarWriters,
   ISODate,
   LinkField,
@@ -29,8 +29,8 @@ describe('LinkFieldBuilder', () => {
       .withAlternateLabels(['Link', 'Link 2'])
       .build();
 
-    const writers: CedarJSONWriters = CedarWriters.json().getStrict();
-    const jsonWriter = writers.getJSONFieldWriterForField(field);
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const jsonWriter = writers.getFieldWriterForField(field);
 
     const stringified = jsonWriter.getAsJsonString(field);
     const backparsed = JSON.parse(stringified);

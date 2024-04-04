@@ -1,30 +1,30 @@
-import { JSONTemplateFieldReaderResult } from '../reader/json/JSONTemplateFieldReaderResult';
-import { JSONTemplateFieldWriterInternal } from '../writer/json/JSONTemplateFieldWriterInternal';
+import { JsonTemplateFieldReaderResult } from '../reader/json/JsonTemplateFieldReaderResult';
+import { JsonTemplateFieldWriterInternal } from '../writer/json/JsonTemplateFieldWriterInternal';
 import { ParsingResult } from '../../model/cedar/util/compare/ParsingResult';
 import { ObjectComparator } from '../../model/cedar/util/compare/ObjectComparator';
 import { ChildDeploymentInfo } from '../../model/cedar/deployment/ChildDeploymentInfo';
 import { JsonPath } from '../../model/cedar/util/path/JsonPath';
-import { JSONTemplateReaderResult } from '../reader/json/JSONTemplateReaderResult';
-import { JSONTemplateWriter } from '../writer/json/JSONTemplateWriter';
-import { JSONTemplateElementReaderResult } from '../reader/json/JSONTemplateElementReaderResult';
-import { JSONTemplateElementWriter } from '../writer/json/JSONTemplateElementWriter';
-import { JSONWriterBehavior } from '../../behavior/JSONWriterBehavior';
+import { JsonTemplateReaderResult } from '../reader/json/JsonTemplateReaderResult';
+import { JsonTemplateWriter } from '../writer/json/JsonTemplateWriter';
+import { JsonTemplateElementReaderResult } from '../reader/json/JsonTemplateElementReaderResult';
+import { JsonTemplateElementWriter } from '../writer/json/JsonTemplateElementWriter';
+import { JsonWriterBehavior } from '../../behavior/JsonWriterBehavior';
 
 export class RoundTrip {
-  static compare(jsonFieldReaderResult: JSONTemplateFieldReaderResult, writer: JSONTemplateFieldWriterInternal): ParsingResult;
-  static compare(jsonElementReaderResult: JSONTemplateElementReaderResult, writer: JSONTemplateElementWriter): ParsingResult;
-  static compare(jsonTemplateReaderResult: JSONTemplateReaderResult, writer: JSONTemplateWriter): ParsingResult;
+  static compare(jsonFieldReaderResult: JsonTemplateFieldReaderResult, writer: JsonTemplateFieldWriterInternal): ParsingResult;
+  static compare(jsonElementReaderResult: JsonTemplateElementReaderResult, writer: JsonTemplateElementWriter): ParsingResult;
+  static compare(jsonTemplateReaderResult: JsonTemplateReaderResult, writer: JsonTemplateWriter): ParsingResult;
   static compare(left: string, right: string): ParsingResult;
 
   static compare(
-    readerResult: JSONTemplateFieldReaderResult | JSONTemplateElementReaderResult | JSONTemplateReaderResult | string,
-    writer: JSONTemplateFieldWriterInternal | JSONTemplateElementWriter | JSONTemplateWriter | string,
+    readerResult: JsonTemplateFieldReaderResult | JsonTemplateElementReaderResult | JsonTemplateReaderResult | string,
+    writer: JsonTemplateFieldWriterInternal | JsonTemplateElementWriter | JsonTemplateWriter | string,
   ): ParsingResult {
-    if (readerResult instanceof JSONTemplateFieldReaderResult && writer instanceof JSONTemplateFieldWriterInternal) {
+    if (readerResult instanceof JsonTemplateFieldReaderResult && writer instanceof JsonTemplateFieldWriterInternal) {
       return this.compareField(readerResult, writer);
-    } else if (readerResult instanceof JSONTemplateElementReaderResult && writer instanceof JSONTemplateElementWriter) {
+    } else if (readerResult instanceof JsonTemplateElementReaderResult && writer instanceof JsonTemplateElementWriter) {
       return this.compareElement(readerResult, writer);
-    } else if (readerResult instanceof JSONTemplateReaderResult && writer instanceof JSONTemplateWriter) {
+    } else if (readerResult instanceof JsonTemplateReaderResult && writer instanceof JsonTemplateWriter) {
       return this.compareTemplate(readerResult, writer);
     } else if (typeof readerResult === 'string' && typeof writer === 'string') {
       return this.compareString(readerResult, writer);
@@ -33,7 +33,7 @@ export class RoundTrip {
     }
   }
 
-  static compareField(jsonFieldReaderResult: JSONTemplateFieldReaderResult, writer: JSONTemplateFieldWriterInternal): ParsingResult {
+  static compareField(jsonFieldReaderResult: JsonTemplateFieldReaderResult, writer: JsonTemplateFieldWriterInternal): ParsingResult {
     const compareResult = new ParsingResult();
     ObjectComparator.compareBothWays(
       compareResult,
@@ -45,7 +45,7 @@ export class RoundTrip {
     return compareResult;
   }
 
-  static compareElement(jsonElementReaderResult: JSONTemplateElementReaderResult, writer: JSONTemplateElementWriter): ParsingResult {
+  static compareElement(jsonElementReaderResult: JsonTemplateElementReaderResult, writer: JsonTemplateElementWriter): ParsingResult {
     const compareResult = new ParsingResult();
     ObjectComparator.compareBothWays(
       compareResult,
@@ -57,7 +57,7 @@ export class RoundTrip {
     return compareResult;
   }
 
-  static compareTemplate(jsonTemplateReaderResult: JSONTemplateReaderResult, writer: JSONTemplateWriter): ParsingResult {
+  static compareTemplate(jsonTemplateReaderResult: JsonTemplateReaderResult, writer: JsonTemplateWriter): ParsingResult {
     const compareResult = new ParsingResult();
     ObjectComparator.compareBothWays(
       compareResult,
@@ -73,7 +73,7 @@ export class RoundTrip {
     const leftObject = JSON.parse(left);
     const rightObject = JSON.parse(right);
     const compareResult = new ParsingResult();
-    ObjectComparator.compareBothWays(compareResult, leftObject, rightObject, new JsonPath(), JSONWriterBehavior.STRICT);
+    ObjectComparator.compareBothWays(compareResult, leftObject, rightObject, new JsonPath(), JsonWriterBehavior.STRICT);
     return compareResult;
   }
 }

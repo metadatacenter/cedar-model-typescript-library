@@ -1,4 +1,4 @@
-import { CedarWriters, CedarYAMLWriters, JsonTemplateFieldReader } from '../../../../src';
+import { CedarWriters, CedarYamlWriters, JsonTemplateFieldReader } from '../../../../src';
 import { TestUtil } from '../../../TestUtil';
 import { TestResource } from '../../../TestResource';
 
@@ -14,8 +14,8 @@ describe('YAMLTemplateFieldWriter' + testResource.toString(), () => {
     const parsingResult = jsonFieldReaderResult.parsingResult;
     expect(parsingResult.wasSuccessful()).toBe(true);
 
-    const writers: CedarYAMLWriters = CedarWriters.yaml().getStrict();
-    const yamlWriter = writers.getYAMLFieldWriterForField(jsonFieldReaderResult.field);
+    const writers: CedarYamlWriters = CedarWriters.yaml().getStrict();
+    const yamlWriter = writers.getFieldWriterForField(jsonFieldReaderResult.field);
 
     const stringified = yamlWriter.getAsYamlString(jsonFieldReaderResult.field);
     // console.log(stringified);

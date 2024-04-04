@@ -1,5 +1,5 @@
 import { CedarJsonReaders } from './json/CedarJsonReaders';
-import { CedarYAMLReaders } from './yaml/CedarYAMLReaders';
+import { CedarYamlReaders } from './yaml/CedarYamlReaders';
 
 export abstract class CedarReaders {
   private constructor() {}
@@ -8,7 +8,7 @@ export abstract class CedarReaders {
     return CedarJsonReaders;
   }
 
-  public static yaml(): typeof CedarYAMLReaders {
-    return CedarYAMLReaders;
+  public static yaml(): typeof CedarYamlReaders {
+    return CedarYamlReaders;
   }
 }

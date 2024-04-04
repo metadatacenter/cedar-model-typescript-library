@@ -7,13 +7,13 @@ import { JsonTemplateReader } from './org/metadatacenter/io/reader/json/JsonTemp
 
 // It is needed, do not remove, even if it looks unused
 import { JsonTemplateFieldWriterInternal } from './org/metadatacenter/io/writer/json/JsonTemplateFieldWriterInternal';
-import { YAMLTemplateFieldWriterInternal } from './org/metadatacenter/io/writer/yaml/YAMLTemplateFieldWriterInternal';
+import { YamlTemplateFieldWriterInternal } from './org/metadatacenter/io/writer/yaml/YamlTemplateFieldWriterInternal';
 
 import { JsonTemplateElementWriter } from './org/metadatacenter/io/writer/json/JsonTemplateElementWriter';
 import { JsonTemplateWriter } from './org/metadatacenter/io/writer/json/JsonTemplateWriter';
 
-import { YAMLTemplateElementWriter } from './org/metadatacenter/io/writer/yaml/YAMLTemplateElementWriter';
-import { YAMLTemplateWriter } from './org/metadatacenter/io/writer/yaml/YAMLTemplateWriter';
+import { YamlTemplateElementWriter } from './org/metadatacenter/io/writer/yaml/YamlTemplateElementWriter';
+import { YamlTemplateWriter } from './org/metadatacenter/io/writer/yaml/YamlTemplateWriter';
 
 import { TemplateField } from './org/metadatacenter/model/cedar/field/TemplateField';
 import { AttributeValueField } from './org/metadatacenter/model/cedar/field/dynamic/attribute-value/AttributeValueField';
@@ -86,9 +86,9 @@ import { YamlKeys } from './org/metadatacenter/model/cedar/constants/YamlKeys';
 import { YamlValues } from './org/metadatacenter/model/cedar/constants/YamlValues';
 import { BioportalTermType } from './org/metadatacenter/model/cedar/types/bioportal-types/BioportalTermType';
 import { CedarFieldCategory } from './org/metadatacenter/model/cedar/types/cedar-types/CedarFieldCategory';
-import { YAMLTemplateFieldReader } from './org/metadatacenter/io/reader/yaml/YAMLTemplateFieldReader';
-import { YAMLTemplateElementReader } from './org/metadatacenter/io/reader/yaml/YAMLTemplateElementReader';
-import { YAMLTemplateReader } from './org/metadatacenter/io/reader/yaml/YAMLTemplateReader';
+import { YamlTemplateFieldReader } from './org/metadatacenter/io/reader/yaml/YamlTemplateFieldReader';
+import { YamlTemplateElementReader } from './org/metadatacenter/io/reader/yaml/YamlTemplateElementReader';
+import { YamlTemplateReader } from './org/metadatacenter/io/reader/yaml/YamlTemplateReader';
 import { CedarArtifactType } from './org/metadatacenter/model/cedar/types/cedar-types/CedarArtifactType';
 import { JsonAbstractSchemaArtifactReader } from './org/metadatacenter/io/reader/json/JsonAbstractSchemaArtifactReader';
 import { CedarReaders } from './org/metadatacenter/io/reader/CedarReaders';
@@ -97,8 +97,8 @@ import { JsonAbstractArtifactWriter } from './org/metadatacenter/io/writer/json/
 import { ComparisonErrorType } from './org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
 import { CedarJsonWriters } from './org/metadatacenter/io/writer/json/CedarJsonWriters';
 import { CedarJsonReaders } from './org/metadatacenter/io/reader/json/CedarJsonReaders';
-import { CedarYAMLWriters } from './org/metadatacenter/io/writer/yaml/CedarYAMLWriters';
-import { CedarYAMLReaders } from './org/metadatacenter/io/reader/yaml/CedarYAMLReaders';
+import { CedarYamlWriters } from './org/metadatacenter/io/writer/yaml/CedarYamlWriters';
+import { CedarYamlReaders } from './org/metadatacenter/io/reader/yaml/CedarYamlReaders';
 import { AbstractInstanceArtifact } from './org/metadatacenter/model/cedar/AbstractInstanceArtifact';
 import { AbstractArtifact } from './org/metadatacenter/model/cedar/AbstractArtifact';
 import { TemplateInstance } from './org/metadatacenter/model/cedar/template-instance/TemplateInstance';
@@ -117,24 +117,24 @@ export { CedarWriters };
 export { CedarReaders };
 
 export { CedarJsonReaders, CedarJsonWriters };
-export { CedarYAMLReaders, CedarYAMLWriters };
+export { CedarYamlReaders, CedarYamlWriters };
 
 export { JsonAbstractSchemaArtifactReader };
 export { JsonAbstractInstanceArtifactReader };
 export { JsonAbstractArtifactReader };
 export { JsonAbstractArtifactWriter };
 
-export { JsonTemplateFieldReader, YAMLTemplateFieldReader };
-export { JsonTemplateElementReader, YAMLTemplateElementReader };
-export { JsonTemplateReader, YAMLTemplateReader };
+export { JsonTemplateFieldReader, YamlTemplateFieldReader };
+export { JsonTemplateElementReader, YamlTemplateElementReader };
+export { JsonTemplateReader, YamlTemplateReader };
 export { JsonTemplateInstanceReader };
 
 // It is needed, do not remove, even if it looks unused
 export { JsonTemplateFieldWriterInternal as JSONTemplateFieldWriter };
-export { YAMLTemplateFieldWriterInternal as YAMLTemplateFieldWriter };
+export { YamlTemplateFieldWriterInternal as YAMLTemplateFieldWriter };
 
-export { JsonTemplateElementWriter, YAMLTemplateElementWriter };
-export { JsonTemplateWriter, YAMLTemplateWriter };
+export { JsonTemplateElementWriter, YamlTemplateElementWriter };
+export { JsonTemplateWriter, YamlTemplateWriter };
 
 export { AbstractSchemaArtifact };
 export { AbstractInstanceArtifact };

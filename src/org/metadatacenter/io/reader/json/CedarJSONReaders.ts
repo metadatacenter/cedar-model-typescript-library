@@ -19,6 +19,9 @@ export class CedarJSONReaders {
   public static getStrict(): CedarJSONReaders {
     return new CedarJSONReaders(JSONReaderBehavior.STRICT);
   }
+  public static getFebruary2024(): CedarJSONReaders {
+    return new CedarJSONReaders(JSONReaderBehavior.FEBRUARY_2024);
+  }
 
   public static detectArtifactType(artifactSource: JsonNode | string): CedarArtifactType {
     let artifactJSON: JsonNode;

@@ -61,4 +61,13 @@ export class JsonPath {
     // console.log('RET TRUE');
     return true;
   }
+
+  getLastNComponents(n: number): JsonPath {
+    if (n <= 0 || this.path.length === 0) {
+      return new JsonPath();
+    }
+    const startIdx = Math.max(this.path.length - n, 0);
+    const lastNComponents = this.path.slice(startIdx);
+    return new JsonPath(...lastNComponents);
+  }
 }

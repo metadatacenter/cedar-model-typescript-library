@@ -1,5 +1,5 @@
 import { JSONWriterBehavior } from '../../../behavior/JSONWriterBehavior';
-import { JsonNode, JsonNodeClass } from '../../../model/cedar/types/basic-types/JsonNode';
+import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { TemplateField } from '../../../model/cedar/field/TemplateField';
 import { CedarModel } from '../../../model/cedar/constants/CedarModel';
 import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
@@ -56,7 +56,7 @@ export abstract class JSONTemplateFieldWriterInternal extends JSONAbstractArtifa
   }
 
   protected buildValueConstraintsObject(field: TemplateField, childInfo: ChildDeploymentInfo): JsonNode {
-    const vcNode: JsonNode = JsonNodeClass.getEmpty();
+    const vcNode: JsonNode = JsonNode.getEmpty();
     const vcObject = {
       [CedarModel.valueConstraints]: vcNode,
     };
@@ -65,9 +65,9 @@ export abstract class JSONTemplateFieldWriterInternal extends JSONAbstractArtifa
   }
 
   protected expandLiterals(field: CheckboxField | ListField | RadioField, vcNode: JsonNode) {
-    const literals: Array<JsonNode> = JsonNodeClass.getEmptyList();
+    const literals: Array<JsonNode> = JsonNode.getEmptyList();
     field.valueConstraints.literals.forEach((option: ChoiceOptionEntity) => {
-      const literal = JsonNodeClass.getEmpty();
+      const literal = JsonNode.getEmpty();
       literal[CedarModel.label] = option.label;
       if (option.selectedByDefault) {
         literal[CedarModel.selectedByDefault] = option.selectedByDefault;
@@ -85,11 +85,11 @@ export abstract class JSONTemplateFieldWriterInternal extends JSONAbstractArtifa
   public getAsJsonNode(field: TemplateField, childInfo: ChildDeploymentInfo): JsonNode;
   public getAsJsonNode(field: TemplateField, childInfo: ChildDeploymentInfo = ChildDeploymentInfo.empty()): JsonNode {
     // Build properties wrapper, based on type
-    const propertiesObject: JsonNode = JsonNodeClass.getEmpty();
+    const propertiesObject: JsonNode = JsonNode.getEmpty();
     this.expandPropertiesNodeForJSON(propertiesObject);
 
     // Build required wrapper
-    const requiredObject: JsonNode = JsonNodeClass.getEmpty();
+    const requiredObject: JsonNode = JsonNode.getEmpty();
     this.expandRequiredNodeForJSON(requiredObject);
 
     // Build ui wrapper

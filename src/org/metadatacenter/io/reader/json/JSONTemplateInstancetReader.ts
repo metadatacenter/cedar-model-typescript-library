@@ -3,8 +3,6 @@ import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { ParsingResult } from '../../../model/cedar/util/compare/ParsingResult';
 import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
 import { JSONReaderBehavior } from '../../../behavior/JSONReaderBehavior';
-import { JSONTemplateElementReaderResult } from './JSONTemplateElementReaderResult';
-import { TemplateElement } from '../../../model/cedar/element/TemplateElement';
 import { JSONAbstractInstanceArtifactReader } from './JSONAbstractInstanceArtifactReader';
 import { TemplateInstance } from '../../../model/cedar/template-instance/TemplateInstance';
 import { JSONTemplateInstanceReaderResult } from './JSONTemplateInstanceReaderResult';

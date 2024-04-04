@@ -1,4 +1,4 @@
-import { JsonNode, JsonNodeClass } from '../../model/cedar/types/basic-types/JsonNode';
+import { JsonNode } from '../../model/cedar/types/basic-types/JsonNode';
 import { URI } from '../../model/cedar/types/wrapped-types/URI';
 import { NullableNumber } from '../../model/cedar/types/basic-types/NullableNumber';
 
@@ -47,7 +47,7 @@ export class ReaderUtil {
     if (Object.hasOwn(node, key)) {
       return node[key] as JsonNode;
     } else {
-      return JsonNodeClass.getEmpty();
+      return JsonNode.getEmpty();
     }
   }
 
@@ -117,7 +117,7 @@ export class ReaderUtil {
     if (Object.hasOwn(node, key) && Array.isArray(node[key])) {
       return node[key] as Array<JsonNode>;
     } else {
-      return JsonNodeClass.getEmptyList();
+      return JsonNode.getEmptyList();
     }
   }
 

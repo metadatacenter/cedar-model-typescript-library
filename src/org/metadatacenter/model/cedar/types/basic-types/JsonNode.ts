@@ -1,8 +1,4 @@
-export interface JsonNode {
-  [key: string]: string | number | boolean | object | null | undefined;
-}
-
-export abstract class JsonNodeClass {
+export abstract class JsonNode {
   [key: string]: string | number | boolean | object | null | undefined;
 
   static getEmpty(): JsonNode {

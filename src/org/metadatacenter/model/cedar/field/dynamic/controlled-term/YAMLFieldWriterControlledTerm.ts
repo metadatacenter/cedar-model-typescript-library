@@ -1,4 +1,4 @@
-import { JsonNode, JsonNodeClass } from '../../../types/basic-types/JsonNode';
+import { JsonNode } from '../../../types/basic-types/JsonNode';
 import { ControlledTermField } from './ControlledTermField';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { YAMLTemplateFieldWriterInternal } from '../../../../../io/writer/yaml/YAMLTemplateFieldWriterInternal';
@@ -31,7 +31,7 @@ export class YAMLFieldWriterControlledTerm extends YAMLTemplateFieldWriterIntern
       vcNode[YamlKeys.default] = defaultNode;
     }
 
-    const valuesList: Array<JsonNode> = JsonNodeClass.getEmptyList();
+    const valuesList: Array<JsonNode> = JsonNode.getEmptyList();
     field.valueConstraints.ontologies.forEach((ontology) => {
       valuesList.push(this.writers.getYAMLWriterForValueConstraint(ontology).getAsJsonNode(ontology));
     });
@@ -48,7 +48,7 @@ export class YAMLFieldWriterControlledTerm extends YAMLTemplateFieldWriterIntern
       vcNode[YamlKeys.values] = valuesList;
     }
 
-    const actionsList: Array<JsonNode> = JsonNodeClass.getEmptyList();
+    const actionsList: Array<JsonNode> = JsonNode.getEmptyList();
     field.valueConstraints.actions.forEach((clazz) => {
       actionsList.push(this.writers.getYAMLWriterForValueConstraint(clazz).getAsJsonNode(clazz));
     });

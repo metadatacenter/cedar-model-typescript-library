@@ -1,4 +1,4 @@
-import { JsonNode, JsonNodeClass } from '../../../types/basic-types/JsonNode';
+import { JsonNode } from '../../../types/basic-types/JsonNode';
 import { CedarModel } from '../../../constants/CedarModel';
 import { ControlledTermField } from './ControlledTermField';
 import { JSONTemplateFieldWriterInternal } from '../../../../../io/writer/json/JSONTemplateFieldWriterInternal';
@@ -35,37 +35,37 @@ export class JSONFieldWriterControlledTerm extends JSONTemplateFieldWriterIntern
   override expandValueConstraintsNodeForJSON(vcNode: JsonNode, field: ControlledTermField, childInfo: ChildDeploymentInfo): void {
     super.expandValueConstraintsNodeForJSON(vcNode, field, childInfo);
     if (field.valueConstraints.defaultValue != null) {
-      const defaultValue = JsonNodeClass.getEmpty();
+      const defaultValue = JsonNode.getEmpty();
       defaultValue[JsonSchema.termUri] = this.atomicWriter.write(field.valueConstraints.defaultValue.termUri);
       defaultValue[JsonSchema.rdfsLabel] = field.valueConstraints.defaultValue.rdfsLabel;
       vcNode[CedarModel.defaultValue] = defaultValue;
     }
 
-    const ontologiesList: Array<JsonNode> = JsonNodeClass.getEmptyList();
+    const ontologiesList: Array<JsonNode> = JsonNode.getEmptyList();
     field.valueConstraints.ontologies.forEach((ontology) => {
       ontologiesList.push(this.writers.getJSONWriterForValueConstraint(ontology).getAsJsonNode(ontology));
     });
     vcNode[CedarModel.ontologies] = ontologiesList;
 
-    const classesList: Array<JsonNode> = JsonNodeClass.getEmptyList();
+    const classesList: Array<JsonNode> = JsonNode.getEmptyList();
     field.valueConstraints.classes.forEach((clazz) => {
       classesList.push(this.writers.getJSONWriterForValueConstraint(clazz).getAsJsonNode(clazz));
     });
     vcNode[CedarModel.classes] = classesList;
 
-    const branchesList: Array<JsonNode> = JsonNodeClass.getEmptyList();
+    const branchesList: Array<JsonNode> = JsonNode.getEmptyList();
     field.valueConstraints.branches.forEach((clazz) => {
       branchesList.push(this.writers.getJSONWriterForValueConstraint(clazz).getAsJsonNode(clazz));
     });
     vcNode[CedarModel.branches] = branchesList;
 
-    const valueSetList: Array<JsonNode> = JsonNodeClass.getEmptyList();
+    const valueSetList: Array<JsonNode> = JsonNode.getEmptyList();
     field.valueConstraints.valueSets.forEach((clazz) => {
       valueSetList.push(this.writers.getJSONWriterForValueConstraint(clazz).getAsJsonNode(clazz));
     });
     vcNode[CedarModel.valueSets] = valueSetList;
 
-    const actionsList: Array<JsonNode> = JsonNodeClass.getEmptyList();
+    const actionsList: Array<JsonNode> = JsonNode.getEmptyList();
     field.valueConstraints.actions.forEach((clazz) => {
       actionsList.push(this.writers.getJSONWriterForValueConstraint(clazz).getAsJsonNode(clazz));
     });

@@ -1,4 +1,4 @@
-import { JsonNode, JsonNodeClass } from '../../../../../types/basic-types/JsonNode';
+import { JsonNode } from '../../../../../types/basic-types/JsonNode';
 import { CedarModel } from '../../../../../constants/CedarModel';
 import { JSONWriterBehavior } from '../../../../../../../behavior/JSONWriterBehavior';
 import { AbstractJSONControlledTermValueConstraintWriter } from '../AbstractJSONControlledTermValueConstraintWriter';
@@ -15,7 +15,7 @@ export class JSONValueConstraintsValueSetWriter extends AbstractJSONControlledTe
   }
 
   override getAsJsonNode(valueSet: ControlledTermValueSet): JsonNode {
-    const ret = JsonNodeClass.getEmpty();
+    const ret = JsonNode.getEmpty();
     ret[CedarModel.ValueConstraints.vsCollection] = valueSet.vsCollection;
     ret[CedarModel.ValueConstraints.name] = valueSet.name;
     ret[CedarModel.ValueConstraints.uri] = this.atomicWriter.write(valueSet.uri);

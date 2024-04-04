@@ -1,5 +1,5 @@
 import { AbstractContainerArtifact } from '../../../model/cedar/AbstractContainerArtifact';
-import { JsonNode, JsonNodeClass } from '../../../model/cedar/types/basic-types/JsonNode';
+import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { TemplateChild } from '../../../model/cedar/types/basic-types/TemplateChild';
 import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
 import { TemplateField } from '../../../model/cedar/field/TemplateField';
@@ -9,7 +9,7 @@ import { UiInputType } from '../../../model/cedar/types/wrapped-types/UiInputTyp
 
 export abstract class YAMLAbstractContainerArtifactWriter extends YAMLAbstractArtifactWriter {
   protected getChildListAsJSON(container: AbstractContainerArtifact): JsonNode[] {
-    const childList: JsonNode[] = JsonNodeClass.getEmptyList();
+    const childList: JsonNode[] = JsonNode.getEmptyList();
 
     container
       .getChildrenInfo()
@@ -19,7 +19,7 @@ export abstract class YAMLAbstractContainerArtifactWriter extends YAMLAbstractAr
         if (child != null) {
           const childMeta: ChildDeploymentInfo | null = container.getChildrenInfo().get(childName);
           if (childMeta !== null) {
-            let childDefinition: JsonNode = JsonNodeClass.getEmpty();
+            let childDefinition: JsonNode = JsonNode.getEmpty();
             // Put child deployment name
             childDefinition[YamlKeys.name] = childName;
 
@@ -44,7 +44,7 @@ export abstract class YAMLAbstractContainerArtifactWriter extends YAMLAbstractAr
   }
 
   private getDeploymentInfo(childMeta: ChildDeploymentInfo): JsonNode {
-    const childConfiguration: JsonNode = JsonNodeClass.getEmpty();
+    const childConfiguration: JsonNode = JsonNode.getEmpty();
     if (childMeta.requiredValue) {
       childConfiguration[YamlKeys.required] = true;
     }

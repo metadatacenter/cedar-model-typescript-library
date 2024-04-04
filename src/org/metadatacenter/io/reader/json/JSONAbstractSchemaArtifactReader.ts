@@ -5,12 +5,9 @@ import { CedarArtifactId } from '../../../model/cedar/types/cedar-types/CedarArt
 import { ReaderUtil } from '../ReaderUtil';
 import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
 import { TemplateProperty } from '../../../model/cedar/constants/TemplateProperty';
-import { CedarUser } from '../../../model/cedar/types/cedar-types/CedarUser';
-import { ISODate } from '../../../model/cedar/types/wrapped-types/ISODate';
 import { SchemaVersion } from '../../../model/cedar/types/wrapped-types/SchemaVersion';
 import { PavVersion } from '../../../model/cedar/types/wrapped-types/PavVersion';
 import { BiboStatus } from '../../../model/cedar/types/wrapped-types/BiboStatus';
-import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
 import { ParsingResult } from '../../../model/cedar/util/compare/ParsingResult';
 import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
 import { Annotations } from '../../../model/cedar/annotation/Annotations';

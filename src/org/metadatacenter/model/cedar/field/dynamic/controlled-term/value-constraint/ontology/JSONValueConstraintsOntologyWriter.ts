@@ -1,4 +1,4 @@
-import { JsonNode, JsonNodeClass } from '../../../../../types/basic-types/JsonNode';
+import { JsonNode } from '../../../../../types/basic-types/JsonNode';
 import { CedarModel } from '../../../../../constants/CedarModel';
 import { ControlledTermOntology } from './ControlledTermOntology';
 import { JSONWriterBehavior } from '../../../../../../../behavior/JSONWriterBehavior';
@@ -15,7 +15,7 @@ export class JSONValueConstraintsOntologyWriter extends AbstractJSONControlledTe
   }
 
   override getAsJsonNode(ontology: ControlledTermOntology): JsonNode {
-    const ret = JsonNodeClass.getEmpty();
+    const ret = JsonNode.getEmpty();
     ret[CedarModel.ValueConstraints.acronym] = ontology.acronym;
     ret[CedarModel.ValueConstraints.name] = ontology.name;
     ret[CedarModel.ValueConstraints.uri] = this.atomicWriter.write(ontology.uri);

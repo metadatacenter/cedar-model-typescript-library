@@ -1,4 +1,4 @@
-import { JsonNode, JsonNodeClass } from '../../../model/cedar/types/basic-types/JsonNode';
+import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { TemplateField } from '../../../model/cedar/field/TemplateField';
 import { CedarModel } from '../../../model/cedar/constants/CedarModel';
 import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
@@ -48,21 +48,21 @@ export abstract class YAMLTemplateFieldWriterInternal extends YAMLAbstractArtifa
   }
 
   protected expandUINodeForYAML(_field: TemplateField): JsonNode {
-    return JsonNodeClass.getEmpty();
+    return JsonNode.getEmpty();
   }
 
   protected expandValueConstraintsNodeForYAML(_vcNode: JsonNode, _field: TemplateField, _childInfo: ChildDeploymentInfo): void {}
 
   protected buildValueConstraintsObject(field: TemplateField, childInfo: ChildDeploymentInfo): JsonNode {
-    const vcNode: JsonNode = JsonNodeClass.getEmpty();
+    const vcNode: JsonNode = JsonNode.getEmpty();
     this.expandValueConstraintsNodeForYAML(vcNode, field, childInfo);
     return vcNode;
   }
 
   protected expandLiterals(field: CheckboxField | ListField | RadioField, vcNode: JsonNode) {
-    const literals: Array<JsonNode> = JsonNodeClass.getEmptyList();
+    const literals: Array<JsonNode> = JsonNode.getEmptyList();
     field.valueConstraints.literals.forEach((option: ChoiceOptionEntity) => {
-      const literal = JsonNodeClass.getEmpty();
+      const literal = JsonNode.getEmpty();
       literal[CedarModel.label] = option.label;
       if (option.selectedByDefault) {
         literal[YamlKeys.selected] = option.selectedByDefault;

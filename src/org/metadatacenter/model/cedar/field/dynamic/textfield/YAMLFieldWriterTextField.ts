@@ -1,4 +1,4 @@
-import { JsonNode, JsonNodeClass } from '../../../types/basic-types/JsonNode';
+import { JsonNode } from '../../../types/basic-types/JsonNode';
 import { TextField } from './TextField';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { YAMLTemplateFieldWriterInternal } from '../../../../../io/writer/yaml/YAMLTemplateFieldWriterInternal';
@@ -13,7 +13,7 @@ export class YAMLFieldWriterTextField extends YAMLTemplateFieldWriterInternal {
   }
 
   override expandUINodeForYAML(field: TextField): JsonNode {
-    const ret = JsonNodeClass.getEmpty();
+    const ret = JsonNode.getEmpty();
     if (field.valueRecommendationEnabled) {
       ret[YamlKeys.valueRecommendationEnabled] = field.valueRecommendationEnabled;
     }

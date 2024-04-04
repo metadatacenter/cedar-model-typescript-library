@@ -1,6 +1,6 @@
 import { JSONTemplateFieldWriterInternal } from '../../../../../io/writer/json/JSONTemplateFieldWriterInternal';
 import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
-import { JsonNode, JsonNodeClass } from '../../../types/basic-types/JsonNode';
+import { JsonNode } from '../../../types/basic-types/JsonNode';
 import { TemplateField } from '../../TemplateField';
 import { CedarModel } from '../../../constants/CedarModel';
 import { JavascriptType } from '../../../types/wrapped-types/JavascriptType';
@@ -24,6 +24,6 @@ export class JSONFieldWriterAttributeValue extends JSONTemplateFieldWriterIntern
   }
 
   protected buildValueConstraintsObject(_field: TemplateField): JsonNode {
-    return JsonNodeClass.getEmpty();
+    return JsonNode.getEmpty();
   }
 }

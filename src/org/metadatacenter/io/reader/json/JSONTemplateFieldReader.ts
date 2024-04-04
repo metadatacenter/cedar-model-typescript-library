@@ -1,4 +1,4 @@
-import { JsonNode, JsonNodeClass } from '../../../model/cedar/types/basic-types/JsonNode';
+import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { ParsingResult } from '../../../model/cedar/util/compare/ParsingResult';
 import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
 import { TemplateField } from '../../../model/cedar/field/TemplateField';
@@ -109,7 +109,7 @@ export class JSONTemplateFieldReader extends JSONAbstractSchemaArtifactReader {
 
     // Read and validate, but do not store top level @context
     const topContextNode: JsonNode = ReaderUtil.getNode(fieldSourceObject, JsonSchema.atContext);
-    let blueprintAtContext: JsonNode = JsonNodeClass.getEmpty();
+    let blueprintAtContext: JsonNode = JsonNode.getEmpty();
     if (field.cedarArtifactType == CedarArtifactType.TEMPLATE_FIELD) {
       blueprintAtContext = JSONTemplateFieldContentDynamic.CONTEXT_VERBATIM;
     } else if (field.cedarArtifactType == CedarArtifactType.STATIC_TEMPLATE_FIELD) {

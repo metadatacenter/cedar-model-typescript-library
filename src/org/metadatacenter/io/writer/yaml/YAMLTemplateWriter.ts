@@ -1,5 +1,5 @@
 import { Template } from '../../../model/cedar/template/Template';
-import { JsonNode, JsonNodeClass } from '../../../model/cedar/types/basic-types/JsonNode';
+import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { SimpleYamlSerializer } from './SimpleYamlSerializer';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 import { YAMLAbstractContainerArtifactWriter } from './YAMLAbstractContainerArtifactWriter';
@@ -16,7 +16,7 @@ export class YAMLTemplateWriter extends YAMLAbstractContainerArtifactWriter {
   }
 
   public getYamlAsJsonNode(template: Template): JsonNode {
-    const uiObject: JsonNode = JsonNodeClass.getEmpty();
+    const uiObject: JsonNode = JsonNode.getEmpty();
     if (template.header !== null) {
       uiObject[YamlKeys.header] = template.header;
     }

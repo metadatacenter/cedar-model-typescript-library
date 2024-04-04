@@ -1,5 +1,5 @@
 import { JSONWriterBehavior } from '../../../behavior/JSONWriterBehavior';
-import { JsonNode, JsonNodeClass } from '../../../model/cedar/types/basic-types/JsonNode';
+import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { Annotations } from '../../../model/cedar/annotation/Annotations';
 import { CedarModel } from '../../../model/cedar/constants/CedarModel';
 import { AnnotationAtId } from '../../../model/cedar/annotation/AnnotationAtId';
@@ -14,9 +14,9 @@ export class JSONAnnotationsWriter {
   }
 
   public write(annotations: Annotations | null): JsonNode {
-    const annotationsJson: JsonNode = JsonNodeClass.getEmpty();
+    const annotationsJson: JsonNode = JsonNode.getEmpty();
     if (annotations !== null && annotations.getSize() > 0) {
-      const annotation = JsonNodeClass.getEmpty();
+      const annotation = JsonNode.getEmpty();
       annotations.getAnnotationNames().forEach((name) => {
         const src = annotations.get(name);
         if (src instanceof AnnotationAtId) {

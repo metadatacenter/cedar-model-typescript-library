@@ -1,4 +1,4 @@
-import { JsonNode, JsonNodeClass } from '../../../../../types/basic-types/JsonNode';
+import { JsonNode } from '../../../../../types/basic-types/JsonNode';
 import { CedarModel } from '../../../../../constants/CedarModel';
 import { JSONWriterBehavior } from '../../../../../../../behavior/JSONWriterBehavior';
 import { AbstractJSONControlledTermValueConstraintWriter } from '../AbstractJSONControlledTermValueConstraintWriter';
@@ -15,7 +15,7 @@ export class JSONValueConstraintsActionWriter extends AbstractJSONControlledTerm
   }
 
   override getAsJsonNode(action: ControlledTermAction): JsonNode {
-    const ret = JsonNodeClass.getEmpty();
+    const ret = JsonNode.getEmpty();
     if (action.to !== null) {
       ret[CedarModel.ValueConstraints.to] = action.to;
     }

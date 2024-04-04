@@ -1,4 +1,4 @@
-import { JsonNode, JsonNodeClass } from '../../../../../types/basic-types/JsonNode';
+import { JsonNode } from '../../../../../types/basic-types/JsonNode';
 import { ControlledTermOntology } from './ControlledTermOntology';
 import { AbstractYAMLControlledTermValueConstraintWriter } from '../AbstractYAMLControlledTermValueConstraintWriter';
 import { YamlKeys } from '../../../../../constants/YamlKeys';
@@ -12,7 +12,7 @@ export class YAMLValueConstraintsOntologyWriter extends AbstractYAMLControlledTe
   }
 
   override getAsJsonNode(ontology: ControlledTermOntology): JsonNode {
-    const ret = JsonNodeClass.getEmpty();
+    const ret = JsonNode.getEmpty();
     ret[YamlKeys.type] = YamlValues.Controlled.ontology;
     ret[YamlKeys.Controlled.acronym] = ontology.acronym;
     ret[YamlKeys.Controlled.ontologyName] = ontology.name;

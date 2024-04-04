@@ -1,4 +1,4 @@
-import { JsonNode, JsonNodeClass } from '../../../types/basic-types/JsonNode';
+import { JsonNode } from '../../../types/basic-types/JsonNode';
 import { TimeFormat } from '../../../types/wrapped-types/TimeFormat';
 import { TemporalGranularity } from '../../../types/wrapped-types/TemporalGranularity';
 import { TemporalField } from './TemporalField';
@@ -14,7 +14,7 @@ export class YAMLFieldWriterTemporal extends YAMLTemplateFieldWriterInternal {
   }
 
   override expandUINodeForYAML(field: TemporalField): JsonNode {
-    const ret = JsonNodeClass.getEmpty();
+    const ret = JsonNode.getEmpty();
     if (field.timezoneEnabled) {
       ret[YamlKeys.timeZone] = field.timezoneEnabled;
     }

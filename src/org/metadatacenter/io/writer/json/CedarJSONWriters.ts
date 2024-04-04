@@ -36,7 +36,6 @@ import { JSONAnnotationsWriter } from './JSONAnnotationsWriter';
 import { ControlledTermAction } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/action/ControlledTermAction';
 import { JSONValueConstraintsActionWriter } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/action/JSONValueConstraintsActionWriter';
 import { JSONAbstractArtifactWriter } from './JSONAbstractArtifactWriter';
-import { AbstractSchemaArtifact } from '../../../model/cedar/AbstractSchemaArtifact';
 import { Template } from '../../../model/cedar/template/Template';
 import { TemplateElement } from '../../../model/cedar/element/TemplateElement';
 import { AbstractArtifact } from '../../../model/cedar/AbstractArtifact';

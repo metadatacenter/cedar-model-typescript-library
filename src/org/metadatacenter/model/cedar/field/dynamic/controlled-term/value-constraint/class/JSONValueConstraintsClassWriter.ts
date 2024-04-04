@@ -1,4 +1,4 @@
-import { JsonNode, JsonNodeClass } from '../../../../../types/basic-types/JsonNode';
+import { JsonNode } from '../../../../../types/basic-types/JsonNode';
 import { CedarModel } from '../../../../../constants/CedarModel';
 import { JSONWriterBehavior } from '../../../../../../../behavior/JSONWriterBehavior';
 import { AbstractJSONControlledTermValueConstraintWriter } from '../AbstractJSONControlledTermValueConstraintWriter';
@@ -15,7 +15,7 @@ export class JSONValueConstraintsClassWriter extends AbstractJSONControlledTermV
   }
 
   override getAsJsonNode(clazz: ControlledTermClass): JsonNode {
-    const ret = JsonNodeClass.getEmpty();
+    const ret = JsonNode.getEmpty();
     ret[CedarModel.ValueConstraints.label] = clazz.label;
     ret[CedarModel.ValueConstraints.source] = clazz.source;
     ret[CedarModel.ValueConstraints.type] = this.atomicWriter.write(clazz.type);

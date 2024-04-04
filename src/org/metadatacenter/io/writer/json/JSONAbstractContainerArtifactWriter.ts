@@ -1,7 +1,7 @@
 import { JSONAbstractArtifactWriter } from './JSONAbstractArtifactWriter';
 import { AbstractContainerArtifact } from '../../../model/cedar/AbstractContainerArtifact';
 import { JSONContainerArtifactContent } from '../../../model/cedar/util/serialization/JSONContainerArtifactContent';
-import { JsonNode, JsonNodeClass } from '../../../model/cedar/types/basic-types/JsonNode';
+import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { TemplateChild } from '../../../model/cedar/types/basic-types/TemplateChild';
 import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
 import { TemplateField } from '../../../model/cedar/field/TemplateField';
@@ -14,7 +14,7 @@ export abstract class JSONAbstractContainerArtifactWriter extends JSONAbstractAr
   }
 
   protected getChildMapAsJSON(container: AbstractContainerArtifact): JsonNode {
-    const childMap: JsonNode = JsonNodeClass.getEmpty();
+    const childMap: JsonNode = JsonNode.getEmpty();
 
     container
       .getChildrenInfo()

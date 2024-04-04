@@ -3,7 +3,7 @@ import { JSONWriterBehavior } from '../../../behavior/JSONWriterBehavior';
 import { JSONAtomicWriter } from './JSONAtomicWriter';
 import { JSONAnnotationsWriter } from './JSONAnnotationsWriter';
 import { AbstractSchemaArtifact } from '../../../model/cedar/AbstractSchemaArtifact';
-import { JsonNode, JsonNodeClass } from '../../../model/cedar/types/basic-types/JsonNode';
+import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
 import { BiboStatus } from '../../../model/cedar/types/wrapped-types/BiboStatus';
 import { PavVersion } from '../../../model/cedar/types/wrapped-types/PavVersion';
@@ -50,7 +50,7 @@ export abstract class JSONAbstractArtifactWriter extends AbstractArtifactWriter 
   }
 
   protected macroStatusAndVersion(artifact: AbstractSchemaArtifact, atomicWriter: JSONAtomicWriter): JsonNode {
-    const svObject: JsonNode = JsonNodeClass.getEmpty();
+    const svObject: JsonNode = JsonNode.getEmpty();
     if (artifact.bibo_status !== BiboStatus.NULL) {
       svObject[JsonSchema.biboStatus] = atomicWriter.write(artifact.bibo_status);
     }
@@ -61,7 +61,7 @@ export abstract class JSONAbstractArtifactWriter extends AbstractArtifactWriter 
   }
 
   protected macroSkos(field: TemplateField): JsonNode {
-    const skosObject: JsonNode = JsonNodeClass.getEmpty();
+    const skosObject: JsonNode = JsonNode.getEmpty();
     if (field.skos_altLabel !== null && field.skos_altLabel.length > 0) {
       skosObject[CedarModel.skosAltLabel] = field.skos_altLabel;
     }
@@ -72,7 +72,7 @@ export abstract class JSONAbstractArtifactWriter extends AbstractArtifactWriter 
   }
 
   protected macroDerivedFrom(artifact: AbstractSchemaArtifact): JsonNode {
-    const derivedFrom: JsonNode = JsonNodeClass.getEmpty();
+    const derivedFrom: JsonNode = JsonNode.getEmpty();
     if (artifact.pav_derivedFrom !== CedarArtifactId.NULL) {
       derivedFrom[JsonSchema.pavDerivedFrom] = this.atomicWriter.write(artifact.pav_derivedFrom);
     }
@@ -80,7 +80,7 @@ export abstract class JSONAbstractArtifactWriter extends AbstractArtifactWriter 
   }
 
   protected macroSchemaIdentifier(artifact: AbstractSchemaArtifact): JsonNode {
-    const schemaIdentifier: JsonNode = JsonNodeClass.getEmpty();
+    const schemaIdentifier: JsonNode = JsonNode.getEmpty();
     if (artifact.schema_identifier !== null) {
       schemaIdentifier[JsonSchema.schemaIdentifier] = artifact.schema_identifier;
     }

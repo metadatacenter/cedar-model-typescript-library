@@ -1,4 +1,4 @@
-import { JsonNode, JsonNodeClass } from '../../../../../types/basic-types/JsonNode';
+import { JsonNode } from '../../../../../types/basic-types/JsonNode';
 import { ControlledTermAction } from './ControlledTermAction';
 import { AbstractYAMLControlledTermValueConstraintWriter } from '../AbstractYAMLControlledTermValueConstraintWriter';
 import { YamlKeys } from '../../../../../constants/YamlKeys';
@@ -11,7 +11,7 @@ export class YAMLValueConstraintsActionWriter extends AbstractYAMLControlledTerm
   }
 
   override getAsJsonNode(action: ControlledTermAction): JsonNode {
-    const ret = JsonNodeClass.getEmpty();
+    const ret = JsonNode.getEmpty();
     ret[YamlKeys.action] = action.action;
     if (action.to !== null) {
       ret[YamlKeys.Controlled.to] = action.to;

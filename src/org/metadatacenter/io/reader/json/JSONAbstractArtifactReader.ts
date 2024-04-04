@@ -7,7 +7,6 @@ import { CedarUser } from '../../../model/cedar/types/cedar-types/CedarUser';
 import { ISODate } from '../../../model/cedar/types/wrapped-types/ISODate';
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
 import { JSONArtifactReaderResult } from './JSONArtifactReaderResult';
-import { AbstractInstanceArtifact } from '../../../model/cedar/AbstractInstanceArtifact';
 import { AbstractArtifact } from '../../../model/cedar/AbstractArtifact';
 
 export abstract class JSONAbstractArtifactReader {

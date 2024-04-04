@@ -1,7 +1,7 @@
 import { ReaderUtil } from '../../../../io/reader/ReaderUtil';
 import { JsonNode } from '../../types/basic-types/JsonNode';
 
-export class JSONElementContent {
+export class JSONTemplateElementContent {
   // This will have the names of elements and fields as well
   public static REQUIRED_PARTIAL = ['@context', '@id'];
 
@@ -42,7 +42,7 @@ export class JSONElementContent {
   public static CONTEXT_VERBATIM_NO_BIBO: JsonNode;
 
   static {
-    Object.keys(JSONElementContent.PROPERTIES_PARTIAL).forEach((key) => {
+    Object.keys(JSONTemplateElementContent.PROPERTIES_PARTIAL).forEach((key) => {
       this.PROPERTIES_PARTIAL_KEY_MAP.set(key, true);
     });
     this.REQUIRED_PARTIAL_KEY_MAP = this.REQUIRED_PARTIAL.reduce((acc, current) => {

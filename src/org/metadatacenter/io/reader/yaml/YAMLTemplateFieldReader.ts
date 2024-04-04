@@ -8,12 +8,12 @@ import { CedarModel } from '../../../model/cedar/constants/CedarModel';
 import { YAMLFieldReaderEmail } from '../../../model/cedar/field/dynamic/email/YAMLFieldReaderEmail';
 import { UiInputType } from '../../../model/cedar/types/wrapped-types/UiInputType';
 import { CedarFieldType } from '../../../model/cedar/types/cedar-types/CedarFieldType';
-import { YAMLFieldReaderResult } from './YAMLFieldReaderResult';
+import { YAMLTemplateFieldReaderResult } from './YAMLTemplateFieldReaderResult';
 import { UnknownTemplateField } from '../../../model/cedar/field/UnknownTemplateField';
 import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
 import { YAMLAbstractArtifactReader } from './YAMLAbstractArtifactReader';
 import { YAMLReaderBehavior } from '../../../behavior/YAMLReaderBehavior';
-import { YAMLFieldTypeSpecificReader } from './YAMLFieldTypeSpecificReader';
+import { YAMLTemplateFieldTypeSpecificReader } from './YAMLTemplateFieldTypeSpecificReader';
 import YAML from 'yaml';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 import { YamlArtifactType } from '../../../model/cedar/types/wrapped-types/YamlArtifactType';
@@ -35,20 +35,20 @@ import { YAMLFieldReaderMultiSelectList } from '../../../model/cedar/field/dynam
 import { YAMLFieldReaderRadio } from '../../../model/cedar/field/dynamic/radio/YAMLFieldReaderRadio';
 import { YAMLFieldReaderControlledTerm } from '../../../model/cedar/field/dynamic/controlled-term/YAMLFieldReaderControlledTerm';
 
-export class YAMLFieldReader extends YAMLAbstractArtifactReader {
+export class YAMLTemplateFieldReader extends YAMLAbstractArtifactReader {
   private constructor(behavior: YAMLReaderBehavior) {
     super(behavior);
   }
 
-  public static getStrict(): YAMLFieldReader {
-    return new YAMLFieldReader(YAMLReaderBehavior.STRICT);
+  public static getStrict(): YAMLTemplateFieldReader {
+    return new YAMLTemplateFieldReader(YAMLReaderBehavior.STRICT);
   }
 
-  public static getForBehavior(behavior: YAMLReaderBehavior): YAMLFieldReader {
-    return new YAMLFieldReader(behavior);
+  public static getForBehavior(behavior: YAMLReaderBehavior): YAMLTemplateFieldReader {
+    return new YAMLTemplateFieldReader(behavior);
   }
 
-  static readerMap = new Map<YamlArtifactType, YAMLFieldTypeSpecificReader>([
+  static readerMap = new Map<YamlArtifactType, YAMLTemplateFieldTypeSpecificReader>([
     [YamlArtifactType.TEXTFIELD, new YAMLFieldReaderTextField()],
     [YamlArtifactType.TEXTAREA, new YAMLFieldReaderTextArea()],
     [YamlArtifactType.CONTROLLED_TERM, new YAMLFieldReaderControlledTerm()],
@@ -69,7 +69,7 @@ export class YAMLFieldReader extends YAMLAbstractArtifactReader {
     [YamlArtifactType.YOUTUBE, new YAMLFieldReaderYoutube()],
   ]);
 
-  public readFromString(fieldSourceString: string): YAMLFieldReaderResult {
+  public readFromString(fieldSourceString: string): YAMLTemplateFieldReaderResult {
     let fieldObject;
     try {
       fieldObject = YAML.parse(fieldSourceString);
@@ -79,12 +79,12 @@ export class YAMLFieldReader extends YAMLAbstractArtifactReader {
     return this.readFromObject(fieldObject, ChildDeploymentInfo.empty(), new JsonPath());
   }
 
-  public readFromObject(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, path: JsonPath): YAMLFieldReaderResult {
+  public readFromObject(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, path: JsonPath): YAMLTemplateFieldReaderResult {
     const parsingResult: ParsingResult = new ParsingResult();
-    const field: TemplateField = YAMLFieldReader.readFieldSpecificAttributes(fieldSourceObject, childInfo, parsingResult, path);
+    const field: TemplateField = YAMLTemplateFieldReader.readFieldSpecificAttributes(fieldSourceObject, childInfo, parsingResult, path);
     this.readNonReportableAttributes(field, fieldSourceObject);
     this.readAnnotations(field, fieldSourceObject, parsingResult, path);
-    return new YAMLFieldReaderResult(field, parsingResult, fieldSourceObject);
+    return new YAMLTemplateFieldReaderResult(field, parsingResult, fieldSourceObject);
   }
 
   protected readNonReportableAttributes(field: TemplateField, fieldSourceObject: JsonNode) {
@@ -102,7 +102,7 @@ export class YAMLFieldReader extends YAMLAbstractArtifactReader {
   ): TemplateField {
     const yamlArtifactType: YamlArtifactType = YamlArtifactType.forValue(ReaderUtil.getString(fieldSourceObject, YamlKeys.type));
     if (yamlArtifactType.isField()) {
-      const reader: YAMLFieldTypeSpecificReader | undefined = this.readerMap.get(yamlArtifactType);
+      const reader: YAMLTemplateFieldTypeSpecificReader | undefined = this.readerMap.get(yamlArtifactType);
       if (!reader) {
         throw new Error(`No reader defined for dynamic input type "${yamlArtifactType.getValue()}"`);
       }

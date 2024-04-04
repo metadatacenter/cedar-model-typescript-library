@@ -5,10 +5,10 @@ import { RadioField } from './RadioField';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { RadioOption } from './RadioOption';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
-import { YAMLFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YAMLFieldTypeSpecificReader';
+import { YAMLTemplateFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YAMLTemplateFieldTypeSpecificReader';
 import { YamlKeys } from '../../../constants/YamlKeys';
 
-export class YAMLFieldReaderRadio extends YAMLFieldTypeSpecificReader {
+export class YAMLFieldReaderRadio extends YAMLTemplateFieldTypeSpecificReader {
   override read(fieldSourceObject: JsonNode, _childInfo: ChildDeploymentInfo, _parsingResult: ParsingResult, _path: JsonPath): RadioField {
     const field = RadioField.buildEmptyWithNullValues();
 

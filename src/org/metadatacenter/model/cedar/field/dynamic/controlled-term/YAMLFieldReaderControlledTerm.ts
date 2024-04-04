@@ -13,7 +13,7 @@ import { JsonSchema } from '../../../constants/JsonSchema';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { ControlledTermAction } from './value-constraint/action/ControlledTermAction';
 import { BioportalTermType } from '../../../types/bioportal-types/BioportalTermType';
-import { YAMLFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YAMLFieldTypeSpecificReader';
+import { YAMLTemplateFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YAMLTemplateFieldTypeSpecificReader';
 import { YamlKeys } from '../../../constants/YamlKeys';
 import { YamlValues } from '../../../constants/YamlValues';
 import { ControlledTermOntologyBuilder } from './value-constraint/ontology/ControlledTermOntologyBuilder';
@@ -22,7 +22,7 @@ import { ControlledTermBranchBuilder } from './value-constraint/branch/Controlle
 import { ControlledTermValueSetBuilder } from './value-constraint/value-set/ControlledTermValueSetBuilder';
 import { ControlledTermActionBuilder } from './value-constraint/action/ControlledTermActionBuilder';
 
-export class YAMLFieldReaderControlledTerm extends YAMLFieldTypeSpecificReader {
+export class YAMLFieldReaderControlledTerm extends YAMLTemplateFieldTypeSpecificReader {
   override read(
     fieldSourceObject: JsonNode,
     _childInfo: ChildDeploymentInfo,

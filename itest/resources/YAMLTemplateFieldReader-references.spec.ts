@@ -1,16 +1,16 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { CedarWriters, JSONFieldReader, YAMLFieldReader } from '../../src';
+import { CedarWriters, CedarYAMLWriters, JSONTemplateFieldReader, YAMLTemplateFieldReader } from '../../src';
 import { TestUtil } from '../TestUtil';
 import { ComparisonResult } from '../../src/org/metadatacenter/model/cedar/util/compare/ComparisonResult';
 import { YamlObjectComparator } from '../../src/org/metadatacenter/model/cedar/util/compare/YamlObjectComparator';
 import { fieldTestCases } from './generatedTestCases';
 
-describe('YAMLFieldReader-references', () => {
+describe('YAMLTemplateFieldReader-references', () => {
   // Generate a test for each file
   fieldTestCases.forEach((sourcePath) => {
     it(`should correctly process file: ${path.basename(sourcePath)}`, async () => {
-      const writers: CedarWriters = CedarWriters.getStrict();
+      const writers: CedarYAMLWriters = CedarWriters.yaml().getStrict();
       let comparisonResult: ComparisonResult = new ComparisonResult();
       let leftYAMLObject = {};
       let rightYAMLObject = {};
@@ -18,7 +18,7 @@ describe('YAMLFieldReader-references', () => {
         // console.log(sourcePath);
         const fieldSourceJSONString = await fs.readFile(sourcePath, 'utf8');
 
-        const fieldJSONReader: JSONFieldReader = JSONFieldReader.getStrict();
+        const fieldJSONReader: JSONTemplateFieldReader = JSONTemplateFieldReader.getStrict();
         const fieldJSONReaderResult = fieldJSONReader.readFromString(fieldSourceJSONString);
         const jsonReadField = fieldJSONReaderResult.field;
 
@@ -26,7 +26,7 @@ describe('YAMLFieldReader-references', () => {
         const leftYAMLString = fieldYAMLWriter1.getAsYamlString(jsonReadField);
         leftYAMLObject = fieldYAMLWriter1.getYamlAsJsonNode(jsonReadField);
 
-        const fieldYAMLReader: YAMLFieldReader = YAMLFieldReader.getStrict();
+        const fieldYAMLReader: YAMLTemplateFieldReader = YAMLTemplateFieldReader.getStrict();
         const fieldYAMLReaderResult = fieldYAMLReader.readFromString(leftYAMLString);
         const yamlReadField = fieldYAMLReaderResult.field;
 

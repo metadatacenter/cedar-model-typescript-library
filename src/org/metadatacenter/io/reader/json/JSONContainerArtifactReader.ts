@@ -1,6 +1,6 @@
 import { JSONReaderBehavior } from '../../../behavior/JSONReaderBehavior';
 import { JSONAbstractArtifactReader } from './JSONAbstractArtifactReader';
-import { JSONFieldReader } from './JSONFieldReader';
+import { JSONTemplateFieldReader } from './JSONTemplateFieldReader';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { ParsingResult } from '../../../model/cedar/util/compare/ParsingResult';
 import { ContainerArtifactChildrenInfo } from '../../../model/cedar/deployment/ContainerArtifactChildrenInfo';
@@ -18,18 +18,18 @@ import { ObjectComparator } from '../../../model/cedar/util/compare/ObjectCompar
 import { JavascriptType } from '../../../model/cedar/types/wrapped-types/JavascriptType';
 import { ArtifactSchema } from '../../../model/cedar/types/wrapped-types/ArtifactSchema';
 import { AbstractContainerArtifact } from '../../../model/cedar/AbstractContainerArtifact';
-import { JSONElementReader } from './JSONElementReader';
+import { JSONTemplateElementReader } from './JSONTemplateElementReader';
 import { JSONContainerArtifactContent } from '../../../model/cedar/util/serialization/JSONContainerArtifactContent';
 
 export abstract class JSONContainerArtifactReader extends JSONAbstractArtifactReader {
-  protected fieldReader: JSONFieldReader;
+  protected fieldReader: JSONTemplateFieldReader;
 
   protected constructor(behavior: JSONReaderBehavior) {
     super(behavior);
-    this.fieldReader = JSONFieldReader.getForBehavior(behavior);
+    this.fieldReader = JSONTemplateFieldReader.getForBehavior(behavior);
   }
 
-  protected abstract getElementReader(): JSONElementReader;
+  protected abstract getElementReader(): JSONTemplateElementReader;
 
   protected abstract includeInIRIMapping(childInfo: ChildDeploymentInfo): boolean;
 

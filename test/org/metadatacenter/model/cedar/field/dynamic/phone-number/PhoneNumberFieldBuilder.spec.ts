@@ -1,5 +1,6 @@
 import {
   CedarBuilders,
+  CedarJSONWriters,
   CedarWriters,
   ISODate,
   PhoneNumberField,
@@ -28,7 +29,7 @@ describe('PhoneNumberFieldBuilder', () => {
       .withAlternateLabels(['Alt label 1', 'Alt label 2', 'Alt label 3'])
       .build();
 
-    const writers: CedarWriters = CedarWriters.getStrict();
+    const writers: CedarJSONWriters = CedarWriters.json().getStrict();
     const jsonWriter = writers.getJSONFieldWriterForField(field);
 
     const stringified = jsonWriter.getAsJsonString(field);

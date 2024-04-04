@@ -1,4 +1,12 @@
-import { CedarBuilders, CedarWriters, ISODate, EmailField, EmailFieldBuilder, SchemaVersion } from '../../../../../../../../src';
+import {
+  CedarBuilders,
+  CedarJSONWriters,
+  CedarWriters,
+  EmailField,
+  EmailFieldBuilder,
+  ISODate,
+  SchemaVersion,
+} from '../../../../../../../../src';
 
 describe('EmailFieldBuilder', () => {
   test('creates email field with builder', () => {
@@ -21,7 +29,7 @@ describe('EmailFieldBuilder', () => {
       .withAlternateLabels(['Email', 'Contact Email'])
       .build();
 
-    const writers: CedarWriters = CedarWriters.getStrict();
+    const writers: CedarJSONWriters = CedarWriters.json().getStrict();
     const jsonWriter = writers.getJSONFieldWriterForField(field);
 
     const stringified = jsonWriter.getAsJsonString(field);

@@ -2,14 +2,14 @@ import { JsonNode, JsonNodeClass } from '../../../types/basic-types/JsonNode';
 import { TimeFormat } from '../../../types/wrapped-types/TimeFormat';
 import { TemporalGranularity } from '../../../types/wrapped-types/TemporalGranularity';
 import { TemporalField } from './TemporalField';
-import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
-import { CedarWriters } from '../../../../../io/writer/CedarWriters';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { YAMLTemplateFieldWriterInternal } from '../../../../../io/writer/yaml/YAMLTemplateFieldWriterInternal';
 import { YamlKeys } from '../../../constants/YamlKeys';
+import { YAMLWriterBehavior } from '../../../../../behavior/YAMLWriterBehavior';
+import { CedarYAMLWriters } from '../../../../../io/writer/yaml/CedarYAMLWriters';
 
 export class YAMLFieldWriterTemporal extends YAMLTemplateFieldWriterInternal {
-  constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
+  constructor(behavior: YAMLWriterBehavior, writers: CedarYAMLWriters) {
     super(behavior, writers);
   }
 

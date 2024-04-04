@@ -7,24 +7,24 @@ import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarA
 import { JavascriptType } from '../../../model/cedar/types/wrapped-types/JavascriptType';
 import { TemplateProperty } from '../../../model/cedar/constants/TemplateProperty';
 import { ArtifactSchema } from '../../../model/cedar/types/wrapped-types/ArtifactSchema';
-import { CedarWriters } from '../CedarWriters';
 import { JSONTemplateFieldContentDynamic } from '../../../model/cedar/util/serialization/JSONTemplateFieldContentDynamic';
 import { TemplateElement } from '../../../model/cedar/element/TemplateElement';
-import { JSONElementContent } from '../../../model/cedar/util/serialization/JSONElementContent';
+import { JSONTemplateElementContent } from '../../../model/cedar/util/serialization/JSONTemplateElementContent';
 import { JSONAbstractContainerArtifactWriter } from './JSONAbstractContainerArtifactWriter';
+import { CedarJSONWriters } from './CedarJSONWriters';
 
 export class JSONTemplateElementWriter extends JSONAbstractContainerArtifactWriter {
-  private constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
+  private constructor(behavior: JSONWriterBehavior, writers: CedarJSONWriters) {
     super(behavior, writers);
   }
 
-  public static getFor(behavior: JSONWriterBehavior, writers: CedarWriters): JSONTemplateElementWriter {
+  public static getFor(behavior: JSONWriterBehavior, writers: CedarJSONWriters): JSONTemplateElementWriter {
     return new JSONTemplateElementWriter(behavior, writers);
   }
 
   private buildProperties(element: TemplateElement): JsonNode {
     // clone, because we will need to modify deep content
-    const properties = ReaderUtil.deepClone(JSONElementContent.PROPERTIES_PARTIAL);
+    const properties = ReaderUtil.deepClone(JSONTemplateElementContent.PROPERTIES_PARTIAL);
 
     // Include the IRI mapping
     properties[JsonSchema.atContext][JsonSchema.properties] = {
@@ -80,7 +80,7 @@ export class JSONTemplateElementWriter extends JSONAbstractContainerArtifactWrit
       [TemplateProperty.description]: element.description,
       [CedarModel.ui]: elementUi,
       [JsonSchema.properties]: extendedProperties,
-      [JsonSchema.required]: [...JSONElementContent.REQUIRED_PARTIAL, ...element.getChildrenInfo().getChildrenNamesForRequired()],
+      [JsonSchema.required]: [...JSONTemplateElementContent.REQUIRED_PARTIAL, ...element.getChildrenInfo().getChildrenNamesForRequired()],
       ...this.macroSchemaNameAndDescription(element),
       ...this.macroProvenance(element, this.atomicWriter),
       [JsonSchema.schemaVersion]: this.atomicWriter.write(element.schema_schemaVersion),

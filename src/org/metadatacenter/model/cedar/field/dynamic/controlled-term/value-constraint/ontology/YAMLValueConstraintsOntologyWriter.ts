@@ -1,13 +1,13 @@
 import { JsonNode, JsonNodeClass } from '../../../../../types/basic-types/JsonNode';
 import { ControlledTermOntology } from './ControlledTermOntology';
-import { JSONWriterBehavior } from '../../../../../../../behavior/JSONWriterBehavior';
-import { CedarWriters } from '../../../../../../../io/writer/CedarWriters';
 import { AbstractYAMLControlledTermValueConstraintWriter } from '../AbstractYAMLControlledTermValueConstraintWriter';
 import { YamlKeys } from '../../../../../constants/YamlKeys';
 import { YamlValues } from '../../../../../constants/YamlValues';
+import { YAMLWriterBehavior } from '../../../../../../../behavior/YAMLWriterBehavior';
+import { CedarYAMLWriters } from '../../../../../../../io/writer/yaml/CedarYAMLWriters';
 
 export class YAMLValueConstraintsOntologyWriter extends AbstractYAMLControlledTermValueConstraintWriter {
-  public constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
+  public constructor(behavior: YAMLWriterBehavior, writers: CedarYAMLWriters) {
     super(behavior, writers);
   }
 

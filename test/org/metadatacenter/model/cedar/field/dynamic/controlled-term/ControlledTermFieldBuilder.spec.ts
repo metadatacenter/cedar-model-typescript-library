@@ -1,6 +1,7 @@
 import {
   BioportalTermType,
   CedarBuilders,
+  CedarJSONWriters,
   CedarWriters,
   ControlledTermBranchBuilder,
   ControlledTermClassBuilder,
@@ -77,7 +78,7 @@ describe('ControlledTermFieldBuilder', () => {
       )
       .build();
 
-    const writers: CedarWriters = CedarWriters.getStrict();
+    const writers: CedarJSONWriters = CedarWriters.json().getStrict();
     const jsonWriter = writers.getJSONFieldWriterForField(field);
 
     const stringified = jsonWriter.getAsJsonString(field);

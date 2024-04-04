@@ -1,13 +1,17 @@
 import { JsonNode, JsonNodeClass } from '../../../../../types/basic-types/JsonNode';
 import { CedarModel } from '../../../../../constants/CedarModel';
 import { JSONWriterBehavior } from '../../../../../../../behavior/JSONWriterBehavior';
-import { CedarWriters } from '../../../../../../../io/writer/CedarWriters';
 import { AbstractJSONControlledTermValueConstraintWriter } from '../AbstractJSONControlledTermValueConstraintWriter';
 import { ControlledTermValueSet } from './ControlledTermValueSet';
+import { CedarJSONWriters } from '../../../../../../../io/writer/json/CedarJSONWriters';
 
 export class JSONValueConstraintsValueSetWriter extends AbstractJSONControlledTermValueConstraintWriter {
-  public constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
+  public constructor(behavior: JSONWriterBehavior, writers: CedarJSONWriters) {
     super(behavior, writers);
+  }
+
+  public getAsJsonString(valueSet: ControlledTermValueSet, indent: number = 2): string {
+    return JSON.stringify(this.getAsJsonNode(valueSet), null, indent);
   }
 
   override getAsJsonNode(valueSet: ControlledTermValueSet): JsonNode {

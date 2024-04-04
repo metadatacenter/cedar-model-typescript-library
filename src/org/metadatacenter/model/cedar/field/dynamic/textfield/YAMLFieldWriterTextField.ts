@@ -1,14 +1,14 @@
 import { JsonNode, JsonNodeClass } from '../../../types/basic-types/JsonNode';
 import { TextField } from './TextField';
-import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
-import { CedarWriters } from '../../../../../io/writer/CedarWriters';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { YAMLTemplateFieldWriterInternal } from '../../../../../io/writer/yaml/YAMLTemplateFieldWriterInternal';
 import { YamlKeys } from '../../../constants/YamlKeys';
 import { XsdDatatype } from '../../../constants/XsdDatatype';
+import { YAMLWriterBehavior } from '../../../../../behavior/YAMLWriterBehavior';
+import { CedarYAMLWriters } from '../../../../../io/writer/yaml/CedarYAMLWriters';
 
 export class YAMLFieldWriterTextField extends YAMLTemplateFieldWriterInternal {
-  constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
+  constructor(behavior: YAMLWriterBehavior, writers: CedarYAMLWriters) {
     super(behavior, writers);
   }
 

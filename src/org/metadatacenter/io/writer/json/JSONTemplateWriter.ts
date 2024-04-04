@@ -9,16 +9,16 @@ import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarA
 import { JavascriptType } from '../../../model/cedar/types/wrapped-types/JavascriptType';
 import { TemplateProperty } from '../../../model/cedar/constants/TemplateProperty';
 import { ArtifactSchema } from '../../../model/cedar/types/wrapped-types/ArtifactSchema';
-import { CedarWriters } from '../CedarWriters';
 import { JSONTemplateFieldContentDynamic } from '../../../model/cedar/util/serialization/JSONTemplateFieldContentDynamic';
 import { JSONAbstractContainerArtifactWriter } from './JSONAbstractContainerArtifactWriter';
+import { CedarJSONWriters } from './CedarJSONWriters';
 
 export class JSONTemplateWriter extends JSONAbstractContainerArtifactWriter {
-  private constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
+  private constructor(behavior: JSONWriterBehavior, writers: CedarJSONWriters) {
     super(behavior, writers);
   }
 
-  public static getFor(behavior: JSONWriterBehavior, writers: CedarWriters): JSONTemplateWriter {
+  public static getFor(behavior: JSONWriterBehavior, writers: CedarJSONWriters): JSONTemplateWriter {
     return new JSONTemplateWriter(behavior, writers);
   }
 

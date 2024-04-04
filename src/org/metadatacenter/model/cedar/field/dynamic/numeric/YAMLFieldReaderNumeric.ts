@@ -5,10 +5,10 @@ import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { NumericField } from './NumericField';
 import { NumberType } from '../../../types/wrapped-types/NumberType';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
-import { YAMLFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YAMLFieldTypeSpecificReader';
+import { YAMLTemplateFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YAMLTemplateFieldTypeSpecificReader';
 import { YamlKeys } from '../../../constants/YamlKeys';
 
-export class YAMLFieldReaderNumeric extends YAMLFieldTypeSpecificReader {
+export class YAMLFieldReaderNumeric extends YAMLTemplateFieldTypeSpecificReader {
   override read(
     fieldSourceObject: JsonNode,
     _childInfo: ChildDeploymentInfo,

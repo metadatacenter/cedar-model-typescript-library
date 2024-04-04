@@ -1,11 +1,11 @@
-import { CedarWriters, TextField } from '../../../../../../src';
+import { CedarJSONWriters, CedarWriters, TextField } from '../../../../../../src';
 
 describe('TemplateField', () => {
   test('creates empty field null values', () => {
     const cedarTextField = TextField.buildEmptyWithNullValues();
     expect(cedarTextField).not.toBeNull();
 
-    const writers: CedarWriters = CedarWriters.getStrict();
+    const writers: CedarJSONWriters = CedarWriters.json().getStrict();
     const writer = writers.getJSONFieldWriterForType(cedarTextField.cedarFieldType);
 
     const stringified = writer.getAsJsonString(cedarTextField);

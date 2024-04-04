@@ -1,13 +1,13 @@
 import { JSONTemplateFieldWriterInternal } from '../../../../../io/writer/json/JSONTemplateFieldWriterInternal';
 import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
-import { CedarWriters } from '../../../../../io/writer/CedarWriters';
 import { JsonNode, JsonNodeClass } from '../../../types/basic-types/JsonNode';
 import { TemplateField } from '../../TemplateField';
 import { CedarModel } from '../../../constants/CedarModel';
 import { JavascriptType } from '../../../types/wrapped-types/JavascriptType';
+import { CedarJSONWriters } from '../../../../../io/writer/json/CedarJSONWriters';
 
 export class JSONFieldWriterAttributeValue extends JSONTemplateFieldWriterInternal {
-  constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
+  constructor(behavior: JSONWriterBehavior, writers: CedarJSONWriters) {
     super(behavior, writers);
   }
 

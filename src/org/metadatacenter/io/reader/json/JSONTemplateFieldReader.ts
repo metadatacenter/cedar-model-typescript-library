@@ -25,7 +25,7 @@ import { JSONFieldReaderNumeric } from '../../../model/cedar/field/dynamic/numer
 import { JSONFieldReaderTextArea } from '../../../model/cedar/field/dynamic/textarea/JSONFieldReaderTextArea';
 import { JSONFieldReaderPhoneNumber } from '../../../model/cedar/field/dynamic/phone-number/JSONFieldReaderPhoneNumber';
 import { JSONFieldReaderRadio } from '../../../model/cedar/field/dynamic/radio/JSONFieldReaderRadio';
-import { JSONFieldTypeSpecificReader } from './JSONFieldTypeSpecificReader';
+import { JSONTemplateFieldTypeSpecificReader } from './JSONTemplateFieldTypeSpecificReader';
 import { UiInputType } from '../../../model/cedar/types/wrapped-types/UiInputType';
 import { JSONFieldReaderCheckbox } from '../../../model/cedar/field/dynamic/checkbox/JSONFieldReaderCheckbox';
 import { JSONFieldReaderList } from '../../../model/cedar/field/dynamic/list/JSONFieldReaderList';
@@ -33,29 +33,29 @@ import { JSONFieldReaderAttributeValue } from '../../../model/cedar/field/dynami
 import { CedarFieldType } from '../../../model/cedar/types/cedar-types/CedarFieldType';
 import { JSONFieldReaderControlledTerm } from '../../../model/cedar/field/dynamic/controlled-term/JSONFieldReaderControlledTerm';
 import { JSONReaderBehavior } from '../../../behavior/JSONReaderBehavior';
-import { JSONFieldReaderResult } from './JSONFieldReaderResult';
+import { JSONTemplateFieldReaderResult } from './JSONTemplateFieldReaderResult';
 import { UnknownTemplateField } from '../../../model/cedar/field/UnknownTemplateField';
 import { JSONAbstractArtifactReader } from './JSONAbstractArtifactReader';
 import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
 
-export class JSONFieldReader extends JSONAbstractArtifactReader {
+export class JSONTemplateFieldReader extends JSONAbstractArtifactReader {
   private constructor(behavior: JSONReaderBehavior) {
     super(behavior);
   }
 
-  public static getStrict(): JSONFieldReader {
-    return new JSONFieldReader(JSONReaderBehavior.STRICT);
+  public static getStrict(): JSONTemplateFieldReader {
+    return new JSONTemplateFieldReader(JSONReaderBehavior.STRICT);
   }
 
-  public static getFebruary2024(): JSONFieldReader {
-    return new JSONFieldReader(JSONReaderBehavior.FEBRUARY_2024);
+  public static getFebruary2024(): JSONTemplateFieldReader {
+    return new JSONTemplateFieldReader(JSONReaderBehavior.FEBRUARY_2024);
   }
 
-  public static getForBehavior(behavior: JSONReaderBehavior): JSONFieldReader {
-    return new JSONFieldReader(behavior);
+  public static getForBehavior(behavior: JSONReaderBehavior): JSONTemplateFieldReader {
+    return new JSONTemplateFieldReader(behavior);
   }
 
-  static dynamicTypeReaderMap = new Map<CedarFieldType, JSONFieldTypeSpecificReader>([
+  static dynamicTypeReaderMap = new Map<CedarFieldType, JSONTemplateFieldTypeSpecificReader>([
     [CedarFieldType.TEXT, new JSONFieldReaderTextField()],
     [CedarFieldType.TEXTAREA, new JSONFieldReaderTextArea()],
     [CedarFieldType.CONTROLLED_TERM, new JSONFieldReaderControlledTerm()],
@@ -70,7 +70,7 @@ export class JSONFieldReader extends JSONAbstractArtifactReader {
     [CedarFieldType.ATTRIBUTE_VALUE, new JSONFieldReaderAttributeValue()],
   ]);
 
-  static staticReaderMap = new Map<CedarFieldType, JSONFieldTypeSpecificReader>([
+  static staticReaderMap = new Map<CedarFieldType, JSONTemplateFieldTypeSpecificReader>([
     [CedarFieldType.STATIC_PAGE_BREAK, new JSONFieldReaderPageBreak()],
     [CedarFieldType.STATIC_SECTION_BREAK, new JSONFieldReaderSectionBreak()],
     [CedarFieldType.STATIC_IMAGE, new JSONFieldReaderImage()],
@@ -78,7 +78,7 @@ export class JSONFieldReader extends JSONAbstractArtifactReader {
     [CedarFieldType.STATIC_YOUTUBE, new JSONFieldReaderYoutube()],
   ]);
 
-  public readFromString(fieldSourceString: string): JSONFieldReaderResult {
+  public readFromString(fieldSourceString: string): JSONTemplateFieldReaderResult {
     let fieldObject;
     try {
       fieldObject = JSON.parse(fieldSourceString);
@@ -88,13 +88,13 @@ export class JSONFieldReader extends JSONAbstractArtifactReader {
     return this.readFromObject(fieldObject, ChildDeploymentInfo.empty(), new JsonPath());
   }
 
-  public readFromObject(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, path: JsonPath): JSONFieldReaderResult {
+  public readFromObject(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, path: JsonPath): JSONTemplateFieldReaderResult {
     const parsingResult: ParsingResult = new ParsingResult();
-    const field: TemplateField = JSONFieldReader.readFieldSpecificAttributes(fieldSourceObject, childInfo, parsingResult, path);
+    const field: TemplateField = JSONTemplateFieldReader.readFieldSpecificAttributes(fieldSourceObject, childInfo, parsingResult, path);
     this.readNonReportableAttributes(field, fieldSourceObject);
     this.readReportableAttributes(field, fieldSourceObject, parsingResult, path);
     this.readAnnotations(field, fieldSourceObject, parsingResult, path);
-    return new JSONFieldReaderResult(field, parsingResult, fieldSourceObject);
+    return new JSONTemplateFieldReaderResult(field, parsingResult, fieldSourceObject);
   }
 
   protected readNonReportableAttributes(field: TemplateField, fieldSourceObject: JsonNode) {
@@ -164,7 +164,7 @@ export class JSONFieldReader extends JSONAbstractArtifactReader {
     const fieldType: CedarFieldType = this.getCedarFieldType(fieldSourceObject, uiInputType);
     if (artifactType == CedarArtifactType.STATIC_TEMPLATE_FIELD) {
       if (uiInputType != null) {
-        const reader: JSONFieldTypeSpecificReader | undefined = this.staticReaderMap.get(fieldType);
+        const reader: JSONTemplateFieldTypeSpecificReader | undefined = this.staticReaderMap.get(fieldType);
         if (!reader) {
           throw new Error(`No reader defined for static input type "${fieldType.getValue()}"`);
         }
@@ -172,7 +172,7 @@ export class JSONFieldReader extends JSONAbstractArtifactReader {
       }
     } else if (artifactType == CedarArtifactType.TEMPLATE_FIELD) {
       if (uiInputType != null) {
-        const reader: JSONFieldTypeSpecificReader | undefined = this.dynamicTypeReaderMap.get(fieldType);
+        const reader: JSONTemplateFieldTypeSpecificReader | undefined = this.dynamicTypeReaderMap.get(fieldType);
         if (!reader) {
           throw new Error(`No reader defined for dynamic input type "${fieldType.getValue()}"`);
         }

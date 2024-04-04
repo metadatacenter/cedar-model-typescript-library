@@ -1,12 +1,12 @@
-import { JSONWriterBehavior } from '../../../../behavior/JSONWriterBehavior';
-import { CedarWriters } from '../../../../io/writer/CedarWriters';
 import { StaticImageField } from './image/StaticImageField';
-import { JsonNode, JsonNodeClass } from '../../types/basic-types/JsonNode';
+import { JsonNode } from '../../types/basic-types/JsonNode';
 import { TemplateField } from '../TemplateField';
 import { YAMLTemplateFieldWriterInternal } from '../../../../io/writer/yaml/YAMLTemplateFieldWriterInternal';
+import { YAMLWriterBehavior } from '../../../../behavior/YAMLWriterBehavior';
+import { CedarYAMLWriters } from '../../../../io/writer/yaml/CedarYAMLWriters';
 
 export class YAMLStaticFieldWriter extends YAMLTemplateFieldWriterInternal {
-  constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
+  constructor(behavior: YAMLWriterBehavior, writers: CedarYAMLWriters) {
     super(behavior, writers);
   }
 

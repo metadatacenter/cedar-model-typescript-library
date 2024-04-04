@@ -1,5 +1,6 @@
 import {
   CedarBuilders,
+  CedarJSONWriters,
   CedarWriters,
   ISODate,
   SchemaVersion,
@@ -31,7 +32,7 @@ describe('StaticYoutubeFieldBuilder', () => {
       .withVideoId('dQw4w9WgXcQ')
       .build();
 
-    const writers: CedarWriters = CedarWriters.getStrict();
+    const writers: CedarJSONWriters = CedarWriters.json().getStrict();
     const jsonWriter = writers.getJSONFieldWriterForField(field);
 
     const stringified = jsonWriter.getAsJsonString(field);

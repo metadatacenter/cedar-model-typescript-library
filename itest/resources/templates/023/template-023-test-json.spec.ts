@@ -1,4 +1,5 @@
 import {
+  CedarJSONWriters,
   CedarModel,
   CedarWriters,
   ComparisonError,
@@ -26,7 +27,7 @@ describe('JSONTemplateReader' + testResource.toString(), () => {
     // TestUtil.p(parsingResult.getBlueprintComparisonErrors());
     expect(parsingResult.wasSuccessful()).toBe(true);
 
-    const writers: CedarWriters = CedarWriters.getStrict();
+    const writers: CedarJSONWriters = CedarWriters.json().getStrict();
     const writer: JSONTemplateWriter = writers.getJSONTemplateWriter();
 
     // TestUtil.p(writer.getAsJsonNode(jsonTemplateReaderResult.template));

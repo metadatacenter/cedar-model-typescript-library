@@ -1,5 +1,6 @@
 import {
   CedarBuilders,
+  CedarJSONWriters,
   CedarWriters,
   ISODate,
   SchemaVersion,
@@ -29,7 +30,7 @@ describe('StaticRichTextFieldBuilder', () => {
       .withContent('<p>Rich text</p>')
       .build();
 
-    const writers: CedarWriters = CedarWriters.getStrict();
+    const writers: CedarJSONWriters = CedarWriters.json().getStrict();
     const jsonWriter = writers.getJSONFieldWriterForField(field);
 
     const stringified = jsonWriter.getAsJsonString(field);

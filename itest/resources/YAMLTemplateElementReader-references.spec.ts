@@ -1,16 +1,16 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { CedarWriters, JSONElementReader, YAMLElementReader } from '../../src';
+import { CedarWriters, CedarYAMLWriters, JSONTemplateElementReader, YAMLTemplateElementReader } from '../../src';
 import { TestUtil } from '../TestUtil';
 import { ComparisonResult } from '../../src/org/metadatacenter/model/cedar/util/compare/ComparisonResult';
 import { YamlObjectComparator } from '../../src/org/metadatacenter/model/cedar/util/compare/YamlObjectComparator';
 import { elementTestCases } from './generatedTestCases';
 
-describe('YAMLElementReader-references', () => {
+describe('YAMLTemplateElementReader-references', () => {
   // Generate a test for each file
   elementTestCases.forEach((sourcePath) => {
     it(`should correctly process file: ${path.basename(sourcePath)}`, async () => {
-      const writers: CedarWriters = CedarWriters.getStrict();
+      const writers: CedarYAMLWriters = CedarWriters.yaml().getStrict();
       let comparisonResult: ComparisonResult = new ComparisonResult();
       let leftYAMLObject = {};
       let rightYAMLObject = {};
@@ -18,7 +18,7 @@ describe('YAMLElementReader-references', () => {
         // console.log(sourcePath);
         const elementSourceJSONString = await fs.readFile(sourcePath, 'utf8');
 
-        const elementJSONReader: JSONElementReader = JSONElementReader.getStrict();
+        const elementJSONReader: JSONTemplateElementReader = JSONTemplateElementReader.getStrict();
         const elementJSONReaderResult = elementJSONReader.readFromString(elementSourceJSONString);
         const jsonReadElement = elementJSONReaderResult.element;
 
@@ -26,7 +26,7 @@ describe('YAMLElementReader-references', () => {
         const leftYAMLString = elementYAMLWriter1.getAsYamlString(jsonReadElement);
         leftYAMLObject = elementYAMLWriter1.getYamlAsJsonNode(jsonReadElement);
 
-        const elementYAMLReader: YAMLElementReader = YAMLElementReader.getStrict();
+        const elementYAMLReader: YAMLTemplateElementReader = YAMLTemplateElementReader.getStrict();
         const elementYAMLReaderResult = elementYAMLReader.readFromString(leftYAMLString);
         const yamlReadElement = elementYAMLReaderResult.element;
 

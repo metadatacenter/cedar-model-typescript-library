@@ -2,7 +2,7 @@ import { ParsingResult } from '../../../model/cedar/util/compare/ParsingResult';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { TemplateField } from '../../../model/cedar/field/TemplateField';
 
-export class JSONFieldReaderResult {
+export class YAMLTemplateFieldReaderResult {
   private readonly _field: TemplateField;
   private readonly _parsingResult: ParsingResult;
   private readonly _fieldSourceObject: JsonNode;

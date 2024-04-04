@@ -7,10 +7,10 @@ import { TemporalField } from './TemporalField';
 import { TemporalType } from '../../../types/wrapped-types/TemporalType';
 import { TimeFormat } from '../../../types/wrapped-types/TimeFormat';
 import { TemporalGranularity } from '../../../types/wrapped-types/TemporalGranularity';
-import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/json/JSONFieldTypeSpecificReader';
+import { JSONTemplateFieldTypeSpecificReader } from '../../../../../io/reader/json/JSONTemplateFieldTypeSpecificReader';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 
-export class JSONFieldReaderTemporal extends JSONFieldTypeSpecificReader {
+export class JSONFieldReaderTemporal extends JSONTemplateFieldTypeSpecificReader {
   override read(
     fieldSourceObject: JsonNode,
     childInfo: ChildDeploymentInfo,

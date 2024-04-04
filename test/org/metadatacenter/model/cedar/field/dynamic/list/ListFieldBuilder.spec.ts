@@ -1,4 +1,12 @@
-import { CedarBuilders, CedarWriters, ISODate, ListField, ListFieldBuilder, SchemaVersion } from '../../../../../../../../src';
+import {
+  CedarBuilders,
+  CedarJSONWriters,
+  CedarWriters,
+  ISODate,
+  ListField,
+  ListFieldBuilder,
+  SchemaVersion,
+} from '../../../../../../../../src';
 
 describe('ListFieldBuilder', () => {
   test('creates list field, single-select, with builder', () => {
@@ -25,7 +33,7 @@ describe('ListFieldBuilder', () => {
       .withMultipleChoice(false)
       .build();
 
-    const writers: CedarWriters = CedarWriters.getStrict();
+    const writers: CedarJSONWriters = CedarWriters.json().getStrict();
     const jsonWriter = writers.getJSONFieldWriterForField(field);
 
     const stringified = jsonWriter.getAsJsonString(field);
@@ -96,7 +104,7 @@ describe('ListFieldBuilder', () => {
       .withMultipleChoice(true)
       .build();
 
-    const writers: CedarWriters = CedarWriters.getStrict();
+    const writers: CedarJSONWriters = CedarWriters.json().getStrict();
     const jsonWriter = writers.getJSONFieldWriterForField(field);
 
     const stringified = jsonWriter.getAsJsonString(field);

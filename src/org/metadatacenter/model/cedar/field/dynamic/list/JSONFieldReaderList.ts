@@ -3,12 +3,12 @@ import { ParsingResult } from '../../../util/compare/ParsingResult';
 import { JsonPath } from '../../../util/path/JsonPath';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { CedarModel } from '../../../constants/CedarModel';
-import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/json/JSONFieldTypeSpecificReader';
+import { JSONTemplateFieldTypeSpecificReader } from '../../../../../io/reader/json/JSONTemplateFieldTypeSpecificReader';
 import { ListField } from './ListField';
 import { ListOption } from './ListOption';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 
-export class JSONFieldReaderList extends JSONFieldTypeSpecificReader {
+export class JSONFieldReaderList extends JSONTemplateFieldTypeSpecificReader {
   override read(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, _parsingResult: ParsingResult, _path: JsonPath): ListField {
     const field = ListField.buildEmptyWithNullValues();
     this.readRequiredAndHidden(fieldSourceObject, childInfo);

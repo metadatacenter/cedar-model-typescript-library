@@ -1,12 +1,12 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
-import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
-import { CedarWriters } from '../../../../../io/writer/CedarWriters';
 import { YAMLStaticFieldWriter } from '../YAMLStaticFieldWriter';
 import { StaticYoutubeField } from './StaticYoutubeField';
 import { YamlKeys } from '../../../constants/YamlKeys';
+import { YAMLWriterBehavior } from '../../../../../behavior/YAMLWriterBehavior';
+import { CedarYAMLWriters } from '../../../../../io/writer/yaml/CedarYAMLWriters';
 
 export class YAMLFieldWriterStaticYoutube extends YAMLStaticFieldWriter {
-  constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
+  constructor(behavior: YAMLWriterBehavior, writers: CedarYAMLWriters) {
     super(behavior, writers);
   }
 

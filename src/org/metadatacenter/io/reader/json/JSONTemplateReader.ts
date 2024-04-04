@@ -12,18 +12,18 @@ import { ContainerArtifactChildrenInfo } from '../../../model/cedar/deployment/C
 import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
 import { JSONReaderBehavior } from '../../../behavior/JSONReaderBehavior';
 import { JSONTemplateFieldContentDynamic } from '../../../model/cedar/util/serialization/JSONTemplateFieldContentDynamic';
-import { JSONElementReader } from './JSONElementReader';
+import { JSONTemplateElementReader } from './JSONTemplateElementReader';
 import { JSONContainerArtifactReader } from './JSONContainerArtifactReader';
 import { Template } from '../../../model/cedar/template/Template';
 import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
 
 export class JSONTemplateReader extends JSONContainerArtifactReader {
-  private readonly elementReader: JSONElementReader;
+  private readonly elementReader: JSONTemplateElementReader;
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.TEMPLATE;
 
   private constructor(behavior: JSONReaderBehavior) {
     super(behavior);
-    this.elementReader = JSONElementReader.getForBehavior(behavior);
+    this.elementReader = JSONTemplateElementReader.getForBehavior(behavior);
   }
 
   public static getStrict(): JSONTemplateReader {
@@ -38,7 +38,7 @@ export class JSONTemplateReader extends JSONContainerArtifactReader {
     return new JSONTemplateReader(behavior);
   }
 
-  protected override getElementReader(): JSONElementReader {
+  protected override getElementReader(): JSONTemplateElementReader {
     return this.elementReader;
   }
 

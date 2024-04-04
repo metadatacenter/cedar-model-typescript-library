@@ -3,9 +3,9 @@ import { ParsingResult } from '../../../util/compare/ParsingResult';
 import { JsonPath } from '../../../util/path/JsonPath';
 import { StaticPageBreakField } from './StaticPageBreakField';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
-import { YAMLFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YAMLFieldTypeSpecificReader';
+import { YAMLTemplateFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YAMLTemplateFieldTypeSpecificReader';
 
-export class YAMLFieldReaderPageBreak extends YAMLFieldTypeSpecificReader {
+export class YAMLFieldReaderPageBreak extends YAMLTemplateFieldTypeSpecificReader {
   override read(
     _fieldSourceObject: JsonNode,
     _childInfo: ChildDeploymentInfo,

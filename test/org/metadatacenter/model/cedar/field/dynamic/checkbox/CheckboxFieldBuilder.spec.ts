@@ -1,11 +1,10 @@
 import {
   CedarBuilders,
+  CedarJSONWriters,
   CedarWriters,
   CheckboxField,
   CheckboxFieldBuilder,
   ISODate,
-  RadioField,
-  RadioFieldBuilder,
   SchemaVersion,
 } from '../../../../../../../../src';
 
@@ -33,7 +32,7 @@ describe('CheckboxFieldBuilder', () => {
       .addCheckboxOption('option 3', true)
       .build();
 
-    const writers: CedarWriters = CedarWriters.getStrict();
+    const writers: CedarJSONWriters = CedarWriters.json().getStrict();
     const jsonWriter = writers.getJSONFieldWriterForField(field);
 
     const stringified = jsonWriter.getAsJsonString(field);

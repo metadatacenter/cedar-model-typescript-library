@@ -1,27 +1,27 @@
 import { YAMLReaderBehavior } from '../../../behavior/YAMLReaderBehavior';
 import { YAMLAbstractArtifactReader } from './YAMLAbstractArtifactReader';
-import { YAMLFieldReader } from './YAMLFieldReader';
+import { YAMLTemplateFieldReader } from './YAMLTemplateFieldReader';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { ParsingResult } from '../../../model/cedar/util/compare/ParsingResult';
 import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
 import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
 import { ReaderUtil } from '../ReaderUtil';
-import { YAMLElementReader } from './YAMLElementReader';
+import { YAMLTemplateElementReader } from './YAMLTemplateElementReader';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 import { YamlArtifactType } from '../../../model/cedar/types/wrapped-types/YamlArtifactType';
 import { CedarFieldType } from '../../../model/cedar/types/cedar-types/CedarFieldType';
 import { AbstractContainerArtifact } from '../../../model/cedar/AbstractContainerArtifact';
 
 export abstract class YAMLContainerArtifactReader extends YAMLAbstractArtifactReader {
-  protected fieldReader: YAMLFieldReader;
+  protected fieldReader: YAMLTemplateFieldReader;
 
   protected constructor(behavior: YAMLReaderBehavior) {
     super(behavior);
-    this.fieldReader = YAMLFieldReader.getForBehavior(behavior);
+    this.fieldReader = YAMLTemplateFieldReader.getForBehavior(behavior);
   }
 
-  protected abstract getElementReader(): YAMLElementReader;
+  protected abstract getElementReader(): YAMLTemplateElementReader;
 
   protected readAndValidateChildrenInfo(
     container: AbstractContainerArtifact,

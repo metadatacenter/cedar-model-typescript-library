@@ -7,7 +7,7 @@ import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploy
 import { ReaderUtil } from '../ReaderUtil';
 import { CedarModel } from '../../../model/cedar/constants/CedarModel';
 
-export abstract class JSONFieldTypeSpecificReader {
+export abstract class JSONTemplateFieldTypeSpecificReader {
   public read(
     _fieldSourceObject: JsonNode,
     _childInfo: ChildDeploymentInfo,

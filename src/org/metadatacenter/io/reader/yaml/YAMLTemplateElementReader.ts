@@ -7,28 +7,28 @@ import { TemplateElement } from '../../../model/cedar/element/TemplateElement';
 import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
 import YAML from 'yaml';
 import { YAMLContainerArtifactReader } from './YAMLContainerArtifactReader';
-import { YAMLElementReaderResult } from './YAMLElementReaderResult';
+import { YAMLTemplateElementReaderResult } from './YAMLTemplateElementReaderResult';
 
-export class YAMLElementReader extends YAMLContainerArtifactReader {
+export class YAMLTemplateElementReader extends YAMLContainerArtifactReader {
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.TEMPLATE_ELEMENT;
 
   private constructor(behavior: YAMLReaderBehavior) {
     super(behavior);
   }
 
-  public static getStrict(): YAMLElementReader {
-    return new YAMLElementReader(YAMLReaderBehavior.STRICT);
+  public static getStrict(): YAMLTemplateElementReader {
+    return new YAMLTemplateElementReader(YAMLReaderBehavior.STRICT);
   }
 
-  public static getForBehavior(behavior: YAMLReaderBehavior): YAMLElementReader {
-    return new YAMLElementReader(behavior);
+  public static getForBehavior(behavior: YAMLReaderBehavior): YAMLTemplateElementReader {
+    return new YAMLTemplateElementReader(behavior);
   }
 
-  protected override getElementReader(): YAMLElementReader {
+  protected override getElementReader(): YAMLTemplateElementReader {
     return this;
   }
 
-  public readFromString(elementSourceString: string): YAMLElementReaderResult {
+  public readFromString(elementSourceString: string): YAMLTemplateElementReaderResult {
     let elementObject;
     try {
       elementObject = YAML.parse(elementSourceString);
@@ -38,7 +38,11 @@ export class YAMLElementReader extends YAMLContainerArtifactReader {
     return this.readFromObject(elementObject, ChildDeploymentInfo.empty(), new JsonPath());
   }
 
-  public readFromObject(elementSourceObject: JsonNode, _childInfo: ChildDeploymentInfo, topPath: JsonPath): YAMLElementReaderResult {
+  public readFromObject(
+    elementSourceObject: JsonNode,
+    _childInfo: ChildDeploymentInfo,
+    topPath: JsonPath,
+  ): YAMLTemplateElementReaderResult {
     const parsingResult: ParsingResult = new ParsingResult();
     const element = TemplateElement.buildEmptyWithNullValues();
 
@@ -46,7 +50,7 @@ export class YAMLElementReader extends YAMLContainerArtifactReader {
     this.readAnnotations(element, elementSourceObject, parsingResult, topPath);
     super.readAndValidateChildrenInfo(element, elementSourceObject, parsingResult, topPath);
 
-    return new YAMLElementReaderResult(element, parsingResult, elementSourceObject);
+    return new YAMLTemplateElementReaderResult(element, parsingResult, elementSourceObject);
   }
 
   protected readNonReportableAttributes(element: TemplateElement, elementSourceObject: JsonNode) {

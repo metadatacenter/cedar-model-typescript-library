@@ -1,4 +1,12 @@
-import { CedarBuilders, ISODate, TextArea, CedarWriters, SchemaVersion, TextAreaBuilder } from '../../../../../../../../src';
+import {
+  CedarBuilders,
+  CedarJSONWriters,
+  CedarWriters,
+  ISODate,
+  SchemaVersion,
+  TextArea,
+  TextAreaBuilder,
+} from '../../../../../../../../src';
 
 describe('TextAreaBuilder', () => {
   test('creates text area with builder', () => {
@@ -21,7 +29,7 @@ describe('TextAreaBuilder', () => {
       .withAlternateLabels(['Alt label 1', 'Alt label 2', 'Alt label 3'])
       .build();
 
-    const writers: CedarWriters = CedarWriters.getStrict();
+    const writers: CedarJSONWriters = CedarWriters.json().getStrict();
     const jsonWriter = writers.getJSONFieldWriterForField(field);
 
     const stringified = jsonWriter.getAsJsonString(field);

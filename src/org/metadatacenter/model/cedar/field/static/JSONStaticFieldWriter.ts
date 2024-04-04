@@ -1,6 +1,5 @@
 import { JSONTemplateFieldWriterInternal } from '../../../../io/writer/json/JSONTemplateFieldWriterInternal';
 import { JSONWriterBehavior } from '../../../../behavior/JSONWriterBehavior';
-import { CedarWriters } from '../../../../io/writer/CedarWriters';
 import { StaticImageField } from './image/StaticImageField';
 import { JsonNode } from '../../types/basic-types/JsonNode';
 import { JsonSchema } from '../../constants/JsonSchema';
@@ -11,9 +10,10 @@ import { TemplateProperty } from '../../constants/TemplateProperty';
 import { AdditionalProperties } from '../../types/wrapped-types/AdditionalProperties';
 import { ArtifactSchema } from '../../types/wrapped-types/ArtifactSchema';
 import { TemplateField } from '../TemplateField';
+import { CedarJSONWriters } from '../../../../io/writer/json/CedarJSONWriters';
 
 export class JSONStaticFieldWriter extends JSONTemplateFieldWriterInternal {
-  constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
+  constructor(behavior: JSONWriterBehavior, writers: CedarJSONWriters) {
     super(behavior, writers);
   }
 

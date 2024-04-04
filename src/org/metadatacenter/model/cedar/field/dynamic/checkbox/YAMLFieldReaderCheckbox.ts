@@ -5,10 +5,10 @@ import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { CheckboxField } from './CheckboxField';
 import { CheckboxOption } from './CheckboxOption';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
-import { YAMLFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YAMLFieldTypeSpecificReader';
+import { YAMLTemplateFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YAMLTemplateFieldTypeSpecificReader';
 import { YamlKeys } from '../../../constants/YamlKeys';
 
-export class YAMLFieldReaderCheckbox extends YAMLFieldTypeSpecificReader {
+export class YAMLFieldReaderCheckbox extends YAMLTemplateFieldTypeSpecificReader {
   override read(
     fieldSourceObject: JsonNode,
     _childInfo: ChildDeploymentInfo,

@@ -6,19 +6,19 @@ import { ParsingResult } from '../../../model/cedar/util/compare/ParsingResult';
 import { YAMLTemplateReaderResult } from './YAMLTemplateReaderResult';
 import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
 import { YAMLReaderBehavior } from '../../../behavior/YAMLReaderBehavior';
-import { YAMLElementReader } from './YAMLElementReader';
+import { YAMLTemplateElementReader } from './YAMLTemplateElementReader';
 import { Template } from '../../../model/cedar/template/Template';
 import YAML from 'yaml';
 import { YAMLContainerArtifactReader } from './YAMLContainerArtifactReader';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 
 export class YAMLTemplateReader extends YAMLContainerArtifactReader {
-  private readonly elementReader: YAMLElementReader;
+  private readonly elementReader: YAMLTemplateElementReader;
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.TEMPLATE;
 
   private constructor(behavior: YAMLReaderBehavior) {
     super(behavior);
-    this.elementReader = YAMLElementReader.getForBehavior(behavior);
+    this.elementReader = YAMLTemplateElementReader.getForBehavior(behavior);
   }
 
   public static getStrict(): YAMLTemplateReader {
@@ -29,7 +29,7 @@ export class YAMLTemplateReader extends YAMLContainerArtifactReader {
     return new YAMLTemplateReader(behavior);
   }
 
-  protected override getElementReader(): YAMLElementReader {
+  protected override getElementReader(): YAMLTemplateElementReader {
     return this.elementReader;
   }
 

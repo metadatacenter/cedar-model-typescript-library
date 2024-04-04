@@ -1,8 +1,6 @@
-import { JSONWriterBehavior } from '../../../behavior/JSONWriterBehavior';
 import { JsonNode, JsonNodeClass } from '../../../model/cedar/types/basic-types/JsonNode';
 import { TemplateField } from '../../../model/cedar/field/TemplateField';
 import { CedarModel } from '../../../model/cedar/constants/CedarModel';
-import { CedarWriters } from '../CedarWriters';
 import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
 import { CheckboxField } from '../../../model/cedar/field/dynamic/checkbox/CheckboxField';
 import { ListField } from '../../../model/cedar/field/dynamic/list/ListField';
@@ -11,9 +9,11 @@ import { ChoiceOptionEntity } from '../../../model/cedar/field/ChoiceOptionEntit
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 import { YAMLAbstractArtifactWriter } from './YAMLAbstractArtifactWriter';
 import { SimpleYamlSerializer } from './SimpleYamlSerializer';
+import { YAMLWriterBehavior } from '../../../behavior/YAMLWriterBehavior';
+import { CedarYAMLWriters } from './CedarYAMLWriters';
 
 export abstract class YAMLTemplateFieldWriterInternal extends YAMLAbstractArtifactWriter {
-  protected constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
+  protected constructor(behavior: YAMLWriterBehavior, writers: CedarYAMLWriters) {
     super(behavior, writers);
   }
 

@@ -4,10 +4,10 @@ import { JsonPath } from '../../../util/path/JsonPath';
 import { TextField } from './TextField';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
-import { YAMLFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YAMLFieldTypeSpecificReader';
+import { YAMLTemplateFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YAMLTemplateFieldTypeSpecificReader';
 import { YamlKeys } from '../../../constants/YamlKeys';
 
-export class YAMLFieldReaderTextField extends YAMLFieldTypeSpecificReader {
+export class YAMLFieldReaderTextField extends YAMLTemplateFieldTypeSpecificReader {
   override read(fieldSourceObject: JsonNode, _childInfo: ChildDeploymentInfo, _parsingResult: ParsingResult, _path: JsonPath): TextField {
     const field = TextField.buildEmptyWithNullValues();
 

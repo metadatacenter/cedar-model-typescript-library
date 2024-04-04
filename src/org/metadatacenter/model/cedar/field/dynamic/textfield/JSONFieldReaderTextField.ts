@@ -4,10 +4,10 @@ import { JsonPath } from '../../../util/path/JsonPath';
 import { TextField } from './TextField';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { CedarModel } from '../../../constants/CedarModel';
-import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/json/JSONFieldTypeSpecificReader';
+import { JSONTemplateFieldTypeSpecificReader } from '../../../../../io/reader/json/JSONTemplateFieldTypeSpecificReader';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 
-export class JSONFieldReaderTextField extends JSONFieldTypeSpecificReader {
+export class JSONFieldReaderTextField extends JSONTemplateFieldTypeSpecificReader {
   override read(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, _parsingResult: ParsingResult, _path: JsonPath): TextField {
     const field = TextField.buildEmptyWithNullValues();
     this.readRequiredAndHidden(fieldSourceObject, childInfo);

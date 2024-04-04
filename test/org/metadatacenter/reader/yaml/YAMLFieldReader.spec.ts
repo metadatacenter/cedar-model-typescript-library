@@ -1,12 +1,14 @@
 import {
   CedarBuilders,
+  CedarJSONWriters,
   CedarWriters,
+  CedarYAMLWriters,
   EmailField,
   EmailFieldBuilder,
   ISODate,
-  JSONFieldReader,
+  JSONTemplateFieldReader,
   SchemaVersion,
-  YAMLFieldReader,
+  YAMLTemplateFieldReader,
 } from '../../../../../src';
 import { YamlObjectComparator } from '../../../../../src/org/metadatacenter/model/cedar/util/compare/YamlObjectComparator';
 import { ComparisonResult } from '../../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonResult';
@@ -32,28 +34,29 @@ describe('YAMLFieldReader', () => {
       .withAlternateLabels(['Email', 'Contact Email'])
       .build();
 
-    const writers: CedarWriters = CedarWriters.getStrict();
-    const jsonWriter = writers.getJSONFieldWriterForField(field);
+    const jsonWriters: CedarJSONWriters = CedarWriters.json().getStrict();
+    const jsonWriter = jsonWriters.getJSONFieldWriterForField(field);
 
     const fieldSourceJSONString = jsonWriter.getAsJsonString(field);
     // console.log('JSON generated from BUILDER', fieldSourceJSONString);
 
-    const yamlWriter = writers.getYAMLFieldWriterForField(field);
+    const yamlWriters: CedarYAMLWriters = CedarWriters.yaml().getStrict();
+    const yamlWriter = yamlWriters.getYAMLFieldWriterForField(field);
 
     const fieldSourceYAMLString = yamlWriter.getAsYamlString(field);
     const fieldSourceYAMLObject = yamlWriter.getYamlAsJsonNode(field);
 
     // console.log('YAML generated from JSON', fieldSourceYAMLString);
 
-    const fieldJSONReader: JSONFieldReader = JSONFieldReader.getStrict();
+    const fieldJSONReader: JSONTemplateFieldReader = JSONTemplateFieldReader.getStrict();
     const fieldJSONReaderResult = fieldJSONReader.readFromString(fieldSourceJSONString);
 
     expect(fieldJSONReaderResult.parsingResult.wasSuccessful()).toBe(true);
 
-    const fieldYAMLReader: YAMLFieldReader = YAMLFieldReader.getStrict();
+    const fieldYAMLReader: YAMLTemplateFieldReader = YAMLTemplateFieldReader.getStrict();
     const fieldYAMLReaderResult = fieldYAMLReader.readFromString(fieldSourceYAMLString);
 
-    const fieldYAMLWriter = writers.getYAMLFieldWriterForField(fieldYAMLReaderResult.field);
+    const fieldYAMLWriter = yamlWriters.getYAMLFieldWriterForField(fieldYAMLReaderResult.field);
     const reYAMLString = fieldYAMLWriter.getAsYamlString(fieldYAMLReaderResult.field);
     const reYAMLObject = fieldYAMLWriter.getYamlAsJsonNode(fieldYAMLReaderResult.field);
     // console.log('YAML generated and re-parsed from YAML\n', reYAMLString);

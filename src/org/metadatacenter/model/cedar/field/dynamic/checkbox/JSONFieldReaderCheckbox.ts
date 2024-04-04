@@ -3,12 +3,12 @@ import { ParsingResult } from '../../../util/compare/ParsingResult';
 import { JsonPath } from '../../../util/path/JsonPath';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { CedarModel } from '../../../constants/CedarModel';
-import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/json/JSONFieldTypeSpecificReader';
+import { JSONTemplateFieldTypeSpecificReader } from '../../../../../io/reader/json/JSONTemplateFieldTypeSpecificReader';
 import { CheckboxField } from './CheckboxField';
 import { CheckboxOption } from './CheckboxOption';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 
-export class JSONFieldReaderCheckbox extends JSONFieldTypeSpecificReader {
+export class JSONFieldReaderCheckbox extends JSONTemplateFieldTypeSpecificReader {
   override read(
     fieldSourceObject: JsonNode,
     childInfo: ChildDeploymentInfo,

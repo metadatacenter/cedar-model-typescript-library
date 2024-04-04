@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { CedarWriters, JSONTemplateReader, YAMLTemplateReader } from '../../src';
+import { CedarWriters, CedarYAMLWriters, JSONTemplateReader, YAMLTemplateReader } from '../../src';
 import { TestUtil } from '../TestUtil';
 import { ComparisonResult } from '../../src/org/metadatacenter/model/cedar/util/compare/ComparisonResult';
 import { YamlObjectComparator } from '../../src/org/metadatacenter/model/cedar/util/compare/YamlObjectComparator';
@@ -10,7 +10,7 @@ describe('YAMLReader-references', () => {
   // Generate a test for each file
   templateTestCases.forEach((sourcePath) => {
     it(`should correctly process file: ${path.basename(sourcePath)}`, async () => {
-      const writers: CedarWriters = CedarWriters.getStrict();
+      const writers: CedarYAMLWriters = CedarWriters.yaml().getStrict();
       let comparisonResult: ComparisonResult = new ComparisonResult();
       let leftYAMLObject = {};
       let rightYAMLObject = {};

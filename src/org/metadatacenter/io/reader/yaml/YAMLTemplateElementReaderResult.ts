@@ -2,7 +2,7 @@ import { ParsingResult } from '../../../model/cedar/util/compare/ParsingResult';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { TemplateElement } from '../../../model/cedar/element/TemplateElement';
 
-export class YAMLElementReaderResult {
+export class YAMLTemplateElementReaderResult {
   private readonly _element: TemplateElement;
   private readonly _parsingResult: ParsingResult;
   private readonly _elementSourceObject: JsonNode;

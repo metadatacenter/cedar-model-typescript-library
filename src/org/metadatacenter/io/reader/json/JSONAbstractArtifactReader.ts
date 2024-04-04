@@ -17,6 +17,7 @@ import { Annotations } from '../../../model/cedar/annotation/Annotations';
 import { CedarModel } from '../../../model/cedar/constants/CedarModel';
 import { AnnotationAtId } from '../../../model/cedar/annotation/AnnotationAtId';
 import { AnnotationAtValue } from '../../../model/cedar/annotation/AnnotationAtValue';
+import { JSONArtifactReaderResult } from './JSONArtifactReaderResult';
 
 export abstract class JSONAbstractArtifactReader {
   protected behavior: JSONReaderBehavior;
@@ -25,6 +26,8 @@ export abstract class JSONAbstractArtifactReader {
   protected constructor(behavior: JSONReaderBehavior) {
     this.behavior = behavior;
   }
+
+  public abstract readFromString(artifactSourceString: string): JSONArtifactReaderResult;
 
   protected readNonReportableAttributes(container: AbstractArtifact, sourceObject: JsonNode): void {
     // Read in non-reportable properties

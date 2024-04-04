@@ -1,4 +1,12 @@
-import { CedarBuilders, CedarWriters, ISODate, LinkField, LinkFieldBuilder, SchemaVersion } from '../../../../../../../../src';
+import {
+  CedarBuilders,
+  CedarJSONWriters,
+  CedarWriters,
+  ISODate,
+  LinkField,
+  LinkFieldBuilder,
+  SchemaVersion,
+} from '../../../../../../../../src';
 
 describe('LinkFieldBuilder', () => {
   test('creates link field with builder', () => {
@@ -21,7 +29,7 @@ describe('LinkFieldBuilder', () => {
       .withAlternateLabels(['Link', 'Link 2'])
       .build();
 
-    const writers: CedarWriters = CedarWriters.getStrict();
+    const writers: CedarJSONWriters = CedarWriters.json().getStrict();
     const jsonWriter = writers.getJSONFieldWriterForField(field);
 
     const stringified = jsonWriter.getAsJsonString(field);

@@ -2,12 +2,16 @@ import { JsonNode, JsonNodeClass } from '../../../../../types/basic-types/JsonNo
 import { CedarModel } from '../../../../../constants/CedarModel';
 import { ControlledTermOntology } from './ControlledTermOntology';
 import { JSONWriterBehavior } from '../../../../../../../behavior/JSONWriterBehavior';
-import { CedarWriters } from '../../../../../../../io/writer/CedarWriters';
 import { AbstractJSONControlledTermValueConstraintWriter } from '../AbstractJSONControlledTermValueConstraintWriter';
+import { CedarJSONWriters } from '../../../../../../../io/writer/json/CedarJSONWriters';
 
 export class JSONValueConstraintsOntologyWriter extends AbstractJSONControlledTermValueConstraintWriter {
-  public constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
+  public constructor(behavior: JSONWriterBehavior, writers: CedarJSONWriters) {
     super(behavior, writers);
+  }
+
+  public getAsJsonString(ontology: ControlledTermOntology, indent: number = 2): string {
+    return JSON.stringify(this.getAsJsonNode(ontology), null, indent);
   }
 
   override getAsJsonNode(ontology: ControlledTermOntology): JsonNode {

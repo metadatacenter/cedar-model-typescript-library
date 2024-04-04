@@ -1,4 +1,4 @@
-import { CedarWriters, JSONTemplateReader, JSONTemplateWriter, RoundTrip } from '../../../../src';
+import { CedarJSONWriters, CedarWriters, JSONTemplateReader, JSONTemplateWriter, RoundTrip } from '../../../../src';
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
 import { TestUtil } from '../../../TestUtil';
 import { TestResource } from '../../../TestResource';
@@ -17,7 +17,7 @@ describe('JSONTemplateReader' + testResource.toString(), () => {
 
     // TestUtil.p(jsonTemplateReaderResult.template);
 
-    const writers: CedarWriters = CedarWriters.getFebruary2024();
+    const writers: CedarJSONWriters = CedarWriters.json().getFebruary2024();
     const writer: JSONTemplateWriter = writers.getJSONTemplateWriter();
 
     // console.log(jsonTemplateReaderResult.templateSourceObject);

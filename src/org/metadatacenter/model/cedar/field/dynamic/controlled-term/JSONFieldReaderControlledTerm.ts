@@ -4,7 +4,7 @@ import { JsonPath } from '../../../util/path/JsonPath';
 import { ControlledTermField } from './ControlledTermField';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { CedarModel } from '../../../constants/CedarModel';
-import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/json/JSONFieldTypeSpecificReader';
+import { JSONTemplateFieldTypeSpecificReader } from '../../../../../io/reader/json/JSONTemplateFieldTypeSpecificReader';
 import { ControlledTermOntology } from './value-constraint/ontology/ControlledTermOntology';
 import { ControlledTermClass } from './value-constraint/class/ControlledTermClass';
 import { ControlledTermBranch } from './value-constraint/branch/ControlledTermBranch';
@@ -15,7 +15,7 @@ import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { ControlledTermAction } from './value-constraint/action/ControlledTermAction';
 import { BioportalTermType } from '../../../types/bioportal-types/BioportalTermType';
 
-export class JSONFieldReaderControlledTerm extends JSONFieldTypeSpecificReader {
+export class JSONFieldReaderControlledTerm extends JSONTemplateFieldTypeSpecificReader {
   override read(
     fieldSourceObject: JsonNode,
     childInfo: ChildDeploymentInfo,

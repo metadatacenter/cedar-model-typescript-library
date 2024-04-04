@@ -1,6 +1,7 @@
 import {
   BiboStatus,
   CedarBuilders,
+  CedarJSONWriters,
   CedarWriters,
   ISODate,
   JSONTemplateElementWriter,
@@ -66,7 +67,7 @@ describe('TemplateElement', () => {
 
     //TestUtil.p(template);
 
-    const writers: CedarWriters = CedarWriters.getStrict();
+    const writers: CedarJSONWriters = CedarWriters.json().getStrict();
     const writer: JSONTemplateElementWriter = writers.getJSONTemplateElementWriter();
 
     const stringified = JSON.stringify(writer.getAsJsonNode(templateElement), null, 2);

@@ -11,32 +11,32 @@ import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
 import { JSONReaderBehavior } from '../../../behavior/JSONReaderBehavior';
 import { UiInputType } from '../../../model/cedar/types/wrapped-types/UiInputType';
 import { JSONTemplateFieldContentDynamic } from '../../../model/cedar/util/serialization/JSONTemplateFieldContentDynamic';
-import { JSONElementReaderResult } from './JSONElementReaderResult';
+import { JSONTemplateElementReaderResult } from './JSONTemplateElementReaderResult';
 import { TemplateElement } from '../../../model/cedar/element/TemplateElement';
 import { JSONContainerArtifactReader } from './JSONContainerArtifactReader';
-import { JSONElementContent } from '../../../model/cedar/util/serialization/JSONElementContent';
+import { JSONTemplateElementContent } from '../../../model/cedar/util/serialization/JSONTemplateElementContent';
 import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
 
-export class JSONElementReader extends JSONContainerArtifactReader {
+export class JSONTemplateElementReader extends JSONContainerArtifactReader {
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.TEMPLATE_ELEMENT;
 
   private constructor(behavior: JSONReaderBehavior) {
     super(behavior);
   }
 
-  public static getStrict(): JSONElementReader {
-    return new JSONElementReader(JSONReaderBehavior.STRICT);
+  public static getStrict(): JSONTemplateElementReader {
+    return new JSONTemplateElementReader(JSONReaderBehavior.STRICT);
   }
 
-  public static getFebruary2024(): JSONElementReader {
-    return new JSONElementReader(JSONReaderBehavior.FEBRUARY_2024);
+  public static getFebruary2024(): JSONTemplateElementReader {
+    return new JSONTemplateElementReader(JSONReaderBehavior.FEBRUARY_2024);
   }
 
-  public static getForBehavior(behavior: JSONReaderBehavior): JSONElementReader {
-    return new JSONElementReader(behavior);
+  public static getForBehavior(behavior: JSONReaderBehavior): JSONTemplateElementReader {
+    return new JSONTemplateElementReader(behavior);
   }
 
-  protected override getElementReader(): JSONElementReader {
+  protected override getElementReader(): JSONTemplateElementReader {
     return this;
   }
 
@@ -44,7 +44,7 @@ export class JSONElementReader extends JSONContainerArtifactReader {
     return childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD && childInfo.uiInputType !== UiInputType.ATTRIBUTE_VALUE;
   }
 
-  public readFromString(elementSourceString: string): JSONElementReaderResult {
+  public readFromString(elementSourceString: string): JSONTemplateElementReaderResult {
     let elementObject;
     try {
       elementObject = JSON.parse(elementSourceString);
@@ -54,7 +54,11 @@ export class JSONElementReader extends JSONContainerArtifactReader {
     return this.readFromObject(elementObject, ChildDeploymentInfo.empty(), new JsonPath());
   }
 
-  public readFromObject(elementSourceObject: JsonNode, _childInfo: ChildDeploymentInfo, topPath: JsonPath): JSONElementReaderResult {
+  public readFromObject(
+    elementSourceObject: JsonNode,
+    _childInfo: ChildDeploymentInfo,
+    topPath: JsonPath,
+  ): JSONTemplateElementReaderResult {
     const parsingResult: ParsingResult = new ParsingResult();
     const element = TemplateElement.buildEmptyWithNullValues();
 
@@ -63,7 +67,7 @@ export class JSONElementReader extends JSONContainerArtifactReader {
     this.readAnnotations(element, elementSourceObject, parsingResult, topPath);
     this.readAndValidateChildrenInfo(element, elementSourceObject, parsingResult, topPath);
 
-    return new JSONElementReaderResult(element, parsingResult, elementSourceObject);
+    return new JSONTemplateElementReaderResult(element, parsingResult, elementSourceObject);
   }
 
   protected readNonReportableAttributes(element: TemplateElement, elementSourceObject: JsonNode) {
@@ -81,14 +85,14 @@ export class JSONElementReader extends JSONContainerArtifactReader {
 
     const elementRequiredMap: Map<string, boolean> = this.generateAndValidateRequiredMap(
       elementRequired,
-      JSONElementContent.REQUIRED_PARTIAL,
+      JSONTemplateElementContent.REQUIRED_PARTIAL,
       parsingResult,
       path,
     );
 
     const candidateChildrenInfo: ContainerArtifactChildrenInfo = this.getCandidateChildrenInfo(
       elementProperties,
-      JSONElementContent.PROPERTIES_PARTIAL_KEY_MAP,
+      JSONTemplateElementContent.PROPERTIES_PARTIAL_KEY_MAP,
       parsingResult,
       path,
     );
@@ -97,7 +101,7 @@ export class JSONElementReader extends JSONContainerArtifactReader {
       candidateChildrenInfo,
       elementRequiredMap,
       elementRequired,
-      JSONElementContent.REQUIRED_PARTIAL_KEY_MAP,
+      JSONTemplateElementContent.REQUIRED_PARTIAL_KEY_MAP,
       parsingResult,
       path,
     );
@@ -133,7 +137,7 @@ export class JSONElementReader extends JSONContainerArtifactReader {
     //    "type": "string",
     //    "format": "uri"
     //  },
-    const blueprint = ReaderUtil.deepClone(JSONElementContent.PROPERTIES_PARTIAL) as JsonNode;
+    const blueprint = ReaderUtil.deepClone(JSONTemplateElementContent.PROPERTIES_PARTIAL) as JsonNode;
     if (childrenInfo.hasAttributeValue()) {
       const atContext: JsonNode = blueprint[JsonSchema.atContext] as JsonNode;
       atContext[TemplateProperty.additionalProperties] =

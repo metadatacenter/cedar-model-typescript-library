@@ -2,10 +2,10 @@ import { JsonNode } from '../../../types/basic-types/JsonNode';
 import { ParsingResult } from '../../../util/compare/ParsingResult';
 import { JsonPath } from '../../../util/path/JsonPath';
 import { StaticPageBreakField } from './StaticPageBreakField';
-import { JSONFieldTypeSpecificReader } from '../../../../../io/reader/json/JSONFieldTypeSpecificReader';
+import { JSONTemplateFieldTypeSpecificReader } from '../../../../../io/reader/json/JSONTemplateFieldTypeSpecificReader';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 
-export class JSONFieldReaderPageBreak extends JSONFieldTypeSpecificReader {
+export class JSONFieldReaderPageBreak extends JSONTemplateFieldTypeSpecificReader {
   override read(
     _fieldSourceObject: JsonNode,
     _childInfo: ChildDeploymentInfo,

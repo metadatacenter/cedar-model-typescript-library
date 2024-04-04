@@ -1,15 +1,15 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
-import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
-import { CedarWriters } from '../../../../../io/writer/CedarWriters';
 import { RadioField } from './RadioField';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { YAMLTemplateFieldWriterInternal } from '../../../../../io/writer/yaml/YAMLTemplateFieldWriterInternal';
 import { TextField } from '../textfield/TextField';
 import { YamlKeys } from '../../../constants/YamlKeys';
 import { XsdDatatype } from '../../../constants/XsdDatatype';
+import { YAMLWriterBehavior } from '../../../../../behavior/YAMLWriterBehavior';
+import { CedarYAMLWriters } from '../../../../../io/writer/yaml/CedarYAMLWriters';
 
 export class YAMLFieldWriterRadio extends YAMLTemplateFieldWriterInternal {
-  constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
+  constructor(behavior: YAMLWriterBehavior, writers: CedarYAMLWriters) {
     super(behavior, writers);
   }
 

@@ -1,15 +1,15 @@
-import { JSONWriterBehavior } from '../../../behavior/JSONWriterBehavior';
 import { JsonNode, JsonNodeClass } from '../../../model/cedar/types/basic-types/JsonNode';
 import { Annotations } from '../../../model/cedar/annotation/Annotations';
 import { AnnotationAtId } from '../../../model/cedar/annotation/AnnotationAtId';
 import { AnnotationAtValue } from '../../../model/cedar/annotation/AnnotationAtValue';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 import { YamlValues } from '../../../model/cedar/constants/YamlValues';
+import { YAMLWriterBehavior } from '../../../behavior/YAMLWriterBehavior';
 
 export class YAMLAnnotationsWriter {
-  private behavior: JSONWriterBehavior;
+  private behavior: YAMLWriterBehavior;
 
-  public constructor(behavior: JSONWriterBehavior) {
+  public constructor(behavior: YAMLWriterBehavior) {
     this.behavior = behavior;
   }
 

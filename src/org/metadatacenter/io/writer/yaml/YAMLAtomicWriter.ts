@@ -19,10 +19,11 @@ import { TimeFormat } from '../../../model/cedar/types/wrapped-types/TimeFormat'
 import { UiInputType } from '../../../model/cedar/types/wrapped-types/UiInputType';
 import { AdditionalProperties } from '../../../model/cedar/types/wrapped-types/AdditionalProperties';
 import { URI } from '../../../model/cedar/types/wrapped-types/URI';
+import { YAMLWriterBehavior } from '../../../behavior/YAMLWriterBehavior';
 
 export class YAMLAtomicWriter extends JSONAtomicWriter {
-  public constructor(behavior: JSONWriterBehavior) {
-    super(behavior);
+  public constructor(_behavior: YAMLWriterBehavior) {
+    super(JSONWriterBehavior.STRICT);
   }
 
   protected override writeCedarArtifactType(type: CedarArtifactType): NullableString {

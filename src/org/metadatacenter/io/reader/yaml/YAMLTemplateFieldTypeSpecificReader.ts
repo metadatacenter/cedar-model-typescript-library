@@ -5,7 +5,7 @@ import { TemplateField } from '../../../model/cedar/field/TemplateField';
 import { UnknownTemplateField } from '../../../model/cedar/field/UnknownTemplateField';
 import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
 
-export abstract class YAMLFieldTypeSpecificReader {
+export abstract class YAMLTemplateFieldTypeSpecificReader {
   public read(
     _fieldSourceObject: JsonNode,
     _childInfo: ChildDeploymentInfo,

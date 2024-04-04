@@ -5,10 +5,10 @@ import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { ListField } from './ListField';
 import { ListOption } from './ListOption';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
-import { YAMLFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YAMLFieldTypeSpecificReader';
+import { YAMLTemplateFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YAMLTemplateFieldTypeSpecificReader';
 import { YamlKeys } from '../../../constants/YamlKeys';
 
-export class YAMLFieldReaderSingleSelectList extends YAMLFieldTypeSpecificReader {
+export class YAMLFieldReaderSingleSelectList extends YAMLTemplateFieldTypeSpecificReader {
   override read(fieldSourceObject: JsonNode, _childInfo: ChildDeploymentInfo, _parsingResult: ParsingResult, _path: JsonPath): ListField {
     const field = ListField.buildEmptyWithNullValues();
 

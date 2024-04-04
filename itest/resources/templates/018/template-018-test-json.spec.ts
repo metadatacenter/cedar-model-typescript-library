@@ -1,4 +1,5 @@
 import {
+  CedarJSONWriters,
   CedarModel,
   CedarWriters,
   ComparisonError,
@@ -25,7 +26,7 @@ describe('JSONTemplateReader' + testResource.toString(), () => {
     const parsingResult: ParsingResult = jsonTemplateReaderResult.parsingResult;
     expect(parsingResult.wasSuccessful()).toBe(true);
 
-    const writers: CedarWriters = CedarWriters.getStrict();
+    const writers: CedarJSONWriters = CedarWriters.json().getStrict();
     const writer: JSONTemplateWriter = writers.getJSONTemplateWriter();
 
     const compareResult: ParsingResult = RoundTrip.compare(jsonTemplateReaderResult, writer);

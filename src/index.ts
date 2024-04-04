@@ -1,8 +1,8 @@
 import { CedarWriters } from './org/metadatacenter/io/writer/CedarWriters';
 import { CedarBuilders } from './org/metadatacenter/io/builder/CedarBuilders';
 
-import { JSONFieldReader } from './org/metadatacenter/io/reader/json/JSONFieldReader';
-import { JSONElementReader } from './org/metadatacenter/io/reader/json/JSONElementReader';
+import { JSONTemplateFieldReader } from './org/metadatacenter/io/reader/json/JSONTemplateFieldReader';
+import { JSONTemplateElementReader } from './org/metadatacenter/io/reader/json/JSONTemplateElementReader';
 import { JSONTemplateReader } from './org/metadatacenter/io/reader/json/JSONTemplateReader';
 
 // It is needed, do not remove, even if it looks unused
@@ -67,11 +67,21 @@ import { TemporalType } from './org/metadatacenter/model/cedar/types/wrapped-typ
 import { NumberType } from './org/metadatacenter/model/cedar/types/wrapped-types/NumberType';
 import { URI } from './org/metadatacenter/model/cedar/types/wrapped-types/URI';
 
-import { ControlledTermBranchBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/branch/ControlledTermBranchBuilder';
-import { ControlledTermClassBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/class/ControlledTermClassBuilder';
-import { ControlledTermOntologyBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/ontology/ControlledTermOntologyBuilder';
-import { ControlledTermValueSetBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/value-set/ControlledTermValueSetBuilder';
-import { ControlledTermDefaultValueBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/ControlledTermDefaultValueBuilder';
+import {
+  ControlledTermBranchBuilder,
+} from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/branch/ControlledTermBranchBuilder';
+import {
+  ControlledTermClassBuilder,
+} from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/class/ControlledTermClassBuilder';
+import {
+  ControlledTermOntologyBuilder,
+} from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/ontology/ControlledTermOntologyBuilder';
+import {
+  ControlledTermValueSetBuilder,
+} from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/value-set/ControlledTermValueSetBuilder';
+import {
+  ControlledTermDefaultValueBuilder,
+} from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/ControlledTermDefaultValueBuilder';
 import { BiboStatus } from './org/metadatacenter/model/cedar/types/wrapped-types/BiboStatus';
 
 import { ChildDeploymentInfo } from './org/metadatacenter/model/cedar/deployment/ChildDeploymentInfo';
@@ -81,20 +91,39 @@ import { ComparisonError } from './org/metadatacenter/model/cedar/util/compare/C
 import { RoundTrip } from './org/metadatacenter/io/roundtrip/RoundTrip';
 import { JsonSchema } from './org/metadatacenter/model/cedar/constants/JsonSchema';
 import { CedarModel } from './org/metadatacenter/model/cedar/constants/CedarModel';
-import { ControlledTermActionBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/action/ControlledTermActionBuilder';
+import {
+  ControlledTermActionBuilder,
+} from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/action/ControlledTermActionBuilder';
 import { YamlKeys } from './org/metadatacenter/model/cedar/constants/YamlKeys';
 import { YamlValues } from './org/metadatacenter/model/cedar/constants/YamlValues';
 import { BioportalTermType } from './org/metadatacenter/model/cedar/types/bioportal-types/BioportalTermType';
 import { CedarFieldCategory } from './org/metadatacenter/model/cedar/types/cedar-types/CedarFieldCategory';
-import { YAMLFieldReader } from './org/metadatacenter/io/reader/yaml/YAMLFieldReader';
-import { YAMLElementReader } from './org/metadatacenter/io/reader/yaml/YAMLElementReader';
+import { YAMLTemplateFieldReader } from './org/metadatacenter/io/reader/yaml/YAMLTemplateFieldReader';
+import { YAMLTemplateElementReader } from './org/metadatacenter/io/reader/yaml/YAMLTemplateElementReader';
 import { YAMLTemplateReader } from './org/metadatacenter/io/reader/yaml/YAMLTemplateReader';
+import { CedarArtifactType } from './org/metadatacenter/model/cedar/types/cedar-types/CedarArtifactType';
+import { JSONAbstractArtifactReader } from './org/metadatacenter/io/reader/json/JSONAbstractArtifactReader';
+import { CedarReaders } from './org/metadatacenter/io/reader/CedarReaders';
+import { AbstractArtifact } from './org/metadatacenter/model/cedar/AbstractArtifact';
+import { JSONAbstractArtifactWriter } from './org/metadatacenter/io/writer/json/JSONAbstractArtifactWriter';
+import { ComparisonErrorType } from './org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
+import { CedarJSONWriters } from './org/metadatacenter/io/writer/json/CedarJSONWriters';
+import { CedarJSONReaders } from './org/metadatacenter/io/reader/json/CedarJSONReaders';
+import { CedarYAMLWriters } from './org/metadatacenter/io/writer/yaml/CedarYAMLWriters';
+import { CedarYAMLReaders } from './org/metadatacenter/io/reader/yaml/CedarYAMLReaders';
 
 export { CedarBuilders };
 export { CedarWriters };
+export { CedarReaders };
 
-export { JSONFieldReader, YAMLFieldReader };
-export { JSONElementReader, YAMLElementReader };
+export { CedarJSONReaders, CedarJSONWriters };
+export { CedarYAMLReaders, CedarYAMLWriters };
+
+export { JSONAbstractArtifactReader };
+export { JSONAbstractArtifactWriter };
+
+export { JSONTemplateFieldReader, YAMLTemplateFieldReader };
+export { JSONTemplateElementReader, YAMLTemplateElementReader };
 export { JSONTemplateReader, YAMLTemplateReader };
 
 // It is needed, do not remove, even if it looks unused
@@ -103,6 +132,8 @@ export { YAMLTemplateFieldWriterInternal as YAMLTemplateFieldWriter };
 
 export { JSONTemplateElementWriter, YAMLTemplateElementWriter };
 export { JSONTemplateWriter, YAMLTemplateWriter };
+
+export { AbstractArtifact };
 
 export { TemplateField };
 export { AttributeValueField, AttributeValueFieldBuilder };
@@ -156,3 +187,6 @@ export { CedarModel };
 export { YamlKeys };
 export { YamlValues };
 export { CedarFieldCategory };
+export { CedarArtifactType };
+
+export { ComparisonErrorType };

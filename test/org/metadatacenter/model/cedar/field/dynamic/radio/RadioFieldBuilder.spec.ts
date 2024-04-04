@@ -1,4 +1,12 @@
-import { CedarBuilders, CedarWriters, ISODate, RadioField, RadioFieldBuilder, SchemaVersion } from '../../../../../../../../src';
+import {
+  CedarBuilders,
+  CedarJSONWriters,
+  CedarWriters,
+  ISODate,
+  RadioField,
+  RadioFieldBuilder,
+  SchemaVersion,
+} from '../../../../../../../../src';
 
 describe('RadioFieldBuilder', () => {
   test('creates radio field with builder', () => {
@@ -24,7 +32,7 @@ describe('RadioFieldBuilder', () => {
       .addRadioOption('option 3', true)
       .build();
 
-    const writers: CedarWriters = CedarWriters.getStrict();
+    const writers: CedarJSONWriters = CedarWriters.json().getStrict();
     const jsonWriter = writers.getJSONFieldWriterForField(field);
 
     const stringified = jsonWriter.getAsJsonString(field);

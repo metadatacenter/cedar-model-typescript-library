@@ -1,7 +1,9 @@
 import {
+  CedarJSONWriters,
   CedarModel,
   CedarWriters,
   ComparisonError,
+  ComparisonErrorType,
   JsonPath,
   JsonSchema,
   JSONTemplateReader,
@@ -10,7 +12,6 @@ import {
 } from '../../../../src';
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
 import { TestUtil } from '../../../TestUtil';
-import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
 import { JSONTemplateReaderResult } from '../../../../src/org/metadatacenter/io/reader/json/JSONTemplateReaderResult';
 import { TestResource } from '../../../TestResource';
 
@@ -26,7 +27,7 @@ describe('JSONTemplateReader' + testResource.toString(), () => {
     // TestUtil.p(parsingResult);
     expect(parsingResult.wasSuccessful()).toBe(true);
 
-    const writers: CedarWriters = CedarWriters.getStrict();
+    const writers: CedarJSONWriters = CedarWriters.json().getStrict();
     const writer: JSONTemplateWriter = writers.getJSONTemplateWriter();
 
     const compareResult: ParsingResult = RoundTrip.compare(jsonTemplateReaderResult, writer);

@@ -5,9 +5,9 @@ import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { StaticImageField } from './StaticImageField';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { YamlKeys } from '../../../constants/YamlKeys';
-import { YAMLFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YAMLFieldTypeSpecificReader';
+import { YAMLTemplateFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YAMLTemplateFieldTypeSpecificReader';
 
-export class YAMLFieldReaderImage extends YAMLFieldTypeSpecificReader {
+export class YAMLFieldReaderImage extends YAMLTemplateFieldTypeSpecificReader {
   override read(
     fieldSourceObject: JsonNode,
     _childInfo: ChildDeploymentInfo,

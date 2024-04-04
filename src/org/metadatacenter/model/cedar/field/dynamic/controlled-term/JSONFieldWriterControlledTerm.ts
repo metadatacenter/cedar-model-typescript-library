@@ -3,13 +3,13 @@ import { CedarModel } from '../../../constants/CedarModel';
 import { ControlledTermField } from './ControlledTermField';
 import { JSONTemplateFieldWriterInternal } from '../../../../../io/writer/json/JSONTemplateFieldWriterInternal';
 import { JSONWriterBehavior } from '../../../../../behavior/JSONWriterBehavior';
-import { CedarWriters } from '../../../../../io/writer/CedarWriters';
 import { JsonSchema } from '../../../constants/JsonSchema';
 import { JSONTemplateFieldContentDynamic } from '../../../util/serialization/JSONTemplateFieldContentDynamic';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
+import { CedarJSONWriters } from '../../../../../io/writer/json/CedarJSONWriters';
 
 export class JSONFieldWriterControlledTerm extends JSONTemplateFieldWriterInternal {
-  constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
+  constructor(behavior: JSONWriterBehavior, writers: CedarJSONWriters) {
     super(behavior, writers);
   }
 

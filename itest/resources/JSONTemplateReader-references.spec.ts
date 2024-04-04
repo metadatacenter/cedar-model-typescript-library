@@ -1,7 +1,6 @@
-import { JSONTemplateReader, RoundTrip } from '../../src';
+import { CedarJSONWriters, CedarWriters, JSONTemplateReader, JSONTemplateWriter, RoundTrip } from '../../src';
 import { ParsingResult } from '../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
 import { JSONTemplateReaderResult } from '../../src/org/metadatacenter/io/reader/json/JSONTemplateReaderResult';
-import { CedarWriters, JSONTemplateWriter } from '../../src';
 import { TestUtil } from '../TestUtil';
 
 describe('JSONTemplateReader - CEDAR reference templates', () => {
@@ -44,7 +43,7 @@ describe('JSONTemplateReader - CEDAR reference templates', () => {
     }
     // expect(parsingResult.wasSuccessful()).toBe(true);
 
-    const writers: CedarWriters = CedarWriters.getStrict();
+    const writers: CedarJSONWriters = CedarWriters.json().getStrict();
     const writer: JSONTemplateWriter = writers.getJSONTemplateWriter();
 
     const compareResult: ParsingResult = RoundTrip.compare(jsonTemplateReaderResult, writer);

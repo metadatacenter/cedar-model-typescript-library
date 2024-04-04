@@ -1,17 +1,17 @@
-import { JSONWriterBehavior } from '../../../behavior/JSONWriterBehavior';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
-import { CedarWriters } from '../CedarWriters';
 import { SimpleYamlSerializer } from './SimpleYamlSerializer';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 import { YAMLAbstractContainerArtifactWriter } from './YAMLAbstractContainerArtifactWriter';
 import { TemplateElement } from '../../../model/cedar/element/TemplateElement';
+import { YAMLWriterBehavior } from '../../../behavior/YAMLWriterBehavior';
+import { CedarYAMLWriters } from './CedarYAMLWriters';
 
 export class YAMLTemplateElementWriter extends YAMLAbstractContainerArtifactWriter {
-  private constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
+  private constructor(behavior: YAMLWriterBehavior, writers: CedarYAMLWriters) {
     super(behavior, writers);
   }
 
-  public static getFor(behavior: JSONWriterBehavior, writers: CedarWriters): YAMLTemplateElementWriter {
+  public static getFor(behavior: YAMLWriterBehavior, writers: CedarYAMLWriters): YAMLTemplateElementWriter {
     return new YAMLTemplateElementWriter(behavior, writers);
   }
 

@@ -1,7 +1,5 @@
 import { AbstractArtifactWriter } from '../AbstractArtifactWriter';
-import { CedarWriters } from '../CedarWriters';
 import { YAMLAtomicWriter } from './YAMLAtomicWriter';
-import { JSONWriterBehavior } from '../../../behavior/JSONWriterBehavior';
 import { AbstractArtifact } from '../../../model/cedar/AbstractArtifact';
 import { JsonNode, JsonNodeClass } from '../../../model/cedar/types/basic-types/JsonNode';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
@@ -15,13 +13,20 @@ import { ISODate } from '../../../model/cedar/types/wrapped-types/ISODate';
 import { TemplateElement } from '../../../model/cedar/element/TemplateElement';
 import { YamlArtifactType } from '../../../model/cedar/types/wrapped-types/YamlArtifactType';
 import { Template } from '../../../model/cedar/template/Template';
+import { YAMLWriterBehavior } from '../../../behavior/YAMLWriterBehavior';
+import { CedarYAMLWriters } from './CedarYAMLWriters';
 
 export abstract class YAMLAbstractArtifactWriter extends AbstractArtifactWriter {
+  protected behavior: YAMLWriterBehavior;
+  protected writers: CedarYAMLWriters;
+
   protected atomicWriter: YAMLAtomicWriter;
   protected annotationsWriter: YAMLAnnotationsWriter;
 
-  protected constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
-    super(behavior, writers);
+  protected constructor(behavior: YAMLWriterBehavior, writers: CedarYAMLWriters) {
+    super();
+    this.behavior = behavior;
+    this.writers = writers;
     this.atomicWriter = writers.getYAMLAtomicWriter();
     this.annotationsWriter = writers.getYAMLAnnotationsWriter();
   }

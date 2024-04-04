@@ -1,6 +1,6 @@
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
 import { TestUtil } from '../../../TestUtil';
-import { CedarWriters, ComparisonError, JSONFieldReader, JsonPath, JsonSchema, RoundTrip } from '../../../../src';
+import { CedarJSONWriters, CedarWriters, ComparisonError, JsonPath, JsonSchema, JSONTemplateFieldReader, RoundTrip } from '../../../../src';
 import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
 import { TestResource } from '../../../TestResource';
 
@@ -9,13 +9,13 @@ const testResource: TestResource = TestResource.field(1);
 describe('JSONFieldReader' + testResource.toString(), () => {
   test('reads a text field with a lot of features', () => {
     const artifactSource = TestUtil.readTestJson(testResource);
-    const reader: JSONFieldReader = JSONFieldReader.getStrict();
+    const reader: JSONTemplateFieldReader = JSONTemplateFieldReader.getStrict();
     const jsonFieldReaderResult = reader.readFromString(artifactSource);
     expect(jsonFieldReaderResult).not.toBeNull();
     const parsingResult = jsonFieldReaderResult.parsingResult;
     expect(parsingResult.wasSuccessful()).toBe(true);
 
-    const writers: CedarWriters = CedarWriters.getStrict();
+    const writers: CedarJSONWriters = CedarWriters.json().getStrict();
     const writer = writers.getJSONFieldWriterForField(jsonFieldReaderResult.field);
 
     const compareResult: ParsingResult = RoundTrip.compare(jsonFieldReaderResult, writer);

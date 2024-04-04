@@ -1,6 +1,5 @@
 import { AbstractArtifactWriter } from '../AbstractArtifactWriter';
 import { JSONWriterBehavior } from '../../../behavior/JSONWriterBehavior';
-import { CedarWriters } from '../CedarWriters';
 import { JSONAtomicWriter } from './JSONAtomicWriter';
 import { JSONAnnotationsWriter } from './JSONAnnotationsWriter';
 import { AbstractArtifact } from '../../../model/cedar/AbstractArtifact';
@@ -11,13 +10,19 @@ import { PavVersion } from '../../../model/cedar/types/wrapped-types/PavVersion'
 import { TemplateField } from '../../../model/cedar/field/TemplateField';
 import { CedarModel } from '../../../model/cedar/constants/CedarModel';
 import { CedarArtifactId } from '../../../model/cedar/types/cedar-types/CedarArtifactId';
+import { ValueConstraints } from '../../../model/cedar/field/ValueConstraints';
+import { CedarJSONWriters } from './CedarJSONWriters';
 
 export abstract class JSONAbstractArtifactWriter extends AbstractArtifactWriter {
+  protected behavior: JSONWriterBehavior;
+  protected writers: CedarJSONWriters;
   protected atomicWriter: JSONAtomicWriter;
   protected annotationsWriter: JSONAnnotationsWriter;
 
-  protected constructor(behavior: JSONWriterBehavior, writers: CedarWriters) {
-    super(behavior, writers);
+  protected constructor(behavior: JSONWriterBehavior, writers: CedarJSONWriters) {
+    super();
+    this.behavior = behavior;
+    this.writers = writers;
     this.atomicWriter = writers.getJSONAtomicWriter();
     this.annotationsWriter = writers.getJSONAnnotationsWriter();
   }
@@ -25,6 +30,8 @@ export abstract class JSONAbstractArtifactWriter extends AbstractArtifactWriter 
   public getBehavior(): JSONWriterBehavior {
     return this.behavior;
   }
+
+  public abstract getAsJsonString(artifact: AbstractArtifact | ValueConstraints): string;
 
   protected macroSchemaNameAndDescription(artifact: AbstractArtifact): JsonNode {
     return {

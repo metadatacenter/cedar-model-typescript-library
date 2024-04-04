@@ -8,27 +8,17 @@ import { ISODate } from '../../../model/cedar/types/wrapped-types/ISODate';
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
 import { JSONArtifactReaderResult } from './JSONArtifactReaderResult';
 import { AbstractInstanceArtifact } from '../../../model/cedar/AbstractInstanceArtifact';
+import { JSONAbstractArtifactReader } from './JSONAbstractArtifactReader';
 
-export abstract class JSONAbstractInstanceArtifactReader {
-  protected behavior: JSONReaderBehavior;
-  protected knownArtifactType: CedarArtifactType = CedarArtifactType.NULL;
-
+export abstract class JSONAbstractInstanceArtifactReader extends JSONAbstractArtifactReader {
   protected constructor(behavior: JSONReaderBehavior) {
-    this.behavior = behavior;
+    super(behavior);
   }
 
   public abstract readFromString(artifactSourceString: string): JSONArtifactReaderResult;
 
   protected readNonReportableAttributes(container: AbstractInstanceArtifact, sourceObject: JsonNode): void {
-    // Read in non-reportable properties
-    container.at_id = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, JsonSchema.atId));
-    container.schema_name = ReaderUtil.getString(sourceObject, JsonSchema.schemaName);
-    container.schema_description = ReaderUtil.getString(sourceObject, JsonSchema.schemaDescription);
-    container.pav_createdBy = CedarUser.forValue(ReaderUtil.getString(sourceObject, JsonSchema.pavCreatedBy));
-    container.pav_createdOn = ISODate.forValue(ReaderUtil.getString(sourceObject, JsonSchema.pavCreatedOn));
-    container.oslc_modifiedBy = CedarUser.forValue(ReaderUtil.getString(sourceObject, JsonSchema.oslcModifiedBy));
-    container.pav_lastUpdatedOn = ISODate.forValue(ReaderUtil.getString(sourceObject, JsonSchema.pavLastUpdatedOn));
-
+    super.readNonReportableAttributes(container, sourceObject);
     container.schema_isBasedOn = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, JsonSchema.schemaIsBasedOn));
   }
 }

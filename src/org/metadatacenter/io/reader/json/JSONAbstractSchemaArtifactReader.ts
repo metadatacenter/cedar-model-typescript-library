@@ -18,28 +18,19 @@ import { CedarModel } from '../../../model/cedar/constants/CedarModel';
 import { AnnotationAtId } from '../../../model/cedar/annotation/AnnotationAtId';
 import { AnnotationAtValue } from '../../../model/cedar/annotation/AnnotationAtValue';
 import { JSONArtifactReaderResult } from './JSONArtifactReaderResult';
+import { JSONAbstractArtifactReader } from './JSONAbstractArtifactReader';
 
-export abstract class JSONAbstractSchemaArtifactReader {
-  protected behavior: JSONReaderBehavior;
-  protected knownArtifactType: CedarArtifactType = CedarArtifactType.NULL;
-
+export abstract class JSONAbstractSchemaArtifactReader extends JSONAbstractArtifactReader {
   protected constructor(behavior: JSONReaderBehavior) {
-    this.behavior = behavior;
+    super(behavior);
   }
 
   public abstract readFromString(artifactSourceString: string): JSONArtifactReaderResult;
 
   protected readNonReportableAttributes(container: AbstractSchemaArtifact, sourceObject: JsonNode): void {
-    // Read in non-reportable properties
-    container.at_id = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, JsonSchema.atId));
+    super.readNonReportableAttributes(container, sourceObject);
     container.title = ReaderUtil.getString(sourceObject, TemplateProperty.title);
     container.description = ReaderUtil.getString(sourceObject, TemplateProperty.description);
-    container.schema_name = ReaderUtil.getString(sourceObject, JsonSchema.schemaName);
-    container.schema_description = ReaderUtil.getString(sourceObject, JsonSchema.schemaDescription);
-    container.pav_createdBy = CedarUser.forValue(ReaderUtil.getString(sourceObject, JsonSchema.pavCreatedBy));
-    container.pav_createdOn = ISODate.forValue(ReaderUtil.getString(sourceObject, JsonSchema.pavCreatedOn));
-    container.oslc_modifiedBy = CedarUser.forValue(ReaderUtil.getString(sourceObject, JsonSchema.oslcModifiedBy));
-    container.pav_lastUpdatedOn = ISODate.forValue(ReaderUtil.getString(sourceObject, JsonSchema.pavLastUpdatedOn));
     container.schema_schemaVersion = SchemaVersion.forValue(ReaderUtil.getString(sourceObject, JsonSchema.schemaVersion));
     container.pav_version = PavVersion.forValue(ReaderUtil.getString(sourceObject, JsonSchema.pavVersion));
     container.bibo_status = BiboStatus.forJsonValue(ReaderUtil.getString(sourceObject, JsonSchema.biboStatus));

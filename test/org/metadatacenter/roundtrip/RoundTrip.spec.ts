@@ -10,7 +10,7 @@ import {
   EmailField,
   EmailFieldBuilder,
   ISODate,
-  JSONAbstractSchemaArtifactReader,
+  JSONAbstractArtifactReader,
   JsonPath,
   JsonSchema,
   RoundTrip,
@@ -46,7 +46,7 @@ describe('RoundTrip', () => {
     const cedarArtifactType: CedarArtifactType = CedarReaders.json().detectArtifactType(fieldSourceJSONString);
     const jsonReaders = CedarReaders.json().getStrict();
 
-    const artifactReader: JSONAbstractSchemaArtifactReader = jsonReaders.getReaderForArtifactType(cedarArtifactType);
+    const artifactReader: JSONAbstractArtifactReader = jsonReaders.getReaderForArtifactType(cedarArtifactType);
 
     const jsonArtifactReaderResult = artifactReader.readFromString(fieldSourceJSONString);
     expect(jsonArtifactReaderResult.parsingResult.getBlueprintComparisonErrorCount()).toBe(0);

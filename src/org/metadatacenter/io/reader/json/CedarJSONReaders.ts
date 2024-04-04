@@ -2,12 +2,12 @@ import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarA
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { ReaderUtil } from '../ReaderUtil';
 import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
-import { JSONAbstractSchemaArtifactReader } from './JSONAbstractSchemaArtifactReader';
 import { JSONTemplateReader } from './JSONTemplateReader';
 import { JSONTemplateElementReader } from './JSONTemplateElementReader';
 import { JSONTemplateFieldReader } from './JSONTemplateFieldReader';
 import { JSONReaderBehavior } from '../../../behavior/JSONReaderBehavior';
 import { JSONTemplateInstanceReader } from './JSONTemplateInstancetReader';
+import { JSONAbstractArtifactReader } from './JSONAbstractArtifactReader';
 
 export class CedarJSONReaders {
   private readonly behavior: JSONReaderBehavior;
@@ -34,7 +34,7 @@ export class CedarJSONReaders {
     return CedarArtifactType.NULL;
   }
 
-  public getReaderForArtifactType(cedarArtifactType: CedarArtifactType): JSONAbstractSchemaArtifactReader {
+  public getReaderForArtifactType(cedarArtifactType: CedarArtifactType): JSONAbstractArtifactReader {
     switch (cedarArtifactType) {
       case CedarArtifactType.TEMPLATE:
         return JSONTemplateReader.getStrict();
@@ -44,6 +44,8 @@ export class CedarJSONReaders {
         return JSONTemplateFieldReader.getStrict();
       case CedarArtifactType.STATIC_TEMPLATE_FIELD:
         return JSONTemplateFieldReader.getStrict();
+      case CedarArtifactType.TEMPLATE_INSTANCE:
+        return JSONTemplateInstanceReader.getStrict();
       default:
         throw new Error(`No JSON reader available for CedarArtifactType: ${cedarArtifactType}`);
     }

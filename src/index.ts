@@ -103,6 +103,14 @@ import { AbstractInstanceArtifact } from './org/metadatacenter/model/cedar/Abstr
 import { AbstractArtifact } from './org/metadatacenter/model/cedar/AbstractArtifact';
 import { TemplateInstance } from './org/metadatacenter/model/cedar/template-instance/TemplateInstance';
 import { JSONTemplateInstanceReader } from './org/metadatacenter/io/reader/json/JSONTemplateInstancetReader';
+import { JSONAbstractInstanceArtifactReader } from './org/metadatacenter/io/reader/json/JSONAbstractInstanceArtifactReader';
+import { JSONAbstractArtifactReader } from './org/metadatacenter/io/reader/json/JSONAbstractArtifactReader';
+import { JSONTemplateReaderResult } from './org/metadatacenter/io/reader/json/JSONTemplateReaderResult';
+import { CedarUser } from './org/metadatacenter/model/cedar/types/cedar-types/CedarUser';
+import { JSONArtifactReaderResult } from './org/metadatacenter/io/reader/json/JSONArtifactReaderResult';
+import { JSONTemplateElementReaderResult } from './org/metadatacenter/io/reader/json/JSONTemplateElementReaderResult';
+import { JSONTemplateFieldReaderResult } from './org/metadatacenter/io/reader/json/JSONTemplateFieldReaderResult';
+import { JSONTemplateInstanceReaderResult } from './org/metadatacenter/io/reader/json/JSONTemplateInstanceReaderResult';
 
 export { CedarBuilders };
 export { CedarWriters };
@@ -112,6 +120,8 @@ export { CedarJSONReaders, CedarJSONWriters };
 export { CedarYAMLReaders, CedarYAMLWriters };
 
 export { JSONAbstractSchemaArtifactReader };
+export { JSONAbstractInstanceArtifactReader };
+export { JSONAbstractArtifactReader };
 export { JSONAbstractArtifactWriter };
 
 export { JSONTemplateFieldReader, YAMLTemplateFieldReader };
@@ -185,5 +195,12 @@ export { YamlKeys };
 export { YamlValues };
 export { CedarFieldCategory };
 export { CedarArtifactType };
+export { CedarUser };
 
 export { ComparisonErrorType };
+
+export { JSONTemplateFieldReaderResult };
+export { JSONTemplateElementReaderResult };
+export { JSONTemplateReaderResult };
+export { JSONTemplateInstanceReaderResult };
+export { JSONArtifactReaderResult };

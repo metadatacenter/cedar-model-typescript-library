@@ -39,6 +39,7 @@ import { JSONAbstractArtifactWriter } from './JSONAbstractArtifactWriter';
 import { AbstractSchemaArtifact } from '../../../model/cedar/AbstractSchemaArtifact';
 import { Template } from '../../../model/cedar/template/Template';
 import { TemplateElement } from '../../../model/cedar/element/TemplateElement';
+import { AbstractArtifact } from '../../../model/cedar/AbstractArtifact';
 
 export class CedarJSONWriters {
   private readonly behavior: JSONWriterBehavior;
@@ -144,7 +145,7 @@ export class CedarJSONWriters {
     return this.jsonAnnotationsWriter;
   }
 
-  public getJSONWriterForArtifact(cedarArtifact: AbstractSchemaArtifact): JSONAbstractArtifactWriter {
+  public getJSONWriterForArtifact(cedarArtifact: AbstractArtifact): JSONAbstractArtifactWriter {
     if (cedarArtifact instanceof Template) {
       return JSONTemplateWriter.getFor(this.behavior, this);
     } else if (cedarArtifact instanceof TemplateElement) {

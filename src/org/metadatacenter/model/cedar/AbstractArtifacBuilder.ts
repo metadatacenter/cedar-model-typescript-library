@@ -4,7 +4,7 @@ import { PavVersion } from './types/wrapped-types/PavVersion';
 import { BiboStatus } from './types/wrapped-types/BiboStatus';
 import { CedarArtifactId } from './types/cedar-types/CedarArtifactId';
 import { SchemaVersion } from './types/wrapped-types/SchemaVersion';
-import { AbstractArtifact } from './AbstractArtifact';
+import { AbstractSchemaArtifact } from './AbstractSchemaArtifact';
 
 export abstract class AbstractArtifactBuilder {
   protected at_id: CedarArtifactId = CedarArtifactId.NULL;
@@ -124,7 +124,7 @@ export abstract class AbstractArtifactBuilder {
     return this;
   }
 
-  protected buildInternal(artifact: AbstractArtifact): void {
+  protected buildInternal(artifact: AbstractSchemaArtifact): void {
     artifact.at_id = this.at_id;
     artifact.title = this.title;
     artifact.description = this.description;

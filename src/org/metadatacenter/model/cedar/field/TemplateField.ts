@@ -1,8 +1,8 @@
 import { ValueConstraints } from './ValueConstraints';
 import { CedarFieldType } from '../types/cedar-types/CedarFieldType';
-import { AbstractArtifact } from '../AbstractArtifact';
+import { AbstractSchemaArtifact } from '../AbstractSchemaArtifact';
 
-export abstract class TemplateField extends AbstractArtifact {
+export abstract class TemplateField extends AbstractSchemaArtifact {
   public skos_altLabel: Array<string> | null = null;
   public skos_prefLabel: string | null = null;
 

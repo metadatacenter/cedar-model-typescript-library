@@ -1,10 +1,10 @@
-import { AbstractArtifact } from './AbstractArtifact';
+import { AbstractSchemaArtifact } from './AbstractSchemaArtifact';
 import { ContainerArtifactChildrenInfo } from './deployment/ContainerArtifactChildrenInfo';
 import { TemplateChild } from './types/basic-types/TemplateChild';
 import { AdditionalProperties } from './types/wrapped-types/AdditionalProperties';
 import { ChildDeploymentInfo } from './deployment/ChildDeploymentInfo';
 
-export abstract class AbstractContainerArtifact extends AbstractArtifact {
+export abstract class AbstractContainerArtifact extends AbstractSchemaArtifact {
   // Children
   private childrenInfo: ContainerArtifactChildrenInfo = new ContainerArtifactChildrenInfo();
   private childMap: Map<string, TemplateChild> = new Map<string, TemplateChild>();

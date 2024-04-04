@@ -1,5 +1,5 @@
 import { JSONReaderBehavior } from '../../../behavior/JSONReaderBehavior';
-import { AbstractArtifact } from '../../../model/cedar/AbstractArtifact';
+import { AbstractSchemaArtifact } from '../../../model/cedar/AbstractSchemaArtifact';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { CedarArtifactId } from '../../../model/cedar/types/cedar-types/CedarArtifactId';
 import { ReaderUtil } from '../ReaderUtil';
@@ -19,7 +19,7 @@ import { AnnotationAtId } from '../../../model/cedar/annotation/AnnotationAtId';
 import { AnnotationAtValue } from '../../../model/cedar/annotation/AnnotationAtValue';
 import { JSONArtifactReaderResult } from './JSONArtifactReaderResult';
 
-export abstract class JSONAbstractArtifactReader {
+export abstract class JSONAbstractSchemaArtifactReader {
   protected behavior: JSONReaderBehavior;
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.NULL;
 
@@ -29,7 +29,7 @@ export abstract class JSONAbstractArtifactReader {
 
   public abstract readFromString(artifactSourceString: string): JSONArtifactReaderResult;
 
-  protected readNonReportableAttributes(container: AbstractArtifact, sourceObject: JsonNode): void {
+  protected readNonReportableAttributes(container: AbstractSchemaArtifact, sourceObject: JsonNode): void {
     // Read in non-reportable properties
     container.at_id = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, JsonSchema.atId));
     container.title = ReaderUtil.getString(sourceObject, TemplateProperty.title);
@@ -47,7 +47,12 @@ export abstract class JSONAbstractArtifactReader {
     container.schema_identifier = ReaderUtil.getString(sourceObject, JsonSchema.schemaIdentifier);
   }
 
-  protected readAnnotations(artifact: AbstractArtifact, artifactSourceObject: JsonNode, _parsingResult: ParsingResult, _topPath: JsonPath) {
+  protected readAnnotations(
+    artifact: AbstractSchemaArtifact,
+    artifactSourceObject: JsonNode,
+    _parsingResult: ParsingResult,
+    _topPath: JsonPath,
+  ) {
     const annotations = new Annotations();
     const annotationsNode: JsonNode | null = ReaderUtil.getNodeOrNull(artifactSourceObject, CedarModel.annotations);
     if (annotationsNode !== null) {

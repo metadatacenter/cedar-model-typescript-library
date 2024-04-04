@@ -2,7 +2,7 @@ import { AbstractArtifactWriter } from '../AbstractArtifactWriter';
 import { JSONWriterBehavior } from '../../../behavior/JSONWriterBehavior';
 import { JSONAtomicWriter } from './JSONAtomicWriter';
 import { JSONAnnotationsWriter } from './JSONAnnotationsWriter';
-import { AbstractArtifact } from '../../../model/cedar/AbstractArtifact';
+import { AbstractSchemaArtifact } from '../../../model/cedar/AbstractSchemaArtifact';
 import { JsonNode, JsonNodeClass } from '../../../model/cedar/types/basic-types/JsonNode';
 import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
 import { BiboStatus } from '../../../model/cedar/types/wrapped-types/BiboStatus';
@@ -31,16 +31,16 @@ export abstract class JSONAbstractArtifactWriter extends AbstractArtifactWriter 
     return this.behavior;
   }
 
-  public abstract getAsJsonString(artifact: AbstractArtifact | ValueConstraints): string;
+  public abstract getAsJsonString(artifact: AbstractSchemaArtifact | ValueConstraints): string;
 
-  protected macroSchemaNameAndDescription(artifact: AbstractArtifact): JsonNode {
+  protected macroSchemaNameAndDescription(artifact: AbstractSchemaArtifact): JsonNode {
     return {
       [JsonSchema.schemaName]: artifact.schema_name,
       [JsonSchema.schemaDescription]: artifact.schema_description,
     } as JsonNode;
   }
 
-  protected macroProvenance(artifact: AbstractArtifact, atomicWriter: JSONAtomicWriter): JsonNode {
+  protected macroProvenance(artifact: AbstractSchemaArtifact, atomicWriter: JSONAtomicWriter): JsonNode {
     return {
       [JsonSchema.pavCreatedOn]: atomicWriter.write(artifact.pav_createdOn),
       [JsonSchema.pavCreatedBy]: atomicWriter.write(artifact.pav_createdBy),
@@ -49,7 +49,7 @@ export abstract class JSONAbstractArtifactWriter extends AbstractArtifactWriter 
     } as JsonNode;
   }
 
-  protected macroStatusAndVersion(artifact: AbstractArtifact, atomicWriter: JSONAtomicWriter): JsonNode {
+  protected macroStatusAndVersion(artifact: AbstractSchemaArtifact, atomicWriter: JSONAtomicWriter): JsonNode {
     const svObject: JsonNode = JsonNodeClass.getEmpty();
     if (artifact.bibo_status !== BiboStatus.NULL) {
       svObject[JsonSchema.biboStatus] = atomicWriter.write(artifact.bibo_status);
@@ -71,7 +71,7 @@ export abstract class JSONAbstractArtifactWriter extends AbstractArtifactWriter 
     return skosObject;
   }
 
-  protected macroDerivedFrom(artifact: AbstractArtifact): JsonNode {
+  protected macroDerivedFrom(artifact: AbstractSchemaArtifact): JsonNode {
     const derivedFrom: JsonNode = JsonNodeClass.getEmpty();
     if (artifact.pav_derivedFrom !== CedarArtifactId.NULL) {
       derivedFrom[JsonSchema.pavDerivedFrom] = this.atomicWriter.write(artifact.pav_derivedFrom);
@@ -79,7 +79,7 @@ export abstract class JSONAbstractArtifactWriter extends AbstractArtifactWriter 
     return derivedFrom;
   }
 
-  protected macroSchemaIdentifier(artifact: AbstractArtifact): JsonNode {
+  protected macroSchemaIdentifier(artifact: AbstractSchemaArtifact): JsonNode {
     const schemaIdentifier: JsonNode = JsonNodeClass.getEmpty();
     if (artifact.schema_identifier !== null) {
       schemaIdentifier[JsonSchema.schemaIdentifier] = artifact.schema_identifier;
@@ -87,7 +87,7 @@ export abstract class JSONAbstractArtifactWriter extends AbstractArtifactWriter 
     return schemaIdentifier;
   }
 
-  protected macroAnnotations(artifact: AbstractArtifact): JsonNode {
+  protected macroAnnotations(artifact: AbstractSchemaArtifact): JsonNode {
     return this.annotationsWriter.write(artifact.annotations);
   }
 }

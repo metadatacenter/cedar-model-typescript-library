@@ -35,10 +35,10 @@ import { JSONFieldReaderControlledTerm } from '../../../model/cedar/field/dynami
 import { JSONReaderBehavior } from '../../../behavior/JSONReaderBehavior';
 import { JSONTemplateFieldReaderResult } from './JSONTemplateFieldReaderResult';
 import { UnknownTemplateField } from '../../../model/cedar/field/UnknownTemplateField';
-import { JSONAbstractArtifactReader } from './JSONAbstractArtifactReader';
+import { JSONAbstractSchemaArtifactReader } from './JSONAbstractSchemaArtifactReader';
 import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
 
-export class JSONTemplateFieldReader extends JSONAbstractArtifactReader {
+export class JSONTemplateFieldReader extends JSONAbstractSchemaArtifactReader {
   private constructor(behavior: JSONReaderBehavior) {
     super(behavior);
   }

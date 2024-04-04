@@ -36,7 +36,7 @@ import { JSONAnnotationsWriter } from './JSONAnnotationsWriter';
 import { ControlledTermAction } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/action/ControlledTermAction';
 import { JSONValueConstraintsActionWriter } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/action/JSONValueConstraintsActionWriter';
 import { JSONAbstractArtifactWriter } from './JSONAbstractArtifactWriter';
-import { AbstractArtifact } from '../../../model/cedar/AbstractArtifact';
+import { AbstractSchemaArtifact } from '../../../model/cedar/AbstractSchemaArtifact';
 import { Template } from '../../../model/cedar/template/Template';
 import { TemplateElement } from '../../../model/cedar/element/TemplateElement';
 
@@ -144,7 +144,7 @@ export class CedarJSONWriters {
     return this.jsonAnnotationsWriter;
   }
 
-  public getJSONWriterForArtifact(cedarArtifact: AbstractArtifact): JSONAbstractArtifactWriter {
+  public getJSONWriterForArtifact(cedarArtifact: AbstractSchemaArtifact): JSONAbstractArtifactWriter {
     if (cedarArtifact instanceof Template) {
       return JSONTemplateWriter.getFor(this.behavior, this);
     } else if (cedarArtifact instanceof TemplateElement) {

@@ -67,21 +67,11 @@ import { TemporalType } from './org/metadatacenter/model/cedar/types/wrapped-typ
 import { NumberType } from './org/metadatacenter/model/cedar/types/wrapped-types/NumberType';
 import { URI } from './org/metadatacenter/model/cedar/types/wrapped-types/URI';
 
-import {
-  ControlledTermBranchBuilder,
-} from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/branch/ControlledTermBranchBuilder';
-import {
-  ControlledTermClassBuilder,
-} from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/class/ControlledTermClassBuilder';
-import {
-  ControlledTermOntologyBuilder,
-} from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/ontology/ControlledTermOntologyBuilder';
-import {
-  ControlledTermValueSetBuilder,
-} from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/value-set/ControlledTermValueSetBuilder';
-import {
-  ControlledTermDefaultValueBuilder,
-} from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/ControlledTermDefaultValueBuilder';
+import { ControlledTermBranchBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/branch/ControlledTermBranchBuilder';
+import { ControlledTermClassBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/class/ControlledTermClassBuilder';
+import { ControlledTermOntologyBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/ontology/ControlledTermOntologyBuilder';
+import { ControlledTermValueSetBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/value-set/ControlledTermValueSetBuilder';
+import { ControlledTermDefaultValueBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/ControlledTermDefaultValueBuilder';
 import { BiboStatus } from './org/metadatacenter/model/cedar/types/wrapped-types/BiboStatus';
 
 import { ChildDeploymentInfo } from './org/metadatacenter/model/cedar/deployment/ChildDeploymentInfo';
@@ -91,9 +81,7 @@ import { ComparisonError } from './org/metadatacenter/model/cedar/util/compare/C
 import { RoundTrip } from './org/metadatacenter/io/roundtrip/RoundTrip';
 import { JsonSchema } from './org/metadatacenter/model/cedar/constants/JsonSchema';
 import { CedarModel } from './org/metadatacenter/model/cedar/constants/CedarModel';
-import {
-  ControlledTermActionBuilder,
-} from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/action/ControlledTermActionBuilder';
+import { ControlledTermActionBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/action/ControlledTermActionBuilder';
 import { YamlKeys } from './org/metadatacenter/model/cedar/constants/YamlKeys';
 import { YamlValues } from './org/metadatacenter/model/cedar/constants/YamlValues';
 import { BioportalTermType } from './org/metadatacenter/model/cedar/types/bioportal-types/BioportalTermType';
@@ -102,15 +90,19 @@ import { YAMLTemplateFieldReader } from './org/metadatacenter/io/reader/yaml/YAM
 import { YAMLTemplateElementReader } from './org/metadatacenter/io/reader/yaml/YAMLTemplateElementReader';
 import { YAMLTemplateReader } from './org/metadatacenter/io/reader/yaml/YAMLTemplateReader';
 import { CedarArtifactType } from './org/metadatacenter/model/cedar/types/cedar-types/CedarArtifactType';
-import { JSONAbstractArtifactReader } from './org/metadatacenter/io/reader/json/JSONAbstractArtifactReader';
+import { JSONAbstractSchemaArtifactReader } from './org/metadatacenter/io/reader/json/JSONAbstractSchemaArtifactReader';
 import { CedarReaders } from './org/metadatacenter/io/reader/CedarReaders';
-import { AbstractArtifact } from './org/metadatacenter/model/cedar/AbstractArtifact';
+import { AbstractSchemaArtifact } from './org/metadatacenter/model/cedar/AbstractSchemaArtifact';
 import { JSONAbstractArtifactWriter } from './org/metadatacenter/io/writer/json/JSONAbstractArtifactWriter';
 import { ComparisonErrorType } from './org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
 import { CedarJSONWriters } from './org/metadatacenter/io/writer/json/CedarJSONWriters';
 import { CedarJSONReaders } from './org/metadatacenter/io/reader/json/CedarJSONReaders';
 import { CedarYAMLWriters } from './org/metadatacenter/io/writer/yaml/CedarYAMLWriters';
 import { CedarYAMLReaders } from './org/metadatacenter/io/reader/yaml/CedarYAMLReaders';
+import { AbstractInstanceArtifact } from './org/metadatacenter/model/cedar/AbstractInstanceArtifact';
+import { AbstractArtifact } from './org/metadatacenter/model/cedar/AbstractArtifact';
+import { TemplateInstance } from './org/metadatacenter/model/cedar/template-instance/TemplateInstance';
+import { JSONTemplateInstanceReader } from './org/metadatacenter/io/reader/json/JSONTemplateInstancetReader';
 
 export { CedarBuilders };
 export { CedarWriters };
@@ -119,12 +111,13 @@ export { CedarReaders };
 export { CedarJSONReaders, CedarJSONWriters };
 export { CedarYAMLReaders, CedarYAMLWriters };
 
-export { JSONAbstractArtifactReader };
+export { JSONAbstractSchemaArtifactReader };
 export { JSONAbstractArtifactWriter };
 
 export { JSONTemplateFieldReader, YAMLTemplateFieldReader };
 export { JSONTemplateElementReader, YAMLTemplateElementReader };
 export { JSONTemplateReader, YAMLTemplateReader };
+export { JSONTemplateInstanceReader };
 
 // It is needed, do not remove, even if it looks unused
 export { JSONTemplateFieldWriterInternal as JSONTemplateFieldWriter };
@@ -133,6 +126,8 @@ export { YAMLTemplateFieldWriterInternal as YAMLTemplateFieldWriter };
 export { JSONTemplateElementWriter, YAMLTemplateElementWriter };
 export { JSONTemplateWriter, YAMLTemplateWriter };
 
+export { AbstractSchemaArtifact };
+export { AbstractInstanceArtifact };
 export { AbstractArtifact };
 
 export { TemplateField };
@@ -156,6 +151,8 @@ export { StaticYoutubeField, StaticYoutubeFieldBuilder };
 
 export { TemplateElement, TemplateElementBuilder };
 export { Template, TemplateBuilder };
+
+export { TemplateInstance };
 
 export { ControlledTermDefaultValueBuilder };
 export { ControlledTermBranchBuilder };

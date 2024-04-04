@@ -2,11 +2,12 @@ import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarA
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { ReaderUtil } from '../ReaderUtil';
 import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
-import { JSONAbstractArtifactReader } from './JSONAbstractArtifactReader';
+import { JSONAbstractSchemaArtifactReader } from './JSONAbstractSchemaArtifactReader';
 import { JSONTemplateReader } from './JSONTemplateReader';
 import { JSONTemplateElementReader } from './JSONTemplateElementReader';
 import { JSONTemplateFieldReader } from './JSONTemplateFieldReader';
 import { JSONReaderBehavior } from '../../../behavior/JSONReaderBehavior';
+import { JSONTemplateInstanceReader } from './JSONTemplateInstancetReader';
 
 export class CedarJSONReaders {
   private readonly behavior: JSONReaderBehavior;
@@ -33,7 +34,7 @@ export class CedarJSONReaders {
     return CedarArtifactType.NULL;
   }
 
-  public getReaderForArtifactType(cedarArtifactType: CedarArtifactType): JSONAbstractArtifactReader {
+  public getReaderForArtifactType(cedarArtifactType: CedarArtifactType): JSONAbstractSchemaArtifactReader {
     switch (cedarArtifactType) {
       case CedarArtifactType.TEMPLATE:
         return JSONTemplateReader.getStrict();
@@ -55,7 +56,12 @@ export class CedarJSONReaders {
   public getTemplateElementReader(): JSONTemplateElementReader {
     return JSONTemplateElementReader.getForBehavior(this.behavior);
   }
+
   public getTemplateFieldReader(): JSONTemplateFieldReader {
     return JSONTemplateFieldReader.getForBehavior(this.behavior);
+  }
+
+  public getTemplateInstanceReader(): JSONTemplateInstanceReader {
+    return JSONTemplateInstanceReader.getForBehavior(this.behavior);
   }
 }

@@ -24,6 +24,8 @@ export const YamlArtifactTypeValues = {
   IMAGE: 'static-image',
   RICH_TEXT: 'static-rich-text',
   YOUTUBE: 'static-youtube-video',
+
+  TEMPLATE_INSTANCE: 'instance',
 } as const;
 
 export type YamlArtifactTypeValue = (typeof YamlArtifactTypeValues)[keyof typeof YamlArtifactTypeValues] | null;
@@ -64,6 +66,8 @@ export class YamlArtifactType {
   public static RICH_TEXT = new YamlArtifactType(YamlArtifactTypeValues.RICH_TEXT, CedarFieldCategory.STATIC);
   public static YOUTUBE = new YamlArtifactType(YamlArtifactTypeValues.YOUTUBE, CedarFieldCategory.STATIC);
 
+  public static TEMPLATE_INSTANCE = new YamlArtifactType(YamlArtifactTypeValues.TEMPLATE_INSTANCE, CedarFieldCategory.NONE);
+
   public static NULL = new YamlArtifactType(null, CedarFieldCategory.NULL);
 
   public static values(): YamlArtifactType[] {
@@ -90,6 +94,8 @@ export class YamlArtifactType {
       YamlArtifactType.IMAGE,
       YamlArtifactType.RICH_TEXT,
       YamlArtifactType.YOUTUBE,
+
+      YamlArtifactType.TEMPLATE_INSTANCE,
 
       YamlArtifactType.NULL,
     ];
@@ -122,5 +128,9 @@ export class YamlArtifactType {
 
   isDynamicField() {
     return this.category === CedarFieldCategory.DYNAMIC;
+  }
+
+  isTemplateInstance() {
+    return this.value === YamlArtifactTypeValues.TEMPLATE_INSTANCE;
   }
 }

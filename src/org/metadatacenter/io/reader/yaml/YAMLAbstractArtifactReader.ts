@@ -1,4 +1,4 @@
-import { AbstractArtifact } from '../../../model/cedar/AbstractArtifact';
+import { AbstractSchemaArtifact } from '../../../model/cedar/AbstractSchemaArtifact';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { CedarArtifactId } from '../../../model/cedar/types/cedar-types/CedarArtifactId';
 import { CedarUser } from '../../../model/cedar/types/cedar-types/CedarUser';
@@ -25,7 +25,7 @@ export abstract class YAMLAbstractArtifactReader {
     this.behavior = behavior;
   }
 
-  protected readNonReportableAttributes(container: AbstractArtifact, sourceObject: JsonNode): void {
+  protected readNonReportableAttributes(container: AbstractSchemaArtifact, sourceObject: JsonNode): void {
     // Read in non-reportable properties
     container.at_id = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, YamlKeys.id));
     // TODO: These are lost???
@@ -44,7 +44,12 @@ export abstract class YAMLAbstractArtifactReader {
     container.schema_identifier = ReaderUtil.getString(sourceObject, YamlKeys.identifier);
   }
 
-  protected readAnnotations(artifact: AbstractArtifact, artifactSourceObject: JsonNode, _parsingResult: ParsingResult, _topPath: JsonPath) {
+  protected readAnnotations(
+    artifact: AbstractSchemaArtifact,
+    artifactSourceObject: JsonNode,
+    _parsingResult: ParsingResult,
+    _topPath: JsonPath,
+  ) {
     const annotations = new Annotations();
     const annotationsNodeList: JsonNode[] = ReaderUtil.getNodeList(artifactSourceObject, YamlKeys.annotations);
     annotationsNodeList.forEach((annotationNode) => {

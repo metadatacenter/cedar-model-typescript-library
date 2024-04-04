@@ -5,6 +5,7 @@ export const CedarArtifactTypeValues = {
   TEMPLATE_ELEMENT: 'https://schema.metadatacenter.org/core/TemplateElement',
   TEMPLATE_FIELD: 'https://schema.metadatacenter.org/core/TemplateField',
   STATIC_TEMPLATE_FIELD: 'https://schema.metadatacenter.org/core/StaticTemplateField',
+  TEMPLATE_INSTANCE: 'TemplateInstance',
 } as const;
 
 export const CedarArtifactTypeYamlValues = {
@@ -12,6 +13,7 @@ export const CedarArtifactTypeYamlValues = {
   TEMPLATE_ELEMENT: 'templateElement',
   TEMPLATE_FIELD: 'templateField',
   STATIC_TEMPLATE_FIELD: 'staticTemplateField',
+  TEMPLATE_INSTANCE: 'instance',
 } as const;
 
 export type CedarArtifactTypeValue = (typeof CedarArtifactTypeValues)[keyof typeof CedarArtifactTypeValues] | null;
@@ -44,6 +46,10 @@ export class CedarArtifactType {
     CedarArtifactTypeValues.STATIC_TEMPLATE_FIELD,
     CedarArtifactTypeYamlValues.STATIC_TEMPLATE_FIELD,
   );
+  public static TEMPLATE_INSTANCE = new CedarArtifactType(
+    CedarArtifactTypeValues.TEMPLATE_INSTANCE,
+    CedarArtifactTypeYamlValues.TEMPLATE_INSTANCE,
+  );
   public static NULL = new CedarArtifactType(null, null);
 
   public static values(): CedarArtifactType[] {
@@ -52,6 +58,7 @@ export class CedarArtifactType {
       CedarArtifactType.TEMPLATE_ELEMENT,
       CedarArtifactType.TEMPLATE_FIELD,
       CedarArtifactType.STATIC_TEMPLATE_FIELD,
+      CedarArtifactType.TEMPLATE_INSTANCE,
     ];
   }
 
@@ -73,6 +80,8 @@ export class CedarArtifactType {
       return CedarArtifactType.TEMPLATE_FIELD;
     } else if (yamlArtifactType.isStaticField()) {
       return CedarArtifactType.STATIC_TEMPLATE_FIELD;
+    } else if (yamlArtifactType.isTemplateInstance()) {
+      return CedarArtifactType.TEMPLATE_INSTANCE;
     }
     return CedarArtifactType.NULL;
   }

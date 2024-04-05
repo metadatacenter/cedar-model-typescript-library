@@ -29,6 +29,7 @@ import { ListFieldBuilderImpl } from '../../model/cedar/field/dynamic/list/ListF
 import { LinkFieldBuilderImpl } from '../../model/cedar/field/dynamic/link/LinkFieldBuilderImpl';
 import { EmailFieldBuilderImpl } from '../../model/cedar/field/dynamic/email/EmailFieldBuilderImpl';
 import { AttributeValueFieldBuilderImpl } from '../../model/cedar/field/dynamic/attribute-value/AttributeValueFieldBuilderImpl';
+import { CheckboxFieldBuilderImpl } from '../../model/cedar/field/dynamic/checkbox/CheckboxFieldBuilderImpl';
 
 export abstract class CedarBuilders {
   static templateBuilder(): TemplateBuilder {
@@ -100,7 +101,7 @@ export abstract class CedarBuilders {
   }
 
   static checkboxFieldBuilder(): CheckboxFieldBuilder {
-    return new CheckboxFieldBuilder();
+    return CheckboxFieldBuilderImpl.create();
   }
 
   static controlledTermFieldBuilder(): ControlledTermFieldBuilder {

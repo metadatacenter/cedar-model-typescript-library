@@ -7,6 +7,7 @@ import { CheckboxOption } from './CheckboxOption';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { YamlTemplateFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YamlTemplateFieldTypeSpecificReader';
 import { YamlKeys } from '../../../constants/YamlKeys';
+import { CheckboxFieldImpl } from './CheckboxFieldImpl';
 
 export class YamlFieldReaderCheckbox extends YamlTemplateFieldTypeSpecificReader {
   override read(
@@ -15,7 +16,7 @@ export class YamlFieldReaderCheckbox extends YamlTemplateFieldTypeSpecificReader
     _parsingResult: ParsingResult,
     _path: JsonPath,
   ): CheckboxField {
-    const field = CheckboxField.buildEmptyWithNullValues();
+    const field = CheckboxFieldImpl.buildEmpty();
     const literals: Array<JsonNode> = ReaderUtil.getNodeList(fieldSourceObject, YamlKeys.values);
     if (literals !== null) {
       literals.forEach((literal) => {

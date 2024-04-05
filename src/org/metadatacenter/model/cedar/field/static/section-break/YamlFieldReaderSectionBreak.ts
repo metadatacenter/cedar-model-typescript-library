@@ -4,6 +4,7 @@ import { JsonPath } from '../../../util/path/JsonPath';
 import { StaticSectionBreakField } from './StaticSectionBreakField';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { YamlTemplateFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YamlTemplateFieldTypeSpecificReader';
+import { StaticSectionBreakFieldImpl } from './StaticSectionBreakFieldImpl';
 
 export class YamlFieldReaderSectionBreak extends YamlTemplateFieldTypeSpecificReader {
   override read(
@@ -12,6 +13,6 @@ export class YamlFieldReaderSectionBreak extends YamlTemplateFieldTypeSpecificRe
     _parsingResult: ParsingResult,
     _path: JsonPath,
   ): StaticSectionBreakField {
-    return StaticSectionBreakField.buildEmptyWithNullValues();
+    return StaticSectionBreakFieldImpl.buildEmpty();
   }
 }

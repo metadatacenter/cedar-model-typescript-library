@@ -34,6 +34,7 @@ import { ControlledTermFieldBuilderImpl } from '../../model/cedar/field/dynamic/
 import { StaticImageFieldBuilderImpl } from '../../model/cedar/field/static/image/StaticImageFieldBuilderImpl';
 import { StaticPageBreakFieldBuilderImpl } from '../../model/cedar/field/static/page-break/StaticPageBreakFieldBuilderImpl';
 import { StaticRichTextFieldBuilderImpl } from '../../model/cedar/field/static/rich-text/StaticRichTextFieldBuilderImpl';
+import { StaticSectionBreakFieldBuilderImpl } from '../../model/cedar/field/static/section-break/StaticSectionBreakFieldBuilderImpl';
 
 export abstract class CedarBuilders {
   static templateBuilder(): TemplateBuilder {
@@ -77,7 +78,7 @@ export abstract class CedarBuilders {
   }
 
   static sectionBreakFieldBuilder(): StaticSectionBreakFieldBuilder {
-    return new StaticSectionBreakFieldBuilder();
+    return StaticSectionBreakFieldBuilderImpl.create();
   }
 
   static richTextFieldBuilder(): StaticRichTextFieldBuilder {

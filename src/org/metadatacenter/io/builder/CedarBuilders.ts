@@ -24,6 +24,7 @@ import { TextAreaBuilder } from '../../model/cedar/field/dynamic/textarea/TextAr
 import { TemporalFieldBuilderImpl } from '../../model/cedar/field/dynamic/temporal/TemporalFieldBuilderImpl';
 import { RadioFieldBuilderImpl } from '../../model/cedar/field/dynamic/radio/RadioFieldBuilderImpl';
 import { PhoneNumberFieldBuilderImpl } from '../../model/cedar/field/dynamic/phone-number/PhoneNumberFieldBuilderImpl';
+import { NumericFieldBuilderImpl } from '../../model/cedar/field/dynamic/numeric/NumericFieldBuilderImpl';
 
 export abstract class CedarBuilders {
   static templateBuilder(): TemplateBuilder {
@@ -51,7 +52,7 @@ export abstract class CedarBuilders {
   }
 
   static numericFieldBuilder(): NumericFieldBuilder {
-    return new NumericFieldBuilder();
+    return NumericFieldBuilderImpl.create();
   }
 
   static emailFieldBuilder(): EmailFieldBuilder {

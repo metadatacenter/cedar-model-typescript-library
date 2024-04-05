@@ -7,10 +7,11 @@ import { NumericField } from './NumericField';
 import { NumberType } from '../../../types/wrapped-types/NumberType';
 import { JsonTemplateFieldTypeSpecificReader } from '../../../../../io/reader/json/JsonTemplateFieldTypeSpecificReader';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
+import { NumericFieldImpl } from './NumericFieldImpl';
 
 export class JsonFieldReaderNumeric extends JsonTemplateFieldTypeSpecificReader {
   override read(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, _parsingResult: ParsingResult, _path: JsonPath): NumericField {
-    const field = NumericField.buildEmptyWithNullValues();
+    const field = NumericFieldImpl.buildEmpty();
     this.readRequiredAndHidden(fieldSourceObject, childInfo);
 
     const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);

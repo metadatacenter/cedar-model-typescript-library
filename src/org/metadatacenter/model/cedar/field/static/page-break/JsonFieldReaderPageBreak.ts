@@ -4,6 +4,7 @@ import { JsonPath } from '../../../util/path/JsonPath';
 import { StaticPageBreakField } from './StaticPageBreakField';
 import { JsonTemplateFieldTypeSpecificReader } from '../../../../../io/reader/json/JsonTemplateFieldTypeSpecificReader';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
+import { StaticPageBreakFieldImpl } from './StaticPageBreakFieldImpl';
 
 export class JsonFieldReaderPageBreak extends JsonTemplateFieldTypeSpecificReader {
   override read(
@@ -12,6 +13,6 @@ export class JsonFieldReaderPageBreak extends JsonTemplateFieldTypeSpecificReade
     _parsingResult: ParsingResult,
     _path: JsonPath,
   ): StaticPageBreakField {
-    return StaticPageBreakField.buildEmptyWithNullValues();
+    return StaticPageBreakFieldImpl.buildEmpty();
   }
 }

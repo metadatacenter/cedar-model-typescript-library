@@ -33,6 +33,7 @@ import { CheckboxFieldBuilderImpl } from '../../model/cedar/field/dynamic/checkb
 import { ControlledTermFieldBuilderImpl } from '../../model/cedar/field/dynamic/controlled-term/ControlledTermFieldBuilderImpl';
 import { StaticImageFieldBuilderImpl } from '../../model/cedar/field/static/image/StaticImageFieldBuilderImpl';
 import { StaticPageBreakFieldBuilderImpl } from '../../model/cedar/field/static/page-break/StaticPageBreakFieldBuilderImpl';
+import { StaticRichTextFieldBuilderImpl } from '../../model/cedar/field/static/rich-text/StaticRichTextFieldBuilderImpl';
 
 export abstract class CedarBuilders {
   static templateBuilder(): TemplateBuilder {
@@ -80,7 +81,7 @@ export abstract class CedarBuilders {
   }
 
   static richTextFieldBuilder(): StaticRichTextFieldBuilder {
-    return new StaticRichTextFieldBuilder();
+    return StaticRichTextFieldBuilderImpl.create();
   }
 
   static pageBreakFieldBuilder(): StaticPageBreakFieldBuilder {

@@ -6,6 +6,7 @@ import { CedarModel } from '../../../constants/CedarModel';
 import { StaticRichTextField } from './StaticRichTextField';
 import { JsonTemplateFieldTypeSpecificReader } from '../../../../../io/reader/json/JsonTemplateFieldTypeSpecificReader';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
+import { StaticRichTextFieldImpl } from './StaticRichTextFieldImpl';
 
 export class JsonFieldReaderRichText extends JsonTemplateFieldTypeSpecificReader {
   override read(
@@ -14,7 +15,7 @@ export class JsonFieldReaderRichText extends JsonTemplateFieldTypeSpecificReader
     _parsingResult: ParsingResult,
     _path: JsonPath,
   ): StaticRichTextField {
-    const field = StaticRichTextField.buildEmptyWithNullValues();
+    const field = StaticRichTextFieldImpl.buildEmpty();
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
     field.content = ReaderUtil.getString(uiNode, CedarModel.content);
     return field;

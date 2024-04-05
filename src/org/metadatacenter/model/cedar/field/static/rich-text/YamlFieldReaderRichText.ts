@@ -6,6 +6,7 @@ import { StaticRichTextField } from './StaticRichTextField';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { YamlTemplateFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YamlTemplateFieldTypeSpecificReader';
 import { YamlKeys } from '../../../constants/YamlKeys';
+import { StaticRichTextFieldImpl } from './StaticRichTextFieldImpl';
 
 export class YamlFieldReaderRichText extends YamlTemplateFieldTypeSpecificReader {
   override read(
@@ -14,7 +15,7 @@ export class YamlFieldReaderRichText extends YamlTemplateFieldTypeSpecificReader
     _parsingResult: ParsingResult,
     _path: JsonPath,
   ): StaticRichTextField {
-    const field = StaticRichTextField.buildEmptyWithNullValues();
+    const field = StaticRichTextFieldImpl.buildEmpty();
     field.content = ReaderUtil.getString(fieldSourceObject, YamlKeys.content);
     return field;
   }

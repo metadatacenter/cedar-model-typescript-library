@@ -4,6 +4,7 @@ import { JsonPath } from '../../../util/path/JsonPath';
 import { AttributeValueField } from './AttributeValueField';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { YamlTemplateFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YamlTemplateFieldTypeSpecificReader';
+import { AttributeValueFieldImpl } from './AttributeValueFieldImpl';
 
 export class YamlFieldReaderAttributeValue extends YamlTemplateFieldTypeSpecificReader {
   override read(
@@ -12,7 +13,7 @@ export class YamlFieldReaderAttributeValue extends YamlTemplateFieldTypeSpecific
     _parsingResult: ParsingResult,
     _path: JsonPath,
   ): AttributeValueField {
-    const field = AttributeValueField.buildEmptyWithNullValues();
+    const field = AttributeValueFieldImpl.buildEmpty();
     return field;
   }
 }

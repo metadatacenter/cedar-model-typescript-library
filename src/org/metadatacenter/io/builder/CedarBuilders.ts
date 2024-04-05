@@ -28,6 +28,7 @@ import { NumericFieldBuilderImpl } from '../../model/cedar/field/dynamic/numeric
 import { ListFieldBuilderImpl } from '../../model/cedar/field/dynamic/list/ListFieldBuilderImpl';
 import { LinkFieldBuilderImpl } from '../../model/cedar/field/dynamic/link/LinkFieldBuilderImpl';
 import { EmailFieldBuilderImpl } from '../../model/cedar/field/dynamic/email/EmailFieldBuilderImpl';
+import { AttributeValueFieldBuilderImpl } from '../../model/cedar/field/dynamic/attribute-value/AttributeValueFieldBuilderImpl';
 
 export abstract class CedarBuilders {
   static templateBuilder(): TemplateBuilder {
@@ -63,7 +64,7 @@ export abstract class CedarBuilders {
   }
 
   static attributeValueFieldBuilder(): AttributeValueFieldBuilder {
-    return new AttributeValueFieldBuilder();
+    return AttributeValueFieldBuilderImpl.create();
   }
 
   static youtubeFieldBuilder(): StaticYoutubeFieldBuilder {

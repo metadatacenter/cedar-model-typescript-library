@@ -4,6 +4,7 @@ import { JsonPath } from '../../../util/path/JsonPath';
 import { AttributeValueField } from './AttributeValueField';
 import { JsonTemplateFieldTypeSpecificReader } from '../../../../../io/reader/json/JsonTemplateFieldTypeSpecificReader';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
+import { AttributeValueFieldImpl } from './AttributeValueFieldImpl';
 
 export class JsonFieldReaderAttributeValue extends JsonTemplateFieldTypeSpecificReader {
   override read(
@@ -12,7 +13,7 @@ export class JsonFieldReaderAttributeValue extends JsonTemplateFieldTypeSpecific
     _parsingResult: ParsingResult,
     _path: JsonPath,
   ): AttributeValueField {
-    const field = AttributeValueField.buildEmptyWithNullValues();
+    const field = AttributeValueFieldImpl.buildEmpty();
     this.readRequiredAndHidden(fieldSourceObject, childInfo);
     return field;
   }

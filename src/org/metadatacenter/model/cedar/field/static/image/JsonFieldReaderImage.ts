@@ -6,6 +6,7 @@ import { CedarModel } from '../../../constants/CedarModel';
 import { StaticImageField } from './StaticImageField';
 import { JsonTemplateFieldTypeSpecificReader } from '../../../../../io/reader/json/JsonTemplateFieldTypeSpecificReader';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
+import { StaticImageFieldImpl } from './StaticImageFieldImpl';
 
 export class JsonFieldReaderImage extends JsonTemplateFieldTypeSpecificReader {
   override read(
@@ -14,7 +15,7 @@ export class JsonFieldReaderImage extends JsonTemplateFieldTypeSpecificReader {
     _parsingResult: ParsingResult,
     _path: JsonPath,
   ): StaticImageField {
-    const field = StaticImageField.buildEmptyWithNullValues();
+    const field = StaticImageFieldImpl.buildEmpty();
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
     field.content = ReaderUtil.getString(uiNode, CedarModel.content);
     return field;

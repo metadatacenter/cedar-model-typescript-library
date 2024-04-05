@@ -6,6 +6,7 @@ import { StaticImageField } from './StaticImageField';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { YamlKeys } from '../../../constants/YamlKeys';
 import { YamlTemplateFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YamlTemplateFieldTypeSpecificReader';
+import { StaticImageFieldImpl } from './StaticImageFieldImpl';
 
 export class YamlFieldReaderImage extends YamlTemplateFieldTypeSpecificReader {
   override read(
@@ -14,7 +15,7 @@ export class YamlFieldReaderImage extends YamlTemplateFieldTypeSpecificReader {
     _parsingResult: ParsingResult,
     _path: JsonPath,
   ): StaticImageField {
-    const field = StaticImageField.buildEmptyWithNullValues();
+    const field = StaticImageFieldImpl.buildEmpty();
     field.content = ReaderUtil.getString(fieldSourceObject, YamlKeys.content);
     return field;
   }

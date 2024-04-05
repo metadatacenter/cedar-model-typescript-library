@@ -31,6 +31,7 @@ import { EmailFieldBuilderImpl } from '../../model/cedar/field/dynamic/email/Ema
 import { AttributeValueFieldBuilderImpl } from '../../model/cedar/field/dynamic/attribute-value/AttributeValueFieldBuilderImpl';
 import { CheckboxFieldBuilderImpl } from '../../model/cedar/field/dynamic/checkbox/CheckboxFieldBuilderImpl';
 import { ControlledTermFieldBuilderImpl } from '../../model/cedar/field/dynamic/controlled-term/ControlledTermFieldBuilderImpl';
+import { StaticImageFieldBuilderImpl } from '../../model/cedar/field/static/image/StaticImageFieldBuilderImpl';
 
 export abstract class CedarBuilders {
   static templateBuilder(): TemplateBuilder {
@@ -86,7 +87,7 @@ export abstract class CedarBuilders {
   }
 
   static imageFieldBuilder(): StaticImageFieldBuilder {
-    return new StaticImageFieldBuilder();
+    return StaticImageFieldBuilderImpl.create();
   }
 
   static linkFieldBuilder(): LinkFieldBuilder {

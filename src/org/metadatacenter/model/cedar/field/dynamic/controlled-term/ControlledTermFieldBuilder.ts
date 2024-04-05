@@ -1,5 +1,4 @@
 import { ControlledTermField } from './ControlledTermField';
-import { ValueConstraintsControlledTermField } from './ValueConstraintsControlledTermField';
 import { ControlledTermDefaultValue } from './value-constraint/ControlledTermDefaultValue';
 import { ControlledTermOntology } from './value-constraint/ontology/ControlledTermOntology';
 import { ControlledTermValueSet } from './value-constraint/value-set/ControlledTermValueSet';
@@ -7,45 +6,18 @@ import { ControlledTermClass } from './value-constraint/class/ControlledTermClas
 import { ControlledTermBranch } from './value-constraint/branch/ControlledTermBranch';
 import { TemplateFieldBuilder } from '../../TemplateFieldBuilder';
 
-export class ControlledTermFieldBuilder extends TemplateFieldBuilder {
-  private valueConstraints: ValueConstraintsControlledTermField = new ValueConstraintsControlledTermField();
-  private valueRecommendationEnabled: boolean = false;
+export interface ControlledTermFieldBuilder extends TemplateFieldBuilder {
+  withDefaultValue(defaultValue: ControlledTermDefaultValue): ControlledTermFieldBuilder;
 
-  public withDefaultValue(defaultValue: ControlledTermDefaultValue): ControlledTermFieldBuilder {
-    this.valueConstraints.defaultValue = defaultValue;
-    return this;
-  }
+  addOntology(ontology: ControlledTermOntology): ControlledTermFieldBuilder;
 
-  public addOntology(ontology: ControlledTermOntology): ControlledTermFieldBuilder {
-    this.valueConstraints.ontologies.push(ontology);
-    return this;
-  }
+  addValueSet(valueSet: ControlledTermValueSet): ControlledTermFieldBuilder;
 
-  public addValueSet(valueSet: ControlledTermValueSet): ControlledTermFieldBuilder {
-    this.valueConstraints.valueSets.push(valueSet);
-    return this;
-  }
+  addClass(cls: ControlledTermClass): ControlledTermFieldBuilder;
 
-  public addClass(cls: ControlledTermClass): ControlledTermFieldBuilder {
-    this.valueConstraints.classes.push(cls);
-    return this;
-  }
+  addBranch(branch: ControlledTermBranch): ControlledTermFieldBuilder;
 
-  public addBranch(branch: ControlledTermBranch): ControlledTermFieldBuilder {
-    this.valueConstraints.branches.push(branch);
-    return this;
-  }
+  withValueRecommendationEnabled(enabled: boolean): ControlledTermFieldBuilder;
 
-  public withValueRecommendationEnabled(enabled: boolean): ControlledTermFieldBuilder {
-    this.valueRecommendationEnabled = enabled;
-    return this;
-  }
-
-  public build(): ControlledTermField {
-    const controlledTermField = ControlledTermField.buildEmptyWithNullValues();
-    super.buildInternal(controlledTermField);
-    controlledTermField.valueConstraints = this.valueConstraints;
-    controlledTermField.valueRecommendationEnabled = this.valueRecommendationEnabled;
-    return controlledTermField;
-  }
+  build(): ControlledTermField;
 }

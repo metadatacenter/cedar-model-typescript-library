@@ -30,6 +30,7 @@ import { LinkFieldBuilderImpl } from '../../model/cedar/field/dynamic/link/LinkF
 import { EmailFieldBuilderImpl } from '../../model/cedar/field/dynamic/email/EmailFieldBuilderImpl';
 import { AttributeValueFieldBuilderImpl } from '../../model/cedar/field/dynamic/attribute-value/AttributeValueFieldBuilderImpl';
 import { CheckboxFieldBuilderImpl } from '../../model/cedar/field/dynamic/checkbox/CheckboxFieldBuilderImpl';
+import { ControlledTermFieldBuilderImpl } from '../../model/cedar/field/dynamic/controlled-term/ControlledTermFieldBuilderImpl';
 
 export abstract class CedarBuilders {
   static templateBuilder(): TemplateBuilder {
@@ -105,7 +106,7 @@ export abstract class CedarBuilders {
   }
 
   static controlledTermFieldBuilder(): ControlledTermFieldBuilder {
-    return new ControlledTermFieldBuilder();
+    return ControlledTermFieldBuilderImpl.create();
   }
 
   static childDeploymentBuilder(child: TemplateChild, childName: string): ChildDeploymentInfoBuilder {

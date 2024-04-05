@@ -14,6 +14,7 @@ import { JsonSchema } from '../../../constants/JsonSchema';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { ControlledTermAction } from './value-constraint/action/ControlledTermAction';
 import { BioportalTermType } from '../../../types/bioportal-types/BioportalTermType';
+import { ControlledTermFieldImpl } from './ControlledTermFieldImpl';
 
 export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecificReader {
   override read(
@@ -22,7 +23,7 @@ export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecific
     _parsingResult: ParsingResult,
     _path: JsonPath,
   ): ControlledTermField {
-    const field = ControlledTermField.buildEmptyWithNullValues();
+    const field = ControlledTermFieldImpl.buildEmpty();
     this.readRequiredAndHidden(fieldSourceObject, childInfo);
 
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
@@ -101,6 +102,7 @@ export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecific
     });
     return ret;
   }
+
   private getActions(nodeList: Array<JsonNode>): Array<ControlledTermAction> {
     const ret: Array<ControlledTermAction> = [];
     nodeList.forEach((vs) => {

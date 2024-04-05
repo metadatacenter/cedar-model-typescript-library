@@ -21,6 +21,7 @@ import { ControlledTermClassBuilder } from './value-constraint/class/ControlledT
 import { ControlledTermBranchBuilder } from './value-constraint/branch/ControlledTermBranchBuilder';
 import { ControlledTermValueSetBuilder } from './value-constraint/value-set/ControlledTermValueSetBuilder';
 import { ControlledTermActionBuilder } from './value-constraint/action/ControlledTermActionBuilder';
+import { ControlledTermFieldImpl } from './ControlledTermFieldImpl';
 
 export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecificReader {
   override read(
@@ -29,7 +30,7 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
     _parsingResult: ParsingResult,
     _path: JsonPath,
   ): ControlledTermField {
-    const field = ControlledTermField.buildEmptyWithNullValues();
+    const field = ControlledTermFieldImpl.buildEmpty();
 
     field.valueRecommendationEnabled = ReaderUtil.getBoolean(fieldSourceObject, YamlKeys.valueRecommendationEnabled);
 

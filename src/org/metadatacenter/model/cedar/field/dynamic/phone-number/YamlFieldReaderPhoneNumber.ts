@@ -4,6 +4,7 @@ import { JsonPath } from '../../../util/path/JsonPath';
 import { PhoneNumberField } from './PhoneNumberField';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { YamlTemplateFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YamlTemplateFieldTypeSpecificReader';
+import { PhoneNumberFieldImpl } from './PhoneNumberFieldImpl';
 
 export class YamlFieldReaderPhoneNumber extends YamlTemplateFieldTypeSpecificReader {
   override read(
@@ -12,7 +13,7 @@ export class YamlFieldReaderPhoneNumber extends YamlTemplateFieldTypeSpecificRea
     _parsingResult: ParsingResult,
     _path: JsonPath,
   ): PhoneNumberField {
-    const field = PhoneNumberField.buildEmptyWithNullValues();
+    const field = PhoneNumberFieldImpl.buildEmpty();
     return field;
   }
 }

@@ -5,7 +5,6 @@ import {
   IsoDate,
   PhoneNumberField,
   PhoneNumberFieldBuilder,
-  SchemaVersion,
 } from '../../../../../../../../src';
 
 describe('PhoneNumberFieldBuilder', () => {
@@ -16,7 +15,6 @@ describe('PhoneNumberFieldBuilder', () => {
       .withAtId('https://repo.metadatacenter.org/template-fields/f38b5ef4-a078-4d82-90c0-a9a721ad5ecf')
       .withTitle('Text field title')
       .withDescription('Text field description')
-      .withSchemaVersion(SchemaVersion.CURRENT)
       .withCreatedOn('2024-03-12T10:03:57-07:00')
       .withCreatedBy('https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95')
       .withLastUpdatedOn(now)

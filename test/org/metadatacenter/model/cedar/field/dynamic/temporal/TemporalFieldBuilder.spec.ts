@@ -3,7 +3,6 @@ import {
   CedarJsonWriters,
   CedarWriters,
   IsoDate,
-  SchemaVersion,
   TemporalField,
   TemporalFieldBuilder,
   TemporalGranularity,
@@ -19,7 +18,6 @@ describe('TemporalFieldBuilder', () => {
       .withAtId('https://repo.metadatacenter.org/template-fields/f38b5ef4-a078-4d82-90c0-a9a721ad5ecf')
       .withTitle('Temporal field title')
       .withDescription('Temporal field description')
-      .withSchemaVersion(SchemaVersion.CURRENT)
       .withCreatedOn('2024-03-14T10:05:00-07:00')
       .withCreatedBy('https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95')
       .withLastUpdatedOn(now)

@@ -1,5 +1,4 @@
 import { TextFieldBuilder } from '../../model/cedar/field/dynamic/textfield/TextFieldBuilder';
-import { TextAreaBuilder } from '../../model/cedar/field/dynamic/textarea/TextAreaBuilder';
 import { TemporalFieldBuilder } from '../../model/cedar/field/dynamic/temporal/TemporalFieldBuilder';
 import { PhoneNumberFieldBuilder } from '../../model/cedar/field/dynamic/phone-number/PhoneNumberFieldBuilder';
 import { NumericFieldBuilder } from '../../model/cedar/field/dynamic/numeric/NumericFieldBuilder';
@@ -20,6 +19,9 @@ import { ChildDeploymentInfoBuilder } from '../../model/cedar/deployment/ChildDe
 import { TemplateChild } from '../../model/cedar/types/basic-types/TemplateChild';
 import { TemplateElementBuilder } from '../../model/cedar/element/TemplateElementBuilder';
 import { TextFieldBuilderImpl } from '../../model/cedar/field/dynamic/textfield/TextFieldBuilderImpl';
+import { TextAreaBuilderImpl } from '../../model/cedar/field/dynamic/textarea/TextAreaBuilderImpl';
+import { TextAreaBuilder } from '../../model/cedar/field/dynamic/textarea/TextAreaBuilder';
+import { TemporalFieldBuilderImpl } from '../../model/cedar/field/dynamic/temporal/TemporalFieldBuilderImpl';
 
 export abstract class CedarBuilders {
   static templateBuilder(): TemplateBuilder {
@@ -31,16 +33,15 @@ export abstract class CedarBuilders {
   }
 
   static textFieldBuilder(): TextFieldBuilder {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return new (TextFieldBuilderImpl as any)();
+    return TextFieldBuilderImpl.create();
   }
 
   static textAreaBuilder(): TextAreaBuilder {
-    return new TextAreaBuilder();
+    return TextAreaBuilderImpl.create();
   }
 
   static temporalFieldBuilder(): TemporalFieldBuilder {
-    return new TemporalFieldBuilder();
+    return TemporalFieldBuilderImpl.create();
   }
 
   static phoneNumberFieldBuilder(): PhoneNumberFieldBuilder {

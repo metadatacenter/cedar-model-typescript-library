@@ -9,6 +9,7 @@ import { TimeFormat } from '../../../types/wrapped-types/TimeFormat';
 import { TemporalGranularity } from '../../../types/wrapped-types/TemporalGranularity';
 import { JsonTemplateFieldTypeSpecificReader } from '../../../../../io/reader/json/JsonTemplateFieldTypeSpecificReader';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
+import { TemporalFieldImpl } from './TemporalFieldImpl';
 
 export class JsonFieldReaderTemporal extends JsonTemplateFieldTypeSpecificReader {
   override read(
@@ -17,7 +18,7 @@ export class JsonFieldReaderTemporal extends JsonTemplateFieldTypeSpecificReader
     _parsingResult: ParsingResult,
     _path: JsonPath,
   ): TemporalField {
-    const field = TemporalField.buildEmptyWithNullValues();
+    const field = TemporalFieldImpl.buildEmpty();
     this.readRequiredAndHidden(fieldSourceObject, childInfo);
 
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);

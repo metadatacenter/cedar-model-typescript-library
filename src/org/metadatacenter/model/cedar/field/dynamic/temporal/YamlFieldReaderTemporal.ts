@@ -9,6 +9,7 @@ import { TemporalGranularity } from '../../../types/wrapped-types/TemporalGranul
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { YamlTemplateFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YamlTemplateFieldTypeSpecificReader';
 import { YamlKeys } from '../../../constants/YamlKeys';
+import { TemporalFieldImpl } from './TemporalFieldImpl';
 
 export class YamlFieldReaderTemporal extends YamlTemplateFieldTypeSpecificReader {
   override read(
@@ -17,7 +18,7 @@ export class YamlFieldReaderTemporal extends YamlTemplateFieldTypeSpecificReader
     _parsingResult: ParsingResult,
     _path: JsonPath,
   ): TemporalField {
-    const field = TemporalField.buildEmptyWithNullValues();
+    const field = TemporalFieldImpl.buildEmpty();
 
     field.temporalGranularity = TemporalGranularity.forValue(ReaderUtil.getString(fieldSourceObject, YamlKeys.granularity));
     field.inputTimeFormat = TimeFormat.forValue(ReaderUtil.getString(fieldSourceObject, YamlKeys.timeFormat));

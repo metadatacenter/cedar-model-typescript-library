@@ -14,6 +14,10 @@ export class TextFieldBuilderImpl extends TemplateFieldBuilder implements TextFi
     super();
   }
 
+  public static create(): TextFieldBuilder {
+    return new TextFieldBuilderImpl();
+  }
+
   public withDefaultValue(defaultValue: string | null): TextFieldBuilder {
     this.defaultValue = defaultValue;
     return this;

@@ -27,6 +27,7 @@ import { PhoneNumberFieldBuilderImpl } from '../../model/cedar/field/dynamic/pho
 import { NumericFieldBuilderImpl } from '../../model/cedar/field/dynamic/numeric/NumericFieldBuilderImpl';
 import { ListFieldBuilderImpl } from '../../model/cedar/field/dynamic/list/ListFieldBuilderImpl';
 import { LinkFieldBuilderImpl } from '../../model/cedar/field/dynamic/link/LinkFieldBuilderImpl';
+import { EmailFieldBuilderImpl } from '../../model/cedar/field/dynamic/email/EmailFieldBuilderImpl';
 
 export abstract class CedarBuilders {
   static templateBuilder(): TemplateBuilder {
@@ -58,7 +59,7 @@ export abstract class CedarBuilders {
   }
 
   static emailFieldBuilder(): EmailFieldBuilder {
-    return new EmailFieldBuilder();
+    return EmailFieldBuilderImpl.create();
   }
 
   static attributeValueFieldBuilder(): AttributeValueFieldBuilder {

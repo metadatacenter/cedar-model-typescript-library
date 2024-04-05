@@ -7,10 +7,11 @@ import { ListOption } from './ListOption';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { YamlTemplateFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YamlTemplateFieldTypeSpecificReader';
 import { YamlKeys } from '../../../constants/YamlKeys';
+import { ListFieldImpl } from './ListFieldImpl';
 
 export class YamlFieldReaderSingleSelectList extends YamlTemplateFieldTypeSpecificReader {
   override read(fieldSourceObject: JsonNode, _childInfo: ChildDeploymentInfo, _parsingResult: ParsingResult, _path: JsonPath): ListField {
-    const field = ListField.buildEmptyWithNullValues();
+    const field = ListFieldImpl.buildEmpty();
 
     field.multipleChoice = false;
     const literals: Array<JsonNode> = ReaderUtil.getNodeList(fieldSourceObject, YamlKeys.values);

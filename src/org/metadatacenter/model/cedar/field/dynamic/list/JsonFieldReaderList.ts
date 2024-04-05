@@ -7,10 +7,11 @@ import { JsonTemplateFieldTypeSpecificReader } from '../../../../../io/reader/js
 import { ListField } from './ListField';
 import { ListOption } from './ListOption';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
+import { ListFieldImpl } from './ListFieldImpl';
 
 export class JsonFieldReaderList extends JsonTemplateFieldTypeSpecificReader {
   override read(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, _parsingResult: ParsingResult, _path: JsonPath): ListField {
-    const field = ListField.buildEmptyWithNullValues();
+    const field = ListFieldImpl.buildEmpty();
     this.readRequiredAndHidden(fieldSourceObject, childInfo);
 
     const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);

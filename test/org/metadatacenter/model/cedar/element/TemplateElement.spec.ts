@@ -27,7 +27,7 @@ describe('TemplateElement', () => {
       .withLastUpdatedOn(now)
       .withModifiedBy('https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c99')
       .withVersion('0.0.2')
-      .withBiboStatus('bibo:published')
+      .withStatus('bibo:published')
       .withPreferredLabel('Preferred label')
       .withAlternateLabels(['Alt label 1', 'Alt label 2', 'Alt label 3'])
       .withDefaultValue('default')
@@ -61,7 +61,7 @@ describe('TemplateElement', () => {
       .withLastUpdatedOn(now.getValue())
       .withModifiedBy('https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c99')
       .withVersion('0.0.2')
-      .withBiboStatus(BiboStatus.PUBLISHED)
+      .withStatus(BiboStatus.PUBLISHED)
       .addChild(textField, textFieldDeployment)
       .build();
 

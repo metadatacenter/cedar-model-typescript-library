@@ -22,7 +22,7 @@ describe('AttributeValueFieldBuilder', () => {
       .withLastUpdatedOn(now)
       .withModifiedBy('https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c99')
       .withVersion('1.0.0')
-      .withBiboStatus('bibo:published')
+      .withStatus('bibo:published')
       .withSchemaName('Attribute-value Schema Name')
       .withSchemaDescription('Description of the Attribute-value Schema')
       .withPreferredLabel('Attribute-value Field')

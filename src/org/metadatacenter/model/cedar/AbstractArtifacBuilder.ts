@@ -95,7 +95,7 @@ export abstract class AbstractArtifactBuilder {
     return this;
   }
 
-  withBiboStatus(bibo_status: BiboStatus | string): this {
+  withStatus(bibo_status: BiboStatus | string): this {
     if (bibo_status instanceof BiboStatus) {
       this.bibo_status = bibo_status;
     } else {

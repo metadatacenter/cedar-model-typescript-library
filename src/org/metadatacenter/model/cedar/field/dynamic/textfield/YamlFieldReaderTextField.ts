@@ -6,10 +6,11 @@ import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { YamlTemplateFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YamlTemplateFieldTypeSpecificReader';
 import { YamlKeys } from '../../../constants/YamlKeys';
+import { TextFieldImpl } from './TextFieldImpl';
 
 export class YamlFieldReaderTextField extends YamlTemplateFieldTypeSpecificReader {
   override read(fieldSourceObject: JsonNode, _childInfo: ChildDeploymentInfo, _parsingResult: ParsingResult, _path: JsonPath): TextField {
-    const field = TextField.buildEmptyWithNullValues();
+    const field = TextFieldImpl.buildEmpty();
 
     field.valueRecommendationEnabled = ReaderUtil.getBoolean(fieldSourceObject, YamlKeys.valueRecommendationEnabled);
 

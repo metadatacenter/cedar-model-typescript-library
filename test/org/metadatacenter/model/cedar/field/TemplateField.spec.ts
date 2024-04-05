@@ -1,8 +1,8 @@
-import { CedarJsonWriters, CedarWriters, TextField } from '../../../../../../src';
+import { BiboStatus, CedarBuilders, CedarJsonWriters, CedarWriters, PavVersion, SchemaVersion, TextField } from '../../../../../../src';
 
 describe('TemplateField', () => {
   test('creates empty field null values', () => {
-    const cedarTextField = TextField.buildEmptyWithNullValues();
+    const cedarTextField: TextField = CedarBuilders.textFieldBuilder().build();
     expect(cedarTextField).not.toBeNull();
 
     const writers: CedarJsonWriters = CedarWriters.json().getStrict();
@@ -30,11 +30,11 @@ describe('TemplateField', () => {
     expect(backparsed['pav:lastUpdatedOn']).toBeNull();
     expect(backparsed['oslc:modifiedBy']).toBeNull();
 
-    expect(backparsed['schema:schemaVersion']).toBeNull();
+    expect(backparsed['schema:schemaVersion']).toBe(SchemaVersion.CURRENT.getValue());
     expect(backparsed['additionalProperties']).toBe(false);
 
-    expect(backparsed['pav:version']).toBeUndefined();
-    expect(backparsed['bibo:status']).toBeUndefined();
+    expect(backparsed['pav:version']).toBe(PavVersion.DEFAULT.getValue());
+    expect(backparsed['bibo:status']).toBe(BiboStatus.DRAFT.getJsonValue());
     expect(backparsed['$schema']).toBe('http://json-schema.org/draft-04/schema#');
   });
 });

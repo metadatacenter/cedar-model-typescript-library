@@ -19,6 +19,7 @@ import { TemplateBuilder } from '../../model/cedar/template/TemplateBuilder';
 import { ChildDeploymentInfoBuilder } from '../../model/cedar/deployment/ChildDeploymentInfoBuilder';
 import { TemplateChild } from '../../model/cedar/types/basic-types/TemplateChild';
 import { TemplateElementBuilder } from '../../model/cedar/element/TemplateElementBuilder';
+import { TextFieldBuilderImpl } from '../../model/cedar/field/dynamic/textfield/TextFieldBuilderImpl';
 
 export abstract class CedarBuilders {
   static templateBuilder(): TemplateBuilder {
@@ -30,7 +31,8 @@ export abstract class CedarBuilders {
   }
 
   static textFieldBuilder(): TextFieldBuilder {
-    return new TextFieldBuilder();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return new (TextFieldBuilderImpl as any)();
   }
 
   static textAreaBuilder(): TextAreaBuilder {

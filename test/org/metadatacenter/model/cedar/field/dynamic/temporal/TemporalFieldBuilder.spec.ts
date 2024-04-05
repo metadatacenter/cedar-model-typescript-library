@@ -25,7 +25,7 @@ describe('TemporalFieldBuilder', () => {
       .withLastUpdatedOn(now)
       .withModifiedBy('https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c99')
       .withVersion('0.0.2')
-      .withBiboStatus('bibo:published')
+      .withStatus('bibo:published')
       .withSchemaName('Temporal Schema Name')
       .withSchemaDescription('Temporal Schema Description')
       .withPreferredLabel('Temporal Preferred Label')

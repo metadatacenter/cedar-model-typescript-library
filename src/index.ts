@@ -5,7 +5,6 @@ import { JsonTemplateFieldReader } from './org/metadatacenter/io/reader/json/Jso
 import { JsonTemplateElementReader } from './org/metadatacenter/io/reader/json/JsonTemplateElementReader';
 import { JsonTemplateReader } from './org/metadatacenter/io/reader/json/JsonTemplateReader';
 
-// It is needed, do not remove, even if it looks unused
 import { JsonTemplateFieldWriterInternal } from './org/metadatacenter/io/writer/json/JsonTemplateFieldWriterInternal';
 import { YamlTemplateFieldWriterInternal } from './org/metadatacenter/io/writer/yaml/YamlTemplateFieldWriterInternal';
 
@@ -112,6 +111,14 @@ import { JsonTemplateElementReaderResult } from './org/metadatacenter/io/reader/
 import { JsonTemplateFieldReaderResult } from './org/metadatacenter/io/reader/json/JsonTemplateFieldReaderResult';
 import { JsonTemplateInstanceReaderResult } from './org/metadatacenter/io/reader/json/JsonTemplateInstanceReaderResult';
 
+// It is needed, do not remove, even if it looks unused
+import { JsonTemplateFieldWriter } from './org/metadatacenter/io/writer/json/JsonTemplateFieldWriter';
+import { YamlTemplateFieldWriter } from './org/metadatacenter/io/writer/yaml/YamlTemplateFieldWriter';
+import { PavVersion } from './org/metadatacenter/model/cedar/types/wrapped-types/PavVersion';
+// It is needed, do not remove, even if it looks unused
+export { JsonTemplateFieldWriterInternal as JsonTemplateFieldWriter };
+export { YamlTemplateFieldWriterInternal as YamlTemplateFieldWriter };
+
 export { CedarBuilders };
 export { CedarWriters };
 export { CedarReaders };
@@ -128,10 +135,6 @@ export { JsonTemplateFieldReader, YamlTemplateFieldReader };
 export { JsonTemplateElementReader, YamlTemplateElementReader };
 export { JsonTemplateReader, YamlTemplateReader };
 export { JsonTemplateInstanceReader };
-
-// It is needed, do not remove, even if it looks unused
-export { JsonTemplateFieldWriterInternal as JSONTemplateFieldWriter };
-export { YamlTemplateFieldWriterInternal as YAMLTemplateFieldWriter };
 
 export { JsonTemplateElementWriter, YamlTemplateElementWriter };
 export { JsonTemplateWriter, YamlTemplateWriter };
@@ -196,6 +199,7 @@ export { YamlValues };
 export { CedarFieldCategory };
 export { CedarArtifactType };
 export { CedarUser };
+export { PavVersion };
 
 export { ComparisonErrorType };
 

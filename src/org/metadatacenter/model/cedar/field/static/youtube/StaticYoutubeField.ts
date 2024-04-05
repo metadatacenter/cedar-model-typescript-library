@@ -1,26 +1,15 @@
-import { SchemaVersion } from '../../../types/wrapped-types/SchemaVersion';
 import { TemplateField } from '../../TemplateField';
-import { CedarFieldType } from '../../../types/cedar-types/CedarFieldType';
-import { CedarArtifactType } from '../../../types/cedar-types/CedarArtifactType';
 
-export class StaticYoutubeField extends TemplateField {
-  public videoId: string | null = null;
-  public width: number | null = null;
-  public height: number | null = null;
+export interface StaticYoutubeField extends TemplateField {
+  set videoId(videoId: string | null);
 
-  private constructor() {
-    super();
-    this.cedarFieldType = CedarFieldType.STATIC_YOUTUBE;
-    this.cedarArtifactType = CedarArtifactType.STATIC_TEMPLATE_FIELD;
-  }
+  get videoId(): string | null;
 
-  public static buildEmptyWithNullValues(): StaticYoutubeField {
-    return new StaticYoutubeField();
-  }
+  set width(width: number | null);
 
-  public static buildEmptyWithDefaultValues(): StaticYoutubeField {
-    const r = new StaticYoutubeField();
-    r.schema_schemaVersion = SchemaVersion.CURRENT;
-    return r;
-  }
+  get width(): number | null;
+
+  set height(height: number | null);
+
+  get height(): number | null;
 }

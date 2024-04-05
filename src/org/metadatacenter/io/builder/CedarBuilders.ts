@@ -35,6 +35,7 @@ import { StaticImageFieldBuilderImpl } from '../../model/cedar/field/static/imag
 import { StaticPageBreakFieldBuilderImpl } from '../../model/cedar/field/static/page-break/StaticPageBreakFieldBuilderImpl';
 import { StaticRichTextFieldBuilderImpl } from '../../model/cedar/field/static/rich-text/StaticRichTextFieldBuilderImpl';
 import { StaticSectionBreakFieldBuilderImpl } from '../../model/cedar/field/static/section-break/StaticSectionBreakFieldBuilderImpl';
+import { StaticYoutubeFieldBuilderImpl } from '../../model/cedar/field/static/youtube/StaticYoutubeFieldBuilderImpl';
 
 export abstract class CedarBuilders {
   static templateBuilder(): TemplateBuilder {
@@ -74,7 +75,7 @@ export abstract class CedarBuilders {
   }
 
   static youtubeFieldBuilder(): StaticYoutubeFieldBuilder {
-    return new StaticYoutubeFieldBuilder();
+    return StaticYoutubeFieldBuilderImpl.create();
   }
 
   static sectionBreakFieldBuilder(): StaticSectionBreakFieldBuilder {

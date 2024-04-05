@@ -6,6 +6,7 @@ import { CedarModel } from '../../../constants/CedarModel';
 import { StaticYoutubeField } from './StaticYoutubeField';
 import { JsonTemplateFieldTypeSpecificReader } from '../../../../../io/reader/json/JsonTemplateFieldTypeSpecificReader';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
+import { StaticYoutubeFieldImpl } from './StaticYoutubeFieldImpl';
 
 export class JsonFieldReaderYoutube extends JsonTemplateFieldTypeSpecificReader {
   override read(
@@ -14,7 +15,7 @@ export class JsonFieldReaderYoutube extends JsonTemplateFieldTypeSpecificReader 
     _parsingResult: ParsingResult,
     _path: JsonPath,
   ): StaticYoutubeField {
-    const field = StaticYoutubeField.buildEmptyWithNullValues();
+    const field = StaticYoutubeFieldImpl.buildEmpty();
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
     field.videoId = ReaderUtil.getString(uiNode, CedarModel.content);
     const sizeNode = ReaderUtil.getNode(uiNode, CedarModel.size);

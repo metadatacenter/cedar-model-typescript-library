@@ -7,10 +7,11 @@ import { RadioOption } from './RadioOption';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { YamlTemplateFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YamlTemplateFieldTypeSpecificReader';
 import { YamlKeys } from '../../../constants/YamlKeys';
+import { RadioFieldImpl } from './RadioFieldImpl';
 
 export class YamlFieldReaderRadio extends YamlTemplateFieldTypeSpecificReader {
   override read(fieldSourceObject: JsonNode, _childInfo: ChildDeploymentInfo, _parsingResult: ParsingResult, _path: JsonPath): RadioField {
-    const field = RadioField.buildEmptyWithNullValues();
+    const field = RadioFieldImpl.buildEmpty();
 
     const literals: Array<JsonNode> = ReaderUtil.getNodeList(fieldSourceObject, YamlKeys.values);
     if (literals !== null) {

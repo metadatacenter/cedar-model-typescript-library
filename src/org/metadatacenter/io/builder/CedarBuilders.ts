@@ -22,6 +22,7 @@ import { TextFieldBuilderImpl } from '../../model/cedar/field/dynamic/textfield/
 import { TextAreaBuilderImpl } from '../../model/cedar/field/dynamic/textarea/TextAreaBuilderImpl';
 import { TextAreaBuilder } from '../../model/cedar/field/dynamic/textarea/TextAreaBuilder';
 import { TemporalFieldBuilderImpl } from '../../model/cedar/field/dynamic/temporal/TemporalFieldBuilderImpl';
+import { RadioFieldBuilderImpl } from '../../model/cedar/field/dynamic/radio/RadioFieldBuilderImpl';
 
 export abstract class CedarBuilders {
   static templateBuilder(): TemplateBuilder {
@@ -89,7 +90,7 @@ export abstract class CedarBuilders {
   }
 
   static radioFieldBuilder(): RadioFieldBuilder {
-    return new RadioFieldBuilder();
+    return RadioFieldBuilderImpl.create();
   }
 
   static checkboxFieldBuilder(): CheckboxFieldBuilder {

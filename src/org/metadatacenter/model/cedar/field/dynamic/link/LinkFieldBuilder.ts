@@ -1,11 +1,6 @@
 import { TemplateFieldBuilder } from '../../TemplateFieldBuilder';
 import { LinkField } from './LinkField';
 
-export class LinkFieldBuilder extends TemplateFieldBuilder {
-  public build(): LinkField {
-    const linkField = LinkField.buildEmptyWithNullValues();
-    super.buildInternal(linkField);
-
-    return linkField;
-  }
+export interface LinkFieldBuilder extends TemplateFieldBuilder {
+  build(): LinkField;
 }

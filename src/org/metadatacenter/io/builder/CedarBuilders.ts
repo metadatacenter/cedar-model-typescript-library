@@ -26,6 +26,7 @@ import { RadioFieldBuilderImpl } from '../../model/cedar/field/dynamic/radio/Rad
 import { PhoneNumberFieldBuilderImpl } from '../../model/cedar/field/dynamic/phone-number/PhoneNumberFieldBuilderImpl';
 import { NumericFieldBuilderImpl } from '../../model/cedar/field/dynamic/numeric/NumericFieldBuilderImpl';
 import { ListFieldBuilderImpl } from '../../model/cedar/field/dynamic/list/ListFieldBuilderImpl';
+import { LinkFieldBuilderImpl } from '../../model/cedar/field/dynamic/link/LinkFieldBuilderImpl';
 
 export abstract class CedarBuilders {
   static templateBuilder(): TemplateBuilder {
@@ -85,7 +86,7 @@ export abstract class CedarBuilders {
   }
 
   static linkFieldBuilder(): LinkFieldBuilder {
-    return new LinkFieldBuilder();
+    return LinkFieldBuilderImpl.create();
   }
 
   static listFieldBuilder(): ListFieldBuilder {

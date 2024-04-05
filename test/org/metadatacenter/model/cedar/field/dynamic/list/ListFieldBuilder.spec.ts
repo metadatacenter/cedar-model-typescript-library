@@ -2,7 +2,7 @@ import {
   CedarBuilders,
   CedarJsonWriters,
   CedarWriters,
-  ISODate,
+  IsoDate,
   ListField,
   ListFieldBuilder,
   SchemaVersion,
@@ -11,7 +11,7 @@ import {
 describe('ListFieldBuilder', () => {
   test('creates list field, single-select, with builder', () => {
     const builder: ListFieldBuilder = CedarBuilders.listFieldBuilder();
-    const now = ISODate.now();
+    const now = IsoDate.now();
     const field: ListField = builder
       .withAtId('https://repo.metadatacenter.org/template-fields/f38b5ef4-a078-4d82-90c0-a9a721ad5ecf')
       .withTitle('List field title')
@@ -82,7 +82,7 @@ describe('ListFieldBuilder', () => {
 
   test('creates list field, multi-select, with builder', () => {
     const builder: ListFieldBuilder = CedarBuilders.listFieldBuilder();
-    const now = ISODate.now();
+    const now = IsoDate.now();
     const field: ListField = builder
       .withAtId('https://repo.metadatacenter.org/template-fields/f38b5ef4-a078-4d82-90c0-a9a721ad5ecf')
       .withTitle('List field title')

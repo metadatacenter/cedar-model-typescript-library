@@ -2,7 +2,7 @@ import {
   CedarBuilders,
   CedarJsonWriters,
   CedarWriters,
-  ISODate,
+  IsoDate,
   SchemaVersion,
   StaticSectionBreakField,
   StaticSectionBreakFieldBuilder,
@@ -11,7 +11,7 @@ import {
 describe('StaticSectionBreakFieldBuilder', () => {
   test('creates section break field with builder', () => {
     const builder: StaticSectionBreakFieldBuilder = CedarBuilders.sectionBreakFieldBuilder();
-    const now = ISODate.now();
+    const now = IsoDate.now();
     const field: StaticSectionBreakField = builder
       .withAtId('https://repo.metadatacenter.org/template-fields/f38b5ef4-a078-4d82-90c0-a9a721ad5ecf')
       .withTitle('Text field title')

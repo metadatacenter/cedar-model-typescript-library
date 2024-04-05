@@ -3,7 +3,7 @@ import {
   CedarBuilders,
   CedarJsonWriters,
   CedarWriters,
-  ISODate,
+  IsoDate,
   JsonTemplateElementWriter,
   SchemaVersion,
   TemplateElement,
@@ -14,7 +14,7 @@ import {
 
 describe('TemplateElement', () => {
   test('creates element with one field', () => {
-    const now = ISODate.now();
+    const now = IsoDate.now();
     const textFieldBuilder: TextFieldBuilder = CedarBuilders.textFieldBuilder();
     const textField: TextField = textFieldBuilder
       .withAtId('https://repo.metadatacenter.org/template-fields/f38b5ef4-a078-4d82-90c0-a9a721ad5ecf')

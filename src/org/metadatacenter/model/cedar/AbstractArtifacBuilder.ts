@@ -1,4 +1,4 @@
-import { ISODate } from './types/wrapped-types/ISODate';
+import { IsoDate } from './types/wrapped-types/IsoDate';
 import { CedarUser } from './types/cedar-types/CedarUser';
 import { PavVersion } from './types/wrapped-types/PavVersion';
 import { BiboStatus } from './types/wrapped-types/BiboStatus';
@@ -12,9 +12,9 @@ export abstract class AbstractArtifactBuilder {
   protected description: string | null = null;
   protected schema_schemaVersion: SchemaVersion = SchemaVersion.CURRENT;
   // provenance
-  protected pav_createdOn: ISODate = ISODate.NULL;
+  protected pav_createdOn: IsoDate = IsoDate.NULL;
   protected pav_createdBy: CedarUser = CedarUser.NULL;
-  protected pav_lastUpdatedOn: ISODate = ISODate.NULL;
+  protected pav_lastUpdatedOn: IsoDate = IsoDate.NULL;
   protected oslc_modifiedBy: CedarUser = CedarUser.NULL;
   // status and version
   protected pav_version: PavVersion = PavVersion.DEFAULT;
@@ -50,11 +50,11 @@ export abstract class AbstractArtifactBuilder {
     return this;
   }
 
-  withCreatedOn(createdOn: ISODate | string | null): this {
-    if (createdOn instanceof ISODate) {
+  withCreatedOn(createdOn: IsoDate | string | null): this {
+    if (createdOn instanceof IsoDate) {
       this.pav_createdOn = createdOn;
     } else {
-      this.pav_createdOn = ISODate.forValue(createdOn);
+      this.pav_createdOn = IsoDate.forValue(createdOn);
     }
     return this;
   }
@@ -68,11 +68,11 @@ export abstract class AbstractArtifactBuilder {
     return this;
   }
 
-  withLastUpdatedOn(lastUpdatedOn: ISODate | string | null): this {
-    if (lastUpdatedOn instanceof ISODate) {
+  withLastUpdatedOn(lastUpdatedOn: IsoDate | string | null): this {
+    if (lastUpdatedOn instanceof IsoDate) {
       this.pav_lastUpdatedOn = lastUpdatedOn;
     } else {
-      this.pav_lastUpdatedOn = ISODate.forValue(lastUpdatedOn);
+      this.pav_lastUpdatedOn = IsoDate.forValue(lastUpdatedOn);
     }
     return this;
   }

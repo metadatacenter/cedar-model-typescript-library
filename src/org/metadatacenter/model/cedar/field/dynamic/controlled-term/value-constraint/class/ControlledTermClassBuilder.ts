@@ -1,4 +1,4 @@
-import { URI } from '../../../../../types/wrapped-types/URI';
+import { Iri } from '../../../../../types/wrapped-types/Iri';
 import { ControlledTermClass } from './ControlledTermClass';
 import { BioportalTermType } from '../../../../../types/bioportal-types/BioportalTermType';
 
@@ -7,7 +7,7 @@ export class ControlledTermClassBuilder {
   private _source: string = '';
   private _type: BioportalTermType = BioportalTermType.NULL;
   private _prefLabel: string = '';
-  private _uri: URI = URI.empty();
+  private _uri: Iri = Iri.empty();
 
   public withLabel(label: string): ControlledTermClassBuilder {
     this._label = label;
@@ -29,7 +29,7 @@ export class ControlledTermClassBuilder {
     return this;
   }
 
-  public withUri(uri: URI): ControlledTermClassBuilder {
+  public withUri(uri: Iri): ControlledTermClassBuilder {
     this._uri = uri;
     return this;
   }

@@ -1,4 +1,4 @@
-import { URI } from '../../../../../types/wrapped-types/URI';
+import { Iri } from '../../../../../types/wrapped-types/Iri';
 import { ControlledTermAbstractValueConstraint } from '../ControlledTermAbstractValueConstraint';
 import { BioportalTermType } from '../../../../../types/bioportal-types/BioportalTermType';
 
@@ -9,9 +9,9 @@ export class ControlledTermClass extends ControlledTermAbstractValueConstraint {
   private readonly _source: string;
   private readonly _type: BioportalTermType;
   private readonly _prefLabel: string;
-  private readonly _uri: URI;
+  private readonly _uri: Iri;
 
-  constructor(label: string, source: string, type: BioportalTermType, prefLabel: string, uri: URI) {
+  constructor(label: string, source: string, type: BioportalTermType, prefLabel: string, uri: Iri) {
     super();
     this._label = label;
     this._source = source;
@@ -36,7 +36,7 @@ export class ControlledTermClass extends ControlledTermAbstractValueConstraint {
     return this._prefLabel;
   }
 
-  get uri(): URI {
+  get uri(): Iri {
     return this._uri;
   }
 }

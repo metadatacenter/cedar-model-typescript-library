@@ -4,14 +4,14 @@ import {
   CedarWriters,
   CheckboxField,
   CheckboxFieldBuilder,
-  ISODate,
+  IsoDate,
   SchemaVersion,
 } from '../../../../../../../../src';
 
 describe('CheckboxFieldBuilder', () => {
   test('creates radio field with builder', () => {
     const builder: CheckboxFieldBuilder = CedarBuilders.checkboxFieldBuilder();
-    const now = ISODate.now();
+    const now = IsoDate.now();
     const field: CheckboxField = builder
       .withAtId('https://repo.metadatacenter.org/template-fields/f38b5ef4-a078-4d82-90c0-a9a721ad5ecf')
       .withTitle('List field title')

@@ -2,7 +2,7 @@ import {
   CedarBuilders,
   CedarJsonWriters,
   CedarWriters,
-  ISODate,
+  IsoDate,
   SchemaVersion,
   TemporalField,
   TemporalFieldBuilder,
@@ -14,7 +14,7 @@ import {
 describe('TemporalFieldBuilder', () => {
   test('creates temporal field with builder', () => {
     const builder: TemporalFieldBuilder = CedarBuilders.temporalFieldBuilder();
-    const now = ISODate.now();
+    const now = IsoDate.now();
     const field: TemporalField = builder
       .withAtId('https://repo.metadatacenter.org/template-fields/f38b5ef4-a078-4d82-90c0-a9a721ad5ecf')
       .withTitle('Temporal field title')

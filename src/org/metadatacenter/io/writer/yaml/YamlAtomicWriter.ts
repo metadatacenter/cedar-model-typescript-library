@@ -6,7 +6,7 @@ import { BioportalTermType, BioportalTermTypeYamlValue } from '../../../model/ce
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { CedarArtifactId } from '../../../model/cedar/types/cedar-types/CedarArtifactId';
 import { JavascriptType } from '../../../model/cedar/types/wrapped-types/JavascriptType';
-import { ISODate } from '../../../model/cedar/types/wrapped-types/ISODate';
+import { IsoDate } from '../../../model/cedar/types/wrapped-types/IsoDate';
 import { CedarUser } from '../../../model/cedar/types/cedar-types/CedarUser';
 import { BiboStatus } from '../../../model/cedar/types/wrapped-types/BiboStatus';
 import { PavVersion } from '../../../model/cedar/types/wrapped-types/PavVersion';
@@ -18,7 +18,7 @@ import { TemporalGranularity } from '../../../model/cedar/types/wrapped-types/Te
 import { TimeFormat } from '../../../model/cedar/types/wrapped-types/TimeFormat';
 import { UiInputType } from '../../../model/cedar/types/wrapped-types/UiInputType';
 import { AdditionalProperties } from '../../../model/cedar/types/wrapped-types/AdditionalProperties';
-import { URI } from '../../../model/cedar/types/wrapped-types/URI';
+import { Iri } from '../../../model/cedar/types/wrapped-types/Iri';
 import { YamlWriterBehavior } from '../../../behavior/YamlWriterBehavior';
 
 export class YamlAtomicWriter extends JsonAtomicWriter {
@@ -35,7 +35,7 @@ export class YamlAtomicWriter extends JsonAtomicWriter {
       | CedarArtifactId
       | CedarArtifactType
       | JavascriptType
-      | ISODate
+      | IsoDate
       | CedarUser
       | BiboStatus
       | PavVersion
@@ -47,7 +47,7 @@ export class YamlAtomicWriter extends JsonAtomicWriter {
       | TimeFormat
       | UiInputType
       | AdditionalProperties
-      | URI
+      | Iri
       | BioportalTermType
       | null,
   ): string | number | boolean | JsonNode | null {

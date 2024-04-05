@@ -4,14 +4,14 @@ import {
   CedarBuilders,
   CedarJsonWriters,
   CedarWriters,
-  ISODate,
+  IsoDate,
   SchemaVersion,
 } from '../../../../../../../../src';
 
 describe('AttributeValueFieldBuilder', () => {
   test('creates attribute-value field with builder', () => {
     const builder: AttributeValueFieldBuilder = CedarBuilders.attributeValueFieldBuilder();
-    const now = ISODate.now();
+    const now = IsoDate.now();
     const field: AttributeValueField = builder
       .withAtId('https://repo.metadatacenter.org/template-fields/f38b5ef4-a078-4d82-90c0-a9a721ad5ecf')
       .withTitle('Attribute-value field title')

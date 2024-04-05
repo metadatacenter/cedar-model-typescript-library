@@ -10,15 +10,15 @@ import {
   ControlledTermFieldBuilder,
   ControlledTermOntologyBuilder,
   ControlledTermValueSetBuilder,
-  ISODate,
+  IsoDate,
   SchemaVersion,
-  URI,
+  Iri,
 } from '../../../../../../../../src';
 
 describe('ControlledTermFieldBuilder', () => {
   test('creates controlled field with builder', () => {
     const builder: ControlledTermFieldBuilder = CedarBuilders.controlledTermFieldBuilder();
-    const now = ISODate.now();
+    const now = IsoDate.now();
 
     const field: ControlledTermField = builder
       .withAtId('https://repo.metadatacenter.org/template-fields/f38b5ef4-a078-4d82-90c0-a9a721ad5ecf')
@@ -38,14 +38,14 @@ describe('ControlledTermFieldBuilder', () => {
       .withValueRecommendationEnabled(true)
       .withDefaultValue(
         new ControlledTermDefaultValueBuilder()
-          .withTermUri(new URI('http://purl.bioontology.org/ontology/MESH/C039047'))
+          .withTermUri(new Iri('http://purl.bioontology.org/ontology/MESH/C039047'))
           .withRdfsLabel('2,3,6-trichlorotoluene')
           .build(),
       )
       .addBranch(
         new ControlledTermBranchBuilder()
           .withAcronym('MESH')
-          .withUri(new URI('http://purl.bioontology.org/ontology/MESH/D055641'))
+          .withUri(new Iri('http://purl.bioontology.org/ontology/MESH/D055641'))
           .withName('Mathematical Concepts')
           .withSource('Medical Subject Headings (MESH)')
           .withMaxDepth(0)
@@ -57,7 +57,7 @@ describe('ControlledTermFieldBuilder', () => {
           .withPrefLabel('Music')
           .withSource('MESH')
           .withType(BioportalTermType.ONTOLOGY_CLASS)
-          .withUri(new URI('http://purl.bioontology.org/ontology/MESH/D009146'))
+          .withUri(new Iri('http://purl.bioontology.org/ontology/MESH/D009146'))
           .build(),
       )
       .addOntology(
@@ -65,14 +65,14 @@ describe('ControlledTermFieldBuilder', () => {
           .withAcronym('MESH')
           .withName('Medical Subject Headings')
           .withNumTerms(353825)
-          .withUri(new URI('https://data.bioontology.org/ontologies/MESH'))
+          .withUri(new Iri('https://data.bioontology.org/ontologies/MESH'))
           .build(),
       )
       .addValueSet(
         new ControlledTermValueSetBuilder()
           .withName('Progressive Disease')
           .withNumTerms(0)
-          .withUri(new URI('https://cadsr.nci.nih.gov/metadata/CADSR-VS/ad5886076616ec6c35558648aca5abf942d6147a'))
+          .withUri(new Iri('https://cadsr.nci.nih.gov/metadata/CADSR-VS/ad5886076616ec6c35558648aca5abf942d6147a'))
           .withVsCollection('CADSR-VS')
           .build(),
       )

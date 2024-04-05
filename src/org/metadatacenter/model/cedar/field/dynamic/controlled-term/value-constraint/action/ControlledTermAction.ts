@@ -1,4 +1,4 @@
-import { URI } from '../../../../../types/wrapped-types/URI';
+import { Iri } from '../../../../../types/wrapped-types/Iri';
 import { ControlledTermAbstractValueConstraint } from '../ControlledTermAbstractValueConstraint';
 
 export class ControlledTermAction extends ControlledTermAbstractValueConstraint {
@@ -6,12 +6,12 @@ export class ControlledTermAction extends ControlledTermAbstractValueConstraint 
   public className = 'ControlledTermAction';
   private readonly _to: number | null = null;
   private readonly _action: string;
-  private readonly _termUri: URI;
-  private readonly _sourceUri: URI;
+  private readonly _termUri: Iri;
+  private readonly _sourceUri: Iri;
   private readonly _source: string;
   private readonly _type: string;
 
-  constructor(to: number | null, action: string, termUri: URI, sourceUri: URI, source: string, type: string) {
+  constructor(to: number | null, action: string, termUri: Iri, sourceUri: Iri, source: string, type: string) {
     super();
     this._to = to;
     this._action = action;
@@ -29,11 +29,11 @@ export class ControlledTermAction extends ControlledTermAbstractValueConstraint 
     return this._action;
   }
 
-  get termUri(): URI {
+  get termUri(): Iri {
     return this._termUri;
   }
 
-  get sourceUri(): URI {
+  get sourceUri(): Iri {
     return this._sourceUri;
   }
 

@@ -1,11 +1,11 @@
-import { URI } from '../../../../../types/wrapped-types/URI';
+import { Iri } from '../../../../../types/wrapped-types/Iri';
 import { ControlledTermAction } from './ControlledTermAction';
 
 export class ControlledTermActionBuilder {
   private _to: number | null = null;
   private _action: string = '';
-  private _termUri: URI = URI.empty();
-  private _sourceUri: URI = URI.empty();
+  private _termUri: Iri = Iri.empty();
+  private _sourceUri: Iri = Iri.empty();
   private _source: string = '';
   private _type: string = '';
 
@@ -19,12 +19,12 @@ export class ControlledTermActionBuilder {
     return this;
   }
 
-  public withTermUri(termUri: URI): ControlledTermActionBuilder {
+  public withTermUri(termUri: Iri): ControlledTermActionBuilder {
     this._termUri = termUri;
     return this;
   }
 
-  public withSourceUri(sourceUri: URI): ControlledTermActionBuilder {
+  public withSourceUri(sourceUri: Iri): ControlledTermActionBuilder {
     this._sourceUri = sourceUri;
     return this;
   }

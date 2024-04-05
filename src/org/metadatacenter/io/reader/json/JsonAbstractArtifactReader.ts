@@ -4,7 +4,7 @@ import { CedarArtifactId } from '../../../model/cedar/types/cedar-types/CedarArt
 import { ReaderUtil } from '../ReaderUtil';
 import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
 import { CedarUser } from '../../../model/cedar/types/cedar-types/CedarUser';
-import { ISODate } from '../../../model/cedar/types/wrapped-types/ISODate';
+import { IsoDate } from '../../../model/cedar/types/wrapped-types/IsoDate';
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
 import { JsonArtifactReaderResult } from './JsonArtifactReaderResult';
 import { AbstractArtifact } from '../../../model/cedar/AbstractArtifact';
@@ -25,8 +25,8 @@ export abstract class JsonAbstractArtifactReader {
     container.schema_name = ReaderUtil.getString(sourceObject, JsonSchema.schemaName);
     container.schema_description = ReaderUtil.getString(sourceObject, JsonSchema.schemaDescription);
     container.pav_createdBy = CedarUser.forValue(ReaderUtil.getString(sourceObject, JsonSchema.pavCreatedBy));
-    container.pav_createdOn = ISODate.forValue(ReaderUtil.getString(sourceObject, JsonSchema.pavCreatedOn));
+    container.pav_createdOn = IsoDate.forValue(ReaderUtil.getString(sourceObject, JsonSchema.pavCreatedOn));
     container.oslc_modifiedBy = CedarUser.forValue(ReaderUtil.getString(sourceObject, JsonSchema.oslcModifiedBy));
-    container.pav_lastUpdatedOn = ISODate.forValue(ReaderUtil.getString(sourceObject, JsonSchema.pavLastUpdatedOn));
+    container.pav_lastUpdatedOn = IsoDate.forValue(ReaderUtil.getString(sourceObject, JsonSchema.pavLastUpdatedOn));
   }
 }

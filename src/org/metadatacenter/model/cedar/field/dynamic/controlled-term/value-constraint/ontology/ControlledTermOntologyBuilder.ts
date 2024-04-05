@@ -1,11 +1,11 @@
-import { URI } from '../../../../../types/wrapped-types/URI';
+import { Iri } from '../../../../../types/wrapped-types/Iri';
 import { ControlledTermOntology } from './ControlledTermOntology';
 
 export class ControlledTermOntologyBuilder {
   private acronym: string = '';
   private name: string = '';
   private numTerms: number = 0;
-  private uri: URI = URI.empty();
+  private uri: Iri = Iri.empty();
 
   public withAcronym(acronym: string): ControlledTermOntologyBuilder {
     this.acronym = acronym;
@@ -22,7 +22,7 @@ export class ControlledTermOntologyBuilder {
     return this;
   }
 
-  public withUri(uri: URI): ControlledTermOntologyBuilder {
+  public withUri(uri: Iri): ControlledTermOntologyBuilder {
     this.uri = uri;
     return this;
   }

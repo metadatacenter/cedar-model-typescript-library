@@ -2,7 +2,7 @@ import { AbstractSchemaArtifact } from '../../../model/cedar/AbstractSchemaArtif
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { CedarArtifactId } from '../../../model/cedar/types/cedar-types/CedarArtifactId';
 import { CedarUser } from '../../../model/cedar/types/cedar-types/CedarUser';
-import { ISODate } from '../../../model/cedar/types/wrapped-types/ISODate';
+import { IsoDate } from '../../../model/cedar/types/wrapped-types/IsoDate';
 import { SchemaVersion } from '../../../model/cedar/types/wrapped-types/SchemaVersion';
 import { PavVersion } from '../../../model/cedar/types/wrapped-types/PavVersion';
 import { BiboStatus } from '../../../model/cedar/types/wrapped-types/BiboStatus';
@@ -34,9 +34,9 @@ export abstract class YamlAbstractArtifactReader {
     container.schema_name = ReaderUtil.getString(sourceObject, YamlKeys.label);
     container.schema_description = ReaderUtil.getString(sourceObject, YamlKeys.description);
     container.pav_createdBy = CedarUser.forValue(ReaderUtil.getString(sourceObject, YamlKeys.createdBy));
-    container.pav_createdOn = ISODate.forValue(ReaderUtil.getString(sourceObject, YamlKeys.createdOn));
+    container.pav_createdOn = IsoDate.forValue(ReaderUtil.getString(sourceObject, YamlKeys.createdOn));
     container.oslc_modifiedBy = CedarUser.forValue(ReaderUtil.getString(sourceObject, YamlKeys.modifiedBy));
-    container.pav_lastUpdatedOn = ISODate.forValue(ReaderUtil.getString(sourceObject, YamlKeys.lastUpdatedOn));
+    container.pav_lastUpdatedOn = IsoDate.forValue(ReaderUtil.getString(sourceObject, YamlKeys.lastUpdatedOn));
     container.schema_schemaVersion = SchemaVersion.forValue(ReaderUtil.getString(sourceObject, YamlKeys.modelVersion));
     container.pav_version = PavVersion.forValue(ReaderUtil.getString(sourceObject, YamlKeys.version));
     container.bibo_status = BiboStatus.forYamlValue(ReaderUtil.getString(sourceObject, YamlKeys.status));

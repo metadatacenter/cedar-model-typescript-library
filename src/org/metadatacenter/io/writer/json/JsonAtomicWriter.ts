@@ -2,7 +2,7 @@ import { JsonWriterBehavior } from '../../../behavior/JsonWriterBehavior';
 import { CedarArtifactId } from '../../../model/cedar/types/cedar-types/CedarArtifactId';
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
 import { JavascriptType } from '../../../model/cedar/types/wrapped-types/JavascriptType';
-import { ISODate } from '../../../model/cedar/types/wrapped-types/ISODate';
+import { IsoDate } from '../../../model/cedar/types/wrapped-types/IsoDate';
 import { CedarUser } from '../../../model/cedar/types/cedar-types/CedarUser';
 import { BiboStatus } from '../../../model/cedar/types/wrapped-types/BiboStatus';
 import { PavVersion } from '../../../model/cedar/types/wrapped-types/PavVersion';
@@ -17,7 +17,7 @@ import { AdditionalProperties } from '../../../model/cedar/types/wrapped-types/A
 import { NullableString } from '../../../model/cedar/types/basic-types/NullableString';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { JsonTemplateFieldContentDynamic } from '../../../model/cedar/util/serialization/JsonTemplateFieldContentDynamic';
-import { URI } from '../../../model/cedar/types/wrapped-types/URI';
+import { Iri } from '../../../model/cedar/types/wrapped-types/Iri';
 import { BioportalTermType, BioportalTermTypeJsonValue } from '../../../model/cedar/types/bioportal-types/BioportalTermType';
 
 export class JsonAtomicWriter {
@@ -32,7 +32,7 @@ export class JsonAtomicWriter {
       | CedarArtifactId
       | CedarArtifactType
       | JavascriptType
-      | ISODate
+      | IsoDate
       | CedarUser
       | BiboStatus
       | PavVersion
@@ -44,7 +44,7 @@ export class JsonAtomicWriter {
       | TimeFormat
       | UiInputType
       | AdditionalProperties
-      | URI
+      | Iri
       | BioportalTermType
       | null,
   ): string | number | boolean | JsonNode | null {
@@ -57,7 +57,7 @@ export class JsonAtomicWriter {
       return this.writeCedarArtifactType(arg);
     } else if (arg instanceof JavascriptType) {
       return this.writeJavascriptType(arg);
-    } else if (arg instanceof ISODate) {
+    } else if (arg instanceof IsoDate) {
       return this.writeCedarDate(arg);
     } else if (arg instanceof CedarUser) {
       return this.writeCedarUser(arg);
@@ -81,7 +81,7 @@ export class JsonAtomicWriter {
       return this.writeUiInputType(arg);
     } else if (arg instanceof AdditionalProperties) {
       return this.writeAdditionalProperties(arg);
-    } else if (arg instanceof URI) {
+    } else if (arg instanceof Iri) {
       return this.writeURI(arg);
     } else if (arg instanceof BioportalTermType) {
       return this.writeBioportalTermTypeJson(arg);
@@ -102,7 +102,7 @@ export class JsonAtomicWriter {
     return type.getValue();
   }
 
-  private writeCedarDate(date: ISODate): NullableString {
+  private writeCedarDate(date: IsoDate): NullableString {
     return date.getValue();
   }
 
@@ -155,7 +155,7 @@ export class JsonAtomicWriter {
     return null;
   }
 
-  private writeURI(uri: URI): string {
+  private writeURI(uri: Iri): string {
     return uri.getValue();
   }
 

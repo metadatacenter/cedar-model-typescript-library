@@ -1,4 +1,4 @@
-export class URI {
+export class Iri {
   private readonly value: string;
 
   constructor(value: string) {
@@ -9,7 +9,7 @@ export class URI {
     return this.value;
   }
 
-  static empty(): URI {
-    return new URI('');
+  static empty(): Iri {
+    return new Iri('');
   }
 }

@@ -2,7 +2,7 @@ import {
   CedarBuilders,
   CedarJsonWriters,
   CedarWriters,
-  ISODate,
+  IsoDate,
   SchemaVersion,
   StaticYoutubeField,
   StaticYoutubeFieldBuilder,
@@ -11,7 +11,7 @@ import {
 describe('StaticYoutubeFieldBuilder', () => {
   test('creates youtube field with builder', () => {
     const builder: StaticYoutubeFieldBuilder = CedarBuilders.youtubeFieldBuilder();
-    const now = ISODate.now();
+    const now = IsoDate.now();
     const field: StaticYoutubeField = builder
       .withAtId('https://repo.metadatacenter.org/template-fields/f38b5ef4-a078-4d82-90c0-a9a721ad5ecf')
       .withTitle('Text field title')

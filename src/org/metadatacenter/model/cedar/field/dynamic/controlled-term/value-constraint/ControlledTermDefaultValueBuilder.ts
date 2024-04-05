@@ -1,11 +1,11 @@
-import { URI } from '../../../../types/wrapped-types/URI';
+import { Iri } from '../../../../types/wrapped-types/Iri';
 import { ControlledTermDefaultValue } from './ControlledTermDefaultValue';
 
 export class ControlledTermDefaultValueBuilder {
-  private termUri: URI = URI.empty();
+  private termUri: Iri = Iri.empty();
   private rdfsLabel: string = '';
 
-  public withTermUri(termUri: URI): ControlledTermDefaultValueBuilder {
+  public withTermUri(termUri: Iri): ControlledTermDefaultValueBuilder {
     this.termUri = termUri;
     return this;
   }

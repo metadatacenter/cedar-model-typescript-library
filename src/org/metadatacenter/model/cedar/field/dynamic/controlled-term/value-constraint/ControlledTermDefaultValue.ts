@@ -1,15 +1,15 @@
-import { URI } from '../../../../types/wrapped-types/URI';
+import { Iri } from '../../../../types/wrapped-types/Iri';
 
 export class ControlledTermDefaultValue {
-  private readonly _termUri: URI;
+  private readonly _termUri: Iri;
   private readonly _rdfsLabel: string;
 
-  constructor(termUri: URI, rdfsLabel: string) {
+  constructor(termUri: Iri, rdfsLabel: string) {
     this._termUri = termUri;
     this._rdfsLabel = rdfsLabel;
   }
 
-  get termUri(): URI {
+  get termUri(): Iri {
     return this._termUri;
   }
 

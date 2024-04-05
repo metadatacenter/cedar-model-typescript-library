@@ -9,7 +9,7 @@ import { TemplateField } from '../../../model/cedar/field/TemplateField';
 import { CedarArtifactId } from '../../../model/cedar/types/cedar-types/CedarArtifactId';
 import { YamlAnnotationsWriter } from './YamlAnnotationsWriter';
 import { CedarUser } from '../../../model/cedar/types/cedar-types/CedarUser';
-import { ISODate } from '../../../model/cedar/types/wrapped-types/ISODate';
+import { IsoDate } from '../../../model/cedar/types/wrapped-types/IsoDate';
 import { TemplateElement } from '../../../model/cedar/element/TemplateElement';
 import { YamlArtifactType } from '../../../model/cedar/types/wrapped-types/YamlArtifactType';
 import { Template } from '../../../model/cedar/template/Template';
@@ -65,13 +65,13 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
 
   protected macroProvenance(artifact: AbstractSchemaArtifact): JsonNode {
     const prov = JsonNode.getEmpty();
-    if (artifact.pav_createdOn !== ISODate.NULL) {
+    if (artifact.pav_createdOn !== IsoDate.NULL) {
       prov[YamlKeys.createdOn] = this.atomicWriter.write(artifact.pav_createdOn);
     }
     if (artifact.pav_createdBy !== CedarUser.NULL) {
       prov[YamlKeys.createdBy] = this.atomicWriter.write(artifact.pav_createdBy);
     }
-    if (artifact.pav_lastUpdatedOn !== ISODate.NULL) {
+    if (artifact.pav_lastUpdatedOn !== IsoDate.NULL) {
       prov[YamlKeys.lastUpdatedOn] = this.atomicWriter.write(artifact.pav_lastUpdatedOn);
     }
     if (artifact.oslc_modifiedBy !== CedarUser.NULL) {

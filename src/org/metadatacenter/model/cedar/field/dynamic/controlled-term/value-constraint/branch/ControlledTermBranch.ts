@@ -1,4 +1,4 @@
-import { URI } from '../../../../../types/wrapped-types/URI';
+import { Iri } from '../../../../../types/wrapped-types/Iri';
 import { ControlledTermAbstractValueConstraint } from '../ControlledTermAbstractValueConstraint';
 
 export class ControlledTermBranch extends ControlledTermAbstractValueConstraint {
@@ -7,10 +7,10 @@ export class ControlledTermBranch extends ControlledTermAbstractValueConstraint 
   private readonly _source: string;
   private readonly _acronym: string;
   private readonly _name: string;
-  private readonly _uri: URI;
+  private readonly _uri: Iri;
   private readonly _maxDepth: number = 0;
 
-  constructor(source: string, acronym: string, name: string, maxDepth: number, uri: URI) {
+  constructor(source: string, acronym: string, name: string, maxDepth: number, uri: Iri) {
     super();
     this._source = source;
     this._acronym = acronym;
@@ -31,7 +31,7 @@ export class ControlledTermBranch extends ControlledTermAbstractValueConstraint 
     return this._name;
   }
 
-  get uri(): URI {
+  get uri(): Iri {
     return this._uri;
   }
 

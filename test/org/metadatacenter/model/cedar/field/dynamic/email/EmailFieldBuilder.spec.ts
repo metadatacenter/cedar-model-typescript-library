@@ -4,14 +4,14 @@ import {
   CedarWriters,
   EmailField,
   EmailFieldBuilder,
-  ISODate,
+  IsoDate,
   SchemaVersion,
 } from '../../../../../../../../src';
 
 describe('EmailFieldBuilder', () => {
   test('creates email field with builder', () => {
     const builder: EmailFieldBuilder = CedarBuilders.emailFieldBuilder();
-    const now = ISODate.now();
+    const now = IsoDate.now();
     const field: EmailField = builder
       .withAtId('https://repo.metadatacenter.org/template-fields/f38b5ef4-a078-4d82-90c0-a9a721ad5ecf')
       .withTitle('Email field title')

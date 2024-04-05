@@ -1,4 +1,4 @@
-import { URI } from '../../../../../types/wrapped-types/URI';
+import { Iri } from '../../../../../types/wrapped-types/Iri';
 import { ControlledTermAbstractValueConstraint } from '../ControlledTermAbstractValueConstraint';
 
 export class ControlledTermOntology extends ControlledTermAbstractValueConstraint {
@@ -6,10 +6,10 @@ export class ControlledTermOntology extends ControlledTermAbstractValueConstrain
   public className = 'ControlledTermOntology';
   private readonly _acronym: string;
   private readonly _name: string;
-  private readonly _uri: URI;
+  private readonly _uri: Iri;
   private readonly _numTerms: number = 0;
 
-  constructor(acronym: string, name: string, numTerms: number, uri: URI) {
+  constructor(acronym: string, name: string, numTerms: number, uri: Iri) {
     super();
     this._acronym = acronym;
     this._name = name;
@@ -25,7 +25,7 @@ export class ControlledTermOntology extends ControlledTermAbstractValueConstrain
     return this._name;
   }
 
-  get uri(): URI {
+  get uri(): Iri {
     return this._uri;
   }
 

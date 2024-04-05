@@ -1,4 +1,4 @@
-export class ISODate {
+export class IsoDate {
   private readonly date: Date | null;
   private readonly timezoneOffset: string | null;
 
@@ -7,7 +7,7 @@ export class ISODate {
     this.timezoneOffset = timezoneOffset;
   }
 
-  public static NULL = new ISODate(null, null);
+  public static NULL = new IsoDate(null, null);
 
   // Returns the date as an ISO string with the original time zone offset without partial seconds.
   public getValue(): string | null {
@@ -27,20 +27,20 @@ export class ISODate {
     }
   }
 
-  public static forValue(isoDateString: string | null): ISODate {
+  public static forValue(isoDateString: string | null): IsoDate {
     if (!isoDateString) {
-      return ISODate.NULL;
+      return IsoDate.NULL;
     }
 
     const date = new Date(isoDateString);
     const timezoneOffset = isoDateString.match(/Z|([+-])([01]\d):?([0-5]\d)$/)?.[0] ?? 'Z';
-    return new ISODate(date, timezoneOffset);
+    return new IsoDate(date, timezoneOffset);
   }
 
-  public static now(): ISODate {
+  public static now(): IsoDate {
     const date = new Date();
     const timezoneOffset = this.getCurrentGMTOffset();
-    return new ISODate(date, timezoneOffset);
+    return new IsoDate(date, timezoneOffset);
   }
 
   public static getCurrentGMTOffset(): string {

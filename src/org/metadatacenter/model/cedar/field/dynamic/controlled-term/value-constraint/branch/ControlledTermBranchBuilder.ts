@@ -1,11 +1,11 @@
-import { URI } from '../../../../../types/wrapped-types/URI';
+import { Iri } from '../../../../../types/wrapped-types/Iri';
 import { ControlledTermBranch } from './ControlledTermBranch';
 
 export class ControlledTermBranchBuilder {
   private _source: string = '';
   private _acronym: string = '';
   private _name: string = '';
-  private _uri: URI = URI.empty();
+  private _uri: Iri = Iri.empty();
   private _maxDepth: number = 0;
 
   public withSource(source: string): ControlledTermBranchBuilder {
@@ -23,7 +23,7 @@ export class ControlledTermBranchBuilder {
     return this;
   }
 
-  public withUri(uri: URI): ControlledTermBranchBuilder {
+  public withUri(uri: Iri): ControlledTermBranchBuilder {
     this._uri = uri;
     return this;
   }

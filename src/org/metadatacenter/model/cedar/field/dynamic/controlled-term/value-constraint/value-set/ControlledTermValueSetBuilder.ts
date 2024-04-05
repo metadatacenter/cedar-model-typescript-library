@@ -1,10 +1,10 @@
-import { URI } from '../../../../../types/wrapped-types/URI';
+import { Iri } from '../../../../../types/wrapped-types/Iri';
 import { ControlledTermValueSet } from './ControlledTermValueSet';
 
 export class ControlledTermValueSetBuilder {
   private _vsCollection: string = '';
   private _name: string = '';
-  private _uri: URI = URI.empty();
+  private _uri: Iri = Iri.empty();
   private _numTerms: number = 0;
 
   public withVsCollection(vsCollection: string): ControlledTermValueSetBuilder {
@@ -17,7 +17,7 @@ export class ControlledTermValueSetBuilder {
     return this;
   }
 
-  public withUri(uri: URI): ControlledTermValueSetBuilder {
+  public withUri(uri: Iri): ControlledTermValueSetBuilder {
     this._uri = uri;
     return this;
   }

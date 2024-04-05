@@ -1,5 +1,5 @@
 import { JsonNode } from '../../model/cedar/types/basic-types/JsonNode';
-import { URI } from '../../model/cedar/types/wrapped-types/URI';
+import { Iri } from '../../model/cedar/types/wrapped-types/Iri';
 import { NullableNumber } from '../../model/cedar/types/basic-types/NullableNumber';
 
 export class ReaderUtil {
@@ -121,8 +121,8 @@ export class ReaderUtil {
     }
   }
 
-  static getURI(node: JsonNode, key: string): URI {
-    return new URI(this.getStringOrEmpty(node, key));
+  static getURI(node: JsonNode, key: string): Iri {
+    return new Iri(this.getStringOrEmpty(node, key));
   }
 
   static deleteNodeKey(node: JsonNode, key: string) {

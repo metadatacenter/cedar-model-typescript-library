@@ -3,6 +3,7 @@ import { ValueConstraints } from '../../ValueConstraints';
 import { TextArea } from './TextArea';
 import { CedarFieldType } from '../../../types/cedar-types/CedarFieldType';
 import { CedarArtifactType } from '../../../types/cedar-types/CedarArtifactType';
+import { ChildDeploymentInfoBuilder } from '../../../deployment/ChildDeploymentInfoBuilder';
 
 export class TextAreaImpl extends TemplateField implements TextArea {
   private constructor() {
@@ -14,5 +15,9 @@ export class TextAreaImpl extends TemplateField implements TextArea {
 
   public static buildEmpty(): TextArea {
     return new TextAreaImpl();
+  }
+
+  override createDeploymentBuilder(childName: string): ChildDeploymentInfoBuilder {
+    return new ChildDeploymentInfoBuilder(this, childName);
   }
 }

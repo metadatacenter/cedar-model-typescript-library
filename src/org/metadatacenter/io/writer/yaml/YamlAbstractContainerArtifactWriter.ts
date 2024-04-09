@@ -1,11 +1,13 @@
 import { AbstractContainerArtifact } from '../../../model/cedar/AbstractContainerArtifact';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { TemplateChild } from '../../../model/cedar/types/basic-types/TemplateChild';
-import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
 import { TemplateField } from '../../../model/cedar/field/TemplateField';
 import { YamlAbstractArtifactWriter } from './YamlAbstractArtifactWriter';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 import { UiInputType } from '../../../model/cedar/types/wrapped-types/UiInputType';
+import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
+import { WriterUtil } from '../WriterUtil';
+import { CedarModel } from '../../../model/cedar/constants/CedarModel';
 
 export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractArtifactWriter {
   protected getChildListAsJSON(container: AbstractContainerArtifact): JsonNode[] {
@@ -17,16 +19,16 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
       .forEach((childName: string) => {
         const child: TemplateChild | null = container.getChild(childName);
         if (child != null) {
-          const childMeta: ChildDeploymentInfo | null = container.getChildrenInfo().get(childName);
-          if (childMeta !== null) {
-            let childDefinition: JsonNode = JsonNode.getEmpty();
+          let childDefinition: JsonNode = JsonNode.getEmpty();
+          const childMetaAbstract: AbstractChildDeploymentInfo | null = container.getChildrenInfo().get(childName);
+          if (childMetaAbstract !== null) {
             // Put child deployment name
             childDefinition[YamlKeys.name] = childName;
 
             if (child instanceof TemplateField) {
               childDefinition = {
                 ...childDefinition,
-                ...this.writers.getFieldWriterForType(child.cedarFieldType).getYamlAsJsonNode(child, childMeta),
+                ...this.writers.getFieldWriterForType(child.cedarFieldType).getYamlAsJsonNode(child, childMetaAbstract),
               };
             } else {
               childDefinition = {
@@ -34,7 +36,7 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
                 ...this.writers.getTemplateElementWriter().getYamlAsJsonNode(child),
               };
             }
-            childDefinition[YamlKeys.configuration] = this.getDeploymentInfo(childMeta);
+            childDefinition[YamlKeys.configuration] = this.getDeploymentInfo(child, childMetaAbstract);
             childList.push(childDefinition);
           }
         }
@@ -43,7 +45,7 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
     return childList;
   }
 
-  private getDeploymentInfo(childMeta: ChildDeploymentInfo): JsonNode {
+  private getDeploymentInfo(child: TemplateChild | null, childMeta: AbstractChildDeploymentInfo): JsonNode {
     const childConfiguration: JsonNode = JsonNode.getEmpty();
     if (childMeta.requiredValue) {
       childConfiguration[YamlKeys.required] = true;
@@ -56,18 +58,26 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
     }
     childConfiguration[YamlKeys.overrideLabel] = childMeta.label;
     childConfiguration[YamlKeys.overrideDescription] = childMeta.description;
-    // If multi-instance, add info
-    if (
-      childMeta.multiInstance &&
-      childMeta.uiInputType != UiInputType.CHECKBOX &&
-      childMeta.uiInputType != UiInputType.LIST &&
-      childMeta.uiInputType != UiInputType.ATTRIBUTE_VALUE
-    ) {
-      // TODO: handle maxItems, minItems inconsistencies
-      childConfiguration[YamlKeys.multiple] = true;
-      childConfiguration[YamlKeys.minItems] = childMeta.minItems;
-      if (childMeta.maxItems !== null) {
-        childConfiguration[YamlKeys.maxItems] = childMeta.maxItems;
+
+    const { isMultiInstance, minItems: constMinItems, maxItems: constMaxItems } = WriterUtil.getMultiMinMax(child!, childMeta);
+    let minItems = constMinItems;
+    let maxItems = constMaxItems;
+
+    if (isMultiInstance) {
+      if (minItems === null) {
+        minItems = 0;
+      }
+      if (maxItems !== null && maxItems < minItems) {
+        maxItems = minItems;
+      }
+      if (child?.isMultiInstanceByDefinition() || child?.isSingleInstanceByDefinition()) {
+        // Do not add multi info
+      } else {
+        childConfiguration[YamlKeys.multiple] = true;
+        childConfiguration[YamlKeys.minItems] = minItems;
+        if (maxItems !== null) {
+          childConfiguration[YamlKeys.maxItems] = maxItems;
+        }
       }
     }
     return childConfiguration;

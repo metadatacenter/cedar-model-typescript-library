@@ -25,8 +25,10 @@ import { EmailField } from './org/metadatacenter/model/cedar/field/dynamic/email
 import { EmailFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/email/EmailFieldBuilder';
 import { LinkField } from './org/metadatacenter/model/cedar/field/dynamic/link/LinkField';
 import { LinkFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/link/LinkFieldBuilder';
-import { ListField } from './org/metadatacenter/model/cedar/field/dynamic/list/ListField';
-import { ListFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/list/ListFieldBuilder';
+import { SingleChoiceListField } from './org/metadatacenter/model/cedar/field/dynamic/list-single-choice/SingleChoiceListField';
+import { SingleChoiceListFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/list-single-choice/SingleChoiceListFieldBuilder';
+import { MultipleChoiceListField } from './org/metadatacenter/model/cedar/field/dynamic/list-multiple-choice/MultipleChoiceListField';
+import { MultipleChoiceListFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/list-multiple-choice/MultipleChoiceListFieldBuilder';
 import { NumericField } from './org/metadatacenter/model/cedar/field/dynamic/numeric/NumericField';
 import { NumericFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/numeric/NumericFieldBuilder';
 import { PhoneNumberField } from './org/metadatacenter/model/cedar/field/dynamic/phone-number/PhoneNumberField';
@@ -115,6 +117,7 @@ import { JsonTemplateInstanceReaderResult } from './org/metadatacenter/io/reader
 import { JsonTemplateFieldWriter } from './org/metadatacenter/io/writer/json/JsonTemplateFieldWriter';
 import { YamlTemplateFieldWriter } from './org/metadatacenter/io/writer/yaml/YamlTemplateFieldWriter';
 import { PavVersion } from './org/metadatacenter/model/cedar/types/wrapped-types/PavVersion';
+import { TemplateChild } from './org/metadatacenter/model/cedar/types/basic-types/TemplateChild';
 // It is needed, do not remove, even if it looks unused
 export { JsonTemplateFieldWriterInternal as JsonTemplateFieldWriter };
 export { YamlTemplateFieldWriterInternal as YamlTemplateFieldWriter };
@@ -149,7 +152,8 @@ export { CheckboxField, CheckboxFieldBuilder };
 export { ControlledTermField, ControlledTermFieldBuilder };
 export { EmailField, EmailFieldBuilder };
 export { LinkField, LinkFieldBuilder };
-export { ListField, ListFieldBuilder };
+export { SingleChoiceListField, SingleChoiceListFieldBuilder };
+export { MultipleChoiceListField, MultipleChoiceListFieldBuilder };
 export { NumericField, NumericFieldBuilder };
 export { PhoneNumberField, PhoneNumberFieldBuilder };
 export { RadioField, RadioFieldBuilder };
@@ -208,3 +212,4 @@ export { JsonTemplateElementReaderResult };
 export { JsonTemplateReaderResult };
 export { JsonTemplateInstanceReaderResult };
 export { JsonArtifactReaderResult };
+export { TemplateChild };

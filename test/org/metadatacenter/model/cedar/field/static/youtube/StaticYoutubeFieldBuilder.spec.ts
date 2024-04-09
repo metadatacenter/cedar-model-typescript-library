@@ -3,10 +3,14 @@ import {
   CedarJsonWriters,
   CedarWriters,
   IsoDate,
+  JsonTemplateElementWriter,
   SchemaVersion,
   StaticYoutubeField,
   StaticYoutubeFieldBuilder,
+  TemplateElement,
+  TemplateElementBuilder,
 } from '../../../../../../../../src';
+import { ChildDeploymentInfoAlwaysSingleBuilder } from '../../../../../../../../src/org/metadatacenter/model/cedar/deployment/ChildDeploymentInfoAlwaysSingleBuilder';
 
 describe('StaticYoutubeFieldBuilder', () => {
   test('creates youtube field with builder', () => {
@@ -75,5 +79,33 @@ describe('StaticYoutubeFieldBuilder', () => {
     expect(backparsed['skos:altLabel']).toStrictEqual(['Alt label 1', 'Alt label 2', 'Alt label 3']);
 
     expect(backparsed['_valueConstraints']).toBeUndefined();
+  });
+
+  test('creates element with one youtube field, single-instance', () => {
+    const youtubeFieldBuilder: StaticYoutubeFieldBuilder = CedarBuilders.youtubeFieldBuilder();
+    const youtubeField: StaticYoutubeField = youtubeFieldBuilder.withTitle('Text field').build();
+
+    const youtubeFieldDeploymentBuilder: ChildDeploymentInfoAlwaysSingleBuilder = youtubeField.createDeploymentBuilder('youtube_field');
+
+    const youtubeFieldDeployment = youtubeFieldDeploymentBuilder
+      .withIri('https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde')
+      .build();
+
+    const templateElementBuilder: TemplateElementBuilder = CedarBuilders.templateElementBuilder();
+    const templateElement: TemplateElement = templateElementBuilder.addChild(youtubeField, youtubeFieldDeployment).build();
+
+    // console.log(TestUtil.d(templateElement.getChildrenInfo().children));
+
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const writer: JsonTemplateElementWriter = writers.getTemplateElementWriter();
+    //
+    const stringified = JSON.stringify(writer.getAsJsonNode(templateElement), null, 2);
+    // console.log(stringified);
+    const backparsed = JSON.parse(stringified);
+
+    expect(backparsed['properties']).not.toBeNull();
+    expect(backparsed['properties']['youtube_field']).not.toBeNull();
+    expect(backparsed['properties']['youtube_field']['type']).toBe('object');
+    expect(backparsed['properties']['youtube_field']['items']).toBeUndefined();
   });
 });

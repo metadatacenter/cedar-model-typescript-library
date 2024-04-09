@@ -37,7 +37,8 @@ describe('TemplateElement', () => {
       .withValueRecommendationEnabled(true)
       .build();
 
-    const textFieldDeploymentBuilder = CedarBuilders.childDeploymentBuilder(textField, '_text_field')
+    const textFieldDeploymentBuilder = textField
+      .createDeploymentBuilder('_text_field')
       .withIri('https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde')
       .withLabel('Text field property label')
       .withDescription('Text field property description')

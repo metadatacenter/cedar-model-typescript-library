@@ -6,11 +6,12 @@ import { UnknownTemplateField } from '../../../model/cedar/field/UnknownTemplate
 import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
 import { ReaderUtil } from '../ReaderUtil';
 import { CedarModel } from '../../../model/cedar/constants/CedarModel';
+import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
 
 export abstract class JsonTemplateFieldTypeSpecificReader {
   public read(
     _fieldSourceObject: JsonNode,
-    _childInfo: ChildDeploymentInfo,
+    _childInfo: AbstractChildDeploymentInfo,
     _parsingResult: ParsingResult,
     _path: JsonPath,
   ): TemplateField {

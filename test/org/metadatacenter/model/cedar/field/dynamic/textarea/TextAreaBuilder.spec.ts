@@ -1,4 +1,15 @@
-import { CedarBuilders, CedarJsonWriters, CedarWriters, IsoDate, TextArea, TextAreaBuilder } from '../../../../../../../../src';
+import {
+  CedarBuilders,
+  CedarJsonWriters,
+  CedarWriters,
+  ChildDeploymentInfoBuilder,
+  IsoDate,
+  JsonTemplateElementWriter,
+  TemplateElement,
+  TemplateElementBuilder,
+  TextArea,
+  TextAreaBuilder,
+} from '../../../../../../../../src';
 
 describe('TextAreaBuilder', () => {
   test('creates text area with builder', () => {
@@ -57,5 +68,66 @@ describe('TextAreaBuilder', () => {
     expect(backparsed['skos:altLabel']).toStrictEqual(['Alt label 1', 'Alt label 2', 'Alt label 3']);
 
     expect(backparsed['_valueConstraints']['requiredValue']).toBe(false);
+  });
+
+  test('creates element with one text area, single-instance', () => {
+    const textAreaBuilder: TextAreaBuilder = CedarBuilders.textAreaBuilder();
+    const textArea: TextArea = textAreaBuilder.withTitle('Text area').build();
+
+    const textAreaDeploymentBuilder: ChildDeploymentInfoBuilder = textArea.createDeploymentBuilder('text_area');
+
+    const textAreaDeployment = textAreaDeploymentBuilder
+      .withIri('https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde')
+      .build();
+
+    const templateElementBuilder: TemplateElementBuilder = CedarBuilders.templateElementBuilder();
+    const templateElement: TemplateElement = templateElementBuilder.addChild(textArea, textAreaDeployment).build();
+
+    // console.log(TestUtil.d(templateElement.getChildrenInfo().children));
+
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const writer: JsonTemplateElementWriter = writers.getTemplateElementWriter();
+    //
+    const stringified = JSON.stringify(writer.getAsJsonNode(templateElement), null, 2);
+    // console.log(stringified);
+    const backparsed = JSON.parse(stringified);
+
+    expect(backparsed['properties']).not.toBeNull();
+    expect(backparsed['properties']['text_area']).not.toBeNull();
+    expect(backparsed['properties']['text_area']['type']).toBe('object');
+    expect(backparsed['properties']['text_area']['items']).toBeUndefined();
+  });
+
+  test('creates element with one text area, multi-instance', () => {
+    const textAreaBuilder: TextAreaBuilder = CedarBuilders.textAreaBuilder();
+    const textArea: TextArea = textAreaBuilder.withTitle('Text field').build();
+
+    const textAreaDeploymentBuilder: ChildDeploymentInfoBuilder = textArea.createDeploymentBuilder('text_area');
+
+    const textAreaDeployment = textAreaDeploymentBuilder
+      .withIri('https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde')
+      .withMultiInstance(true)
+      .withMinItems(2)
+      .withMaxItems(10)
+      .build();
+
+    const templateElementBuilder: TemplateElementBuilder = CedarBuilders.templateElementBuilder();
+    const templateElement: TemplateElement = templateElementBuilder.addChild(textArea, textAreaDeployment).build();
+
+    // console.log(TestUtil.d(templateElement.getChildrenInfo().children));
+
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const writer: JsonTemplateElementWriter = writers.getTemplateElementWriter();
+    //
+    const stringified = JSON.stringify(writer.getAsJsonNode(templateElement), null, 2);
+    // console.log(stringified);
+    const backparsed = JSON.parse(stringified);
+
+    expect(backparsed['properties']).not.toBeNull();
+    expect(backparsed['properties']['text_area']).not.toBeNull();
+    expect(backparsed['properties']['text_area']['type']).toBe('array');
+    expect(backparsed['properties']['text_area']['minItems']).toBe(2);
+    expect(backparsed['properties']['text_area']['maxItems']).toBe(10);
+    expect(backparsed['properties']['text_area']['items']).not.toBeNull();
   });
 });

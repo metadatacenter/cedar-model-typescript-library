@@ -2,7 +2,11 @@ import {
   CedarBuilders,
   CedarJsonWriters,
   CedarWriters,
+  ChildDeploymentInfoBuilder,
   IsoDate,
+  JsonTemplateElementWriter,
+  TemplateElement,
+  TemplateElementBuilder,
   TemporalField,
   TemporalFieldBuilder,
   TemporalGranularity,
@@ -76,5 +80,66 @@ describe('TemporalFieldBuilder', () => {
     expect(backparsed['_valueConstraints']['requiredValue']).toBe(false);
     expect(backparsed['_valueConstraints']['temporalType']).toBe('xsd:dateTime');
     expect(backparsed['_valueConstraints']['defaultValue']).toBeUndefined();
+  });
+
+  test('creates element with one temporal field, single-instance', () => {
+    const temporalFieldBuilder: TemporalFieldBuilder = CedarBuilders.temporalFieldBuilder();
+    const temporalField: TemporalField = temporalFieldBuilder.withTitle('Text area').build();
+
+    const temporalFieldDeploymentBuilder: ChildDeploymentInfoBuilder = temporalField.createDeploymentBuilder('temporal_field');
+
+    const temporalFieldDeployment = temporalFieldDeploymentBuilder
+      .withIri('https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde')
+      .build();
+
+    const templateElementBuilder: TemplateElementBuilder = CedarBuilders.templateElementBuilder();
+    const templateElement: TemplateElement = templateElementBuilder.addChild(temporalField, temporalFieldDeployment).build();
+
+    // console.log(TestUtil.d(templateElement.getChildrenInfo().children));
+
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const writer: JsonTemplateElementWriter = writers.getTemplateElementWriter();
+    //
+    const stringified = JSON.stringify(writer.getAsJsonNode(templateElement), null, 2);
+    // console.log(stringified);
+    const backparsed = JSON.parse(stringified);
+
+    expect(backparsed['properties']).not.toBeNull();
+    expect(backparsed['properties']['temporal_field']).not.toBeNull();
+    expect(backparsed['properties']['temporal_field']['type']).toBe('object');
+    expect(backparsed['properties']['temporal_field']['items']).toBeUndefined();
+  });
+
+  test('creates element with one temporal field, multi-instance', () => {
+    const temporalFieldBuilder: TemporalFieldBuilder = CedarBuilders.temporalFieldBuilder();
+    const temporalField: TemporalField = temporalFieldBuilder.withTitle('Text field').build();
+
+    const temporalFieldDeploymentBuilder: ChildDeploymentInfoBuilder = temporalField.createDeploymentBuilder('temporal_field');
+
+    const temporalFieldDeployment = temporalFieldDeploymentBuilder
+      .withIri('https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde')
+      .withMultiInstance(true)
+      .withMinItems(2)
+      .withMaxItems(10)
+      .build();
+
+    const templateElementBuilder: TemplateElementBuilder = CedarBuilders.templateElementBuilder();
+    const templateElement: TemplateElement = templateElementBuilder.addChild(temporalField, temporalFieldDeployment).build();
+
+    // console.log(TestUtil.d(templateElement.getChildrenInfo().children));
+
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const writer: JsonTemplateElementWriter = writers.getTemplateElementWriter();
+    //
+    const stringified = JSON.stringify(writer.getAsJsonNode(templateElement), null, 2);
+    // console.log(stringified);
+    const backparsed = JSON.parse(stringified);
+
+    expect(backparsed['properties']).not.toBeNull();
+    expect(backparsed['properties']['temporal_field']).not.toBeNull();
+    expect(backparsed['properties']['temporal_field']['type']).toBe('array');
+    expect(backparsed['properties']['temporal_field']['minItems']).toBe(2);
+    expect(backparsed['properties']['temporal_field']['maxItems']).toBe(10);
+    expect(backparsed['properties']['temporal_field']['items']).not.toBeNull();
   });
 });

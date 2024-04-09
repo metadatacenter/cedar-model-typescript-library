@@ -17,8 +17,13 @@ describe('YAMLTemplateWriter' + testResource.toString(), () => {
     const writers: CedarYamlWriters = CedarWriters.yaml().getStrict();
     const yamlWriter: YamlTemplateWriter = writers.getTemplateWriter();
 
+    // TestUtil.p(jsonTemplateReaderResult.template);
+    // TestUtil.p(
+    //   'instanceof:' + (jsonTemplateReaderResult.template.getChildInfo('My checkbox 1') instanceof ChildDeploymentInfoAlwaysMultiple),
+    // );
+
     const stringified = yamlWriter.getAsYamlString(jsonTemplateReaderResult.template);
-    // console.log(stringified);
+    //console.log(stringified);
     expect(stringified).toEqual(referenceYaml);
   });
 });

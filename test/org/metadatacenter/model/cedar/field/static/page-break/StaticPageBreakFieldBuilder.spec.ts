@@ -3,10 +3,14 @@ import {
   CedarJsonWriters,
   CedarWriters,
   IsoDate,
+  JsonTemplateElementWriter,
   SchemaVersion,
   StaticPageBreakField,
   StaticPageBreakFieldBuilder,
+  TemplateElement,
+  TemplateElementBuilder,
 } from '../../../../../../../../src';
+import { ChildDeploymentInfoAlwaysSingleBuilder } from '../../../../../../../../src/org/metadatacenter/model/cedar/deployment/ChildDeploymentInfoAlwaysSingleBuilder';
 
 describe('StaticPageBreakFieldBuilder', () => {
   test('creates page break field with builder', () => {
@@ -69,5 +73,34 @@ describe('StaticPageBreakFieldBuilder', () => {
     expect(backparsed['skos:altLabel']).toStrictEqual(['Alt label 1', 'Alt label 2', 'Alt label 3']);
 
     expect(backparsed['_valueConstraints']).toBeUndefined();
+  });
+
+  test('creates element with one page break field, single-instance', () => {
+    const pageBreakFieldBuilder: StaticPageBreakFieldBuilder = CedarBuilders.pageBreakFieldBuilder();
+    const pageBreakField: StaticPageBreakField = pageBreakFieldBuilder.withTitle('Text field').build();
+
+    const pageBreakFieldDeploymentBuilder: ChildDeploymentInfoAlwaysSingleBuilder =
+      pageBreakField.createDeploymentBuilder('page_break_field');
+
+    const pageBreakFieldDeployment = pageBreakFieldDeploymentBuilder
+      .withIri('https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde')
+      .build();
+
+    const templateElementBuilder: TemplateElementBuilder = CedarBuilders.templateElementBuilder();
+    const templateElement: TemplateElement = templateElementBuilder.addChild(pageBreakField, pageBreakFieldDeployment).build();
+
+    // console.log(TestUtil.d(templateElement.getChildrenInfo().children));
+
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const writer: JsonTemplateElementWriter = writers.getTemplateElementWriter();
+    //
+    const stringified = JSON.stringify(writer.getAsJsonNode(templateElement), null, 2);
+    // console.log(stringified);
+    const backparsed = JSON.parse(stringified);
+
+    expect(backparsed['properties']).not.toBeNull();
+    expect(backparsed['properties']['page_break_field']).not.toBeNull();
+    expect(backparsed['properties']['page_break_field']['type']).toBe('object');
+    expect(backparsed['properties']['page_break_field']['items']).toBeUndefined();
   });
 });

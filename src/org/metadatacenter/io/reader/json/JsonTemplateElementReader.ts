@@ -16,6 +16,7 @@ import { TemplateElement } from '../../../model/cedar/element/TemplateElement';
 import { JsonContainerArtifactReader } from './JsonContainerArtifactReader';
 import { JsonTemplateElementContent } from '../../../model/cedar/util/serialization/JsonTemplateElementContent';
 import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
+import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
 
 export class JsonTemplateElementReader extends JsonContainerArtifactReader {
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.TEMPLATE_ELEMENT;
@@ -56,7 +57,7 @@ export class JsonTemplateElementReader extends JsonContainerArtifactReader {
 
   public readFromObject(
     elementSourceObject: JsonNode,
-    _childInfo: ChildDeploymentInfo,
+    _childInfo: AbstractChildDeploymentInfo,
     topPath: JsonPath,
   ): JsonTemplateElementReaderResult {
     const parsingResult: ParsingResult = new ParsingResult();

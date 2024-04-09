@@ -8,4 +8,12 @@ export abstract class TemplateField extends AbstractSchemaArtifact {
 
   public valueConstraints: ValueConstraints = new ValueConstraints();
   public cedarFieldType: CedarFieldType = CedarFieldType.NULL;
+
+  override isMultiInstanceByDefinition(): boolean {
+    return false;
+  }
+
+  override isSingleInstanceByDefinition(): boolean {
+    return false;
+  }
 }

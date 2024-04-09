@@ -65,7 +65,8 @@ export class CedarYamlWriters {
       [CedarFieldType.TEMPORAL, new YamlFieldWriterTemporal(behavior, this)],
       [CedarFieldType.RADIO, new YamlFieldWriterRadio(behavior, this)],
       [CedarFieldType.CHECKBOX, new YamlFieldWriterCheckbox(behavior, this)],
-      [CedarFieldType.LIST, new YamlFieldWriterList(behavior, this)],
+      [CedarFieldType.SINGLE_SELECT_LIST, new YamlFieldWriterList(behavior, this)],
+      [CedarFieldType.MULTIPLE_SELECT_LIST, new YamlFieldWriterList(behavior, this)],
       [CedarFieldType.ATTRIBUTE_VALUE, new YamlFieldWriterAttributeValue(behavior, this)],
     ]);
 

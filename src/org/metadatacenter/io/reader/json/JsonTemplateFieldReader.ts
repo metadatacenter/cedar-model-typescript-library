@@ -37,6 +37,7 @@ import { JsonTemplateFieldReaderResult } from './JsonTemplateFieldReaderResult';
 import { UnknownTemplateField } from '../../../model/cedar/field/UnknownTemplateField';
 import { JsonAbstractSchemaArtifactReader } from './JsonAbstractSchemaArtifactReader';
 import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
+import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
 
 export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
   private constructor(behavior: JsonReaderBehavior) {
@@ -66,7 +67,8 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     [CedarFieldType.PHONE_NUMBER, new JsonFieldReaderPhoneNumber()],
     [CedarFieldType.RADIO, new JsonFieldReaderRadio()],
     [CedarFieldType.CHECKBOX, new JsonFieldReaderCheckbox()],
-    [CedarFieldType.LIST, new JsonFieldReaderList()],
+    [CedarFieldType.SINGLE_SELECT_LIST, new JsonFieldReaderList()],
+    [CedarFieldType.MULTIPLE_SELECT_LIST, new JsonFieldReaderList()],
     [CedarFieldType.ATTRIBUTE_VALUE, new JsonFieldReaderAttributeValue()],
   ]);
 
@@ -88,7 +90,11 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     return this.readFromObject(fieldObject, ChildDeploymentInfo.empty(), new JsonPath());
   }
 
-  public readFromObject(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, path: JsonPath): JsonTemplateFieldReaderResult {
+  public readFromObject(
+    fieldSourceObject: JsonNode,
+    childInfo: AbstractChildDeploymentInfo,
+    path: JsonPath,
+  ): JsonTemplateFieldReaderResult {
     const parsingResult: ParsingResult = new ParsingResult();
     const field: TemplateField = JsonTemplateFieldReader.readFieldSpecificAttributes(fieldSourceObject, childInfo, parsingResult, path);
     this.readNonReportableAttributes(field, fieldSourceObject);
@@ -154,7 +160,7 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
 
   private static readFieldSpecificAttributes(
     fieldSourceObject: JsonNode,
-    childInfo: ChildDeploymentInfo,
+    childInfo: AbstractChildDeploymentInfo,
     parsingResult: ParsingResult,
     path: JsonPath,
   ): TemplateField {

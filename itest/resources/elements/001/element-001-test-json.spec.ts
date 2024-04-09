@@ -20,7 +20,12 @@ describe('JSONElementReader' + testResource.toString(), () => {
 
     const compareResult: ParsingResult = RoundTrip.compare(jsonElementReaderResult, writer);
     // TestUtil.p(compareResult);
-    // TestUtil.p(writer.getAsJsonNode(jsonFieldReaderResult.field));
+    // TestUtil.p(writer.getAsJsonNode(jsonElementReaderResult.element));
+    // TestUtil.p(jsonElementReaderResult.element);
+    // TestUtil.p(jsonElementReaderResult.element.getChildInfo('Attribute-Value'));
+    // TestUtil.p(
+    //   'instanceof:' + (jsonElementReaderResult.element.getChildInfo('Attribute-Value') instanceof ChildDeploymentInfoAlwaysMultiple),
+    // );
 
     expect(compareResult.wasSuccessful()).toBe(true);
     expect(compareResult.getBlueprintComparisonErrorCount()).toBe(0);

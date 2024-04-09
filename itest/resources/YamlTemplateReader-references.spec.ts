@@ -22,6 +22,8 @@ describe('YAMLReader-references', () => {
         const templateJSONReaderResult = templateJSONReader.readFromString(templateSourceJSONString);
         const jsonReadTemplate = templateJSONReaderResult.template;
 
+        // console.log(jsonReadTemplate.getChildInfo('Textfield'));
+
         const templateYAMLWriter1 = writers.getTemplateWriter();
         const leftYAMLString = templateYAMLWriter1.getAsYamlString(jsonReadTemplate);
         leftYAMLObject = templateYAMLWriter1.getYamlAsJsonNode(jsonReadTemplate);
@@ -29,6 +31,8 @@ describe('YAMLReader-references', () => {
         const templateYAMLReader: YamlTemplateReader = YamlTemplateReader.getStrict();
         const templateYAMLReaderResult = templateYAMLReader.readFromString(leftYAMLString);
         const yamlReadTemplate = templateYAMLReaderResult.template;
+
+        // console.log(yamlReadTemplate.getChildInfo('Textfield'));
 
         const templateYAMLWriter2 = writers.getTemplateWriter();
         // const rightYAMLString = templateYAMLWriter2.getAsYamlString(yamlReadTemplate);
@@ -38,10 +42,10 @@ describe('YAMLReader-references', () => {
 
         expect(comparisonResult.areEqual()).toBe(true);
       } catch (error) {
-        console.log('Left yaml object');
-        TestUtil.p(leftYAMLObject);
-        console.log('Right yaml object');
-        TestUtil.p(rightYAMLObject);
+        // console.log('Left yaml object');
+        // TestUtil.p(leftYAMLObject);
+        // console.log('Right yaml object');
+        // TestUtil.p(rightYAMLObject);
         TestUtil.p(comparisonResult.getComparisonErrors());
         console.error(`Failed to process file: ${sourcePath}`, error);
         throw error;

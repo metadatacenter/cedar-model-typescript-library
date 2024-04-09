@@ -33,6 +33,12 @@ describe('JSONTemplateReader' + testResource.toString(), () => {
 
     // TestUtil.p(compareResult);
     // TestUtil.p(writer.getAsJsonNode(jsonTemplateReaderResult.template));
+    //
+    // TestUtil.p(jsonTemplateReaderResult.template);
+    // TestUtil.p(jsonTemplateReaderResult.template.getChildInfo('MultiSelect'));
+    // TestUtil.p(
+    //   'instanceof:' + (jsonTemplateReaderResult.template.getChildInfo('MultiSelect') instanceof ChildDeploymentInfoAlwaysMultiple),
+    // );
 
     expect(compareResult.wasSuccessful()).toBe(false);
     expect(compareResult.getBlueprintComparisonErrorCount()).toBe(3);

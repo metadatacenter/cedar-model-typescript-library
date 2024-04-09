@@ -2,6 +2,7 @@ import { TemplateField } from '../../TemplateField';
 import { ValueConstraintsTemporalField } from './ValueConstraintsTemporalField';
 import { TimeFormat } from '../../../types/wrapped-types/TimeFormat';
 import { TemporalGranularity } from '../../../types/wrapped-types/TemporalGranularity';
+import { ChildDeploymentInfoBuilder } from '../../../deployment/ChildDeploymentInfoBuilder';
 
 export interface TemporalField extends TemplateField {
   get valueConstraints(): ValueConstraintsTemporalField;
@@ -17,4 +18,6 @@ export interface TemporalField extends TemplateField {
   get temporalGranularity(): TemporalGranularity;
 
   set temporalGranularity(temporalGranularity: TemporalGranularity);
+
+  createDeploymentBuilder(childName: string): ChildDeploymentInfoBuilder;
 }

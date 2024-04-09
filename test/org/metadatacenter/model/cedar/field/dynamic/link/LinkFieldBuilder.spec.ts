@@ -2,10 +2,14 @@ import {
   CedarBuilders,
   CedarJsonWriters,
   CedarWriters,
+  ChildDeploymentInfoBuilder,
   IsoDate,
+  JsonTemplateElementWriter,
   LinkField,
   LinkFieldBuilder,
   SchemaVersion,
+  TemplateElement,
+  TemplateElementBuilder,
 } from '../../../../../../../../src';
 
 describe('LinkFieldBuilder', () => {
@@ -67,5 +71,66 @@ describe('LinkFieldBuilder', () => {
 
     expect(backparsed['_valueConstraints']).toBeDefined();
     expect(backparsed['_valueConstraints']['requiredValue']).toBe(false);
+  });
+
+  test('creates element with one link field, single-instance', () => {
+    const linkFieldBuilder: LinkFieldBuilder = CedarBuilders.linkFieldBuilder();
+    const linkField: LinkField = linkFieldBuilder.withTitle('Text area').build();
+
+    const linkFieldDeploymentBuilder: ChildDeploymentInfoBuilder = linkField.createDeploymentBuilder('link_field');
+
+    const linkFieldDeployment = linkFieldDeploymentBuilder
+      .withIri('https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde')
+      .build();
+
+    const templateElementBuilder: TemplateElementBuilder = CedarBuilders.templateElementBuilder();
+    const templateElement: TemplateElement = templateElementBuilder.addChild(linkField, linkFieldDeployment).build();
+
+    // console.log(TestUtil.d(templateElement.getChildrenInfo().children));
+
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const writer: JsonTemplateElementWriter = writers.getTemplateElementWriter();
+    //
+    const stringified = JSON.stringify(writer.getAsJsonNode(templateElement), null, 2);
+    // console.log(stringified);
+    const backparsed = JSON.parse(stringified);
+
+    expect(backparsed['properties']).not.toBeNull();
+    expect(backparsed['properties']['link_field']).not.toBeNull();
+    expect(backparsed['properties']['link_field']['type']).toBe('object');
+    expect(backparsed['properties']['link_field']['items']).toBeUndefined();
+  });
+
+  test('creates element with one link field, multi-instance', () => {
+    const linkFieldBuilder: LinkFieldBuilder = CedarBuilders.linkFieldBuilder();
+    const linkField: LinkField = linkFieldBuilder.withTitle('Text field').build();
+
+    const linkFieldDeploymentBuilder: ChildDeploymentInfoBuilder = linkField.createDeploymentBuilder('link_field');
+
+    const linkFieldDeployment = linkFieldDeploymentBuilder
+      .withIri('https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde')
+      .withMultiInstance(true)
+      .withMinItems(2)
+      .withMaxItems(10)
+      .build();
+
+    const templateElementBuilder: TemplateElementBuilder = CedarBuilders.templateElementBuilder();
+    const templateElement: TemplateElement = templateElementBuilder.addChild(linkField, linkFieldDeployment).build();
+
+    // console.log(TestUtil.d(templateElement.getChildrenInfo().children));
+
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const writer: JsonTemplateElementWriter = writers.getTemplateElementWriter();
+    //
+    const stringified = JSON.stringify(writer.getAsJsonNode(templateElement), null, 2);
+    // console.log(stringified);
+    const backparsed = JSON.parse(stringified);
+
+    expect(backparsed['properties']).not.toBeNull();
+    expect(backparsed['properties']['link_field']).not.toBeNull();
+    expect(backparsed['properties']['link_field']['type']).toBe('array');
+    expect(backparsed['properties']['link_field']['minItems']).toBe(2);
+    expect(backparsed['properties']['link_field']['maxItems']).toBe(10);
+    expect(backparsed['properties']['link_field']['items']).not.toBeNull();
   });
 });

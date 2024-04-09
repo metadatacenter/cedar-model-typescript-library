@@ -3,6 +3,7 @@ import { ValueConstraintsTextField } from './ValueConstraintsTextField';
 import { CedarFieldType } from '../../../types/cedar-types/CedarFieldType';
 import { CedarArtifactType } from '../../../types/cedar-types/CedarArtifactType';
 import { TextField } from './TextField';
+import { ChildDeploymentInfoBuilder } from '../../../deployment/ChildDeploymentInfoBuilder';
 
 export class TextFieldImpl extends TemplateField implements TextField {
   // Redeclare valueConstraints with a more specific type
@@ -19,5 +20,9 @@ export class TextFieldImpl extends TemplateField implements TextField {
 
   public static buildEmpty(): TextField {
     return new TextFieldImpl();
+  }
+
+  override createDeploymentBuilder(childName: string): ChildDeploymentInfoBuilder {
+    return new ChildDeploymentInfoBuilder(this, childName);
   }
 }

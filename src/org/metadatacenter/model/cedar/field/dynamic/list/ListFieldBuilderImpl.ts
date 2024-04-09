@@ -2,35 +2,30 @@ import { ListField } from './ListField';
 import { ListOption } from './ListOption';
 import { TemplateFieldBuilder } from '../../TemplateFieldBuilder';
 import { ListFieldBuilder } from './ListFieldBuilder';
-import { ListFieldImpl } from './ListFieldImpl';
+import { MultipleChoiceListFieldImpl } from '../list-multiple-choice/MultipleChoiceListFieldImpl';
+import { SingleChoiceListFieldImpl } from '../list-single-choice/SingleChoiceListFieldImpl';
 
-export class ListFieldBuilderImpl extends TemplateFieldBuilder implements ListFieldBuilder {
-  private multipleChoice: boolean = false;
+export abstract class ListFieldBuilderImpl extends TemplateFieldBuilder implements ListFieldBuilder {
+  protected multipleChoice: boolean = false;
   private literals: Array<ListOption> = [];
 
-  private constructor() {
+  protected constructor() {
     super();
   }
 
-  public static create(): ListFieldBuilder {
-    return new ListFieldBuilderImpl();
-  }
-
-  public withMultipleChoice(multipleChoice: boolean): ListFieldBuilder {
-    this.multipleChoice = multipleChoice;
-    return this;
-  }
-
-  public addListOption(label: string, selectedByDefault: boolean = false): ListFieldBuilder {
+  public addListOption(label: string, selectedByDefault: boolean = false): this {
     this.literals.push(new ListOption(label, selectedByDefault));
     return this;
   }
 
   public build(): ListField {
-    const listField = ListFieldImpl.buildEmpty();
+    let listField: ListField;
+    if (this.multipleChoice) {
+      listField = MultipleChoiceListFieldImpl.buildEmpty();
+    } else {
+      listField = SingleChoiceListFieldImpl.buildEmpty();
+    }
     super.buildInternal(listField);
-
-    listField.multipleChoice = this.multipleChoice;
 
     if (!this.multipleChoice) {
       // Find the last option that was marked as selectedByDefault

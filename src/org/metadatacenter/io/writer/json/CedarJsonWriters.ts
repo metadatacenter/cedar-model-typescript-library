@@ -69,7 +69,8 @@ export class CedarJsonWriters {
       [CedarFieldType.TEMPORAL, new JsonFieldWriterTemporal(behavior, this)],
       [CedarFieldType.RADIO, new JsonFieldWriterRadio(behavior, this)],
       [CedarFieldType.CHECKBOX, new JsonFieldWriterCheckbox(behavior, this)],
-      [CedarFieldType.LIST, new JsonFieldWriterList(behavior, this)],
+      [CedarFieldType.SINGLE_SELECT_LIST, new JsonFieldWriterList(behavior, this)],
+      [CedarFieldType.MULTIPLE_SELECT_LIST, new JsonFieldWriterList(behavior, this)],
       [CedarFieldType.ATTRIBUTE_VALUE, new JsonFieldWriterAttributeValue(behavior, this)],
     ]);
 

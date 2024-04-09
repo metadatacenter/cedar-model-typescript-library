@@ -12,6 +12,7 @@ import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 import { YamlArtifactType } from '../../../model/cedar/types/wrapped-types/YamlArtifactType';
 import { CedarFieldType } from '../../../model/cedar/types/cedar-types/CedarFieldType';
 import { AbstractContainerArtifact } from '../../../model/cedar/AbstractContainerArtifact';
+import { ChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/ChildDeploymentInfoBuilder';
 
 export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactReader {
   protected fieldReader: YamlTemplateFieldReader;
@@ -57,7 +58,23 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
           childDeploymentInfo.uiInputType = cedarFieldType.getUiInputType();
 
           const fieldReadingResult = this.fieldReader.readFromObject(childNode, childDeploymentInfo, path.add(YamlKeys.children, name));
-          container.addChild(fieldReadingResult.field, childDeploymentInfo);
+
+          const finalChildInfoBuilder = fieldReadingResult.field.createDeploymentBuilder(childDeploymentInfo.name);
+          finalChildInfoBuilder
+            .withIri(childDeploymentInfo.iri)
+            .withHidden(childDeploymentInfo.hidden)
+            .withLabel(childDeploymentInfo.label)
+            .withDescription(childDeploymentInfo.description)
+            .withRequiredValue(childDeploymentInfo.requiredValue);
+          if (finalChildInfoBuilder instanceof ChildDeploymentInfoBuilder) {
+            const currentInfo = childDeploymentInfo as any as ChildDeploymentInfo;
+            finalChildInfoBuilder
+              .withMultiInstance(currentInfo.multiInstance)
+              .withMinItems(currentInfo.minItems)
+              .withMaxItems(currentInfo.maxItems);
+          }
+          const finalChildInfo = finalChildInfoBuilder.build();
+          container.addChild(fieldReadingResult.field, finalChildInfo);
         } else if (yamlArtifactType.isElement()) {
           const elementReadingResult = this.getElementReader().readFromObject(
             childNode,

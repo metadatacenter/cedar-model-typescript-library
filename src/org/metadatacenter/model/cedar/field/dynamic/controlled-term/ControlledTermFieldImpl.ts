@@ -3,6 +3,7 @@ import { ValueConstraintsControlledTermField } from './ValueConstraintsControlle
 import { CedarFieldType } from '../../../types/cedar-types/CedarFieldType';
 import { CedarArtifactType } from '../../../types/cedar-types/CedarArtifactType';
 import { ControlledTermField } from './ControlledTermField';
+import { ChildDeploymentInfoBuilder } from '../../../deployment/ChildDeploymentInfoBuilder';
 
 export class ControlledTermFieldImpl extends TemplateField implements ControlledTermField {
   // Redeclare valueConstraints with a more specific type
@@ -19,5 +20,9 @@ export class ControlledTermFieldImpl extends TemplateField implements Controlled
 
   public static buildEmpty(): ControlledTermField {
     return new ControlledTermFieldImpl();
+  }
+
+  override createDeploymentBuilder(childName: string): ChildDeploymentInfoBuilder {
+    return new ChildDeploymentInfoBuilder(this, childName);
   }
 }

@@ -17,6 +17,10 @@ describe('YAMLTemplateWriter' + testResource.toString(), () => {
     const writers: CedarYamlWriters = CedarWriters.yaml().getStrict();
     const yamlWriter: YamlTemplateWriter = writers.getTemplateWriter();
 
+    // TestUtil.p(jsonTemplateReaderResult.template);
+    // TestUtil.p('instanceof:' + (jsonTemplateReaderResult.template.getChildInfo('Textfield') instanceof ChildDeploymentInfo));
+    // TestUtil.p(jsonTemplateReaderResult.template.getChildInfo('Textfield'));
+
     const stringified = yamlWriter.getAsYamlString(jsonTemplateReaderResult.template);
     // console.log(stringified);
     expect(stringified).toEqual(referenceYaml);

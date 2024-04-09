@@ -15,6 +15,7 @@ import { ListField } from '../../../model/cedar/field/dynamic/list/ListField';
 import { RadioField } from '../../../model/cedar/field/dynamic/radio/RadioField';
 import { ChoiceOptionEntity } from '../../../model/cedar/field/ChoiceOptionEntity';
 import { CedarJsonWriters } from './CedarJsonWriters';
+import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
 
 export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifactWriter {
   protected constructor(behavior: JsonWriterBehavior, writers: CedarJsonWriters) {
@@ -32,13 +33,13 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
     requiredObject[JsonSchema.required] = [JsonSchema.atValue];
   }
 
-  protected expandUINode(uiNode: JsonNode, _field: TemplateField, childInfo: ChildDeploymentInfo): void {
+  protected expandUINode(uiNode: JsonNode, _field: TemplateField, childInfo: AbstractChildDeploymentInfo): void {
     if (childInfo.hidden) {
       uiNode[CedarModel.Ui.hidden] = childInfo.hidden;
     }
   }
 
-  protected buildUIObject(field: TemplateField, childInfo: ChildDeploymentInfo): JsonNode {
+  protected buildUIObject(field: TemplateField, childInfo: AbstractChildDeploymentInfo): JsonNode {
     const uiNode: JsonNode = {
       [CedarModel.inputType]: this.atomicWriter.write(field.cedarFieldType.getUiInputType()),
     };
@@ -51,11 +52,11 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
 
   protected expandTypeNode(_typeNode: JsonNode, _field: TemplateField): void {}
 
-  protected expandValueConstraintsNode(vcNode: JsonNode, field: TemplateField, childInfo: ChildDeploymentInfo): void {
+  protected expandValueConstraintsNode(vcNode: JsonNode, field: TemplateField, childInfo: AbstractChildDeploymentInfo): void {
     vcNode[CedarModel.requiredValue] = childInfo.requiredValue;
   }
 
-  protected buildValueConstraintsObject(field: TemplateField, childInfo: ChildDeploymentInfo): JsonNode {
+  protected buildValueConstraintsObject(field: TemplateField, childInfo: AbstractChildDeploymentInfo): JsonNode {
     const vcNode: JsonNode = JsonNode.getEmpty();
     const vcObject = {
       [CedarModel.valueConstraints]: vcNode,
@@ -82,8 +83,8 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
   }
 
   public getAsJsonNode(field: TemplateField): JsonNode;
-  public getAsJsonNode(field: TemplateField, childInfo: ChildDeploymentInfo): JsonNode;
-  public getAsJsonNode(field: TemplateField, childInfo: ChildDeploymentInfo = ChildDeploymentInfo.empty()): JsonNode {
+  public getAsJsonNode(field: TemplateField, childInfo: AbstractChildDeploymentInfo): JsonNode;
+  public getAsJsonNode(field: TemplateField, childInfo: AbstractChildDeploymentInfo = ChildDeploymentInfo.empty()): JsonNode {
     // Build properties wrapper, based on type
     const propertiesObject: JsonNode = JsonNode.getEmpty();
     this.expandPropertiesNode(propertiesObject);

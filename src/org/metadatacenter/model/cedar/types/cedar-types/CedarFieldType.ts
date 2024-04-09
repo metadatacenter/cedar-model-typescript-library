@@ -12,7 +12,8 @@ export const CedarFieldTypeValues = {
   PHONE_NUMBER: 'DYNAMIC-phone-number',
   RADIO: 'DYNAMIC-radio',
   CHECKBOX: 'DYNAMIC-checkbox',
-  LIST: 'DYNAMIC-list',
+  SINGLE_SELECT_LIST: 'DYNAMIC-single-select-list',
+  MULTIPLE_SELECT_LIST: 'DYNAMIC-multiple-select-list',
   ATTRIBUTE_VALUE: 'DYNAMIC-attribute-value',
 
   STATIC_PAGE_BREAK: 'STATIC-page-break',
@@ -65,7 +66,8 @@ export class CedarFieldType {
       CedarFieldType.PHONE_NUMBER,
       CedarFieldType.RADIO,
       CedarFieldType.CHECKBOX,
-      CedarFieldType.LIST,
+      CedarFieldType.SINGLE_SELECT_LIST,
+      CedarFieldType.MULTIPLE_SELECT_LIST,
       CedarFieldType.ATTRIBUTE_VALUE,
       CedarFieldType.STATIC_PAGE_BREAK,
       CedarFieldType.STATIC_SECTION_BREAK,
@@ -95,7 +97,18 @@ export class CedarFieldType {
   );
   public static RADIO = new CedarFieldType(CedarFieldTypeValues.RADIO, UiInputType.RADIO, YamlArtifactType.RADIO, false);
   public static CHECKBOX = new CedarFieldType(CedarFieldTypeValues.CHECKBOX, UiInputType.CHECKBOX, YamlArtifactType.CHECKBOX, false);
-  public static LIST = new CedarFieldType(CedarFieldTypeValues.LIST, UiInputType.LIST, YamlArtifactType.SINGLE_SELECT_LIST, false);
+  public static SINGLE_SELECT_LIST = new CedarFieldType(
+    CedarFieldTypeValues.SINGLE_SELECT_LIST,
+    UiInputType.LIST,
+    YamlArtifactType.SINGLE_SELECT_LIST,
+    false,
+  );
+  public static MULTIPLE_SELECT_LIST = new CedarFieldType(
+    CedarFieldTypeValues.MULTIPLE_SELECT_LIST,
+    UiInputType.LIST,
+    YamlArtifactType.SINGLE_SELECT_LIST,
+    false,
+  );
   public static ATTRIBUTE_VALUE = new CedarFieldType(
     CedarFieldTypeValues.ATTRIBUTE_VALUE,
     UiInputType.ATTRIBUTE_VALUE,
@@ -141,9 +154,6 @@ export class CedarFieldType {
   }
 
   static forYamlArtifactType(yamlArtifactType: YamlArtifactType): CedarFieldType {
-    if (yamlArtifactType === YamlArtifactType.SINGLE_SELECT_LIST) {
-      return CedarFieldType.LIST;
-    }
     for (const fieldType of CedarFieldType.values()) {
       if (fieldType.getYamlType() === yamlArtifactType) {
         return fieldType;

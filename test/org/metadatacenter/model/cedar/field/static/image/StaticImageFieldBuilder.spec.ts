@@ -2,11 +2,16 @@ import {
   CedarBuilders,
   CedarJsonWriters,
   CedarWriters,
+  ChildDeploymentInfoBuilder,
   IsoDate,
+  JsonTemplateElementWriter,
   SchemaVersion,
   StaticImageField,
   StaticImageFieldBuilder,
+  TemplateElement,
+  TemplateElementBuilder,
 } from '../../../../../../../../src';
+import { ChildDeploymentInfoAlwaysSingleBuilder } from '../../../../../../../../src/org/metadatacenter/model/cedar/deployment/ChildDeploymentInfoAlwaysSingleBuilder';
 
 describe('StaticImageFieldBuilder', () => {
   test('creates image field with builder', () => {
@@ -72,5 +77,33 @@ describe('StaticImageFieldBuilder', () => {
     expect(backparsed['skos:altLabel']).toStrictEqual(['Alt label 1', 'Alt label 2', 'Alt label 3']);
 
     expect(backparsed['_valueConstraints']).toBeUndefined();
+  });
+
+  test('creates element with one image field, single-instance', () => {
+    const imageFieldBuilder: StaticImageFieldBuilder = CedarBuilders.imageFieldBuilder();
+    const imageField: StaticImageField = imageFieldBuilder.withTitle('Text field').build();
+
+    const imageFieldDeploymentBuilder: ChildDeploymentInfoAlwaysSingleBuilder = imageField.createDeploymentBuilder('image_field');
+
+    const imageFieldDeployment = imageFieldDeploymentBuilder
+      .withIri('https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde')
+      .build();
+
+    const templateElementBuilder: TemplateElementBuilder = CedarBuilders.templateElementBuilder();
+    const templateElement: TemplateElement = templateElementBuilder.addChild(imageField, imageFieldDeployment).build();
+
+    // console.log(TestUtil.d(templateElement.getChildrenInfo().children));
+
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const writer: JsonTemplateElementWriter = writers.getTemplateElementWriter();
+    //
+    const stringified = JSON.stringify(writer.getAsJsonNode(templateElement), null, 2);
+    // console.log(stringified);
+    const backparsed = JSON.parse(stringified);
+
+    expect(backparsed['properties']).not.toBeNull();
+    expect(backparsed['properties']['image_field']).not.toBeNull();
+    expect(backparsed['properties']['image_field']['type']).toBe('object');
+    expect(backparsed['properties']['image_field']['items']).toBeUndefined();
   });
 });

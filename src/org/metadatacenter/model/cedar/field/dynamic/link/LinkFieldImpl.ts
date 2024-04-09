@@ -3,6 +3,7 @@ import { CedarFieldType } from '../../../types/cedar-types/CedarFieldType';
 import { CedarArtifactType } from '../../../types/cedar-types/CedarArtifactType';
 import { ValueConstraints } from '../../ValueConstraints';
 import { LinkField } from './LinkField';
+import { ChildDeploymentInfoBuilder } from '../../../deployment/ChildDeploymentInfoBuilder';
 
 export class LinkFieldImpl extends TemplateField implements LinkField {
   private constructor() {
@@ -14,5 +15,9 @@ export class LinkFieldImpl extends TemplateField implements LinkField {
 
   public static buildEmpty(): LinkField {
     return new LinkFieldImpl();
+  }
+
+  override createDeploymentBuilder(childName: string): ChildDeploymentInfoBuilder {
+    return new ChildDeploymentInfoBuilder(this, childName);
   }
 }

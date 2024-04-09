@@ -1,4 +1,14 @@
-import { CedarBuilders, CedarJsonWriters, CedarWriters, IsoDate, RadioField, RadioFieldBuilder } from '../../../../../../../../src';
+import {
+  CedarBuilders,
+  CedarJsonWriters,
+  CedarWriters,
+  IsoDate,
+  JsonTemplateElementWriter,
+  RadioField,
+  RadioFieldBuilder,
+  TemplateElement,
+  TemplateElementBuilder,
+} from '../../../../../../../../src';
 
 describe('RadioFieldBuilder', () => {
   test('creates radio field with builder', () => {
@@ -68,5 +78,33 @@ describe('RadioFieldBuilder', () => {
       { label: 'option 2' },
       { label: 'option 3', selectedByDefault: true },
     ]);
+  });
+
+  test('creates element with one radio field', () => {
+    const radioFieldBuilder: RadioFieldBuilder = CedarBuilders.radioFieldBuilder();
+    const radioField: RadioField = radioFieldBuilder.withTitle('Radio field').build();
+
+    const radioFieldDeploymentBuilder = radioField.createDeploymentBuilder('radio_field');
+
+    const radioFieldDeployment = radioFieldDeploymentBuilder
+      .withIri('https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde')
+      .build();
+
+    const templateElementBuilder: TemplateElementBuilder = CedarBuilders.templateElementBuilder();
+    const templateElement: TemplateElement = templateElementBuilder.addChild(radioField, radioFieldDeployment).build();
+
+    // TestUtil.p(templateElement);
+
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const writer: JsonTemplateElementWriter = writers.getTemplateElementWriter();
+    //
+    const stringified = JSON.stringify(writer.getAsJsonNode(templateElement), null, 2);
+    // console.log(stringified);
+    const backparsed = JSON.parse(stringified);
+
+    expect(backparsed['properties']).not.toBeNull();
+    expect(backparsed['properties']['radio_field']).not.toBeNull();
+    expect(backparsed['properties']['radio_field']['type']).toBe('object');
+    expect(backparsed['properties']['radio_field']['items']).toBeUndefined();
   });
 });

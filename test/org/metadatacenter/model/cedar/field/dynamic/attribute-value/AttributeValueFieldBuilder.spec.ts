@@ -5,8 +5,12 @@ import {
   CedarJsonWriters,
   CedarWriters,
   IsoDate,
+  JsonTemplateElementWriter,
   SchemaVersion,
+  TemplateElement,
+  TemplateElementBuilder,
 } from '../../../../../../../../src';
+import { TestUtil } from '../../../../../../../../itest/TestUtil';
 
 describe('AttributeValueFieldBuilder', () => {
   test('creates attribute-value field with builder', () => {
@@ -66,5 +70,35 @@ describe('AttributeValueFieldBuilder', () => {
     expect(backparsed['skos:altLabel']).toStrictEqual(['Attribute-value', 'Attribute-value 2']);
 
     expect(backparsed['_valueConstraints']).toBeUndefined();
+  });
+
+  test('creates element with one attribute-value field', () => {
+    const attributeValueFieldBuilder: AttributeValueFieldBuilder = CedarBuilders.attributeValueFieldBuilder();
+    const attributeValueField: AttributeValueField = attributeValueFieldBuilder.withTitle('Attribute-Value field').build();
+
+    const attributeValueFieldDeploymentBuilder = attributeValueField.createDeploymentBuilder('attribute_value');
+
+    const checkboxFieldDeployment = attributeValueFieldDeploymentBuilder
+      .withIri('https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde')
+      .build();
+
+    const templateElementBuilder: TemplateElementBuilder = CedarBuilders.templateElementBuilder();
+    const templateElement: TemplateElement = templateElementBuilder.addChild(attributeValueField, checkboxFieldDeployment).build();
+
+    // console.log(TestUtil.d(templateElement.getChildrenInfo().children));
+
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const writer: JsonTemplateElementWriter = writers.getTemplateElementWriter();
+    //
+    const stringified = JSON.stringify(writer.getAsJsonNode(templateElement), null, 2);
+    // console.log(stringified);
+    const backparsed = JSON.parse(stringified);
+
+    expect(backparsed['properties']).not.toBeNull();
+    expect(backparsed['properties']['attribute_value']).not.toBeNull();
+    expect(backparsed['properties']['attribute_value']['type']).toBe('array');
+    expect(backparsed['properties']['attribute_value']['minItems']).toBe(0);
+    expect(backparsed['properties']['attribute_value']['maxItems']).toBeUndefined();
+    expect(backparsed['properties']['attribute_value']['items']).not.toBeNull();
   });
 });

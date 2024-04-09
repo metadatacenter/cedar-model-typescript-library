@@ -1,4 +1,5 @@
 import { TemplateField } from '../../TemplateField';
+import { ChildDeploymentInfoAlwaysSingleBuilder } from '../../../deployment/ChildDeploymentInfoAlwaysSingleBuilder';
 
 export interface StaticYoutubeField extends TemplateField {
   set videoId(videoId: string | null);
@@ -12,4 +13,6 @@ export interface StaticYoutubeField extends TemplateField {
   set height(height: number | null);
 
   get height(): number | null;
+
+  createDeploymentBuilder(childName: string): ChildDeploymentInfoAlwaysSingleBuilder;
 }

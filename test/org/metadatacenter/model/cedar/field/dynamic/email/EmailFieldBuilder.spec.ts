@@ -2,10 +2,14 @@ import {
   CedarBuilders,
   CedarJsonWriters,
   CedarWriters,
+  ChildDeploymentInfoBuilder,
   EmailField,
   EmailFieldBuilder,
   IsoDate,
+  JsonTemplateElementWriter,
   SchemaVersion,
+  TemplateElement,
+  TemplateElementBuilder,
 } from '../../../../../../../../src';
 
 describe('EmailFieldBuilder', () => {
@@ -67,5 +71,66 @@ describe('EmailFieldBuilder', () => {
 
     expect(backparsed['_valueConstraints']).toBeDefined();
     expect(backparsed['_valueConstraints']['requiredValue']).toBe(false);
+  });
+
+  test('creates element with one email field, single-instance', () => {
+    const emailFieldBuilder: EmailFieldBuilder = CedarBuilders.emailFieldBuilder();
+    const emailField: EmailField = emailFieldBuilder.withTitle('Text area').build();
+
+    const emailFieldDeploymentBuilder: ChildDeploymentInfoBuilder = emailField.createDeploymentBuilder('email_field');
+
+    const emailFieldDeployment = emailFieldDeploymentBuilder
+      .withIri('https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde')
+      .build();
+
+    const templateElementBuilder: TemplateElementBuilder = CedarBuilders.templateElementBuilder();
+    const templateElement: TemplateElement = templateElementBuilder.addChild(emailField, emailFieldDeployment).build();
+
+    // console.log(TestUtil.d(templateElement.getChildrenInfo().children));
+
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const writer: JsonTemplateElementWriter = writers.getTemplateElementWriter();
+    //
+    const stringified = JSON.stringify(writer.getAsJsonNode(templateElement), null, 2);
+    // console.log(stringified);
+    const backparsed = JSON.parse(stringified);
+
+    expect(backparsed['properties']).not.toBeNull();
+    expect(backparsed['properties']['email_field']).not.toBeNull();
+    expect(backparsed['properties']['email_field']['type']).toBe('object');
+    expect(backparsed['properties']['email_field']['items']).toBeUndefined();
+  });
+
+  test('creates element with one email field, multi-instance', () => {
+    const emailFieldBuilder: EmailFieldBuilder = CedarBuilders.emailFieldBuilder();
+    const emailField: EmailField = emailFieldBuilder.withTitle('Text field').build();
+
+    const emailFieldDeploymentBuilder: ChildDeploymentInfoBuilder = emailField.createDeploymentBuilder('email_field');
+
+    const emailFieldDeployment = emailFieldDeploymentBuilder
+      .withIri('https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde')
+      .withMultiInstance(true)
+      .withMinItems(2)
+      .withMaxItems(10)
+      .build();
+
+    const templateElementBuilder: TemplateElementBuilder = CedarBuilders.templateElementBuilder();
+    const templateElement: TemplateElement = templateElementBuilder.addChild(emailField, emailFieldDeployment).build();
+
+    // console.log(TestUtil.d(templateElement.getChildrenInfo().children));
+
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const writer: JsonTemplateElementWriter = writers.getTemplateElementWriter();
+    //
+    const stringified = JSON.stringify(writer.getAsJsonNode(templateElement), null, 2);
+    // console.log(stringified);
+    const backparsed = JSON.parse(stringified);
+
+    expect(backparsed['properties']).not.toBeNull();
+    expect(backparsed['properties']['email_field']).not.toBeNull();
+    expect(backparsed['properties']['email_field']['type']).toBe('array');
+    expect(backparsed['properties']['email_field']['minItems']).toBe(2);
+    expect(backparsed['properties']['email_field']['maxItems']).toBe(10);
+    expect(backparsed['properties']['email_field']['items']).not.toBeNull();
   });
 });

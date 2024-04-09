@@ -2,7 +2,7 @@ import { JsonNode } from '../../model/cedar/types/basic-types/JsonNode';
 import { Iri } from '../../model/cedar/types/wrapped-types/Iri';
 import { NullableNumber } from '../../model/cedar/types/basic-types/NullableNumber';
 
-export class ReaderUtil {
+export abstract class ReaderUtil {
   public static getString(node: JsonNode, key: string): string | null {
     if (Object.hasOwn(node, key)) {
       return node[key] as string;

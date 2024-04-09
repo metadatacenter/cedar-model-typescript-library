@@ -1,19 +1,19 @@
-import { ChildDeploymentInfo } from './ChildDeploymentInfo';
 import { CedarArtifactType } from '../types/cedar-types/CedarArtifactType';
 import { JsonSchema } from '../constants/JsonSchema';
 import { UiInputType } from '../types/wrapped-types/UiInputType';
 import { NullableString } from '../types/basic-types/NullableString';
+import { AbstractChildDeploymentInfo } from './AbstractChildDeploymentInfo';
 
 export class ContainerArtifactChildrenInfo {
   private childNameList: Array<string> = [];
-  private childMap: Map<string, ChildDeploymentInfo> = new Map<string, ChildDeploymentInfo>();
+  private childMap: Map<string, AbstractChildDeploymentInfo> = new Map<string, AbstractChildDeploymentInfo>();
 
-  add(childInfo: ChildDeploymentInfo) {
+  add(childInfo: AbstractChildDeploymentInfo) {
     this.childNameList.push(childInfo.name);
     this.childMap.set(childInfo.name, childInfo);
   }
 
-  get children(): Array<ChildDeploymentInfo> {
+  get children(): Array<AbstractChildDeploymentInfo> {
     return this.childNameList.map((name) => this.childMap.get(name)!);
   }
 
@@ -21,7 +21,7 @@ export class ContainerArtifactChildrenInfo {
     return this.childMap.has(name);
   }
 
-  get(name: string): ChildDeploymentInfo | null {
+  get(name: string): AbstractChildDeploymentInfo | null {
     return this.childMap.get(name) ?? null;
   }
 
@@ -52,7 +52,7 @@ export class ContainerArtifactChildrenInfo {
   public getPropertyLabelMap(): Record<string, NullableString> {
     const labelMap: { [key: string]: NullableString } = {};
     this.childNameList.forEach((childName) => {
-      const childInfo = this.getChild(childName);
+      const childInfo = this.getChildInfo(childName);
       labelMap[childInfo.name] = childInfo.label;
     });
     return labelMap;
@@ -61,15 +61,16 @@ export class ContainerArtifactChildrenInfo {
   public getPropertyDescriptionMap(): Record<string, NullableString> {
     const descriptionMap: { [key: string]: NullableString } = {};
     this.childNameList.forEach((childName) => {
-      const childInfo = this.getChild(childName);
+      const childInfo = this.getChildInfo(childName);
       descriptionMap[childInfo.name] = childInfo.description;
     });
     return descriptionMap;
   }
+
   public getNonStaticIRIMap(): { [key: string]: { [key in typeof JsonSchema.enum]: Array<NullableString> } } {
     const iriMap: { [key: string]: { [key in typeof JsonSchema.enum]: Array<string | null> } } = {};
     this.childNameList.forEach((childName) => {
-      const childInfo = this.getChild(childName);
+      const childInfo = this.getChildInfo(childName);
       if (childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD) {
         iriMap[childInfo.name] = { [JsonSchema.enum]: [childInfo.iri] };
       }
@@ -80,7 +81,7 @@ export class ContainerArtifactChildrenInfo {
   public getNonStaticNonAttributeValueIRIMap(): { [key: string]: { [key in typeof JsonSchema.enum]: Array<NullableString> } } {
     const iriMap: { [key: string]: { [key in typeof JsonSchema.enum]: Array<string | null> } } = {};
     this.childNameList.forEach((childName) => {
-      const childInfo = this.getChild(childName);
+      const childInfo = this.getChildInfo(childName);
       if (childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD && childInfo.uiInputType !== UiInputType.ATTRIBUTE_VALUE) {
         iriMap[childInfo.name] = { [JsonSchema.enum]: [childInfo.iri] };
       }
@@ -97,7 +98,7 @@ export class ContainerArtifactChildrenInfo {
     return false;
   }
 
-  private getChild(name: string): ChildDeploymentInfo {
+  private getChildInfo(name: string): AbstractChildDeploymentInfo {
     return this.childMap.get(name)!;
   }
 }

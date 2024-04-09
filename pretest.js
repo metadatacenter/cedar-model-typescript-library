@@ -31,9 +31,11 @@ async function generateTestCases() {
   const subfoldersInTemplates = await fs.readdir(templatesTestFolderPath, { withFileTypes: true });
   for (const dirent of subfoldersInTemplates) {
     if (dirent.isDirectory()) {
+      //      if (dirent.name === '005') {
       const folderPath = path.join(templatesTestFolderPath, dirent.name);
       const sourcePath = path.join(folderPath, `template-${dirent.name}.json`); // Note the prefix change to "template-"
       templateTestCases.push(sourcePath);
+      //      }
     }
   }
 

@@ -5,8 +5,12 @@ import {
   CheckboxField,
   CheckboxFieldBuilder,
   IsoDate,
+  JsonTemplateElementWriter,
   SchemaVersion,
+  TemplateElement,
+  TemplateElementBuilder,
 } from '../../../../../../../../src';
+import { TestUtil } from '../../../../../../../../itest/TestUtil';
 
 describe('CheckboxFieldBuilder', () => {
   test('creates radio field with builder', () => {
@@ -77,5 +81,35 @@ describe('CheckboxFieldBuilder', () => {
       { label: 'option 2' },
       { label: 'option 3', selectedByDefault: true },
     ]);
+  });
+
+  test('creates element with one checkbox field', () => {
+    const checkboxFieldBuilder: CheckboxFieldBuilder = CedarBuilders.checkboxFieldBuilder();
+    const checkboxField: CheckboxField = checkboxFieldBuilder.withTitle('Checkbox field').build();
+
+    const checkboxFieldDeploymentBuilder = checkboxField.createDeploymentBuilder('checkbox_field');
+
+    const checkboxFieldDeployment = checkboxFieldDeploymentBuilder
+      .withIri('https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde')
+      .build();
+
+    const templateElementBuilder: TemplateElementBuilder = CedarBuilders.templateElementBuilder();
+    const templateElement: TemplateElement = templateElementBuilder.addChild(checkboxField, checkboxFieldDeployment).build();
+
+    // console.log(TestUtil.d(templateElement.getChildrenInfo().children));
+
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const writer: JsonTemplateElementWriter = writers.getTemplateElementWriter();
+    //
+    const stringified = JSON.stringify(writer.getAsJsonNode(templateElement), null, 2);
+    // console.log(stringified);
+    const backparsed = JSON.parse(stringified);
+
+    expect(backparsed['properties']).not.toBeNull();
+    expect(backparsed['properties']['checkbox_field']).not.toBeNull();
+    expect(backparsed['properties']['checkbox_field']['type']).toBe('array');
+    expect(backparsed['properties']['checkbox_field']['minItems']).toBe(1);
+    expect(backparsed['properties']['checkbox_field']['maxItems']).toBeUndefined();
+    expect(backparsed['properties']['checkbox_field']['items']).not.toBeNull();
   });
 });

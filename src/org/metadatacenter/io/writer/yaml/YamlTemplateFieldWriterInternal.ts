@@ -11,6 +11,7 @@ import { YamlAbstractArtifactWriter } from './YamlAbstractArtifactWriter';
 import { SimpleYamlSerializer } from './SimpleYamlSerializer';
 import { YamlWriterBehavior } from '../../../behavior/YamlWriterBehavior';
 import { CedarYamlWriters } from './CedarYamlWriters';
+import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
 
 export abstract class YamlTemplateFieldWriterInternal extends YamlAbstractArtifactWriter {
   protected constructor(behavior: YamlWriterBehavior, writers: CedarYamlWriters) {
@@ -23,9 +24,9 @@ export abstract class YamlTemplateFieldWriterInternal extends YamlAbstractArtifa
 
   public getYamlAsJsonNode(field: TemplateField): JsonNode;
 
-  public getYamlAsJsonNode(field: TemplateField, childInfo: ChildDeploymentInfo): JsonNode;
+  public getYamlAsJsonNode(field: TemplateField, childInfo: AbstractChildDeploymentInfo): JsonNode;
 
-  public getYamlAsJsonNode(field: TemplateField, childInfo: ChildDeploymentInfo = ChildDeploymentInfo.empty()): JsonNode {
+  public getYamlAsJsonNode(field: TemplateField, childInfo: AbstractChildDeploymentInfo = ChildDeploymentInfo.empty()): JsonNode {
     // Build ui wrapper
     const uiObject: JsonNode = this.buildUIObject(field, childInfo);
 
@@ -51,9 +52,9 @@ export abstract class YamlTemplateFieldWriterInternal extends YamlAbstractArtifa
     return JsonNode.getEmpty();
   }
 
-  protected expandValueConstraintsNodeForYAML(_vcNode: JsonNode, _field: TemplateField, _childInfo: ChildDeploymentInfo): void {}
+  protected expandValueConstraintsNodeForYAML(_vcNode: JsonNode, _field: TemplateField, _childInfo: AbstractChildDeploymentInfo): void {}
 
-  protected buildValueConstraintsObject(field: TemplateField, childInfo: ChildDeploymentInfo): JsonNode {
+  protected buildValueConstraintsObject(field: TemplateField, childInfo: AbstractChildDeploymentInfo): JsonNode {
     const vcNode: JsonNode = JsonNode.getEmpty();
     this.expandValueConstraintsNodeForYAML(vcNode, field, childInfo);
     return vcNode;
@@ -72,7 +73,7 @@ export abstract class YamlTemplateFieldWriterInternal extends YamlAbstractArtifa
     vcNode[YamlKeys.values] = literals;
   }
 
-  protected buildUIObject(field: TemplateField, _childInfo: ChildDeploymentInfo): JsonNode {
+  protected buildUIObject(field: TemplateField, _childInfo: AbstractChildDeploymentInfo): JsonNode {
     return this.expandUINodeForYAML(field);
   }
 }

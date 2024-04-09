@@ -3,10 +3,11 @@ import { AbstractContainerArtifact } from '../../../model/cedar/AbstractContaine
 import { JsonContainerArtifactContent } from '../../../model/cedar/util/serialization/JsonContainerArtifactContent';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { TemplateChild } from '../../../model/cedar/types/basic-types/TemplateChild';
-import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
 import { TemplateField } from '../../../model/cedar/field/TemplateField';
 import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
 import { CedarModel } from '../../../model/cedar/constants/CedarModel';
+import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
+import { WriterUtil } from '../WriterUtil';
 
 export abstract class JsonAbstractContainerArtifactWriter extends JsonAbstractArtifactWriter {
   protected macroContext(_artifact: AbstractContainerArtifact) {
@@ -22,21 +23,39 @@ export abstract class JsonAbstractContainerArtifactWriter extends JsonAbstractAr
       .forEach((childName: string) => {
         const child: TemplateChild | null = container.getChild(childName);
         if (child != null) {
-          const childMeta: ChildDeploymentInfo | null = container.getChildrenInfo().get(childName);
-          if (childMeta !== null) {
-            let childDefinition: JsonNode;
+          let childDefinition: JsonNode = JsonNode.getEmpty();
+          const childMetaAbstract: AbstractChildDeploymentInfo | null = container.getChildrenInfo().get(childName);
+          if (childMetaAbstract !== null) {
             if (child instanceof TemplateField) {
-              childDefinition = this.writers.getFieldWriterForType(child.cedarFieldType).getAsJsonNode(child, childMeta);
+              childDefinition = this.writers.getFieldWriterForType(child.cedarFieldType).getAsJsonNode(child, childMetaAbstract);
             } else {
               childDefinition = this.writers.getTemplateElementWriter().getAsJsonNode(child);
             }
+          }
+          if (childMetaAbstract !== null) {
+            const {
+              isMultiInstance,
+              minItems: constMinItems,
+              maxItems: constMaxItems,
+            } = WriterUtil.getMultiMinMax(child, childMetaAbstract);
+            let minItems = constMinItems;
+            let maxItems = constMaxItems;
             // If multi-instance, wrap the definition
-            if (childMeta.multiInstance) {
-              // TODO: handle maxItems, minItems inconsistencies
+            if (isMultiInstance) {
+              if (minItems === null) {
+                minItems = 0;
+              }
+              if (maxItems !== null && maxItems < minItems) {
+                maxItems = minItems;
+              }
+              const minMax = JsonNode.getEmpty();
+              minMax[CedarModel.minItems] = minItems;
+              if (maxItems !== null) {
+                minMax[CedarModel.maxItems] = maxItems;
+              }
               childDefinition = {
                 [JsonSchema.type]: 'array',
-                [CedarModel.minItems]: childMeta.minItems,
-                ...(childMeta.maxItems !== null && { [CedarModel.maxItems]: childMeta.maxItems }),
+                ...minMax,
                 [JsonSchema.items]: childDefinition,
               };
             }

@@ -1,4 +1,15 @@
-import { CedarBuilders, CedarJsonWriters, CedarWriters, IsoDate, TextField, TextFieldBuilder } from '../../../../../../../../src';
+import {
+  CedarBuilders,
+  CedarJsonWriters,
+  CedarWriters,
+  ChildDeploymentInfoBuilder,
+  IsoDate,
+  JsonTemplateElementWriter,
+  TemplateElement,
+  TemplateElementBuilder,
+  TextField,
+  TextFieldBuilder,
+} from '../../../../../../../../src';
 
 describe('TextFieldBuilder', () => {
   test('creates text field with builder', () => {
@@ -65,5 +76,66 @@ describe('TextFieldBuilder', () => {
     expect(backparsed['_valueConstraints']['defaultValue']).toBe('default');
     expect(backparsed['_valueConstraints']['minLength']).toBe(10);
     expect(backparsed['_valueConstraints']['maxLength']).toBe(100);
+  });
+
+  test('creates element with one text field, single-instance', () => {
+    const textFieldBuilder: TextFieldBuilder = CedarBuilders.textFieldBuilder();
+    const textField: TextField = textFieldBuilder.withTitle('Text field').build();
+
+    const textFieldDeploymentBuilder: ChildDeploymentInfoBuilder = textField.createDeploymentBuilder('text_field');
+
+    const textFieldDeployment = textFieldDeploymentBuilder
+      .withIri('https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde')
+      .build();
+
+    const templateElementBuilder: TemplateElementBuilder = CedarBuilders.templateElementBuilder();
+    const templateElement: TemplateElement = templateElementBuilder.addChild(textField, textFieldDeployment).build();
+
+    // console.log(TestUtil.d(templateElement.getChildrenInfo().children));
+
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const writer: JsonTemplateElementWriter = writers.getTemplateElementWriter();
+    //
+    const stringified = JSON.stringify(writer.getAsJsonNode(templateElement), null, 2);
+    // console.log(stringified);
+    const backparsed = JSON.parse(stringified);
+
+    expect(backparsed['properties']).not.toBeNull();
+    expect(backparsed['properties']['text_field']).not.toBeNull();
+    expect(backparsed['properties']['text_field']['type']).toBe('object');
+    expect(backparsed['properties']['text_field']['items']).toBeUndefined();
+  });
+
+  test('creates element with one text field, multi-instance', () => {
+    const textFieldBuilder: TextFieldBuilder = CedarBuilders.textFieldBuilder();
+    const textField: TextField = textFieldBuilder.withTitle('Text field').build();
+
+    const textFieldDeploymentBuilder: ChildDeploymentInfoBuilder = textField.createDeploymentBuilder('text_field');
+
+    const textFieldDeployment = textFieldDeploymentBuilder
+      .withIri('https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde')
+      .withMultiInstance(true)
+      .withMinItems(2)
+      .withMaxItems(10)
+      .build();
+
+    const templateElementBuilder: TemplateElementBuilder = CedarBuilders.templateElementBuilder();
+    const templateElement: TemplateElement = templateElementBuilder.addChild(textField, textFieldDeployment).build();
+
+    // console.log(TestUtil.d(templateElement.getChildrenInfo().children));
+
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const writer: JsonTemplateElementWriter = writers.getTemplateElementWriter();
+    //
+    const stringified = JSON.stringify(writer.getAsJsonNode(templateElement), null, 2);
+    // console.log(stringified);
+    const backparsed = JSON.parse(stringified);
+
+    expect(backparsed['properties']).not.toBeNull();
+    expect(backparsed['properties']['text_field']).not.toBeNull();
+    expect(backparsed['properties']['text_field']['type']).toBe('array');
+    expect(backparsed['properties']['text_field']['minItems']).toBe(2);
+    expect(backparsed['properties']['text_field']['maxItems']).toBe(10);
+    expect(backparsed['properties']['text_field']['items']).not.toBeNull();
   });
 });

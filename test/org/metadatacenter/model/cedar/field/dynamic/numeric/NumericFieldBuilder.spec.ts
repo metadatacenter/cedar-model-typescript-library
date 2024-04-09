@@ -2,11 +2,15 @@ import {
   CedarBuilders,
   CedarJsonWriters,
   CedarWriters,
+  ChildDeploymentInfoBuilder,
   IsoDate,
+  JsonTemplateElementWriter,
   NumberType,
   NumericField,
   NumericFieldBuilder,
   SchemaVersion,
+  TemplateElement,
+  TemplateElementBuilder,
 } from '../../../../../../../../src';
 
 describe('NumericFieldBuilder', () => {
@@ -78,5 +82,66 @@ describe('NumericFieldBuilder', () => {
     expect(backparsed['_valueConstraints']['maxValue']).toBe(100);
     expect(backparsed['_valueConstraints']['decimalPlace']).toBe(2);
     expect(backparsed['_valueConstraints']['unitOfMeasure']).toBe('cm');
+  });
+
+  test('creates element with one text area, single-instance', () => {
+    const numericFieldBuilder: NumericFieldBuilder = CedarBuilders.numericFieldBuilder();
+    const numericField: NumericField = numericFieldBuilder.withTitle('Text area').build();
+
+    const numericFieldDeploymentBuilder: ChildDeploymentInfoBuilder = numericField.createDeploymentBuilder('numeric_field');
+
+    const numericFieldDeployment = numericFieldDeploymentBuilder
+      .withIri('https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde')
+      .build();
+
+    const templateElementBuilder: TemplateElementBuilder = CedarBuilders.templateElementBuilder();
+    const templateElement: TemplateElement = templateElementBuilder.addChild(numericField, numericFieldDeployment).build();
+
+    // console.log(TestUtil.d(templateElement.getChildrenInfo().children));
+
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const writer: JsonTemplateElementWriter = writers.getTemplateElementWriter();
+    //
+    const stringified = JSON.stringify(writer.getAsJsonNode(templateElement), null, 2);
+    // console.log(stringified);
+    const backparsed = JSON.parse(stringified);
+
+    expect(backparsed['properties']).not.toBeNull();
+    expect(backparsed['properties']['numeric_field']).not.toBeNull();
+    expect(backparsed['properties']['numeric_field']['type']).toBe('object');
+    expect(backparsed['properties']['numeric_field']['items']).toBeUndefined();
+  });
+
+  test('creates element with one text area, multi-instance', () => {
+    const numericFieldBuilder: NumericFieldBuilder = CedarBuilders.numericFieldBuilder();
+    const numericField: NumericField = numericFieldBuilder.withTitle('Text field').build();
+
+    const numericFieldDeploymentBuilder: ChildDeploymentInfoBuilder = numericField.createDeploymentBuilder('numeric_field');
+
+    const numericFieldDeployment = numericFieldDeploymentBuilder
+      .withIri('https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde')
+      .withMultiInstance(true)
+      .withMinItems(2)
+      .withMaxItems(10)
+      .build();
+
+    const templateElementBuilder: TemplateElementBuilder = CedarBuilders.templateElementBuilder();
+    const templateElement: TemplateElement = templateElementBuilder.addChild(numericField, numericFieldDeployment).build();
+
+    // console.log(TestUtil.d(templateElement.getChildrenInfo().children));
+
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const writer: JsonTemplateElementWriter = writers.getTemplateElementWriter();
+    //
+    const stringified = JSON.stringify(writer.getAsJsonNode(templateElement), null, 2);
+    // console.log(stringified);
+    const backparsed = JSON.parse(stringified);
+
+    expect(backparsed['properties']).not.toBeNull();
+    expect(backparsed['properties']['numeric_field']).not.toBeNull();
+    expect(backparsed['properties']['numeric_field']['type']).toBe('array');
+    expect(backparsed['properties']['numeric_field']['minItems']).toBe(2);
+    expect(backparsed['properties']['numeric_field']['maxItems']).toBe(10);
+    expect(backparsed['properties']['numeric_field']['items']).not.toBeNull();
   });
 });

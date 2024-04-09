@@ -5,6 +5,7 @@ import { ValueConstraintsTemporalField } from './ValueConstraintsTemporalField';
 import { TimeFormat } from '../../../types/wrapped-types/TimeFormat';
 import { TemporalGranularity } from '../../../types/wrapped-types/TemporalGranularity';
 import { TemporalField } from './TemporalField';
+import { ChildDeploymentInfoBuilder } from '../../../deployment/ChildDeploymentInfoBuilder';
 
 export class TemporalFieldImpl extends TemplateField implements TemporalField {
   // Redeclare valueConstraints with a more specific type
@@ -23,5 +24,9 @@ export class TemporalFieldImpl extends TemplateField implements TemporalField {
 
   public static buildEmpty(): TemporalField {
     return new TemporalFieldImpl();
+  }
+
+  override createDeploymentBuilder(childName: string): ChildDeploymentInfoBuilder {
+    return new ChildDeploymentInfoBuilder(this, childName);
   }
 }

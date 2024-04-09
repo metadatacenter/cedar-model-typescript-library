@@ -36,6 +36,10 @@ import { StaticPageBreakFieldBuilderImpl } from '../../model/cedar/field/static/
 import { StaticRichTextFieldBuilderImpl } from '../../model/cedar/field/static/rich-text/StaticRichTextFieldBuilderImpl';
 import { StaticSectionBreakFieldBuilderImpl } from '../../model/cedar/field/static/section-break/StaticSectionBreakFieldBuilderImpl';
 import { StaticYoutubeFieldBuilderImpl } from '../../model/cedar/field/static/youtube/StaticYoutubeFieldBuilderImpl';
+import { SingleChoiceListFieldBuilder } from '../../model/cedar/field/dynamic/list-single-choice/SingleChoiceListFieldBuilder';
+import { SingleChoiceListFieldBuilderImpl } from '../../model/cedar/field/dynamic/list-single-choice/SingleChoiceListFieldBuilderImpl';
+import { MultipleChoiceListFieldBuilder } from '../../model/cedar/field/dynamic/list-multiple-choice/MultipleChoiceListFieldBuilder';
+import { MultipleChoiceListFieldBuilderImpl } from '../../model/cedar/field/dynamic/list-multiple-choice/MultipleChoiceListFieldBuilderImpl';
 
 export abstract class CedarBuilders {
   static templateBuilder(): TemplateBuilder {
@@ -98,8 +102,12 @@ export abstract class CedarBuilders {
     return LinkFieldBuilderImpl.create();
   }
 
-  static listFieldBuilder(): ListFieldBuilder {
-    return ListFieldBuilderImpl.create();
+  static singleChoiceListFieldBuilder(): SingleChoiceListFieldBuilder {
+    return SingleChoiceListFieldBuilderImpl.create();
+  }
+
+  static multipleChoiceListFieldBuilder(): MultipleChoiceListFieldBuilder {
+    return MultipleChoiceListFieldBuilderImpl.create();
   }
 
   static radioFieldBuilder(): RadioFieldBuilder {
@@ -114,7 +122,7 @@ export abstract class CedarBuilders {
     return ControlledTermFieldBuilderImpl.create();
   }
 
-  static childDeploymentBuilder(child: TemplateChild, childName: string): ChildDeploymentInfoBuilder {
-    return new ChildDeploymentInfoBuilder(child, childName);
-  }
+  // static childDeploymentBuilder(child: TemplateChild, childName: string): ChildDeploymentInfoBuilder {
+  //   return new ChildDeploymentInfoBuilder(child, childName);
+  // }
 }

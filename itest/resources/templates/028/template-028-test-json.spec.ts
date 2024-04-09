@@ -3,15 +3,18 @@ import {
   CedarModel,
   CedarWriters,
   ComparisonError,
+  ComparisonErrorType,
   JsonPath,
   JsonTemplateReader,
   JsonTemplateWriter,
   RoundTrip,
+  TemplateChild,
+  TemplateElement,
 } from '../../../../src';
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
 import { TestUtil } from '../../../TestUtil';
-import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
 import { TestResource } from '../../../TestResource';
+import { AbstractChildDeploymentInfo } from '../../../../src/org/metadatacenter/model/cedar/deployment/AbstractChildDeploymentInfo';
 
 const testResource: TestResource = TestResource.template(28);
 
@@ -34,6 +37,24 @@ describe('JSONTemplateReader' + testResource.toString(), () => {
     const compareResult: ParsingResult = RoundTrip.compare(jsonTemplateReaderResult, writer);
 
     // TestUtil.p(compareResult);
+    const template = jsonTemplateReaderResult.template;
+    const name1 = 'Read & Understood Catalog';
+    const info1: AbstractChildDeploymentInfo | null = template.getChildInfo(name1);
+    const child1: TemplateElement | null = template.getElement(name1);
+
+    const name2 = 'Read & Understood';
+    const info2: AbstractChildDeploymentInfo | null = child1?.getChildInfo(name2) ?? null;
+    const child2: TemplateChild | null = child1?.getChild(name2) ?? null;
+
+    expect(info1).not.toBeNull();
+    expect(child1).not.toBeNull();
+    expect(info2).not.toBeNull();
+    expect(child2).not.toBeNull();
+
+    // console.log(TestUtil.d(info1));
+    // console.log(TestUtil.d(child1));
+    // console.log(TestUtil.d(info2));
+    //    console.log(TestUtil.d(child2));
     // TestUtil.p(writer.getAsJsonNode(jsonTemplateReaderResult.template));
 
     expect(compareResult.wasSuccessful()).toBe(false);

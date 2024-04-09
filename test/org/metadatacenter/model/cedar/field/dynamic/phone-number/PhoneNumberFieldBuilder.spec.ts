@@ -2,9 +2,13 @@ import {
   CedarBuilders,
   CedarJsonWriters,
   CedarWriters,
+  ChildDeploymentInfoBuilder,
   IsoDate,
+  JsonTemplateElementWriter,
   PhoneNumberField,
   PhoneNumberFieldBuilder,
+  TemplateElement,
+  TemplateElementBuilder,
 } from '../../../../../../../../src';
 
 describe('PhoneNumberFieldBuilder', () => {
@@ -64,5 +68,66 @@ describe('PhoneNumberFieldBuilder', () => {
     expect(backparsed['skos:altLabel']).toStrictEqual(['Alt label 1', 'Alt label 2', 'Alt label 3']);
 
     expect(backparsed['_valueConstraints']['requiredValue']).toBe(false);
+  });
+
+  test('creates element with one phone number field, single-instance', () => {
+    const phoneNumberFieldBuilder: PhoneNumberFieldBuilder = CedarBuilders.phoneNumberFieldBuilder();
+    const phoneNumberField: PhoneNumberField = phoneNumberFieldBuilder.withTitle('Text area').build();
+
+    const phoneNumberFieldDeploymentBuilder: ChildDeploymentInfoBuilder = phoneNumberField.createDeploymentBuilder('phone_number');
+
+    const phoneNumberFieldDeployment = phoneNumberFieldDeploymentBuilder
+      .withIri('https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde')
+      .build();
+
+    const templateElementBuilder: TemplateElementBuilder = CedarBuilders.templateElementBuilder();
+    const templateElement: TemplateElement = templateElementBuilder.addChild(phoneNumberField, phoneNumberFieldDeployment).build();
+
+    // console.log(TestUtil.d(templateElement.getChildrenInfo().children));
+
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const writer: JsonTemplateElementWriter = writers.getTemplateElementWriter();
+    //
+    const stringified = JSON.stringify(writer.getAsJsonNode(templateElement), null, 2);
+    // console.log(stringified);
+    const backparsed = JSON.parse(stringified);
+
+    expect(backparsed['properties']).not.toBeNull();
+    expect(backparsed['properties']['phone_number']).not.toBeNull();
+    expect(backparsed['properties']['phone_number']['type']).toBe('object');
+    expect(backparsed['properties']['phone_number']['items']).toBeUndefined();
+  });
+
+  test('creates element with one phone number field, multi-instance', () => {
+    const phoneNumberFieldBuilder: PhoneNumberFieldBuilder = CedarBuilders.phoneNumberFieldBuilder();
+    const phoneNumberField: PhoneNumberField = phoneNumberFieldBuilder.withTitle('Text field').build();
+
+    const phoneNumberFieldDeploymentBuilder: ChildDeploymentInfoBuilder = phoneNumberField.createDeploymentBuilder('phone_number');
+
+    const phoneNumberFieldDeployment = phoneNumberFieldDeploymentBuilder
+      .withIri('https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde')
+      .withMultiInstance(true)
+      .withMinItems(2)
+      .withMaxItems(10)
+      .build();
+
+    const templateElementBuilder: TemplateElementBuilder = CedarBuilders.templateElementBuilder();
+    const templateElement: TemplateElement = templateElementBuilder.addChild(phoneNumberField, phoneNumberFieldDeployment).build();
+
+    // console.log(TestUtil.d(templateElement.getChildrenInfo().children));
+
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const writer: JsonTemplateElementWriter = writers.getTemplateElementWriter();
+    //
+    const stringified = JSON.stringify(writer.getAsJsonNode(templateElement), null, 2);
+    // console.log(stringified);
+    const backparsed = JSON.parse(stringified);
+
+    expect(backparsed['properties']).not.toBeNull();
+    expect(backparsed['properties']['phone_number']).not.toBeNull();
+    expect(backparsed['properties']['phone_number']['type']).toBe('array');
+    expect(backparsed['properties']['phone_number']['minItems']).toBe(2);
+    expect(backparsed['properties']['phone_number']['maxItems']).toBe(10);
+    expect(backparsed['properties']['phone_number']['items']).not.toBeNull();
   });
 });

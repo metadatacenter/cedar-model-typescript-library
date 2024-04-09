@@ -3,16 +3,16 @@ import {
   CedarModel,
   CedarWriters,
   ComparisonError,
+  ComparisonErrorType,
   JsonPath,
   JsonSchema,
   JsonTemplateReader,
+  JsonTemplateReaderResult,
   JsonTemplateWriter,
   RoundTrip,
 } from '../../../../src';
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
 import { TestUtil } from '../../../TestUtil';
-import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
-import { JsonTemplateReaderResult } from '../../../../src/org/metadatacenter/io/reader/json/JsonTemplateReaderResult';
 import { TestResource } from '../../../TestResource';
 
 const testResource: TestResource = TestResource.template(18);
@@ -33,8 +33,9 @@ describe('JSONTemplateReader' + testResource.toString(), () => {
 
     // TestUtil.p(compareResult);
     // TestUtil.p(writer.getAsJsonNode(jsonTemplateReaderResult.template));
-
+    //
     // TestUtil.p(jsonTemplateReaderResult.template);
+    // TestUtil.p(jsonTemplateReaderResult.template.getChildInfo('My checkbox 1'));
 
     expect(compareResult.wasSuccessful()).toBe(false);
     expect(compareResult.getBlueprintComparisonErrorCount()).toBe(5);

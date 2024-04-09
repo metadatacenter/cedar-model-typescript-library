@@ -13,13 +13,14 @@ import { CedarModel } from '../../../model/cedar/constants/CedarModel';
 import { UiInputType } from '../../../model/cedar/types/wrapped-types/UiInputType';
 import { ComparisonError } from '../../../model/cedar/util/compare/ComparisonError';
 import { ComparisonErrorType } from '../../../model/cedar/util/compare/ComparisonErrorType';
-import { TemplateElement } from '../../../model/cedar/element/TemplateElement';
 import { ObjectComparator } from '../../../model/cedar/util/compare/ObjectComparator';
 import { JavascriptType } from '../../../model/cedar/types/wrapped-types/JavascriptType';
 import { ArtifactSchema } from '../../../model/cedar/types/wrapped-types/ArtifactSchema';
 import { AbstractContainerArtifact } from '../../../model/cedar/AbstractContainerArtifact';
 import { JsonTemplateElementReader } from './JsonTemplateElementReader';
 import { JsonContainerArtifactContent } from '../../../model/cedar/util/serialization/JsonContainerArtifactContent';
+import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
+import { ChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/ChildDeploymentInfoBuilder';
 
 export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArtifactReader {
   protected fieldReader: JsonTemplateFieldReader;
@@ -31,7 +32,7 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
 
   protected abstract getElementReader(): JsonTemplateElementReader;
 
-  protected abstract includeInIRIMapping(childInfo: ChildDeploymentInfo): boolean;
+  protected abstract includeInIRIMapping(childInfo: AbstractChildDeploymentInfo): boolean;
 
   protected readAndStoreCandidateChildInfo(
     childDefinitionNode: JsonNode,
@@ -57,7 +58,7 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
   }
 
   protected readReportableAttributes(
-    element: TemplateElement,
+    container: AbstractContainerArtifact,
     elementSourceObject: JsonNode,
     parsingResult: ParsingResult,
     path: JsonPath,
@@ -115,13 +116,30 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
     for (const childInfo of finalChildrenInfo.children) {
       let childDefinition: JsonNode = ReaderUtil.getNode(containerProperties, childInfo.name);
       let childPath: JsonPath = path.add(JsonSchema.properties, childInfo.name);
-      if (childInfo.multiInstance) {
+      if (childInfo.isMultiInAnyWay()) {
         childDefinition = ReaderUtil.getNode(childDefinition, JsonSchema.items);
         childPath = childPath.add(JsonSchema.items);
       }
       if (childInfo.atType === CedarArtifactType.TEMPLATE_FIELD || childInfo.atType === CedarArtifactType.STATIC_TEMPLATE_FIELD) {
         const cedarFieldReaderResult = this.fieldReader.readFromObject(childDefinition, childInfo, childPath);
-        container.addChild(cedarFieldReaderResult.field, childInfo);
+        const finalChildInfoBuilder = cedarFieldReaderResult.field.createDeploymentBuilder(childInfo.name);
+        // console.log('CHILD INFO1:', childInfo);
+        finalChildInfoBuilder
+          .withIri(childInfo.iri)
+          .withHidden(childInfo.hidden)
+          .withLabel(childInfo.label)
+          .withDescription(childInfo.description)
+          .withRequiredValue(childInfo.requiredValue);
+        if (finalChildInfoBuilder instanceof ChildDeploymentInfoBuilder) {
+          const currentInfo = childInfo as any as ChildDeploymentInfo;
+          finalChildInfoBuilder
+            .withMultiInstance(currentInfo.multiInstance)
+            .withMinItems(currentInfo.minItems)
+            .withMaxItems(currentInfo.maxItems);
+        }
+        const finalChildInfo = finalChildInfoBuilder.build();
+        // console.log('CHILD INFO2:', finalChildInfo);
+        container.addChild(cedarFieldReaderResult.field, finalChildInfo);
         parsingResult.merge(cedarFieldReaderResult.parsingResult);
       } else if (childInfo.atType === CedarArtifactType.TEMPLATE_ELEMENT) {
         const cedarElementReaderResult = this.getElementReader().readFromObject(childDefinition, childInfo, childPath);

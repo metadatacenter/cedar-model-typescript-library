@@ -3,6 +3,7 @@ import { CedarFieldType } from '../../../types/cedar-types/CedarFieldType';
 import { CedarArtifactType } from '../../../types/cedar-types/CedarArtifactType';
 import { ValueConstraints } from '../../ValueConstraints';
 import { AttributeValueField } from './AttributeValueField';
+import { ChildDeploymentInfoAlwaysMultipleBuilder } from '../../../deployment/ChildDeploymentInfoAlwaysMultipleBuilder';
 
 export class AttributeValueFieldImpl extends TemplateField implements AttributeValueField {
   private constructor() {
@@ -14,5 +15,13 @@ export class AttributeValueFieldImpl extends TemplateField implements AttributeV
 
   public static buildEmpty(): AttributeValueField {
     return new AttributeValueFieldImpl();
+  }
+
+  override isMultiInstanceByDefinition(): boolean {
+    return true;
+  }
+
+  override createDeploymentBuilder(childName: string): ChildDeploymentInfoAlwaysMultipleBuilder {
+    return new ChildDeploymentInfoAlwaysMultipleBuilder(this, childName);
   }
 }

@@ -5,6 +5,7 @@ import { SchemaVersion } from './types/wrapped-types/SchemaVersion';
 import { Annotations } from './annotation/Annotations';
 import { NullableString } from './types/basic-types/NullableString';
 import { AbstractArtifact } from './AbstractArtifact';
+import { AbstractChildDeploymentInfoBuilder } from './deployment/AbstractChildDeploymentInfoBuilder';
 
 export abstract class AbstractSchemaArtifact extends AbstractArtifact {
   public title: NullableString = null;
@@ -19,4 +20,10 @@ export abstract class AbstractSchemaArtifact extends AbstractArtifact {
   public pav_derivedFrom: CedarArtifactId = CedarArtifactId.NULL;
   //
   public annotations: Annotations | null = null;
+
+  abstract isMultiInstanceByDefinition(): boolean;
+
+  abstract isSingleInstanceByDefinition(): boolean;
+
+  abstract createDeploymentBuilder(childName: string): AbstractChildDeploymentInfoBuilder;
 }

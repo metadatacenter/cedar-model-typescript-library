@@ -3,6 +3,7 @@ import { CedarFieldType } from '../../../types/cedar-types/CedarFieldType';
 import { CedarArtifactType } from '../../../types/cedar-types/CedarArtifactType';
 import { ValueConstraints } from '../../ValueConstraints';
 import { PhoneNumberField } from './PhoneNumberField';
+import { ChildDeploymentInfoBuilder } from '../../../deployment/ChildDeploymentInfoBuilder';
 
 export class PhoneNumberFieldImpl extends TemplateField implements PhoneNumberField {
   private constructor() {
@@ -14,5 +15,9 @@ export class PhoneNumberFieldImpl extends TemplateField implements PhoneNumberFi
 
   public static buildEmpty(): PhoneNumberField {
     return new PhoneNumberFieldImpl();
+  }
+
+  override createDeploymentBuilder(childName: string): ChildDeploymentInfoBuilder {
+    return new ChildDeploymentInfoBuilder(this, childName);
   }
 }

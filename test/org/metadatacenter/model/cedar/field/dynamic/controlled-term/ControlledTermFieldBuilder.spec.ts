@@ -3,6 +3,7 @@ import {
   CedarBuilders,
   CedarJsonWriters,
   CedarWriters,
+  ChildDeploymentInfoBuilder,
   ControlledTermBranchBuilder,
   ControlledTermClassBuilder,
   ControlledTermDefaultValueBuilder,
@@ -10,9 +11,12 @@ import {
   ControlledTermFieldBuilder,
   ControlledTermOntologyBuilder,
   ControlledTermValueSetBuilder,
-  IsoDate,
-  SchemaVersion,
   Iri,
+  IsoDate,
+  JsonTemplateElementWriter,
+  SchemaVersion,
+  TemplateElement,
+  TemplateElementBuilder,
 } from '../../../../../../../../src';
 
 describe('ControlledTermFieldBuilder', () => {
@@ -155,5 +159,68 @@ describe('ControlledTermFieldBuilder', () => {
         numTerms: 0,
       },
     ]);
+  });
+
+  test('creates element with one controlled field, single-instance', () => {
+    const controlledTermFieldBuilder: ControlledTermFieldBuilder = CedarBuilders.controlledTermFieldBuilder();
+    const controlledTermField: ControlledTermField = controlledTermFieldBuilder.withTitle('Controlled Term field').build();
+
+    const controlledTermFieldDeploymentBuilder: ChildDeploymentInfoBuilder =
+      controlledTermField.createDeploymentBuilder('controlled_field');
+
+    const controlledTermFieldDeployment = controlledTermFieldDeploymentBuilder
+      .withIri('https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde')
+      .build();
+
+    const templateElementBuilder: TemplateElementBuilder = CedarBuilders.templateElementBuilder();
+    const templateElement: TemplateElement = templateElementBuilder.addChild(controlledTermField, controlledTermFieldDeployment).build();
+
+    // console.log(TestUtil.d(templateElement.getChildrenInfo().children));
+
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const writer: JsonTemplateElementWriter = writers.getTemplateElementWriter();
+    //
+    const stringified = JSON.stringify(writer.getAsJsonNode(templateElement), null, 2);
+    // console.log(stringified);
+    const backparsed = JSON.parse(stringified);
+
+    expect(backparsed['properties']).not.toBeNull();
+    expect(backparsed['properties']['controlled_field']).not.toBeNull();
+    expect(backparsed['properties']['controlled_field']['type']).toBe('object');
+    expect(backparsed['properties']['controlled_field']['items']).toBeUndefined();
+  });
+
+  test('creates element with one controlled field, multi-instance', () => {
+    const controlledTermFieldBuilder: ControlledTermFieldBuilder = CedarBuilders.controlledTermFieldBuilder();
+    const controlledTermField: ControlledTermField = controlledTermFieldBuilder.withTitle('Controlled Term field').build();
+
+    const controlledTermFieldDeploymentBuilder: ChildDeploymentInfoBuilder =
+      controlledTermField.createDeploymentBuilder('controlled_field');
+
+    const controlledTermFieldDeployment = controlledTermFieldDeploymentBuilder
+      .withIri('https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde')
+      .withMultiInstance(true)
+      .withMinItems(2)
+      .withMaxItems(10)
+      .build();
+
+    const templateElementBuilder: TemplateElementBuilder = CedarBuilders.templateElementBuilder();
+    const templateElement: TemplateElement = templateElementBuilder.addChild(controlledTermField, controlledTermFieldDeployment).build();
+
+    // console.log(TestUtil.d(templateElement.getChildrenInfo().children));
+
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const writer: JsonTemplateElementWriter = writers.getTemplateElementWriter();
+    //
+    const stringified = JSON.stringify(writer.getAsJsonNode(templateElement), null, 2);
+    // console.log(stringified);
+    const backparsed = JSON.parse(stringified);
+
+    expect(backparsed['properties']).not.toBeNull();
+    expect(backparsed['properties']['controlled_field']).not.toBeNull();
+    expect(backparsed['properties']['controlled_field']['type']).toBe('array');
+    expect(backparsed['properties']['controlled_field']['minItems']).toBe(2);
+    expect(backparsed['properties']['controlled_field']['maxItems']).toBe(10);
+    expect(backparsed['properties']['controlled_field']['items']).not.toBeNull();
   });
 });

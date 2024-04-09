@@ -19,8 +19,11 @@ import { ArtifactSchema } from '../../../model/cedar/types/wrapped-types/Artifac
 import { AbstractContainerArtifact } from '../../../model/cedar/AbstractContainerArtifact';
 import { JsonTemplateElementReader } from './JsonTemplateElementReader';
 import { JsonContainerArtifactContent } from '../../../model/cedar/util/serialization/JsonContainerArtifactContent';
-import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
+import { AbstractDynamicChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractDynamicChildDeploymentInfo';
 import { ChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/ChildDeploymentInfoBuilder';
+import { ChildDeploymentInfoStaticBuilder } from '../../../model/cedar/deployment/ChildDeploymentInfoStaticBuilder';
+import { AbstractDynamicChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/AbstractDynamicChildDeploymentInfoBuilder';
+import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
 
 export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArtifactReader {
   protected fieldReader: JsonTemplateFieldReader;
@@ -120,16 +123,28 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
         childDefinition = ReaderUtil.getNode(childDefinition, JsonSchema.items);
         childPath = childPath.add(JsonSchema.items);
       }
-      if (childInfo.atType === CedarArtifactType.TEMPLATE_FIELD || childInfo.atType === CedarArtifactType.STATIC_TEMPLATE_FIELD) {
+      if (childInfo.atType === CedarArtifactType.STATIC_TEMPLATE_FIELD) {
         const cedarFieldReaderResult = this.fieldReader.readFromObject(childDefinition, childInfo, childPath);
-        const finalChildInfoBuilder = cedarFieldReaderResult.field.createDeploymentBuilder(childInfo.name);
+        const finalChildInfoBuilder: ChildDeploymentInfoStaticBuilder = cedarFieldReaderResult.field
+          .createDeploymentBuilder(childInfo.name)
+          .withLabel(childInfo.label)
+          .withDescription(childInfo.description);
+        const finalChildInfo = finalChildInfoBuilder.build();
+        container.addChild(cedarFieldReaderResult.field, finalChildInfo);
+        parsingResult.merge(cedarFieldReaderResult.parsingResult);
+      } else if (childInfo.atType === CedarArtifactType.TEMPLATE_FIELD) {
+        const cedarFieldReaderResult = this.fieldReader.readFromObject(childDefinition, childInfo, childPath);
+        const finalChildInfoBuilder: AbstractDynamicChildDeploymentInfoBuilder = cedarFieldReaderResult.field.createDeploymentBuilder(
+          childInfo.name,
+        ) as AbstractDynamicChildDeploymentInfoBuilder;
+        const dynaChildInfo: AbstractDynamicChildDeploymentInfo = childInfo as AbstractDynamicChildDeploymentInfo;
         // console.log('CHILD INFO1:', childInfo);
         finalChildInfoBuilder
-          .withIri(childInfo.iri)
-          .withHidden(childInfo.hidden)
+          .withIri(dynaChildInfo.iri)
+          .withHidden(dynaChildInfo.hidden)
           .withLabel(childInfo.label)
           .withDescription(childInfo.description)
-          .withRequiredValue(childInfo.requiredValue);
+          .withRequiredValue(dynaChildInfo.requiredValue);
         if (finalChildInfoBuilder instanceof ChildDeploymentInfoBuilder) {
           const currentInfo = childInfo as any as ChildDeploymentInfo;
           finalChildInfoBuilder
@@ -360,7 +375,9 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
             ),
           );
         } else {
-          childInfo.iri = iriList[0];
+          if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
+            childInfo.iri = iriList[0];
+          }
         }
       }
     }

@@ -2,6 +2,7 @@ import {
   CedarBuilders,
   CedarJsonWriters,
   CedarWriters,
+  ChildDeploymentInfoStaticBuilder,
   IsoDate,
   JsonTemplateElementWriter,
   SchemaVersion,
@@ -10,7 +11,6 @@ import {
   TemplateElement,
   TemplateElementBuilder,
 } from '../../../../../../../../src';
-import { ChildDeploymentInfoAlwaysSingleBuilder } from '../../../../../../../../src/org/metadatacenter/model/cedar/deployment/ChildDeploymentInfoAlwaysSingleBuilder';
 
 describe('StaticYoutubeFieldBuilder', () => {
   test('creates youtube field with builder', () => {
@@ -85,11 +85,9 @@ describe('StaticYoutubeFieldBuilder', () => {
     const youtubeFieldBuilder: StaticYoutubeFieldBuilder = CedarBuilders.youtubeFieldBuilder();
     const youtubeField: StaticYoutubeField = youtubeFieldBuilder.withTitle('Text field').build();
 
-    const youtubeFieldDeploymentBuilder: ChildDeploymentInfoAlwaysSingleBuilder = youtubeField.createDeploymentBuilder('youtube_field');
+    const youtubeFieldDeploymentBuilder: ChildDeploymentInfoStaticBuilder = youtubeField.createDeploymentBuilder('youtube_field');
 
-    const youtubeFieldDeployment = youtubeFieldDeploymentBuilder
-      .withIri('https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde')
-      .build();
+    const youtubeFieldDeployment = youtubeFieldDeploymentBuilder.withLabel('Youtube label ').withDescription('Youtube description').build();
 
     const templateElementBuilder: TemplateElementBuilder = CedarBuilders.templateElementBuilder();
     const templateElement: TemplateElement = templateElementBuilder.addChild(youtubeField, youtubeFieldDeployment).build();

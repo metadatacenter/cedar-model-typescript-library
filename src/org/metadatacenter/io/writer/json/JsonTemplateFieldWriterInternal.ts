@@ -15,6 +15,7 @@ import { ListField } from '../../../model/cedar/field/dynamic/list/ListField';
 import { RadioField } from '../../../model/cedar/field/dynamic/radio/RadioField';
 import { ChoiceOptionEntity } from '../../../model/cedar/field/ChoiceOptionEntity';
 import { CedarJsonWriters } from './CedarJsonWriters';
+import { AbstractDynamicChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractDynamicChildDeploymentInfo';
 import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
 
 export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifactWriter {
@@ -34,8 +35,10 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
   }
 
   protected expandUINode(uiNode: JsonNode, _field: TemplateField, childInfo: AbstractChildDeploymentInfo): void {
-    if (childInfo.hidden) {
-      uiNode[CedarModel.Ui.hidden] = childInfo.hidden;
+    if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
+      if (childInfo.hidden) {
+        uiNode[CedarModel.Ui.hidden] = childInfo.hidden;
+      }
     }
   }
 
@@ -53,7 +56,9 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
   protected expandTypeNode(_typeNode: JsonNode, _field: TemplateField): void {}
 
   protected expandValueConstraintsNode(vcNode: JsonNode, field: TemplateField, childInfo: AbstractChildDeploymentInfo): void {
-    vcNode[CedarModel.requiredValue] = childInfo.requiredValue;
+    if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
+      vcNode[CedarModel.requiredValue] = childInfo.requiredValue;
+    }
   }
 
   protected buildValueConstraintsObject(field: TemplateField, childInfo: AbstractChildDeploymentInfo): JsonNode {

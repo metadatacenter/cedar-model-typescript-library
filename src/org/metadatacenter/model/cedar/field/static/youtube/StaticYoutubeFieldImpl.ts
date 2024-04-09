@@ -2,7 +2,7 @@ import { TemplateField } from '../../TemplateField';
 import { CedarFieldType } from '../../../types/cedar-types/CedarFieldType';
 import { CedarArtifactType } from '../../../types/cedar-types/CedarArtifactType';
 import { StaticYoutubeField } from './StaticYoutubeField';
-import { ChildDeploymentInfoAlwaysSingleBuilder } from '../../../deployment/ChildDeploymentInfoAlwaysSingleBuilder';
+import { ChildDeploymentInfoStaticBuilder } from '../../../deployment/ChildDeploymentInfoStaticBuilder';
 
 export class StaticYoutubeFieldImpl extends TemplateField implements StaticYoutubeField {
   public videoId: string | null = null;
@@ -19,7 +19,7 @@ export class StaticYoutubeFieldImpl extends TemplateField implements StaticYoutu
     return new StaticYoutubeFieldImpl();
   }
 
-  override createDeploymentBuilder(childName: string): ChildDeploymentInfoAlwaysSingleBuilder {
-    return new ChildDeploymentInfoAlwaysSingleBuilder(this, childName);
+  override createDeploymentBuilder(childName: string): ChildDeploymentInfoStaticBuilder {
+    return new ChildDeploymentInfoStaticBuilder(this, childName);
   }
 }

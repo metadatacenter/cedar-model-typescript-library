@@ -6,8 +6,8 @@ import { TemplateChild } from '../../../model/cedar/types/basic-types/TemplateCh
 import { TemplateField } from '../../../model/cedar/field/TemplateField';
 import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
 import { CedarModel } from '../../../model/cedar/constants/CedarModel';
-import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
 import { WriterUtil } from '../WriterUtil';
+import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
 
 export abstract class JsonAbstractContainerArtifactWriter extends JsonAbstractArtifactWriter {
   protected macroContext(_artifact: AbstractContainerArtifact) {

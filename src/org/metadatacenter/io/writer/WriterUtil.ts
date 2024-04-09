@@ -1,9 +1,8 @@
 import { TemplateChild } from '../../model/cedar/types/basic-types/TemplateChild';
-import { AbstractChildDeploymentInfo } from '../../model/cedar/deployment/AbstractChildDeploymentInfo';
 import { ChildDeploymentInfoAlwaysMultiple } from '../../model/cedar/deployment/ChildDeploymentInfoAlwaysMultiple';
 import { ChildDeploymentInfo } from '../../model/cedar/deployment/ChildDeploymentInfo';
 import { AttributeValueFieldImpl } from '../../model/cedar/field/dynamic/attribute-value/AttributeValueFieldImpl';
-import { ChildDeploymentInfoMultipleChoiceList } from '../../model/cedar/deployment/ChildDeploymentInfoMultipleChoiceList';
+import { AbstractChildDeploymentInfo } from '../../model/cedar/deployment/AbstractChildDeploymentInfo';
 
 export abstract class WriterUtil {
   public static getMultiMinMax(
@@ -14,10 +13,7 @@ export abstract class WriterUtil {
     let maxItems: number | null = null;
     let isMultiInstance = false;
     if (child.isMultiInstanceByDefinition()) {
-      if (
-        childMetaAbstract instanceof ChildDeploymentInfoAlwaysMultiple ||
-        childMetaAbstract instanceof ChildDeploymentInfoMultipleChoiceList
-      ) {
+      if (childMetaAbstract instanceof ChildDeploymentInfoAlwaysMultiple) {
         // const childMeta = childMetaAbstract as ChildDeploymentInfoAlwaysMultiple;
         // minItems = childMeta.minItems;
         isMultiInstance = true;

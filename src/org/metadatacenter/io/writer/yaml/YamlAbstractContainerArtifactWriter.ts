@@ -5,9 +5,9 @@ import { TemplateField } from '../../../model/cedar/field/TemplateField';
 import { YamlAbstractArtifactWriter } from './YamlAbstractArtifactWriter';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 import { UiInputType } from '../../../model/cedar/types/wrapped-types/UiInputType';
-import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
+import { AbstractDynamicChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractDynamicChildDeploymentInfo';
 import { WriterUtil } from '../WriterUtil';
-import { CedarModel } from '../../../model/cedar/constants/CedarModel';
+import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
 
 export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractArtifactWriter {
   protected getChildListAsJSON(container: AbstractContainerArtifact): JsonNode[] {
@@ -47,14 +47,16 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
 
   private getDeploymentInfo(child: TemplateChild | null, childMeta: AbstractChildDeploymentInfo): JsonNode {
     const childConfiguration: JsonNode = JsonNode.getEmpty();
-    if (childMeta.requiredValue) {
-      childConfiguration[YamlKeys.required] = true;
-    }
-    if (childMeta.hidden) {
-      childConfiguration[YamlKeys.hidden] = true;
-    }
-    if (childMeta.uiInputType != UiInputType.ATTRIBUTE_VALUE) {
-      childConfiguration[YamlKeys.propertyIRI] = childMeta.iri;
+    if (childMeta instanceof AbstractDynamicChildDeploymentInfo) {
+      if (childMeta.requiredValue) {
+        childConfiguration[YamlKeys.required] = true;
+      }
+      if (childMeta.hidden) {
+        childConfiguration[YamlKeys.hidden] = true;
+      }
+      if (childMeta.uiInputType != UiInputType.ATTRIBUTE_VALUE) {
+        childConfiguration[YamlKeys.propertyIRI] = childMeta.iri;
+      }
     }
     childConfiguration[YamlKeys.overrideLabel] = childMeta.label;
     childConfiguration[YamlKeys.overrideDescription] = childMeta.description;

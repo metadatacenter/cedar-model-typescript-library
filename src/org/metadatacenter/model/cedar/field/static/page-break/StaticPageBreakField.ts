@@ -1,6 +1,6 @@
 import { TemplateField } from '../../TemplateField';
-import { ChildDeploymentInfoAlwaysSingleBuilder } from '../../../deployment/ChildDeploymentInfoAlwaysSingleBuilder';
+import { ChildDeploymentInfoStaticBuilder } from '../../../deployment/ChildDeploymentInfoStaticBuilder';
 
 export interface StaticPageBreakField extends TemplateField {
-  createDeploymentBuilder(childName: string): ChildDeploymentInfoAlwaysSingleBuilder;
+  createDeploymentBuilder(childName: string): ChildDeploymentInfoStaticBuilder;
 }

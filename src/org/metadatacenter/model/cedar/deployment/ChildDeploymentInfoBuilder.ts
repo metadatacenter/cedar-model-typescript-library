@@ -1,9 +1,9 @@
 import { NullableNumber } from '../types/basic-types/NullableNumber';
 import { ChildDeploymentInfo } from './ChildDeploymentInfo';
 import { TemplateChild } from '../types/basic-types/TemplateChild';
-import { AbstractChildDeploymentInfoBuilder } from './AbstractChildDeploymentInfoBuilder';
+import { AbstractDynamicChildDeploymentInfoBuilder } from './AbstractDynamicChildDeploymentInfoBuilder';
 
-export class ChildDeploymentInfoBuilder extends AbstractChildDeploymentInfoBuilder {
+export class ChildDeploymentInfoBuilder extends AbstractDynamicChildDeploymentInfoBuilder {
   private multiInstance: boolean = false;
   private minItems: NullableNumber = null;
   private maxItems: NullableNumber = null;

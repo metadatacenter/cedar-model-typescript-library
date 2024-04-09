@@ -13,6 +13,7 @@ import { YamlArtifactType } from '../../../model/cedar/types/wrapped-types/YamlA
 import { CedarFieldType } from '../../../model/cedar/types/cedar-types/CedarFieldType';
 import { AbstractContainerArtifact } from '../../../model/cedar/AbstractContainerArtifact';
 import { ChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/ChildDeploymentInfoBuilder';
+import { AbstractDynamicChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/AbstractDynamicChildDeploymentInfoBuilder';
 
 export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactReader {
   protected fieldReader: YamlTemplateFieldReader;
@@ -59,19 +60,25 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
 
           const fieldReadingResult = this.fieldReader.readFromObject(childNode, childDeploymentInfo, path.add(YamlKeys.children, name));
 
-          const finalChildInfoBuilder = fieldReadingResult.field.createDeploymentBuilder(childDeploymentInfo.name);
-          finalChildInfoBuilder
-            .withIri(childDeploymentInfo.iri)
-            .withHidden(childDeploymentInfo.hidden)
+          const finalChildInfoBuilder = fieldReadingResult.field
+            .createDeploymentBuilder(childDeploymentInfo.name)
             .withLabel(childDeploymentInfo.label)
-            .withDescription(childDeploymentInfo.description)
-            .withRequiredValue(childDeploymentInfo.requiredValue);
-          if (finalChildInfoBuilder instanceof ChildDeploymentInfoBuilder) {
-            const currentInfo = childDeploymentInfo as any as ChildDeploymentInfo;
-            finalChildInfoBuilder
-              .withMultiInstance(currentInfo.multiInstance)
-              .withMinItems(currentInfo.minItems)
-              .withMaxItems(currentInfo.maxItems);
+            .withDescription(childDeploymentInfo.description);
+
+          if (childDeploymentInfo.atType === CedarArtifactType.TEMPLATE_FIELD) {
+            const finalChildInfoBuilder2: AbstractDynamicChildDeploymentInfoBuilder =
+              finalChildInfoBuilder as AbstractDynamicChildDeploymentInfoBuilder;
+            finalChildInfoBuilder2
+              .withIri(childDeploymentInfo.iri)
+              .withHidden(childDeploymentInfo.hidden)
+              .withRequiredValue(childDeploymentInfo.requiredValue);
+            if (finalChildInfoBuilder2 instanceof ChildDeploymentInfoBuilder) {
+              const currentInfo = childDeploymentInfo as any as ChildDeploymentInfo;
+              finalChildInfoBuilder2
+                .withMultiInstance(currentInfo.multiInstance)
+                .withMinItems(currentInfo.minItems)
+                .withMaxItems(currentInfo.maxItems);
+            }
           }
           const finalChildInfo = finalChildInfoBuilder.build();
           container.addChild(fieldReadingResult.field, finalChildInfo);

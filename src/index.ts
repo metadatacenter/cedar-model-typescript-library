@@ -118,6 +118,16 @@ import { JsonTemplateFieldWriter } from './org/metadatacenter/io/writer/json/Jso
 import { YamlTemplateFieldWriter } from './org/metadatacenter/io/writer/yaml/YamlTemplateFieldWriter';
 import { PavVersion } from './org/metadatacenter/model/cedar/types/wrapped-types/PavVersion';
 import { TemplateChild } from './org/metadatacenter/model/cedar/types/basic-types/TemplateChild';
+import { ChildDeploymentInfoStatic } from './org/metadatacenter/model/cedar/deployment/ChildDeploymentInfoStatic';
+import { ChildDeploymentInfoStaticBuilder } from './org/metadatacenter/model/cedar/deployment/ChildDeploymentInfoStaticBuilder';
+import { ChildDeploymentInfoAlwaysSingle } from './org/metadatacenter/model/cedar/deployment/ChildDeploymentInfoAlwaysSingle';
+import { ChildDeploymentInfoAlwaysSingleBuilder } from './org/metadatacenter/model/cedar/deployment/ChildDeploymentInfoAlwaysSingleBuilder';
+import { ChildDeploymentInfoAlwaysMultiple } from './org/metadatacenter/model/cedar/deployment/ChildDeploymentInfoAlwaysMultiple';
+import { ChildDeploymentInfoAlwaysMultipleBuilder } from './org/metadatacenter/model/cedar/deployment/ChildDeploymentInfoAlwaysMultipleBuilder';
+import { AbstractChildDeploymentInfo } from './org/metadatacenter/model/cedar/deployment/AbstractChildDeploymentInfo';
+import { AbstractChildDeploymentInfoBuilder } from './org/metadatacenter/model/cedar/deployment/AbstractChildDeploymentInfoBuilder';
+import { AbstractDynamicChildDeploymentInfoBuilder } from './org/metadatacenter/model/cedar/deployment/AbstractDynamicChildDeploymentInfoBuilder';
+import { AbstractDynamicChildDeploymentInfo } from './org/metadatacenter/model/cedar/deployment/AbstractDynamicChildDeploymentInfo';
 // It is needed, do not remove, even if it looks unused
 export { JsonTemplateFieldWriterInternal as JsonTemplateFieldWriter };
 export { YamlTemplateFieldWriterInternal as YamlTemplateFieldWriter };
@@ -178,7 +188,12 @@ export { ControlledTermOntologyBuilder };
 export { ControlledTermValueSetBuilder };
 export { ControlledTermActionBuilder };
 
+export { AbstractChildDeploymentInfo, AbstractChildDeploymentInfoBuilder };
+export { AbstractDynamicChildDeploymentInfo, AbstractDynamicChildDeploymentInfoBuilder };
 export { ChildDeploymentInfo, ChildDeploymentInfoBuilder };
+export { ChildDeploymentInfoAlwaysSingle, ChildDeploymentInfoAlwaysSingleBuilder };
+export { ChildDeploymentInfoAlwaysMultiple, ChildDeploymentInfoAlwaysMultipleBuilder };
+export { ChildDeploymentInfoStatic, ChildDeploymentInfoStaticBuilder };
 
 export { JsonNode };
 export { IsoDate };

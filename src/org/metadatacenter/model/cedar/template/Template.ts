@@ -3,7 +3,7 @@ import { SchemaVersion } from '../types/wrapped-types/SchemaVersion';
 import { PavVersion } from '../types/wrapped-types/PavVersion';
 import { AbstractContainerArtifact } from '../AbstractContainerArtifact';
 import { CedarArtifactType } from '../types/cedar-types/CedarArtifactType';
-import { AbstractChildDeploymentInfoBuilder } from '../deployment/AbstractChildDeploymentInfoBuilder';
+import { AbstractDynamicChildDeploymentInfoBuilder } from '../deployment/AbstractDynamicChildDeploymentInfoBuilder';
 
 export class Template extends AbstractContainerArtifact {
   public header: string | null = null;
@@ -36,7 +36,7 @@ export class Template extends AbstractContainerArtifact {
     return false;
   }
 
-  createDeploymentBuilder(_childName: string): AbstractChildDeploymentInfoBuilder {
+  createDeploymentBuilder(_childName: string): AbstractDynamicChildDeploymentInfoBuilder {
     throw new Error('Method not supported.');
   }
 }

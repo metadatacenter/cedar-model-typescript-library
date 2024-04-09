@@ -2,7 +2,7 @@ import { TemplateField } from '../../TemplateField';
 import { CedarFieldType } from '../../../types/cedar-types/CedarFieldType';
 import { CedarArtifactType } from '../../../types/cedar-types/CedarArtifactType';
 import { StaticImageField } from './StaticImageField';
-import { ChildDeploymentInfoAlwaysSingleBuilder } from '../../../deployment/ChildDeploymentInfoAlwaysSingleBuilder';
+import { ChildDeploymentInfoStaticBuilder } from '../../../deployment/ChildDeploymentInfoStaticBuilder';
 
 export class StaticImageFieldImpl extends TemplateField implements StaticImageField {
   public content: string | null = null;
@@ -17,7 +17,7 @@ export class StaticImageFieldImpl extends TemplateField implements StaticImageFi
     return new StaticImageFieldImpl();
   }
 
-  override createDeploymentBuilder(childName: string): ChildDeploymentInfoAlwaysSingleBuilder {
-    return new ChildDeploymentInfoAlwaysSingleBuilder(this, childName);
+  override createDeploymentBuilder(childName: string): ChildDeploymentInfoStaticBuilder {
+    return new ChildDeploymentInfoStaticBuilder(this, childName);
   }
 }

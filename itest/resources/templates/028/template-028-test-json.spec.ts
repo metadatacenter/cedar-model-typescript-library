@@ -1,4 +1,5 @@
 import {
+  AbstractChildDeploymentInfo,
   CedarJsonWriters,
   CedarModel,
   CedarWriters,
@@ -14,7 +15,6 @@ import {
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
 import { TestUtil } from '../../../TestUtil';
 import { TestResource } from '../../../TestResource';
-import { AbstractChildDeploymentInfo } from '../../../../src/org/metadatacenter/model/cedar/deployment/AbstractChildDeploymentInfo';
 
 const testResource: TestResource = TestResource.template(28);
 

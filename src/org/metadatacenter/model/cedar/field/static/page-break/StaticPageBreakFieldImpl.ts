@@ -2,7 +2,7 @@ import { TemplateField } from '../../TemplateField';
 import { CedarFieldType } from '../../../types/cedar-types/CedarFieldType';
 import { CedarArtifactType } from '../../../types/cedar-types/CedarArtifactType';
 import { StaticPageBreakField } from './StaticPageBreakField';
-import { ChildDeploymentInfoAlwaysSingleBuilder } from '../../../deployment/ChildDeploymentInfoAlwaysSingleBuilder';
+import { ChildDeploymentInfoStaticBuilder } from '../../../deployment/ChildDeploymentInfoStaticBuilder';
 
 export class StaticPageBreakFieldImpl extends TemplateField implements StaticPageBreakField {
   private constructor() {
@@ -15,7 +15,7 @@ export class StaticPageBreakFieldImpl extends TemplateField implements StaticPag
     return new StaticPageBreakFieldImpl();
   }
 
-  override createDeploymentBuilder(childName: string): ChildDeploymentInfoAlwaysSingleBuilder {
-    return new ChildDeploymentInfoAlwaysSingleBuilder(this, childName);
+  override createDeploymentBuilder(childName: string): ChildDeploymentInfoStaticBuilder {
+    return new ChildDeploymentInfoStaticBuilder(this, childName);
   }
 }

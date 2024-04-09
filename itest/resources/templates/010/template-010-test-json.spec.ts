@@ -7,12 +7,12 @@ import {
   JsonPath,
   JsonSchema,
   JsonTemplateReader,
+  JsonTemplateReaderResult,
   JsonTemplateWriter,
   RoundTrip,
 } from '../../../../src';
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
 import { TestUtil } from '../../../TestUtil';
-import { JsonTemplateReaderResult } from '../../../../src/org/metadatacenter/io/reader/json/JsonTemplateReaderResult';
 import { TestResource } from '../../../TestResource';
 
 const testResource: TestResource = TestResource.template(10);

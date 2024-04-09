@@ -3,6 +3,7 @@ import { JsonSchema } from '../constants/JsonSchema';
 import { UiInputType } from '../types/wrapped-types/UiInputType';
 import { NullableString } from '../types/basic-types/NullableString';
 import { AbstractChildDeploymentInfo } from './AbstractChildDeploymentInfo';
+import { AbstractDynamicChildDeploymentInfo } from './AbstractDynamicChildDeploymentInfo';
 
 export class ContainerArtifactChildrenInfo {
   private childNameList: Array<string> = [];
@@ -72,7 +73,9 @@ export class ContainerArtifactChildrenInfo {
     this.childNameList.forEach((childName) => {
       const childInfo = this.getChildInfo(childName);
       if (childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD) {
-        iriMap[childInfo.name] = { [JsonSchema.enum]: [childInfo.iri] };
+        if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
+          iriMap[childInfo.name] = { [JsonSchema.enum]: [childInfo.iri] };
+        }
       }
     });
     return iriMap;
@@ -83,7 +86,9 @@ export class ContainerArtifactChildrenInfo {
     this.childNameList.forEach((childName) => {
       const childInfo = this.getChildInfo(childName);
       if (childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD && childInfo.uiInputType !== UiInputType.ATTRIBUTE_VALUE) {
-        iriMap[childInfo.name] = { [JsonSchema.enum]: [childInfo.iri] };
+        if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
+          iriMap[childInfo.name] = { [JsonSchema.enum]: [childInfo.iri] };
+        }
       }
     });
     return iriMap;

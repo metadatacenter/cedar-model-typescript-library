@@ -2,7 +2,7 @@ import {
   CedarBuilders,
   CedarJsonWriters,
   CedarWriters,
-  ChildDeploymentInfoBuilder,
+  ChildDeploymentInfoStaticBuilder,
   IsoDate,
   JsonTemplateElementWriter,
   SchemaVersion,
@@ -11,7 +11,6 @@ import {
   TemplateElement,
   TemplateElementBuilder,
 } from '../../../../../../../../src';
-import { ChildDeploymentInfoAlwaysSingleBuilder } from '../../../../../../../../src/org/metadatacenter/model/cedar/deployment/ChildDeploymentInfoAlwaysSingleBuilder';
 
 describe('StaticImageFieldBuilder', () => {
   test('creates image field with builder', () => {
@@ -83,11 +82,9 @@ describe('StaticImageFieldBuilder', () => {
     const imageFieldBuilder: StaticImageFieldBuilder = CedarBuilders.imageFieldBuilder();
     const imageField: StaticImageField = imageFieldBuilder.withTitle('Text field').build();
 
-    const imageFieldDeploymentBuilder: ChildDeploymentInfoAlwaysSingleBuilder = imageField.createDeploymentBuilder('image_field');
+    const imageFieldDeploymentBuilder: ChildDeploymentInfoStaticBuilder = imageField.createDeploymentBuilder('image_field');
 
-    const imageFieldDeployment = imageFieldDeploymentBuilder
-      .withIri('https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde')
-      .build();
+    const imageFieldDeployment = imageFieldDeploymentBuilder.build();
 
     const templateElementBuilder: TemplateElementBuilder = CedarBuilders.templateElementBuilder();
     const templateElement: TemplateElement = templateElementBuilder.addChild(imageField, imageFieldDeployment).build();

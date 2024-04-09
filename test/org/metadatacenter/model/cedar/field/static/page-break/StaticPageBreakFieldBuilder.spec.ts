@@ -2,6 +2,7 @@ import {
   CedarBuilders,
   CedarJsonWriters,
   CedarWriters,
+  ChildDeploymentInfoStaticBuilder,
   IsoDate,
   JsonTemplateElementWriter,
   SchemaVersion,
@@ -10,7 +11,6 @@ import {
   TemplateElement,
   TemplateElementBuilder,
 } from '../../../../../../../../src';
-import { ChildDeploymentInfoAlwaysSingleBuilder } from '../../../../../../../../src/org/metadatacenter/model/cedar/deployment/ChildDeploymentInfoAlwaysSingleBuilder';
 
 describe('StaticPageBreakFieldBuilder', () => {
   test('creates page break field with builder', () => {
@@ -79,12 +79,9 @@ describe('StaticPageBreakFieldBuilder', () => {
     const pageBreakFieldBuilder: StaticPageBreakFieldBuilder = CedarBuilders.pageBreakFieldBuilder();
     const pageBreakField: StaticPageBreakField = pageBreakFieldBuilder.withTitle('Text field').build();
 
-    const pageBreakFieldDeploymentBuilder: ChildDeploymentInfoAlwaysSingleBuilder =
-      pageBreakField.createDeploymentBuilder('page_break_field');
+    const pageBreakFieldDeploymentBuilder: ChildDeploymentInfoStaticBuilder = pageBreakField.createDeploymentBuilder('page_break_field');
 
-    const pageBreakFieldDeployment = pageBreakFieldDeploymentBuilder
-      .withIri('https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde')
-      .build();
+    const pageBreakFieldDeployment = pageBreakFieldDeploymentBuilder.build();
 
     const templateElementBuilder: TemplateElementBuilder = CedarBuilders.templateElementBuilder();
     const templateElement: TemplateElement = templateElementBuilder.addChild(pageBreakField, pageBreakFieldDeployment).build();

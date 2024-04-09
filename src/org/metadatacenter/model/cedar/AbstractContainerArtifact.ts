@@ -2,7 +2,6 @@ import { AbstractSchemaArtifact } from './AbstractSchemaArtifact';
 import { ContainerArtifactChildrenInfo } from './deployment/ContainerArtifactChildrenInfo';
 import { TemplateChild } from './types/basic-types/TemplateChild';
 import { AdditionalProperties } from './types/wrapped-types/AdditionalProperties';
-import { ChildDeploymentInfo } from './deployment/ChildDeploymentInfo';
 import { TemplateElement } from './element/TemplateElement';
 import { TemplateField } from './field/TemplateField';
 import { CedarArtifactType } from './types/cedar-types/CedarArtifactType';

@@ -2,6 +2,7 @@ import {
   CedarBuilders,
   CedarJsonWriters,
   CedarWriters,
+  ChildDeploymentInfoStaticBuilder,
   IsoDate,
   JsonTemplateElementWriter,
   SchemaVersion,
@@ -10,7 +11,6 @@ import {
   TemplateElement,
   TemplateElementBuilder,
 } from '../../../../../../../../src';
-import { ChildDeploymentInfoAlwaysSingleBuilder } from '../../../../../../../../src/org/metadatacenter/model/cedar/deployment/ChildDeploymentInfoAlwaysSingleBuilder';
 
 describe('StaticSectionBreakFieldBuilder', () => {
   test('creates section break field with builder', () => {
@@ -79,12 +79,10 @@ describe('StaticSectionBreakFieldBuilder', () => {
     const sectionBreakFieldBuilder: StaticSectionBreakFieldBuilder = CedarBuilders.sectionBreakFieldBuilder();
     const sectionBreakField: StaticSectionBreakField = sectionBreakFieldBuilder.withTitle('Text field').build();
 
-    const sectionBreakFieldDeploymentBuilder: ChildDeploymentInfoAlwaysSingleBuilder =
+    const sectionBreakFieldDeploymentBuilder: ChildDeploymentInfoStaticBuilder =
       sectionBreakField.createDeploymentBuilder('section_break_field');
 
-    const sectionBreakFieldDeployment = sectionBreakFieldDeploymentBuilder
-      .withIri('https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde')
-      .build();
+    const sectionBreakFieldDeployment = sectionBreakFieldDeploymentBuilder.build();
 
     const templateElementBuilder: TemplateElementBuilder = CedarBuilders.templateElementBuilder();
     const templateElement: TemplateElement = templateElementBuilder.addChild(sectionBreakField, sectionBreakFieldDeployment).build();

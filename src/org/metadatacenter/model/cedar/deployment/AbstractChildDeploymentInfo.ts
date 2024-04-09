@@ -4,14 +4,11 @@ import { NullableString } from '../types/basic-types/NullableString';
 
 export abstract class AbstractChildDeploymentInfo {
   protected readonly _name: string;
-  protected _label: NullableString = null;
-  protected _description: NullableString = null;
-  protected _iri: NullableString = null;
   protected _atType: CedarArtifactType = CedarArtifactType.NULL;
   protected _uiInputType: UiInputType = UiInputType.NULL;
 
-  protected _requiredValue: boolean = false;
-  protected _hidden: boolean = false;
+  protected _label: NullableString = null;
+  protected _description: NullableString = null;
 
   public constructor(name: string) {
     this._name = name;
@@ -51,30 +48,6 @@ export abstract class AbstractChildDeploymentInfo {
 
   set description(value: NullableString) {
     this._description = value;
-  }
-
-  get iri(): NullableString {
-    return this._iri;
-  }
-
-  set iri(value: NullableString) {
-    this._iri = value;
-  }
-
-  get requiredValue(): boolean {
-    return this._requiredValue;
-  }
-
-  set requiredValue(value: boolean) {
-    this._requiredValue = value;
-  }
-
-  get hidden(): boolean {
-    return this._hidden;
-  }
-
-  set hidden(value: boolean) {
-    this._hidden = value;
   }
 
   abstract isMultiInAnyWay(): boolean;

@@ -1,7 +1,7 @@
 import { NullableNumber } from '../types/basic-types/NullableNumber';
-import { AbstractChildDeploymentInfo } from './AbstractChildDeploymentInfo';
+import { AbstractDynamicChildDeploymentInfo } from './AbstractDynamicChildDeploymentInfo';
 
-export class ChildDeploymentInfo extends AbstractChildDeploymentInfo {
+export class ChildDeploymentInfo extends AbstractDynamicChildDeploymentInfo {
   protected _multiInstance: boolean = false;
   protected _minItems: NullableNumber = null;
   protected _maxItems: NullableNumber = null;

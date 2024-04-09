@@ -1,8 +1,8 @@
 import { TemplateChild } from '../types/basic-types/TemplateChild';
 import { ChildDeploymentInfoAlwaysMultiple } from './ChildDeploymentInfoAlwaysMultiple';
-import { AbstractChildDeploymentInfoBuilder } from './AbstractChildDeploymentInfoBuilder';
+import { AbstractDynamicChildDeploymentInfoBuilder } from './AbstractDynamicChildDeploymentInfoBuilder';
 
-export class ChildDeploymentInfoAlwaysMultipleBuilder extends AbstractChildDeploymentInfoBuilder {
+export class ChildDeploymentInfoAlwaysMultipleBuilder extends AbstractDynamicChildDeploymentInfoBuilder {
   constructor(child: TemplateChild, name: string) {
     super(child, name);
   }

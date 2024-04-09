@@ -1,6 +1,6 @@
-import { AbstractChildDeploymentInfo } from './AbstractChildDeploymentInfo';
+import { AbstractDynamicChildDeploymentInfo } from './AbstractDynamicChildDeploymentInfo';
 
-export class ChildDeploymentInfoAlwaysSingle extends AbstractChildDeploymentInfo {
+export class ChildDeploymentInfoAlwaysSingle extends AbstractDynamicChildDeploymentInfo {
   public static empty(): ChildDeploymentInfoAlwaysSingle {
     return new ChildDeploymentInfoAlwaysSingle('');
   }

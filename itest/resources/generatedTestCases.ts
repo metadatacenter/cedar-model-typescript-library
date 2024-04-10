@@ -3,6 +3,9 @@ export const fieldTestCases: string[] = [
   '../cedar-test-artifacts/artifacts/fields/002/field-002.json',
   '../cedar-test-artifacts/artifacts/fields/003/field-003.json',
   '../cedar-test-artifacts/artifacts/fields/004/field-004.json',
+  '../cedar-test-artifacts/artifacts/fields/005/field-005.json',
+  '../cedar-test-artifacts/artifacts/fields/006/field-006.json',
+  '../cedar-test-artifacts/artifacts/fields/007/field-007.json',
 ];
 export const elementTestCases: string[] = [
   '../cedar-test-artifacts/artifacts/elements/001/element-001.json',

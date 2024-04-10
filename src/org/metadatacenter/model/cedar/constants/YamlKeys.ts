@@ -86,4 +86,9 @@ export class YamlKeys {
     static sourceIri: string = 'sourceIri';
     static sourceAcronym: string = 'sourceAcronym';
   };
+
+  static nullEnabled: string = 'nullEnabled';
+  static trueLabel: string = 'trueLabel';
+  static falseLabel: string = 'falseLabel';
+  static nullLabel: string = 'nullLabel';
 }

@@ -15,7 +15,7 @@ describe('YAMLTemplateFieldReader-references', () => {
       let leftYAMLObject = {};
       let rightYAMLObject = {};
       try {
-        // console.log(sourcePath);
+        //console.log(sourcePath);
         const fieldSourceJSONString = await fs.readFile(sourcePath, 'utf8');
 
         const fieldJSONReader: JsonTemplateFieldReader = JsonTemplateFieldReader.getStrict();

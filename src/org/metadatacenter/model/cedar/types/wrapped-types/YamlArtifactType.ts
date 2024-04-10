@@ -18,6 +18,7 @@ export const YamlArtifactTypeValues = {
   CHECKBOX: 'checkbox-field',
   RADIO: 'radio-field',
   ATTRIBUTE_VALUE: 'attribute-value-field',
+  BOOLEAN: 'boolean',
 
   PAGE_BREAK: 'static-page-break',
   SECTION_BREAK: 'static-section-break',
@@ -59,6 +60,7 @@ export class YamlArtifactType {
   public static CHECKBOX = new YamlArtifactType(YamlArtifactTypeValues.CHECKBOX, CedarFieldCategory.DYNAMIC);
   public static RADIO = new YamlArtifactType(YamlArtifactTypeValues.RADIO, CedarFieldCategory.DYNAMIC);
   public static ATTRIBUTE_VALUE = new YamlArtifactType(YamlArtifactTypeValues.ATTRIBUTE_VALUE, CedarFieldCategory.DYNAMIC);
+  public static BOOLEAN = new YamlArtifactType(YamlArtifactTypeValues.BOOLEAN, CedarFieldCategory.DYNAMIC);
 
   public static PAGE_BREAK = new YamlArtifactType(YamlArtifactTypeValues.PAGE_BREAK, CedarFieldCategory.STATIC);
   public static SECTION_BREAK = new YamlArtifactType(YamlArtifactTypeValues.SECTION_BREAK, CedarFieldCategory.STATIC);
@@ -88,6 +90,7 @@ export class YamlArtifactType {
       YamlArtifactType.CHECKBOX,
       YamlArtifactType.RADIO,
       YamlArtifactType.ATTRIBUTE_VALUE,
+      YamlArtifactType.BOOLEAN,
 
       YamlArtifactType.PAGE_BREAK,
       YamlArtifactType.SECTION_BREAK,

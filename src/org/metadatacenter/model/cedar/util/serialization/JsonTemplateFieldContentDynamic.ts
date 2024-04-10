@@ -130,15 +130,29 @@ export class JsonTemplateFieldContentDynamic {
 
   // This is a verbatim representation for numeric fields
   public static PROPERTIES_VERBATIM_NUMERIC: JsonNode = {
+    '@type': {
+      type: 'string',
+      format: 'uri',
+    },
     '@value': {
       type: ['string', 'null'],
     },
     'rdfs:label': {
       type: ['string', 'null'],
     },
+  };
+
+  // This is a verbatim representation for boolean fields
+  public static PROPERTIES_VERBATIM_BOOLEAN: JsonNode = {
     '@type': {
       type: 'string',
       format: 'uri',
+    },
+    '@value': {
+      type: ['string', 'null'],
+    },
+    'rdfs:label': {
+      type: ['string', 'null'],
     },
   };
 
@@ -191,6 +205,7 @@ export class JsonTemplateFieldContentDynamic {
     ReaderUtil.deepFreeze(this.PROPERTIES_VERBATIM_CONTROLLED);
     ReaderUtil.deepFreeze(this.PROPERTIES_VERBATIM_IRI);
     ReaderUtil.deepFreeze(this.PROPERTIES_VERBATIM_NUMERIC);
+    ReaderUtil.deepFreeze(this.PROPERTIES_VERBATIM_BOOLEAN);
     ReaderUtil.deepFreeze(this.ADDITIONAL_PROPERTIES_VERBATIM_ATTRIBUTE_VALUE_OUTSIDE);
     ReaderUtil.deepFreeze(this.ADDITIONAL_PROPERTIES_VERBATIM_ATTRIBUTE_VALUE_INSIDE);
   }

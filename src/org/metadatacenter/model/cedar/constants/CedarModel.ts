@@ -86,4 +86,10 @@ export class CedarModel {
   static Ui = class {
     static hidden = 'hidden';
   };
+
+  static nullEnabled = 'nullEnabled';
+  static trueLabel = 'true';
+  static falseLabel = 'false';
+  static nullLabel = 'null';
+  static labels = 'labels';
 }

@@ -38,6 +38,7 @@ import { UnknownTemplateField } from '../../../model/cedar/field/UnknownTemplate
 import { JsonAbstractSchemaArtifactReader } from './JsonAbstractSchemaArtifactReader';
 import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
 import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
+import { JsonFieldReaderBoolean } from '../../../model/cedar/field/dynamic/boolean/JsonFieldReaderBoolean';
 
 export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
   private constructor(behavior: JsonReaderBehavior) {
@@ -70,6 +71,7 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     [CedarFieldType.SINGLE_SELECT_LIST, new JsonFieldReaderList()],
     [CedarFieldType.MULTIPLE_SELECT_LIST, new JsonFieldReaderList()],
     [CedarFieldType.ATTRIBUTE_VALUE, new JsonFieldReaderAttributeValue()],
+    [CedarFieldType.BOOLEAN, new JsonFieldReaderBoolean()],
   ]);
 
   static staticReaderMap = new Map<CedarFieldType, JsonTemplateFieldTypeSpecificReader>([
@@ -166,23 +168,29 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
   ): TemplateField {
     const artifactType: CedarArtifactType = CedarArtifactType.forValue(ReaderUtil.getString(fieldSourceObject, JsonSchema.atType));
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
-    const uiInputType: UiInputType = UiInputType.forValue(ReaderUtil.getString(uiNode, CedarModel.inputType));
+    const rawUiInputType = ReaderUtil.getString(uiNode, CedarModel.inputType);
+    const uiInputType: UiInputType = UiInputType.forValue(rawUiInputType);
     const fieldType: CedarFieldType = this.getCedarFieldType(fieldSourceObject, uiInputType);
-    if (artifactType == CedarArtifactType.STATIC_TEMPLATE_FIELD) {
-      if (uiInputType != null) {
-        const reader: JsonTemplateFieldTypeSpecificReader | undefined = this.staticReaderMap.get(fieldType);
-        if (!reader) {
-          throw new Error(`No reader defined for static input type "${fieldType.getValue()}"`);
+    if (fieldType === CedarFieldType.NULL) {
+      throw new Error(`Unknown uiInputType type: "${rawUiInputType}"`);
+    } else {
+      if (artifactType == CedarArtifactType.STATIC_TEMPLATE_FIELD) {
+        if (uiInputType != null) {
+          const reader: JsonTemplateFieldTypeSpecificReader | undefined = this.staticReaderMap.get(fieldType);
+          if (!reader) {
+            throw new Error(`No reader defined for static input type "${fieldType.getValue()}"`);
+          }
+          return reader.read(fieldSourceObject, childInfo, parsingResult, path);
         }
-        return reader.read(fieldSourceObject, childInfo, parsingResult, path);
-      }
-    } else if (artifactType == CedarArtifactType.TEMPLATE_FIELD) {
-      if (uiInputType != null) {
-        const reader: JsonTemplateFieldTypeSpecificReader | undefined = this.dynamicTypeReaderMap.get(fieldType);
-        if (!reader) {
-          throw new Error(`No reader defined for dynamic input type "${fieldType.getValue()}"`);
+      } else if (artifactType == CedarArtifactType.TEMPLATE_FIELD) {
+        if (uiInputType != null) {
+          const reader: JsonTemplateFieldTypeSpecificReader | undefined = this.dynamicTypeReaderMap.get(fieldType);
+          if (!reader) {
+            throw new Error(`
+          No reader defined for dynamic input type "${fieldType.getValue()}"`);
+          }
+          return reader.read(fieldSourceObject, childInfo, parsingResult, path);
         }
-        return reader.read(fieldSourceObject, childInfo, parsingResult, path);
       }
     }
     return UnknownTemplateField.build();

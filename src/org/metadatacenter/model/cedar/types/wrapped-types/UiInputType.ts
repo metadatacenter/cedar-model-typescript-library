@@ -10,6 +10,7 @@ export const UiInputTypeValues = {
   CHECKBOX: 'checkbox',
   RADIO: 'radio',
   ATTRIBUTE_VALUE: 'attribute-value',
+  BOOLEAN: 'boolean',
 
   PAGE_BREAK: 'page-break',
   SECTION_BREAK: 'section-break',
@@ -42,6 +43,7 @@ export class UiInputType {
   public static CHECKBOX = new UiInputType(UiInputTypeValues.CHECKBOX);
   public static RADIO = new UiInputType(UiInputTypeValues.RADIO);
   public static ATTRIBUTE_VALUE = new UiInputType(UiInputTypeValues.ATTRIBUTE_VALUE);
+  public static BOOLEAN = new UiInputType(UiInputTypeValues.BOOLEAN);
 
   public static PAGE_BREAK = new UiInputType(UiInputTypeValues.PAGE_BREAK);
   public static SECTION_BREAK = new UiInputType(UiInputTypeValues.SECTION_BREAK);
@@ -64,6 +66,7 @@ export class UiInputType {
       UiInputType.CHECKBOX,
       UiInputType.RADIO,
       UiInputType.ATTRIBUTE_VALUE,
+      UiInputType.BOOLEAN,
 
       UiInputType.PAGE_BREAK,
       UiInputType.SECTION_BREAK,

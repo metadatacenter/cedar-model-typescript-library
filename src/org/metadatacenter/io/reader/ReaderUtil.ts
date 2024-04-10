@@ -27,6 +27,30 @@ export abstract class ReaderUtil {
     }
   }
 
+  public static getBooleanOrNullOrUndefined(node: JsonNode, key: string): boolean | null | undefined {
+    if (Object.hasOwn(node, key)) {
+      if (node[key] === null) {
+        return null;
+      } else {
+        return node[key] as boolean;
+      }
+    } else {
+      return undefined;
+    }
+  }
+
+  public static getBooleanOrNull(node: JsonNode, key: string): boolean | null {
+    if (Object.hasOwn(node, key)) {
+      if (node[key] === null) {
+        return null;
+      } else {
+        return node[key] as boolean;
+      }
+    } else {
+      return null;
+    }
+  }
+
   static getNumber(node: JsonNode, key: string): NullableNumber {
     if (Object.hasOwn(node, key)) {
       return node[key] as number;

@@ -2,7 +2,6 @@ import { YamlReaderBehavior } from '../../../behavior/YamlReaderBehavior';
 import { YamlAbstractArtifactReader } from './YamlAbstractArtifactReader';
 import { YamlTemplateFieldReader } from './YamlTemplateFieldReader';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
-import { ParsingResult } from '../../../model/cedar/util/compare/ParsingResult';
 import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
 import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
@@ -14,6 +13,7 @@ import { CedarFieldType } from '../../../model/cedar/types/cedar-types/CedarFiel
 import { AbstractContainerArtifact } from '../../../model/cedar/AbstractContainerArtifact';
 import { ChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/ChildDeploymentInfoBuilder';
 import { AbstractDynamicChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/AbstractDynamicChildDeploymentInfoBuilder';
+import { YamlArtifactParsingResult } from '../../../model/cedar/util/compare/YamlArtifactParsingResult';
 
 export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactReader {
   protected fieldReader: YamlTemplateFieldReader;
@@ -28,7 +28,7 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
   protected readAndValidateChildrenInfo(
     container: AbstractContainerArtifact,
     elementSourceObject: JsonNode,
-    _parsingResult: ParsingResult,
+    _parsingResult: YamlArtifactParsingResult,
     path: JsonPath,
   ) {
     const childrenNodeList: JsonNode[] = ReaderUtil.getNodeList(elementSourceObject, YamlKeys.children);

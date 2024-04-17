@@ -1,10 +1,10 @@
 import { Template } from '../../../model/cedar/template/Template';
-import { ParsingResult } from '../../../model/cedar/util/compare/ParsingResult';
+import { JsonArtifactParsingResult } from '../../../model/cedar/util/compare/JsonArtifactParsingResult';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { JsonArtifactReaderResult } from './JsonArtifactReaderResult';
 
 export class JsonTemplateReaderResult extends JsonArtifactReaderResult {
-  constructor(template: Template, parsingResult: ParsingResult, elementSourceObject: JsonNode) {
+  constructor(template: Template, parsingResult: JsonArtifactParsingResult, elementSourceObject: JsonNode) {
     super(template, parsingResult, elementSourceObject);
   }
 

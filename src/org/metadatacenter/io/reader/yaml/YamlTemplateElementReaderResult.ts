@@ -1,13 +1,13 @@
-import { ParsingResult } from '../../../model/cedar/util/compare/ParsingResult';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { TemplateElement } from '../../../model/cedar/element/TemplateElement';
+import { YamlArtifactParsingResult } from '../../../model/cedar/util/compare/YamlArtifactParsingResult';
 
 export class YamlTemplateElementReaderResult {
   private readonly _element: TemplateElement;
-  private readonly _parsingResult: ParsingResult;
+  private readonly _parsingResult: YamlArtifactParsingResult;
   private readonly _elementSourceObject: JsonNode;
 
-  constructor(element: TemplateElement, parsingResult: ParsingResult, elementSourceObject: JsonNode) {
+  constructor(element: TemplateElement, parsingResult: YamlArtifactParsingResult, elementSourceObject: JsonNode) {
     this._element = element;
     this._parsingResult = parsingResult;
     this._elementSourceObject = elementSourceObject;
@@ -17,7 +17,7 @@ export class YamlTemplateElementReaderResult {
     return this._element;
   }
 
-  get parsingResult(): ParsingResult {
+  get parsingResult(): YamlArtifactParsingResult {
     return this._parsingResult;
   }
 

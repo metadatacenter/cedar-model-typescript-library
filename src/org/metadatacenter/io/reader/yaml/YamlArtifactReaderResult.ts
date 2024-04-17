@@ -1,13 +1,13 @@
-import { JsonArtifactParsingResult } from '../../../model/cedar/util/compare/JsonArtifactParsingResult';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { AbstractArtifact } from '../../../model/cedar/AbstractArtifact';
+import { YamlArtifactParsingResult } from '../../../model/cedar/util/compare/YamlArtifactParsingResult';
 
-export abstract class JsonArtifactReaderResult {
+export abstract class YamlArtifactReaderResult {
   protected readonly _artifact: AbstractArtifact;
-  private readonly _parsingResult: JsonArtifactParsingResult;
+  private readonly _parsingResult: YamlArtifactParsingResult;
   protected readonly _artifactSourceObject: JsonNode;
 
-  constructor(artifact: AbstractArtifact, parsingResult: JsonArtifactParsingResult, artifactSourceObject: JsonNode) {
+  constructor(artifact: AbstractArtifact, parsingResult: YamlArtifactParsingResult, artifactSourceObject: JsonNode) {
     this._artifact = artifact;
     this._parsingResult = parsingResult;
     this._artifactSourceObject = artifactSourceObject;
@@ -17,7 +17,7 @@ export abstract class JsonArtifactReaderResult {
     return this._artifact;
   }
 
-  get parsingResult(): JsonArtifactParsingResult {
+  get parsingResult(): YamlArtifactParsingResult {
     return this._parsingResult;
   }
 

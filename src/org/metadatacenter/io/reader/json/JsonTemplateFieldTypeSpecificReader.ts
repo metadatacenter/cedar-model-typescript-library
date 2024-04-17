@@ -1,5 +1,5 @@
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
-import { ParsingResult } from '../../../model/cedar/util/compare/ParsingResult';
+import { JsonArtifactParsingResult } from '../../../model/cedar/util/compare/JsonArtifactParsingResult';
 import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
 import { TemplateField } from '../../../model/cedar/field/TemplateField';
 import { UnknownTemplateField } from '../../../model/cedar/field/UnknownTemplateField';
@@ -12,7 +12,7 @@ export abstract class JsonTemplateFieldTypeSpecificReader {
   public read(
     _fieldSourceObject: JsonNode,
     _childInfo: AbstractChildDeploymentInfo,
-    _parsingResult: ParsingResult,
+    _parsingResult: JsonArtifactParsingResult,
     _path: JsonPath,
   ): TemplateField {
     return UnknownTemplateField.build();

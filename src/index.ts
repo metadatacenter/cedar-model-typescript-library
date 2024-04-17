@@ -128,6 +128,11 @@ import { AbstractChildDeploymentInfo } from './org/metadatacenter/model/cedar/de
 import { AbstractChildDeploymentInfoBuilder } from './org/metadatacenter/model/cedar/deployment/AbstractChildDeploymentInfoBuilder';
 import { AbstractDynamicChildDeploymentInfoBuilder } from './org/metadatacenter/model/cedar/deployment/AbstractDynamicChildDeploymentInfoBuilder';
 import { AbstractDynamicChildDeploymentInfo } from './org/metadatacenter/model/cedar/deployment/AbstractDynamicChildDeploymentInfo';
+import { JsonArtifactParsingResult } from './org/metadatacenter/model/cedar/util/compare/JsonArtifactParsingResult';
+import { YamlArtifactParsingResult } from './org/metadatacenter/model/cedar/util/compare/YamlArtifactParsingResult';
+import { ComparisonResult } from './org/metadatacenter/model/cedar/util/compare/ComparisonResult';
+import { YamlObjectComparator } from './org/metadatacenter/model/cedar/util/compare/YamlObjectComparator';
+import { JsonObjectComparator } from './org/metadatacenter/model/cedar/util/compare/JsonObjectComparator';
 // It is needed, do not remove, even if it looks unused
 export { JsonTemplateFieldWriterInternal as JsonTemplateFieldWriter };
 export { YamlTemplateFieldWriterInternal as YamlTemplateFieldWriter };
@@ -228,3 +233,11 @@ export { JsonTemplateReaderResult };
 export { JsonTemplateInstanceReaderResult };
 export { JsonArtifactReaderResult };
 export { TemplateChild };
+
+export { JsonArtifactParsingResult };
+export { YamlArtifactParsingResult };
+
+export { ComparisonResult };
+
+export { JsonObjectComparator };
+export { YamlObjectComparator };

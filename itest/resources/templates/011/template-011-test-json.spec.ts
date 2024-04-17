@@ -6,7 +6,7 @@ import {
   JsonTemplateWriter,
   RoundTrip,
 } from '../../../../src';
-import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
+import { JsonArtifactParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/JsonArtifactParsingResult';
 import { TestUtil } from '../../../TestUtil';
 import { TestResource } from '../../../TestResource';
 
@@ -18,13 +18,13 @@ describe('JSONTemplateReader' + testResource.toString(), () => {
     const reader: JsonTemplateReader = JsonTemplateReader.getStrict();
     const jsonTemplateReaderResult: JsonTemplateReaderResult = reader.readFromString(artifactSource);
     expect(jsonTemplateReaderResult).not.toBeNull();
-    const parsingResult: ParsingResult = jsonTemplateReaderResult.parsingResult;
+    const parsingResult: JsonArtifactParsingResult = jsonTemplateReaderResult.parsingResult;
     expect(parsingResult.wasSuccessful()).toBe(true);
 
     const writers: CedarJsonWriters = CedarWriters.json().getStrict();
     const writer: JsonTemplateWriter = writers.getTemplateWriter();
 
-    const compareResult: ParsingResult = RoundTrip.compare(jsonTemplateReaderResult, writer);
+    const compareResult: JsonArtifactParsingResult = RoundTrip.compare(jsonTemplateReaderResult, writer);
 
     // TestUtil.p(compareResult);
     // TestUtil.p(jsonTemplateReaderResult.template.asCedarTemplateJSONObject());

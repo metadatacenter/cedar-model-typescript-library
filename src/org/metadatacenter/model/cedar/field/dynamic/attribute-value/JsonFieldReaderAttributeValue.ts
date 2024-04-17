@@ -1,5 +1,5 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
-import { ParsingResult } from '../../../util/compare/ParsingResult';
+import { JsonArtifactParsingResult } from '../../../util/compare/JsonArtifactParsingResult';
 import { JsonPath } from '../../../util/path/JsonPath';
 import { AttributeValueField } from './AttributeValueField';
 import { JsonTemplateFieldTypeSpecificReader } from '../../../../../io/reader/json/JsonTemplateFieldTypeSpecificReader';
@@ -10,7 +10,7 @@ export class JsonFieldReaderAttributeValue extends JsonTemplateFieldTypeSpecific
   override read(
     fieldSourceObject: JsonNode,
     childInfo: ChildDeploymentInfo,
-    _parsingResult: ParsingResult,
+    _parsingResult: JsonArtifactParsingResult,
     _path: JsonPath,
   ): AttributeValueField {
     const field = AttributeValueFieldImpl.buildEmpty();

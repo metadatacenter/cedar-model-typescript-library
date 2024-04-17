@@ -1,5 +1,5 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
-import { ParsingResult } from '../../../util/compare/ParsingResult';
+import { JsonArtifactParsingResult } from '../../../util/compare/JsonArtifactParsingResult';
 import { JsonPath } from '../../../util/path/JsonPath';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { CedarModel } from '../../../constants/CedarModel';
@@ -9,7 +9,7 @@ import { BooleanField } from './BooleanField';
 import { BooleanFieldImpl } from './BooleanFieldImpl';
 
 export class JsonFieldReaderBoolean extends JsonTemplateFieldTypeSpecificReader {
-  override read(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, _parsingResult: ParsingResult, _path: JsonPath): BooleanField {
+  override read(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, _parsingResult: JsonArtifactParsingResult, _path: JsonPath): BooleanField {
     const field = BooleanFieldImpl.buildEmpty();
     this.readRequiredAndHidden(fieldSourceObject, childInfo);
 

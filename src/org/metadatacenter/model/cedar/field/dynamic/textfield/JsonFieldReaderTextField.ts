@@ -1,5 +1,5 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
-import { ParsingResult } from '../../../util/compare/ParsingResult';
+import { JsonArtifactParsingResult } from '../../../util/compare/JsonArtifactParsingResult';
 import { JsonPath } from '../../../util/path/JsonPath';
 import { TextField } from './TextField';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
@@ -9,7 +9,7 @@ import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { TextFieldImpl } from './TextFieldImpl';
 
 export class JsonFieldReaderTextField extends JsonTemplateFieldTypeSpecificReader {
-  override read(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, _parsingResult: ParsingResult, _path: JsonPath): TextField {
+  override read(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, _parsingResult: JsonArtifactParsingResult, _path: JsonPath): TextField {
     const field = TextFieldImpl.buildEmpty();
     this.readRequiredAndHidden(fieldSourceObject, childInfo);
 

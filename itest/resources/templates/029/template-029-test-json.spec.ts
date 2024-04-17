@@ -1,5 +1,5 @@
 import { CedarJsonWriters, CedarWriters, JsonTemplateReader, JsonTemplateWriter, RoundTrip } from '../../../../src';
-import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
+import { JsonArtifactParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/JsonArtifactParsingResult';
 import { TestUtil } from '../../../TestUtil';
 import { TestResource } from '../../../TestResource';
 
@@ -22,7 +22,7 @@ describe('JSONTemplateReader' + testResource.toString(), () => {
 
     // console.log(jsonTemplateReaderResult.templateSourceObject);
 
-    const compareResult: ParsingResult = RoundTrip.compare(jsonTemplateReaderResult, writer);
+    const compareResult: JsonArtifactParsingResult = RoundTrip.compare(jsonTemplateReaderResult, writer);
 
     // TestUtil.p(compareResult.getBlueprintComparisonErrors());
     // TestUtil.p(writer.getAsJsonNode(jsonTemplateReaderResult.template));

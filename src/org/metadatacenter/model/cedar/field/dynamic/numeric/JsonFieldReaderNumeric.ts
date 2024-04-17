@@ -1,5 +1,5 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
-import { ParsingResult } from '../../../util/compare/ParsingResult';
+import { JsonArtifactParsingResult } from '../../../util/compare/JsonArtifactParsingResult';
 import { JsonPath } from '../../../util/path/JsonPath';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { CedarModel } from '../../../constants/CedarModel';
@@ -10,7 +10,7 @@ import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { NumericFieldImpl } from './NumericFieldImpl';
 
 export class JsonFieldReaderNumeric extends JsonTemplateFieldTypeSpecificReader {
-  override read(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, _parsingResult: ParsingResult, _path: JsonPath): NumericField {
+  override read(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, _parsingResult: JsonArtifactParsingResult, _path: JsonPath): NumericField {
     const field = NumericFieldImpl.buildEmpty();
     this.readRequiredAndHidden(fieldSourceObject, childInfo);
 

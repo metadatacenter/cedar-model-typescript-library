@@ -8,7 +8,7 @@ import { TemplateProperty } from '../../../model/cedar/constants/TemplatePropert
 import { SchemaVersion } from '../../../model/cedar/types/wrapped-types/SchemaVersion';
 import { PavVersion } from '../../../model/cedar/types/wrapped-types/PavVersion';
 import { BiboStatus } from '../../../model/cedar/types/wrapped-types/BiboStatus';
-import { ParsingResult } from '../../../model/cedar/util/compare/ParsingResult';
+import { JsonArtifactParsingResult } from '../../../model/cedar/util/compare/JsonArtifactParsingResult';
 import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
 import { Annotations } from '../../../model/cedar/annotation/Annotations';
 import { CedarModel } from '../../../model/cedar/constants/CedarModel';
@@ -38,7 +38,7 @@ export abstract class JsonAbstractSchemaArtifactReader extends JsonAbstractArtif
   protected readAnnotations(
     artifact: AbstractSchemaArtifact,
     artifactSourceObject: JsonNode,
-    _parsingResult: ParsingResult,
+    _parsingResult: JsonArtifactParsingResult,
     _topPath: JsonPath,
   ) {
     const annotations = new Annotations();

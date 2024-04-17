@@ -1,5 +1,4 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
-import { ParsingResult } from '../../../util/compare/ParsingResult';
 import { JsonPath } from '../../../util/path/JsonPath';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
@@ -7,12 +6,13 @@ import { YamlTemplateFieldTypeSpecificReader } from '../../../../../io/reader/ya
 import { YamlKeys } from '../../../constants/YamlKeys';
 import { BooleanField } from './BooleanField';
 import { BooleanFieldImpl } from './BooleanFieldImpl';
+import { YamlArtifactParsingResult } from '../../../util/compare/YamlArtifactParsingResult';
 
 export class YamlFieldReaderBoolean extends YamlTemplateFieldTypeSpecificReader {
   override read(
     fieldSourceObject: JsonNode,
     _childInfo: ChildDeploymentInfo,
-    _parsingResult: ParsingResult,
+    _parsingResult: YamlArtifactParsingResult,
     _path: JsonPath,
   ): BooleanField {
     const field = BooleanFieldImpl.buildEmpty();

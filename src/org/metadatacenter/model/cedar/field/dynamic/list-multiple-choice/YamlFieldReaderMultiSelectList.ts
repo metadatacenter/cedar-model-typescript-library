@@ -1,16 +1,16 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
-import { ParsingResult } from '../../../util/compare/ParsingResult';
 import { JsonPath } from '../../../util/path/JsonPath';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { YamlTemplateFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YamlTemplateFieldTypeSpecificReader';
-import { MultipleChoiceListField } from '../list-multiple-choice/MultipleChoiceListField';
-import { MultipleChoiceListFieldImpl } from '../list-multiple-choice/MultipleChoiceListFieldImpl';
+import { MultipleChoiceListField } from './MultipleChoiceListField';
+import { MultipleChoiceListFieldImpl } from './MultipleChoiceListFieldImpl';
+import { YamlArtifactParsingResult } from '../../../util/compare/YamlArtifactParsingResult';
 
 export class YamlFieldReaderMultiSelectList extends YamlTemplateFieldTypeSpecificReader {
   override read(
     fieldSourceObject: JsonNode,
     _childInfo: ChildDeploymentInfo,
-    _parsingResult: ParsingResult,
+    _parsingResult: YamlArtifactParsingResult,
     _path: JsonPath,
   ): MultipleChoiceListField {
     const field = MultipleChoiceListFieldImpl.buildEmpty();

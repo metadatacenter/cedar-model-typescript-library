@@ -1,5 +1,5 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
-import { ParsingResult } from '../../../util/compare/ParsingResult';
+import { JsonArtifactParsingResult } from '../../../util/compare/JsonArtifactParsingResult';
 import { JsonPath } from '../../../util/path/JsonPath';
 import { ControlledTermField } from './ControlledTermField';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
@@ -20,7 +20,7 @@ export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecific
   override read(
     fieldSourceObject: JsonNode,
     childInfo: ChildDeploymentInfo,
-    _parsingResult: ParsingResult,
+    _parsingResult: JsonArtifactParsingResult,
     _path: JsonPath,
   ): ControlledTermField {
     const field = ControlledTermFieldImpl.buildEmpty();

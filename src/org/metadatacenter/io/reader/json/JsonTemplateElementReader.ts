@@ -4,8 +4,8 @@ import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarA
 import { TemplateProperty } from '../../../model/cedar/constants/TemplateProperty';
 import { ReaderUtil } from '../ReaderUtil';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
-import { ObjectComparator } from '../../../model/cedar/util/compare/ObjectComparator';
-import { ParsingResult } from '../../../model/cedar/util/compare/ParsingResult';
+import { JsonObjectComparator } from '../../../model/cedar/util/compare/JsonObjectComparator';
+import { JsonArtifactParsingResult } from '../../../model/cedar/util/compare/JsonArtifactParsingResult';
 import { ContainerArtifactChildrenInfo } from '../../../model/cedar/deployment/ContainerArtifactChildrenInfo';
 import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
 import { JsonReaderBehavior } from '../../../behavior/JsonReaderBehavior';
@@ -60,7 +60,7 @@ export class JsonTemplateElementReader extends JsonContainerArtifactReader {
     _childInfo: AbstractChildDeploymentInfo,
     topPath: JsonPath,
   ): JsonTemplateElementReaderResult {
-    const parsingResult: ParsingResult = new ParsingResult();
+    const parsingResult: JsonArtifactParsingResult = new JsonArtifactParsingResult();
     const element = TemplateElement.buildEmptyWithNullValues();
 
     this.readNonReportableAttributes(element, elementSourceObject);
@@ -78,7 +78,7 @@ export class JsonTemplateElementReader extends JsonContainerArtifactReader {
   private readAndValidateChildrenInfo(
     element: TemplateElement,
     elementSourceObject: JsonNode,
-    parsingResult: ParsingResult,
+    parsingResult: JsonArtifactParsingResult,
     path: JsonPath,
   ) {
     const elementRequired: Array<string> = ReaderUtil.getStringList(elementSourceObject, JsonSchema.required);
@@ -126,7 +126,7 @@ export class JsonTemplateElementReader extends JsonContainerArtifactReader {
     childrenInfo: ContainerArtifactChildrenInfo,
     elementProperties: JsonNode,
     _element: TemplateElement,
-    parsingResult: ParsingResult,
+    parsingResult: JsonArtifactParsingResult,
     path: JsonPath,
   ) {
     // Validate properties
@@ -150,6 +150,6 @@ export class JsonTemplateElementReader extends JsonContainerArtifactReader {
     if (pCRequired != null && pCRequired.length == 0) {
       ReaderUtil.deleteNodeKey(atContext, JsonSchema.required);
     }
-    ObjectComparator.compareToLeft(parsingResult, blueprint, elementProperties, path.add(JsonSchema.properties));
+    JsonObjectComparator.compareToLeft(parsingResult, blueprint, elementProperties, path.add(JsonSchema.properties));
   }
 }

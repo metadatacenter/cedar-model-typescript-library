@@ -1,6 +1,6 @@
 import { ComparisonError } from './ComparisonError';
 
-export class ParsingResult {
+export class JsonArtifactParsingResult {
   private blueprintComparisonErrors: Array<ComparisonError> = [];
   private blueprintComparisonWarnings: Array<ComparisonError> = [];
 
@@ -36,7 +36,7 @@ export class ParsingResult {
     return this.blueprintComparisonErrors.length === 0;
   }
 
-  merge(otherResult: ParsingResult) {
+  merge(otherResult: JsonArtifactParsingResult) {
     this.blueprintComparisonErrors.push(...otherResult.blueprintComparisonErrors);
     this.blueprintComparisonWarnings.push(...otherResult.blueprintComparisonWarnings);
   }

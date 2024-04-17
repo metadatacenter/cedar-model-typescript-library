@@ -2,7 +2,6 @@ import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
 import { ReaderUtil } from '../ReaderUtil';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
-import { ParsingResult } from '../../../model/cedar/util/compare/ParsingResult';
 import { YamlTemplateReaderResult } from './YamlTemplateReaderResult';
 import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
 import { YamlReaderBehavior } from '../../../behavior/YamlReaderBehavior';
@@ -11,6 +10,7 @@ import { Template } from '../../../model/cedar/template/Template';
 import YAML from 'yaml';
 import { YamlContainerArtifactReader } from './YamlContainerArtifactReader';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
+import { YamlArtifactParsingResult } from '../../../model/cedar/util/compare/YamlArtifactParsingResult';
 
 export class YamlTemplateReader extends YamlContainerArtifactReader {
   private readonly elementReader: YamlTemplateElementReader;
@@ -44,7 +44,7 @@ export class YamlTemplateReader extends YamlContainerArtifactReader {
   }
 
   public readFromObject(templateSourceObject: JsonNode, topPath: JsonPath = new JsonPath()): YamlTemplateReaderResult {
-    const parsingResult: ParsingResult = new ParsingResult();
+    const parsingResult: YamlArtifactParsingResult = new YamlArtifactParsingResult();
     const template = Template.buildEmptyWithNullValues();
 
     this.readNonReportableAttributes(template, templateSourceObject);
@@ -62,7 +62,7 @@ export class YamlTemplateReader extends YamlContainerArtifactReader {
     template.footer = ReaderUtil.getString(templateSourceObject, YamlKeys.footer);
   }
 
-  private readInstanceTypeSpecification(template: Template, templateSourceObject: JsonNode, _parsingResult: ParsingResult) {
+  private readInstanceTypeSpecification(template: Template, templateSourceObject: JsonNode, _parsingResult: YamlArtifactParsingResult) {
     const properties: JsonNode = ReaderUtil.getNode(templateSourceObject, JsonSchema.properties);
     if (properties !== null) {
       const atType: JsonNode = ReaderUtil.getNode(properties, JsonSchema.atType);

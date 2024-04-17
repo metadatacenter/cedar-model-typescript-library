@@ -1,5 +1,4 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
-import { ParsingResult } from '../../../util/compare/ParsingResult';
 import { JsonPath } from '../../../util/path/JsonPath';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { TemporalField } from './TemporalField';
@@ -10,12 +9,13 @@ import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { YamlTemplateFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YamlTemplateFieldTypeSpecificReader';
 import { YamlKeys } from '../../../constants/YamlKeys';
 import { TemporalFieldImpl } from './TemporalFieldImpl';
+import { YamlArtifactParsingResult } from '../../../util/compare/YamlArtifactParsingResult';
 
 export class YamlFieldReaderTemporal extends YamlTemplateFieldTypeSpecificReader {
   override read(
     fieldSourceObject: JsonNode,
     _childInfo: ChildDeploymentInfo,
-    _parsingResult: ParsingResult,
+    _parsingResult: YamlArtifactParsingResult,
     _path: JsonPath,
   ): TemporalField {
     const field = TemporalFieldImpl.buildEmpty();

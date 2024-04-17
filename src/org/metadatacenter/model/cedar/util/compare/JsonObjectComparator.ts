@@ -1,4 +1,4 @@
-import { ParsingResult } from './ParsingResult';
+import { JsonArtifactParsingResult } from './JsonArtifactParsingResult';
 import { ComparisonError } from './ComparisonError';
 import { Primitive } from '../../types/basic-types/Primitive';
 import { JsonPath } from '../path/JsonPath';
@@ -8,9 +8,9 @@ import { CedarModel } from '../../constants/CedarModel';
 import { ReaderWriterBehavior } from '../../../../behavior/ReaderWriterBehavior';
 import { ComparableObject } from './ComparableObject';
 
-export class ObjectComparator {
+export class JsonObjectComparator {
   static compareBothWays(
-    comparisonResult: ParsingResult,
+    comparisonResult: JsonArtifactParsingResult,
     blueprintObject: ComparableObject,
     realObject: ComparableObject,
     path: JsonPath,
@@ -115,7 +115,7 @@ export class ObjectComparator {
   }
 
   static compareToLeft(
-    comparisonResult: ParsingResult,
+    comparisonResult: JsonArtifactParsingResult,
     blueprintObject: ComparableObject,
     realObject: ComparableObject,
     path: JsonPath,
@@ -176,7 +176,12 @@ export class ObjectComparator {
     recurse(path, blueprintObject, realObject);
   }
 
-  static comparePrimitive(comparisonResult: ParsingResult, blue: Primitive, actual: Primitive, path: JsonPath): ParsingResult {
+  static comparePrimitive(
+    comparisonResult: JsonArtifactParsingResult,
+    blue: Primitive,
+    actual: Primitive,
+    path: JsonPath,
+  ): JsonArtifactParsingResult {
     if (blue !== actual) {
       comparisonResult.addBlueprintComparisonError(new ComparisonError('opp1', ComparisonErrorType.VALUE_MISMATCH, path, blue, actual));
     }

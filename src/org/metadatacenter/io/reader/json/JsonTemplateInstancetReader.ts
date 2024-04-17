@@ -1,6 +1,6 @@
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
-import { ParsingResult } from '../../../model/cedar/util/compare/ParsingResult';
+import { JsonArtifactParsingResult } from '../../../model/cedar/util/compare/JsonArtifactParsingResult';
 import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
 import { JsonReaderBehavior } from '../../../behavior/JsonReaderBehavior';
 import { JsonAbstractInstanceArtifactReader } from './JsonAbstractInstanceArtifactReader';
@@ -37,7 +37,7 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
   }
 
   public readFromObject(instanceSourceObject: JsonNode, _topPath: JsonPath): JsonTemplateInstanceReaderResult {
-    const parsingResult: ParsingResult = new ParsingResult();
+    const parsingResult: JsonArtifactParsingResult = new JsonArtifactParsingResult();
     const instance = TemplateInstance.buildEmptyWithNullValues();
 
     this.readNonReportableAttributes(instance, instanceSourceObject);

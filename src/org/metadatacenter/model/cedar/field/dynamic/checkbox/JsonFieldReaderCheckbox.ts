@@ -1,5 +1,5 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
-import { ParsingResult } from '../../../util/compare/ParsingResult';
+import { JsonArtifactParsingResult } from '../../../util/compare/JsonArtifactParsingResult';
 import { JsonPath } from '../../../util/path/JsonPath';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { CedarModel } from '../../../constants/CedarModel';
@@ -13,7 +13,7 @@ export class JsonFieldReaderCheckbox extends JsonTemplateFieldTypeSpecificReader
   override read(
     fieldSourceObject: JsonNode,
     childInfo: ChildDeploymentInfo,
-    _parsingResult: ParsingResult,
+    _parsingResult: JsonArtifactParsingResult,
     _path: JsonPath,
   ): CheckboxField {
     const field = CheckboxFieldImpl.buildEmpty();

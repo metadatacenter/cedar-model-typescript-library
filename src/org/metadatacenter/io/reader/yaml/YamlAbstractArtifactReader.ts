@@ -7,7 +7,6 @@ import { SchemaVersion } from '../../../model/cedar/types/wrapped-types/SchemaVe
 import { PavVersion } from '../../../model/cedar/types/wrapped-types/PavVersion';
 import { BiboStatus } from '../../../model/cedar/types/wrapped-types/BiboStatus';
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
-import { ParsingResult } from '../../../model/cedar/util/compare/ParsingResult';
 import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
 import { Annotations } from '../../../model/cedar/annotation/Annotations';
 import { AnnotationAtId } from '../../../model/cedar/annotation/AnnotationAtId';
@@ -16,6 +15,7 @@ import { YamlReaderBehavior } from '../../../behavior/YamlReaderBehavior';
 import { ReaderUtil } from '../ReaderUtil';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 import { YamlValues } from '../../../model/cedar/constants/YamlValues';
+import { YamlArtifactParsingResult } from '../../../model/cedar/util/compare/YamlArtifactParsingResult';
 
 export abstract class YamlAbstractArtifactReader {
   protected behavior: YamlReaderBehavior;
@@ -47,7 +47,7 @@ export abstract class YamlAbstractArtifactReader {
   protected readAnnotations(
     artifact: AbstractSchemaArtifact,
     artifactSourceObject: JsonNode,
-    _parsingResult: ParsingResult,
+    _parsingResult: YamlArtifactParsingResult,
     _topPath: JsonPath,
   ) {
     const annotations = new Annotations();

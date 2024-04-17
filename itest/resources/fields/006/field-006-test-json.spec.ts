@@ -1,6 +1,5 @@
-import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
+import { CedarJsonWriters, CedarWriters, JsonArtifactParsingResult, JsonTemplateFieldReader, RoundTrip } from '../../../../src';
 import { TestUtil } from '../../../TestUtil';
-import { CedarJsonWriters, CedarWriters, JsonTemplateFieldReader, RoundTrip } from '../../../../src';
 import { TestResource } from '../../../TestResource';
 
 const testResource: TestResource = TestResource.field(6);
@@ -17,7 +16,7 @@ describe('JSONFieldReader' + testResource.toString(), () => {
     const writers: CedarJsonWriters = CedarWriters.json().getStrict();
     const writer = writers.getFieldWriterForField(jsonFieldReaderResult.field);
 
-    const compareResult: ParsingResult = RoundTrip.compare(jsonFieldReaderResult, writer);
+    const compareResult: JsonArtifactParsingResult = RoundTrip.compare(jsonFieldReaderResult, writer);
 
     // TestUtil.p(compareResult);
     // TestUtil.p(writer.getAsJsonNode(jsonFieldReaderResult.field));

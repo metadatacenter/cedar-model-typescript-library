@@ -1,6 +1,5 @@
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
-import { ParsingResult } from '../../../model/cedar/util/compare/ParsingResult';
 import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
 import { YamlReaderBehavior } from '../../../behavior/YamlReaderBehavior';
 import { TemplateElement } from '../../../model/cedar/element/TemplateElement';
@@ -8,6 +7,7 @@ import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploy
 import YAML from 'yaml';
 import { YamlContainerArtifactReader } from './YamlContainerArtifactReader';
 import { YamlTemplateElementReaderResult } from './YamlTemplateElementReaderResult';
+import { YamlArtifactParsingResult } from '../../../model/cedar/util/compare/YamlArtifactParsingResult';
 
 export class YamlTemplateElementReader extends YamlContainerArtifactReader {
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.TEMPLATE_ELEMENT;
@@ -43,7 +43,7 @@ export class YamlTemplateElementReader extends YamlContainerArtifactReader {
     _childInfo: ChildDeploymentInfo,
     topPath: JsonPath,
   ): YamlTemplateElementReaderResult {
-    const parsingResult: ParsingResult = new ParsingResult();
+    const parsingResult: YamlArtifactParsingResult = new YamlArtifactParsingResult();
     const element = TemplateElement.buildEmptyWithNullValues();
 
     this.readNonReportableAttributes(element, elementSourceObject);

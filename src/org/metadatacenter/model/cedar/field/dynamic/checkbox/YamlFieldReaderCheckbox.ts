@@ -1,5 +1,4 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
-import { ParsingResult } from '../../../util/compare/ParsingResult';
 import { JsonPath } from '../../../util/path/JsonPath';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { CheckboxField } from './CheckboxField';
@@ -8,12 +7,13 @@ import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { YamlTemplateFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YamlTemplateFieldTypeSpecificReader';
 import { YamlKeys } from '../../../constants/YamlKeys';
 import { CheckboxFieldImpl } from './CheckboxFieldImpl';
+import { YamlArtifactParsingResult } from '../../../util/compare/YamlArtifactParsingResult';
 
 export class YamlFieldReaderCheckbox extends YamlTemplateFieldTypeSpecificReader {
   override read(
     fieldSourceObject: JsonNode,
     _childInfo: ChildDeploymentInfo,
-    _parsingResult: ParsingResult,
+    _parsingResult: YamlArtifactParsingResult,
     _path: JsonPath,
   ): CheckboxField {
     const field = CheckboxFieldImpl.buildEmpty();

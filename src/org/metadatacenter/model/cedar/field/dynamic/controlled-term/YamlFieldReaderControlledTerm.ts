@@ -1,5 +1,4 @@
 import { JsonNode } from '../../../types/basic-types/JsonNode';
-import { ParsingResult } from '../../../util/compare/ParsingResult';
 import { JsonPath } from '../../../util/path/JsonPath';
 import { ControlledTermField } from './ControlledTermField';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
@@ -22,12 +21,13 @@ import { ControlledTermBranchBuilder } from './value-constraint/branch/Controlle
 import { ControlledTermValueSetBuilder } from './value-constraint/value-set/ControlledTermValueSetBuilder';
 import { ControlledTermActionBuilder } from './value-constraint/action/ControlledTermActionBuilder';
 import { ControlledTermFieldImpl } from './ControlledTermFieldImpl';
+import { YamlArtifactParsingResult } from '../../../util/compare/YamlArtifactParsingResult';
 
 export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecificReader {
   override read(
     fieldSourceObject: JsonNode,
     _childInfo: ChildDeploymentInfo,
-    _parsingResult: ParsingResult,
+    _parsingResult: YamlArtifactParsingResult,
     _path: JsonPath,
   ): ControlledTermField {
     const field = ControlledTermFieldImpl.buildEmpty();

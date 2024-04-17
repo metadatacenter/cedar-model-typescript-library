@@ -2,7 +2,7 @@ import { JsonReaderBehavior } from '../../../behavior/JsonReaderBehavior';
 import { JsonAbstractSchemaArtifactReader } from './JsonAbstractSchemaArtifactReader';
 import { JsonTemplateFieldReader } from './JsonTemplateFieldReader';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
-import { ParsingResult } from '../../../model/cedar/util/compare/ParsingResult';
+import { JsonArtifactParsingResult } from '../../../model/cedar/util/compare/JsonArtifactParsingResult';
 import { ContainerArtifactChildrenInfo } from '../../../model/cedar/deployment/ContainerArtifactChildrenInfo';
 import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
 import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
@@ -13,7 +13,7 @@ import { CedarModel } from '../../../model/cedar/constants/CedarModel';
 import { UiInputType } from '../../../model/cedar/types/wrapped-types/UiInputType';
 import { ComparisonError } from '../../../model/cedar/util/compare/ComparisonError';
 import { ComparisonErrorType } from '../../../model/cedar/util/compare/ComparisonErrorType';
-import { ObjectComparator } from '../../../model/cedar/util/compare/ObjectComparator';
+import { JsonObjectComparator } from '../../../model/cedar/util/compare/JsonObjectComparator';
 import { JavascriptType } from '../../../model/cedar/types/wrapped-types/JavascriptType';
 import { ArtifactSchema } from '../../../model/cedar/types/wrapped-types/ArtifactSchema';
 import { AbstractContainerArtifact } from '../../../model/cedar/AbstractContainerArtifact';
@@ -40,7 +40,7 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
   protected readAndStoreCandidateChildInfo(
     childDefinitionNode: JsonNode,
     childCandidateName: string,
-    parsingResult: ParsingResult,
+    parsingResult: JsonArtifactParsingResult,
     candidateChildrenInfo: ContainerArtifactChildrenInfo,
     path: JsonPath,
   ): ChildDeploymentInfo | null {
@@ -63,11 +63,11 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
   protected readReportableAttributes(
     container: AbstractContainerArtifact,
     elementSourceObject: JsonNode,
-    parsingResult: ParsingResult,
+    parsingResult: JsonArtifactParsingResult,
     path: JsonPath,
   ) {
     // Read and validate, but do not store top level @type
-    ObjectComparator.comparePrimitive(
+    JsonObjectComparator.comparePrimitive(
       parsingResult,
       this.knownArtifactType.getValue(),
       ReaderUtil.getString(elementSourceObject, JsonSchema.atType),
@@ -79,10 +79,10 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
 
     const blueprintAtContext: JsonNode = JsonContainerArtifactContent.CONTEXT_VERBATIM;
 
-    ObjectComparator.compareBothWays(parsingResult, blueprintAtContext, topContextNode, path.add(JsonSchema.atContext), this.behavior);
+    JsonObjectComparator.compareBothWays(parsingResult, blueprintAtContext, topContextNode, path.add(JsonSchema.atContext), this.behavior);
 
     // Read and validate, but do not store top level type
-    ObjectComparator.comparePrimitive(
+    JsonObjectComparator.comparePrimitive(
       parsingResult,
       JavascriptType.OBJECT.getValue(),
       ReaderUtil.getString(elementSourceObject, CedarModel.type),
@@ -99,7 +99,7 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
     // );
 
     // Read and validate, but do not store top level $schema
-    ObjectComparator.comparePrimitive(
+    JsonObjectComparator.comparePrimitive(
       parsingResult,
       ArtifactSchema.CURRENT.getValue(),
       ReaderUtil.getString(elementSourceObject, CedarModel.schema),
@@ -111,7 +111,7 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
     finalChildrenInfo: ContainerArtifactChildrenInfo,
     containerProperties: JsonNode,
     container: AbstractContainerArtifact,
-    parsingResult: ParsingResult,
+    parsingResult: JsonArtifactParsingResult,
     path: JsonPath,
   ) {
     // Parse children
@@ -168,7 +168,7 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
   protected validatePropertiesVsOrder(
     candidateChildrenInfo: ContainerArtifactChildrenInfo,
     containerUIOrder: string[],
-    parsingResult: ParsingResult,
+    parsingResult: JsonArtifactParsingResult,
     path: JsonPath,
   ) {
     // Children present in the 'properties' but not in the 'order' will also result in error
@@ -190,7 +190,7 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
   protected finalizeChildInfo(
     elementUIOrder: string[],
     candidateChildrenInfo: ContainerArtifactChildrenInfo,
-    parsingResult: ParsingResult,
+    parsingResult: JsonArtifactParsingResult,
     path: JsonPath,
   ): ContainerArtifactChildrenInfo {
     // Generate final child info, based on the order and content of _ui/order. Disregard candidates not present in _ui/order with an error
@@ -217,7 +217,7 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
   protected getCandidateChildrenInfo(
     containerProperties: JsonNode,
     partialKeyMap: Map<string, boolean>,
-    parsingResult: ParsingResult,
+    parsingResult: JsonArtifactParsingResult,
     path: JsonPath,
   ): ContainerArtifactChildrenInfo {
     // Generate the candidate children names list based on the unknown keys of "properties"
@@ -265,7 +265,7 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
   protected generateAndValidateRequiredMap(
     elementRequired: Array<string>,
     requiredPartial: Array<string>,
-    parsingResult: ParsingResult,
+    parsingResult: JsonArtifactParsingResult,
     path: JsonPath,
   ): Map<string, boolean> {
     // Generate a map of the "required" list for caching reasons
@@ -290,7 +290,7 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
     elementRequiredMap: Map<string, boolean>,
     elementRequired: Array<string>,
     requiredPartialKeyMap: Map<string, boolean>,
-    parsingResult: ParsingResult,
+    parsingResult: JsonArtifactParsingResult,
     path: JsonPath,
   ) {
     // Check if all candidate children are present in the "required". Static fields don't need to be there
@@ -316,7 +316,7 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
   protected extractUIPreferredLabelsAndDescriptions(
     containerUI: JsonNode,
     candidateChildrenInfo: ContainerArtifactChildrenInfo,
-    parsingResult: ParsingResult,
+    parsingResult: JsonArtifactParsingResult,
     path: JsonPath,
   ) {
     // Extract _ui/propertyLabels
@@ -357,7 +357,7 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
   protected extractIRIMappings(
     elementProperties: JsonNode,
     candidateChildrenInfo: ContainerArtifactChildrenInfo,
-    parsingResult: ParsingResult,
+    parsingResult: JsonArtifactParsingResult,
     path: JsonPath,
   ) {
     // Get the IRI mappings

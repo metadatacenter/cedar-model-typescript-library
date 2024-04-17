@@ -3,6 +3,7 @@ import {
   CedarJsonWriters,
   CedarWriters,
   CedarYamlWriters,
+  ComparisonResult,
   EmailField,
   EmailFieldBuilder,
   IsoDate,
@@ -11,7 +12,6 @@ import {
   YamlTemplateFieldReader,
 } from '../../../../../src';
 import { YamlObjectComparator } from '../../../../../src/org/metadatacenter/model/cedar/util/compare/YamlObjectComparator';
-import { ComparisonResult } from '../../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonResult';
 
 describe('YAMLFieldReader', () => {
   test('reads field built with a builder', () => {

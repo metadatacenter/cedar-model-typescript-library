@@ -1,5 +1,4 @@
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
-import { ParsingResult } from '../../../model/cedar/util/compare/ParsingResult';
 import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
 import { TemplateField } from '../../../model/cedar/field/TemplateField';
 import { ReaderUtil } from '../ReaderUtil';
@@ -30,11 +29,12 @@ import { YamlFieldReaderRichText } from '../../../model/cedar/field/static/rich-
 import { YamlFieldReaderYoutube } from '../../../model/cedar/field/static/youtube/YamlFieldReaderYoutube';
 import { YamlFieldReaderPhoneNumber } from '../../../model/cedar/field/dynamic/phone-number/YamlFieldReaderPhoneNumber';
 import { YamlFieldReaderCheckbox } from '../../../model/cedar/field/dynamic/checkbox/YamlFieldReaderCheckbox';
-import { YamlFieldReaderSingleSelectList } from '../../../model/cedar/field/dynamic/list/YamlFieldReaderSingleSelectList';
-import { YamlFieldReaderMultiSelectList } from '../../../model/cedar/field/dynamic/list/YamlFieldReaderMultiSelectList';
+import { YamlFieldReaderSingleSelectList } from '../../../model/cedar/field/dynamic/list-single-choice/YamlFieldReaderSingleSelectList';
+import { YamlFieldReaderMultiSelectList } from '../../../model/cedar/field/dynamic/list-multiple-choice/YamlFieldReaderMultiSelectList';
 import { YamlFieldReaderRadio } from '../../../model/cedar/field/dynamic/radio/YamlFieldReaderRadio';
 import { YamlFieldReaderControlledTerm } from '../../../model/cedar/field/dynamic/controlled-term/YamlFieldReaderControlledTerm';
 import { YamlFieldReaderBoolean } from '../../../model/cedar/field/dynamic/boolean/YamlFieldReaderBoolean';
+import { YamlArtifactParsingResult } from '../../../model/cedar/util/compare/YamlArtifactParsingResult';
 
 export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
   private constructor(behavior: YamlReaderBehavior) {
@@ -82,7 +82,7 @@ export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
   }
 
   public readFromObject(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, path: JsonPath): YamlTemplateFieldReaderResult {
-    const parsingResult: ParsingResult = new ParsingResult();
+    const parsingResult: YamlArtifactParsingResult = new YamlArtifactParsingResult();
     const field: TemplateField = YamlTemplateFieldReader.readFieldSpecificAttributes(fieldSourceObject, childInfo, parsingResult, path);
     this.readNonReportableAttributes(field, fieldSourceObject);
     this.readAnnotations(field, fieldSourceObject, parsingResult, path);
@@ -99,7 +99,7 @@ export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
   private static readFieldSpecificAttributes(
     fieldSourceObject: JsonNode,
     childInfo: ChildDeploymentInfo,
-    parsingResult: ParsingResult,
+    parsingResult: YamlArtifactParsingResult,
     path: JsonPath,
   ): TemplateField {
     const yamlArtifactType: YamlArtifactType = YamlArtifactType.forValue(ReaderUtil.getString(fieldSourceObject, YamlKeys.type));

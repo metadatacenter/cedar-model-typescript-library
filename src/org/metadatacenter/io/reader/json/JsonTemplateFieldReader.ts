@@ -1,11 +1,11 @@
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
-import { ParsingResult } from '../../../model/cedar/util/compare/ParsingResult';
+import { JsonArtifactParsingResult } from '../../../model/cedar/util/compare/JsonArtifactParsingResult';
 import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
 import { TemplateField } from '../../../model/cedar/field/TemplateField';
 import { ReaderUtil } from '../ReaderUtil';
 import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
 import { TemplateProperty } from '../../../model/cedar/constants/TemplateProperty';
-import { ObjectComparator } from '../../../model/cedar/util/compare/ObjectComparator';
+import { JsonObjectComparator } from '../../../model/cedar/util/compare/JsonObjectComparator';
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
 import { JavascriptType } from '../../../model/cedar/types/wrapped-types/JavascriptType';
 import { CedarModel } from '../../../model/cedar/constants/CedarModel';
@@ -97,7 +97,7 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     childInfo: AbstractChildDeploymentInfo,
     path: JsonPath,
   ): JsonTemplateFieldReaderResult {
-    const parsingResult: ParsingResult = new ParsingResult();
+    const parsingResult: JsonArtifactParsingResult = new JsonArtifactParsingResult();
     const field: TemplateField = JsonTemplateFieldReader.readFieldSpecificAttributes(fieldSourceObject, childInfo, parsingResult, path);
     this.readNonReportableAttributes(field, fieldSourceObject);
     this.readReportableAttributes(field, fieldSourceObject, parsingResult, path);
@@ -112,7 +112,12 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     field.skos_altLabel = ReaderUtil.getStringList(fieldSourceObject, CedarModel.skosAltLabel);
   }
 
-  private readReportableAttributes(field: TemplateField, fieldSourceObject: JsonNode, parsingResult: ParsingResult, path: JsonPath) {
+  private readReportableAttributes(
+    field: TemplateField,
+    fieldSourceObject: JsonNode,
+    parsingResult: JsonArtifactParsingResult,
+    path: JsonPath,
+  ) {
     // Read and validate, but do not store top level @type
 
     // Read and validate, but do not store top level @context
@@ -123,19 +128,19 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     } else if (field.cedarArtifactType == CedarArtifactType.STATIC_TEMPLATE_FIELD) {
       blueprintAtContext = JsonTemplateFieldContentStatic.CONTEXT_VERBATIM;
     }
-    ObjectComparator.compareBothWays(parsingResult, blueprintAtContext, topContextNode, path.add(JsonSchema.atContext), this.behavior);
+    JsonObjectComparator.compareBothWays(parsingResult, blueprintAtContext, topContextNode, path.add(JsonSchema.atContext), this.behavior);
 
     // Read and validate, but do not store top level type
     // Attribute value requires string, the others object
     if (field.cedarFieldType === CedarFieldType.ATTRIBUTE_VALUE) {
-      ObjectComparator.comparePrimitive(
+      JsonObjectComparator.comparePrimitive(
         parsingResult,
         JavascriptType.STRING.getValue(),
         ReaderUtil.getString(fieldSourceObject, CedarModel.type),
         path.add(CedarModel.type),
       );
     } else {
-      ObjectComparator.comparePrimitive(
+      JsonObjectComparator.comparePrimitive(
         parsingResult,
         JavascriptType.OBJECT.getValue(),
         ReaderUtil.getString(fieldSourceObject, CedarModel.type),
@@ -144,7 +149,7 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     }
 
     // Read and validate, but do not store top level additionalProperties
-    ObjectComparator.comparePrimitive(
+    JsonObjectComparator.comparePrimitive(
       parsingResult,
       false,
       ReaderUtil.getBoolean(fieldSourceObject, TemplateProperty.additionalProperties),
@@ -152,7 +157,7 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     );
 
     // Read and validate, but do not store top level $schema
-    ObjectComparator.comparePrimitive(
+    JsonObjectComparator.comparePrimitive(
       parsingResult,
       ArtifactSchema.CURRENT.getValue(),
       ReaderUtil.getString(fieldSourceObject, CedarModel.schema),
@@ -163,7 +168,7 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
   private static readFieldSpecificAttributes(
     fieldSourceObject: JsonNode,
     childInfo: AbstractChildDeploymentInfo,
-    parsingResult: ParsingResult,
+    parsingResult: JsonArtifactParsingResult,
     path: JsonPath,
   ): TemplateField {
     const artifactType: CedarArtifactType = CedarArtifactType.forValue(ReaderUtil.getString(fieldSourceObject, JsonSchema.atType));

@@ -1,18 +1,13 @@
 import {
   CedarJsonWriters,
-  CedarModel,
   CedarWriters,
-  ComparisonError,
-  JsonPath,
-  JsonSchema,
   JsonTemplateReader,
+  JsonTemplateReaderResult,
   JsonTemplateWriter,
   RoundTrip,
 } from '../../../../src';
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
 import { TestUtil } from '../../../TestUtil';
-import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
-import { JsonTemplateReaderResult } from '../../../../src/org/metadatacenter/io/reader/json/JsonTemplateReaderResult';
 import { TestResource } from '../../../TestResource';
 
 const testResource: TestResource = TestResource.template(21);
@@ -34,46 +29,46 @@ describe('JSONTemplateReader' + testResource.toString(), () => {
     // TestUtil.p(compareResult);
     // TestUtil.p(writer.getAsJsonNode(jsonTemplateReaderResult.template));
 
-    expect(compareResult.wasSuccessful()).toBe(false);
-    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(5);
+    expect(compareResult.wasSuccessful()).toBe(true);
+    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(0);
 
-    const uiPagesMissing = new ComparisonError(
-      'oco02',
-      ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-      new JsonPath(CedarModel.ui, CedarModel.pages),
-    );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
-
-    const requiredMultipleChoiceWithDefaultUnexpected = new ComparisonError(
-      'oca02',
-      ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
-      new JsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 11),
-      undefined,
-      'Multiple choice with default',
-    );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredMultipleChoiceWithDefaultUnexpected);
-
-    const requiredMultipleChoiceWithoutDefaultUnexpected = new ComparisonError(
-      'oca02',
-      ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
-      new JsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 12),
-      undefined,
-      'Multiple choice without default',
-    );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredMultipleChoiceWithoutDefaultUnexpected);
-
-    const languageMultipleChoiceWithDefaultUnexpected = new ComparisonError(
-      'oco01',
-      ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
-      new JsonPath(JsonSchema.properties, 'Multiple choice with default', JsonSchema.properties, JsonSchema.atLanguage),
-    );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageMultipleChoiceWithDefaultUnexpected);
-
-    const languageMultipleChoiceWithoutDefaultUnexpected = new ComparisonError(
-      'oco01',
-      ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
-      new JsonPath(JsonSchema.properties, 'Multiple choice without default', JsonSchema.properties, JsonSchema.atLanguage),
-    );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageMultipleChoiceWithoutDefaultUnexpected);
+    // const uiPagesMissing = new ComparisonError(
+    //   'oco02',
+    //   ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
+    //   new JsonPath(CedarModel.ui, CedarModel.pages),
+    // );
+    // expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
+    //
+    // const requiredMultipleChoiceWithDefaultUnexpected = new ComparisonError(
+    //   'oca02',
+    //   ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
+    //   new JsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 11),
+    //   undefined,
+    //   'Multiple choice with default',
+    // );
+    // expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredMultipleChoiceWithDefaultUnexpected);
+    //
+    // const requiredMultipleChoiceWithoutDefaultUnexpected = new ComparisonError(
+    //   'oca02',
+    //   ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
+    //   new JsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 12),
+    //   undefined,
+    //   'Multiple choice without default',
+    // );
+    // expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredMultipleChoiceWithoutDefaultUnexpected);
+    //
+    // const languageMultipleChoiceWithDefaultUnexpected = new ComparisonError(
+    //   'oco01',
+    //   ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
+    //   new JsonPath(JsonSchema.properties, 'Multiple choice with default', JsonSchema.properties, JsonSchema.atLanguage),
+    // );
+    // expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageMultipleChoiceWithDefaultUnexpected);
+    //
+    // const languageMultipleChoiceWithoutDefaultUnexpected = new ComparisonError(
+    //   'oco01',
+    //   ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
+    //   new JsonPath(JsonSchema.properties, 'Multiple choice without default', JsonSchema.properties, JsonSchema.atLanguage),
+    // );
+    // expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageMultipleChoiceWithoutDefaultUnexpected);
   });
 });

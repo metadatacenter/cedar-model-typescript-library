@@ -12,6 +12,7 @@ export const elementTestCases: string[] = [
   '../cedar-test-artifacts/artifacts/elements/002/element-002.json',
   '../cedar-test-artifacts/artifacts/elements/003/element-003.json',
   '../cedar-test-artifacts/artifacts/elements/004/element-004.json',
+  '../cedar-test-artifacts/artifacts/elements/005/element-005.json',
 ];
 export const templateTestCases: string[] = [
   '../cedar-test-artifacts/artifacts/templates/001/template-001.json',

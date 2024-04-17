@@ -1,18 +1,13 @@
 import {
   CedarJsonWriters,
-  CedarModel,
   CedarWriters,
-  ComparisonError,
-  JsonPath,
-  JsonSchema,
   JsonTemplateReader,
+  JsonTemplateReaderResult,
   JsonTemplateWriter,
   RoundTrip,
 } from '../../../../src';
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
 import { TestUtil } from '../../../TestUtil';
-import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
-import { JsonTemplateReaderResult } from '../../../../src/org/metadatacenter/io/reader/json/JsonTemplateReaderResult';
 import { TestResource } from '../../../TestResource';
 
 const testResource: TestResource = TestResource.template(20);
@@ -40,30 +35,30 @@ describe('JSONTemplateReader' + testResource.toString(), () => {
     //   'instanceof:' + (jsonTemplateReaderResult.template.getChildInfo('MultiSelect') instanceof ChildDeploymentInfoAlwaysMultiple),
     // );
 
-    expect(compareResult.wasSuccessful()).toBe(false);
-    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(3);
-
-    const uiPagesMissing = new ComparisonError(
-      'oco02',
-      ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-      new JsonPath(CedarModel.ui, CedarModel.pages),
-    );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
-
-    const requiredMultiSelectUnexpected = new ComparisonError(
-      'oca02',
-      ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
-      new JsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 11),
-      undefined,
-      'MultiSelect',
-    );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredMultiSelectUnexpected);
-
-    const languageMultiSelectUnexpected = new ComparisonError(
-      'oco01',
-      ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
-      new JsonPath(JsonSchema.properties, 'MultiSelect', JsonSchema.items, JsonSchema.properties, JsonSchema.atLanguage),
-    );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageMultiSelectUnexpected);
+    expect(compareResult.wasSuccessful()).toBe(true);
+    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(0);
+    //
+    // const uiPagesMissing = new ComparisonError(
+    //   'oco02',
+    //   ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
+    //   new JsonPath(CedarModel.ui, CedarModel.pages),
+    // );
+    // expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
+    //
+    // const requiredMultiSelectUnexpected = new ComparisonError(
+    //   'oca02',
+    //   ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
+    //   new JsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 11),
+    //   undefined,
+    //   'MultiSelect',
+    // );
+    // expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredMultiSelectUnexpected);
+    //
+    // const languageMultiSelectUnexpected = new ComparisonError(
+    //   'oco01',
+    //   ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
+    //   new JsonPath(JsonSchema.properties, 'MultiSelect', JsonSchema.items, JsonSchema.properties, JsonSchema.atLanguage),
+    // );
+    // expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageMultiSelectUnexpected);
   });
 });

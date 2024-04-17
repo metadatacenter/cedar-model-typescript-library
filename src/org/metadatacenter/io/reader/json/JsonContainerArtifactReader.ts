@@ -144,6 +144,7 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
           .withHidden(dynaChildInfo.hidden)
           .withLabel(childInfo.label)
           .withDescription(childInfo.description)
+          .withRecommendedValue(dynaChildInfo.recommendedValue)
           .withRequiredValue(dynaChildInfo.requiredValue);
         if (finalChildInfoBuilder instanceof ChildDeploymentInfoBuilder) {
           const currentInfo = childInfo as any as ChildDeploymentInfo;

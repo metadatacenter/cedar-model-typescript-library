@@ -1,5 +1,4 @@
-import { CedarModel, ComparisonError, JsonPath, JsonSchema, JsonTemplateReader } from '../../../../src';
-import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
+import { CedarModel, ComparisonError, ComparisonErrorType, JsonPath, JsonSchema, JsonTemplateReader } from '../../../../src';
 import { TestUtil } from '../../../TestUtil';
 import { TestResource } from '../../../TestResource';
 

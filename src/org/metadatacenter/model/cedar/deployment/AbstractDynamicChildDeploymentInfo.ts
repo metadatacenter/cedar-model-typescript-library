@@ -5,6 +5,7 @@ export abstract class AbstractDynamicChildDeploymentInfo extends AbstractChildDe
   protected _iri: NullableString = null;
 
   protected _requiredValue: boolean = false;
+  private _recommendedValue: boolean = false;
   protected _hidden: boolean = false;
 
   public constructor(name: string) {
@@ -25,6 +26,14 @@ export abstract class AbstractDynamicChildDeploymentInfo extends AbstractChildDe
 
   set requiredValue(value: boolean) {
     this._requiredValue = value;
+  }
+
+  get recommendedValue(): boolean {
+    return this._recommendedValue;
+  }
+
+  set recommendedValue(value: boolean) {
+    this._recommendedValue = value;
   }
 
   get hidden(): boolean {

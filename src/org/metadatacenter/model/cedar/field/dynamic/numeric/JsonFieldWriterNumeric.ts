@@ -14,7 +14,7 @@ export class JsonFieldWriterNumeric extends JsonTemplateFieldWriterInternal {
   }
 
   override expandPropertiesNode(propertiesObject: JsonNode): void {
-    propertiesObject[JsonSchema.properties] = JsonTemplateFieldContentDynamic.PROPERTIES_VERBATIM_NUMERIC;
+    propertiesObject[JsonSchema.properties] = JsonTemplateFieldContentDynamic.PROPERTIES_VERBATIM_LITERAL;
   }
 
   override expandRequiredNode(requiredObject: JsonNode): void {

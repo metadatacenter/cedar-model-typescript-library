@@ -7,6 +7,7 @@ import { AbstractChildDeploymentInfoBuilder } from './AbstractChildDeploymentInf
 export class AbstractDynamicChildDeploymentInfoBuilder extends AbstractChildDeploymentInfoBuilder {
   protected iri: NullableString = null;
   protected requiredValue: boolean = false;
+  protected recommendedValue: boolean = false;
   protected hidden: boolean = false;
 
   constructor(child: TemplateChild, name: string) {
@@ -20,6 +21,11 @@ export class AbstractDynamicChildDeploymentInfoBuilder extends AbstractChildDepl
 
   public withRequiredValue(requiredValue: boolean): this {
     this.requiredValue = requiredValue;
+    return this;
+  }
+
+  public withRecommendedValue(recommendedValue: boolean): this {
+    this.recommendedValue = recommendedValue;
     return this;
   }
 
@@ -38,6 +44,7 @@ export class AbstractDynamicChildDeploymentInfoBuilder extends AbstractChildDepl
     super.setCommonData(info);
     info.iri = this.iri;
     info.requiredValue = this.requiredValue;
+    info.recommendedValue = this.recommendedValue;
     info.hidden = this.hidden;
   }
 }

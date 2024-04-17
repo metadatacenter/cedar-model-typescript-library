@@ -17,7 +17,7 @@ describe('JSONTemplateReader' + testResource.toString(), () => {
 
     // TestUtil.p(jsonTemplateReaderResult.template);
 
-    const writers: CedarJsonWriters = CedarWriters.json().getFebruary2024();
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
     const writer: JsonTemplateWriter = writers.getTemplateWriter();
 
     // console.log(jsonTemplateReaderResult.templateSourceObject);
@@ -28,7 +28,7 @@ describe('JSONTemplateReader' + testResource.toString(), () => {
     // TestUtil.p(writer.getAsJsonNode(jsonTemplateReaderResult.template));
 
     expect(compareResult.wasSuccessful()).toBe(false);
-    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(523);
-    expect(compareResult.getBlueprintComparisonWarningCount()).toBe(736);
+    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(1780);
+    expect(compareResult.getBlueprintComparisonWarningCount()).toBe(0);
   });
 });

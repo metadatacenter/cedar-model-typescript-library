@@ -85,6 +85,7 @@ export class CedarModel {
 
   static Ui = class {
     static hidden = 'hidden';
+    static recommendedValue = 'recommendedValue';
   };
 
   static nullEnabled = 'nullEnabled';

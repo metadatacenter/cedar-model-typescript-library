@@ -14,7 +14,7 @@ export class JsonFieldWriterBoolean extends JsonTemplateFieldWriterInternal {
   }
 
   override expandPropertiesNode(propertiesObject: JsonNode): void {
-    propertiesObject[JsonSchema.properties] = JsonTemplateFieldContentDynamic.PROPERTIES_VERBATIM_BOOLEAN;
+    propertiesObject[JsonSchema.properties] = JsonTemplateFieldContentDynamic.PROPERTIES_VERBATIM_LITERAL;
   }
 
   override expandValueConstraintsNode(vcNode: JsonNode, field: BooleanField, childInfo: ChildDeploymentInfo): void {

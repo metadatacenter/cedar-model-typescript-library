@@ -14,7 +14,7 @@ describe('JSONFieldReader' + testResource.toString(), () => {
     const parsingResult = jsonFieldReaderResult.parsingResult;
     expect(parsingResult.wasSuccessful()).toBe(true);
 
-    const writers: CedarJsonWriters = CedarWriters.json().getFebruary2024();
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
     const writer = writers.getFieldWriterForField(jsonFieldReaderResult.field);
 
     const compareResult: ParsingResult = RoundTrip.compare(jsonFieldReaderResult, writer);

@@ -1,16 +1,6 @@
-import {
-  CedarJsonWriters,
-  CedarModel,
-  CedarWriters,
-  ComparisonError,
-  JsonPath,
-  JsonTemplateReader,
-  JsonTemplateWriter,
-  RoundTrip,
-} from '../../../../src';
+import { CedarJsonWriters, CedarWriters, JsonTemplateReader, JsonTemplateWriter, RoundTrip } from '../../../../src';
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
 import { TestUtil } from '../../../TestUtil';
-import { ComparisonErrorType } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
 import { TestResource } from '../../../TestResource';
 
 const testResource: TestResource = TestResource.template(27);
@@ -34,14 +24,14 @@ describe('JSONTemplateReader' + testResource.toString(), () => {
     // TestUtil.p(compareResult);
     // TestUtil.p(writer.getAsJsonNode(jsonTemplateReaderResult.template));
 
-    expect(compareResult.wasSuccessful()).toBe(false);
-    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(1);
+    expect(compareResult.wasSuccessful()).toBe(true);
+    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(0);
 
-    const uiPagesMissing = new ComparisonError(
-      'oco02',
-      ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-      new JsonPath(CedarModel.ui, CedarModel.pages),
-    );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
+    // const uiPagesMissing = new ComparisonError(
+    //   'oco02',
+    //   ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
+    //   new JsonPath(CedarModel.ui, CedarModel.pages),
+    // );
+    // expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
   });
 });

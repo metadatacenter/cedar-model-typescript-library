@@ -1,16 +1,6 @@
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
 import { TestUtil } from '../../../TestUtil';
-import {
-  CedarJsonWriters,
-  CedarWriters,
-  ComparisonError,
-  ComparisonErrorType,
-  JsonPath,
-  JsonSchema,
-  JsonTemplateElementReader,
-  JsonTemplateElementWriter,
-  RoundTrip,
-} from '../../../../src';
+import { CedarJsonWriters, CedarWriters, JsonTemplateElementReader, JsonTemplateElementWriter, RoundTrip } from '../../../../src';
 import { TestResource } from '../../../TestResource';
 
 const testResource: TestResource = TestResource.element(2);
@@ -33,21 +23,21 @@ describe('JSONElementReader' + testResource.toString(), () => {
     // TestUtil.p(compareResult);
     // TestUtil.p(writer.getAsJsonNode(jsonFieldReaderResult.field));
 
-    expect(compareResult.wasSuccessful()).toBe(false);
-    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(2);
+    expect(compareResult.wasSuccessful()).toBe(true);
+    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(0);
 
-    const languageTextfieldUnexpected = new ComparisonError(
-      'oco01',
-      ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
-      new JsonPath(JsonSchema.properties, 'Text field', JsonSchema.properties, JsonSchema.atLanguage),
-    );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageTextfieldUnexpected);
-
-    const languageEmailUnexpected = new ComparisonError(
-      'oco01',
-      ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
-      new JsonPath(JsonSchema.properties, 'Email', JsonSchema.properties, JsonSchema.atLanguage),
-    );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageEmailUnexpected);
+    // const languageTextfieldUnexpected = new ComparisonError(
+    //   'oco01',
+    //   ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
+    //   new JsonPath(JsonSchema.properties, 'Text field', JsonSchema.properties, JsonSchema.atLanguage),
+    // );
+    // expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageTextfieldUnexpected);
+    //
+    // const languageEmailUnexpected = new ComparisonError(
+    //   'oco01',
+    //   ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
+    //   new JsonPath(JsonSchema.properties, 'Email', JsonSchema.properties, JsonSchema.atLanguage),
+    // );
+    // expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageEmailUnexpected);
   });
 });

@@ -48,6 +48,7 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
           childDeploymentInfo.maxItems = ReaderUtil.getNumber(configuration, YamlKeys.maxItems);
         }
         childDeploymentInfo.requiredValue = ReaderUtil.getBoolean(configuration, YamlKeys.required);
+        childDeploymentInfo.recommendedValue = ReaderUtil.getBoolean(configuration, YamlKeys.recommended);
         childDeploymentInfo.hidden = ReaderUtil.getBoolean(configuration, YamlKeys.hidden);
 
         if (yamlArtifactType !== YamlArtifactType.ATTRIBUTE_VALUE) {
@@ -71,6 +72,7 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
             finalChildInfoBuilder2
               .withIri(childDeploymentInfo.iri)
               .withHidden(childDeploymentInfo.hidden)
+              .withRecommendedValue(childDeploymentInfo.recommendedValue)
               .withRequiredValue(childDeploymentInfo.requiredValue);
             if (finalChildInfoBuilder2 instanceof ChildDeploymentInfoBuilder) {
               const currentInfo = childDeploymentInfo as any as ChildDeploymentInfo;

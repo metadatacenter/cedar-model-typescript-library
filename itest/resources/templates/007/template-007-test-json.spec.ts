@@ -1,18 +1,13 @@
 import {
   CedarJsonWriters,
-  CedarModel,
   CedarWriters,
-  ComparisonError,
-  ComparisonErrorType,
-  JsonPath,
-  JsonSchema,
   JsonTemplateReader,
+  JsonTemplateReaderResult,
   JsonTemplateWriter,
   RoundTrip,
 } from '../../../../src';
 import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
 import { TestUtil } from '../../../TestUtil';
-import { JsonTemplateReaderResult } from '../../../../src/org/metadatacenter/io/reader/json/JsonTemplateReaderResult';
 import { TestResource } from '../../../TestResource';
 
 const testResource: TestResource = TestResource.template(7);
@@ -36,30 +31,30 @@ describe('JSONTemplateReader' + testResource.toString(), () => {
     // TestUtil.p(jsonTemplateReaderResult.template.asCedarNode());
     // TestUtil.raw(jsonTemplateReaderResult.template);
 
-    expect(compareResult.wasSuccessful()).toBe(false);
-    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(3);
+    expect(compareResult.wasSuccessful()).toBe(true);
+    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(0);
 
-    const uiPagesMissing = new ComparisonError(
-      'oco02',
-      ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-      new JsonPath(CedarModel.ui, CedarModel.pages),
-    );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
-
-    const requiredTextfieldUnexpected = new ComparisonError(
-      'oca02',
-      ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
-      new JsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 11),
-      undefined,
-      'Text field',
-    );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredTextfieldUnexpected);
-
-    const languageTextfieldUnexpected = new ComparisonError(
-      'oco01',
-      ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
-      new JsonPath(JsonSchema.properties, 'Text field', JsonSchema.properties, JsonSchema.atLanguage),
-    );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageTextfieldUnexpected);
+    // const uiPagesMissing = new ComparisonError(
+    //   'oco02',
+    //   ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
+    //   new JsonPath(CedarModel.ui, CedarModel.pages),
+    // );
+    // expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
+    //
+    // const requiredTextfieldUnexpected = new ComparisonError(
+    //   'oca02',
+    //   ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
+    //   new JsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 11),
+    //   undefined,
+    //   'Text field',
+    // );
+    // expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredTextfieldUnexpected);
+    //
+    // const languageTextfieldUnexpected = new ComparisonError(
+    //   'oco01',
+    //   ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
+    //   new JsonPath(JsonSchema.properties, 'Text field', JsonSchema.properties, JsonSchema.atLanguage),
+    // );
+    // expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageTextfieldUnexpected);
   });
 });

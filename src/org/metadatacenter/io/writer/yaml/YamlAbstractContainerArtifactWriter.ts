@@ -54,6 +54,9 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
       if (childMeta.hidden) {
         childConfiguration[YamlKeys.hidden] = true;
       }
+      if (childMeta.recommendedValue) {
+        childConfiguration[YamlKeys.recommended] = true;
+      }
       if (childMeta.uiInputType != UiInputType.ATTRIBUTE_VALUE) {
         childConfiguration[YamlKeys.propertyIRI] = childMeta.iri;
       }

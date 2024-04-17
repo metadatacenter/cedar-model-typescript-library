@@ -1,11 +1,7 @@
 import {
   AbstractChildDeploymentInfo,
   CedarJsonWriters,
-  CedarModel,
   CedarWriters,
-  ComparisonError,
-  ComparisonErrorType,
-  JsonPath,
   JsonTemplateReader,
   JsonTemplateWriter,
   RoundTrip,
@@ -21,7 +17,7 @@ const testResource: TestResource = TestResource.template(28);
 describe('JSONTemplateReader' + testResource.toString(), () => {
   test('reads template witch annotations', () => {
     const artifactSource = TestUtil.readTestJson(testResource);
-    const reader: JsonTemplateReader = JsonTemplateReader.getFebruary2024();
+    const reader: JsonTemplateReader = JsonTemplateReader.getStrict();
     const jsonTemplateReaderResult = reader.readFromString(artifactSource);
     expect(jsonTemplateReaderResult).not.toBeNull();
     const parsingResult = jsonTemplateReaderResult.parsingResult;
@@ -29,7 +25,7 @@ describe('JSONTemplateReader' + testResource.toString(), () => {
 
     // TestUtil.p(jsonTemplateReaderResult.template);
 
-    const writers: CedarJsonWriters = CedarWriters.json().getFebruary2024();
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
     const writer: JsonTemplateWriter = writers.getTemplateWriter();
 
     // console.log(jsonTemplateReaderResult.templateSourceObject);
@@ -37,6 +33,7 @@ describe('JSONTemplateReader' + testResource.toString(), () => {
     const compareResult: ParsingResult = RoundTrip.compare(jsonTemplateReaderResult, writer);
 
     // TestUtil.p(compareResult);
+
     const template = jsonTemplateReaderResult.template;
     const name1 = 'Read & Understood Catalog';
     const info1: AbstractChildDeploymentInfo | null = template.getChildInfo(name1);
@@ -57,28 +54,28 @@ describe('JSONTemplateReader' + testResource.toString(), () => {
     //    console.log(TestUtil.d(child2));
     // TestUtil.p(writer.getAsJsonNode(jsonTemplateReaderResult.template));
 
-    expect(compareResult.wasSuccessful()).toBe(false);
-    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(3);
+    expect(compareResult.wasSuccessful()).toBe(true);
+    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(0);
 
-    const missingPropDesc1 = new ComparisonError(
-      'oco02',
-      ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-      new JsonPath(CedarModel.ui, CedarModel.propertyDescriptions, 'Read & Understood'),
-    );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(missingPropDesc1);
-
-    const missingPropDesc2 = new ComparisonError(
-      'oco02',
-      ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-      new JsonPath(CedarModel.ui, CedarModel.propertyDescriptions, 'ProjectAdminIntanceID'),
-    );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(missingPropDesc2);
-
-    const missingPropDesc3 = new ComparisonError(
-      'oco02',
-      ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-      new JsonPath(CedarModel.ui, CedarModel.propertyDescriptions, 'ProjectAdminInstanceIDRT'),
-    );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(missingPropDesc3);
+    // const missingPropDesc1 = new ComparisonError(
+    //   'oco02',
+    //   ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
+    //   new JsonPath(CedarModel.ui, CedarModel.propertyDescriptions, 'Read & Understood'),
+    // );
+    // expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(missingPropDesc1);
+    //
+    // const missingPropDesc2 = new ComparisonError(
+    //   'oco02',
+    //   ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
+    //   new JsonPath(CedarModel.ui, CedarModel.propertyDescriptions, 'ProjectAdminIntanceID'),
+    // );
+    // expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(missingPropDesc2);
+    //
+    // const missingPropDesc3 = new ComparisonError(
+    //   'oco02',
+    //   ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
+    //   new JsonPath(CedarModel.ui, CedarModel.propertyDescriptions, 'ProjectAdminInstanceIDRT'),
+    // );
+    // expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(missingPropDesc3);
   });
 });

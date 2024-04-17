@@ -1,11 +1,6 @@
 import {
   CedarJsonWriters,
-  CedarModel,
   CedarWriters,
-  ComparisonError,
-  ComparisonErrorType,
-  JsonPath,
-  JsonSchema,
   JsonTemplateReader,
   JsonTemplateReaderResult,
   JsonTemplateWriter,
@@ -37,46 +32,46 @@ describe('JSONTemplateReader' + testResource.toString(), () => {
     // TestUtil.p(jsonTemplateReaderResult.template);
     // TestUtil.p(jsonTemplateReaderResult.template.getChildInfo('My checkbox 1'));
 
-    expect(compareResult.wasSuccessful()).toBe(false);
-    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(5);
+    expect(compareResult.wasSuccessful()).toBe(true);
+    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(0);
 
-    const uiPagesMissing = new ComparisonError(
-      'oco02',
-      ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-      new JsonPath(CedarModel.ui, CedarModel.pages),
-    );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
-
-    const requiredCheckbox1Unexpected = new ComparisonError(
-      'oca02',
-      ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
-      new JsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 11),
-      undefined,
-      'My checkbox 1',
-    );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredCheckbox1Unexpected);
-
-    const requiredCheckbox2Unexpected = new ComparisonError(
-      'oca02',
-      ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
-      new JsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 12),
-      undefined,
-      'My checkbox 2',
-    );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredCheckbox2Unexpected);
-
-    const languageCheckbox1Unexpected = new ComparisonError(
-      'oco01',
-      ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
-      new JsonPath(JsonSchema.properties, 'My checkbox 1', JsonSchema.items, JsonSchema.properties, JsonSchema.atLanguage),
-    );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageCheckbox1Unexpected);
-
-    const languageCheckbox2Unexpected = new ComparisonError(
-      'oco01',
-      ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
-      new JsonPath(JsonSchema.properties, 'My checkbox 2', JsonSchema.items, JsonSchema.properties, JsonSchema.atLanguage),
-    );
-    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageCheckbox2Unexpected);
+    // const uiPagesMissing = new ComparisonError(
+    //   'oco02',
+    //   ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
+    //   new JsonPath(CedarModel.ui, CedarModel.pages),
+    // );
+    // expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
+    //
+    // const requiredCheckbox1Unexpected = new ComparisonError(
+    //   'oca02',
+    //   ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
+    //   new JsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 11),
+    //   undefined,
+    //   'My checkbox 1',
+    // );
+    // expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredCheckbox1Unexpected);
+    //
+    // const requiredCheckbox2Unexpected = new ComparisonError(
+    //   'oca02',
+    //   ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
+    //   new JsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 12),
+    //   undefined,
+    //   'My checkbox 2',
+    // );
+    // expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredCheckbox2Unexpected);
+    //
+    // const languageCheckbox1Unexpected = new ComparisonError(
+    //   'oco01',
+    //   ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
+    //   new JsonPath(JsonSchema.properties, 'My checkbox 1', JsonSchema.items, JsonSchema.properties, JsonSchema.atLanguage),
+    // );
+    // expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageCheckbox1Unexpected);
+    //
+    // const languageCheckbox2Unexpected = new ComparisonError(
+    //   'oco01',
+    //   ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
+    //   new JsonPath(JsonSchema.properties, 'My checkbox 2', JsonSchema.items, JsonSchema.properties, JsonSchema.atLanguage),
+    // );
+    // expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(languageCheckbox2Unexpected);
   });
 });

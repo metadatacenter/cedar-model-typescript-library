@@ -41,80 +41,23 @@ export class JsonTemplateFieldContentDynamic {
   // This is a verbatim representation for regular fields
   public static PROPERTIES_VERBATIM_LITERAL: JsonNode = {
     '@type': {
-      oneOf: [
-        {
-          type: 'string',
-          format: 'uri',
-        },
-        {
-          type: 'array',
-          minItems: 1,
-          items: {
-            type: 'string',
-            format: 'uri',
-          },
-          uniqueItems: true,
-        },
-      ],
+      type: 'string',
+      format: 'uri',
     },
     '@value': {
       type: ['string', 'null'],
     },
-    '@language': { type: ['string', 'null'], minLength: 1 },
-    'rdfs:label': {
+    '@language': {
       type: ['string', 'null'],
+      minLength: 1,
     },
   };
 
-  // This is a verbatim representation for controlled fields
-  public static PROPERTIES_VERBATIM_CONTROLLED: JsonNode = {
-    '@type': {
-      oneOf: [
-        {
-          type: 'string',
-          format: 'uri',
-        },
-        {
-          type: 'array',
-          minItems: 1,
-          items: {
-            type: 'string',
-            format: 'uri',
-          },
-          uniqueItems: true,
-        },
-      ],
-    },
-    '@id': {
-      type: 'string',
-      format: 'uri',
-    },
-    'rdfs:label': {
-      type: ['string', 'null'],
-    },
-    'skos:notation': {
-      type: ['string', 'null'],
-    },
-  };
-
-  // This is a verbatim representation for link and controlled fields
+  // This is a verbatim representation for controlled fields and IRIs
   public static PROPERTIES_VERBATIM_IRI: JsonNode = {
     '@type': {
-      oneOf: [
-        {
-          type: 'string',
-          format: 'uri',
-        },
-        {
-          type: 'array',
-          minItems: 1,
-          items: {
-            type: 'string',
-            format: 'uri',
-          },
-          uniqueItems: true,
-        },
-      ],
+      type: 'string',
+      format: 'uri',
     },
     '@id': {
       type: 'string',
@@ -124,34 +67,6 @@ export class JsonTemplateFieldContentDynamic {
       type: ['string', 'null'],
     },
     'skos:notation': {
-      type: ['string', 'null'],
-    },
-  };
-
-  // This is a verbatim representation for numeric fields
-  public static PROPERTIES_VERBATIM_NUMERIC: JsonNode = {
-    '@type': {
-      type: 'string',
-      format: 'uri',
-    },
-    '@value': {
-      type: ['string', 'null'],
-    },
-    'rdfs:label': {
-      type: ['string', 'null'],
-    },
-  };
-
-  // This is a verbatim representation for boolean fields
-  public static PROPERTIES_VERBATIM_BOOLEAN: JsonNode = {
-    '@type': {
-      type: 'string',
-      format: 'uri',
-    },
-    '@value': {
-      type: ['string', 'null'],
-    },
-    'rdfs:label': {
       type: ['string', 'null'],
     },
   };
@@ -178,7 +93,6 @@ export class JsonTemplateFieldContentDynamic {
   };
 
   public static PROPERTIES_VERBATIM_LITERAL_NO_AT_LANGUAGE: JsonNode;
-  public static PROPERTIES_VERBATIM_CONTROLLED_NO_SKOS_NOTATION: JsonNode;
   public static PROPERTIES_VERBATIM_IRI_NO_SKOS_NOTATION: JsonNode;
   public static CONTEXT_VERBATIM_NO_BIBO: JsonNode;
 
@@ -190,10 +104,6 @@ export class JsonTemplateFieldContentDynamic {
     ReaderUtil.deleteNodeKey(this.PROPERTIES_VERBATIM_LITERAL_NO_AT_LANGUAGE, JsonSchema.atLanguage);
     ReaderUtil.deepFreeze(this.PROPERTIES_VERBATIM_LITERAL_NO_AT_LANGUAGE);
 
-    this.PROPERTIES_VERBATIM_CONTROLLED_NO_SKOS_NOTATION = ReaderUtil.deepClone(this.PROPERTIES_VERBATIM_CONTROLLED);
-    ReaderUtil.deleteNodeKey(this.PROPERTIES_VERBATIM_CONTROLLED_NO_SKOS_NOTATION, CedarModel.skosNotation);
-    ReaderUtil.deepFreeze(this.PROPERTIES_VERBATIM_CONTROLLED_NO_SKOS_NOTATION);
-
     this.PROPERTIES_VERBATIM_IRI_NO_SKOS_NOTATION = ReaderUtil.deepClone(this.PROPERTIES_VERBATIM_IRI);
     ReaderUtil.deleteNodeKey(this.PROPERTIES_VERBATIM_IRI_NO_SKOS_NOTATION, CedarModel.skosNotation);
     ReaderUtil.deepFreeze(this.PROPERTIES_VERBATIM_IRI_NO_SKOS_NOTATION);
@@ -202,10 +112,7 @@ export class JsonTemplateFieldContentDynamic {
     ReaderUtil.deleteNodeKey(this.CONTEXT_VERBATIM_NO_BIBO, 'bibo');
     ReaderUtil.deepFreeze(this.CONTEXT_VERBATIM_NO_BIBO);
 
-    ReaderUtil.deepFreeze(this.PROPERTIES_VERBATIM_CONTROLLED);
     ReaderUtil.deepFreeze(this.PROPERTIES_VERBATIM_IRI);
-    ReaderUtil.deepFreeze(this.PROPERTIES_VERBATIM_NUMERIC);
-    ReaderUtil.deepFreeze(this.PROPERTIES_VERBATIM_BOOLEAN);
     ReaderUtil.deepFreeze(this.ADDITIONAL_PROPERTIES_VERBATIM_ATTRIBUTE_VALUE_OUTSIDE);
     ReaderUtil.deepFreeze(this.ADDITIONAL_PROPERTIES_VERBATIM_ATTRIBUTE_VALUE_INSIDE);
   }

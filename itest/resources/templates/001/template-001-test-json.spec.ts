@@ -1,6 +1,7 @@
-import { JsonTemplateReader } from '../../../../src';
+import { CedarJsonWriters, CedarWriters, JsonTemplateReader, JsonTemplateWriter, RoundTrip } from '../../../../src';
 import { TestUtil } from '../../../TestUtil';
 import { TestResource } from '../../../TestResource';
+import { ParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/ParsingResult';
 
 const testResource: TestResource = TestResource.template(1);
 
@@ -12,6 +13,14 @@ describe('JSONTemplateReader' + testResource.toString(), () => {
     expect(jsonTemplateReaderResult).not.toBeNull();
     const parsingResult = jsonTemplateReaderResult.parsingResult;
     expect(parsingResult.wasSuccessful()).toBe(true);
+
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const writer: JsonTemplateWriter = writers.getTemplateWriter();
+
+    const compareResult: ParsingResult = RoundTrip.compare(jsonTemplateReaderResult, writer);
+    // TestUtil.p(compareResult);
+    expect(compareResult.wasSuccessful()).toBe(true);
+    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(0);
   });
 
   test('reads very simple template as string, before save', () => {

@@ -15,6 +15,7 @@ export class YamlKeys {
   static valueRecommendationEnabled: string = 'valueRecommendationEnabled';
 
   static required: string = 'required';
+  static recommended: string = 'recommended';
   static hidden: string = 'hidden';
   static propertyIRI: string = 'propertyIRI';
   static overrideLabel: string = 'overrideLabel';

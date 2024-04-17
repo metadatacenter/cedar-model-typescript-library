@@ -7,6 +7,15 @@ export const fieldTestCases: string[] = [
   '../cedar-test-artifacts/artifacts/fields/006/field-006.json',
   '../cedar-test-artifacts/artifacts/fields/007/field-007.json',
 ];
+export const fieldTestNumbers: number[] = [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+];
 export const elementTestCases: string[] = [
   '../cedar-test-artifacts/artifacts/elements/001/element-001.json',
   '../cedar-test-artifacts/artifacts/elements/002/element-002.json',

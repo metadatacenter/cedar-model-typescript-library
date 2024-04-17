@@ -6,6 +6,7 @@ const templatesTestFolderPath = '../cedar-test-artifacts/artifacts/templates'; /
 
 async function generateTestCases() {
   let fieldTestCases = [];
+  let fieldTestNumbers = [];
   let elementTestCases = [];
   let elementTestNumbers = [];
   let templateTestCases = []; // Add a new array for template test cases
@@ -16,6 +17,7 @@ async function generateTestCases() {
       const folderPath = path.join(fieldsTestFolderPath, dirent.name);
       const sourcePath = path.join(folderPath, `field-${dirent.name}.json`);
       fieldTestCases.push(sourcePath);
+      fieldTestNumbers.push(parseInt(dirent.name, 10));
     }
   }
 
@@ -52,6 +54,7 @@ async function generateTestCases() {
   // Use the arrayToString function for each test case type
   const content =
     `export const fieldTestCases: string[] = ${arrayToString(fieldTestCases)};\n` +
+    `export const fieldTestNumbers: number[] = ${numberArrayToString(fieldTestNumbers)};\n` +
     `export const elementTestCases: string[] = ${arrayToString(elementTestCases)};\n` +
     `export const elementTestNumbers: number[] = ${numberArrayToString(elementTestNumbers)};\n` +
     `export const templateTestCases: string[] = ${arrayToString(templateTestCases)};\n`;

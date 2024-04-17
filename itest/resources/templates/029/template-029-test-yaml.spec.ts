@@ -4,7 +4,7 @@ import { TestResource } from '../../../TestResource';
 
 const testResource: TestResource = TestResource.template(29);
 
-describe('YAMLTemplateWriter' + testResource.toString(), () => {
+describe('YamlTemplateWriter' + testResource.toString(), () => {
   test('read a JSON template, and writes it as YAML', () => {
     const artifactSource = TestUtil.readTestJson(testResource);
     const referenceYaml = TestUtil.readReferenceYaml(testResource);

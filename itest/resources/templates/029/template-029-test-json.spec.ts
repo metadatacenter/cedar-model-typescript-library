@@ -1,11 +1,17 @@
-import { CedarJsonWriters, CedarWriters, JsonTemplateReader, JsonTemplateWriter, RoundTrip } from '../../../../src';
-import { JsonArtifactParsingResult } from '../../../../src/org/metadatacenter/model/cedar/util/compare/JsonArtifactParsingResult';
+import {
+  CedarJsonWriters,
+  CedarWriters,
+  JsonArtifactParsingResult,
+  JsonTemplateReader,
+  JsonTemplateWriter,
+  RoundTrip,
+} from '../../../../src';
 import { TestUtil } from '../../../TestUtil';
 import { TestResource } from '../../../TestResource';
 
 const testResource: TestResource = TestResource.template(29);
 
-describe('JSONTemplateReader' + testResource.toString(), () => {
+describe('JsonTemplateReader' + testResource.toString(), () => {
   test('reads template witch annotations', () => {
     const artifactSource = TestUtil.readTestJson(testResource);
     const reader: JsonTemplateReader = JsonTemplateReader.getStrict();

@@ -4,7 +4,7 @@ import { TestResource } from '../../../TestResource';
 
 const testResource: TestResource = TestResource.template(3);
 
-describe('JSONTemplateReader' + testResource.toString(), () => {
+describe('JsonTemplateReader' + testResource.toString(), () => {
   test('reads very simple template as object, with various mismatches', () => {
     const artifactSource = TestUtil.readTestJson(testResource);
     const reader: JsonTemplateReader = JsonTemplateReader.getStrict();

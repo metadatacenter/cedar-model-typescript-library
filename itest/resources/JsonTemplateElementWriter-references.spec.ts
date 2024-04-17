@@ -1,46 +1,39 @@
 import {
+  CedarJsonWriters,
   CedarWriters,
-  CedarYamlWriters,
-  ComparisonResult,
   JsonArtifactParsingResult,
   JsonTemplateElementReader,
   JsonTemplateElementReaderResult,
-  YamlTemplateElementWriter,
+  JsonTemplateElementWriter,
+  RoundTrip,
 } from '../../src';
 import { TestUtil } from '../TestUtil';
 import { elementTestNumbers } from './generatedTestCases';
 import { TestResource } from '../TestResource';
 
-describe('YAMLTemplateElementWriter-references', () => {
+describe('JsonTemplateElementWriter-references', () => {
   // Generate a test for each file
   elementTestNumbers.forEach((elementTestNumber) => {
-    it(`should correctly read the JSON element, and create the same YAML output as the reference: ${elementTestNumber}`, async () => {
-      const writers: CedarYamlWriters = CedarWriters.yaml().getStrict();
-      const comparisonResult: ComparisonResult = new ComparisonResult();
-      const leftYAMLObject = {};
-      const rightYAMLObject = {};
+    it(`should correctly read the JSON element, and create the same JSON output as the reference: ${elementTestNumber}`, async () => {
+      let comparisonResult: JsonArtifactParsingResult = new JsonArtifactParsingResult();
       try {
         const testResource: TestResource = TestResource.element(elementTestNumber);
         const artifactSource: string = TestUtil.readTestJson(testResource);
-        const referenceYaml: string = TestUtil.readReferenceYaml(testResource);
         const reader: JsonTemplateElementReader = JsonTemplateElementReader.getStrict();
         const jsonElementReaderResult: JsonTemplateElementReaderResult = reader.readFromString(artifactSource);
         expect(jsonElementReaderResult).not.toBeNull();
         const parsingResult: JsonArtifactParsingResult = jsonElementReaderResult.parsingResult;
         expect(parsingResult.wasSuccessful()).toBe(true);
 
-        const writers: CedarYamlWriters = CedarWriters.yaml().getStrict();
-        const yamlWriter: YamlTemplateElementWriter = writers.getTemplateElementWriter();
+        const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+        const writer: JsonTemplateElementWriter = writers.getTemplateElementWriter();
 
-        const stringified = yamlWriter.getAsYamlString(jsonElementReaderResult.element);
-        // console.log(stringified);
-        expect(stringified).toEqual(referenceYaml);
+        comparisonResult = RoundTrip.compare(jsonElementReaderResult, writer);
+        expect(comparisonResult.wasSuccessful()).toBe(true);
+        expect(comparisonResult.getBlueprintComparisonErrorCount()).toBe(0);
+        expect(comparisonResult.getBlueprintComparisonWarningCount()).toBe(0);
       } catch (error) {
-        console.log('Left yaml object');
-        TestUtil.p(leftYAMLObject);
-        console.log('Right yaml object');
-        TestUtil.p(rightYAMLObject);
-        TestUtil.p(comparisonResult.getComparisonErrors());
+        TestUtil.p(comparisonResult.getBlueprintComparisonErrors());
         console.error(`Failed to process element file: ${elementTestNumber}`, error);
         throw error;
       }

@@ -14,6 +14,13 @@ export const elementTestCases: string[] = [
   '../cedar-test-artifacts/artifacts/elements/004/element-004.json',
   '../cedar-test-artifacts/artifacts/elements/005/element-005.json',
 ];
+export const elementTestNumbers: number[] = [
+  1,
+  2,
+  3,
+  4,
+  5,
+];
 export const templateTestCases: string[] = [
   '../cedar-test-artifacts/artifacts/templates/001/template-001.json',
   '../cedar-test-artifacts/artifacts/templates/002/template-002.json',

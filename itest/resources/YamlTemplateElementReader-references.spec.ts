@@ -1,9 +1,14 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { CedarWriters, CedarYamlWriters, JsonTemplateElementReader, YamlTemplateElementReader } from '../../src';
+import {
+  CedarWriters,
+  CedarYamlWriters,
+  ComparisonResult,
+  JsonTemplateElementReader,
+  YamlObjectComparator,
+  YamlTemplateElementReader,
+} from '../../src';
 import { TestUtil } from '../TestUtil';
-import { ComparisonResult } from '../../src/org/metadatacenter/model/cedar/util/compare/ComparisonResult';
-import { YamlObjectComparator } from '../../src/org/metadatacenter/model/cedar/util/compare/YamlObjectComparator';
 import { elementTestCases } from './generatedTestCases';
 
 describe('YAMLTemplateElementReader-references', () => {

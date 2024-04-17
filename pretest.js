@@ -7,6 +7,7 @@ const templatesTestFolderPath = '../cedar-test-artifacts/artifacts/templates'; /
 async function generateTestCases() {
   let fieldTestCases = [];
   let elementTestCases = [];
+  let elementTestNumbers = [];
   let templateTestCases = []; // Add a new array for template test cases
 
   const subfoldersInFields = await fs.readdir(fieldsTestFolderPath, { withFileTypes: true });
@@ -24,6 +25,7 @@ async function generateTestCases() {
       const folderPath = path.join(elementsTestFolderPath, dirent.name);
       const sourcePath = path.join(folderPath, `element-${dirent.name}.json`);
       elementTestCases.push(sourcePath);
+      elementTestNumbers.push(parseInt(dirent.name, 10));
     }
   }
 
@@ -43,10 +45,15 @@ async function generateTestCases() {
     return '[\n  ' + arr.map((item) => `'${item}'`).join(',\n  ') + ',\n]';
   }
 
+  function numberArrayToString(arr) {
+    return '[\n  ' + arr.map((item) => `${item}`).join(',\n  ') + ',\n]';
+  }
+
   // Use the arrayToString function for each test case type
   const content =
     `export const fieldTestCases: string[] = ${arrayToString(fieldTestCases)};\n` +
     `export const elementTestCases: string[] = ${arrayToString(elementTestCases)};\n` +
+    `export const elementTestNumbers: number[] = ${numberArrayToString(elementTestNumbers)};\n` +
     `export const templateTestCases: string[] = ${arrayToString(templateTestCases)};\n`;
   await fs.writeFile('itest/resources/generatedTestCases.ts', content, { encoding: 'utf8' });
 }

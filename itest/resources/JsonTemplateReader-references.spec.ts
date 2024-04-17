@@ -1,6 +1,12 @@
-import { CedarJsonWriters, CedarWriters, JsonTemplateReader, JsonTemplateWriter, RoundTrip } from '../../src';
-import { JsonArtifactParsingResult } from '../../src/org/metadatacenter/model/cedar/util/compare/JsonArtifactParsingResult';
-import { JsonTemplateReaderResult } from '../../src/org/metadatacenter/io/reader/json/JsonTemplateReaderResult';
+import {
+  CedarJsonWriters,
+  CedarWriters,
+  JsonArtifactParsingResult,
+  JsonTemplateReader,
+  JsonTemplateReaderResult,
+  JsonTemplateWriter,
+  RoundTrip,
+} from '../../src';
 import { TestUtil } from '../TestUtil';
 
 describe('JSONTemplateReader - CEDAR reference templates', () => {

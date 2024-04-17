@@ -1,7 +1,6 @@
 import {
   CedarWriters,
   CedarYamlWriters,
-  ComparisonResult,
   JsonArtifactParsingResult,
   JsonTemplateElementReader,
   JsonTemplateElementReaderResult,
@@ -15,10 +14,6 @@ describe('YAMLTemplateElementWriter-references', () => {
   // Generate a test for each file
   elementTestNumbers.forEach((elementTestNumber) => {
     it(`should correctly read the JSON element, and create the same YAML output as the reference: ${elementTestNumber}`, async () => {
-      const writers: CedarYamlWriters = CedarWriters.yaml().getStrict();
-      const comparisonResult: ComparisonResult = new ComparisonResult();
-      const leftYAMLObject = {};
-      const rightYAMLObject = {};
       try {
         const testResource: TestResource = TestResource.element(elementTestNumber);
         const artifactSource: string = TestUtil.readTestJson(testResource);
@@ -36,11 +31,6 @@ describe('YAMLTemplateElementWriter-references', () => {
         // console.log(stringified);
         expect(stringified).toEqual(referenceYaml);
       } catch (error) {
-        console.log('Left yaml object');
-        TestUtil.p(leftYAMLObject);
-        console.log('Right yaml object');
-        TestUtil.p(rightYAMLObject);
-        TestUtil.p(comparisonResult.getComparisonErrors());
         console.error(`Failed to process element file: ${elementTestNumber}`, error);
         throw error;
       }

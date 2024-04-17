@@ -9,7 +9,8 @@ async function generateTestCases() {
   let fieldTestNumbers = [];
   let elementTestCases = [];
   let elementTestNumbers = [];
-  let templateTestCases = []; // Add a new array for template test cases
+  let templateTestCases = [];
+  let templateTestNumbers = [];
 
   const subfoldersInFields = await fs.readdir(fieldsTestFolderPath, { withFileTypes: true });
   for (const dirent of subfoldersInFields) {
@@ -35,11 +36,10 @@ async function generateTestCases() {
   const subfoldersInTemplates = await fs.readdir(templatesTestFolderPath, { withFileTypes: true });
   for (const dirent of subfoldersInTemplates) {
     if (dirent.isDirectory()) {
-      //      if (dirent.name === '005') {
       const folderPath = path.join(templatesTestFolderPath, dirent.name);
       const sourcePath = path.join(folderPath, `template-${dirent.name}.json`); // Note the prefix change to "template-"
       templateTestCases.push(sourcePath);
-      //      }
+      templateTestNumbers.push(parseInt(dirent.name, 10));
     }
   }
 
@@ -57,7 +57,8 @@ async function generateTestCases() {
     `export const fieldTestNumbers: number[] = ${numberArrayToString(fieldTestNumbers)};\n` +
     `export const elementTestCases: string[] = ${arrayToString(elementTestCases)};\n` +
     `export const elementTestNumbers: number[] = ${numberArrayToString(elementTestNumbers)};\n` +
-    `export const templateTestCases: string[] = ${arrayToString(templateTestCases)};\n`;
+    `export const templateTestCases: string[] = ${arrayToString(templateTestCases)};\n` +
+    `export const templateTestNumbers: number[] = ${numberArrayToString(templateTestNumbers)};\n`;
   await fs.writeFile('itest/resources/generatedTestCases.ts', content, { encoding: 'utf8' });
 }
 

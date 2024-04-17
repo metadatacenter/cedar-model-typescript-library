@@ -1,7 +1,6 @@
 import {
   CedarWriters,
   CedarYamlWriters,
-  ComparisonResult,
   JsonArtifactParsingResult,
   JsonTemplateFieldReader,
   JsonTemplateFieldReaderResult,
@@ -15,10 +14,6 @@ describe('YAMLTemplateFieldWriter-references', () => {
   // Generate a test for each file
   fieldTestNumbers.forEach((fieldTestNumber) => {
     it(`should correctly read the JSON field, and create the same YAML output as the reference: ${fieldTestNumber}`, async () => {
-      const writers: CedarYamlWriters = CedarWriters.yaml().getStrict();
-      const comparisonResult: ComparisonResult = new ComparisonResult();
-      const leftYAMLObject = {};
-      const rightYAMLObject = {};
       try {
         const testResource: TestResource = TestResource.field(fieldTestNumber);
         const artifactSource: string = TestUtil.readTestJson(testResource);
@@ -36,11 +31,6 @@ describe('YAMLTemplateFieldWriter-references', () => {
         // console.log(stringified);
         expect(stringified).toEqual(referenceYaml);
       } catch (error) {
-        console.log('Left yaml object');
-        TestUtil.p(leftYAMLObject);
-        console.log('Right yaml object');
-        TestUtil.p(rightYAMLObject);
-        TestUtil.p(comparisonResult.getComparisonErrors());
         console.error(`Failed to process field file: ${fieldTestNumber}`, error);
         throw error;
       }

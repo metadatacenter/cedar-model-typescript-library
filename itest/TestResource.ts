@@ -28,7 +28,11 @@ export class TestResource {
   }
 
   public getDirectory() {
-    return '../../../cedar-test-artifacts/artifacts/' + this.type + 's' + '/' + this.getPadNum();
+    return '../../../' + this.getDirectoryFromCedarHomeRoot();
+  }
+
+  public getDirectoryFromCedarHomeRoot() {
+    return 'cedar-test-artifacts/artifacts/' + this.type + 's' + '/' + this.getPadNum();
   }
 
   private getPadNum() {

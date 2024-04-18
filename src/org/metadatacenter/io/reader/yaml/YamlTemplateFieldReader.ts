@@ -93,7 +93,7 @@ export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
     super.readNonReportableAttributes(field, fieldSourceObject);
     // Read field-specific nodes
     field.skos_prefLabel = ReaderUtil.getString(fieldSourceObject, YamlKeys.prefLabel);
-    field.skos_altLabel = ReaderUtil.getStringList(fieldSourceObject, YamlKeys.altLabel);
+    field.skos_altLabel = ReaderUtil.getStringList(fieldSourceObject, YamlKeys.altLabels);
   }
 
   private static readFieldSpecificAttributes(

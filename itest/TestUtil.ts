@@ -29,11 +29,21 @@ export class TestUtil {
     return fileContent;
   }
 
+  static writeOutsideResource(resourceFolder: string, fileName: string, content: string): void {
+    const projectRoot = process.cwd();
+    const filePath = path.join(projectRoot, '../', resourceFolder, fileName);
+    fs.writeFileSync(filePath, content, 'utf8');
+  }
+
   static readTestJson(testResource: TestResource): string {
     return this.readTestResourceAsString(testResource.getDirectory(), testResource.getFile('.json'));
   }
 
   static readReferenceYaml(testResource: TestResource): string {
     return this.readTestResourceAsString(testResource.getDirectory(), testResource.getFile('-ts-model-lib.yml'));
+  }
+
+  static writeSerializedYaml(testResource: TestResource, content: string): void {
+    this.writeOutsideResource(testResource.getDirectoryFromCedarHomeRoot(), testResource.getFile('-ts-model-lib-generated.yaml'), content);
   }
 }

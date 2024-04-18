@@ -25,9 +25,10 @@ export class YamlTemplateWriter extends YamlAbstractContainerArtifactWriter {
     }
     // build the final object
     const element: JsonNode = {
-      ...this.macroTypeAndId(template),
+      ...this.macroType(template),
+      ...this.macroNameAndDescriptionTemplate(template),
       ...this.macroSchemaIdentifier(template),
-      ...this.macroNameAndDescription(template),
+      ...this.macroId(template),
       ...this.macroStatusAndVersion(template),
       ...uiObject,
       ...this.macroProvenance(template),

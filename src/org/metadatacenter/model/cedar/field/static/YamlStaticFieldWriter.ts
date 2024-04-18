@@ -22,9 +22,10 @@ export class YamlStaticFieldWriter extends YamlTemplateFieldWriterInternal {
     // Build ui wrapper
     //const uiObject: JsonNode = this.buildUIObject(field);
     return {
-      ...this.macroTypeAndId(field),
-      ...this.macroSchemaIdentifier(field),
+      ...this.macroType(field),
       ...this.macroNameAndDescription(field),
+      ...this.macroSchemaIdentifier(field),
+      ...this.macroId(field),
       ...this.macroStatusAndVersion(field),
       ...this.macroSkos(field),
       ...this.expandUINodeForYAML(field),

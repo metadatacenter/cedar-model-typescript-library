@@ -35,9 +35,10 @@ export abstract class YamlTemplateFieldWriterInternal extends YamlAbstractArtifa
 
     // build the final object
     return {
-      ...this.macroTypeAndId(field),
-      ...this.macroSchemaIdentifier(field),
+      ...this.macroType(field),
       ...this.macroNameAndDescription(field),
+      ...this.macroSchemaIdentifier(field),
+      ...this.macroId(field),
       ...this.macroStatusAndVersion(field),
       ...this.macroSkos(field),
       ...uiObject,

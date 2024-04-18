@@ -9,7 +9,7 @@ export class YamlKeys {
 
   static label: string = 'label';
   static prefLabel: string = 'prefLabel';
-  static altLabel: string = 'altLabel';
+  static altLabels: string = 'altLabels';
 
   static datatype: string = 'datatype';
   static valueRecommendationEnabled: string = 'valueRecommendationEnabled';

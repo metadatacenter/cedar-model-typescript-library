@@ -23,8 +23,7 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
           const childMetaAbstract: AbstractChildDeploymentInfo | null = container.getChildrenInfo().get(childName);
           if (childMetaAbstract !== null) {
             // Put child deployment name
-            childDefinition[YamlKeys.name] = childName;
-
+            childDefinition[YamlKeys.key] = childName;
             if (child instanceof TemplateField) {
               childDefinition = {
                 ...childDefinition,

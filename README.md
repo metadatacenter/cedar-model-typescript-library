@@ -12,5 +12,14 @@ npm run build
 npm test
 ```
 
+## To regenerate reference file outputs
+```shell
+# Using CEDAR Artifact Library
+./scripts/regenerate-yaml-files.bash
+
+# Using CEDAR Model TypeScript Library
+npx ts-node ./itest/scripts/regenerate-yaml-files.ts
+```
+
 ## See it in action
 Check out the README at the companion [demo repo](https://github.com/metadatacenter/cedar-model-typescript-library-demo)

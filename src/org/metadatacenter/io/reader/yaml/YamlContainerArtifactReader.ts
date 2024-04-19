@@ -34,7 +34,7 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
     const childrenNodeList: JsonNode[] = ReaderUtil.getNodeList(elementSourceObject, YamlKeys.children);
     childrenNodeList.forEach((childNode) => {
       const type = ReaderUtil.getString(childNode, YamlKeys.type);
-      const name = ReaderUtil.getString(childNode, YamlKeys.name);
+      const name = ReaderUtil.getString(childNode, YamlKeys.key);
       const yamlArtifactType = YamlArtifactType.forValue(type);
       if (name !== null) {
         const childDeploymentInfo = new ChildDeploymentInfo(name);

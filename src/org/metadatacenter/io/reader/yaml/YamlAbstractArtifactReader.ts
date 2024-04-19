@@ -31,7 +31,7 @@ export abstract class YamlAbstractArtifactReader {
     // TODO: These are lost???
     // container.title = ReaderUtil.getString(sourceObject, TemplateProperty.title);
     // container.description = ReaderUtil.getString(sourceObject, TemplateProperty.description);
-    container.schema_name = ReaderUtil.getString(sourceObject, YamlKeys.label);
+    container.schema_name = ReaderUtil.getString(sourceObject, YamlKeys.name);
     container.schema_description = ReaderUtil.getString(sourceObject, YamlKeys.description);
     container.pav_createdBy = CedarUser.forValue(ReaderUtil.getString(sourceObject, YamlKeys.createdBy));
     container.pav_createdOn = IsoDate.forValue(ReaderUtil.getString(sourceObject, YamlKeys.createdOn));

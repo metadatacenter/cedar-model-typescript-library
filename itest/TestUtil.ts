@@ -40,7 +40,7 @@ export class TestUtil {
   }
 
   static readReferenceYaml(testResource: TestResource): string {
-    return this.readTestResourceAsString(testResource.getDirectory(), testResource.getFile('-ts-model-lib.yml'));
+    return this.readTestResourceAsString(testResource.getDirectory(), testResource.getFile('.yaml'));
   }
 
   static writeSerializedYaml(testResource: TestResource, content: string): void {

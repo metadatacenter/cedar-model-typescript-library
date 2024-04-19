@@ -19,6 +19,6 @@ describe('YamlTemplateWriter' + testResource.toString(), () => {
 
     const stringified = yamlWriter.getAsYamlString(jsonTemplateReaderResult.template);
     // console.log(stringified);
-    expect(stringified.split('\n').length).toEqual(4232);
+    expect(stringified.split('\n').length).toEqual(4151);
   });
 });

@@ -8,8 +8,7 @@ const skipTests: number[] = [3, 29];
 describe('YAMLTemplateWriter-references', () => {
   // Generate a test for each file
   templateTestNumbers.forEach((templateTestNumber) => {
-    //if (!skipTests.includes(templateTestNumber)) {
-    if (templateTestNumber == 6) {
+    if (!skipTests.includes(templateTestNumber)) {
       it(`should correctly read the JSON template, and create the same YAML output as the reference: ${templateTestNumber}`, async () => {
         try {
           const testResource: TestResource = TestResource.template(templateTestNumber);

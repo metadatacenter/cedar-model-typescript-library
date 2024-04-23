@@ -25,6 +25,7 @@ export class YamlTemplateElementWriter extends YamlAbstractContainerArtifactWrit
       ...this.macroStatusAndVersion(element),
       ...this.macroProvenance(element),
       ...this.macroDerivedFrom(element),
+      ...this.macroPreviousVersion(element),
       ...this.macroAnnotations(element),
     };
     const children: JsonNode[] = this.getChildListAsJSON(element);

@@ -17,6 +17,7 @@ describe('JsonTemplateWriter-references', () => {
   // Generate a test for each file
   templateTestNumbers.forEach((templateTestNumber) => {
     if (!skipTests.includes(templateTestNumber)) {
+      // if (templateTestNumber == 32) {
       it(`should correctly read the JSON template, and create the same JSON output as the reference: ${templateTestNumber}`, async () => {
         try {
           const testResource: TestResource = TestResource.template(templateTestNumber);

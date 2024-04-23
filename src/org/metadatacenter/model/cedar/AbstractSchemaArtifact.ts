@@ -18,6 +18,7 @@ export abstract class AbstractSchemaArtifact extends AbstractArtifact {
   public schema_identifier: NullableString = null;
   //
   public pav_derivedFrom: CedarArtifactId = CedarArtifactId.NULL;
+  public pav_previousVersion: CedarArtifactId = CedarArtifactId.NULL;
   //
   public annotations: Annotations | null = null;
 

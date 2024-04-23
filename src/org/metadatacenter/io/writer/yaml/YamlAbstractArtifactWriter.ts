@@ -119,6 +119,14 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
     return derivedFrom;
   }
 
+  protected macroPreviousVersion(artifact: AbstractSchemaArtifact): JsonNode {
+    const previousVersion: JsonNode = JsonNode.getEmpty();
+    if (artifact.pav_previousVersion !== CedarArtifactId.NULL) {
+      previousVersion[YamlKeys.previousVersion] = this.atomicWriter.write(artifact.pav_previousVersion);
+    }
+    return previousVersion;
+  }
+
   protected macroAnnotations(artifact: AbstractSchemaArtifact): JsonNode {
     return this.annotationsWriter.write(artifact.annotations);
   }

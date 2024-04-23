@@ -62,6 +62,7 @@ export const templateTestCases: string[] = [
   '../cedar-test-artifacts/artifacts/templates/029/template-029.json',
   '../cedar-test-artifacts/artifacts/templates/030/template-030.json',
   '../cedar-test-artifacts/artifacts/templates/031/template-031.json',
+  '../cedar-test-artifacts/artifacts/templates/032/template-032.json',
 ];
 export const templateTestNumbers: number[] = [
   1,
@@ -95,4 +96,5 @@ export const templateTestNumbers: number[] = [
   29,
   30,
   31,
+  32,
 ];

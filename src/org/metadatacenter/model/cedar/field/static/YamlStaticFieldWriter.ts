@@ -31,6 +31,7 @@ export class YamlStaticFieldWriter extends YamlTemplateFieldWriterInternal {
       ...this.expandUINodeForYAML(field),
       ...this.macroProvenance(field),
       ...this.macroDerivedFrom(field),
+      ...this.macroPreviousVersion(field),
       ...this.macroAnnotations(field),
     };
   }

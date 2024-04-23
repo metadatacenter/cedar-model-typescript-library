@@ -112,6 +112,7 @@ export class JsonTemplateWriter extends JsonAbstractContainerArtifactWriter {
       [CedarModel.schema]: this.atomicWriter.write(ArtifactSchema.CURRENT),
       ...this.macroSchemaIdentifier(template),
       ...this.macroDerivedFrom(template),
+      ...this.macroPreviousVersion(template),
       ...this.macroAnnotations(template),
     };
   }

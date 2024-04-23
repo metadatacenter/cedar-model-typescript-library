@@ -29,6 +29,7 @@ export class YamlKeys {
   static identifier: string = 'identifier';
 
   static derivedFrom: string = 'derivedFrom';
+  static previousVersion: string = 'previousVersion';
   static createdOn: string = 'createdOn';
   static createdBy: string = 'createdBy';
   static lastUpdatedOn: string = 'lastUpdatedOn';

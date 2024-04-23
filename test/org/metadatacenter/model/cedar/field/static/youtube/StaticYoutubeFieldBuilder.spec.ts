@@ -27,7 +27,7 @@ describe('StaticYoutubeFieldBuilder', () => {
       .withModifiedBy('https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c99')
       .withVersion('0.0.2')
       .withStatus('bibo:published')
-      .withSchemaName('Schema nam of this template')
+      .withSchemaName('Schema name of this template')
       .withSchemaDescription('Schema description of the template')
       .withPreferredLabel('Preferred label')
       .withAlternateLabels(['Alt label 1', 'Alt label 2', 'Alt label 3'])
@@ -60,7 +60,7 @@ describe('StaticYoutubeFieldBuilder', () => {
     expect(backparsed['properties']).not.toBeNull();
     expect(backparsed['required']).not.toBeNull();
 
-    expect(backparsed['schema:name']).toBe('Schema nam of this template');
+    expect(backparsed['schema:name']).toBe('Schema name of this template');
     expect(backparsed['schema:description']).toBe('Schema description of the template');
 
     expect(backparsed['pav:createdOn']).toBe('2024-03-12T10:03:57-07:00');

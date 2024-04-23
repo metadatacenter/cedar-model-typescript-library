@@ -16,6 +16,7 @@ import { ReaderUtil } from '../ReaderUtil';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 import { YamlValues } from '../../../model/cedar/constants/YamlValues';
 import { YamlArtifactParsingResult } from '../../../model/cedar/util/compare/YamlArtifactParsingResult';
+import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
 
 export abstract class YamlAbstractArtifactReader {
   protected behavior: YamlReaderBehavior;
@@ -41,6 +42,7 @@ export abstract class YamlAbstractArtifactReader {
     container.pav_version = PavVersion.forValue(ReaderUtil.getString(sourceObject, YamlKeys.version));
     container.bibo_status = BiboStatus.forYamlValue(ReaderUtil.getString(sourceObject, YamlKeys.status));
     container.pav_derivedFrom = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, YamlKeys.derivedFrom));
+    container.pav_previousVersion = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, YamlKeys.previousVersion));
     container.schema_identifier = ReaderUtil.getString(sourceObject, YamlKeys.identifier);
   }
 

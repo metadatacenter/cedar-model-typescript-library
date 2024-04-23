@@ -33,6 +33,7 @@ export class YamlTemplateWriter extends YamlAbstractContainerArtifactWriter {
       ...uiObject,
       ...this.macroProvenance(template),
       ...this.macroDerivedFrom(template),
+      ...this.macroPreviousVersion(template),
       ...this.macroAnnotations(template),
     };
     const children: JsonNode[] = this.getChildListAsJSON(template);

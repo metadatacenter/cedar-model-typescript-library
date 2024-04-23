@@ -12,6 +12,7 @@ import { CedarModel } from '../../../model/cedar/constants/CedarModel';
 import { CedarArtifactId } from '../../../model/cedar/types/cedar-types/CedarArtifactId';
 import { ValueConstraints } from '../../../model/cedar/field/ValueConstraints';
 import { CedarJsonWriters } from './CedarJsonWriters';
+import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 
 export abstract class JsonAbstractArtifactWriter extends AbstractArtifactWriter {
   protected behavior: JsonWriterBehavior;
@@ -77,6 +78,14 @@ export abstract class JsonAbstractArtifactWriter extends AbstractArtifactWriter 
       derivedFrom[JsonSchema.pavDerivedFrom] = this.atomicWriter.write(artifact.pav_derivedFrom);
     }
     return derivedFrom;
+  }
+
+  protected macroPreviousVersion(artifact: AbstractSchemaArtifact): JsonNode {
+    const previousVersion: JsonNode = JsonNode.getEmpty();
+    if (artifact.pav_previousVersion !== CedarArtifactId.NULL) {
+      previousVersion[JsonSchema.pavPreviousVersion] = this.atomicWriter.write(artifact.pav_previousVersion);
+    }
+    return previousVersion;
   }
 
   protected macroSchemaIdentifier(artifact: AbstractSchemaArtifact): JsonNode {

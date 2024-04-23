@@ -13,6 +13,7 @@ export class JsonSchema {
   static schemaVersion: string = 'schema:schemaVersion';
   static schemaIdentifier: string = 'schema:identifier';
   static pavDerivedFrom: string = 'pav:derivedFrom';
+  static pavPreviousVersion: string = 'pav:previousVersion';
   static pavCreatedOn: string = 'pav:createdOn';
   static pavCreatedBy: string = 'pav:createdBy';
   static pavLastUpdatedOn: string = 'pav:lastUpdatedOn';

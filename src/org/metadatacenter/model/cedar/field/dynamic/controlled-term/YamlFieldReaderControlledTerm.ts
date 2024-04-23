@@ -32,7 +32,7 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
   ): ControlledTermField {
     const field = ControlledTermFieldImpl.buildEmpty();
 
-    field.valueRecommendationEnabled = ReaderUtil.getBoolean(fieldSourceObject, YamlKeys.valueRecommendationEnabled);
+    field.valueRecommendationEnabled = ReaderUtil.getBoolean(fieldSourceObject, YamlKeys.valueRecommendation);
 
     const values: JsonNode[] = ReaderUtil.getNodeList(fieldSourceObject, YamlKeys.values);
     values.forEach((valueNode) => {

@@ -15,6 +15,8 @@ import { YamlArtifactType } from '../../../model/cedar/types/wrapped-types/YamlA
 import { Template } from '../../../model/cedar/template/Template';
 import { YamlWriterBehavior } from '../../../behavior/YamlWriterBehavior';
 import { CedarYamlWriters } from './CedarYamlWriters';
+import { ControlledTermFieldImpl } from '../../../model/cedar/field/dynamic/controlled-term/ControlledTermFieldImpl';
+import { TextFieldImpl } from '../../../model/cedar/field/dynamic/textfield/TextFieldImpl';
 
 export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter {
   protected behavior: YamlWriterBehavior;
@@ -70,6 +72,16 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
       skosObject[YamlKeys.altLabels] = field.skos_altLabel;
     }
     return skosObject;
+  }
+
+  protected macroValueRecommendation(field: TemplateField): JsonNode {
+    const ret: JsonNode = JsonNode.getEmpty();
+    if (field instanceof ControlledTermFieldImpl || field instanceof TextFieldImpl) {
+      if (field.valueRecommendationEnabled) {
+        ret[YamlKeys.valueRecommendation] = field.valueRecommendationEnabled;
+      }
+    }
+    return ret;
   }
 
   protected macroProvenance(artifact: AbstractSchemaArtifact): JsonNode {

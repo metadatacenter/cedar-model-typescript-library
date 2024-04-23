@@ -19,7 +19,7 @@ export abstract class YamlTemplateFieldWriterInternal extends YamlAbstractArtifa
   }
 
   public getAsYamlString(field: TemplateField): string {
-    return SimpleYamlSerializer.serialize(this.getYamlAsJsonNode(field, ChildDeploymentInfo.empty())).trim();
+    return SimpleYamlSerializer.serialize(this.getYamlAsJsonNode(field, ChildDeploymentInfo.empty()));
   }
 
   public getYamlAsJsonNode(field: TemplateField): JsonNode;
@@ -43,6 +43,7 @@ export abstract class YamlTemplateFieldWriterInternal extends YamlAbstractArtifa
       ...this.macroSkos(field),
       ...uiObject,
       ...vcObject,
+      ...this.macroValueRecommendation(field),
       ...this.macroProvenance(field),
       ...this.macroDerivedFrom(field),
       ...this.macroPreviousVersion(field),

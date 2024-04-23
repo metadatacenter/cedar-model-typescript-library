@@ -34,7 +34,7 @@ describe('JsonTemplateReader' + testResource.toString(), () => {
     // TestUtil.p(writer.getAsJsonNode(jsonTemplateReaderResult.template));
 
     expect(compareResult.wasSuccessful()).toBe(false);
-    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(1780);
+    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(1924);
     expect(compareResult.getBlueprintComparisonWarningCount()).toBe(0);
   });
 });

@@ -28,8 +28,7 @@ describe('YAMLTemplateFieldWriter-references', () => {
         const yamlWriter: YamlTemplateFieldWriter = writers.getFieldWriterForField(jsonFieldReaderResult.field);
 
         const stringified: string = yamlWriter.getAsYamlString(jsonFieldReaderResult.field);
-        // console.log(stringified);
-        expect(stringified).toEqual(referenceYaml);
+        expect(stringified.trim()).toEqual(referenceYaml.trim());
       } catch (error) {
         console.error(`Failed to process field file: ${fieldTestNumber}`, error);
         throw error;

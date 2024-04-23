@@ -21,13 +21,13 @@ export class YamlFieldWriterTemporal extends YamlTemplateFieldWriterInternal {
     if (field.inputTimeFormat !== TimeFormat.NULL) {
       ret[YamlKeys.timeFormat] = this.atomicWriter.write(field.inputTimeFormat);
     }
-    if (field.temporalGranularity !== TemporalGranularity.NULL) {
-      ret[YamlKeys.granularity] = this.atomicWriter.write(field.temporalGranularity);
-    }
     return ret;
   }
 
   override expandValueConstraintsNodeForYAML(vcNode: JsonNode, field: TemporalField, _childInfo: ChildDeploymentInfo): void {
     vcNode[YamlKeys.datatype] = this.atomicWriter.write(field.valueConstraints.temporalType);
+    if (field.temporalGranularity !== TemporalGranularity.NULL) {
+      vcNode[YamlKeys.granularity] = this.atomicWriter.write(field.temporalGranularity);
+    }
   }
 }

@@ -17,7 +17,7 @@ export class YamlFieldReaderTextField extends YamlTemplateFieldTypeSpecificReade
   ): TextField {
     const field = TextFieldImpl.buildEmpty();
 
-    field.valueRecommendationEnabled = ReaderUtil.getBoolean(fieldSourceObject, YamlKeys.valueRecommendationEnabled);
+    field.valueRecommendationEnabled = ReaderUtil.getBoolean(fieldSourceObject, YamlKeys.valueRecommendation);
 
     field.valueConstraints.defaultValue = ReaderUtil.getString(fieldSourceObject, YamlKeys.default);
     field.valueConstraints.minLength = ReaderUtil.getNumber(fieldSourceObject, YamlKeys.minLength);

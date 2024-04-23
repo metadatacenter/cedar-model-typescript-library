@@ -11,14 +11,6 @@ export class YamlFieldWriterTextField extends YamlTemplateFieldWriterInternal {
     super(behavior, writers);
   }
 
-  override expandUINodeForYAML(field: TextField): JsonNode {
-    const ret = JsonNode.getEmpty();
-    if (field.valueRecommendationEnabled) {
-      ret[YamlKeys.valueRecommendationEnabled] = field.valueRecommendationEnabled;
-    }
-    return ret;
-  }
-
   override expandValueConstraintsNodeForYAML(vcNode: JsonNode, field: TextField, _childInfo: ChildDeploymentInfo): void {
     if (field.valueConstraints.defaultValue != null && field.valueConstraints.defaultValue !== '') {
       vcNode[YamlKeys.default] = field.valueConstraints.defaultValue;

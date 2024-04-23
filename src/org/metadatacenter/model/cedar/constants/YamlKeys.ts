@@ -12,7 +12,7 @@ export class YamlKeys {
   static altLabels: string = 'altLabels';
 
   static datatype: string = 'datatype';
-  static valueRecommendationEnabled: string = 'valueRecommendationEnabled';
+  static valueRecommendation: string = 'valueRecommendation';
 
   static required: string = 'required';
   static recommended: string = 'recommended';

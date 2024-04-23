@@ -14,6 +14,8 @@ export class CedarArtifactId {
   static forValue(value: string | null): CedarArtifactId {
     if (value === null) {
       return CedarArtifactId.NULL;
+    } else if (value === '') {
+      return CedarArtifactId.NULL;
     } else {
       return new CedarArtifactId(value);
     }

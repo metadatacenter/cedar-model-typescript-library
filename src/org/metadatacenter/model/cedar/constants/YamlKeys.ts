@@ -59,7 +59,7 @@ export class YamlKeys {
 
   static minValue: string = 'minValue';
   static maxValue: string = 'maxValue';
-  static decimalPlace: string = 'decimalPlace';
+  static decimalPlaces: string = 'decimalPlaces';
   static unit: string = 'unit';
 
   static multipleChoice: string = 'multipleChoice';

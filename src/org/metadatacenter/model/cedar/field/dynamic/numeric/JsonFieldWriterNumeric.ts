@@ -30,8 +30,8 @@ export class JsonFieldWriterNumeric extends JsonTemplateFieldWriterInternal {
     if (field.valueConstraints.maxValue != null) {
       vcNode[CedarModel.maxValue] = field.valueConstraints.maxValue;
     }
-    if (field.valueConstraints.decimalPlace != null) {
-      vcNode[CedarModel.decimalPlace] = field.valueConstraints.decimalPlace;
+    if (field.valueConstraints.decimalPlaces != null) {
+      vcNode[CedarModel.decimalPlace] = field.valueConstraints.decimalPlaces;
     }
     if (field.valueConstraints.unitOfMeasure != null) {
       vcNode[CedarModel.unitOfMeasure] = field.valueConstraints.unitOfMeasure;

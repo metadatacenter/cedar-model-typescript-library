@@ -10,7 +10,12 @@ import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { NumericFieldImpl } from './NumericFieldImpl';
 
 export class JsonFieldReaderNumeric extends JsonTemplateFieldTypeSpecificReader {
-  override read(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, _parsingResult: JsonArtifactParsingResult, _path: JsonPath): NumericField {
+  override read(
+    fieldSourceObject: JsonNode,
+    childInfo: ChildDeploymentInfo,
+    _parsingResult: JsonArtifactParsingResult,
+    _path: JsonPath,
+  ): NumericField {
     const field = NumericFieldImpl.buildEmpty();
     this.readRequiredAndHidden(fieldSourceObject, childInfo);
 
@@ -19,7 +24,7 @@ export class JsonFieldReaderNumeric extends JsonTemplateFieldTypeSpecificReader 
       field.valueConstraints.numberType = NumberType.forValue(ReaderUtil.getString(valueConstraints, CedarModel.numberType));
       field.valueConstraints.minValue = ReaderUtil.getNumber(valueConstraints, CedarModel.minValue);
       field.valueConstraints.maxValue = ReaderUtil.getNumber(valueConstraints, CedarModel.maxValue);
-      field.valueConstraints.decimalPlace = ReaderUtil.getNumber(valueConstraints, CedarModel.decimalPlace);
+      field.valueConstraints.decimalPlaces = ReaderUtil.getNumber(valueConstraints, CedarModel.decimalPlace);
       field.valueConstraints.unitOfMeasure = ReaderUtil.getString(valueConstraints, CedarModel.unitOfMeasure);
     }
     return field;

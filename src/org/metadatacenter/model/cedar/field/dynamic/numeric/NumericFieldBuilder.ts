@@ -9,7 +9,7 @@ export interface NumericFieldBuilder extends TemplateFieldBuilder {
 
   withMaxValue(maxValue: number | null): NumericFieldBuilder;
 
-  withDecimalPlace(decimalPlace: number | null): NumericFieldBuilder;
+  withDecimalPlaces(decimalPlaces: number | null): NumericFieldBuilder;
 
   withUnitOfMeasure(unitOfMeasure: string | null): NumericFieldBuilder;
 

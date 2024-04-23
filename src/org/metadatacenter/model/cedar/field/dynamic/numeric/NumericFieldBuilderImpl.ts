@@ -8,7 +8,7 @@ export class NumericFieldBuilderImpl extends TemplateFieldBuilder implements Num
   private numberType: NumberType = NumberType.NULL;
   private minValue: number | null = null;
   private maxValue: number | null = null;
-  private decimalPlace: number | null = null;
+  private decimalPlaces: number | null = null;
   private unitOfMeasure: string | null = null;
 
   private constructor() {
@@ -34,8 +34,8 @@ export class NumericFieldBuilderImpl extends TemplateFieldBuilder implements Num
     return this;
   }
 
-  public withDecimalPlace(decimalPlace: number | null): NumericFieldBuilder {
-    this.decimalPlace = decimalPlace;
+  public withDecimalPlaces(decimalPlaces: number | null): NumericFieldBuilder {
+    this.decimalPlaces = decimalPlaces;
     return this;
   }
 
@@ -51,7 +51,7 @@ export class NumericFieldBuilderImpl extends TemplateFieldBuilder implements Num
     numericField.valueConstraints.numberType = this.numberType;
     numericField.valueConstraints.minValue = this.minValue;
     numericField.valueConstraints.maxValue = this.maxValue;
-    numericField.valueConstraints.decimalPlace = this.decimalPlace;
+    numericField.valueConstraints.decimalPlaces = this.decimalPlaces;
     numericField.valueConstraints.unitOfMeasure = this.unitOfMeasure;
 
     return numericField;

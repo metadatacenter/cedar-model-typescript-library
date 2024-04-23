@@ -35,7 +35,7 @@ describe('NumericFieldBuilder', () => {
       .withNumberType(NumberType.FLOAT)
       .withMinValue(1)
       .withMaxValue(100)
-      .withDecimalPlace(2)
+      .withDecimalPlaces(2)
       .withUnitOfMeasure('cm')
       .build();
 

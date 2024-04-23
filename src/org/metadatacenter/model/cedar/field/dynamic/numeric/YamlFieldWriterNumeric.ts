@@ -19,8 +19,8 @@ export class YamlFieldWriterNumeric extends YamlTemplateFieldWriterInternal {
     if (field.valueConstraints.maxValue != null) {
       vcNode[YamlKeys.maxValue] = field.valueConstraints.maxValue;
     }
-    if (field.valueConstraints.decimalPlace != null) {
-      vcNode[YamlKeys.decimalPlace] = field.valueConstraints.decimalPlace;
+    if (field.valueConstraints.decimalPlaces != null) {
+      vcNode[YamlKeys.decimalPlaces] = field.valueConstraints.decimalPlaces;
     }
     if (field.valueConstraints.unitOfMeasure != null) {
       vcNode[YamlKeys.unit] = field.valueConstraints.unitOfMeasure;

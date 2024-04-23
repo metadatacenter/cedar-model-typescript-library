@@ -52,7 +52,7 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
         childDeploymentInfo.hidden = ReaderUtil.getBoolean(configuration, YamlKeys.hidden);
 
         if (yamlArtifactType !== YamlArtifactType.ATTRIBUTE_VALUE) {
-          childDeploymentInfo.iri = ReaderUtil.getString(configuration, YamlKeys.propertyIRI);
+          childDeploymentInfo.iri = ReaderUtil.getString(configuration, YamlKeys.propertyIri);
         }
 
         if (yamlArtifactType.isField()) {

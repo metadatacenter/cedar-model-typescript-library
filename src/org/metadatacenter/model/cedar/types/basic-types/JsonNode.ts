@@ -8,4 +8,8 @@ export abstract class JsonNode {
   static getEmptyList(): Array<JsonNode> {
     return [];
   }
+
+  static hasEntries(node: JsonNode): boolean {
+    return Object.keys(node).length > 0;
+  }
 }

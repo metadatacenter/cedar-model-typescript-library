@@ -35,7 +35,10 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
                 ...this.writers.getTemplateElementWriter().getYamlAsJsonNode(child),
               };
             }
-            childDefinition[YamlKeys.configuration] = this.getDeploymentInfo(child, childMetaAbstract);
+            const deploymentInfo: JsonNode = this.getDeploymentInfo(child, childMetaAbstract);
+            if (JsonNode.hasEntries(deploymentInfo)) {
+              childDefinition[YamlKeys.configuration] = deploymentInfo;
+            }
             childList.push(childDefinition);
           }
         }
@@ -57,11 +60,15 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
         childConfiguration[YamlKeys.recommended] = true;
       }
       if (childMeta.uiInputType != UiInputType.ATTRIBUTE_VALUE) {
-        childConfiguration[YamlKeys.propertyIRI] = childMeta.iri;
+        childConfiguration[YamlKeys.propertyIri] = childMeta.iri;
       }
     }
-    childConfiguration[YamlKeys.overrideLabel] = childMeta.label;
-    childConfiguration[YamlKeys.overrideDescription] = childMeta.description;
+    if (childMeta.label !== null && childMeta.label !== child?.schema_name) {
+      childConfiguration[YamlKeys.overrideLabel] = childMeta.label;
+    }
+    if (childMeta.description !== null && childMeta.description !== child?.schema_description) {
+      childConfiguration[YamlKeys.overrideDescription] = childMeta.description;
+    }
 
     const { isMultiInstance, minItems: constMinItems, maxItems: constMaxItems } = WriterUtil.getMultiMinMax(child!, childMeta);
     let minItems = constMinItems;

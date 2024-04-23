@@ -133,6 +133,11 @@ import { YamlArtifactParsingResult } from './org/metadatacenter/model/cedar/util
 import { ComparisonResult } from './org/metadatacenter/model/cedar/util/compare/ComparisonResult';
 import { YamlObjectComparator } from './org/metadatacenter/model/cedar/util/compare/YamlObjectComparator';
 import { JsonObjectComparator } from './org/metadatacenter/model/cedar/util/compare/JsonObjectComparator';
+import { YamlTemplateReaderResult } from './org/metadatacenter/io/reader/yaml/YamlTemplateReaderResult';
+import { YamlTemplateFieldReaderResult } from './org/metadatacenter/io/reader/yaml/YamlTemplateFieldReaderResult';
+import { YamlTemplateElementReaderResult } from './org/metadatacenter/io/reader/yaml/YamlTemplateElementReaderResult';
+import { YamlArtifactReaderResult } from './org/metadatacenter/io/reader/yaml/YamlArtifactReaderResult';
+import { YamlTemplateInstanceReaderResult } from './org/metadatacenter/io/reader/yaml/YamlTemplateInstanceReaderResult';
 // It is needed, do not remove, even if it looks unused
 export { JsonTemplateFieldWriterInternal as JsonTemplateFieldWriter };
 export { YamlTemplateFieldWriterInternal as YamlTemplateFieldWriter };
@@ -228,10 +233,15 @@ export { PavVersion };
 export { ComparisonErrorType };
 
 export { JsonTemplateFieldReaderResult };
+export { YamlTemplateFieldReaderResult };
 export { JsonTemplateElementReaderResult };
+export { YamlTemplateElementReaderResult };
 export { JsonTemplateReaderResult };
+export { YamlTemplateReaderResult };
 export { JsonTemplateInstanceReaderResult };
+export { YamlTemplateInstanceReaderResult };
 export { JsonArtifactReaderResult };
+export { YamlArtifactReaderResult };
 export { TemplateChild };
 
 export { JsonArtifactParsingResult };

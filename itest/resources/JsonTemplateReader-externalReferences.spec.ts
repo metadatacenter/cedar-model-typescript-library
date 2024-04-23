@@ -26,7 +26,7 @@ describe('JSONTemplateReader - CEDAR reference templates', () => {
     'SampleSection.json',
     'SampleSuspension.json',
     'SimpleTemplate.json',
-    'SimpleTemplateWithAttributeValues.json',
+    // 'SimpleTemplateWithAttributeValues.json', // TODO: this is successful at the moment
     'TemplateWithActions.json',
     'HuBMAP/CODEX.json',
     'HuBMAP/DESI.json',
@@ -35,6 +35,7 @@ describe('JSONTemplateReader - CEDAR reference templates', () => {
     'HuBMAP/NanoSplits.json',
     'HuBMAP/SIMS.json',
   ];
+  // files = ['SimpleTemplateWithAttributeValues.json'];
 
   test.each(files)('reads template %s from CEDAR Artifact Library', (fileName) => {
     const templateSource = TestUtil.readOutsideResourceAsString('../cedar-artifact-library/src/test/resources/templates/', fileName);

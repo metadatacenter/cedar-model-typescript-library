@@ -19,7 +19,7 @@ export class TestUtil {
     const projectRoot = process.cwd();
     const filePath = path.join(projectRoot, 'test', 'resources', resourceFolder, fileName);
     const fileContent = fs.readFileSync(filePath, 'utf8');
-    return fileContent.trim();
+    return fileContent;
   }
 
   static readOutsideResourceAsString(resourceFolder: string, fileName: string): string {
@@ -45,5 +45,9 @@ export class TestUtil {
 
   static writeSerializedYaml(testResource: TestResource, content: string): void {
     this.writeOutsideResource(testResource.getDirectoryFromCedarHomeRoot(), testResource.getFile('-ts-model-lib-generated.yaml'), content);
+  }
+
+  static writeSerializedJson(testResource: TestResource, content: string): void {
+    this.writeOutsideResource(testResource.getDirectoryFromCedarHomeRoot(), testResource.getFile('-ts-model-lib-generated.json'), content);
   }
 }

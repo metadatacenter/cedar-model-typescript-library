@@ -36,6 +36,6 @@ export class YamlTemplateElementWriter extends YamlAbstractContainerArtifactWrit
   }
 
   public getAsYamlString(element: TemplateElement): string {
-    return SimpleYamlSerializer.serialize(this.getYamlAsJsonNode(element)).trim();
+    return SimpleYamlSerializer.serialize(this.getYamlAsJsonNode(element));
   }
 }

@@ -25,7 +25,7 @@ describe('YAMLTemplateWriter-references', () => {
 
           const stringified = yamlWriter.getAsYamlString(jsonTemplateReaderResult.template);
           // console.log(stringified);
-          expect(stringified).toEqual(referenceYaml);
+          expect(stringified.trim()).toEqual(referenceYaml.trim());
         } catch (error) {
           console.error(`Failed to process template file: ${templateTestNumber}`, error);
           throw error;

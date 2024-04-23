@@ -29,7 +29,7 @@ describe('YAMLTemplateElementWriter-references', () => {
 
         const stringified = yamlWriter.getAsYamlString(jsonElementReaderResult.element);
         // console.log(stringified);
-        expect(stringified).toEqual(referenceYaml);
+        expect(stringified.trim()).toEqual(referenceYaml.trim());
       } catch (error) {
         console.error(`Failed to process element file: ${elementTestNumber}`, error);
         throw error;

@@ -2,17 +2,17 @@ import { elementTestNumbers, fieldTestNumbers, templateTestNumbers } from '../re
 import { TestResource } from '../TestResource';
 import { TestUtil } from '../TestUtil';
 import {
+  CedarJsonWriters,
   CedarWriters,
-  CedarYamlWriters,
   JsonTemplateElementReader,
   JsonTemplateElementReaderResult,
+  JsonTemplateElementWriter,
   JsonTemplateFieldReader,
   JsonTemplateFieldReaderResult,
+  JsonTemplateFieldWriter,
   JsonTemplateReader,
   JsonTemplateReaderResult,
-  YamlTemplateElementWriter,
-  YamlTemplateFieldWriter,
-  YamlTemplateWriter,
+  JsonTemplateWriter,
 } from '../../src';
 
 templateTestNumbers.forEach((templateTestNumber) => {
@@ -22,12 +22,12 @@ templateTestNumbers.forEach((templateTestNumber) => {
     const reader: JsonTemplateReader = JsonTemplateReader.getStrict();
     const jsonTemplateReaderResult: JsonTemplateReaderResult = reader.readFromString(artifactSource);
 
-    const writers: CedarYamlWriters = CedarWriters.yaml().getStrict();
-    const yamlWriter: YamlTemplateWriter = writers.getTemplateWriter();
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const jsonWriter: JsonTemplateWriter = writers.getTemplateWriter();
 
-    const stringified = yamlWriter.getAsYamlString(jsonTemplateReaderResult.template);
+    const stringified = jsonWriter.getAsJsonString(jsonTemplateReaderResult.template);
 
-    TestUtil.writeSerializedYaml(testResource, stringified);
+    TestUtil.writeSerializedJson(testResource, stringified + '\n');
   } catch (error) {
     console.error(`Failed to process template file: ${templateTestNumber}`, error);
     throw error;
@@ -41,12 +41,12 @@ elementTestNumbers.forEach((templateElementTestNumber) => {
     const reader: JsonTemplateElementReader = JsonTemplateElementReader.getStrict();
     const jsonTemplateElementReaderResult: JsonTemplateElementReaderResult = reader.readFromString(artifactSource);
 
-    const writers: CedarYamlWriters = CedarWriters.yaml().getStrict();
-    const yamlWriter: YamlTemplateElementWriter = writers.getTemplateElementWriter();
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const jsonWriter: JsonTemplateElementWriter = writers.getTemplateElementWriter();
 
-    const stringified = yamlWriter.getAsYamlString(jsonTemplateElementReaderResult.element);
+    const stringified = jsonWriter.getAsJsonString(jsonTemplateElementReaderResult.element);
 
-    TestUtil.writeSerializedYaml(testResource, stringified);
+    TestUtil.writeSerializedJson(testResource, stringified + '\n');
   } catch (error) {
     console.error(`Failed to process templateElement file: ${templateElementTestNumber}`, error);
     throw error;
@@ -60,12 +60,12 @@ fieldTestNumbers.forEach((templateFieldTestNumber) => {
     const reader: JsonTemplateFieldReader = JsonTemplateFieldReader.getStrict();
     const jsonTemplateFieldReaderResult: JsonTemplateFieldReaderResult = reader.readFromString(artifactSource);
 
-    const writers: CedarYamlWriters = CedarWriters.yaml().getStrict();
-    const yamlWriter: YamlTemplateFieldWriter = writers.getFieldWriterForField(jsonTemplateFieldReaderResult.field);
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const jsonWriter: JsonTemplateFieldWriter = writers.getFieldWriterForField(jsonTemplateFieldReaderResult.field);
 
-    const stringified = yamlWriter.getAsYamlString(jsonTemplateFieldReaderResult.field);
+    const stringified = jsonWriter.getAsJsonString(jsonTemplateFieldReaderResult.field);
 
-    TestUtil.writeSerializedYaml(testResource, stringified);
+    TestUtil.writeSerializedJson(testResource, stringified + '\n');
   } catch (error) {
     console.error(`Failed to process templateField file: ${templateFieldTestNumber}`, error);
     throw error;

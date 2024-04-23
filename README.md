@@ -19,6 +19,7 @@ npm test
 
 # Using CEDAR Model TypeScript Library
 npx ts-node ./itest/scripts/regenerate-yaml-files.ts
+npx ts-node ./itest/scripts/regenerate-json-files.ts
 ```
 
 ## See it in action

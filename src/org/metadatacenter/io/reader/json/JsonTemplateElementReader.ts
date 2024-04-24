@@ -9,7 +9,6 @@ import { JsonArtifactParsingResult } from '../../../model/cedar/util/compare/Jso
 import { ContainerArtifactChildrenInfo } from '../../../model/cedar/deployment/ContainerArtifactChildrenInfo';
 import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
 import { JsonReaderBehavior } from '../../../behavior/JsonReaderBehavior';
-import { UiInputType } from '../../../model/cedar/types/wrapped-types/UiInputType';
 import { JsonTemplateFieldContentDynamic } from '../../../model/cedar/util/serialization/JsonTemplateFieldContentDynamic';
 import { JsonTemplateElementReaderResult } from './JsonTemplateElementReaderResult';
 import { TemplateElement } from '../../../model/cedar/element/TemplateElement';
@@ -42,7 +41,7 @@ export class JsonTemplateElementReader extends JsonContainerArtifactReader {
   }
 
   protected override includeInIRIMapping(childInfo: ChildDeploymentInfo): boolean {
-    return childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD && childInfo.uiInputType !== UiInputType.ATTRIBUTE_VALUE;
+    return childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD;
   }
 
   public readFromString(elementSourceString: string): JsonTemplateElementReaderResult {

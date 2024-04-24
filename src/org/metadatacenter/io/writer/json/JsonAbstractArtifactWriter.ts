@@ -12,7 +12,6 @@ import { CedarModel } from '../../../model/cedar/constants/CedarModel';
 import { CedarArtifactId } from '../../../model/cedar/types/cedar-types/CedarArtifactId';
 import { ValueConstraints } from '../../../model/cedar/field/ValueConstraints';
 import { CedarJsonWriters } from './CedarJsonWriters';
-import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 
 export abstract class JsonAbstractArtifactWriter extends AbstractArtifactWriter {
   protected behavior: JsonWriterBehavior;

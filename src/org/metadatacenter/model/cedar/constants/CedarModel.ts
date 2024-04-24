@@ -81,11 +81,12 @@ export class CedarModel {
 
     static action: string = 'action';
     static to: string = 'to';
+
+    static recommendedValue = 'recommendedValue';
   };
 
   static Ui = class {
     static hidden = 'hidden';
-    static recommendedValue = 'recommendedValue';
   };
 
   static nullEnabled = 'nullEnabled';

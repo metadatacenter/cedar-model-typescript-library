@@ -39,8 +39,8 @@ export class YamlKeys {
   static value: string = 'value';
 
   static granularity: string = 'granularity';
-  static timeZone: string = 'timeZone';
-  static timeFormat: string = 'timeFormat';
+  static inputTimeZone: string = 'inputTimeZone';
+  static inputTimeFormat: string = 'inputTimeFormat';
 
   static header: string = 'header';
   static footer: string = 'footer';

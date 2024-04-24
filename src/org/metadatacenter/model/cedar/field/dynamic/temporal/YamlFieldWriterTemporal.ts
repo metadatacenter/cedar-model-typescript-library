@@ -13,21 +13,22 @@ export class YamlFieldWriterTemporal extends YamlTemplateFieldWriterInternal {
     super(behavior, writers);
   }
 
-  override expandUINodeForYAML(field: TemporalField): JsonNode {
-    const ret = JsonNode.getEmpty();
-    if (field.timezoneEnabled) {
-      ret[YamlKeys.timeZone] = field.timezoneEnabled;
-    }
-    if (field.inputTimeFormat !== TimeFormat.NULL) {
-      ret[YamlKeys.timeFormat] = this.atomicWriter.write(field.inputTimeFormat);
-    }
-    return ret;
-  }
-
   override expandValueConstraintsNodeForYAML(vcNode: JsonNode, field: TemporalField, _childInfo: ChildDeploymentInfo): void {
     vcNode[YamlKeys.datatype] = this.atomicWriter.write(field.valueConstraints.temporalType);
     if (field.temporalGranularity !== TemporalGranularity.NULL) {
       vcNode[YamlKeys.granularity] = this.atomicWriter.write(field.temporalGranularity);
+      if (
+        field.temporalGranularity !== TemporalGranularity.YEAR &&
+        field.temporalGranularity !== TemporalGranularity.MONTH &&
+        field.temporalGranularity !== TemporalGranularity.DAY
+      ) {
+        if (field.inputTimeFormat !== TimeFormat.NULL) {
+          vcNode[YamlKeys.inputTimeFormat] = this.atomicWriter.write(field.inputTimeFormat);
+        }
+        if (field.timezoneEnabled) {
+          vcNode[YamlKeys.inputTimeZone] = field.timezoneEnabled;
+        }
+      }
     }
   }
 }

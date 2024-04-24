@@ -39,9 +39,6 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
       if (childInfo.hidden) {
         uiNode[CedarModel.Ui.hidden] = childInfo.hidden;
       }
-      if (childInfo.recommendedValue) {
-        uiNode[CedarModel.Ui.recommendedValue] = childInfo.recommendedValue;
-      }
     }
   }
 
@@ -61,6 +58,11 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
   protected expandValueConstraintsNode(vcNode: JsonNode, field: TemplateField, childInfo: AbstractChildDeploymentInfo): void {
     if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
       vcNode[CedarModel.requiredValue] = childInfo.requiredValue;
+    }
+    if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
+      if (childInfo.recommendedValue) {
+        vcNode[CedarModel.ValueConstraints.recommendedValue] = childInfo.recommendedValue;
+      }
     }
   }
 

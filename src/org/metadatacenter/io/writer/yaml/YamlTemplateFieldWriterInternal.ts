@@ -44,9 +44,9 @@ export abstract class YamlTemplateFieldWriterInternal extends YamlAbstractArtifa
       ...uiObject,
       ...vcObject,
       ...this.macroValueRecommendation(field),
-      ...this.macroProvenance(field),
-      ...this.macroDerivedFrom(field),
       ...this.macroPreviousVersion(field),
+      ...this.macroDerivedFrom(field),
+      ...this.macroProvenance(field),
       ...this.macroAnnotations(field),
     };
   }

@@ -15,11 +15,20 @@ npm test
 ## To regenerate reference file outputs
 ```shell
 # Using CEDAR Artifact Library
-./scripts/regenerate-yaml-files.bash
+npx ts-node ./itest/scripts/regenerate-json-files-with-java-lib.ts
+npx ts-node ./itest/scripts/regenerate-yaml-files-with-java-lib.ts
 
 # Using CEDAR Model TypeScript Library
-npx ts-node ./itest/scripts/regenerate-yaml-files.ts
-npx ts-node ./itest/scripts/regenerate-json-files.ts
+npx ts-node ./itest/scripts/regenerate-json-files-with-ts-lib.ts
+npx ts-node ./itest/scripts/regenerate-yaml-files-with-ts-lib.ts
+
+# All files
+npx ts-node ./itest/scripts/regenerate-all-files.ts
+```
+
+## Compare generated files
+```shell
+npx ts-node ./itest/scripts/compare-yaml-files.ts
 ```
 
 ## See it in action

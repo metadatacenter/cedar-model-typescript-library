@@ -18,7 +18,7 @@ describe('JsonTemplateFieldWriter-references', () => {
       let comparisonResult: JsonArtifactParsingResult = new JsonArtifactParsingResult();
       try {
         const testResource: TestResource = TestResource.field(fieldTestNumber);
-        const artifactSource: string = TestUtil.readTestJson(testResource);
+        const artifactSource: string = TestUtil.readReferenceJson(testResource);
         const reader: JsonTemplateFieldReader = JsonTemplateFieldReader.getStrict();
         const jsonFieldReaderResult: JsonTemplateFieldReaderResult = reader.readFromString(artifactSource);
         expect(jsonFieldReaderResult).not.toBeNull();

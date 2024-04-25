@@ -6,8 +6,8 @@ const testResource: TestResource = TestResource.template(29);
 
 describe('YamlTemplateWriter' + testResource.toString(), () => {
   test('read a JSON template, and writes it as YAML', () => {
-    const artifactSource = TestUtil.readTestJson(testResource);
-    const referenceYaml = TestUtil.readReferenceYaml(testResource);
+    const artifactSource = TestUtil.readReferenceJson(testResource);
+    //const referenceYaml = TestUtil.readReferenceYaml(testResource);
     const reader: JsonTemplateReader = JsonTemplateReader.getStrict();
     const jsonTemplateReaderResult = reader.readFromString(artifactSource);
     expect(jsonTemplateReaderResult).not.toBeNull();
@@ -19,6 +19,6 @@ describe('YamlTemplateWriter' + testResource.toString(), () => {
 
     const stringified = yamlWriter.getAsYamlString(jsonTemplateReaderResult.template);
     // console.log(stringified);
-    expect(stringified.split('\n').length).toEqual(3408);
+    expect(stringified.split('\n').length).toEqual(3412);
   });
 });

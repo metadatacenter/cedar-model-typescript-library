@@ -50,10 +50,7 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
         childDeploymentInfo.requiredValue = ReaderUtil.getBoolean(configuration, YamlKeys.required);
         childDeploymentInfo.recommendedValue = ReaderUtil.getBoolean(configuration, YamlKeys.recommended);
         childDeploymentInfo.hidden = ReaderUtil.getBoolean(configuration, YamlKeys.hidden);
-
-        if (yamlArtifactType !== YamlArtifactType.ATTRIBUTE_VALUE) {
-          childDeploymentInfo.iri = ReaderUtil.getString(configuration, YamlKeys.propertyIri);
-        }
+        childDeploymentInfo.iri = ReaderUtil.getString(configuration, YamlKeys.propertyIri);
 
         if (yamlArtifactType.isField()) {
           const cedarFieldType: CedarFieldType = CedarFieldType.forYamlArtifactType(yamlArtifactType);

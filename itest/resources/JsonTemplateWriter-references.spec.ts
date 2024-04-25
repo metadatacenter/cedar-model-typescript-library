@@ -22,7 +22,7 @@ describe('JsonTemplateWriter-references', () => {
         try {
           const testResource: TestResource = TestResource.template(templateTestNumber);
 
-          const artifactSource: string = TestUtil.readTestJson(testResource);
+          const artifactSource: string = TestUtil.readReferenceJson(testResource);
           const reader: JsonTemplateReader = JsonTemplateReader.getStrict();
           const jsonTemplateReaderResult: JsonTemplateReaderResult = reader.readFromString(artifactSource);
           expect(jsonTemplateReaderResult).not.toBeNull();
@@ -35,7 +35,7 @@ describe('JsonTemplateWriter-references', () => {
 
           const compareResult: JsonArtifactParsingResult = RoundTrip.compare(jsonTemplateReaderResult, writer);
 
-          // TestUtil.p(jsonTemplateReaderResult.template.asCedarTemplateJSONObject());
+          // console.log(writer.getAsJsonString(jsonTemplateReaderResult.template));
           // TestUtil.p(compareResult);
 
           expect(compareResult.wasSuccessful()).toBe(true);

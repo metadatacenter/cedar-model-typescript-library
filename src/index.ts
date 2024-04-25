@@ -138,6 +138,7 @@ import { YamlTemplateFieldReaderResult } from './org/metadatacenter/io/reader/ya
 import { YamlTemplateElementReaderResult } from './org/metadatacenter/io/reader/yaml/YamlTemplateElementReaderResult';
 import { YamlArtifactReaderResult } from './org/metadatacenter/io/reader/yaml/YamlArtifactReaderResult';
 import { YamlTemplateInstanceReaderResult } from './org/metadatacenter/io/reader/yaml/YamlTemplateInstanceReaderResult';
+import { Language } from './org/metadatacenter/model/cedar/types/wrapped-types/Language';
 // It is needed, do not remove, even if it looks unused
 export { JsonTemplateFieldWriterInternal as JsonTemplateFieldWriter };
 export { YamlTemplateFieldWriterInternal as YamlTemplateFieldWriter };
@@ -229,6 +230,7 @@ export { CedarFieldCategory };
 export { CedarArtifactType };
 export { CedarUser };
 export { PavVersion };
+export { Language };
 
 export { ComparisonErrorType };
 

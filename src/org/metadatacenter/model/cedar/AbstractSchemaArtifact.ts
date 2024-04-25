@@ -6,6 +6,7 @@ import { Annotations } from './annotation/Annotations';
 import { NullableString } from './types/basic-types/NullableString';
 import { AbstractArtifact } from './AbstractArtifact';
 import { AbstractChildDeploymentInfoBuilder } from './deployment/AbstractChildDeploymentInfoBuilder';
+import { Language } from './types/wrapped-types/Language';
 
 export abstract class AbstractSchemaArtifact extends AbstractArtifact {
   public title: NullableString = null;
@@ -19,6 +20,8 @@ export abstract class AbstractSchemaArtifact extends AbstractArtifact {
   //
   public pav_derivedFrom: CedarArtifactId = CedarArtifactId.NULL;
   public pav_previousVersion: CedarArtifactId = CedarArtifactId.NULL;
+  //
+  public language: Language = Language.NULL;
   //
   public annotations: Annotations | null = null;
 

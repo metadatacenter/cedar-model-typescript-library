@@ -16,7 +16,7 @@ import { ReaderUtil } from '../ReaderUtil';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 import { YamlValues } from '../../../model/cedar/constants/YamlValues';
 import { YamlArtifactParsingResult } from '../../../model/cedar/util/compare/YamlArtifactParsingResult';
-import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
+import { Language } from '../../../model/cedar/types/wrapped-types/Language';
 
 export abstract class YamlAbstractArtifactReader {
   protected behavior: YamlReaderBehavior;
@@ -37,13 +37,14 @@ export abstract class YamlAbstractArtifactReader {
     container.pav_createdBy = CedarUser.forValue(ReaderUtil.getString(sourceObject, YamlKeys.createdBy));
     container.pav_createdOn = IsoDate.forValue(ReaderUtil.getString(sourceObject, YamlKeys.createdOn));
     container.oslc_modifiedBy = CedarUser.forValue(ReaderUtil.getString(sourceObject, YamlKeys.modifiedBy));
-    container.pav_lastUpdatedOn = IsoDate.forValue(ReaderUtil.getString(sourceObject, YamlKeys.lastUpdatedOn));
+    container.pav_lastUpdatedOn = IsoDate.forValue(ReaderUtil.getString(sourceObject, YamlKeys.modifiedOn));
     container.schema_schemaVersion = SchemaVersion.forValue(ReaderUtil.getString(sourceObject, YamlKeys.modelVersion));
     container.pav_version = PavVersion.forValue(ReaderUtil.getString(sourceObject, YamlKeys.version));
     container.bibo_status = BiboStatus.forYamlValue(ReaderUtil.getString(sourceObject, YamlKeys.status));
     container.pav_derivedFrom = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, YamlKeys.derivedFrom));
     container.pav_previousVersion = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, YamlKeys.previousVersion));
     container.schema_identifier = ReaderUtil.getString(sourceObject, YamlKeys.identifier);
+    container.language = Language.forValue(ReaderUtil.getString(sourceObject, YamlKeys.language));
   }
 
   protected readAnnotations(

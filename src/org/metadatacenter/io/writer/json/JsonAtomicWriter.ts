@@ -19,6 +19,7 @@ import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { JsonTemplateFieldContentDynamic } from '../../../model/cedar/util/serialization/JsonTemplateFieldContentDynamic';
 import { Iri } from '../../../model/cedar/types/wrapped-types/Iri';
 import { BioportalTermType, BioportalTermTypeJsonValue } from '../../../model/cedar/types/bioportal-types/BioportalTermType';
+import { Language } from '../../../model/cedar/types/wrapped-types/Language';
 
 export class JsonAtomicWriter {
   private behavior: JsonWriterBehavior;
@@ -46,6 +47,7 @@ export class JsonAtomicWriter {
       | AdditionalProperties
       | Iri
       | BioportalTermType
+      | Language
       | null,
   ): string | number | boolean | JsonNode | null {
     if (arg == null) {
@@ -85,6 +87,8 @@ export class JsonAtomicWriter {
       return this.writeURI(arg);
     } else if (arg instanceof BioportalTermType) {
       return this.writeBioportalTermTypeJson(arg);
+    } else if (arg instanceof Language) {
+      return this.writeLanguage(arg);
     } else {
       throw new Error('Unsupported type');
     }
@@ -161,5 +165,9 @@ export class JsonAtomicWriter {
 
   private writeBioportalTermTypeJson(termType: BioportalTermType): BioportalTermTypeJsonValue {
     return termType.getJsonValue();
+  }
+
+  private writeLanguage(language: Language): string | null {
+    return language.getValue();
   }
 }

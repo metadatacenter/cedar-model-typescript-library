@@ -3,9 +3,9 @@ import { ControlledTermField } from './ControlledTermField';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { YamlTemplateFieldWriterInternal } from '../../../../../io/writer/yaml/YamlTemplateFieldWriterInternal';
 import { YamlKeys } from '../../../constants/YamlKeys';
-import { XsdDatatype } from '../../../constants/XsdDatatype';
 import { CedarYamlWriters } from '../../../../../io/writer/yaml/CedarYamlWriters';
 import { YamlWriterBehavior } from '../../../../../behavior/YamlWriterBehavior';
+import { NonStandardDatatype } from '../../../constants/NonStandardDatatype';
 
 export class YamlFieldWriterControlledTerm extends YamlTemplateFieldWriterInternal {
   constructor(behavior: YamlWriterBehavior, writers: CedarYamlWriters) {
@@ -14,7 +14,7 @@ export class YamlFieldWriterControlledTerm extends YamlTemplateFieldWriterIntern
 
   override expandUINodeForYAML(_field: ControlledTermField): JsonNode {
     const ret: JsonNode = {
-      [YamlKeys.datatype]: XsdDatatype.ANY_URI,
+      [YamlKeys.datatype]: NonStandardDatatype.IRI,
     };
     return ret;
   }

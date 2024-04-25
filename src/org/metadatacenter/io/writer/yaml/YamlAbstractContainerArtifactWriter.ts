@@ -4,7 +4,6 @@ import { TemplateChild } from '../../../model/cedar/types/basic-types/TemplateCh
 import { TemplateField } from '../../../model/cedar/field/TemplateField';
 import { YamlAbstractArtifactWriter } from './YamlAbstractArtifactWriter';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
-import { UiInputType } from '../../../model/cedar/types/wrapped-types/UiInputType';
 import { AbstractDynamicChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractDynamicChildDeploymentInfo';
 import { WriterUtil } from '../WriterUtil';
 import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
@@ -59,7 +58,7 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
       if (childMeta.recommendedValue) {
         childConfiguration[YamlKeys.recommended] = true;
       }
-      if (childMeta.uiInputType != UiInputType.ATTRIBUTE_VALUE) {
+      if (childMeta.iri !== null) {
         childConfiguration[YamlKeys.propertyIri] = childMeta.iri;
       }
     }

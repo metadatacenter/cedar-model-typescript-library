@@ -17,6 +17,7 @@ import { YamlWriterBehavior } from '../../../behavior/YamlWriterBehavior';
 import { CedarYamlWriters } from './CedarYamlWriters';
 import { ControlledTermFieldImpl } from '../../../model/cedar/field/dynamic/controlled-term/ControlledTermFieldImpl';
 import { TextFieldImpl } from '../../../model/cedar/field/dynamic/textfield/TextFieldImpl';
+import { Language } from '../../../model/cedar/types/wrapped-types/Language';
 
 export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter {
   protected behavior: YamlWriterBehavior;
@@ -35,6 +36,9 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
 
   protected macroNameAndDescription(artifact: AbstractSchemaArtifact): JsonNode {
     const node: JsonNode = JsonNode.getEmpty();
+    if (artifact.language !== Language.NULL) {
+      node[YamlKeys.language] = this.atomicWriter.write(artifact.language);
+    }
     node[YamlKeys.name] = artifact.schema_name;
     if (artifact.schema_description !== null && artifact.schema_description !== '') {
       node[YamlKeys.description] = artifact.schema_description;
@@ -42,14 +46,14 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
     return node;
   }
 
-  protected macroNameAndDescriptionTemplate(artifact: AbstractSchemaArtifact): JsonNode {
-    const node: JsonNode = JsonNode.getEmpty();
-    node[YamlKeys.name] = artifact.schema_name;
-    if (artifact.schema_description !== null && artifact.schema_description !== '') {
-      node[YamlKeys.description] = artifact.schema_description;
-    }
-    return node;
-  }
+  // protected macroNameAndDescriptionTemplate(artifact: AbstractSchemaArtifact): JsonNode {
+  //   const node: JsonNode = JsonNode.getEmpty();
+  //   node[YamlKeys.name] = artifact.schema_name;
+  //   if (artifact.schema_description !== null && artifact.schema_description !== '') {
+  //     node[YamlKeys.description] = artifact.schema_description;
+  //   }
+  //   return node;
+  // }
 
   protected macroStatusAndVersion(artifact: AbstractSchemaArtifact): JsonNode {
     const svObject: JsonNode = JsonNode.getEmpty();
@@ -93,7 +97,7 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
       prov[YamlKeys.createdBy] = this.atomicWriter.write(artifact.pav_createdBy);
     }
     if (artifact.pav_lastUpdatedOn !== IsoDate.NULL) {
-      prov[YamlKeys.lastUpdatedOn] = this.atomicWriter.write(artifact.pav_lastUpdatedOn);
+      prov[YamlKeys.modifiedOn] = this.atomicWriter.write(artifact.pav_lastUpdatedOn);
     }
     if (artifact.oslc_modifiedBy !== CedarUser.NULL) {
       prov[YamlKeys.modifiedBy] = this.atomicWriter.write(artifact.oslc_modifiedBy);

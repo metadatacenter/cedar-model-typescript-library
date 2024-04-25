@@ -35,6 +35,8 @@ import { YamlFieldReaderRadio } from '../../../model/cedar/field/dynamic/radio/Y
 import { YamlFieldReaderControlledTerm } from '../../../model/cedar/field/dynamic/controlled-term/YamlFieldReaderControlledTerm';
 import { YamlFieldReaderBoolean } from '../../../model/cedar/field/dynamic/boolean/YamlFieldReaderBoolean';
 import { YamlArtifactParsingResult } from '../../../model/cedar/util/compare/YamlArtifactParsingResult';
+import { Language } from '../../../model/cedar/types/wrapped-types/Language';
+import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
 
 export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
   private constructor(behavior: YamlReaderBehavior) {

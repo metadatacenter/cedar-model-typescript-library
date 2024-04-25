@@ -15,9 +15,7 @@ export class TestUtil {
     return JSON.stringify(obj, null, 2);
   }
 
-  static readTestResourceAsString(fileName: string): string {
-    const projectRoot = process.cwd();
-    const filePath = path.join(projectRoot, 'test', 'resources', fileName);
+  static readResourceAsString(filePath: string): string {
     const fileContent = fs.readFileSync(filePath, 'utf8');
     return fileContent;
   }
@@ -29,9 +27,7 @@ export class TestUtil {
     return fileContent;
   }
 
-  static writeOutsideResource(resourceFolder: string, fileName: string, content: string): void {
-    const projectRoot = process.cwd();
-    const filePath = path.join(projectRoot, '../', resourceFolder, fileName);
+  static writeOutsideResource(filePath: string, content: string): void {
     fs.writeFileSync(filePath, content, 'utf8');
   }
 
@@ -59,27 +55,27 @@ export class TestUtil {
     return path.join(testResource.getDirectory(), testResource.getFile('-generated-java-artifact-lib.json'));
   }
 
-  static readTestJson(testResource: TestResource): string {
-    return this.readTestResourceAsString(this.getReferenceJsonFileName(testResource));
+  static readReferenceJson(testResource: TestResource): string {
+    return this.readResourceAsString(this.getReferenceJsonFileName(testResource));
   }
 
   static readReferenceYaml(testResource: TestResource): string {
-    return this.readTestResourceAsString(this.getReferenceYamlFileName(testResource));
+    return this.readResourceAsString(this.getReferenceYamlFileName(testResource));
   }
 
   static writeSerializedYaml(testResource: TestResource, content: string): void {
-    this.writeOutsideResource(testResource.getDirectoryFromCedarHomeRoot(), testResource.getFile('-generated-ts-model-lib.yaml'), content);
+    this.writeOutsideResource(this.getOwnGeneratedYamlFileName(testResource), content);
   }
 
   static writeSerializedJson(testResource: TestResource, content: string): void {
-    this.writeOutsideResource(testResource.getDirectoryFromCedarHomeRoot(), testResource.getFile('-generated-ts-model-lib.json'), content);
+    this.writeOutsideResource(this.getOwnGeneratedJsonFileName(testResource), content);
   }
 
   static readTSLibYaml(testResource: TestResource): string {
-    return this.readTestResourceAsString(this.getOwnGeneratedYamlFileName(testResource));
+    return this.readResourceAsString(this.getOwnGeneratedYamlFileName(testResource));
   }
 
   static readJavaLibYaml(testResource: TestResource): string {
-    return this.readTestResourceAsString(this.getJavaGeneratedYamlFileName(testResource));
+    return this.readResourceAsString(this.getJavaGeneratedYamlFileName(testResource));
   }
 }

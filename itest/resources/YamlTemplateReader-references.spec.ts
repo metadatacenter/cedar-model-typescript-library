@@ -10,6 +10,8 @@ describe('YAMLReader-references', () => {
     it(`should correctly process file: ${path.basename(sourcePath)}`, async () => {
       const writers: CedarYamlWriters = CedarWriters.yaml().getStrict();
       let comparisonResult: ComparisonResult = new ComparisonResult();
+      let leftYAMLString = '';
+      let rightYAMLString = '';
       let leftYAMLObject = {};
       let rightYAMLObject = {};
       try {
@@ -23,7 +25,7 @@ describe('YAMLReader-references', () => {
         // console.log(jsonReadTemplate.getChildInfo('Textfield'));
 
         const templateYAMLWriter1 = writers.getTemplateWriter();
-        const leftYAMLString = templateYAMLWriter1.getAsYamlString(jsonReadTemplate);
+        leftYAMLString = templateYAMLWriter1.getAsYamlString(jsonReadTemplate);
         leftYAMLObject = templateYAMLWriter1.getYamlAsJsonNode(jsonReadTemplate);
 
         const templateYAMLReader: YamlTemplateReader = YamlTemplateReader.getStrict();
@@ -33,7 +35,7 @@ describe('YAMLReader-references', () => {
         // console.log(yamlReadTemplate.getChildInfo('Textfield'));
 
         const templateYAMLWriter2 = writers.getTemplateWriter();
-        // const rightYAMLString = templateYAMLWriter2.getAsYamlString(yamlReadTemplate);
+        rightYAMLString = templateYAMLWriter2.getAsYamlString(yamlReadTemplate);
         rightYAMLObject = templateYAMLWriter2.getYamlAsJsonNode(yamlReadTemplate);
 
         comparisonResult = YamlObjectComparator.compare(leftYAMLObject, rightYAMLObject);
@@ -41,8 +43,10 @@ describe('YAMLReader-references', () => {
         expect(comparisonResult.areEqual()).toBe(true);
       } catch (error) {
         // console.log('Left yaml object');
+        // console.log(leftYAMLString);
         // TestUtil.p(leftYAMLObject);
         // console.log('Right yaml object');
+        // console.log(rightYAMLString);
         // TestUtil.p(rightYAMLObject);
         TestUtil.p(comparisonResult.getComparisonErrors());
         console.error(`Failed to process file: ${sourcePath}`, error);

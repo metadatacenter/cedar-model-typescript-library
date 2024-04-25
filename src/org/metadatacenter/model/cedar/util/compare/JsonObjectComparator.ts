@@ -15,6 +15,7 @@ export class JsonObjectComparator {
     realObject: ComparableObject,
     path: JsonPath,
     behavior: ReaderWriterBehavior,
+    acceptDiffKeys: string[] = [],
   ): void {
     function recurse(currentPath: JsonPath, obj1: ComparableObject, obj2: ComparableObject) {
       const isNonOrderSensitive = currentPath.getLastComponent() == JsonSchema.required;
@@ -82,9 +83,11 @@ export class JsonObjectComparator {
                 new ComparisonError('wco01', ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT, newPath),
               );
             } else {
-              comparisonResult.addBlueprintComparisonError(
-                new ComparisonError('oco01', ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT, newPath),
-              );
+              if (!acceptDiffKeys.includes(key)) {
+                comparisonResult.addBlueprintComparisonError(
+                  new ComparisonError('oco01', ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT, newPath),
+                );
+              }
             }
           } else if (!(key in obj2)) {
             if (

@@ -17,6 +17,8 @@ import { ChoiceOptionEntity } from '../../../model/cedar/field/ChoiceOptionEntit
 import { CedarJsonWriters } from './CedarJsonWriters';
 import { AbstractDynamicChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractDynamicChildDeploymentInfo';
 import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
+import { Language } from '../../../model/cedar/types/wrapped-types/Language';
+import { ReaderUtil } from '../../reader/ReaderUtil';
 
 export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifactWriter {
   protected constructor(behavior: JsonWriterBehavior, writers: CedarJsonWriters) {
@@ -141,7 +143,12 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
     };
   }
 
-  protected macroContext(_field: TemplateField) {
-    return JsonTemplateFieldContentDynamic.CONTEXT_VERBATIM;
+  protected macroContext(field: TemplateField) {
+    const context = ReaderUtil.deepClone(JsonTemplateFieldContentDynamic.CONTEXT_VERBATIM);
+    // @language
+    if (field.language !== Language.NULL) {
+      context[JsonSchema.atLanguage] = this.atomicWriter.write(field.language);
+    }
+    return context;
   }
 }

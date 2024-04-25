@@ -20,6 +20,7 @@ import { UiInputType } from '../../../model/cedar/types/wrapped-types/UiInputTyp
 import { AdditionalProperties } from '../../../model/cedar/types/wrapped-types/AdditionalProperties';
 import { Iri } from '../../../model/cedar/types/wrapped-types/Iri';
 import { YamlWriterBehavior } from '../../../behavior/YamlWriterBehavior';
+import { Language } from '../../../model/cedar/types/wrapped-types/Language';
 
 export class YamlAtomicWriter extends JsonAtomicWriter {
   public constructor(_behavior: YamlWriterBehavior) {
@@ -49,6 +50,7 @@ export class YamlAtomicWriter extends JsonAtomicWriter {
       | AdditionalProperties
       | Iri
       | BioportalTermType
+      | Language
       | null,
   ): string | number | boolean | JsonNode | null {
     if (arg == null) {

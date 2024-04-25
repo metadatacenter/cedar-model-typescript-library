@@ -7,6 +7,8 @@ export class YamlKeys {
   static status: string = 'status';
   static version: string = 'version';
 
+  static language: string = 'language';
+
   static label: string = 'label';
   static prefLabel: string = 'prefLabel';
   static altLabels: string = 'altLabels';
@@ -32,7 +34,7 @@ export class YamlKeys {
   static previousVersion: string = 'previousVersion';
   static createdOn: string = 'createdOn';
   static createdBy: string = 'createdBy';
-  static lastUpdatedOn: string = 'lastUpdatedOn';
+  static modifiedOn: string = 'modifiedOn';
   static modifiedBy: string = 'modifiedBy';
 
   static annotations: string = 'annotations';

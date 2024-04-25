@@ -6,7 +6,7 @@ const testResource: TestResource = TestResource.instance(1);
 
 describe('JSONInstanceReader' + testResource.toString(), () => {
   test('reads a simple instance', () => {
-    const artifactSource = TestUtil.readTestJson(testResource);
+    const artifactSource = TestUtil.readReferenceJson(testResource);
     const reader: JsonTemplateInstanceReader = JsonTemplateInstanceReader.getStrict();
     const jsonInstanceReaderResult = reader.readFromString(artifactSource);
     expect(jsonInstanceReaderResult).not.toBeNull();

@@ -39,6 +39,7 @@ import { JsonAbstractSchemaArtifactReader } from './JsonAbstractSchemaArtifactRe
 import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
 import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
 import { JsonFieldReaderBoolean } from '../../../model/cedar/field/dynamic/boolean/JsonFieldReaderBoolean';
+import { Language } from '../../../model/cedar/types/wrapped-types/Language';
 
 export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
   private constructor(behavior: JsonReaderBehavior) {
@@ -128,7 +129,9 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     } else if (field.cedarArtifactType == CedarArtifactType.STATIC_TEMPLATE_FIELD) {
       blueprintAtContext = JsonTemplateFieldContentStatic.CONTEXT_VERBATIM;
     }
-    JsonObjectComparator.compareBothWays(parsingResult, blueprintAtContext, topContextNode, path.add(JsonSchema.atContext), this.behavior);
+    JsonObjectComparator.compareBothWays(parsingResult, blueprintAtContext, topContextNode, path.add(JsonSchema.atContext), this.behavior, [
+      JsonSchema.atLanguage,
+    ]);
 
     // Read and validate, but do not store top level type
     // Attribute value requires string, the others object
@@ -163,6 +166,7 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
       ReaderUtil.getString(fieldSourceObject, CedarModel.schema),
       path.add(CedarModel.schema),
     );
+    field.language = Language.forValue(ReaderUtil.getString(topContextNode, JsonSchema.atLanguage));
   }
 
   private static readFieldSpecificAttributes(

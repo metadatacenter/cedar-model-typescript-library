@@ -16,7 +16,7 @@ describe('YAMLTemplateFieldWriter-references', () => {
     it(`should correctly read the JSON field, and create the same YAML output as the reference: ${fieldTestNumber}`, async () => {
       try {
         const testResource: TestResource = TestResource.field(fieldTestNumber);
-        const artifactSource: string = TestUtil.readTestJson(testResource);
+        const artifactSource: string = TestUtil.readReferenceJson(testResource);
         const referenceYaml: string = TestUtil.readReferenceYaml(testResource);
         const reader: JsonTemplateFieldReader = JsonTemplateFieldReader.getStrict();
         const jsonFieldReaderResult: JsonTemplateFieldReaderResult = reader.readFromString(artifactSource);

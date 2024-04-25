@@ -24,6 +24,7 @@ import { ChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/Chil
 import { ChildDeploymentInfoStaticBuilder } from '../../../model/cedar/deployment/ChildDeploymentInfoStaticBuilder';
 import { AbstractDynamicChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/AbstractDynamicChildDeploymentInfoBuilder';
 import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
+import { Language } from '../../../model/cedar/types/wrapped-types/Language';
 
 export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArtifactReader {
   protected fieldReader: JsonTemplateFieldReader;
@@ -79,7 +80,9 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
 
     const blueprintAtContext: JsonNode = JsonContainerArtifactContent.CONTEXT_VERBATIM;
 
-    JsonObjectComparator.compareBothWays(parsingResult, blueprintAtContext, topContextNode, path.add(JsonSchema.atContext), this.behavior);
+    JsonObjectComparator.compareBothWays(parsingResult, blueprintAtContext, topContextNode, path.add(JsonSchema.atContext), this.behavior, [
+      JsonSchema.atLanguage,
+    ]);
 
     // Read and validate, but do not store top level type
     JsonObjectComparator.comparePrimitive(
@@ -105,6 +108,8 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
       ReaderUtil.getString(elementSourceObject, CedarModel.schema),
       path.add(CedarModel.schema),
     );
+
+    container.language = Language.forValue(ReaderUtil.getString(topContextNode, JsonSchema.atLanguage));
   }
 
   protected parseChildren(

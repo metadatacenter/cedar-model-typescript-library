@@ -1,3 +1,5 @@
+import * as path from 'path';
+
 export class TestResource {
   private readonly type: string;
   private readonly num: number;
@@ -28,11 +30,11 @@ export class TestResource {
   }
 
   public getDirectory() {
-    return '../../../' + this.getDirectoryFromCedarHomeRoot();
+    return path.join(process.env.CEDAR_HOME || '', this.getDirectoryFromCedarHomeRoot());
   }
 
   public getDirectoryFromCedarHomeRoot() {
-    return 'cedar-test-artifacts/artifacts/' + this.type + 's' + '/' + this.getPadNum();
+    return path.join('cedar-test-artifacts', 'artifacts', this.type + 's', this.getPadNum());
   }
 
   private getPadNum() {

@@ -12,6 +12,7 @@ import { ArtifactSchema } from '../../../model/cedar/types/wrapped-types/Artifac
 import { JsonTemplateFieldContentDynamic } from '../../../model/cedar/util/serialization/JsonTemplateFieldContentDynamic';
 import { JsonAbstractContainerArtifactWriter } from './JsonAbstractContainerArtifactWriter';
 import { CedarJsonWriters } from './CedarJsonWriters';
+import { Language } from '../../../model/cedar/types/wrapped-types/Language';
 
 export class JsonTemplateWriter extends JsonAbstractContainerArtifactWriter {
   private constructor(behavior: JsonWriterBehavior, writers: CedarJsonWriters) {
@@ -25,6 +26,11 @@ export class JsonTemplateWriter extends JsonAbstractContainerArtifactWriter {
   private buildProperties(template: Template): JsonNode {
     // clone, because we will need to modify deep content
     const properties = ReaderUtil.deepClone(JsonTemplateContent.PROPERTIES_PARTIAL);
+
+    // @language
+    if (template.language !== Language.NULL) {
+      properties[JsonSchema.atContext][JsonSchema.atLanguage] = this.atomicWriter.write(template.language);
+    }
 
     // Include the IRI mapping
     properties[JsonSchema.atContext][JsonSchema.properties] = {

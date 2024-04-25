@@ -13,7 +13,7 @@ const testResource: TestResource = TestResource.template(29);
 
 describe('JsonTemplateReader' + testResource.toString(), () => {
   test('reads template witch annotations', () => {
-    const artifactSource = TestUtil.readTestJson(testResource);
+    const artifactSource = TestUtil.readReferenceJson(testResource);
     const reader: JsonTemplateReader = JsonTemplateReader.getStrict();
     const jsonTemplateReaderResult = reader.readFromString(artifactSource);
     expect(jsonTemplateReaderResult).not.toBeNull();

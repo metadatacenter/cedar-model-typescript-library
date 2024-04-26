@@ -28,9 +28,9 @@ npx ts-node ./itest/scripts/regenerate-all-files.ts
 
 ## Compare generated files
 ```shell
-npx ts-node ./itest/scripts/compare-ts-java-yaml-files.ts
-npx ts-node ./itest/scripts/compare-ref-java-yaml-files.ts
-npx ts-node ./itest/scripts/compare-ref-ts-yaml-files.ts
+npx ts-node ./itest/scripts/compare-verbatim-ts-java-yaml-files.ts
+npx ts-node ./itest/scripts/compare-verbatim-ref-java-yaml-files.ts
+npx ts-node ./itest/scripts/compare-verbatim-ref-ts-yaml-files.ts
 
 npx ts-node ./itest/scripts/compare-content-ref-ts-json-files.ts
 npx ts-node ./itest/scripts/compare-content-ref-java-json-files.ts

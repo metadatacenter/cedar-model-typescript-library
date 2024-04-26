@@ -44,6 +44,9 @@ export class JsonTemplateFieldContentDynamic {
       type: 'string',
       format: 'uri',
     },
+    'rdfs:label': {
+      type: ['string', 'null'],
+    },
     '@value': {
       type: ['string', 'null'],
     },

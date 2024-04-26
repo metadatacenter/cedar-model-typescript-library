@@ -35,10 +35,10 @@ export class JsonTemplateElementWriter extends JsonAbstractContainerArtifactWrit
     // Include the IRI mapping
     properties[JsonSchema.atContext][JsonSchema.properties] = {
       ...properties[JsonSchema.atContext][JsonSchema.properties],
-      ...element.getChildrenInfo().getNonStaticNonAttributeValueIRIMap(),
+      ...element.getChildrenInfo().getNonStaticIRIMap(),
     };
 
-    const childNamesForRequired: string[] = element.getChildrenInfo().getChildrenNamesForRequired();
+    const childNamesForRequired: string[] = element.getChildrenInfo().getChildrenNamesForRequiredInProperties();
 
     // Omit required if empty
     if (childNamesForRequired.length > 0) {
@@ -89,13 +89,13 @@ export class JsonTemplateElementWriter extends JsonAbstractContainerArtifactWrit
       [JsonSchema.required]: [...JsonTemplateElementContent.REQUIRED_PARTIAL, ...element.getChildrenInfo().getChildrenNamesForRequired()],
       ...this.macroSchemaNameAndDescription(element),
       ...this.macroProvenance(element, this.atomicWriter),
+      ...this.macroStatusAndVersion(element, this.atomicWriter),
       [JsonSchema.schemaVersion]: this.atomicWriter.write(element.schema_schemaVersion),
       [TemplateProperty.additionalProperties]: this.atomicWriter.write(element.getAdditionalProperties()),
-      ...this.macroStatusAndVersion(element, this.atomicWriter),
-      [CedarModel.schema]: this.atomicWriter.write(ArtifactSchema.CURRENT),
       ...this.macroSchemaIdentifier(element),
       ...this.macroDerivedFrom(element),
       ...this.macroPreviousVersion(element),
+      [CedarModel.schema]: this.atomicWriter.write(ArtifactSchema.CURRENT),
       ...this.macroAnnotations(element),
     };
   }

@@ -55,9 +55,9 @@ async function generateForFields() {
 }
 
 export async function generateYamlUsingJava() {
-  await generateForTemplates();
-  await generateForElements();
   await generateForFields();
+  await generateForElements();
+  await generateForTemplates();
 }
 
 generateYamlUsingJava().catch((error) => {

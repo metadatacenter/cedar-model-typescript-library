@@ -51,22 +51,22 @@ export abstract class JsonAbstractArtifactWriter extends AbstractArtifactWriter 
 
   protected macroStatusAndVersion(artifact: AbstractSchemaArtifact, atomicWriter: JsonAtomicWriter): JsonNode {
     const svObject: JsonNode = JsonNode.getEmpty();
-    if (artifact.bibo_status !== BiboStatus.NULL) {
-      svObject[JsonSchema.biboStatus] = atomicWriter.write(artifact.bibo_status);
-    }
     if (artifact.pav_version !== PavVersion.NULL) {
       svObject[JsonSchema.pavVersion] = atomicWriter.write(artifact.pav_version);
+    }
+    if (artifact.bibo_status !== BiboStatus.NULL) {
+      svObject[JsonSchema.biboStatus] = atomicWriter.write(artifact.bibo_status);
     }
     return svObject;
   }
 
   protected macroSkos(field: TemplateField): JsonNode {
     const skosObject: JsonNode = JsonNode.getEmpty();
-    if (field.skos_altLabel !== null && field.skos_altLabel.length > 0) {
-      skosObject[CedarModel.skosAltLabel] = field.skos_altLabel;
-    }
     if (field.skos_prefLabel !== null) {
       skosObject[CedarModel.skosPrefLabel] = field.skos_prefLabel;
+    }
+    if (field.skos_altLabel !== null && field.skos_altLabel.length > 0) {
+      skosObject[CedarModel.skosAltLabel] = field.skos_altLabel;
     }
     return skosObject;
   }

@@ -12,8 +12,7 @@ import { fieldTestNumbers } from './generatedTestCases';
 import { TestResource } from '../TestResource';
 
 describe('JsonTemplateFieldWriter-references', () => {
-  // Generate a test for each file
-  fieldTestNumbers.forEach((fieldTestNumber) => {
+  TestUtil.testNumbers(fieldTestNumbers, [], []).forEach((fieldTestNumber) => {
     it(`should correctly read the JSON field, and create the same JSON output as the reference: ${fieldTestNumber}`, async () => {
       let comparisonResult: JsonArtifactParsingResult = new JsonArtifactParsingResult();
       try {

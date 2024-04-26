@@ -55,9 +55,9 @@ async function generateForFields() {
 }
 
 export async function generateJsonUsingJava() {
-  await generateForTemplates();
-  await generateForElements();
   await generateForFields();
+  await generateForElements();
+  await generateForTemplates();
 }
 
 generateJsonUsingJava().catch((error) => {

@@ -20,6 +20,9 @@ export class JsonFieldWriterTextField extends JsonTemplateFieldWriterInternal {
 
   override expandValueConstraintsNode(vcNode: JsonNode, field: TextField, childInfo: ChildDeploymentInfo): void {
     super.expandValueConstraintsNode(vcNode, field, childInfo);
+    if (field.valueConstraints.regex != null) {
+      vcNode[CedarModel.regex] = field.valueConstraints.regex;
+    }
     if (field.valueConstraints.defaultValue != null) {
       vcNode[CedarModel.defaultValue] = field.valueConstraints.defaultValue;
     }
@@ -28,9 +31,6 @@ export class JsonFieldWriterTextField extends JsonTemplateFieldWriterInternal {
     }
     if (field.valueConstraints.maxLength != null) {
       vcNode[CedarModel.maxLength] = field.valueConstraints.maxLength;
-    }
-    if (field.valueConstraints.regex != null) {
-      vcNode[CedarModel.regex] = field.valueConstraints.regex;
     }
   }
 }

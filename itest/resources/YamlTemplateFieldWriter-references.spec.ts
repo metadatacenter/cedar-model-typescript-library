@@ -11,8 +11,7 @@ import { fieldTestNumbers } from './generatedTestCases';
 import { TestResource } from '../TestResource';
 
 describe('YAMLTemplateFieldWriter-references', () => {
-  // Generate a test for each file
-  fieldTestNumbers.forEach((fieldTestNumber) => {
+  TestUtil.testNumbers(fieldTestNumbers, [], []).forEach((fieldTestNumber) => {
     it(`should correctly read the JSON field, and create the same YAML output as the reference: ${fieldTestNumber}`, async () => {
       try {
         const testResource: TestResource = TestResource.field(fieldTestNumber);

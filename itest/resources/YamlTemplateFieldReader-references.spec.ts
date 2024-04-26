@@ -1,5 +1,3 @@
-import fs from 'fs/promises';
-import path from 'path';
 import {
   CedarWriters,
   CedarYamlWriters,
@@ -9,19 +7,19 @@ import {
   YamlTemplateFieldReader,
 } from '../../src';
 import { TestUtil } from '../TestUtil';
-import { fieldTestCases } from './generatedTestCases';
+import { fieldTestNumbers } from './generatedTestCases';
+import { TestResource } from '../TestResource';
 
 describe('YAMLTemplateFieldReader-references', () => {
-  // Generate a test for each file
-  fieldTestCases.forEach((sourcePath) => {
-    it(`should correctly process file: ${path.basename(sourcePath)}`, async () => {
+  TestUtil.testNumbers(fieldTestNumbers, [], []).forEach((fieldTestNumber) => {
+    it(`should correctly process file: ${fieldTestNumber}`, async () => {
       const writers: CedarYamlWriters = CedarWriters.yaml().getStrict();
       let comparisonResult: ComparisonResult = new ComparisonResult();
       let leftYAMLObject = {};
       let rightYAMLObject = {};
       try {
-        //console.log(sourcePath);
-        const fieldSourceJSONString = await fs.readFile(sourcePath, 'utf8');
+        const testResource: TestResource = TestResource.field(fieldTestNumber);
+        const fieldSourceJSONString: string = TestUtil.readReferenceJson(testResource);
 
         const fieldJSONReader: JsonTemplateFieldReader = JsonTemplateFieldReader.getStrict();
         const fieldJSONReaderResult = fieldJSONReader.readFromString(fieldSourceJSONString);
@@ -46,7 +44,7 @@ describe('YAMLTemplateFieldReader-references', () => {
         console.log(leftYAMLObject);
         console.log(rightYAMLObject);
         TestUtil.p(comparisonResult.getComparisonErrors());
-        console.error(`Failed to process file: ${sourcePath}`, error);
+        console.error(`Failed to process field file: ${fieldTestNumber}`, error);
         throw error;
       }
     });

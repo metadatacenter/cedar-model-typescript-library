@@ -79,9 +79,9 @@ function generateForFields() {
 }
 
 export function generateYamlUsingTypeScript() {
-  generateForTemplates();
-  generateForElements();
   generateForFields();
+  generateForElements();
+  generateForTemplates();
 }
 
 generateYamlUsingTypeScript();

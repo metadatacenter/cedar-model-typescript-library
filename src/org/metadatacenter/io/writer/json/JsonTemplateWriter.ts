@@ -112,13 +112,13 @@ export class JsonTemplateWriter extends JsonAbstractContainerArtifactWriter {
       [JsonSchema.required]: [...JsonTemplateContent.REQUIRED_PARTIAL, ...template.getChildrenInfo().getChildrenNamesForRequired()],
       ...this.macroSchemaNameAndDescription(template),
       ...this.macroProvenance(template, this.atomicWriter),
+      ...this.macroStatusAndVersion(template, this.atomicWriter),
       [JsonSchema.schemaVersion]: this.atomicWriter.write(template.schema_schemaVersion),
       [TemplateProperty.additionalProperties]: this.atomicWriter.write(template.getAdditionalProperties()),
-      ...this.macroStatusAndVersion(template, this.atomicWriter),
-      [CedarModel.schema]: this.atomicWriter.write(ArtifactSchema.CURRENT),
       ...this.macroSchemaIdentifier(template),
       ...this.macroDerivedFrom(template),
       ...this.macroPreviousVersion(template),
+      [CedarModel.schema]: this.atomicWriter.write(ArtifactSchema.CURRENT),
       ...this.macroAnnotations(template),
     };
   }

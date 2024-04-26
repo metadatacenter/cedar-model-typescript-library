@@ -1,5 +1,3 @@
-import fs from 'fs/promises';
-import path from 'path';
 import {
   CedarWriters,
   CedarYamlWriters,
@@ -9,19 +7,19 @@ import {
   YamlTemplateElementReader,
 } from '../../src';
 import { TestUtil } from '../TestUtil';
-import { elementTestCases } from './generatedTestCases';
+import { elementTestNumbers } from './generatedTestCases';
+import { TestResource } from '../TestResource';
 
 describe('YAMLTemplateElementReader-references', () => {
-  // Generate a test for each file
-  elementTestCases.forEach((sourcePath) => {
-    it(`should correctly process file: ${path.basename(sourcePath)}`, async () => {
+  TestUtil.testNumbers(elementTestNumbers, [], []).forEach((elementTestNumber) => {
+    it(`should correctly read the JSON template, create YAML output, reparse and reserialize YAML, and compare Y2Y: ${elementTestNumber}`, async () => {
       const writers: CedarYamlWriters = CedarWriters.yaml().getStrict();
       let comparisonResult: ComparisonResult = new ComparisonResult();
       let leftYAMLObject = {};
       let rightYAMLObject = {};
       try {
-        // console.log(sourcePath);
-        const elementSourceJSONString = await fs.readFile(sourcePath, 'utf8');
+        const testResource: TestResource = TestResource.element(elementTestNumber);
+        const elementSourceJSONString: string = TestUtil.readReferenceJson(testResource);
 
         const elementJSONReader: JsonTemplateElementReader = JsonTemplateElementReader.getStrict();
         const elementJSONReaderResult = elementJSONReader.readFromString(elementSourceJSONString);
@@ -48,7 +46,7 @@ describe('YAMLTemplateElementReader-references', () => {
         console.log('Right yaml object');
         TestUtil.p(rightYAMLObject);
         TestUtil.p(comparisonResult.getComparisonErrors());
-        console.error(`Failed to process file: ${sourcePath}`, error);
+        console.error(`Failed to process element file: ${elementTestNumber}`, error);
         throw error;
       }
     });

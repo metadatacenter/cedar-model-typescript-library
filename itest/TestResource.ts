@@ -1,4 +1,5 @@
 import * as path from 'path';
+import { CedarArtifactType } from '../src';
 
 export class TestResource {
   private readonly type: string;
@@ -7,6 +8,18 @@ export class TestResource {
   private constructor(type: string, num: number) {
     this.type = type;
     this.num = num;
+  }
+
+  public static artifact(num: number, type: CedarArtifactType): TestResource {
+    if (type === CedarArtifactType.TEMPLATE) {
+      return this.template(num);
+    } else if (type === CedarArtifactType.TEMPLATE_ELEMENT) {
+      return this.element(num);
+    } else if (type === CedarArtifactType.TEMPLATE_FIELD) {
+      return this.field(num);
+    } else {
+      throw new Error(`Unknown artifact type:${type}`);
+    }
   }
 
   public static template(num: number): TestResource {

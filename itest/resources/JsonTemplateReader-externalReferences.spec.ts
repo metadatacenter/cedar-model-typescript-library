@@ -45,8 +45,8 @@ describe('JSONTemplateReader - CEDAR reference templates', () => {
 
     const parsingResult: JsonArtifactParsingResult = jsonTemplateReaderResult.parsingResult;
     if (!parsingResult.wasSuccessful()) {
-      console.log('Parsing errors found for:', fileName);
-      TestUtil.p(parsingResult.getBlueprintComparisonErrors());
+      // console.log('Parsing errors found for:', fileName);
+      // TestUtil.p(parsingResult.getBlueprintComparisonErrors());
     }
     // expect(parsingResult.wasSuccessful()).toBe(true);
 

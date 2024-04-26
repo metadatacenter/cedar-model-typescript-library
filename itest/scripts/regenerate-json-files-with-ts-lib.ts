@@ -79,9 +79,9 @@ function generateForFields() {
 }
 
 export function generateJsonUsingTypeScript() {
-  generateForTemplates();
-  generateForElements();
   generateForFields();
+  generateForElements();
+  generateForTemplates();
 }
 
 generateJsonUsingTypeScript();

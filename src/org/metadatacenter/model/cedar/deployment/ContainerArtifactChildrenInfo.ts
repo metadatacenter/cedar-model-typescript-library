@@ -30,10 +30,20 @@ export class ContainerArtifactChildrenInfo {
     return Array.from(this.childMap.keys());
   }
 
-  public getChildrenNamesForRequired(): Array<string> {
+  public getChildrenNamesForRequiredInProperties(): Array<string> {
     const result: Array<string> = [];
     for (const [name, childInfo] of this.childMap.entries()) {
       if (childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD && childInfo.uiInputType !== UiInputType.ATTRIBUTE_VALUE) {
+        result.push(name);
+      }
+    }
+    return result;
+  }
+
+  public getChildrenNamesForRequired(): Array<string> {
+    const result: Array<string> = [];
+    for (const [name, childInfo] of this.childMap.entries()) {
+      if (childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD) {
         result.push(name);
       }
     }
@@ -81,18 +91,18 @@ export class ContainerArtifactChildrenInfo {
     return iriMap;
   }
 
-  public getNonStaticNonAttributeValueIRIMap(): { [key: string]: { [key in typeof JsonSchema.enum]: Array<NullableString> } } {
-    const iriMap: { [key: string]: { [key in typeof JsonSchema.enum]: Array<string | null> } } = {};
-    this.childNameList.forEach((childName) => {
-      const childInfo = this.getChildInfo(childName);
-      if (childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD && childInfo.uiInputType !== UiInputType.ATTRIBUTE_VALUE) {
-        if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
-          iriMap[childInfo.name] = { [JsonSchema.enum]: [childInfo.iri] };
-        }
-      }
-    });
-    return iriMap;
-  }
+  // public getNonStaticNonAttributeValueIRIMap(): { [key: string]: { [key in typeof JsonSchema.enum]: Array<NullableString> } } {
+  //   const iriMap: { [key: string]: { [key in typeof JsonSchema.enum]: Array<string | null> } } = {};
+  //   this.childNameList.forEach((childName) => {
+  //     const childInfo = this.getChildInfo(childName);
+  //     if (childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD && childInfo.uiInputType !== UiInputType.ATTRIBUTE_VALUE) {
+  //       if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
+  //         iriMap[childInfo.name] = { [JsonSchema.enum]: [childInfo.iri] };
+  //       }
+  //     }
+  //   });
+  //   return iriMap;
+  // }
 
   hasAttributeValue(): boolean {
     for (const childInfo of this.childMap.values()) {

@@ -37,6 +37,10 @@ export class TestUtil {
     return path.join(testResource.getDirectory(), testResource.getFile('.json'));
   }
 
+  static getReferenceInstanceJsonFileName(testResource: TestResource): string {
+    return path.join(testResource.getDirectory(), testResource.getInstanceFile('.json'));
+  }
+
   static getReferenceYamlFileName(testResource: TestResource): string {
     return path.join(testResource.getDirectory(), testResource.getFile('.yaml'));
   }
@@ -59,6 +63,10 @@ export class TestUtil {
 
   static readReferenceJson(testResource: TestResource): string {
     return this.readResourceAsString(this.getReferenceJsonFileName(testResource));
+  }
+
+  static readReferenceInstanceJson(testResource: TestResource): string {
+    return this.readResourceAsString(this.getReferenceInstanceJsonFileName(testResource));
   }
 
   static readReferenceYaml(testResource: TestResource): string {
@@ -140,5 +148,15 @@ export class TestUtil {
     testNumbers = testNumbers.filter((num) => !skipNumbers.includes(num));
     // console.log(testNumbers, skipNumbers, onlyNumbers);
     return testNumbers;
+  }
+
+  static testMap(
+    testMap: Record<string, { template: boolean; instance: boolean }>,
+    skipNumbers: number[],
+    onlyNumbers: number[],
+  ): [number, { template: boolean; instance: boolean }][] {
+    let testNumbers = Object.keys(testMap).map((key) => parseInt(key, 10));
+    testNumbers = this.testNumbers(testNumbers, skipNumbers, onlyNumbers);
+    return testNumbers.map((num) => [num, testMap[String(num)]]);
   }
 }

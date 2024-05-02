@@ -1,0 +1,51 @@
+import {
+  CedarJsonWriters,
+  CedarWriters,
+  JsonArtifactParsingResult,
+  JsonTemplateReader,
+  JsonTemplateReaderResult,
+  JsonTemplateWriter,
+  RoundTrip,
+} from '../../src';
+import { TestUtil } from '../TestUtil';
+import { ceeSuiteTestMap } from './generatedTestCases';
+import { TestResource } from '../TestResource';
+
+describe('JsonTemplateInstanceReader-references', () => {
+  TestUtil.testMap(ceeSuiteTestMap, [], [1]).forEach(([ceeTestNumber, testDefinition]) => {
+    it(`should correctly read the JSON template instance, and create the same JSON output as the reference: ${ceeTestNumber}`, async () => {
+      const testResource: TestResource = TestResource.ceeSuite(ceeTestNumber);
+      let templateSource: string = '';
+      if (testDefinition.template) {
+        templateSource = TestUtil.readReferenceJson(testResource);
+        // console.log(templateSource);
+      }
+      if (testDefinition.instance) {
+        const instanceSource: string = TestUtil.readReferenceInstanceJson(testResource);
+        // console.log(instanceSource);
+      }
+
+      let comparisonResult: JsonArtifactParsingResult = new JsonArtifactParsingResult();
+      try {
+        const reader: JsonTemplateReader = JsonTemplateReader.getStrict();
+        const jsonTemplateReaderResult: JsonTemplateReaderResult = reader.readFromString(templateSource);
+        expect(jsonTemplateReaderResult).not.toBeNull();
+        const parsingResult: JsonArtifactParsingResult = jsonTemplateReaderResult.parsingResult;
+        expect(parsingResult.wasSuccessful()).toBe(true);
+
+        const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+        const writer: JsonTemplateWriter = writers.getTemplateWriter();
+        // console.log(writer.getAsJsonString(jsonElementReaderResult.element));
+
+        comparisonResult = RoundTrip.compare(jsonTemplateReaderResult, writer);
+        //expect(comparisonResult.wasSuccessful()).toBe(true);
+        //expect(comparisonResult.getBlueprintComparisonErrorCount()).toBe(0);
+        //expect(comparisonResult.getBlueprintComparisonWarningCount()).toBe(0);
+      } catch (error) {
+        TestUtil.p(comparisonResult.getBlueprintComparisonErrors());
+        console.error(`Failed to process template file: ${ceeTestNumber}`, error);
+        throw error;
+      }
+    });
+  });
+});

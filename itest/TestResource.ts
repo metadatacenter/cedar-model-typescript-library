@@ -47,6 +47,9 @@ export class TestResource {
   }
 
   public getDirectoryFromCedarHomeRoot() {
+    if (this.type == 'cee-suite') {
+      return path.join('cedar-test-artifacts', 'artifacts', 'cee-suite', this.getPadNum());
+    }
     return path.join('cedar-test-artifacts', 'artifacts', this.type + 's', this.getPadNum());
   }
 
@@ -55,6 +58,17 @@ export class TestResource {
   }
 
   getFile(suffix: string) {
+    if (this.type == 'cee-suite') {
+      return 'template' + '-' + this.getPadNum() + suffix;
+    }
     return this.type + '-' + this.getPadNum() + suffix;
+  }
+
+  getInstanceFile(suffix: string) {
+    return 'instance' + '-' + this.getPadNum() + suffix;
+  }
+
+  static ceeSuite(num: number): TestResource {
+    return new TestResource('cee-suite', num);
   }
 }

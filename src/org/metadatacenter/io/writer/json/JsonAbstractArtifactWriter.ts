@@ -12,6 +12,7 @@ import { CedarModel } from '../../../model/cedar/constants/CedarModel';
 import { CedarArtifactId } from '../../../model/cedar/types/cedar-types/CedarArtifactId';
 import { ValueConstraints } from '../../../model/cedar/field/ValueConstraints';
 import { CedarJsonWriters } from './CedarJsonWriters';
+import { TemplateElement } from '../../../model/cedar/element/TemplateElement';
 
 export abstract class JsonAbstractArtifactWriter extends AbstractArtifactWriter {
   protected behavior: JsonWriterBehavior;
@@ -60,13 +61,13 @@ export abstract class JsonAbstractArtifactWriter extends AbstractArtifactWriter 
     return svObject;
   }
 
-  protected macroSkos(field: TemplateField): JsonNode {
+  protected macroSkos(artifact: TemplateField | TemplateElement): JsonNode {
     const skosObject: JsonNode = JsonNode.getEmpty();
-    if (field.skos_prefLabel !== null) {
-      skosObject[CedarModel.skosPrefLabel] = field.skos_prefLabel;
+    if (artifact.skos_prefLabel !== null) {
+      skosObject[CedarModel.skosPrefLabel] = artifact.skos_prefLabel;
     }
-    if (field.skos_altLabel !== null && field.skos_altLabel.length > 0) {
-      skosObject[CedarModel.skosAltLabel] = field.skos_altLabel;
+    if (artifact.skos_altLabel !== null && artifact.skos_altLabel.length > 0) {
+      skosObject[CedarModel.skosAltLabel] = artifact.skos_altLabel;
     }
     return skosObject;
   }

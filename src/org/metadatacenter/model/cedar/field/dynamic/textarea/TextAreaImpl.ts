@@ -1,15 +1,18 @@
 import { TemplateField } from '../../TemplateField';
-import { ValueConstraints } from '../../ValueConstraints';
 import { TextArea } from './TextArea';
 import { CedarFieldType } from '../../../types/cedar-types/CedarFieldType';
 import { CedarArtifactType } from '../../../types/cedar-types/CedarArtifactType';
 import { ChildDeploymentInfoBuilder } from '../../../deployment/ChildDeploymentInfoBuilder';
+import { ValueConstraintsTextArea } from './ValueConstraintsTextArea';
 
 export class TextAreaImpl extends TemplateField implements TextArea {
+  // Redeclare valueConstraints with a more specific type
+  public valueConstraints: ValueConstraintsTextArea;
+
   private constructor() {
     super();
     this.cedarFieldType = CedarFieldType.TEXTAREA;
-    this.valueConstraints = new ValueConstraints();
+    this.valueConstraints = new ValueConstraintsTextArea();
     this.cedarArtifactType = CedarArtifactType.TEMPLATE_FIELD;
   }
 

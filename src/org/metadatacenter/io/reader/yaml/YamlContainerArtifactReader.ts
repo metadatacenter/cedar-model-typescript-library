@@ -50,6 +50,8 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
         childDeploymentInfo.requiredValue = ReaderUtil.getBoolean(configuration, YamlKeys.required);
         childDeploymentInfo.recommendedValue = ReaderUtil.getBoolean(configuration, YamlKeys.recommended);
         childDeploymentInfo.hidden = ReaderUtil.getBoolean(configuration, YamlKeys.hidden);
+        childDeploymentInfo.continuePreviousLine = ReaderUtil.getBoolean(configuration, YamlKeys.continuePreviousLine);
+
         childDeploymentInfo.iri = ReaderUtil.getString(configuration, YamlKeys.propertyIri);
 
         if (yamlArtifactType.isField()) {
@@ -69,6 +71,7 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
             finalChildInfoBuilder2
               .withIri(childDeploymentInfo.iri)
               .withHidden(childDeploymentInfo.hidden)
+              .withContinuePreviousLine(childDeploymentInfo.continuePreviousLine)
               .withRecommendedValue(childDeploymentInfo.recommendedValue)
               .withRequiredValue(childDeploymentInfo.requiredValue);
             if (finalChildInfoBuilder2 instanceof ChildDeploymentInfoBuilder) {

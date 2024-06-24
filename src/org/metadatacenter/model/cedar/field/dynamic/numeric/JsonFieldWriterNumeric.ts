@@ -22,7 +22,6 @@ export class JsonFieldWriterNumeric extends JsonTemplateFieldWriterInternal {
   }
 
   override expandValueConstraintsNode(vcNode: JsonNode, field: NumericField, childInfo: ChildDeploymentInfo): void {
-    super.expandValueConstraintsNode(vcNode, field, childInfo);
     vcNode[CedarModel.numberType] = this.atomicWriter.write(field.valueConstraints.numberType);
     if (field.valueConstraints.minValue != null) {
       vcNode[CedarModel.minValue] = field.valueConstraints.minValue;
@@ -36,5 +35,6 @@ export class JsonFieldWriterNumeric extends JsonTemplateFieldWriterInternal {
     if (field.valueConstraints.unitOfMeasure != null) {
       vcNode[CedarModel.unitOfMeasure] = field.valueConstraints.unitOfMeasure;
     }
+    super.expandValueConstraintsNode(vcNode, field, childInfo);
   }
 }

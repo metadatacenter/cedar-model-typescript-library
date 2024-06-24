@@ -7,9 +7,9 @@ export class ControlledTermOntology extends ControlledTermAbstractValueConstrain
   private readonly _acronym: string;
   private readonly _name: string;
   private readonly _uri: Iri;
-  private readonly _numTerms: number = 0;
+  private readonly _numTerms: number | null = 0;
 
-  constructor(acronym: string, name: string, numTerms: number, uri: Iri) {
+  constructor(acronym: string, name: string, numTerms: number | null, uri: Iri) {
     super();
     this._acronym = acronym;
     this._name = name;
@@ -29,7 +29,7 @@ export class ControlledTermOntology extends ControlledTermAbstractValueConstrain
     return this._uri;
   }
 
-  get numTerms(): number {
+  get numTerms(): number | null {
     return this._numTerms;
   }
 }

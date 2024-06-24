@@ -42,6 +42,10 @@ export class TemporalGranularity {
     ];
   }
 
+  public static valuesWithTimes(): TemporalGranularity[] {
+    return [TemporalGranularity.HOUR, TemporalGranularity.MINUTE, TemporalGranularity.SECOND, TemporalGranularity.DECIMAL_SECOND];
+  }
+
   public static forValue(value: string | null): TemporalGranularity {
     for (const temporalType of TemporalGranularity.values()) {
       if (temporalType.getValue() === value) {
@@ -49,5 +53,9 @@ export class TemporalGranularity {
       }
     }
     return this.NULL;
+  }
+
+  static hasTime(temporalGranularity: TemporalGranularity) {
+    return this.valuesWithTimes().includes(temporalGranularity);
   }
 }

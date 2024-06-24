@@ -6,6 +6,7 @@ export const fieldTestNumbers: number[] = [
   5,
   6,
   7,
+  8,
 ];
 export const elementTestNumbers: number[] = [
   1,
@@ -48,6 +49,8 @@ export const templateTestNumbers: number[] = [
   31,
   32,
   33,
+  34,
+  35,
 ];
 export const ceeSuiteTestMap = {
   '1': {

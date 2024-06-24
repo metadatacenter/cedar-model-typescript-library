@@ -41,6 +41,9 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
       if (childInfo.hidden) {
         uiNode[CedarModel.Ui.hidden] = childInfo.hidden;
       }
+      if (childInfo.continuePreviousLine) {
+        uiNode[CedarModel.Ui.continuePreviousLine] = childInfo.continuePreviousLine;
+      }
     }
   }
 
@@ -131,13 +134,13 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
       ...requiredObject,
       ...this.macroSchemaNameAndDescription(field),
       ...this.macroProvenance(field, this.atomicWriter),
-      ...this.macroStatusAndVersion(field, this.atomicWriter),
-      [JsonSchema.schemaVersion]: this.atomicWriter.write(field.schema_schemaVersion),
-      [TemplateProperty.additionalProperties]: this.atomicWriter.write(AdditionalProperties.FALSE),
       ...this.macroSkos(field),
-      ...this.macroSchemaIdentifier(field),
+      ...this.macroStatusAndVersion(field, this.atomicWriter),
       ...this.macroDerivedFrom(field),
       ...this.macroPreviousVersion(field),
+      [JsonSchema.schemaVersion]: this.atomicWriter.write(field.schema_schemaVersion),
+      [TemplateProperty.additionalProperties]: this.atomicWriter.write(AdditionalProperties.FALSE),
+      ...this.macroSchemaIdentifier(field),
       [CedarModel.schema]: this.atomicWriter.write(ArtifactSchema.CURRENT),
       ...this.macroAnnotations(field),
     };

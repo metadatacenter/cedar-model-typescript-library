@@ -19,6 +19,7 @@ export class YamlKeys {
   static required: string = 'required';
   static recommended: string = 'recommended';
   static hidden: string = 'hidden';
+  static continuePreviousLine = 'continuePreviousLine';
   static propertyIri: string = 'propertyIri';
   static overrideLabel: string = 'overrideLabel';
   static overrideDescription: string = 'overrideDescription';

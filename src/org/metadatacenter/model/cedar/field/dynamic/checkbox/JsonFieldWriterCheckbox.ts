@@ -12,8 +12,8 @@ export class JsonFieldWriterCheckbox extends JsonTemplateFieldWriterInternal {
   }
 
   override expandValueConstraintsNode(vcNode: JsonNode, field: CheckboxField, childInfo: ChildDeploymentInfo): void {
-    super.expandValueConstraintsNode(vcNode, field, childInfo);
     vcNode[CedarModel.multipleChoice] = true;
     this.expandLiterals(field, vcNode);
+    super.expandValueConstraintsNode(vcNode, field, childInfo);
   }
 }

@@ -61,6 +61,9 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
       if (childMeta.iri !== null) {
         childConfiguration[YamlKeys.propertyIri] = childMeta.iri;
       }
+      if (childMeta.continuePreviousLine) {
+        childConfiguration[YamlKeys.continuePreviousLine] = true;
+      }
     }
     if (childMeta.label !== null && childMeta.label !== child?.schema_name) {
       childConfiguration[YamlKeys.overrideLabel] = childMeta.label;

@@ -120,7 +120,7 @@ describe('ControlledTermFieldBuilder', () => {
     expect(backparsed['skos:altLabel']).toStrictEqual(['Alt label 1', 'Alt label 2', 'Alt label 3']);
 
     expect(backparsed['_valueConstraints']['requiredValue']).toBe(false);
-    expect(backparsed['_valueConstraints']['multipleChoice']).toBe(false);
+    expect(backparsed['_valueConstraints']['multipleChoice']).toBeUndefined();
     expect(backparsed['_valueConstraints']['defaultValue']).toStrictEqual({
       termUri: 'http://purl.bioontology.org/ontology/MESH/C039047',
       'rdfs:label': '2,3,6-trichlorotoluene',

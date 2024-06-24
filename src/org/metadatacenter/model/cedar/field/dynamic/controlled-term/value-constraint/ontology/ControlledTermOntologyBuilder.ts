@@ -4,7 +4,7 @@ import { ControlledTermOntology } from './ControlledTermOntology';
 export class ControlledTermOntologyBuilder {
   private acronym: string = '';
   private name: string = '';
-  private numTerms: number = 0;
+  private numTerms: number | null = null;
   private uri: Iri = Iri.empty();
 
   public withAcronym(acronym: string): ControlledTermOntologyBuilder {
@@ -17,7 +17,7 @@ export class ControlledTermOntologyBuilder {
     return this;
   }
 
-  public withNumTerms(numTerms: number): ControlledTermOntologyBuilder {
+  public withNumTerms(numTerms: number | null): ControlledTermOntologyBuilder {
     this.numTerms = numTerms;
     return this;
   }

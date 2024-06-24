@@ -51,7 +51,7 @@ export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecific
       const ontology = new ControlledTermOntology(
         ReaderUtil.getStringOrEmpty(o, CedarModel.ValueConstraints.acronym),
         ReaderUtil.getStringOrEmpty(o, CedarModel.ValueConstraints.name),
-        ReaderUtil.getNumberOrZero(o, CedarModel.ValueConstraints.numTerms),
+        ReaderUtil.getNumberOrNull(o, CedarModel.ValueConstraints.numTerms),
         ReaderUtil.getURI(o, CedarModel.ValueConstraints.uri),
       );
       ret.push(ontology);

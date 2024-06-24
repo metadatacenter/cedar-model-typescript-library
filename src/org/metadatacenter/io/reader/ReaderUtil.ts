@@ -67,6 +67,14 @@ export abstract class ReaderUtil {
     }
   }
 
+  static getNumberOrNull(node: JsonNode, key: string): number | null {
+    if (Object.hasOwn(node, key)) {
+      return node[key] as number;
+    } else {
+      return null;
+    }
+  }
+
   public static getNode(node: JsonNode, key: string): JsonNode {
     if (Object.hasOwn(node, key)) {
       return node[key] as JsonNode;

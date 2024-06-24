@@ -16,9 +16,9 @@ export class JsonValueConstraintsValueSetWriter extends AbstractJsonControlledTe
 
   override getAsJsonNode(valueSet: ControlledTermValueSet): JsonNode {
     const ret = JsonNode.getEmpty();
+    ret[CedarModel.ValueConstraints.uri] = this.atomicWriter.write(valueSet.uri);
     ret[CedarModel.ValueConstraints.vsCollection] = valueSet.vsCollection;
     ret[CedarModel.ValueConstraints.name] = valueSet.name;
-    ret[CedarModel.ValueConstraints.uri] = this.atomicWriter.write(valueSet.uri);
     ret[CedarModel.ValueConstraints.numTerms] = valueSet.numTerms;
     return ret;
   }

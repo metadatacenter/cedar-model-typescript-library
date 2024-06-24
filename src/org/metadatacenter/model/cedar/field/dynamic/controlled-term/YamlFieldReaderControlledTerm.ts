@@ -42,7 +42,7 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
           .withAcronym(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.acronym))
           .withName(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.ontologyName))
           .withUri(ReaderUtil.getURI(valueNode, YamlKeys.Controlled.iri))
-          .withNumTerms(ReaderUtil.getNumberOrZero(valueNode, YamlKeys.Controlled.numTerms));
+          .withNumTerms(ReaderUtil.getNumberOrNull(valueNode, YamlKeys.Controlled.numTerms));
         field.valueConstraints.ontologies.push(ontologyBuilder.build());
       } else if (type === YamlValues.Controlled.class) {
         const classBuilder = new ControlledTermClassBuilder()

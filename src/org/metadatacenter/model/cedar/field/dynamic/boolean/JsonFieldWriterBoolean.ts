@@ -18,7 +18,6 @@ export class JsonFieldWriterBoolean extends JsonTemplateFieldWriterInternal {
   }
 
   override expandValueConstraintsNode(vcNode: JsonNode, field: BooleanField, childInfo: ChildDeploymentInfo): void {
-    super.expandValueConstraintsNode(vcNode, field, childInfo);
     if (field.valueConstraints.nullEnabled !== null) {
       vcNode[CedarModel.nullEnabled] = field.valueConstraints.nullEnabled;
     }
@@ -36,5 +35,6 @@ export class JsonFieldWriterBoolean extends JsonTemplateFieldWriterInternal {
       labels[CedarModel.nullLabel] = field.valueConstraints.nullLabel;
     }
     vcNode[CedarModel.labels] = labels;
+    super.expandValueConstraintsNode(vcNode, field, childInfo);
   }
 }

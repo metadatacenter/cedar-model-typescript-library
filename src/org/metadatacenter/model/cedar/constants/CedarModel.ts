@@ -87,6 +87,7 @@ export class CedarModel {
 
   static Ui = class {
     static hidden = 'hidden';
+    static continuePreviousLine = 'continuePreviousLine';
   };
 
   static nullEnabled = 'nullEnabled';

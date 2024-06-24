@@ -6,6 +6,8 @@ import { CedarArtifactType } from '../types/cedar-types/CedarArtifactType';
 import { ChildDeploymentInfoBuilder } from '../deployment/ChildDeploymentInfoBuilder';
 
 export class TemplateElement extends AbstractContainerArtifact {
+  public skos_altLabel: Array<string> | null = null;
+  public skos_prefLabel: string | null = null;
   private constructor() {
     super();
     this.cedarArtifactType = CedarArtifactType.TEMPLATE_ELEMENT;

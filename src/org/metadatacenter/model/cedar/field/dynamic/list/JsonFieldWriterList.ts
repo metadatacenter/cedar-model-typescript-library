@@ -12,8 +12,8 @@ export class JsonFieldWriterList extends JsonTemplateFieldWriterInternal {
   }
 
   override expandValueConstraintsNode(vcNode: JsonNode, field: ListField, childInfo: ChildDeploymentInfo): void {
+    this.expandLiterals(field, vcNode);
     super.expandValueConstraintsNode(vcNode, field, childInfo);
     vcNode[CedarModel.multipleChoice] = field.multipleChoice;
-    this.expandLiterals(field, vcNode);
   }
 }

@@ -16,10 +16,12 @@ export class JsonValueConstraintsOntologyWriter extends AbstractJsonControlledTe
 
   override getAsJsonNode(ontology: ControlledTermOntology): JsonNode {
     const ret = JsonNode.getEmpty();
+    ret[CedarModel.ValueConstraints.uri] = this.atomicWriter.write(ontology.uri);
     ret[CedarModel.ValueConstraints.acronym] = ontology.acronym;
     ret[CedarModel.ValueConstraints.name] = ontology.name;
-    ret[CedarModel.ValueConstraints.uri] = this.atomicWriter.write(ontology.uri);
-    ret[CedarModel.ValueConstraints.numTerms] = ontology.numTerms;
+    if (ontology.numTerms !== null) {
+      ret[CedarModel.ValueConstraints.numTerms] = ontology.numTerms;
+    }
     return ret;
   }
 }

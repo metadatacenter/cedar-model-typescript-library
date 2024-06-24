@@ -7,6 +7,7 @@ export abstract class AbstractDynamicChildDeploymentInfo extends AbstractChildDe
   protected _requiredValue: boolean = false;
   private _recommendedValue: boolean = false;
   protected _hidden: boolean = false;
+  protected _continuePreviousLine: boolean = false;
 
   public constructor(name: string) {
     super(name);
@@ -42,6 +43,14 @@ export abstract class AbstractDynamicChildDeploymentInfo extends AbstractChildDe
 
   set hidden(value: boolean) {
     this._hidden = value;
+  }
+
+  get continuePreviousLine(): boolean {
+    return this._continuePreviousLine;
+  }
+
+  set continuePreviousLine(value: boolean) {
+    this._continuePreviousLine = value;
   }
 
   abstract isMultiInAnyWay(): boolean;

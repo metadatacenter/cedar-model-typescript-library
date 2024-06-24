@@ -9,6 +9,7 @@ export class AbstractDynamicChildDeploymentInfoBuilder extends AbstractChildDepl
   protected requiredValue: boolean = false;
   protected recommendedValue: boolean = false;
   protected hidden: boolean = false;
+  protected continuePreviousLine: boolean = false;
 
   constructor(child: TemplateChild, name: string) {
     super(child, name);
@@ -34,6 +35,11 @@ export class AbstractDynamicChildDeploymentInfoBuilder extends AbstractChildDepl
     return this;
   }
 
+  public withContinuePreviousLine(continuePreviousLine: boolean): this {
+    this.continuePreviousLine = continuePreviousLine;
+    return this;
+  }
+
   public build(): AbstractDynamicChildDeploymentInfo {
     const info: ChildDeploymentInfo = new ChildDeploymentInfo(this.name);
     this.setCommonData(info);
@@ -46,5 +52,6 @@ export class AbstractDynamicChildDeploymentInfoBuilder extends AbstractChildDepl
     info.requiredValue = this.requiredValue;
     info.recommendedValue = this.recommendedValue;
     info.hidden = this.hidden;
+    info.continuePreviousLine = this.continuePreviousLine;
   }
 }

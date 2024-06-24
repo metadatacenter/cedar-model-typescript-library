@@ -16,10 +16,10 @@ export class JsonValueConstraintsBranchWriter extends AbstractJsonControlledTerm
 
   override getAsJsonNode(branch: ControlledTermBranch): JsonNode {
     const ret = JsonNode.getEmpty();
+    ret[CedarModel.ValueConstraints.uri] = this.atomicWriter.write(branch.uri);
     ret[CedarModel.ValueConstraints.source] = branch.source;
     ret[CedarModel.ValueConstraints.acronym] = branch.acronym;
     ret[CedarModel.ValueConstraints.name] = branch.name;
-    ret[CedarModel.ValueConstraints.uri] = this.atomicWriter.write(branch.uri);
     ret[CedarModel.ValueConstraints.maxDepth] = branch.maxDepth;
     return ret;
   }

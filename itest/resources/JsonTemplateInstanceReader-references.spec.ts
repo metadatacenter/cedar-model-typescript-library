@@ -50,7 +50,7 @@ describe('JsonTemplateInstanceReader-references', () => {
         const jsonTemplateInstanceReaderResult: JsonTemplateInstanceReaderResult = instanceReader.readFromString(instanceSource);
         expect(jsonTemplateInstanceReaderResult).not.toBeNull();
         const instance: TemplateInstance = jsonTemplateInstanceReaderResult.instance;
-        TestUtil.p(instance);
+        //TestUtil.p(instance);
       } catch (error) {
         TestUtil.p(comparisonResult.getBlueprintComparisonErrors());
         console.error(`Failed to process template file: ${ceeTestNumber}`, error);

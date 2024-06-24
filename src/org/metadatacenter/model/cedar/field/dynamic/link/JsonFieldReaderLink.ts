@@ -7,7 +7,12 @@ import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { LinkFieldImpl } from './LinkFieldImpl';
 
 export class JsonFieldReaderLink extends JsonTemplateFieldTypeSpecificReader {
-  override read(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, _parsingResult: JsonArtifactParsingResult, _path: JsonPath): LinkField {
+  override read(
+    fieldSourceObject: JsonNode,
+    childInfo: ChildDeploymentInfo,
+    _parsingResult: JsonArtifactParsingResult,
+    _path: JsonPath,
+  ): LinkField {
     const field = LinkFieldImpl.buildEmpty();
     this.readRequiredAndHidden(fieldSourceObject, childInfo);
     return field;

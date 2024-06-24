@@ -17,7 +17,9 @@ export class YamlValueConstraintsOntologyWriter extends AbstractYamlControlledTe
     ret[YamlKeys.Controlled.acronym] = ontology.acronym;
     ret[YamlKeys.Controlled.ontologyName] = ontology.name;
     ret[YamlKeys.Controlled.iri] = this.atomicWriter.write(ontology.uri);
-    ret[YamlKeys.Controlled.numTerms] = ontology.numTerms;
+    if (ontology.numTerms !== null) {
+      ret[YamlKeys.Controlled.numTerms] = ontology.numTerms;
+    }
     return ret;
   }
 }

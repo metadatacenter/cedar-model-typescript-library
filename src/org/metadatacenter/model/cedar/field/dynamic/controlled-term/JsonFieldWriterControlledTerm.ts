@@ -33,19 +33,17 @@ export class JsonFieldWriterControlledTerm extends JsonTemplateFieldWriterIntern
   }
 
   override expandValueConstraintsNode(vcNode: JsonNode, field: ControlledTermField, childInfo: ChildDeploymentInfo): void {
-    super.expandValueConstraintsNode(vcNode, field, childInfo);
-    if (field.valueConstraints.defaultValue != null) {
-      const defaultValue = JsonNode.getEmpty();
-      defaultValue[JsonSchema.termUri] = this.atomicWriter.write(field.valueConstraints.defaultValue.termUri);
-      defaultValue[JsonSchema.rdfsLabel] = field.valueConstraints.defaultValue.rdfsLabel;
-      vcNode[CedarModel.defaultValue] = defaultValue;
-    }
-
     const ontologiesList: Array<JsonNode> = JsonNode.getEmptyList();
     field.valueConstraints.ontologies.forEach((ontology) => {
       ontologiesList.push(this.writers.getWriterForValueConstraint(ontology).getAsJsonNode(ontology));
     });
     vcNode[CedarModel.ontologies] = ontologiesList;
+
+    const valueSetList: Array<JsonNode> = JsonNode.getEmptyList();
+    field.valueConstraints.valueSets.forEach((clazz) => {
+      valueSetList.push(this.writers.getWriterForValueConstraint(clazz).getAsJsonNode(clazz));
+    });
+    vcNode[CedarModel.valueSets] = valueSetList;
 
     const classesList: Array<JsonNode> = JsonNode.getEmptyList();
     field.valueConstraints.classes.forEach((clazz) => {
@@ -59,12 +57,6 @@ export class JsonFieldWriterControlledTerm extends JsonTemplateFieldWriterIntern
     });
     vcNode[CedarModel.branches] = branchesList;
 
-    const valueSetList: Array<JsonNode> = JsonNode.getEmptyList();
-    field.valueConstraints.valueSets.forEach((clazz) => {
-      valueSetList.push(this.writers.getWriterForValueConstraint(clazz).getAsJsonNode(clazz));
-    });
-    vcNode[CedarModel.valueSets] = valueSetList;
-
     const actionsList: Array<JsonNode> = JsonNode.getEmptyList();
     field.valueConstraints.actions.forEach((clazz) => {
       actionsList.push(this.writers.getWriterForValueConstraint(clazz).getAsJsonNode(clazz));
@@ -73,7 +65,16 @@ export class JsonFieldWriterControlledTerm extends JsonTemplateFieldWriterIntern
       vcNode[CedarModel.actions] = actionsList;
     }
 
+    if (field.valueConstraints.defaultValue != null) {
+      const defaultValue = JsonNode.getEmpty();
+      defaultValue[JsonSchema.rdfsLabel] = field.valueConstraints.defaultValue.rdfsLabel;
+      defaultValue[JsonSchema.termUri] = this.atomicWriter.write(field.valueConstraints.defaultValue.termUri);
+      vcNode[CedarModel.defaultValue] = defaultValue;
+    }
+
     // TODO: this should be not in the model
-    vcNode[CedarModel.multipleChoice] = false;
+    // TODO: clarify why was this here then
+    // vcNode[CedarModel.multipleChoice] = false;
+    super.expandValueConstraintsNode(vcNode, field, childInfo);
   }
 }

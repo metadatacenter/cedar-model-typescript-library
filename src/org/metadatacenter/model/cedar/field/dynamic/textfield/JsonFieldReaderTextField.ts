@@ -9,7 +9,12 @@ import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { TextFieldImpl } from './TextFieldImpl';
 
 export class JsonFieldReaderTextField extends JsonTemplateFieldTypeSpecificReader {
-  override read(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, _parsingResult: JsonArtifactParsingResult, _path: JsonPath): TextField {
+  override read(
+    fieldSourceObject: JsonNode,
+    childInfo: ChildDeploymentInfo,
+    _parsingResult: JsonArtifactParsingResult,
+    _path: JsonPath,
+  ): TextField {
     const field = TextFieldImpl.buildEmpty();
     this.readRequiredAndHidden(fieldSourceObject, childInfo);
 

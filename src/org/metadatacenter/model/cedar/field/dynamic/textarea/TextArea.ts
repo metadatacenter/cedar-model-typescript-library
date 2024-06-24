@@ -1,9 +1,9 @@
 import { TemplateField } from '../../TemplateField';
-import { ValueConstraints } from '../../ValueConstraints';
 import { ChildDeploymentInfoBuilder } from '../../../deployment/ChildDeploymentInfoBuilder';
+import { ValueConstraintsTextArea } from './ValueConstraintsTextArea';
 
 export interface TextArea extends TemplateField {
-  get valueConstraints(): ValueConstraints;
+  get valueConstraints(): ValueConstraintsTextArea;
 
   createDeploymentBuilder(childName: string): ChildDeploymentInfoBuilder;
 }

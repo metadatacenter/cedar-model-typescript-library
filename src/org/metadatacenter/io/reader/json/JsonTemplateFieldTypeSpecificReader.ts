@@ -27,6 +27,7 @@ export abstract class JsonTemplateFieldTypeSpecificReader {
     const uiNode: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
     if (uiNode) {
       childInfo.hidden = ReaderUtil.getBoolean(uiNode, CedarModel.Ui.hidden);
+      childInfo.continuePreviousLine = ReaderUtil.getBoolean(uiNode, CedarModel.Ui.continuePreviousLine);
     }
   }
 }

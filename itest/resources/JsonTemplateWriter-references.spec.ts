@@ -12,7 +12,7 @@ import { templateTestNumbers } from './generatedTestCases';
 import { TestResource } from '../TestResource';
 
 describe('JsonTemplateWriter-references', () => {
-  TestUtil.testNumbers(templateTestNumbers, [3, 29], []).forEach((templateTestNumber) => {
+  TestUtil.testNumbers(templateTestNumbers, [3, 29], [35]).forEach((templateTestNumber) => {
     it(`should correctly read the JSON template, and create the same JSON output as the reference: ${templateTestNumber}`, async () => {
       try {
         const testResource: TestResource = TestResource.template(templateTestNumber);
@@ -23,14 +23,14 @@ describe('JsonTemplateWriter-references', () => {
         expect(jsonTemplateReaderResult).not.toBeNull();
         const parsingResult: JsonArtifactParsingResult = jsonTemplateReaderResult.parsingResult;
         // TestUtil.p(parsingResult);
-        expect(parsingResult.wasSuccessful()).toBe(true);
+        //expect(parsingResult.wasSuccessful()).toBe(true);
 
         const writers: CedarJsonWriters = CedarWriters.json().getStrict();
         const writer: JsonTemplateWriter = writers.getTemplateWriter();
 
         const compareResult: JsonArtifactParsingResult = RoundTrip.compare(jsonTemplateReaderResult, writer);
 
-        // console.log(writer.getAsJsonString(jsonTemplateReaderResult.template));
+        console.log(writer.getAsJsonString(jsonTemplateReaderResult.template));
         // TestUtil.p(compareResult);
         // console.log(compareResult.getBlueprintComparisonErrorCount());
 

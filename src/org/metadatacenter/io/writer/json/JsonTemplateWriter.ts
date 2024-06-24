@@ -85,8 +85,8 @@ export class JsonTemplateWriter extends JsonAbstractContainerArtifactWriter {
 
     const templateUI: JsonNode = {
       [CedarModel.order]: template.getChildrenInfo().getChildrenNames(),
-      [CedarModel.propertyLabels]: template.getChildrenInfo().getPropertyLabelMap(),
-      [CedarModel.propertyDescriptions]: template.getChildrenInfo().getPropertyDescriptionMap(),
+      [CedarModel.propertyLabels]: template.getChildrenInfo().getPropertyLabelMap(template),
+      [CedarModel.propertyDescriptions]: template.getChildrenInfo().getPropertyDescriptionMap(template),
     };
     if (this.behavior.outputPages()) {
       templateUI[CedarModel.pages] = [];
@@ -110,13 +110,13 @@ export class JsonTemplateWriter extends JsonAbstractContainerArtifactWriter {
       [CedarModel.ui]: templateUI,
       [JsonSchema.properties]: extendedProperties,
       [JsonSchema.required]: [...JsonTemplateContent.REQUIRED_PARTIAL, ...template.getChildrenInfo().getChildrenNamesForRequired()],
+      [TemplateProperty.additionalProperties]: this.atomicWriter.write(template.getAdditionalProperties()),
       ...this.macroSchemaNameAndDescription(template),
       ...this.macroProvenance(template, this.atomicWriter),
       ...this.macroStatusAndVersion(template, this.atomicWriter),
       ...this.macroDerivedFrom(template),
       ...this.macroPreviousVersion(template),
       [JsonSchema.schemaVersion]: this.atomicWriter.write(template.schema_schemaVersion),
-      [TemplateProperty.additionalProperties]: this.atomicWriter.write(template.getAdditionalProperties()),
       ...this.macroSchemaIdentifier(template),
       [CedarModel.schema]: this.atomicWriter.write(ArtifactSchema.CURRENT),
       ...this.macroAnnotations(template),

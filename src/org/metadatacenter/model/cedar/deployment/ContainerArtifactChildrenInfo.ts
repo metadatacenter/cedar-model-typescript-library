@@ -4,6 +4,7 @@ import { UiInputType } from '../types/wrapped-types/UiInputType';
 import { NullableString } from '../types/basic-types/NullableString';
 import { AbstractChildDeploymentInfo } from './AbstractChildDeploymentInfo';
 import { AbstractDynamicChildDeploymentInfo } from './AbstractDynamicChildDeploymentInfo';
+import { AbstractContainerArtifact } from '../AbstractContainerArtifact';
 
 export class ContainerArtifactChildrenInfo {
   private childNameList: Array<string> = [];
@@ -60,20 +61,31 @@ export class ContainerArtifactChildrenInfo {
     return result;
   }
 
-  public getPropertyLabelMap(): Record<string, NullableString> {
+  public getPropertyLabelMap(container: AbstractContainerArtifact): Record<string, NullableString> {
     const labelMap: { [key: string]: NullableString } = {};
     this.childNameList.forEach((childName) => {
       const childInfo = this.getChildInfo(childName);
-      labelMap[childInfo.name] = childInfo.label;
+      if (childInfo.label !== null) {
+        labelMap[childInfo.name] = childInfo.label;
+      } else {
+        const child = container.getChild(childName);
+        if (child !== null && child.schema_name !== null) {
+          labelMap[childInfo.name] = child.schema_name;
+        }
+      }
     });
     return labelMap;
   }
 
-  public getPropertyDescriptionMap(): Record<string, NullableString> {
+  public getPropertyDescriptionMap(_container: AbstractContainerArtifact): Record<string, NullableString> {
     const descriptionMap: { [key: string]: NullableString } = {};
     this.childNameList.forEach((childName) => {
       const childInfo = this.getChildInfo(childName);
-      descriptionMap[childInfo.name] = childInfo.description;
+      if (childInfo.description !== null) {
+        descriptionMap[childInfo.name] = childInfo.description;
+      } else {
+        descriptionMap[childInfo.name] = '';
+      }
     });
     return descriptionMap;
   }

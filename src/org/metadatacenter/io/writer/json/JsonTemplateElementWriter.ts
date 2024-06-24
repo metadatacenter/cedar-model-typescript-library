@@ -72,8 +72,8 @@ export class JsonTemplateElementWriter extends JsonAbstractContainerArtifactWrit
 
     const elementUi: JsonNode = {
       [CedarModel.order]: element.getChildrenInfo().getChildrenNames(),
-      [CedarModel.propertyLabels]: element.getChildrenInfo().getPropertyLabelMap(),
-      [CedarModel.propertyDescriptions]: element.getChildrenInfo().getPropertyDescriptionMap(),
+      [CedarModel.propertyLabels]: element.getChildrenInfo().getPropertyLabelMap(element),
+      [CedarModel.propertyDescriptions]: element.getChildrenInfo().getPropertyDescriptionMap(element),
     };
 
     // build the final object

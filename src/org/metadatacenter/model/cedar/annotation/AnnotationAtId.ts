@@ -1,8 +1,8 @@
 import { Annotation } from './Annotation';
 
 export class AnnotationAtId implements Annotation {
-  private name: string;
-  private id: string;
+  private readonly name: string;
+  private readonly id: string;
 
   constructor(name: string, id: string) {
     this.name = name;

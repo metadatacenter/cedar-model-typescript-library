@@ -13,7 +13,6 @@ export class YamlFieldReaderPhoneNumber extends YamlTemplateFieldTypeSpecificRea
     _parsingResult: YamlArtifactParsingResult,
     _path: JsonPath,
   ): PhoneNumberField {
-    const field = PhoneNumberFieldImpl.buildEmpty();
-    return field;
+    return PhoneNumberFieldImpl.buildEmpty();
   }
 }

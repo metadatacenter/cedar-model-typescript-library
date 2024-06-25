@@ -13,7 +13,6 @@ export class YamlFieldReaderEmail extends YamlTemplateFieldTypeSpecificReader {
     _parsingResult: YamlArtifactParsingResult,
     _path: JsonPath,
   ): EmailField {
-    const field = EmailFieldImpl.buildEmpty();
-    return field;
+    return EmailFieldImpl.buildEmpty();
   }
 }

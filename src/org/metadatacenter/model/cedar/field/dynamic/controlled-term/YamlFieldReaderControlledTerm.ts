@@ -74,8 +74,7 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
     if (defaultNode !== null) {
       const uri = ReaderUtil.getURI(defaultNode, YamlKeys.value);
       const label = ReaderUtil.getStringOrEmpty(defaultNode, YamlKeys.label);
-      const defaultValue = new ControlledTermDefaultValue(uri, label);
-      field.valueConstraints.defaultValue = defaultValue;
+      field.valueConstraints.defaultValue = new ControlledTermDefaultValue(uri, label);
     }
 
     const actions: JsonNode[] = ReaderUtil.getNodeList(fieldSourceObject, YamlKeys.actions);

@@ -9,7 +9,12 @@ import { BooleanField } from './BooleanField';
 import { BooleanFieldImpl } from './BooleanFieldImpl';
 
 export class JsonFieldReaderBoolean extends JsonTemplateFieldTypeSpecificReader {
-  override read(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, _parsingResult: JsonArtifactParsingResult, _path: JsonPath): BooleanField {
+  override read(
+    fieldSourceObject: JsonNode,
+    childInfo: ChildDeploymentInfo,
+    _parsingResult: JsonArtifactParsingResult,
+    _path: JsonPath,
+  ): BooleanField {
     const field = BooleanFieldImpl.buildEmpty();
     this.readRequiredAndHidden(fieldSourceObject, childInfo);
 

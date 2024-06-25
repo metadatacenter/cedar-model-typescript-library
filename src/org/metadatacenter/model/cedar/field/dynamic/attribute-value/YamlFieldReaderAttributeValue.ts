@@ -13,7 +13,6 @@ export class YamlFieldReaderAttributeValue extends YamlTemplateFieldTypeSpecific
     _parsingResult: YamlArtifactParsingResult,
     _path: JsonPath,
   ): AttributeValueField {
-    const field = AttributeValueFieldImpl.buildEmpty();
-    return field;
+    return AttributeValueFieldImpl.buildEmpty();
   }
 }

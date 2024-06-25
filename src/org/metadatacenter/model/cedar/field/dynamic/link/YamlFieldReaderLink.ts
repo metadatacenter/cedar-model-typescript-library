@@ -13,7 +13,6 @@ export class YamlFieldReaderLink extends YamlTemplateFieldTypeSpecificReader {
     _parsingResult: YamlArtifactParsingResult,
     _path: JsonPath,
   ): LinkField {
-    const field = LinkFieldImpl.buildEmpty();
-    return field;
+    return LinkFieldImpl.buildEmpty();
   }
 }

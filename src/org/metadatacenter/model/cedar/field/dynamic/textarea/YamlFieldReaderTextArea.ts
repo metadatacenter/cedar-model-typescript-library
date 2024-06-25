@@ -13,7 +13,6 @@ export class YamlFieldReaderTextArea extends YamlTemplateFieldTypeSpecificReader
     _parsingResult: YamlArtifactParsingResult,
     _path: JsonPath,
   ): TextArea {
-    const field = TextAreaImpl.buildEmpty();
-    return field;
+    return TextAreaImpl.buildEmpty();
   }
 }

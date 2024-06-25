@@ -7,7 +7,12 @@ import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { EmailFieldImpl } from './EmailFieldImpl';
 
 export class JsonFieldReaderEmail extends JsonTemplateFieldTypeSpecificReader {
-  override read(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, _parsingResult: JsonArtifactParsingResult, _path: JsonPath): EmailField {
+  override read(
+    fieldSourceObject: JsonNode,
+    childInfo: ChildDeploymentInfo,
+    _parsingResult: JsonArtifactParsingResult,
+    _path: JsonPath,
+  ): EmailField {
     const field = EmailFieldImpl.buildEmpty();
     this.readRequiredAndHidden(fieldSourceObject, childInfo);
     return field;

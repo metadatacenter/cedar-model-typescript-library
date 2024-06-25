@@ -11,7 +11,12 @@ import { MultipleChoiceListFieldImpl } from '../list-multiple-choice/MultipleCho
 import { SingleChoiceListFieldImpl } from '../list-single-choice/SingleChoiceListFieldImpl';
 
 export class JsonFieldReaderList extends JsonTemplateFieldTypeSpecificReader {
-  override read(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, _parsingResult: JsonArtifactParsingResult, _path: JsonPath): ListField {
+  override read(
+    fieldSourceObject: JsonNode,
+    childInfo: ChildDeploymentInfo,
+    _parsingResult: JsonArtifactParsingResult,
+    _path: JsonPath,
+  ): ListField {
     let field: ListField = SingleChoiceListFieldImpl.buildEmpty();
     this.readRequiredAndHidden(fieldSourceObject, childInfo);
 

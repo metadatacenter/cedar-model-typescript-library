@@ -11,6 +11,8 @@ export class JsonFieldWriterStaticImage extends JsonStaticFieldWriter {
   }
 
   protected override expandUiNode(uiNode: JsonNode, field: StaticImageField): void {
-    uiNode[CedarModel.content] = field.content;
+    if (field.content !== null) {
+      uiNode[CedarModel.content] = field.content;
+    }
   }
 }

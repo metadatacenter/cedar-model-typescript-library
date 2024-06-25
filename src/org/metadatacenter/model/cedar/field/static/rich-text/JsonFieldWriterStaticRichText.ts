@@ -11,6 +11,8 @@ export class JsonFieldWriterStaticRichText extends JsonStaticFieldWriter {
   }
 
   protected override expandUiNode(uiNode: JsonNode, field: StaticRichTextField): void {
-    uiNode[CedarModel.content] = field.content;
+    if (field.content !== null) {
+      uiNode[CedarModel.content] = field.content;
+    }
   }
 }

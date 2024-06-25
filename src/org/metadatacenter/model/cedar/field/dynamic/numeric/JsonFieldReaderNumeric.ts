@@ -21,7 +21,10 @@ export class JsonFieldReaderNumeric extends JsonTemplateFieldTypeSpecificReader 
 
     const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
     if (valueConstraints != null) {
-      field.valueConstraints.numberType = NumberType.forValue(ReaderUtil.getString(valueConstraints, CedarModel.numberType));
+      const numberTypeString = ReaderUtil.getString(valueConstraints, CedarModel.numberType);
+      if (numberTypeString !== null) {
+        field.valueConstraints.numberType = NumberType.forValue(numberTypeString);
+      }
       field.valueConstraints.minValue = ReaderUtil.getNumber(valueConstraints, CedarModel.minValue);
       field.valueConstraints.maxValue = ReaderUtil.getNumber(valueConstraints, CedarModel.maxValue);
       field.valueConstraints.decimalPlaces = ReaderUtil.getNumber(valueConstraints, CedarModel.decimalPlace);

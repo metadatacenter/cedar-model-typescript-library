@@ -12,8 +12,8 @@ export class JsonFieldWriterRadio extends JsonTemplateFieldWriterInternal {
   }
 
   override expandValueConstraintsNode(vcNode: JsonNode, field: RadioField, childInfo: ChildDeploymentInfo): void {
-    vcNode[CedarModel.multipleChoice] = false;
     this.expandLiterals(field, vcNode);
     super.expandValueConstraintsNode(vcNode, field, childInfo);
+    vcNode[CedarModel.multipleChoice] = false;
   }
 }

@@ -96,7 +96,9 @@ export class ContainerArtifactChildrenInfo {
       const childInfo = this.getChildInfo(childName);
       if (childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD) {
         if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
-          iriMap[childInfo.name] = { [JsonSchema.enum]: [childInfo.iri] };
+          if (childInfo.iri !== null) {
+            iriMap[childInfo.name] = { [JsonSchema.enum]: [childInfo.iri] };
+          }
         }
       }
     });

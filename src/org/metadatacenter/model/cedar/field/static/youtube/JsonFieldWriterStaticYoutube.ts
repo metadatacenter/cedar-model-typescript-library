@@ -11,7 +11,9 @@ export class JsonFieldWriterStaticYoutube extends JsonStaticFieldWriter {
   }
 
   protected override expandUiNode(uiNode: JsonNode, field: StaticYoutubeField): void {
-    uiNode[CedarModel.content] = field.videoId;
+    if (field.videoId !== null) {
+      uiNode[CedarModel.content] = field.videoId;
+    }
     uiNode[CedarModel.size] = {
       [CedarModel.width]: field.width,
       [CedarModel.height]: field.height,

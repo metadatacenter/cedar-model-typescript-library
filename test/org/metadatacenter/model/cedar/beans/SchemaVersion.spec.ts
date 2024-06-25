@@ -10,7 +10,13 @@ describe('SchemaVersion', () => {
   test('creates random version', () => {
     const unknown = SchemaVersion.forValue('1.1.1');
     expect(unknown).not.toBeNull();
-    expect(unknown.getValue()).toBe(null);
+    expect(unknown.getValue()).toBe('1.1.1');
+  });
+
+  test('creates invalid version', () => {
+    const unknown = SchemaVersion.forValue('1.1');
+    expect(unknown).not.toBeNull();
+    expect(unknown.getValue()).toBe('1.6.0');
   });
 
   test('creates unknown version using null', () => {

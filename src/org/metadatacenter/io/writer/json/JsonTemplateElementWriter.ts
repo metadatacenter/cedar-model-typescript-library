@@ -87,6 +87,7 @@ export class JsonTemplateElementWriter extends JsonAbstractContainerArtifactWrit
       [CedarModel.ui]: elementUi,
       [JsonSchema.properties]: extendedProperties,
       [JsonSchema.required]: [...JsonTemplateElementContent.REQUIRED_PARTIAL, ...element.getChildrenInfo().getChildrenNamesForRequired()],
+      ...this.macroAnnotations(element),
       ...this.macroSchemaNameAndDescription(element),
       ...this.macroProvenance(element, this.atomicWriter),
       ...this.macroSkos(element),
@@ -97,7 +98,6 @@ export class JsonTemplateElementWriter extends JsonAbstractContainerArtifactWrit
       [TemplateProperty.additionalProperties]: this.atomicWriter.write(element.getAdditionalProperties()),
       ...this.macroSchemaIdentifier(element),
       [CedarModel.schema]: this.atomicWriter.write(ArtifactSchema.CURRENT),
-      ...this.macroAnnotations(element),
     };
   }
 }

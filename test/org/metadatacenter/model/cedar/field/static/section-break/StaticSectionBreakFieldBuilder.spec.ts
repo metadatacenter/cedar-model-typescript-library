@@ -47,7 +47,7 @@ describe('StaticSectionBreakFieldBuilder', () => {
 
     expect(backparsed['_ui']).not.toBeNull();
     expect(backparsed['_ui']['inputType']).toBe('section-break');
-    expect(backparsed['_ui']['_content']).toBeNull();
+    expect(backparsed['_ui']['_content']).toBeUndefined();
 
     expect(backparsed['_ui']['valueRecommendationEnabled']).toBeUndefined();
 

@@ -132,6 +132,7 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
       ...vcObject,
       ...propertiesObject,
       ...requiredObject,
+      ...this.macroAnnotations(field),
       ...this.macroSchemaNameAndDescription(field),
       ...this.macroProvenance(field, this.atomicWriter),
       ...this.macroSkos(field),
@@ -142,7 +143,6 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
       [TemplateProperty.additionalProperties]: this.atomicWriter.write(AdditionalProperties.FALSE),
       ...this.macroSchemaIdentifier(field),
       [CedarModel.schema]: this.atomicWriter.write(ArtifactSchema.CURRENT),
-      ...this.macroAnnotations(field),
     };
   }
 

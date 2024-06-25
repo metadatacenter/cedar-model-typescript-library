@@ -99,6 +99,14 @@ export abstract class ReaderUtil {
     }
   }
 
+  public static getFilteredStringList(node: JsonNode, key: string): Array<string> {
+    if (Object.hasOwn(node, key) && Array.isArray(node[key])) {
+      return (node[key] as Array<string>).filter((str) => str.trim() !== '');
+    } else {
+      return [];
+    }
+  }
+
   static getStringMap(node: JsonNode, key: string): Map<string, string> {
     if (Object.hasOwn(node, key) && typeof node[key] === 'object' && !Array.isArray(node[key]) && node[key] !== null) {
       const obj = node[key] as JsonNode;

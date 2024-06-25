@@ -12,4 +12,8 @@ export class Iri {
   static empty(): Iri {
     return new Iri('');
   }
+
+  isEmpty() {
+    return this.value === '';
+  }
 }

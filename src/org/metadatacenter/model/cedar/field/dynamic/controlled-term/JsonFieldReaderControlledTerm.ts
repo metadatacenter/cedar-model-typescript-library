@@ -95,7 +95,7 @@ export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecific
       const branch = new ControlledTermValueSet(
         ReaderUtil.getStringOrEmpty(vs, CedarModel.ValueConstraints.vsCollection),
         ReaderUtil.getStringOrEmpty(vs, CedarModel.ValueConstraints.name),
-        ReaderUtil.getNumberOrZero(vs, CedarModel.ValueConstraints.numTerms),
+        ReaderUtil.getNumberOrNull(vs, CedarModel.ValueConstraints.numTerms),
         ReaderUtil.getURI(vs, CedarModel.ValueConstraints.uri),
       );
       ret.push(branch);
@@ -123,9 +123,12 @@ export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecific
     if (node == null) {
       return null;
     }
-    return new ControlledTermDefaultValue(
-      ReaderUtil.getURI(node, JsonSchema.termUri),
-      ReaderUtil.getStringOrEmpty(node, JsonSchema.rdfsLabel),
-    );
+    const uri = ReaderUtil.getURI(node, JsonSchema.termUri);
+    const rdfsLabel: string | null = ReaderUtil.getString(node, JsonSchema.rdfsLabel);
+    if (!uri.isEmpty() || rdfsLabel !== null) {
+      return new ControlledTermDefaultValue(uri, rdfsLabel ?? '');
+    } else {
+      return null;
+    }
   }
 }

@@ -19,7 +19,9 @@ export class JsonValueConstraintsValueSetWriter extends AbstractJsonControlledTe
     ret[CedarModel.ValueConstraints.uri] = this.atomicWriter.write(valueSet.uri);
     ret[CedarModel.ValueConstraints.vsCollection] = valueSet.vsCollection;
     ret[CedarModel.ValueConstraints.name] = valueSet.name;
-    ret[CedarModel.ValueConstraints.numTerms] = valueSet.numTerms;
+    if (valueSet.numTerms !== null) {
+      ret[CedarModel.ValueConstraints.numTerms] = valueSet.numTerms;
+    }
     return ret;
   }
 }

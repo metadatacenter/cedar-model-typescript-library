@@ -110,7 +110,7 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     super.readNonReportableAttributes(field, fieldSourceObject);
     // Read field-specific nodes
     field.skos_prefLabel = ReaderUtil.getString(fieldSourceObject, CedarModel.skosPrefLabel);
-    field.skos_altLabel = ReaderUtil.getStringList(fieldSourceObject, CedarModel.skosAltLabel);
+    field.skos_altLabel = ReaderUtil.getFilteredStringList(fieldSourceObject, CedarModel.skosAltLabel);
   }
 
   private readReportableAttributes(

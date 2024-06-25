@@ -1,9 +1,11 @@
 export const NumberTypeValues = {
   DECIMAL: 'xsd:decimal',
-  LONG: 'xsd:long',
   INT: 'xsd:int',
-  DOUBLE: 'xsd:double',
+  LONG: 'xsd:long',
+  BYTE: 'xsd:byte',
+  SHORT: 'xsd:short',
   FLOAT: 'xsd:float',
+  DOUBLE: 'xsd:double',
 } as const;
 
 export type NumberTypeValue = (typeof NumberTypeValues)[keyof typeof NumberTypeValues] | null;
@@ -20,14 +22,16 @@ export class NumberType {
   }
 
   public static DECIMAL = new NumberType(NumberTypeValues.DECIMAL);
-  public static LONG = new NumberType(NumberTypeValues.LONG);
   public static INT = new NumberType(NumberTypeValues.INT);
-  public static DOUBLE = new NumberType(NumberTypeValues.DOUBLE);
+  public static LONG = new NumberType(NumberTypeValues.LONG);
+  public static BYTE = new NumberType(NumberTypeValues.BYTE);
+  public static SHORT = new NumberType(NumberTypeValues.SHORT);
   public static FLOAT = new NumberType(NumberTypeValues.FLOAT);
+  public static DOUBLE = new NumberType(NumberTypeValues.DOUBLE);
   public static NULL = new NumberType(null);
 
   public static values(): NumberType[] {
-    return [NumberType.DECIMAL, NumberType.LONG, NumberType.INT, NumberType.DOUBLE, NumberType.FLOAT];
+    return [NumberType.DECIMAL, NumberType.INT, NumberType.LONG, NumberType.BYTE, NumberType.SHORT, NumberType.FLOAT, NumberType.DOUBLE];
   }
 
   public static forValue(value: string | null): NumberType {

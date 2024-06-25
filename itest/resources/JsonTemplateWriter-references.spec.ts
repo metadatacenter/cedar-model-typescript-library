@@ -12,7 +12,7 @@ import { templateTestNumbers } from './generatedTestCases';
 import { TestResource } from '../TestResource';
 
 describe('JsonTemplateWriter-references', () => {
-  TestUtil.testNumbers(templateTestNumbers, [3, 29], [35]).forEach((templateTestNumber) => {
+  TestUtil.testNumbers(templateTestNumbers, [3, 29, 35], []).forEach((templateTestNumber) => {
     it(`should correctly read the JSON template, and create the same JSON output as the reference: ${templateTestNumber}`, async () => {
       try {
         const testResource: TestResource = TestResource.template(templateTestNumber);
@@ -30,7 +30,7 @@ describe('JsonTemplateWriter-references', () => {
 
         const compareResult: JsonArtifactParsingResult = RoundTrip.compare(jsonTemplateReaderResult, writer);
 
-        console.log(writer.getAsJsonString(jsonTemplateReaderResult.template));
+        // console.log(writer.getAsJsonString(jsonTemplateReaderResult.template));
         // TestUtil.p(compareResult);
         // console.log(compareResult.getBlueprintComparisonErrorCount());
 

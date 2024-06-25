@@ -16,11 +16,11 @@ export class JsonValueConstraintsClassWriter extends AbstractJsonControlledTermV
 
   override getAsJsonNode(clazz: ControlledTermClass): JsonNode {
     const ret = JsonNode.getEmpty();
-    ret[CedarModel.ValueConstraints.label] = clazz.label;
-    ret[CedarModel.ValueConstraints.source] = clazz.source;
-    ret[CedarModel.ValueConstraints.type] = this.atomicWriter.write(clazz.type);
-    ret[CedarModel.ValueConstraints.prefLabel] = clazz.prefLabel;
     ret[CedarModel.ValueConstraints.uri] = this.atomicWriter.write(clazz.uri);
+    ret[CedarModel.ValueConstraints.source] = clazz.source;
+    ret[CedarModel.ValueConstraints.label] = clazz.label;
+    ret[CedarModel.ValueConstraints.prefLabel] = clazz.prefLabel;
+    ret[CedarModel.ValueConstraints.type] = this.atomicWriter.write(clazz.type);
     return ret;
   }
 }

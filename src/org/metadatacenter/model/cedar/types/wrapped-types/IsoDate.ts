@@ -31,6 +31,8 @@ export class IsoDate {
     if (!isoDateString) {
       return IsoDate.NULL;
     }
+    // Regex to insert colon in timezone offset if missing
+    isoDateString = isoDateString.replace(/([+-]\d{2})(\d{2})$/, '$1:$2');
 
     const date = new Date(isoDateString);
     const timezoneOffset = isoDateString.match(/Z|([+-])([01]\d):?([0-5]\d)$/)?.[0] ?? 'Z';

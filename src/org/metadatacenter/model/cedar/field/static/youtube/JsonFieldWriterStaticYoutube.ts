@@ -14,9 +14,15 @@ export class JsonFieldWriterStaticYoutube extends JsonStaticFieldWriter {
     if (field.videoId !== null) {
       uiNode[CedarModel.content] = field.videoId;
     }
-    uiNode[CedarModel.size] = {
-      [CedarModel.width]: field.width,
-      [CedarModel.height]: field.height,
-    };
+    if (field.width !== null || field.height !== null) {
+      const sizeNode = JsonNode.getEmpty();
+      if (field.width !== null) {
+        sizeNode[CedarModel.width] = field.width;
+      }
+      if (field.height !== null) {
+        sizeNode[CedarModel.height] = field.height;
+      }
+      uiNode[CedarModel.size] = sizeNode;
+    }
   }
 }

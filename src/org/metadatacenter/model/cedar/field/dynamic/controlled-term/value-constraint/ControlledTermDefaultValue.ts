@@ -16,4 +16,8 @@ export class ControlledTermDefaultValue {
   get rdfsLabel(): string {
     return this._rdfsLabel;
   }
+
+  isControlledDefaultValue() {
+    return false;
+  }
 }

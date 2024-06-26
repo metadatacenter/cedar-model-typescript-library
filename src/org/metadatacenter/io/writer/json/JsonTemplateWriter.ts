@@ -59,19 +59,7 @@ export class JsonTemplateWriter extends JsonAbstractContainerArtifactWriter {
       ...this.getChildMapAsJson(template),
     };
 
-    // Inject instance type specification, if present
-    if (template.instanceTypeSpecification !== null) {
-      const oneOfNode: Array<JsonNode> = extendedProperties[JsonSchema.atType][JsonSchema.oneOf];
-      oneOfNode.forEach((item: JsonNode) => {
-        const itemType = ReaderUtil.getString(item, JsonSchema.type);
-        if (itemType == 'string') {
-          item[JsonSchema.enum] = [template.instanceTypeSpecification];
-        } else if (itemType == 'array') {
-          const items: JsonNode = ReaderUtil.getNode(item, JsonSchema.items);
-          items[JsonSchema.enum] = [template.instanceTypeSpecification];
-        }
-      });
-    }
+    this.expandInstanceTypeSpecification(template, extendedProperties);
 
     return extendedProperties;
   }

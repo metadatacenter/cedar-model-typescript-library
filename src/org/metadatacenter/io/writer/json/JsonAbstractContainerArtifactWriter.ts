@@ -8,6 +8,7 @@ import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
 import { CedarModel } from '../../../model/cedar/constants/CedarModel';
 import { WriterUtil } from '../WriterUtil';
 import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
+import { ReaderUtil } from '../../reader/ReaderUtil';
 
 export abstract class JsonAbstractContainerArtifactWriter extends JsonAbstractArtifactWriter {
   protected macroContext(_artifact: AbstractContainerArtifact) {
@@ -65,5 +66,22 @@ export abstract class JsonAbstractContainerArtifactWriter extends JsonAbstractAr
       });
 
     return childMap;
+  }
+
+  protected expandInstanceTypeSpecification(container: AbstractContainerArtifact, extendedProperties: JsonNode) {
+    // Inject instance type specification, if present
+    if (container.instanceTypeSpecification !== null) {
+      const atTypeNode = extendedProperties[JsonSchema.atType];
+      const oneOfNode: Array<JsonNode> = (atTypeNode as any as JsonNode)[JsonSchema.oneOf] as Array<JsonNode>;
+      oneOfNode.forEach((item: JsonNode) => {
+        const itemType = ReaderUtil.getString(item, JsonSchema.type);
+        if (itemType == 'string') {
+          item[JsonSchema.enum] = [container.instanceTypeSpecification];
+        } else if (itemType == 'array') {
+          const items: JsonNode = ReaderUtil.getNode(item, JsonSchema.items);
+          items[JsonSchema.enum] = [container.instanceTypeSpecification];
+        }
+      });
+    }
   }
 }

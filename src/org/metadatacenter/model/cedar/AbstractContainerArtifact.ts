@@ -11,6 +11,7 @@ export abstract class AbstractContainerArtifact extends AbstractSchemaArtifact {
   // Children
   private childrenInfo: ContainerArtifactChildrenInfo = new ContainerArtifactChildrenInfo();
   private childMap: Map<string, TemplateChild> = new Map<string, TemplateChild>();
+  public instanceTypeSpecification: string | null = null;
 
   addChild(templateChild: TemplateChild, deploymentInfo: AbstractChildDeploymentInfo): void {
     this.childrenInfo.add(deploymentInfo);

@@ -79,24 +79,6 @@ export class JsonTemplateReader extends JsonContainerArtifactReader {
     }
   }
 
-  private readInstanceTypeSpecification(template: Template, templateSourceObject: JsonNode, _parsingResult: JsonArtifactParsingResult) {
-    const properties: JsonNode = ReaderUtil.getNode(templateSourceObject, JsonSchema.properties);
-    if (properties !== null) {
-      const atType: JsonNode = ReaderUtil.getNode(properties, JsonSchema.atType);
-      if (atType !== null) {
-        const oneOf: Array<JsonNode> = ReaderUtil.getNodeList(atType, JsonSchema.oneOf);
-        if (oneOf !== null) {
-          oneOf.forEach((item) => {
-            const oneOfEnum = ReaderUtil.getStringList(item, JsonSchema.enum);
-            if (oneOfEnum != null && oneOfEnum.length > 0) {
-              template.instanceTypeSpecification = oneOfEnum[0];
-            }
-          });
-        }
-      }
-    }
-  }
-
   private readAndValidateChildrenInfo(
     template: Template,
     templateSourceObject: JsonNode,

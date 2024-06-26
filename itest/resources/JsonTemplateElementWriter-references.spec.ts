@@ -22,6 +22,7 @@ describe('JsonTemplateElementWriter-references', () => {
         const jsonElementReaderResult: JsonTemplateElementReaderResult = reader.readFromString(artifactSource);
         expect(jsonElementReaderResult).not.toBeNull();
         const parsingResult: JsonArtifactParsingResult = jsonElementReaderResult.parsingResult;
+        // TestUtil.p(parsingResult);
         expect(parsingResult.wasSuccessful()).toBe(true);
 
         const writers: CedarJsonWriters = CedarWriters.json().getStrict();
@@ -29,6 +30,11 @@ describe('JsonTemplateElementWriter-references', () => {
         // console.log(writer.getAsJsonString(jsonElementReaderResult.element));
 
         comparisonResult = RoundTrip.compare(jsonElementReaderResult, writer);
+
+        // console.log(writer.getAsJsonString(jsonElementReaderResult.element));
+        // TestUtil.p(comparisonResult);
+        // console.log(comparisonResult.getBlueprintComparisonErrorCount());
+
         expect(comparisonResult.wasSuccessful()).toBe(true);
         expect(comparisonResult.getBlueprintComparisonErrorCount()).toBe(0);
         expect(comparisonResult.getBlueprintComparisonWarningCount()).toBe(0);

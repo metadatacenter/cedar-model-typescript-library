@@ -90,7 +90,9 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
       }
       literals.push(literal);
     });
-    vcNode[CedarModel.literals] = literals;
+    if (literals.length > 0) {
+      vcNode[CedarModel.literals] = literals;
+    }
   }
 
   public getAsJsonString(field: TemplateField, indent: number = 2): string {

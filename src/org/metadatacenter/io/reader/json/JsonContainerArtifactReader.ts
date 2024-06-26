@@ -25,6 +25,7 @@ import { ChildDeploymentInfoStaticBuilder } from '../../../model/cedar/deploymen
 import { AbstractDynamicChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/AbstractDynamicChildDeploymentInfoBuilder';
 import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
 import { Language } from '../../../model/cedar/types/wrapped-types/Language';
+import { AbstractSchemaArtifact } from '../../../model/cedar/AbstractSchemaArtifact';
 
 export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArtifactReader {
   protected fieldReader: JsonTemplateFieldReader;
@@ -385,6 +386,28 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
           if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
             childInfo.iri = iriList[0];
           }
+        }
+      }
+    }
+  }
+
+  protected readInstanceTypeSpecification(
+    artifact: AbstractContainerArtifact,
+    artifactSourceObject: JsonNode,
+    _parsingResult: JsonArtifactParsingResult,
+  ) {
+    const properties: JsonNode = ReaderUtil.getNode(artifactSourceObject, JsonSchema.properties);
+    if (properties !== null) {
+      const atType: JsonNode = ReaderUtil.getNode(properties, JsonSchema.atType);
+      if (atType !== null) {
+        const oneOf: Array<JsonNode> = ReaderUtil.getNodeList(atType, JsonSchema.oneOf);
+        if (oneOf !== null) {
+          oneOf.forEach((item) => {
+            const oneOfEnum = ReaderUtil.getStringList(item, JsonSchema.enum);
+            if (oneOfEnum != null && oneOfEnum.length > 0) {
+              artifact.instanceTypeSpecification = oneOfEnum[0];
+            }
+          });
         }
       }
     }

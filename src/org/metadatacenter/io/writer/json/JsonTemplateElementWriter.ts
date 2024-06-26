@@ -57,10 +57,14 @@ export class JsonTemplateElementWriter extends JsonAbstractContainerArtifactWrit
     }
 
     // include the field/element definitions
-    return {
+    const extendedProperties = {
       ...properties,
       ...this.getChildMapAsJson(element),
-    } as JsonNode;
+    };
+
+    this.expandInstanceTypeSpecification(element, extendedProperties);
+
+    return extendedProperties;
   }
 
   public getAsJsonString(element: TemplateElement, indent: number = 2): string {

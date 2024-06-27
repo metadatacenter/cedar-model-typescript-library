@@ -35,7 +35,7 @@ export class JsonTemplateElementWriter extends JsonAbstractContainerArtifactWrit
     // Include the IRI mapping
     properties[JsonSchema.atContext][JsonSchema.properties] = {
       ...properties[JsonSchema.atContext][JsonSchema.properties],
-      ...element.getChildrenInfo().getNonStaticIRIMap(),
+      ...element.getChildrenInfo().getIRIMap(),
     };
 
     const childNamesForRequired: string[] = element.getChildrenInfo().getChildrenNamesForRequiredInProperties();

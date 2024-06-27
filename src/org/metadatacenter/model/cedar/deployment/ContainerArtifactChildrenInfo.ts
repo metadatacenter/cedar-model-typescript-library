@@ -44,7 +44,7 @@ export class ContainerArtifactChildrenInfo {
   public getChildrenNamesForRequired(): Array<string> {
     const result: Array<string> = [];
     for (const [name, childInfo] of this.childMap.entries()) {
-      if (childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD) {
+      if (childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD && childInfo.uiInputType !== UiInputType.ATTRIBUTE_VALUE) {
         result.push(name);
       }
     }
@@ -90,11 +90,11 @@ export class ContainerArtifactChildrenInfo {
     return descriptionMap;
   }
 
-  public getNonStaticIRIMap(): { [key: string]: { [key in typeof JsonSchema.enum]: Array<NullableString> } } {
+  public getIRIMap(): { [key: string]: { [key in typeof JsonSchema.enum]: Array<NullableString> } } {
     const iriMap: { [key: string]: { [key in typeof JsonSchema.enum]: Array<string | null> } } = {};
     this.childNameList.forEach((childName) => {
       const childInfo = this.getChildInfo(childName);
-      if (childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD) {
+      if (childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD && childInfo.uiInputType !== UiInputType.ATTRIBUTE_VALUE) {
         if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
           if (childInfo.iri !== null) {
             iriMap[childInfo.name] = { [JsonSchema.enum]: [childInfo.iri] };

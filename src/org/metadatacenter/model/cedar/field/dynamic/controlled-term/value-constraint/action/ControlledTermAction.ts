@@ -6,10 +6,10 @@ export class ControlledTermAction extends ControlledTermAbstractValueConstraint 
   static className = 'ControlledTermAction';
   public className = 'ControlledTermAction';
   private readonly _to: number | null = null;
-  private readonly _action: string;
+  private readonly _action: string; //move, delete
   private readonly _termUri: Iri;
   private readonly _sourceUri: Iri;
-  private readonly _source: string;
+  private readonly _source: string; // source acronym
   private readonly _type: BioportalTermType;
 
   constructor(to: number | null, action: string, termUri: Iri, sourceUri: Iri, source: string, type: BioportalTermType) {

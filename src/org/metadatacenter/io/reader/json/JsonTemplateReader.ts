@@ -16,6 +16,7 @@ import { JsonTemplateElementReader } from './JsonTemplateElementReader';
 import { JsonContainerArtifactReader } from './JsonContainerArtifactReader';
 import { Template } from '../../../model/cedar/template/Template';
 import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
+import { UiInputType } from '../../../model/cedar/types/wrapped-types/UiInputType';
 
 export class JsonTemplateReader extends JsonContainerArtifactReader {
   private readonly elementReader: JsonTemplateElementReader;
@@ -43,7 +44,7 @@ export class JsonTemplateReader extends JsonContainerArtifactReader {
   }
 
   protected override includeInIRIMapping(childInfo: ChildDeploymentInfo): boolean {
-    return childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD;
+    return childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD && childInfo.uiInputType !== UiInputType.ATTRIBUTE_VALUE;
   }
 
   public readFromString(templateSourceString: string): JsonTemplateReaderResult {

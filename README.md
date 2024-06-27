@@ -36,5 +36,30 @@ npx ts-node ./itest/scripts/compare-content-ref-ts-json-files.ts
 npx ts-node ./itest/scripts/compare-content-ref-java-json-files.ts
 ```
 
+## Development
+During development, you might want to use this library in a client project.
+To do so, execute this:
+```shell
+npm run build
+npm run link 
+```
+
+To check the globally installed packages, and check if this library is linked properly, execute:
+```shell
+npm ls -g --depth=0
+```
+
+You should see something similar:
+```shell
+/opt/homebrew/lib
+├── @angular/cli@17.3.0
+├── cedar-model-typescript-library@0.5.0 -> ./../../../Users/egyedia/CEDAR/cedar-model-typescript-library/dist
+├── ember-cli@5.7.0
+├── gulp@4.0.2
+├── npm@10.5.0
+├── ts-node@10.9.2
+└── typescript@5.4.2
+```
+
 ## See it in action
 Check out the README at the companion [demo repo](https://github.com/metadatacenter/cedar-model-typescript-library-demo)

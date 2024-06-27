@@ -82,96 +82,12 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
       const actionBuilder = new ControlledTermActionBuilder()
         .withAction(ReaderUtil.getStringOrEmpty(actionNode, YamlKeys.action))
         .withSource(ReaderUtil.getStringOrEmpty(actionNode, YamlKeys.Controlled.sourceAcronym))
-        .withType(ReaderUtil.getStringOrEmpty(actionNode, YamlKeys.type))
+        .withType(BioportalTermType.forYamlValue(ReaderUtil.getStringOrEmpty(actionNode, YamlKeys.type)))
         .withTermUri(ReaderUtil.getURI(actionNode, YamlKeys.Controlled.termIri))
         .withTo(ReaderUtil.getNumber(actionNode, YamlKeys.Controlled.to))
         .withSourceUri(ReaderUtil.getURI(actionNode, YamlKeys.Controlled.sourceIri));
       field.valueConstraints.actions.push(actionBuilder.build());
     });
     return field;
-  }
-
-  private getOntologies(nodeList: Array<JsonNode>): Array<ControlledTermOntology> {
-    const ret: Array<ControlledTermOntology> = [];
-    nodeList.forEach((o) => {
-      const ontology = new ControlledTermOntology(
-        ReaderUtil.getStringOrEmpty(o, CedarModel.ValueConstraints.acronym),
-        ReaderUtil.getStringOrEmpty(o, CedarModel.ValueConstraints.name),
-        ReaderUtil.getNumberOrZero(o, CedarModel.ValueConstraints.numTerms),
-        ReaderUtil.getURI(o, CedarModel.ValueConstraints.uri),
-      );
-      ret.push(ontology);
-    });
-    return ret;
-  }
-
-  private getClasses(nodeList: Array<JsonNode>): Array<ControlledTermClass> {
-    const ret: Array<ControlledTermClass> = [];
-    nodeList.forEach((c) => {
-      const clazz = new ControlledTermClass(
-        ReaderUtil.getStringOrEmpty(c, CedarModel.ValueConstraints.label),
-        ReaderUtil.getStringOrEmpty(c, CedarModel.ValueConstraints.source),
-        BioportalTermType.forJsonValue(ReaderUtil.getStringOrEmpty(c, CedarModel.ValueConstraints.type)),
-        ReaderUtil.getStringOrEmpty(c, CedarModel.ValueConstraints.prefLabel),
-        ReaderUtil.getURI(c, CedarModel.ValueConstraints.uri),
-      );
-      ret.push(clazz);
-    });
-    return ret;
-  }
-
-  private getBranches(nodeList: Array<JsonNode>): Array<ControlledTermBranch> {
-    const ret: Array<ControlledTermBranch> = [];
-    nodeList.forEach((b) => {
-      const branch = new ControlledTermBranch(
-        ReaderUtil.getStringOrEmpty(b, CedarModel.ValueConstraints.source),
-        ReaderUtil.getStringOrEmpty(b, CedarModel.ValueConstraints.acronym),
-        ReaderUtil.getStringOrEmpty(b, CedarModel.ValueConstraints.name),
-        ReaderUtil.getNumberOrZero(b, CedarModel.ValueConstraints.maxDepth),
-        ReaderUtil.getURI(b, CedarModel.ValueConstraints.uri),
-      );
-      ret.push(branch);
-    });
-    return ret;
-  }
-
-  private getValueSets(nodeList: Array<JsonNode>): Array<ControlledTermValueSet> {
-    const ret: Array<ControlledTermValueSet> = [];
-    nodeList.forEach((vs) => {
-      const branch = new ControlledTermValueSet(
-        ReaderUtil.getStringOrEmpty(vs, CedarModel.ValueConstraints.vsCollection),
-        ReaderUtil.getStringOrEmpty(vs, CedarModel.ValueConstraints.name),
-        ReaderUtil.getNumberOrZero(vs, CedarModel.ValueConstraints.numTerms),
-        ReaderUtil.getURI(vs, CedarModel.ValueConstraints.uri),
-      );
-      ret.push(branch);
-    });
-    return ret;
-  }
-
-  private getActions(nodeList: Array<JsonNode>): Array<ControlledTermAction> {
-    const ret: Array<ControlledTermAction> = [];
-    nodeList.forEach((vs) => {
-      const action = new ControlledTermAction(
-        ReaderUtil.getNumber(vs, CedarModel.ValueConstraints.to),
-        ReaderUtil.getStringOrEmpty(vs, CedarModel.ValueConstraints.action),
-        ReaderUtil.getURI(vs, CedarModel.ValueConstraints.termUri),
-        ReaderUtil.getURI(vs, CedarModel.ValueConstraints.sourceUri),
-        ReaderUtil.getStringOrEmpty(vs, CedarModel.ValueConstraints.source),
-        ReaderUtil.getStringOrEmpty(vs, CedarModel.ValueConstraints.type),
-      );
-      ret.push(action);
-    });
-    return ret;
-  }
-
-  private getDefaultValue(node: JsonNode | null): ControlledTermDefaultValue | null {
-    if (node == null) {
-      return null;
-    }
-    return new ControlledTermDefaultValue(
-      ReaderUtil.getURI(node, JsonSchema.termUri),
-      ReaderUtil.getStringOrEmpty(node, JsonSchema.rdfsLabel),
-    );
   }
 }

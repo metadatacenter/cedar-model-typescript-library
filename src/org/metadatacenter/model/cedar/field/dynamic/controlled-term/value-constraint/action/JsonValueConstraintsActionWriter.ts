@@ -23,7 +23,7 @@ export class JsonValueConstraintsActionWriter extends AbstractJsonControlledTerm
     ret[CedarModel.ValueConstraints.termUri] = this.atomicWriter.write(action.termUri);
     ret[CedarModel.ValueConstraints.sourceUri] = this.atomicWriter.write(action.sourceUri);
     ret[CedarModel.ValueConstraints.source] = action.source;
-    ret[CedarModel.ValueConstraints.type] = action.type;
+    ret[CedarModel.ValueConstraints.type] = this.atomicWriter.write(action.type);
     return ret;
   }
 }

@@ -14,6 +14,7 @@ import { TestResource } from '../TestResource';
 describe('JsonTemplateWriter-references', () => {
   TestUtil.testNumbers(templateTestNumbers, [3, 29, 35], []).forEach((templateTestNumber) => {
     it(`should correctly read the JSON template, and create the same JSON output as the reference: ${templateTestNumber}`, async () => {
+      let compareResult: JsonArtifactParsingResult | null = null;
       try {
         const testResource: TestResource = TestResource.template(templateTestNumber);
 
@@ -28,7 +29,7 @@ describe('JsonTemplateWriter-references', () => {
         const writers: CedarJsonWriters = CedarWriters.json().getStrict();
         const writer: JsonTemplateWriter = writers.getTemplateWriter();
 
-        const compareResult: JsonArtifactParsingResult = RoundTrip.compare(jsonTemplateReaderResult, writer);
+        compareResult = RoundTrip.compare(jsonTemplateReaderResult, writer);
 
         // console.log(writer.getAsJsonString(jsonTemplateReaderResult.template));
         // TestUtil.p(compareResult);
@@ -37,6 +38,7 @@ describe('JsonTemplateWriter-references', () => {
         expect(compareResult.wasSuccessful()).toBe(true);
         expect(compareResult.getBlueprintComparisonErrorCount()).toBe(0);
       } catch (error) {
+        TestUtil.p(compareResult);
         console.error(`Failed to process template file: ${templateTestNumber}`, error);
         throw error;
       }

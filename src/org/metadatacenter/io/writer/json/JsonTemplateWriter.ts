@@ -38,12 +38,7 @@ export class JsonTemplateWriter extends JsonAbstractContainerArtifactWriter {
       ...template.getChildrenInfo().getNonStaticIRIMap(),
     };
 
-    let requiredChildren: string[];
-    if (this.behavior.includeOnlyElementsInPropertiesContextRequired()) {
-      requiredChildren = template.getChildrenInfo().getOnlyElementNamesForPropertiesContextRequired();
-    } else {
-      requiredChildren = template.getChildrenInfo().getChildrenNamesForRequired();
-    }
+    const requiredChildren: string[] = template.getChildrenInfo().getChildrenNamesForRequiredInProperties();
 
     properties[JsonSchema.atContext][JsonSchema.required] = [...properties[JsonSchema.atContext][JsonSchema.required], ...requiredChildren];
 

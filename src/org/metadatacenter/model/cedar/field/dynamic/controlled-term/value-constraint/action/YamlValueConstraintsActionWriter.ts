@@ -19,6 +19,7 @@ export class YamlValueConstraintsActionWriter extends AbstractYamlControlledTerm
     ret[YamlKeys.Controlled.termIri] = this.atomicWriter.write(action.termUri);
     ret[YamlKeys.Controlled.sourceIri] = this.atomicWriter.write(action.sourceUri);
     ret[YamlKeys.Controlled.sourceAcronym] = action.source;
+    ret[YamlKeys.type] = this.atomicWriter.write(action.type);
     return ret;
   }
 }

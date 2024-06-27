@@ -1,5 +1,6 @@
 import { Iri } from '../../../../../types/wrapped-types/Iri';
 import { ControlledTermAbstractValueConstraint } from '../ControlledTermAbstractValueConstraint';
+import { BioportalTermType } from '../../../../../types/bioportal-types/BioportalTermType';
 
 export class ControlledTermAction extends ControlledTermAbstractValueConstraint {
   static className = 'ControlledTermAction';
@@ -9,9 +10,9 @@ export class ControlledTermAction extends ControlledTermAbstractValueConstraint 
   private readonly _termUri: Iri;
   private readonly _sourceUri: Iri;
   private readonly _source: string;
-  private readonly _type: string;
+  private readonly _type: BioportalTermType;
 
-  constructor(to: number | null, action: string, termUri: Iri, sourceUri: Iri, source: string, type: string) {
+  constructor(to: number | null, action: string, termUri: Iri, sourceUri: Iri, source: string, type: BioportalTermType) {
     super();
     this._to = to;
     this._action = action;
@@ -41,7 +42,7 @@ export class ControlledTermAction extends ControlledTermAbstractValueConstraint 
     return this._source;
   }
 
-  get type(): string {
+  get type(): BioportalTermType {
     return this._type;
   }
 }

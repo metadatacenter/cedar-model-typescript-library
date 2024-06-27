@@ -52,6 +52,7 @@ export const templateTestNumbers: number[] = [
   33,
   34,
   35,
+  36,
 ];
 export const ceeSuiteTestMap = {
   '1': {

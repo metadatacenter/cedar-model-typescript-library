@@ -112,7 +112,7 @@ export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecific
         ReaderUtil.getURI(vs, CedarModel.ValueConstraints.termUri),
         ReaderUtil.getURI(vs, CedarModel.ValueConstraints.sourceUri),
         ReaderUtil.getStringOrEmpty(vs, CedarModel.ValueConstraints.source),
-        ReaderUtil.getStringOrEmpty(vs, CedarModel.ValueConstraints.type),
+        BioportalTermType.forJsonValue(ReaderUtil.getStringOrEmpty(vs, CedarModel.ValueConstraints.type)),
       );
       ret.push(action);
     });

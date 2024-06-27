@@ -1,5 +1,6 @@
 import { Iri } from '../../../../../types/wrapped-types/Iri';
 import { ControlledTermAction } from './ControlledTermAction';
+import { BioportalTermType } from '../../../../../types/bioportal-types/BioportalTermType';
 
 export class ControlledTermActionBuilder {
   private _to: number | null = null;
@@ -7,7 +8,7 @@ export class ControlledTermActionBuilder {
   private _termUri: Iri = Iri.empty();
   private _sourceUri: Iri = Iri.empty();
   private _source: string = '';
-  private _type: string = '';
+  private _type: BioportalTermType = BioportalTermType.NULL;
 
   public withTo(to: number | null): ControlledTermActionBuilder {
     this._to = to;
@@ -34,7 +35,7 @@ export class ControlledTermActionBuilder {
     return this;
   }
 
-  public withType(type: string): ControlledTermActionBuilder {
+  public withType(type: BioportalTermType): ControlledTermActionBuilder {
     this._type = type;
     return this;
   }

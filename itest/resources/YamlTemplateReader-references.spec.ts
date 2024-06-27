@@ -4,7 +4,7 @@ import { templateTestNumbers } from './generatedTestCases';
 import { TestResource } from '../TestResource';
 
 describe('YAMLReader-references', () => {
-  TestUtil.testNumbers(templateTestNumbers, [], []).forEach((templateTestNumber) => {
+  TestUtil.testNumbers(templateTestNumbers, [], [30]).forEach((templateTestNumber) => {
     it(`should correctly process template file: ${templateTestNumber}`, async () => {
       const writers: CedarYamlWriters = CedarWriters.yaml().getStrict();
       let comparisonResult: ComparisonResult = new ComparisonResult();

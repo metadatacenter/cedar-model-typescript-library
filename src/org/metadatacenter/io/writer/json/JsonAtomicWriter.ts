@@ -127,7 +127,11 @@ export class JsonAtomicWriter {
   }
 
   private writeSchemaVersion(schemaVersion: SchemaVersion): NullableString {
-    return schemaVersion.getValue();
+    if (schemaVersion.getValue() !== null) {
+      return schemaVersion.getValue();
+    } else {
+      return SchemaVersion.CURRENT.getValue();
+    }
   }
 
   private writeNumberType(numberType: NumberType): NumberTypeValue {

@@ -7,6 +7,9 @@ export const fieldTestNumbers: number[] = [
   6,
   7,
   8,
+  9,
+  10,
+  11,
 ];
 export const elementTestNumbers: number[] = [
   1,

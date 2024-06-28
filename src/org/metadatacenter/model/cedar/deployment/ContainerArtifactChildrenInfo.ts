@@ -98,6 +98,10 @@ export class ContainerArtifactChildrenInfo {
         if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
           if (childInfo.iri !== null) {
             iriMap[childInfo.name] = { [JsonSchema.enum]: [childInfo.iri] };
+          } else {
+            //TODO: Generate a random UUID here
+            const iri = 'https://schema.metadatacenter.org/properties/' + encodeURIComponent(childInfo.name).replace(/%20/g, '+');
+            iriMap[childInfo.name] = { [JsonSchema.enum]: [iri] };
           }
         }
       }

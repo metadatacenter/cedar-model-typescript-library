@@ -22,7 +22,12 @@ export class JsonFieldReaderList extends JsonTemplateFieldTypeSpecificReader {
 
     const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
     if (valueConstraints != null) {
-      const multipleChoice = ReaderUtil.getBoolean(valueConstraints, CedarModel.multipleChoice);
+      let multipleChoice: boolean;
+      if (childInfo.isStandalone()) {
+        multipleChoice = ReaderUtil.getBoolean(valueConstraints, CedarModel.multipleChoice);
+      } else {
+        multipleChoice = childInfo.multiInstance;
+      }
       if (multipleChoice) {
         field = MultipleChoiceListFieldImpl.buildEmpty();
       }

@@ -12,14 +12,15 @@ import { fieldTestNumbers } from './generatedTestCases';
 import { TestResource } from '../TestResource';
 
 describe('JsonTemplateFieldWriter-references', () => {
-  TestUtil.testNumbers(fieldTestNumbers, [], []).forEach((fieldTestNumber) => {
+  TestUtil.testNumbers(fieldTestNumbers, [], [9]).forEach((fieldTestNumber) => {
     it(`should correctly read the JSON field, and create the same JSON output as the reference: ${fieldTestNumber}`, async () => {
       let comparisonResult: JsonArtifactParsingResult = new JsonArtifactParsingResult();
+      let jsonFieldReaderResult: JsonTemplateFieldReaderResult | null = null;
       try {
         const testResource: TestResource = TestResource.field(fieldTestNumber);
         const artifactSource: string = TestUtil.readReferenceJson(testResource);
         const reader: JsonTemplateFieldReader = JsonTemplateFieldReader.getStrict();
-        const jsonFieldReaderResult: JsonTemplateFieldReaderResult = reader.readFromString(artifactSource);
+        jsonFieldReaderResult = reader.readFromString(artifactSource);
         expect(jsonFieldReaderResult).not.toBeNull();
         const parsingResult: JsonArtifactParsingResult = jsonFieldReaderResult.parsingResult;
         expect(parsingResult.wasSuccessful()).toBe(true);
@@ -32,6 +33,7 @@ describe('JsonTemplateFieldWriter-references', () => {
         expect(comparisonResult.getBlueprintComparisonErrorCount()).toBe(0);
         expect(comparisonResult.getBlueprintComparisonWarningCount()).toBe(0);
       } catch (error) {
+        TestUtil.p(jsonFieldReaderResult?.parsingResult);
         TestUtil.p(comparisonResult.getBlueprintComparisonErrors());
         console.error(`Failed to process field file: ${fieldTestNumber}`, error);
         throw error;

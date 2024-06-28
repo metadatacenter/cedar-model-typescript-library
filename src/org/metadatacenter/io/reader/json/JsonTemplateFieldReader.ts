@@ -73,9 +73,6 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     [CedarFieldType.MULTIPLE_SELECT_LIST, new JsonFieldReaderList()],
     [CedarFieldType.ATTRIBUTE_VALUE, new JsonFieldReaderAttributeValue()],
     [CedarFieldType.BOOLEAN, new JsonFieldReaderBoolean()],
-  ]);
-
-  static staticReaderMap = new Map<CedarFieldType, JsonTemplateFieldTypeSpecificReader>([
     [CedarFieldType.STATIC_PAGE_BREAK, new JsonFieldReaderPageBreak()],
     [CedarFieldType.STATIC_SECTION_BREAK, new JsonFieldReaderSectionBreak()],
     [CedarFieldType.STATIC_IMAGE, new JsonFieldReaderImage()],
@@ -90,7 +87,7 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     } catch (Exception) {
       fieldObject = {};
     }
-    return this.readFromObject(fieldObject, ChildDeploymentInfo.empty(), new JsonPath());
+    return this.readFromObject(fieldObject, ChildDeploymentInfo.standalone(), new JsonPath());
   }
 
   public readFromObject(
@@ -183,15 +180,7 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     if (fieldType === CedarFieldType.NULL) {
       throw new Error(`Unknown uiInputType type: "${rawUiInputType}"`);
     } else {
-      if (artifactType == CedarArtifactType.STATIC_TEMPLATE_FIELD) {
-        if (uiInputType != null) {
-          const reader: JsonTemplateFieldTypeSpecificReader | undefined = this.staticReaderMap.get(fieldType);
-          if (!reader) {
-            throw new Error(`No reader defined for static input type "${fieldType.getValue()}"`);
-          }
-          return reader.read(fieldSourceObject, childInfo, parsingResult, path);
-        }
-      } else if (artifactType == CedarArtifactType.TEMPLATE_FIELD) {
+      if (artifactType == CedarArtifactType.TEMPLATE_FIELD || artifactType == CedarArtifactType.STATIC_TEMPLATE_FIELD) {
         if (uiInputType != null) {
           const reader: JsonTemplateFieldTypeSpecificReader | undefined = this.dynamicTypeReaderMap.get(fieldType);
           if (!reader) {

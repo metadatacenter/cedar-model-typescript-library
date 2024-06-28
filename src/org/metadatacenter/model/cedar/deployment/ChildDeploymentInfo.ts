@@ -5,9 +5,16 @@ export class ChildDeploymentInfo extends AbstractDynamicChildDeploymentInfo {
   protected _multiInstance: boolean = false;
   protected _minItems: NullableNumber = null;
   protected _maxItems: NullableNumber = null;
+  protected _standalone: boolean = false;
 
   public static empty(): ChildDeploymentInfo {
     return new ChildDeploymentInfo('');
+  }
+
+  public static standalone(): ChildDeploymentInfo {
+    const info: ChildDeploymentInfo = new ChildDeploymentInfo('');
+    info._standalone = true;
+    return info;
   }
 
   constructor(name: string) {
@@ -40,5 +47,9 @@ export class ChildDeploymentInfo extends AbstractDynamicChildDeploymentInfo {
 
   isMultiInAnyWay(): boolean {
     return this._multiInstance;
+  }
+
+  isStandalone(): boolean {
+    return this._standalone;
   }
 }

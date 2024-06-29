@@ -4,7 +4,7 @@ import { ReaderUtil } from '../ReaderUtil';
 import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
 import { JsonTemplateReader } from './JsonTemplateReader';
 import { JsonTemplateElementReader } from './JsonTemplateElementReader';
-import { JsonTemplateFieldReader } from './JsonTemplateFieldReader';
+import { JsonTemplateFieldReaderInternal } from './JsonTemplateFieldReaderInternal';
 import { JsonReaderBehavior } from '../../../behavior/JsonReaderBehavior';
 import { JsonTemplateInstanceReader } from './JsonTemplateInstancetReader';
 import { JsonAbstractArtifactReader } from './JsonAbstractArtifactReader';
@@ -44,9 +44,9 @@ export class CedarJsonReaders {
       case CedarArtifactType.TEMPLATE_ELEMENT:
         return JsonTemplateElementReader.getStrict();
       case CedarArtifactType.TEMPLATE_FIELD:
-        return JsonTemplateFieldReader.getStrict();
+        return JsonTemplateFieldReaderInternal.getStrict();
       case CedarArtifactType.STATIC_TEMPLATE_FIELD:
-        return JsonTemplateFieldReader.getStrict();
+        return JsonTemplateFieldReaderInternal.getStrict();
       case CedarArtifactType.TEMPLATE_INSTANCE:
         return JsonTemplateInstanceReader.getStrict();
       default:
@@ -62,8 +62,8 @@ export class CedarJsonReaders {
     return JsonTemplateElementReader.getForBehavior(this.behavior);
   }
 
-  public getTemplateFieldReader(): JsonTemplateFieldReader {
-    return JsonTemplateFieldReader.getForBehavior(this.behavior);
+  public getTemplateFieldReader(): JsonTemplateFieldReaderInternal {
+    return JsonTemplateFieldReaderInternal.getForBehavior(this.behavior);
   }
 
   public getTemplateInstanceReader(): JsonTemplateInstanceReader {

@@ -42,7 +42,7 @@ import { JsonFieldReaderBoolean } from '../../../model/cedar/field/dynamic/boole
 import { Language } from '../../../model/cedar/types/wrapped-types/Language';
 
 export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
-  private constructor(behavior: JsonReaderBehavior) {
+  protected constructor(behavior: JsonReaderBehavior) {
     super(behavior);
   }
 
@@ -87,14 +87,18 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     } catch (Exception) {
       fieldObject = {};
     }
-    return this.readFromObject(fieldObject, ChildDeploymentInfo.standalone(), new JsonPath());
+    return this.readFromObject(fieldObject);
   }
 
+  public readFromObject(fieldSourceObject: JsonNode): JsonTemplateFieldReaderResult;
+  public readFromObject(fieldSourceObject: JsonNode, childInfo: AbstractChildDeploymentInfo, path: JsonPath): JsonTemplateFieldReaderResult;
   public readFromObject(
     fieldSourceObject: JsonNode,
-    childInfo: AbstractChildDeploymentInfo,
-    path: JsonPath,
+    childInfo?: AbstractChildDeploymentInfo,
+    path?: JsonPath,
   ): JsonTemplateFieldReaderResult {
+    childInfo = childInfo || ChildDeploymentInfo.standalone();
+    path = path || new JsonPath();
     const parsingResult: JsonArtifactParsingResult = new JsonArtifactParsingResult();
     const field: TemplateField = JsonTemplateFieldReader.readFieldSpecificAttributes(fieldSourceObject, childInfo, parsingResult, path);
     this.readNonReportableAttributes(field, fieldSourceObject);
@@ -110,7 +114,7 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     field.skos_altLabel = ReaderUtil.getFilteredStringList(fieldSourceObject, CedarModel.skosAltLabel);
   }
 
-  private readReportableAttributes(
+  protected readReportableAttributes(
     field: TemplateField,
     fieldSourceObject: JsonNode,
     parsingResult: JsonArtifactParsingResult,
@@ -166,7 +170,7 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     field.language = Language.forValue(ReaderUtil.getString(topContextNode, JsonSchema.atLanguage));
   }
 
-  private static readFieldSpecificAttributes(
+  protected static readFieldSpecificAttributes(
     fieldSourceObject: JsonNode,
     childInfo: AbstractChildDeploymentInfo,
     parsingResult: JsonArtifactParsingResult,

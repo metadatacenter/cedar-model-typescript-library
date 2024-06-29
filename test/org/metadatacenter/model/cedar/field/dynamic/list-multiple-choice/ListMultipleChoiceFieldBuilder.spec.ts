@@ -97,7 +97,38 @@ describe('ListMultipleChoiceFieldBuilder', () => {
     ]);
   });
 
-  test('creates element with one field, multiple choice list', () => {
+  test('creates element with one field, multiple choice list, required', () => {
+    const listFieldBuilder: MultipleChoiceListFieldBuilder = CedarBuilders.multipleChoiceListFieldBuilder();
+    const listField: MultipleChoiceListField = listFieldBuilder.withTitle('Multiple choice list field').build();
+
+    const listFieldDeploymentBuilder = listField.createDeploymentBuilder('list_field');
+
+    const listFieldDeployment = listFieldDeploymentBuilder
+      .withIri('https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde')
+      .withRequiredValue(true)
+      .build();
+
+    const templateElementBuilder: TemplateElementBuilder = CedarBuilders.templateElementBuilder();
+    const templateElement: TemplateElement = templateElementBuilder.addChild(listField, listFieldDeployment).build();
+
+    // TestUtil.p(templateElement);
+
+    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
+    const writer: JsonTemplateElementWriter = writers.getTemplateElementWriter();
+    //
+    const stringified = JSON.stringify(writer.getAsJsonNode(templateElement), null, 2);
+    // console.log(stringified);
+    const backparsed = JSON.parse(stringified);
+
+    expect(backparsed['properties']).not.toBeNull();
+    expect(backparsed['properties']['list_field']).not.toBeNull();
+    expect(backparsed['properties']['list_field']['type']).toBe('array');
+    expect(backparsed['properties']['list_field']['minItems']).toBe(1);
+    expect(backparsed['properties']['list_field']['maxItems']).toBeUndefined();
+    expect(backparsed['properties']['list_field']['items']).not.toBeNull();
+  });
+
+  test('creates element with one field, multiple choice list, not required', () => {
     const listFieldBuilder: MultipleChoiceListFieldBuilder = CedarBuilders.multipleChoiceListFieldBuilder();
     const listField: MultipleChoiceListField = listFieldBuilder.withTitle('Multiple choice list field').build();
 
@@ -122,7 +153,7 @@ describe('ListMultipleChoiceFieldBuilder', () => {
     expect(backparsed['properties']).not.toBeNull();
     expect(backparsed['properties']['list_field']).not.toBeNull();
     expect(backparsed['properties']['list_field']['type']).toBe('array');
-    expect(backparsed['properties']['list_field']['minItems']).toBe(1);
+    expect(backparsed['properties']['list_field']['minItems']).toBe(0);
     expect(backparsed['properties']['list_field']['maxItems']).toBeUndefined();
     expect(backparsed['properties']['list_field']['items']).not.toBeNull();
   });

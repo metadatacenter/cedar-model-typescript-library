@@ -10,7 +10,6 @@ import {
   TemplateElement,
   TemplateElementBuilder,
 } from '../../../../../../../../src';
-import { TestUtil } from '../../../../../../../../itest/TestUtil';
 
 describe('CheckboxFieldBuilder', () => {
   test('creates radio field with builder', () => {
@@ -108,7 +107,7 @@ describe('CheckboxFieldBuilder', () => {
     expect(backparsed['properties']).not.toBeNull();
     expect(backparsed['properties']['checkbox_field']).not.toBeNull();
     expect(backparsed['properties']['checkbox_field']['type']).toBe('array');
-    expect(backparsed['properties']['checkbox_field']['minItems']).toBe(1);
+    expect(backparsed['properties']['checkbox_field']['minItems']).toBe(0);
     expect(backparsed['properties']['checkbox_field']['maxItems']).toBeUndefined();
     expect(backparsed['properties']['checkbox_field']['items']).not.toBeNull();
   });

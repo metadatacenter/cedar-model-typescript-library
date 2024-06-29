@@ -10,7 +10,6 @@ import {
   TemplateElement,
   TemplateElementBuilder,
 } from '../../../../../../../../src';
-import { TestUtil } from '../../../../../../../../itest/TestUtil';
 
 describe('AttributeValueFieldBuilder', () => {
   test('creates attribute-value field with builder', () => {

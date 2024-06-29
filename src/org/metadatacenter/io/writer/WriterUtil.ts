@@ -13,19 +13,24 @@ export abstract class WriterUtil {
     let maxItems: number | null = null;
     let isMultiInstance = false;
     if (child.isMultiInstanceByDefinition()) {
+      // always multi-instance: Checkbox, Attribute-Value, MultipleChoiceList
       if (childMetaAbstract instanceof ChildDeploymentInfoAlwaysMultiple) {
-        // const childMeta = childMetaAbstract as ChildDeploymentInfoAlwaysMultiple;
-        // minItems = childMeta.minItems;
         isMultiInstance = true;
         if (child instanceof AttributeValueFieldImpl) {
           minItems = 0;
         } else {
-          minItems = 1;
+          if (childMetaAbstract.requiredValue) {
+            minItems = 1;
+          } else {
+            minItems = 0;
+          }
         }
       }
     } else if (child.isSingleInstanceByDefinition()) {
+      // always single instance: Radio
       isMultiInstance = false;
     } else {
+      // regular deployment info
       if (childMetaAbstract instanceof ChildDeploymentInfo) {
         const childMeta = childMetaAbstract as ChildDeploymentInfo;
         isMultiInstance = childMeta.multiInstance;

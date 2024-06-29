@@ -31,6 +31,7 @@ export class JsonFieldReaderList extends JsonTemplateFieldTypeSpecificReader {
       if (multipleChoice) {
         field = MultipleChoiceListFieldImpl.buildEmpty();
       }
+      field.valueConstraints.defaultValue = ReaderUtil.getString(valueConstraints, CedarModel.defaultValue);
       const literals: Array<JsonNode> = ReaderUtil.getNodeList(valueConstraints, CedarModel.literals);
       if (literals !== null) {
         literals.forEach((literal) => {

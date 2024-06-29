@@ -117,8 +117,4 @@ export abstract class CedarBuilders {
   static controlledTermFieldBuilder(): ControlledTermFieldBuilder {
     return ControlledTermFieldBuilderImpl.create();
   }
-
-  // static childDeploymentBuilder(child: TemplateChild, childName: string): ChildDeploymentInfoBuilder {
-  //   return new ChildDeploymentInfoBuilder(child, childName);
-  // }
 }

@@ -1,6 +1,6 @@
 import { JsonReaderBehavior } from '../../../behavior/JsonReaderBehavior';
 import { JsonAbstractSchemaArtifactReader } from './JsonAbstractSchemaArtifactReader';
-import { JsonTemplateFieldReader } from './JsonTemplateFieldReader';
+import { JsonTemplateFieldReaderInternal } from './JsonTemplateFieldReaderInternal';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { JsonArtifactParsingResult } from '../../../model/cedar/util/compare/JsonArtifactParsingResult';
 import { ContainerArtifactChildrenInfo } from '../../../model/cedar/deployment/ContainerArtifactChildrenInfo';
@@ -27,11 +27,11 @@ import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/Abs
 import { Language } from '../../../model/cedar/types/wrapped-types/Language';
 
 export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArtifactReader {
-  protected fieldReader: JsonTemplateFieldReader;
+  protected fieldReader: JsonTemplateFieldReaderInternal;
 
   protected constructor(behavior: JsonReaderBehavior) {
     super(behavior);
-    this.fieldReader = JsonTemplateFieldReader.getForBehavior(behavior);
+    this.fieldReader = JsonTemplateFieldReaderInternal.getForBehavior(behavior);
   }
 
   protected abstract getElementReader(): JsonTemplateElementReader;

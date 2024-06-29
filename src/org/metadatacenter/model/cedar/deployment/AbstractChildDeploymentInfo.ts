@@ -10,7 +10,7 @@ export abstract class AbstractChildDeploymentInfo {
   protected _label: NullableString = null;
   protected _description: NullableString = null;
 
-  public constructor(name: string) {
+  protected constructor(name: string) {
     this._name = name;
   }
 

@@ -25,7 +25,6 @@ import { ChildDeploymentInfoStaticBuilder } from '../../../model/cedar/deploymen
 import { AbstractDynamicChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/AbstractDynamicChildDeploymentInfoBuilder';
 import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
 import { Language } from '../../../model/cedar/types/wrapped-types/Language';
-import { AbstractSchemaArtifact } from '../../../model/cedar/AbstractSchemaArtifact';
 
 export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArtifactReader {
   protected fieldReader: JsonTemplateFieldReader;

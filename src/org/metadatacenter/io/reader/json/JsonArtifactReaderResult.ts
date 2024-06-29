@@ -7,7 +7,7 @@ export abstract class JsonArtifactReaderResult {
   private readonly _parsingResult: JsonArtifactParsingResult;
   protected readonly _artifactSourceObject: JsonNode;
 
-  constructor(artifact: AbstractArtifact, parsingResult: JsonArtifactParsingResult, artifactSourceObject: JsonNode) {
+  protected constructor(artifact: AbstractArtifact, parsingResult: JsonArtifactParsingResult, artifactSourceObject: JsonNode) {
     this._artifact = artifact;
     this._parsingResult = parsingResult;
     this._artifactSourceObject = artifactSourceObject;

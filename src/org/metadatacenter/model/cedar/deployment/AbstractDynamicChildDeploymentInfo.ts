@@ -9,7 +9,7 @@ export abstract class AbstractDynamicChildDeploymentInfo extends AbstractChildDe
   protected _hidden: boolean = false;
   protected _continuePreviousLine: boolean = false;
 
-  public constructor(name: string) {
+  protected constructor(name: string) {
     super(name);
   }
 

@@ -7,7 +7,7 @@ export abstract class YamlArtifactReaderResult {
   private readonly _parsingResult: YamlArtifactParsingResult;
   protected readonly _artifactSourceObject: JsonNode;
 
-  constructor(artifact: AbstractArtifact, parsingResult: YamlArtifactParsingResult, artifactSourceObject: JsonNode) {
+  protected constructor(artifact: AbstractArtifact, parsingResult: YamlArtifactParsingResult, artifactSourceObject: JsonNode) {
     this._artifact = artifact;
     this._parsingResult = parsingResult;
     this._artifactSourceObject = artifactSourceObject;

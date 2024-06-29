@@ -14,7 +14,7 @@ export abstract class AbstractChildDeploymentInfoBuilder {
   protected label: NullableString = null;
   protected description: NullableString = null;
 
-  constructor(child: TemplateChild, name: string) {
+  protected constructor(child: TemplateChild, name: string) {
     this.child = child;
     this.name = name;
   }

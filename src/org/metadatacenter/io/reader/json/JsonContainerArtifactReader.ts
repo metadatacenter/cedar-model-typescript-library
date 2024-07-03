@@ -1,6 +1,6 @@
 import { JsonReaderBehavior } from '../../../behavior/JsonReaderBehavior';
 import { JsonAbstractSchemaArtifactReader } from './JsonAbstractSchemaArtifactReader';
-import { JsonTemplateFieldReaderInternal } from './JsonTemplateFieldReaderInternal';
+import { JsonTemplateFieldReader } from './JsonTemplateFieldReader';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { JsonArtifactParsingResult } from '../../../model/cedar/util/compare/JsonArtifactParsingResult';
 import { ContainerArtifactChildrenInfo } from '../../../model/cedar/deployment/ContainerArtifactChildrenInfo';
@@ -25,6 +25,7 @@ import { ChildDeploymentInfoStaticBuilder } from '../../../model/cedar/deploymen
 import { AbstractDynamicChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/AbstractDynamicChildDeploymentInfoBuilder';
 import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
 import { Language } from '../../../model/cedar/types/wrapped-types/Language';
+import { JsonTemplateFieldReaderInternal } from './JsonTemplateFieldReaderInternal';
 
 export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArtifactReader {
   protected fieldReader: JsonTemplateFieldReaderInternal;
@@ -129,7 +130,7 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
         childPath = childPath.add(JsonSchema.items);
       }
       if (childInfo.atType === CedarArtifactType.STATIC_TEMPLATE_FIELD) {
-        const cedarFieldReaderResult = this.fieldReader.readFromObject(childDefinition, childInfo, childPath);
+        const cedarFieldReaderResult = this.fieldReader.readFromObjectInternal(childDefinition, childInfo, childPath);
         const finalChildInfoBuilder: ChildDeploymentInfoStaticBuilder = cedarFieldReaderResult.field
           .createDeploymentBuilder(childInfo.name)
           .withLabel(childInfo.label)
@@ -138,7 +139,7 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
         container.addChild(cedarFieldReaderResult.field, finalChildInfo);
         parsingResult.merge(cedarFieldReaderResult.parsingResult);
       } else if (childInfo.atType === CedarArtifactType.TEMPLATE_FIELD) {
-        const cedarFieldReaderResult = this.fieldReader.readFromObject(childDefinition, childInfo, childPath);
+        const cedarFieldReaderResult = this.fieldReader.readFromObjectInternal(childDefinition, childInfo, childPath);
         const finalChildInfoBuilder: AbstractDynamicChildDeploymentInfoBuilder = cedarFieldReaderResult.field.createDeploymentBuilder(
           childInfo.name,
         ) as AbstractDynamicChildDeploymentInfoBuilder;

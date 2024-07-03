@@ -11,13 +11,17 @@ export class JsonTemplateFieldReaderInternal extends JsonTemplateFieldReader {
     super(behavior);
   }
 
-  public readFromObject(
+  public static getForBehavior(behavior: JsonReaderBehavior): JsonTemplateFieldReaderInternal {
+    return new JsonTemplateFieldReaderInternal(behavior);
+  }
+
+  public readFromObjectInternal(
     fieldSourceObject: JsonNode,
     childInfo?: AbstractChildDeploymentInfo,
     path?: JsonPath,
   ): JsonTemplateFieldReaderResult {
     childInfo = childInfo || ChildDeploymentInfo.standalone();
     path = path || new JsonPath();
-    return super.readFromObject(fieldSourceObject, childInfo, path);
+    return super.readFromObjectInternal(fieldSourceObject, childInfo, path);
   }
 }

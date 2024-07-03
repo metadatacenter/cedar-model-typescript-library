@@ -4,10 +4,10 @@ import { ReaderUtil } from '../ReaderUtil';
 import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
 import { JsonTemplateReader } from './JsonTemplateReader';
 import { JsonTemplateElementReader } from './JsonTemplateElementReader';
-import { JsonTemplateFieldReaderInternal } from './JsonTemplateFieldReaderInternal';
 import { JsonReaderBehavior } from '../../../behavior/JsonReaderBehavior';
 import { JsonTemplateInstanceReader } from './JsonTemplateInstancetReader';
 import { JsonAbstractArtifactReader } from './JsonAbstractArtifactReader';
+import { JsonTemplateFieldReader } from './JsonTemplateFieldReader';
 
 export class CedarJsonReaders {
   private readonly behavior: JsonReaderBehavior;
@@ -19,6 +19,7 @@ export class CedarJsonReaders {
   public static getStrict(): CedarJsonReaders {
     return new CedarJsonReaders(JsonReaderBehavior.STRICT);
   }
+
   public static getFebruary2024(): CedarJsonReaders {
     return new CedarJsonReaders(JsonReaderBehavior.FEBRUARY_2024);
   }
@@ -44,9 +45,9 @@ export class CedarJsonReaders {
       case CedarArtifactType.TEMPLATE_ELEMENT:
         return JsonTemplateElementReader.getStrict();
       case CedarArtifactType.TEMPLATE_FIELD:
-        return JsonTemplateFieldReaderInternal.getStrict();
+        return JsonTemplateFieldReader.getStrict();
       case CedarArtifactType.STATIC_TEMPLATE_FIELD:
-        return JsonTemplateFieldReaderInternal.getStrict();
+        return JsonTemplateFieldReader.getStrict();
       case CedarArtifactType.TEMPLATE_INSTANCE:
         return JsonTemplateInstanceReader.getStrict();
       default:
@@ -62,8 +63,8 @@ export class CedarJsonReaders {
     return JsonTemplateElementReader.getForBehavior(this.behavior);
   }
 
-  public getTemplateFieldReader(): JsonTemplateFieldReaderInternal {
-    return JsonTemplateFieldReaderInternal.getForBehavior(this.behavior);
+  public getTemplateFieldReader(): JsonTemplateFieldReader {
+    return JsonTemplateFieldReader.getForBehavior(this.behavior);
   }
 
   public getTemplateInstanceReader(): JsonTemplateInstanceReader {

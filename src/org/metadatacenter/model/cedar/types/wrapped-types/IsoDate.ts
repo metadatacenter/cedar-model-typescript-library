@@ -12,16 +12,29 @@ export class IsoDate {
   // Returns the date as an ISO string with the original time zone offset without partial seconds.
   public getValue(): string | null {
     if (this.date != null) {
-      const year = this.date.getFullYear();
-      const month = this.date.getMonth() + 1;
-      const day = this.date.getDate();
-      const hour = this.date.getHours();
-      const minute = this.date.getMinutes();
-      const second = this.date.getSeconds();
+      const offsetMatch = this.timezoneOffset!.match(/([+-])(\d{2}):(\d{2})/);
+      if (offsetMatch) {
+        const sign = offsetMatch[1] === '+' ? 1 : -1;
+        const offsetHours = parseInt(offsetMatch[2], 10) * sign;
+        const offsetMinutes = parseInt(offsetMatch[3], 10) * sign;
 
-      const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}T${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:${second.toString().padStart(2, '0')}`;
+        const utcMilliseconds = this.date.getTime();
+        const offsetMilliseconds = (offsetHours * 60 + offsetMinutes) * 60 * 1000;
 
-      return `${formattedDate}${this.timezoneOffset}`;
+        const localDate = new Date(utcMilliseconds + offsetMilliseconds);
+
+        const year = localDate.getUTCFullYear();
+        const month = localDate.getUTCMonth() + 1;
+        const day = localDate.getUTCDate();
+        const hour = localDate.getUTCHours();
+        const minute = localDate.getUTCMinutes();
+        const second = localDate.getUTCSeconds();
+
+        const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}T${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:${second.toString().padStart(2, '0')}`;
+
+        return `${formattedDate}${this.timezoneOffset}`;
+      }
+      return null;
     } else {
       return null;
     }

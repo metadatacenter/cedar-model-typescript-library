@@ -90,15 +90,17 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     return this.readFromObject(fieldObject);
   }
 
-  public readFromObject(fieldSourceObject: JsonNode): JsonTemplateFieldReaderResult;
-  public readFromObject(fieldSourceObject: JsonNode, childInfo: AbstractChildDeploymentInfo, path: JsonPath): JsonTemplateFieldReaderResult;
-  public readFromObject(
+  public readFromObject(fieldSourceObject: JsonNode): JsonTemplateFieldReaderResult {
+    const childInfo: AbstractChildDeploymentInfo = ChildDeploymentInfo.standalone();
+    const path: JsonPath = new JsonPath();
+    return this.readFromObjectInternal(fieldSourceObject, childInfo, path);
+  }
+
+  protected readFromObjectInternal(
     fieldSourceObject: JsonNode,
-    childInfo?: AbstractChildDeploymentInfo,
-    path?: JsonPath,
+    childInfo: AbstractChildDeploymentInfo,
+    path: JsonPath,
   ): JsonTemplateFieldReaderResult {
-    childInfo = childInfo || ChildDeploymentInfo.standalone();
-    path = path || new JsonPath();
     const parsingResult: JsonArtifactParsingResult = new JsonArtifactParsingResult();
     const field: TemplateField = JsonTemplateFieldReader.readFieldSpecificAttributes(fieldSourceObject, childInfo, parsingResult, path);
     this.readNonReportableAttributes(field, fieldSourceObject);

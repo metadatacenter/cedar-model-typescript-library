@@ -11,7 +11,6 @@ import { ControlledTermFieldImpl } from './ControlledTermFieldImpl';
 
 export class ControlledTermFieldBuilderImpl extends TemplateFieldBuilder implements ControlledTermFieldBuilder {
   private valueConstraints: ValueConstraintsControlledTermField = new ValueConstraintsControlledTermField();
-  private valueRecommendationEnabled: boolean = false;
 
   private constructor() {
     super();
@@ -46,16 +45,10 @@ export class ControlledTermFieldBuilderImpl extends TemplateFieldBuilder impleme
     return this;
   }
 
-  public withValueRecommendationEnabled(enabled: boolean): ControlledTermFieldBuilder {
-    this.valueRecommendationEnabled = enabled;
-    return this;
-  }
-
   public build(): ControlledTermField {
     const controlledTermField = ControlledTermFieldImpl.buildEmpty();
     super.buildInternal(controlledTermField);
     controlledTermField.valueConstraints = this.valueConstraints;
-    controlledTermField.valueRecommendationEnabled = this.valueRecommendationEnabled;
     return controlledTermField;
   }
 }

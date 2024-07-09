@@ -21,13 +21,6 @@ export class JsonFieldWriterControlledTerm extends JsonTemplateFieldWriterIntern
     }
   }
 
-  override expandUINode(uiNode: JsonNode, field: ControlledTermField, childInfo: ChildDeploymentInfo): void {
-    super.expandUINode(uiNode, field, childInfo);
-    if (field.valueRecommendationEnabled) {
-      uiNode[CedarModel.valueRecommendationEnabled] = field.valueRecommendationEnabled;
-    }
-  }
-
   override expandRequiredNode(_requiredObject: JsonNode): void {
     // TODO: Should the @id be required in case of a controlled term? or @value?
   }

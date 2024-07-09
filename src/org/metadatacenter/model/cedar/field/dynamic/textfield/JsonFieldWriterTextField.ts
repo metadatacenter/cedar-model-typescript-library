@@ -11,15 +11,8 @@ export class JsonFieldWriterTextField extends JsonTemplateFieldWriterInternal {
     super(behavior, writers);
   }
 
-  override expandUINode(uiNode: JsonNode, field: TextField, childInfo: ChildDeploymentInfo): void {
-    super.expandUINode(uiNode, field, childInfo);
-    if (field.valueRecommendationEnabled) {
-      uiNode[CedarModel.valueRecommendationEnabled] = field.valueRecommendationEnabled;
-    }
-  }
-
   override expandValueConstraintsNode(vcNode: JsonNode, field: TextField, childInfo: ChildDeploymentInfo): void {
-    if (field.valueConstraints.defaultValue !== null) {
+    if (field.valueConstraints.defaultValue !== null && field.valueConstraints.defaultValue !== '') {
       vcNode[CedarModel.defaultValue] = field.valueConstraints.defaultValue;
     }
     if (field.valueConstraints.minLength !== null) {

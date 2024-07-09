@@ -12,7 +12,7 @@ export class JsonFieldWriterTextArea extends JsonTemplateFieldWriterInternal {
   }
 
   protected expandValueConstraintsNode(vcNode: JsonNode, field: TextArea, childInfo: AbstractChildDeploymentInfo): void {
-    if (field.valueConstraints.defaultValue !== null) {
+    if (field.valueConstraints.defaultValue !== null && field.valueConstraints.defaultValue !== '') {
       vcNode[CedarModel.defaultValue] = field.valueConstraints.defaultValue;
     }
     super.expandValueConstraintsNode(vcNode, field, childInfo);

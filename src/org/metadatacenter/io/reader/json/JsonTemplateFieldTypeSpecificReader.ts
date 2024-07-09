@@ -28,6 +28,7 @@ export abstract class JsonTemplateFieldTypeSpecificReader {
     if (uiNode) {
       childInfo.hidden = ReaderUtil.getBoolean(uiNode, CedarModel.Ui.hidden);
       childInfo.continuePreviousLine = ReaderUtil.getBoolean(uiNode, CedarModel.Ui.continuePreviousLine);
+      childInfo.valueRecommendationEnabled = ReaderUtil.getBoolean(uiNode, CedarModel.valueRecommendationEnabled);
     }
   }
 }

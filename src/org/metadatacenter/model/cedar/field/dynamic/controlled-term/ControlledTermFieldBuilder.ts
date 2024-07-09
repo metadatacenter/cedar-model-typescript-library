@@ -17,7 +17,5 @@ export interface ControlledTermFieldBuilder extends TemplateFieldBuilder {
 
   addBranch(branch: ControlledTermBranch): ControlledTermFieldBuilder;
 
-  withValueRecommendationEnabled(enabled: boolean): ControlledTermFieldBuilder;
-
   build(): ControlledTermField;
 }

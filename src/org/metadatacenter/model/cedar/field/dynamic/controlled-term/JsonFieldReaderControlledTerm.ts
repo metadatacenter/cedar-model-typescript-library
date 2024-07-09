@@ -26,13 +26,6 @@ export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecific
     const field = ControlledTermFieldImpl.buildEmpty();
     this.readRequiredAndHidden(fieldSourceObject, childInfo);
 
-    const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
-    if (uiNode) {
-      field.valueRecommendationEnabled = ReaderUtil.getBoolean(uiNode, CedarModel.valueRecommendationEnabled);
-    }
-
-    //field.skos_altLabel = ReaderUtil.getStringList(fieldSourceObject, CedarModel.skosAltLabel);
-
     const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
     if (valueConstraints != null) {
       field.valueConstraints.ontologies = this.getOntologies(ReaderUtil.getNodeList(valueConstraints, CedarModel.ontologies));

@@ -39,7 +39,6 @@ describe('ControlledTermFieldBuilder', () => {
       .withSchemaDescription('Schema description of the field')
       .withPreferredLabel('Preferred label')
       .withAlternateLabels(['Alt label 1', 'Alt label 2', 'Alt label 3'])
-      .withValueRecommendationEnabled(true)
       .withDefaultValue(
         new ControlledTermDefaultValueBuilder()
           .withTermUri(new Iri('http://purl.bioontology.org/ontology/MESH/C039047'))

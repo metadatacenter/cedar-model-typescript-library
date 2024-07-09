@@ -10,7 +10,5 @@ export interface TextFieldBuilder extends TemplateFieldBuilder {
 
   withRegex(regex: string | null): TextFieldBuilder;
 
-  withValueRecommendationEnabled(enabled: boolean): TextFieldBuilder;
-
   build(): TextField;
 }

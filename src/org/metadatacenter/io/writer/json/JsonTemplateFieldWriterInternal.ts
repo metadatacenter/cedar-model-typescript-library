@@ -44,6 +44,9 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
       if (childInfo.continuePreviousLine) {
         uiNode[CedarModel.Ui.continuePreviousLine] = childInfo.continuePreviousLine;
       }
+      if (childInfo.valueRecommendationEnabled) {
+        uiNode[CedarModel.valueRecommendationEnabled] = childInfo.valueRecommendationEnabled;
+      }
     }
   }
 

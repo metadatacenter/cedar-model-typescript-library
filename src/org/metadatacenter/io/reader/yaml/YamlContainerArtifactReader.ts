@@ -51,6 +51,7 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
         childDeploymentInfo.recommendedValue = ReaderUtil.getBoolean(configuration, YamlKeys.recommended);
         childDeploymentInfo.hidden = ReaderUtil.getBoolean(configuration, YamlKeys.hidden);
         childDeploymentInfo.continuePreviousLine = ReaderUtil.getBoolean(configuration, YamlKeys.continuePreviousLine);
+        childDeploymentInfo.valueRecommendationEnabled = ReaderUtil.getBoolean(configuration, YamlKeys.valueRecommendation);
 
         childDeploymentInfo.iri = ReaderUtil.getString(configuration, YamlKeys.propertyIri);
 
@@ -73,7 +74,8 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
               .withHidden(childDeploymentInfo.hidden)
               .withContinuePreviousLine(childDeploymentInfo.continuePreviousLine)
               .withRecommendedValue(childDeploymentInfo.recommendedValue)
-              .withRequiredValue(childDeploymentInfo.requiredValue);
+              .withRequiredValue(childDeploymentInfo.requiredValue)
+              .withValueRecommendationEnabled(childDeploymentInfo.valueRecommendationEnabled);
             if (finalChildInfoBuilder2 instanceof ChildDeploymentInfoBuilder) {
               const currentInfo = childDeploymentInfo as any as ChildDeploymentInfo;
               finalChildInfoBuilder2

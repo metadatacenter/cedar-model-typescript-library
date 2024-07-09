@@ -7,9 +7,5 @@ export interface ControlledTermField extends TemplateField {
 
   get valueConstraints(): ValueConstraintsControlledTermField;
 
-  set valueRecommendationEnabled(valueRecommendationEnabled: boolean);
-
-  get valueRecommendationEnabled(): boolean;
-
   createDeploymentBuilder(childName: string): ChildDeploymentInfoBuilder;
 }

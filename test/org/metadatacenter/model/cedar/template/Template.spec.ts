@@ -35,7 +35,6 @@ describe('Template', () => {
       .withMinLength(10)
       .withMaxLength(100)
       .withRegex('regex')
-      .withValueRecommendationEnabled(true)
       .build();
 
     const textFieldDeploymentBuilder = textField
@@ -47,7 +46,8 @@ describe('Template', () => {
       .withMinItems(0)
       .withMaxItems(123)
       .withRequiredValue(true)
-      .withHidden(true);
+      .withHidden(true)
+      .withValueRecommendationEnabled(true);
 
     const textFieldDeployment = textFieldDeploymentBuilder.build();
 

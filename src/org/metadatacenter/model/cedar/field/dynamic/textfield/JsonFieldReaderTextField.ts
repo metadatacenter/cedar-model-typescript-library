@@ -18,9 +18,6 @@ export class JsonFieldReaderTextField extends JsonTemplateFieldTypeSpecificReade
     const field = TextFieldImpl.buildEmpty();
     this.readRequiredAndHidden(fieldSourceObject, childInfo);
 
-    const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
-    field.valueRecommendationEnabled = ReaderUtil.getBoolean(uiNode, CedarModel.valueRecommendationEnabled);
-
     const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
     if (valueConstraints != null) {
       field.valueConstraints.defaultValue = ReaderUtil.getString(valueConstraints, CedarModel.defaultValue);

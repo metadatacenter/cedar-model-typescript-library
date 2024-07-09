@@ -12,7 +12,7 @@ export class JsonFieldWriterList extends JsonTemplateFieldWriterInternal {
   }
 
   override expandValueConstraintsNode(vcNode: JsonNode, field: ListField, childInfo: ChildDeploymentInfo): void {
-    if (field.valueConstraints.defaultValue !== null) {
+    if (field.valueConstraints.defaultValue !== null && field.valueConstraints.defaultValue !== '') {
       vcNode[CedarModel.defaultValue] = field.valueConstraints.defaultValue;
     }
     this.expandLiterals(field, vcNode);

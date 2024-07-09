@@ -8,6 +8,7 @@ export abstract class AbstractDynamicChildDeploymentInfo extends AbstractChildDe
   private _recommendedValue: boolean = false;
   protected _hidden: boolean = false;
   protected _continuePreviousLine: boolean = false;
+  private _valueRecommendationEnabled: boolean = false;
 
   protected constructor(name: string) {
     super(name);
@@ -51,6 +52,14 @@ export abstract class AbstractDynamicChildDeploymentInfo extends AbstractChildDe
 
   set continuePreviousLine(value: boolean) {
     this._continuePreviousLine = value;
+  }
+
+  get valueRecommendationEnabled(): boolean {
+    return this._valueRecommendationEnabled;
+  }
+
+  set valueRecommendationEnabled(value: boolean) {
+    this._valueRecommendationEnabled = value;
   }
 
   abstract isMultiInAnyWay(): boolean;

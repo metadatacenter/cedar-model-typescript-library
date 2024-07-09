@@ -149,6 +149,7 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
           .withIri(dynaChildInfo.iri)
           .withHidden(dynaChildInfo.hidden)
           .withContinuePreviousLine(dynaChildInfo.continuePreviousLine)
+          .withValueRecommendationEnabled(dynaChildInfo.valueRecommendationEnabled)
           .withLabel(childInfo.label)
           .withDescription(childInfo.description)
           .withRecommendedValue(dynaChildInfo.recommendedValue)

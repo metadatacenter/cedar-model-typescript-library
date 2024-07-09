@@ -25,4 +25,8 @@ export class TextFieldImpl extends TemplateField implements TextField {
   override createDeploymentBuilder(childName: string): ChildDeploymentInfoBuilder {
     return new ChildDeploymentInfoBuilder(this, childName);
   }
+
+  override supportsValueRecommendation(): boolean {
+    return true;
+  }
 }

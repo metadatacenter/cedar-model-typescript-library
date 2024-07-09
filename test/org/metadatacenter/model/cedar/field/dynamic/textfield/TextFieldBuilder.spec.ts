@@ -47,7 +47,7 @@ describe('TextFieldBuilder', () => {
 
     expect(backparsed['_ui']).not.toBeNull();
     expect(backparsed['_ui']['inputType']).toBe('textfield');
-    expect(backparsed['_ui']['valueRecommendationEnabled']).toBe(true);
+    expect(backparsed['_ui']['valueRecommendationEnabled']).toBeUndefined();
 
     expect(backparsed['properties']).not.toBeNull();
     expect(backparsed['required']).not.toBeNull();

@@ -16,4 +16,8 @@ export abstract class TemplateField extends AbstractSchemaArtifact {
   override isSingleInstanceByDefinition(): boolean {
     return false;
   }
+
+  supportsValueRecommendation(): boolean {
+    return false;
+  }
 }

@@ -48,8 +48,6 @@ export class CedarModel {
   static skosAltLabel = 'skos:altLabel';
   static skosNotation = 'skos:notation';
 
-  static valueRecommendationEnabled = 'valueRecommendationEnabled';
-
   static format = 'format';
   static enum = 'enum';
 
@@ -88,6 +86,7 @@ export class CedarModel {
   static Ui = class {
     static hidden = 'hidden';
     static continuePreviousLine = 'continuePreviousLine';
+    static valueRecommendationEnabled = 'valueRecommendationEnabled';
   };
 
   static nullEnabled = 'nullEnabled';

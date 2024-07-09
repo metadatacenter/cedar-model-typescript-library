@@ -40,6 +40,7 @@ export class AbstractDynamicChildDeploymentInfoBuilder extends AbstractChildDepl
     this.continuePreviousLine = continuePreviousLine;
     return this;
   }
+
   public withValueRecommendationEnabled(enabled: boolean): this {
     this.valueRecommendationEnabled = enabled;
     return this;

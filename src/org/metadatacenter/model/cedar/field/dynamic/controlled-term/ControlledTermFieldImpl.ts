@@ -25,4 +25,8 @@ export class ControlledTermFieldImpl extends TemplateField implements Controlled
   override createDeploymentBuilder(childName: string): ChildDeploymentInfoBuilder {
     return new ChildDeploymentInfoBuilder(this, childName);
   }
+
+  override supportsValueRecommendation(): boolean {
+    return true;
+  }
 }

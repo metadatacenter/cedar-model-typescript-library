@@ -14,7 +14,7 @@ import { TestUtil } from '../TestUtil';
 import { ceeSuiteTestMap } from './generatedTestCases';
 import { TestResource } from '../TestResource';
 
-describe('JsonTemplateInstanceReader-references', () => {
+describe('JsonTemplateInstanceReaderCEE-references', () => {
   TestUtil.testMap(ceeSuiteTestMap, [], [1]).forEach(([ceeTestNumber, testDefinition]) => {
     it(`should correctly read the JSON template instance, and create the same JSON output as the reference: ${ceeTestNumber}`, async () => {
       const testResource: TestResource = TestResource.ceeSuite(ceeTestNumber);

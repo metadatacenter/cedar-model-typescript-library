@@ -12,7 +12,7 @@ import { fieldTestNumbers } from './generatedTestCases';
 import { TestResource } from '../TestResource';
 
 describe('JsonTemplateFieldWriter-references', () => {
-  TestUtil.testNumbers(fieldTestNumbers, [], [9]).forEach((fieldTestNumber) => {
+  TestUtil.testNumbers(fieldTestNumbers, [8, 12], [4]).forEach((fieldTestNumber) => {
     it(`should correctly read the JSON field, and create the same JSON output as the reference: ${fieldTestNumber}`, async () => {
       let comparisonResult: JsonArtifactParsingResult = new JsonArtifactParsingResult();
       let jsonFieldReaderResult: JsonTemplateFieldReaderResult | null = null;

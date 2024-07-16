@@ -12,6 +12,10 @@ export class IsoDate {
   // Returns the date as an ISO string with the original time zone offset without partial seconds.
   public getValue(): string | null {
     if (this.date != null) {
+      if (this.timezoneOffset === 'Z') {
+        return this.date.toISOString().replace(/\.\d{3}Z$/, 'Z');
+      }
+
       const offsetMatch = this.timezoneOffset!.match(/([+-])(\d{2}):(\d{2})/);
       if (offsetMatch) {
         const sign = offsetMatch[1] === '+' ? 1 : -1;

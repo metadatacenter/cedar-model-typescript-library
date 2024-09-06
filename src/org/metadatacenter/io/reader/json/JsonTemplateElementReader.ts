@@ -42,7 +42,7 @@ export class JsonTemplateElementReader extends JsonContainerArtifactReader {
   }
 
   protected override includeInIRIMapping(childInfo: ChildDeploymentInfo): boolean {
-    return childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD && childInfo.uiInputType !== UiInputType.ATTRIBUTE_VALUE;
+    return childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD;
   }
 
   public readFromString(elementSourceString: string): JsonTemplateElementReaderResult {

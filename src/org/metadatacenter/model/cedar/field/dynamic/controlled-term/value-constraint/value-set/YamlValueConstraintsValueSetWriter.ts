@@ -17,7 +17,9 @@ export class YamlValueConstraintsValueSetWriter extends AbstractYamlControlledTe
     ret[YamlKeys.Controlled.acronym] = valueSet.vsCollection;
     ret[YamlKeys.Controlled.valueSetName] = valueSet.name;
     ret[YamlKeys.Controlled.iri] = this.atomicWriter.write(valueSet.uri);
-    ret[YamlKeys.Controlled.numTerms] = valueSet.numTerms;
+    if (valueSet.numTerms !== null) {
+      ret[YamlKeys.Controlled.numTerms] = valueSet.numTerms;
+    }
     return ret;
   }
 }

@@ -73,7 +73,9 @@ export abstract class YamlTemplateFieldWriterInternal extends YamlAbstractArtifa
       }
       literals.push(literal);
     });
-    vcNode[YamlKeys.values] = literals;
+    if (literals.length > 0) {
+      vcNode[YamlKeys.values] = literals;
+    }
   }
 
   protected buildUIObject(field: TemplateField, _childInfo: AbstractChildDeploymentInfo): JsonNode {

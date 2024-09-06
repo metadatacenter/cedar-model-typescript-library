@@ -9,9 +9,9 @@ import {
   IsoDate,
   JsonTemplateFieldReader,
   SchemaVersion,
+  YamlObjectComparator,
   YamlTemplateFieldReader,
 } from '../../../../../src';
-import { YamlObjectComparator } from '../../../../../src/org/metadatacenter/model/cedar/util/compare/YamlObjectComparator';
 
 describe('YAMLFieldReader', () => {
   test('reads field built with a builder', () => {

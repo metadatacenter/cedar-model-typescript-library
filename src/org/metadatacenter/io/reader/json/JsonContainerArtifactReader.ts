@@ -1,6 +1,5 @@
 import { JsonReaderBehavior } from '../../../behavior/JsonReaderBehavior';
 import { JsonAbstractSchemaArtifactReader } from './JsonAbstractSchemaArtifactReader';
-import { JsonTemplateFieldReader } from './JsonTemplateFieldReader';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { JsonArtifactParsingResult } from '../../../model/cedar/util/compare/JsonArtifactParsingResult';
 import { ContainerArtifactChildrenInfo } from '../../../model/cedar/deployment/ContainerArtifactChildrenInfo';

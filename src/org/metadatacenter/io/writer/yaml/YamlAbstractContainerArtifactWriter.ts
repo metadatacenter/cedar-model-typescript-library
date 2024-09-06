@@ -61,18 +61,20 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
       if (childMeta.iri !== null) {
         childConfiguration[YamlKeys.propertyIri] = childMeta.iri;
       }
-      if (childMeta.continuePreviousLine) {
-        childConfiguration[YamlKeys.continuePreviousLine] = true;
-      }
-      if (childMeta.valueRecommendationEnabled && child instanceof TemplateField && child.supportsValueRecommendation()) {
-        childConfiguration[YamlKeys.valueRecommendation] = true;
-      }
     }
     if (childMeta.label !== null && childMeta.label !== child?.schema_name) {
       childConfiguration[YamlKeys.overrideLabel] = childMeta.label;
     }
     if (childMeta.description !== null && childMeta.description !== child?.schema_description) {
       childConfiguration[YamlKeys.overrideDescription] = childMeta.description;
+    }
+    if (childMeta instanceof AbstractDynamicChildDeploymentInfo) {
+      if (childMeta.continuePreviousLine) {
+        childConfiguration[YamlKeys.continuePreviousLine] = true;
+      }
+      if (childMeta.valueRecommendationEnabled && child instanceof TemplateField && child.supportsValueRecommendation()) {
+        childConfiguration[YamlKeys.valueRecommendation] = true;
+      }
     }
 
     const { isMultiInstance, minItems: constMinItems, maxItems: constMaxItems } = WriterUtil.getMultiMinMax(child!, childMeta);

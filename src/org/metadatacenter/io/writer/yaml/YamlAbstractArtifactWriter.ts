@@ -18,6 +18,7 @@ import { CedarYamlWriters } from './CedarYamlWriters';
 import { ControlledTermFieldImpl } from '../../../model/cedar/field/dynamic/controlled-term/ControlledTermFieldImpl';
 import { TextFieldImpl } from '../../../model/cedar/field/dynamic/textfield/TextFieldImpl';
 import { Language } from '../../../model/cedar/types/wrapped-types/Language';
+import { SchemaVersion } from '../../../model/cedar/types/wrapped-types/SchemaVersion';
 
 export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter {
   protected behavior: YamlWriterBehavior;
@@ -63,7 +64,7 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
     if (artifact.pav_version !== PavVersion.NULL) {
       svObject[YamlKeys.version] = this.atomicWriter.write(artifact.pav_version);
     }
-    svObject[YamlKeys.modelVersion] = this.atomicWriter.write(artifact.schema_schemaVersion);
+    svObject[YamlKeys.modelVersion] = this.atomicWriter.write(SchemaVersion.CURRENT);
     return svObject;
   }
 

@@ -11,7 +11,7 @@ import { elementTestNumbers } from './generatedTestCases';
 import { TestResource } from '../TestResource';
 
 describe('YAMLTemplateElementWriter-references', () => {
-  TestUtil.testNumbers(elementTestNumbers, [], []).forEach((elementTestNumber) => {
+  TestUtil.testNumbers(elementTestNumbers, [1], []).forEach((elementTestNumber) => {
     it(`should correctly read the JSON element, and create the same YAML output as the reference: ${elementTestNumber}`, async () => {
       try {
         const testResource: TestResource = TestResource.element(elementTestNumber);

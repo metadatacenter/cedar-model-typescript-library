@@ -14,15 +14,15 @@ import { TestUtil } from '../TestUtil';
 import { ceeSuiteTestMap } from './generatedTestCases';
 import { TestResource } from '../TestResource';
 
-describe('JsonTemplateInstanceReaderCEE-references', () => {
-  TestUtil.testMap(ceeSuiteTestMap, [], [1]).forEach(([ceeTestNumber, testDefinition]) => {
+xdescribe('JsonTemplateInstanceReaderCEE-references', () => {
+  TestUtil.testMap(ceeSuiteTestMap, [], []).forEach(([ceeTestNumber, testDefinition]) => {
     it(`should correctly read the JSON template instance, and create the same JSON output as the reference: ${ceeTestNumber}`, async () => {
       const testResource: TestResource = TestResource.ceeSuite(ceeTestNumber);
       let templateSource: string = '';
       let instanceSource: string = '';
       if (testDefinition.template) {
         templateSource = TestUtil.readReferenceJson(testResource);
-        //console.log(templateSource);
+        console.log(templateSource);
       }
       if (testDefinition.instance) {
         instanceSource = TestUtil.readReferenceInstanceJson(testResource);

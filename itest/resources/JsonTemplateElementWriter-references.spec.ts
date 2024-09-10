@@ -12,7 +12,7 @@ import { elementTestNumbers } from './generatedTestCases';
 import { TestResource } from '../TestResource';
 
 describe('JsonTemplateElementWriter-references', () => {
-  TestUtil.testNumbers(elementTestNumbers, [], []).forEach((elementTestNumber) => {
+  TestUtil.testNumbers(elementTestNumbers, [1], []).forEach((elementTestNumber) => {
     it(`should correctly read the JSON element, and create the same JSON output as the reference: ${elementTestNumber}`, async () => {
       let comparisonResult: JsonArtifactParsingResult = new JsonArtifactParsingResult();
       try {

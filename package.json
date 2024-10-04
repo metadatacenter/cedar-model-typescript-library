@@ -7,8 +7,8 @@
   "scripts": {
     "pretest": "node pretest.js",
     "test": "jest",
-    "build": "tsc && cp package-dist.json dist/package.json && cp README-dist.md dist/README.md",
-    "build:watch": "tsc --watch",
+    "build": "webpack && cp package-dist.json dist/package.json && cp README-dist.md dist/README.md",
+    "build:watch": "webpack --watch",
     "prettier": "prettier --write .",
     "link": "cd dist && npm link",
     "unlink": "npm uninstall -g cedar-model-typescript-library"
@@ -38,7 +38,10 @@
     "prettier": "^3.2.5",
     "prettier-plugin-sort-imports": "^1.8.3",
     "ts-jest": "^29.1.2",
-    "typescript": "^5.3.3"
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.3.3",
+    "webpack": "^5.95.0",
+    "webpack-cli": "^5.1.4"
   },
   "files": [
     "dist"

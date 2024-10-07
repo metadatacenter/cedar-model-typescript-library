@@ -165,7 +165,7 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
         container.addChild(cedarFieldReaderResult.field, finalChildInfo);
         parsingResult.merge(cedarFieldReaderResult.parsingResult);
       } else if (childInfo.atType === CedarArtifactType.TEMPLATE_ELEMENT) {
-        const cedarElementReaderResult = this.getElementReader().readFromObject(childDefinition, childInfo, childPath);
+        const cedarElementReaderResult = this.getElementReader().readFromObject(childDefinition, childPath);
         container.addChild(cedarElementReaderResult.element, childInfo);
         parsingResult.merge(cedarElementReaderResult.parsingResult);
       }

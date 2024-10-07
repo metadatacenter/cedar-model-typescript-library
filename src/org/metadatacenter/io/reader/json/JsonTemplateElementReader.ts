@@ -52,14 +52,10 @@ export class JsonTemplateElementReader extends JsonContainerArtifactReader {
     } catch (Exception) {
       elementObject = {};
     }
-    return this.readFromObject(elementObject, ChildDeploymentInfo.empty(), new JsonPath());
+    return this.readFromObject(elementObject, new JsonPath());
   }
 
-  public readFromObject(
-    elementSourceObject: JsonNode,
-    _childInfo: AbstractChildDeploymentInfo,
-    topPath: JsonPath,
-  ): JsonTemplateElementReaderResult {
+  public readFromObject(elementSourceObject: JsonNode, topPath: JsonPath = new JsonPath()): JsonTemplateElementReaderResult {
     const parsingResult: JsonArtifactParsingResult = new JsonArtifactParsingResult();
     const element = TemplateElement.buildEmptyWithNullValues();
 

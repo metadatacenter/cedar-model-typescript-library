@@ -29,7 +29,6 @@ export class YamlAnnotationsWriter {
         } else if (src instanceof AnnotationAtValue) {
           const annotation = {
             [YamlKeys.name]: name,
-            [YamlKeys.type]: YamlValues.string,
             [YamlKeys.value]: src.getAtValue(),
           };
           annotationList.push(annotation);

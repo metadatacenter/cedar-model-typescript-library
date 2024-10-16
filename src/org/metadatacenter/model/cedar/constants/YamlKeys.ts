@@ -37,6 +37,7 @@ export class YamlKeys {
   static createdBy: string = 'createdBy';
   static modifiedOn: string = 'modifiedOn';
   static modifiedBy: string = 'modifiedBy';
+  static isBasedOn: string = 'isBasedOn';
 
   static annotations: string = 'annotations';
   static value: string = 'value';

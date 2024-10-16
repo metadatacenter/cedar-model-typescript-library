@@ -3,12 +3,14 @@ const path = require('path');
 const fieldsTestFolderPath = '../cedar-test-artifacts/artifacts/fields';
 const elementsTestFolderPath = '../cedar-test-artifacts/artifacts/elements';
 const templatesTestFolderPath = '../cedar-test-artifacts/artifacts/templates';
+const instancesTestFolderPath = '../cedar-test-artifacts/artifacts/instances';
 const ceeSuiteTestFolderPath = '../cedar-test-artifacts/artifacts/cee-suite';
 
 async function generateTestCases() {
   let fieldTestNumbers = [];
   let elementTestNumbers = [];
   let templateTestNumbers = [];
+  let instanceTestNumbers = [];
   let ceeSuiteTestMap = {};
 
   const subfoldersInFields = await fs.readdir(fieldsTestFolderPath, { withFileTypes: true });
@@ -25,11 +27,17 @@ async function generateTestCases() {
     }
   }
 
-  // Process the templates directory similarly
   const subfoldersInTemplates = await fs.readdir(templatesTestFolderPath, { withFileTypes: true });
   for (const dirent of subfoldersInTemplates) {
     if (dirent.isDirectory()) {
       templateTestNumbers.push(parseInt(dirent.name, 10));
+    }
+  }
+
+  const subfoldersInInstances = await fs.readdir(instancesTestFolderPath, { withFileTypes: true });
+  for (const dirent of subfoldersInInstances) {
+    if (dirent.isDirectory()) {
+      instanceTestNumbers.push(parseInt(dirent.name, 10));
     }
   }
 
@@ -71,6 +79,7 @@ async function generateTestCases() {
     `export const fieldTestNumbers: number[] = ${numberArrayToString(fieldTestNumbers)};\n` +
     `export const elementTestNumbers: number[] = ${numberArrayToString(elementTestNumbers)};\n` +
     `export const templateTestNumbers: number[] = ${numberArrayToString(templateTestNumbers)};\n` +
+    `export const instanceTestNumbers: number[] = ${numberArrayToString(instanceTestNumbers)};\n` +
     `export const ceeSuiteTestMap = ${ceeJsonString};\n`;
   await fs.writeFile('itest/resources/generatedTestCases.ts', content, { encoding: 'utf8' });
 }

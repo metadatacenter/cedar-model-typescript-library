@@ -11,6 +11,8 @@ export abstract class AbstractArtifact {
   public pav_createdBy: CedarUser = CedarUser.NULL;
   public pav_lastUpdatedOn: IsoDate = IsoDate.NULL;
   public oslc_modifiedBy: CedarUser = CedarUser.NULL;
+  public pav_derivedFrom: CedarArtifactId = CedarArtifactId.NULL;
+
   // schema name and description
   public schema_name: NullableString = null;
   public schema_description: NullableString = null;

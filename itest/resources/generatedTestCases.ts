@@ -60,6 +60,26 @@ export const templateTestNumbers: number[] = [
   36,
   37,
 ];
+export const instanceTestNumbers: number[] = [
+  1,
+  2,
+  3,
+  4,
+  6,
+  7,
+  8,
+  9,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+];
 export const ceeSuiteTestMap = {
   '1': {
     template: true,

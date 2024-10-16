@@ -13,8 +13,8 @@ describe('JSONInstanceReader' + testResource.toString(), () => {
     const parsingResult = jsonInstanceReaderResult.parsingResult;
     expect(parsingResult.wasSuccessful()).toBe(true);
     expect(jsonInstanceReaderResult.instance.at_id).toStrictEqual(
-      CedarArtifactId.forValue('https://repo.metadatacenter.org/template-instances/1da98ce2-9b74-4257-af64-e6ef1c143f6e'),
+      CedarArtifactId.forValue('https://repo.metadatacenter.org/template-instances/19f5261e-9259-45ec-b961-b3d17c92f27f'),
     );
-    expect(jsonInstanceReaderResult.instance.schema_name).toBe('With Email metadata');
+    expect(jsonInstanceReaderResult.instance.schema_name).toBe('01 - single field metadata');
   });
 });

@@ -13,6 +13,8 @@ import { CedarArtifactId } from '../../../model/cedar/types/cedar-types/CedarArt
 import { ValueConstraints } from '../../../model/cedar/field/ValueConstraints';
 import { CedarJsonWriters } from './CedarJsonWriters';
 import { TemplateElement } from '../../../model/cedar/element/TemplateElement';
+import { AbstractArtifact } from '../../../model/cedar/AbstractArtifact';
+import { AbstractInstanceArtifact } from '../../../model/cedar/AbstractInstanceArtifact';
 
 export abstract class JsonAbstractArtifactWriter extends AbstractArtifactWriter {
   protected behavior: JsonWriterBehavior;
@@ -34,14 +36,14 @@ export abstract class JsonAbstractArtifactWriter extends AbstractArtifactWriter 
 
   public abstract getAsJsonString(artifact: AbstractSchemaArtifact | ValueConstraints): string;
 
-  protected macroSchemaNameAndDescription(artifact: AbstractSchemaArtifact): JsonNode {
+  protected macroSchemaNameAndDescription(artifact: AbstractArtifact): JsonNode {
     return {
       [JsonSchema.schemaName]: artifact.schema_name,
       [JsonSchema.schemaDescription]: artifact.schema_description,
     } as JsonNode;
   }
 
-  protected macroProvenance(artifact: AbstractSchemaArtifact, atomicWriter: JsonAtomicWriter): JsonNode {
+  protected macroProvenance(artifact: AbstractArtifact, atomicWriter: JsonAtomicWriter): JsonNode {
     return {
       [JsonSchema.pavCreatedOn]: atomicWriter.write(artifact.pav_createdOn),
       [JsonSchema.pavCreatedBy]: atomicWriter.write(artifact.pav_createdBy),
@@ -72,12 +74,20 @@ export abstract class JsonAbstractArtifactWriter extends AbstractArtifactWriter 
     return skosObject;
   }
 
-  protected macroDerivedFrom(artifact: AbstractSchemaArtifact): JsonNode {
+  protected macroDerivedFrom(artifact: AbstractArtifact): JsonNode {
     const derivedFrom: JsonNode = JsonNode.getEmpty();
     if (artifact.pav_derivedFrom !== CedarArtifactId.NULL) {
       derivedFrom[JsonSchema.pavDerivedFrom] = this.atomicWriter.write(artifact.pav_derivedFrom);
     }
     return derivedFrom;
+  }
+
+  protected macroIsBasedOn(artifact: AbstractInstanceArtifact): JsonNode {
+    const isBasedOn: JsonNode = JsonNode.getEmpty();
+    if (artifact.schema_isBasedOn !== CedarArtifactId.NULL) {
+      isBasedOn[JsonSchema.schemaIsBasedOn] = this.atomicWriter.write(artifact.schema_isBasedOn);
+    }
+    return isBasedOn;
   }
 
   protected macroPreviousVersion(artifact: AbstractSchemaArtifact): JsonNode {

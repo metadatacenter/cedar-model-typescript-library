@@ -40,6 +40,7 @@ import { Template } from '../../../model/cedar/template/Template';
 import { TemplateElement } from '../../../model/cedar/element/TemplateElement';
 import { AbstractArtifact } from '../../../model/cedar/AbstractArtifact';
 import { JsonFieldWriterBoolean } from '../../../model/cedar/field/dynamic/boolean/JsonFieldWriterBoolean';
+import { JsonTemplateInstanceWriter } from './JsonTemplateInstanceWriter';
 
 export class CedarJsonWriters {
   private readonly behavior: JsonWriterBehavior;
@@ -50,6 +51,7 @@ export class CedarJsonWriters {
   private readonly jsonAnnotationsWriter: JsonAnnotationsWriter;
   private readonly jsonTemplateWriter: JsonTemplateWriter;
   private readonly jsonTemplateElementWriter: JsonTemplateElementWriter;
+  private readonly jsonTemplateInstanceWriter: JsonTemplateInstanceWriter;
 
   private constructor(behavior: JsonWriterBehavior) {
     this.behavior = behavior;
@@ -58,6 +60,7 @@ export class CedarJsonWriters {
     this.jsonAnnotationsWriter = new JsonAnnotationsWriter(behavior);
     this.jsonTemplateWriter = JsonTemplateWriter.getFor(behavior, this);
     this.jsonTemplateElementWriter = JsonTemplateElementWriter.getFor(behavior, this);
+    this.jsonTemplateInstanceWriter = JsonTemplateInstanceWriter.getFor(behavior, this);
 
     this.jsonDynamicFieldWriters = new Map<CedarFieldType, JsonTemplateFieldWriterInternal>([
       [CedarFieldType.TEXT, new JsonFieldWriterTextField(behavior, this)],
@@ -111,6 +114,10 @@ export class CedarJsonWriters {
 
   public getTemplateElementWriter(): JsonTemplateElementWriter {
     return this.jsonTemplateElementWriter;
+  }
+
+  public getTemplateInstanceWriter(): JsonTemplateInstanceWriter {
+    return this.jsonTemplateInstanceWriter;
   }
 
   public getAtomicWriter() {

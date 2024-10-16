@@ -19,6 +19,9 @@ import { ControlledTermFieldImpl } from '../../../model/cedar/field/dynamic/cont
 import { TextFieldImpl } from '../../../model/cedar/field/dynamic/textfield/TextFieldImpl';
 import { Language } from '../../../model/cedar/types/wrapped-types/Language';
 import { SchemaVersion } from '../../../model/cedar/types/wrapped-types/SchemaVersion';
+import { AbstractArtifact } from '../../../model/cedar/AbstractArtifact';
+import { AbstractInstanceArtifact } from '../../../model/cedar/AbstractInstanceArtifact';
+import { TemplateInstance } from '../../../model/cedar/template-instance/TemplateInstance';
 
 export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter {
   protected behavior: YamlWriterBehavior;
@@ -35,10 +38,12 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
     this.annotationsWriter = writers.getAnnotationsWriter();
   }
 
-  protected macroNameAndDescription(artifact: AbstractSchemaArtifact): JsonNode {
+  protected macroNameAndDescription(artifact: AbstractArtifact): JsonNode {
     const node: JsonNode = JsonNode.getEmpty();
-    if (artifact.language !== Language.NULL) {
-      node[YamlKeys.language] = this.atomicWriter.write(artifact.language);
+    if (artifact instanceof AbstractSchemaArtifact) {
+      if (artifact.language !== Language.NULL) {
+        node[YamlKeys.language] = this.atomicWriter.write(artifact.language);
+      }
     }
     node[YamlKeys.name] = artifact.schema_name;
     if (artifact.schema_description !== null && artifact.schema_description !== '') {
@@ -89,7 +94,7 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
     return ret;
   }
 
-  protected macroProvenance(artifact: AbstractSchemaArtifact): JsonNode {
+  protected macroProvenance(artifact: AbstractArtifact): JsonNode {
     const prov = JsonNode.getEmpty();
     if (artifact.pav_createdOn !== IsoDate.NULL) {
       prov[YamlKeys.createdOn] = this.atomicWriter.write(artifact.pav_createdOn);
@@ -114,13 +119,13 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
     return schemaIdentifier;
   }
 
-  protected macroType(artifact: AbstractSchemaArtifact): JsonNode {
+  protected macroType(artifact: AbstractArtifact): JsonNode {
     const typeAndId: JsonNode = JsonNode.getEmpty();
     typeAndId[YamlKeys.type] = this.getYamlType(artifact);
     return typeAndId;
   }
 
-  protected macroId(artifact: AbstractSchemaArtifact): JsonNode {
+  protected macroId(artifact: AbstractArtifact): JsonNode {
     const typeAndId: JsonNode = JsonNode.getEmpty();
     if (artifact.at_id !== CedarArtifactId.NULL) {
       typeAndId[YamlKeys.id] = this.atomicWriter.write(artifact.at_id);
@@ -128,12 +133,20 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
     return typeAndId;
   }
 
-  protected macroDerivedFrom(artifact: AbstractSchemaArtifact): JsonNode {
+  protected macroDerivedFrom(artifact: AbstractArtifact): JsonNode {
     const derivedFrom: JsonNode = JsonNode.getEmpty();
     if (artifact.pav_derivedFrom !== CedarArtifactId.NULL) {
       derivedFrom[YamlKeys.derivedFrom] = this.atomicWriter.write(artifact.pav_derivedFrom);
     }
     return derivedFrom;
+  }
+
+  protected macroIsBasedOn(artifact: AbstractInstanceArtifact): JsonNode {
+    const isBasedOn: JsonNode = JsonNode.getEmpty();
+    if (artifact.schema_isBasedOn !== CedarArtifactId.NULL) {
+      isBasedOn[YamlKeys.isBasedOn] = this.atomicWriter.write(artifact.schema_isBasedOn);
+    }
+    return isBasedOn;
   }
 
   protected macroPreviousVersion(artifact: AbstractSchemaArtifact): JsonNode {
@@ -148,13 +161,15 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
     return this.annotationsWriter.write(artifact.annotations);
   }
 
-  protected getYamlType(artifact: AbstractSchemaArtifact) {
+  protected getYamlType(artifact: AbstractArtifact) {
     if (artifact instanceof Template) {
       return YamlArtifactType.TEMPLATE.getValue();
     } else if (artifact instanceof TemplateElement) {
       return YamlArtifactType.ELEMENT.getValue();
     } else if (artifact instanceof TemplateField) {
       return artifact.cedarFieldType.getYamlType().getValue();
+    } else if (artifact instanceof TemplateInstance) {
+      return YamlArtifactType.TEMPLATE_INSTANCE.getValue();
     }
     return undefined;
   }

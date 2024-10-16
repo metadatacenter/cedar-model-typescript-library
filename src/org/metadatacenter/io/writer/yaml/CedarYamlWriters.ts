@@ -36,6 +36,7 @@ import { YamlValueConstraintsValueSetWriter } from '../../../model/cedar/field/d
 import { YamlValueConstraintsActionWriter } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/action/YamlValueConstraintsActionWriter';
 import { YamlWriterBehavior } from '../../../behavior/YamlWriterBehavior';
 import { YamlFieldWriterBoolean } from '../../../model/cedar/field/dynamic/boolean/YamlFieldWriterBoolean';
+import { YamlTemplateInstanceWriter } from './YamlTemplateInstanceWriter';
 
 export class CedarYamlWriters {
   private readonly behavior: YamlWriterBehavior;
@@ -46,6 +47,7 @@ export class CedarYamlWriters {
   private readonly yamlAnnotationsWriter: YamlAnnotationsWriter;
   private readonly yamlTemplateWriter: YamlTemplateWriter;
   private readonly yamlTemplateElementWriter: YamlTemplateElementWriter;
+  private readonly yamlTemplateInstanceWriter: YamlTemplateInstanceWriter;
 
   private constructor(behavior: YamlWriterBehavior) {
     this.behavior = behavior;
@@ -54,6 +56,7 @@ export class CedarYamlWriters {
     this.yamlAnnotationsWriter = new YamlAnnotationsWriter(behavior);
     this.yamlTemplateWriter = YamlTemplateWriter.getFor(behavior, this);
     this.yamlTemplateElementWriter = YamlTemplateElementWriter.getFor(behavior, this);
+    this.yamlTemplateInstanceWriter = YamlTemplateInstanceWriter.getFor(behavior, this);
 
     this.yamlDynamicFieldWriters = new Map<CedarFieldType, YamlTemplateFieldWriterInternal>([
       [CedarFieldType.TEXT, new YamlFieldWriterTextField(behavior, this)],
@@ -128,6 +131,10 @@ export class CedarYamlWriters {
 
   getTemplateElementWriter(): YamlTemplateElementWriter {
     return this.yamlTemplateElementWriter;
+  }
+
+  getTemplateInstanceWriter(): YamlTemplateInstanceWriter {
+    return this.yamlTemplateInstanceWriter;
   }
 
   public getWriterForValueConstraint(object: ControlledTermAbstractValueConstraint): AbstractYamlControlledTermValueConstraintWriter {

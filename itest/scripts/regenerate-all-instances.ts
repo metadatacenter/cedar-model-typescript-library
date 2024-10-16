@@ -5,7 +5,7 @@ import {
   generateInstanceYamlUsingTypeScript,
 } from './regenerate-functions';
 
-const generateInstanceNumbers: number[] = [13];
+const generateInstanceNumbers: number[] = [];
 generateInstanceJsonUsingJava(generateInstanceNumbers).catch((error) => {
   console.error('Error:', error);
   process.exit(1);

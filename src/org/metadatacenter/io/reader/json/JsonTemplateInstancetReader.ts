@@ -111,7 +111,7 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
       Object.keys(ret.values).forEach((key) => {
         const iri = ReaderUtil.getString(atContext, key);
         if (iri !== null) {
-          console.log('-----------------------------SET IRI', key, iri);
+          //console.log('-----------------------------SET IRI', key, iri);
           ret.setIri(key, iri);
         }
       });
@@ -123,7 +123,7 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
           Object.keys(field.values).forEach((avElementName: string) => {
             const iri = ReaderUtil.getString(atContext, avElementName);
             if (iri !== null) {
-              console.log('-----------------------------SET IRI avElementName', key, iri);
+              //console.log('-----------------------------SET IRI avElementName', key, iri);
               ret.setIri(avElementName, iri);
             }
           });
@@ -178,8 +178,8 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
   }
 
   private packAttributeValues(dataContainer: InstanceDataContainer) {
-    console.log('-------------------------------');
-    console.log(dataContainer);
+    //console.log('-------------------------------');
+    //console.log(dataContainer);
     const values = dataContainer.values;
     const newAttributeValues: InstanceDataAttributeValueField[] = [];
     Object.keys(values).forEach((key) => {
@@ -194,14 +194,14 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
         if (!foundNonAttributeValueName) {
           const avField = new InstanceDataAttributeValueField(key);
           newAttributeValues.push(avField);
-          console.log('PACK AV field:' + key);
+          //console.log('PACK AV field:' + key);
           value.forEach((arrayElement: InstanceDataAttributeValueFieldName, _index: number) => {
             const avName: string | null = arrayElement.name;
             if (avName !== null) {
               if (Object.hasOwn(values, avName)) {
                 const avValue: InstanceDataStringAtom = values[avName] as InstanceDataStringAtom;
                 avField.addValue(avName, avValue);
-                console.log('Value for: ' + avName + ' => ' + avValue.value);
+                //console.log('Value for: ' + avName + ' => ' + avValue.value);
               }
             }
           });
@@ -209,8 +209,8 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
       }
     });
 
-    console.log('NEW     => ');
-    console.log(newAttributeValues);
+    //console.log('NEW     => ');
+    //console.log(newAttributeValues);
 
     newAttributeValues.forEach((avField: InstanceDataAttributeValueField, _index: number) => {
       const avName: string | null = avField.name;
@@ -225,6 +225,6 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     });
 
     dataContainer.values = values;
-    console.log(dataContainer);
+    //console.log(dataContainer);
   }
 }

@@ -1,7 +1,11 @@
 export class InstanceDataLinkAtom {
-  protected id: string | null;
+  private _id: string | null;
 
   constructor(id: string | null) {
-    this.id = id;
+    this._id = id;
+  }
+
+  get id(): string | null {
+    return this._id;
   }
 }

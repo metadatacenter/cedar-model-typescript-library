@@ -1,9 +1,17 @@
 export class InstanceDataControlledAtom {
-  protected id: string | null;
-  protected label: string | null;
+  private _id: string | null;
+  private _label: string | null;
 
   constructor(value: string | null, type: string | null) {
-    this.id = value;
-    this.label = type;
+    this._id = value;
+    this._label = type;
+  }
+
+  get id(): string | null {
+    return this._id;
+  }
+
+  get label(): string | null {
+    return this._label;
   }
 }

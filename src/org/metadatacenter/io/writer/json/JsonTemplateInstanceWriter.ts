@@ -12,6 +12,8 @@ import { InstanceDataAtomType } from '../../../model/cedar/template-instance/Ins
 import { InstanceDataStringAtom } from '../../../model/cedar/template-instance/InstanceDataStringAtom';
 import { InstanceDataTypedAtom } from '../../../model/cedar/template-instance/InstanceDataTypedAtom';
 import { InstanceDataAttributeValueField } from '../../../model/cedar/template-instance/InstanceDataAttributeValueField';
+import { InstanceDataControlledAtom } from '../../../model/cedar/template-instance/InstanceDataControlledAtom';
+import { InstanceDataLinkAtom } from '../../../model/cedar/template-instance/InstanceDataLinkAtom';
 
 export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
   private constructor(behavior: JsonWriterBehavior, writers: CedarJsonWriters) {
@@ -55,7 +57,7 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
     Object.keys(dataContainer.values).forEach((key) => {
       const dataAtom: InstanceDataAtomType = dataContainer.values[key];
       if (Array.isArray(dataAtom)) {
-        console.log('KEY array:' + key);
+        //console.log('KEY array:' + key);
         const dataArray: JsonNode[] = JsonNode.getEmptyList();
         ret[key] = dataArray;
         dataAtom.forEach((arrayElement: InstanceDataAtomType, _index: number) => {
@@ -66,6 +68,12 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
           if (arrayElement instanceof InstanceDataTypedAtom) {
             dataArray.push({ [JsonSchema.atValue]: arrayElement.value, [JsonSchema.atType]: arrayElement.type });
           }
+          if (arrayElement instanceof InstanceDataControlledAtom) {
+            dataArray.push({ [JsonSchema.atId]: arrayElement.id, [JsonSchema.rdfsLabel]: arrayElement.label });
+          }
+          if (arrayElement instanceof InstanceDataLinkAtom) {
+            dataArray.push({ [JsonSchema.atId]: arrayElement.id });
+          }
           if (arrayElement instanceof InstanceDataContainer) {
             const elementContainer = JsonNode.getEmpty();
             dataArray.push(elementContainer);
@@ -73,13 +81,19 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
           }
         });
       } else {
-        console.log('KEY single:' + key);
+        //console.log('KEY single:' + key);
         // TODO: handle these cases together
         if (dataAtom instanceof InstanceDataStringAtom) {
           ret[key] = { [JsonSchema.atValue]: dataAtom.value };
         }
         if (dataAtom instanceof InstanceDataTypedAtom) {
           ret[key] = { [JsonSchema.atValue]: dataAtom.value, [JsonSchema.atType]: dataAtom.type };
+        }
+        if (dataAtom instanceof InstanceDataControlledAtom) {
+          ret[key] = { [JsonSchema.atId]: dataAtom.id, [JsonSchema.rdfsLabel]: dataAtom.label };
+        }
+        if (dataAtom instanceof InstanceDataLinkAtom) {
+          ret[key] = { [JsonSchema.atId]: dataAtom.id };
         }
         if (dataAtom instanceof InstanceDataContainer) {
           const elementContainer = JsonNode.getEmpty();

@@ -19,6 +19,8 @@ import { InstanceDataTypedAtom } from '../../../model/cedar/template-instance/In
 import { InstanceDataEmptyNode } from '../../../model/cedar/template-instance/InstanceDataEmptyNode';
 import { InstanceDataAttributeValueFieldName } from '../../../model/cedar/template-instance/InstanceDataAttributeValueFieldName';
 import { InstanceDataAttributeValueField } from '../../../model/cedar/template-instance/InstanceDataAttributeValueField';
+import { CedarModel } from '../../../model/cedar/constants/CedarModel';
+import { InstanceDataAnnotations } from '../../../model/cedar/template-instance/InstanceDataAnnotations';
 
 export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactReader {
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.TEMPLATE_INSTANCE;
@@ -32,6 +34,7 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     [JsonSchema.schemaName]: true,
     [JsonSchema.schemaIsBasedOn]: true,
     [JsonSchema.atContext]: true,
+    [CedarModel.annotations]: true,
   };
 
   private constructor(behavior: JsonReaderBehavior) {
@@ -83,10 +86,6 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     return Object.hasOwn(this.knownKeys, key);
   }
 
-  // private parseAtValueForObject(content: JsonNode, key: string, dataContainer: InstanceDataContainer, _jsonPath: JsonPath) {
-  //   dataContainer.setValue(key, this.parseDataAtom(content), null);
-  // }
-
   private parseContainer(sourceObject: JsonNode, path: JsonPath): InstanceDataContainer {
     const ret: InstanceDataContainer = new InstanceDataContainer();
     Object.keys(sourceObject).forEach((key) => {
@@ -111,7 +110,6 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
       Object.keys(ret.values).forEach((key) => {
         const iri = ReaderUtil.getString(atContext, key);
         if (iri !== null) {
-          //console.log('-----------------------------SET IRI', key, iri);
           ret.setIri(key, iri);
         }
       });
@@ -123,7 +121,6 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
           Object.keys(field.values).forEach((avElementName: string) => {
             const iri = ReaderUtil.getString(atContext, avElementName);
             if (iri !== null) {
-              //console.log('-----------------------------SET IRI avElementName', key, iri);
               ret.setIri(avElementName, iri);
             }
           });
@@ -138,19 +135,37 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
         ret.id = atId;
       }
     }
+
+    this.parseAnnotations(sourceObject, ret);
     return ret;
   }
 
-  private parseNode(sourceObject: JsonNode, path: JsonPath): InstanceDataAtomType {
+  private parseAnnotations(sourceObject: JsonNode, ret: InstanceDataContainer) {
+    if (Object.hasOwn(sourceObject, CedarModel.annotations)) {
+      const anno: InstanceDataAnnotations = new InstanceDataAnnotations();
+      const annoNode = ReaderUtil.getNode(sourceObject, CedarModel.annotations);
+      Object.keys(annoNode).forEach((key: string) => {
+        const aNode = ReaderUtil.getNode(annoNode, key);
+        if (Object.hasOwn(aNode, JsonSchema.atId)) {
+          anno.add(key, new InstanceDataLinkAtom(ReaderUtil.getString(aNode, JsonSchema.atId)));
+        } else if (Object.hasOwn(aNode, JsonSchema.atValue)) {
+          anno.add(key, new InstanceDataStringAtom(ReaderUtil.getString(aNode, JsonSchema.atValue)));
+        }
+      });
+      ret.annotations = anno;
+    }
+  }
+
+  private parseNode(sourceObject: JsonNode | string, path: JsonPath): InstanceDataAtomType {
+    if (typeof sourceObject === 'string') {
+      return new InstanceDataAttributeValueFieldName(sourceObject);
+    }
     if (Object.hasOwn(sourceObject, JsonSchema.atValue)) {
       return this.parseDataAtom(sourceObject);
     } else if (Object.hasOwn(sourceObject, JsonSchema.atContext)) {
       return this.parseContainer(sourceObject, path);
     } else if (Object.hasOwn(sourceObject, JsonSchema.atId)) {
       return this.parseDataAtom(sourceObject);
-    }
-    if (typeof sourceObject === 'string') {
-      return new InstanceDataAttributeValueFieldName(sourceObject);
     }
     return new InstanceDataEmptyNode();
   }
@@ -178,8 +193,6 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
   }
 
   private packAttributeValues(dataContainer: InstanceDataContainer) {
-    //console.log('-------------------------------');
-    //console.log(dataContainer);
     const values = dataContainer.values;
     const newAttributeValues: InstanceDataAttributeValueField[] = [];
     Object.keys(values).forEach((key) => {
@@ -194,23 +207,18 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
         if (!foundNonAttributeValueName) {
           const avField = new InstanceDataAttributeValueField(key);
           newAttributeValues.push(avField);
-          //console.log('PACK AV field:' + key);
           value.forEach((arrayElement: InstanceDataAttributeValueFieldName, _index: number) => {
             const avName: string | null = arrayElement.name;
             if (avName !== null) {
               if (Object.hasOwn(values, avName)) {
                 const avValue: InstanceDataStringAtom = values[avName] as InstanceDataStringAtom;
                 avField.addValue(avName, avValue);
-                //console.log('Value for: ' + avName + ' => ' + avValue.value);
               }
             }
           });
         }
       }
     });
-
-    //console.log('NEW     => ');
-    //console.log(newAttributeValues);
 
     newAttributeValues.forEach((avField: InstanceDataAttributeValueField, _index: number) => {
       const avName: string | null = avField.name;
@@ -225,6 +233,5 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     });
 
     dataContainer.values = values;
-    //console.log(dataContainer);
   }
 }

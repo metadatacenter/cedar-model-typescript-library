@@ -17,6 +17,8 @@ export class TestResource {
       return this.element(num);
     } else if (type === CedarArtifactType.TEMPLATE_FIELD) {
       return this.field(num);
+    } else if (type === CedarArtifactType.TEMPLATE_INSTANCE) {
+      return this.instance(num);
     } else {
       throw new Error(`Unknown artifact type:${type}`);
     }

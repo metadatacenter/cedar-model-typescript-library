@@ -14,6 +14,8 @@ import { InstanceDataTypedAtom } from '../../../model/cedar/template-instance/In
 import { InstanceDataAttributeValueField } from '../../../model/cedar/template-instance/InstanceDataAttributeValueField';
 import { InstanceDataControlledAtom } from '../../../model/cedar/template-instance/InstanceDataControlledAtom';
 import { InstanceDataLinkAtom } from '../../../model/cedar/template-instance/InstanceDataLinkAtom';
+import { InstanceDataAtomStringOrLinkType } from '../../../model/cedar/template-instance/InstanceDataAtomStringOrLinkType';
+import { CedarModel } from '../../../model/cedar/constants/CedarModel';
 
 export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
   private constructor(behavior: JsonWriterBehavior, writers: CedarJsonWriters) {
@@ -45,7 +47,7 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
   }
 
   private getDataTree(instance: TemplateInstance): JsonNode {
-    const ret = JsonNode.getEmpty();
+    const ret: JsonNode = JsonNode.getEmpty();
     this.serializeDataLevelInto(instance.dataContainer, ret);
     return ret;
   }
@@ -57,48 +59,18 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
     Object.keys(dataContainer.values).forEach((key) => {
       const dataAtom: InstanceDataAtomType = dataContainer.values[key];
       if (Array.isArray(dataAtom)) {
-        //console.log('KEY array:' + key);
         const dataArray: JsonNode[] = JsonNode.getEmptyList();
         ret[key] = dataArray;
         dataAtom.forEach((arrayElement: InstanceDataAtomType, _index: number) => {
-          // TODO: handle these cases together
-          if (arrayElement instanceof InstanceDataStringAtom) {
-            dataArray.push({ [JsonSchema.atValue]: arrayElement.value });
-          }
-          if (arrayElement instanceof InstanceDataTypedAtom) {
-            dataArray.push({ [JsonSchema.atValue]: arrayElement.value, [JsonSchema.atType]: arrayElement.type });
-          }
-          if (arrayElement instanceof InstanceDataControlledAtom) {
-            dataArray.push({ [JsonSchema.atId]: arrayElement.id, [JsonSchema.rdfsLabel]: arrayElement.label });
-          }
-          if (arrayElement instanceof InstanceDataLinkAtom) {
-            dataArray.push({ [JsonSchema.atId]: arrayElement.id });
-          }
-          if (arrayElement instanceof InstanceDataContainer) {
-            const elementContainer = JsonNode.getEmpty();
-            dataArray.push(elementContainer);
-            this.serializeDataLevelInto(arrayElement, elementContainer);
+          const serializedData: JsonNode | null = this.serializeCommonType(arrayElement);
+          if (serializedData !== null) {
+            dataArray.push(serializedData);
           }
         });
       } else {
-        //console.log('KEY single:' + key);
-        // TODO: handle these cases together
-        if (dataAtom instanceof InstanceDataStringAtom) {
-          ret[key] = { [JsonSchema.atValue]: dataAtom.value };
-        }
-        if (dataAtom instanceof InstanceDataTypedAtom) {
-          ret[key] = { [JsonSchema.atValue]: dataAtom.value, [JsonSchema.atType]: dataAtom.type };
-        }
-        if (dataAtom instanceof InstanceDataControlledAtom) {
-          ret[key] = { [JsonSchema.atId]: dataAtom.id, [JsonSchema.rdfsLabel]: dataAtom.label };
-        }
-        if (dataAtom instanceof InstanceDataLinkAtom) {
-          ret[key] = { [JsonSchema.atId]: dataAtom.id };
-        }
-        if (dataAtom instanceof InstanceDataContainer) {
-          const elementContainer = JsonNode.getEmpty();
-          ret[key] = elementContainer;
-          this.serializeDataLevelInto(dataAtom, elementContainer);
+        const serializedData: JsonNode | null = this.serializeCommonType(dataAtom);
+        if (serializedData !== null) {
+          ret[key] = serializedData;
         }
         if (dataAtom instanceof InstanceDataAttributeValueField) {
           const keyList: string[] = [];
@@ -110,25 +82,81 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
       }
     });
 
-    //serialize AV field values
+    this.serializeAttributeValueFields(dataContainer, ret);
+
+    this.serializeAnnotations(dataContainer, ret);
+
+    const atContext: JsonNode = JsonNode.getEmpty();
+    Object.keys(dataContainer.iris).forEach((key) => {
+      atContext[key] = dataContainer.iris[key];
+    });
+    ret[JsonSchema.atContext] = atContext;
+  }
+
+  private serializeCommonType(atom: InstanceDataAtomType): JsonNode | null {
+    if (atom instanceof InstanceDataStringAtom) {
+      return this.serializeAtomString(atom);
+    }
+    if (atom instanceof InstanceDataTypedAtom) {
+      return { [JsonSchema.atValue]: atom.value, [JsonSchema.atType]: atom.type };
+    }
+    if (atom instanceof InstanceDataControlledAtom) {
+      return { [JsonSchema.atId]: atom.id, [JsonSchema.rdfsLabel]: atom.label };
+    }
+    if (atom instanceof InstanceDataLinkAtom) {
+      return this.serializeAtomLink(atom);
+    }
+    if (atom instanceof InstanceDataContainer) {
+      const elementContainer: JsonNode = JsonNode.getEmpty();
+      this.serializeDataLevelInto(atom, elementContainer);
+      return elementContainer;
+    }
+
+    return null;
+  }
+
+  private serializeAtomString(atom: InstanceDataStringAtom) {
+    return { [JsonSchema.atValue]: atom.value };
+  }
+
+  private serializeAtomLink(atom: InstanceDataLinkAtom) {
+    return { [JsonSchema.atId]: atom.id };
+  }
+
+  private serializeAttributeValueFields(dataContainer: InstanceDataContainer, ret: JsonNode) {
     Object.keys(dataContainer.values).forEach((key) => {
       const dataAtom: InstanceDataAtomType = dataContainer.values[key];
       if (dataAtom instanceof InstanceDataAttributeValueField) {
         Object.keys(dataAtom.values).forEach((subKey) => {
           const atom = dataAtom.values[subKey];
-          // TODO: handle these cases together
           if (atom instanceof InstanceDataStringAtom) {
-            ret[subKey] = { [JsonSchema.atValue]: atom.value };
+            ret[subKey] = this.serializeAtomString(atom);
           }
         });
       }
     });
+  }
 
-    const atContext = JsonNode.getEmpty();
-    Object.keys(dataContainer.iris).forEach((key) => {
-      atContext[key] = dataContainer.iris[key];
-    });
-    ret[JsonSchema.atContext] = atContext;
+  private serializeAnnotations(dataContainer: InstanceDataContainer, ret: JsonNode) {
+    if (dataContainer.annotations !== null) {
+      const annotations = dataContainer.annotations;
+      if (annotations.values !== null) {
+        const aValues = annotations.values;
+        const jsonAnnotationContainer: JsonNode = JsonNode.getEmpty();
+        Object.keys(aValues).forEach((key) => {
+          if (Object.hasOwn(aValues, key)) {
+            const dataAtom: InstanceDataAtomStringOrLinkType = aValues[key];
+            if (dataAtom instanceof InstanceDataStringAtom) {
+              jsonAnnotationContainer[key] = this.serializeAtomString(dataAtom);
+            }
+            if (dataAtom instanceof InstanceDataLinkAtom) {
+              jsonAnnotationContainer[key] = this.serializeAtomLink(dataAtom);
+            }
+          }
+        });
+        ret[CedarModel.annotations] = jsonAnnotationContainer;
+      }
+    }
   }
 
   public getAsJsonString(instance: TemplateInstance, indent: number = 2): string {

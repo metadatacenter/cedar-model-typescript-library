@@ -62,7 +62,7 @@ export abstract class YamlAbstractArtifactReader {
       if (name !== null && value !== null) {
         if (type === YamlValues.iri) {
           annotations.add(new AnnotationAtId(name, value));
-        } else if (type === YamlValues.string) {
+        } else if (type === YamlValues.string || type === null) {
           annotations.add(new AnnotationAtValue(name, value));
         }
       }

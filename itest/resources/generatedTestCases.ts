@@ -79,6 +79,7 @@ export const instanceTestNumbers: number[] = [
   18,
   19,
   20,
+  21,
 ];
 export const ceeSuiteTestMap = {
   '1': {

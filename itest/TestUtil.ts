@@ -109,6 +109,72 @@ export class TestUtil {
     }
   }
 
+  static getArtifactPath(testResource: TestResource, source: CompareFileSource, format: CompareFileFormat): string {
+    if (source === CompareFileSource.REF) {
+      return this.getReferencePath(testResource, format);
+    } else if (source === CompareFileSource.TS_LIB) {
+      return this.getTSLibPath(testResource, format);
+    } else if (source === CompareFileSource.JAVA_LIB) {
+      return this.getJavaLibPath(testResource, format);
+    } else {
+      return '';
+    }
+  }
+
+  private static getReferencePath(testResource: TestResource, format: CompareFileFormat): string {
+    if (format === CompareFileFormat.JSON) {
+      return this.getReferenceJsonPath(testResource);
+    } else if (format === CompareFileFormat.YAML) {
+      return this.getReferenceYamlPAth(testResource);
+    } else {
+      return '';
+    }
+  }
+
+  private static getTSLibPath(testResource: TestResource, format: CompareFileFormat): string {
+    if (format === CompareFileFormat.JSON) {
+      return this.getTSLibJsonPath(testResource);
+    } else if (format === CompareFileFormat.YAML) {
+      return this.getTSLibYamlPath(testResource);
+    } else {
+      return '';
+    }
+  }
+
+  private static getJavaLibPath(testResource: TestResource, format: CompareFileFormat): string {
+    if (format === CompareFileFormat.JSON) {
+      return this.getJavaLibJsonPath(testResource);
+    } else if (format === CompareFileFormat.YAML) {
+      return this.getJavaLibYamlPath(testResource);
+    } else {
+      return '';
+    }
+  }
+
+  static getReferenceJsonPath(testResource: TestResource): string {
+    return this.getReferenceJsonFileName(testResource);
+  }
+
+  static getReferenceYamlPAth(testResource: TestResource): string {
+    return this.getReferenceYamlFileName(testResource);
+  }
+
+  static getTSLibJsonPath(testResource: TestResource): string {
+    return this.getOwnGeneratedJsonFileName(testResource);
+  }
+
+  static getTSLibYamlPath(testResource: TestResource): string {
+    return this.getOwnGeneratedYamlFileName(testResource);
+  }
+
+  static getJavaLibJsonPath(testResource: TestResource): string {
+    return this.getJavaGeneratedJsonFileName(testResource);
+  }
+
+  static getJavaLibYamlPath(testResource: TestResource): string {
+    return this.getJavaGeneratedYamlFileName(testResource);
+  }
+
   private static readReference(testResource: TestResource, format: CompareFileFormat): string {
     if (format === CompareFileFormat.JSON) {
       return this.readReferenceJson(testResource);

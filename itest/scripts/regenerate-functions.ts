@@ -242,7 +242,7 @@ function generateForInstancesTSJson(instanceNumbers: number[]) {
 
       const stringified = jsonWriter.getAsJsonString(jsonTemplateInstanceReaderResult.instance);
 
-      console.log(jsonTemplateInstanceReaderResult.instance);
+      // console.log(jsonTemplateInstanceReaderResult.instance);
 
       TestUtil.writeSerializedJson(testResource, stringified + '\n');
     } catch (error) {

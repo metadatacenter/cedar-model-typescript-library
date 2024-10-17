@@ -27,7 +27,7 @@ describe('JsonTemplateInstanceReaderCEE-references', () => {
       }
       if (testDefinition.instance) {
         instanceSource = TestUtil.readReferenceInstanceJson(testResource);
-        console.log(instanceSource);
+        //console.log(instanceSource);
       }
 
       let comparisonResult: JsonArtifactParsingResult = new JsonArtifactParsingResult();
@@ -51,8 +51,8 @@ describe('JsonTemplateInstanceReaderCEE-references', () => {
         const jsonTemplateInstanceReaderResult: JsonTemplateInstanceReaderResult = instanceReader.readFromString(instanceSource);
         expect(jsonTemplateInstanceReaderResult).not.toBeNull();
         const instance: TemplateInstance = jsonTemplateInstanceReaderResult.instance;
-        TestUtil.p(instance);
-        TestUtil.p(instance.dataContainer);
+        // TestUtil.p(instance);
+        // TestUtil.p(instance.dataContainer);
         const templateInstanceWriter: JsonTemplateInstanceWriter = CedarWriters.json().getStrict().getTemplateInstanceWriter();
         templateInstanceWriter.getAsJsonNode(instance);
       } catch (error) {

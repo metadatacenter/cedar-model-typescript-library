@@ -52,15 +52,15 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
     return ret;
   }
 
-  private serializeDataLevelInto(dataContainer: InstanceDataContainer, ret: JsonNode) {
+  private serializeDataLevelInto(dataContainer: InstanceDataContainer, into: JsonNode) {
     if (dataContainer.id !== null) {
-      ret[JsonSchema.atId] = dataContainer.id;
+      into[JsonSchema.atId] = dataContainer.id;
     }
     Object.keys(dataContainer.values).forEach((key) => {
       const dataAtom: InstanceDataAtomType = dataContainer.values[key];
       if (Array.isArray(dataAtom)) {
         const dataArray: JsonNode[] = JsonNode.getEmptyList();
-        ret[key] = dataArray;
+        into[key] = dataArray;
         dataAtom.forEach((arrayElement: InstanceDataAtomType, _index: number) => {
           const serializedData: JsonNode | null = this.serializeCommonType(arrayElement);
           if (serializedData !== null) {
@@ -70,27 +70,27 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
       } else {
         const serializedData: JsonNode | null = this.serializeCommonType(dataAtom);
         if (serializedData !== null) {
-          ret[key] = serializedData;
+          into[key] = serializedData;
         }
         if (dataAtom instanceof InstanceDataAttributeValueField) {
           const keyList: string[] = [];
           Object.keys(dataAtom.values).forEach((subKey) => {
             keyList.push(subKey);
           });
-          ret[key] = keyList;
+          into[key] = keyList;
         }
       }
     });
 
-    this.serializeAttributeValueFields(dataContainer, ret);
+    this.serializeAttributeValueFields(dataContainer, into);
 
-    this.serializeAnnotations(dataContainer, ret);
+    this.serializeAnnotations(dataContainer, into);
 
     const atContext: JsonNode = JsonNode.getEmpty();
     Object.keys(dataContainer.iris).forEach((key) => {
       atContext[key] = dataContainer.iris[key];
     });
-    ret[JsonSchema.atContext] = atContext;
+    into[JsonSchema.atContext] = atContext;
   }
 
   private serializeCommonType(atom: InstanceDataAtomType): JsonNode | null {
@@ -123,21 +123,21 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
     return { [JsonSchema.atId]: atom.id };
   }
 
-  private serializeAttributeValueFields(dataContainer: InstanceDataContainer, ret: JsonNode) {
+  private serializeAttributeValueFields(dataContainer: InstanceDataContainer, into: JsonNode) {
     Object.keys(dataContainer.values).forEach((key) => {
       const dataAtom: InstanceDataAtomType = dataContainer.values[key];
       if (dataAtom instanceof InstanceDataAttributeValueField) {
         Object.keys(dataAtom.values).forEach((subKey) => {
           const atom = dataAtom.values[subKey];
           if (atom instanceof InstanceDataStringAtom) {
-            ret[subKey] = this.serializeAtomString(atom);
+            into[subKey] = this.serializeAtomString(atom);
           }
         });
       }
     });
   }
 
-  private serializeAnnotations(dataContainer: InstanceDataContainer, ret: JsonNode) {
+  private serializeAnnotations(dataContainer: InstanceDataContainer, into: JsonNode) {
     if (dataContainer.annotations !== null) {
       const annotations = dataContainer.annotations;
       if (annotations.values !== null) {
@@ -154,7 +154,7 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
             }
           }
         });
-        ret[CedarModel.annotations] = jsonAnnotationContainer;
+        into[CedarModel.annotations] = jsonAnnotationContainer;
       }
     }
   }

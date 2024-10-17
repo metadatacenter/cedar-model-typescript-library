@@ -100,11 +100,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
       return this.serializeAtomString(atom);
     }
     if (atom instanceof InstanceDataTypedAtom) {
-      const ret = { [YamlKeys.datatype]: atom.type };
-      if (atom.value !== null) {
-        ret[YamlKeys.value] = atom.value;
-      }
-      return ret;
+      return { [YamlKeys.datatype]: atom.type, [YamlKeys.value]: atom.value };
     }
     if (atom instanceof InstanceDataControlledAtom) {
       return { [YamlKeys.id]: atom.id, [YamlKeys.label]: atom.label };

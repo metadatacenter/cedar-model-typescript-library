@@ -54,10 +54,10 @@ export abstract class YamlAbstractArtifactReader {
     _topPath: JsonPath,
   ) {
     const annotations = new Annotations();
-    const annotationsNodeList: JsonNode[] = ReaderUtil.getNodeList(artifactSourceObject, YamlKeys.annotations);
-    annotationsNodeList.forEach((annotationNode) => {
-      const name: string | null = ReaderUtil.getString(annotationNode, YamlKeys.name);
-      const type: string | null = ReaderUtil.getString(annotationNode, YamlKeys.type);
+    const annotationsNode: JsonNode = ReaderUtil.getNode(artifactSourceObject, YamlKeys.annotations);
+    Object.keys(annotationsNode).forEach((name: string) => {
+      const annotationNode = ReaderUtil.getNode(annotationsNode, name);
+      const type: string | null = ReaderUtil.getString(annotationNode, YamlKeys.datatype);
       const value: string | null = ReaderUtil.getString(annotationNode, YamlKeys.value);
       if (name !== null && value !== null) {
         if (type === YamlValues.iri) {

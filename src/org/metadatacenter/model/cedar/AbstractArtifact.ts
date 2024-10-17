@@ -3,6 +3,7 @@ import { CedarUser } from './types/cedar-types/CedarUser';
 import { CedarArtifactId } from './types/cedar-types/CedarArtifactId';
 import { CedarArtifactType } from './types/cedar-types/CedarArtifactType';
 import { NullableString } from './types/basic-types/NullableString';
+import { Annotations } from './annotation/Annotations';
 
 export abstract class AbstractArtifact {
   public at_id: CedarArtifactId = CedarArtifactId.NULL;
@@ -18,4 +19,7 @@ export abstract class AbstractArtifact {
   public schema_description: NullableString = null;
   //
   public cedarArtifactType: CedarArtifactType = CedarArtifactType.NULL;
+
+  //
+  public annotations: Annotations | null = null;
 }

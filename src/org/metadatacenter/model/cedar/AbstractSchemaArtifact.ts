@@ -2,7 +2,6 @@ import { PavVersion } from './types/wrapped-types/PavVersion';
 import { BiboStatus } from './types/wrapped-types/BiboStatus';
 import { CedarArtifactId } from './types/cedar-types/CedarArtifactId';
 import { SchemaVersion } from './types/wrapped-types/SchemaVersion';
-import { Annotations } from './annotation/Annotations';
 import { NullableString } from './types/basic-types/NullableString';
 import { AbstractArtifact } from './AbstractArtifact';
 import { AbstractChildDeploymentInfoBuilder } from './deployment/AbstractChildDeploymentInfoBuilder';
@@ -21,8 +20,6 @@ export abstract class AbstractSchemaArtifact extends AbstractArtifact {
   public pav_previousVersion: CedarArtifactId = CedarArtifactId.NULL;
   //
   public language: Language = Language.NULL;
-  //
-  public annotations: Annotations | null = null;
 
   abstract isMultiInstanceByDefinition(): boolean;
 

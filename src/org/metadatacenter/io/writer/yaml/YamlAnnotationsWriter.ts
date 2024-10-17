@@ -15,26 +15,25 @@ export class YamlAnnotationsWriter {
 
   public write(annotations: Annotations | null): JsonNode {
     const annotationsJson: JsonNode = JsonNode.getEmpty();
-    const annotationList: JsonNode[] = JsonNode.getEmptyList();
+    const annotationMap: JsonNode = JsonNode.getEmpty();
     if (annotations !== null && annotations.getSize() > 0) {
       annotations.getAnnotationNames().forEach((name) => {
         const src = annotations.get(name);
         if (src instanceof AnnotationAtId) {
           const annotation = {
-            [YamlKeys.name]: name,
-            [YamlKeys.type]: YamlValues.iri,
+            [YamlKeys.datatype]: YamlValues.iri,
             [YamlKeys.value]: src.getAtId(),
           };
-          annotationList.push(annotation);
+          annotationMap[name] = annotation;
         } else if (src instanceof AnnotationAtValue) {
           const annotation = {
-            [YamlKeys.name]: name,
+            [YamlKeys.datatype]: YamlValues.string,
             [YamlKeys.value]: src.getAtValue(),
           };
-          annotationList.push(annotation);
+          annotationMap[name] = annotation;
         }
       });
-      annotationsJson[YamlKeys.annotations] = annotationList;
+      annotationsJson[YamlKeys.annotations] = annotationMap;
     }
     return annotationsJson;
   }

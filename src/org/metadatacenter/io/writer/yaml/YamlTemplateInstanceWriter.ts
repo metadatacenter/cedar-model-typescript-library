@@ -108,6 +108,8 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
   }
 
   private serializeAnnotations(dataContainer: InstanceDataContainer, into: JsonNode) {
+    // TODO: I have an annotation writer, check if that could be reused: YamlAnnotationsWriter
+    // TODO: Check the reader as well, could be uniformed
     if (dataContainer.annotations !== null) {
       const annotations = dataContainer.annotations;
       if (annotations.values !== null) {
@@ -117,7 +119,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
           if (Object.hasOwn(aValues, key)) {
             const dataAtom: InstanceDataAtomStringOrLinkType = aValues[key];
             if (dataAtom instanceof InstanceDataStringAtom) {
-              jsonAnnotationContainer[key] = this.serializeAtomString(dataAtom);
+              jsonAnnotationContainer[key] = this.serializeAtomStringWithType(dataAtom);
             }
             if (dataAtom instanceof InstanceDataLinkAtom) {
               jsonAnnotationContainer[key] = this.serializeAtomLink(dataAtom);
@@ -159,7 +161,11 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
     return { [YamlKeys.value]: atom.value };
   }
 
+  private serializeAtomStringWithType(atom: InstanceDataStringAtom) {
+    return { [YamlKeys.datatype]: YamlValues.string, [YamlKeys.value]: atom.value };
+  }
+
   private serializeAtomLink(atom: InstanceDataLinkAtom) {
-    return { [YamlKeys.type]: YamlValues.iri, [YamlKeys.id]: atom.id };
+    return { [YamlKeys.datatype]: YamlValues.iri, [YamlKeys.id]: atom.id };
   }
 }

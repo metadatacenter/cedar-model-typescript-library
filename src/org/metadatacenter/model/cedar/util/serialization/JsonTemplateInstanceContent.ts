@@ -4,17 +4,26 @@ import { JsonNode } from '../../types/basic-types/JsonNode';
 export class JsonTemplateInstanceContent {
   // This is a verbatim representation
   public static CONTEXT_VERBATIM: JsonNode = {
-    schema: 'http://schema.org/',
-    pav: 'http://purl.org/pav/',
-    oslc: 'http://open-services.net/ns/core#',
     rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
     xsd: 'http://www.w3.org/2001/XMLSchema#',
+    pav: 'http://purl.org/pav/',
+    schema: 'http://schema.org/',
+    oslc: 'http://open-services.net/ns/core#',
     skos: 'http://www.w3.org/2004/02/skos/core#',
+    'rdfs:label': {
+      '@type': 'xsd:string',
+    },
+    'schema:isBasedOn': {
+      '@type': '@id',
+    },
     'schema:name': {
       '@type': 'xsd:string',
     },
     'schema:description': {
       '@type': 'xsd:string',
+    },
+    'pav:derivedFrom': {
+      '@type': '@id',
     },
     'pav:createdOn': {
       '@type': 'xsd:dateTime',
@@ -28,11 +37,8 @@ export class JsonTemplateInstanceContent {
     'oslc:modifiedBy': {
       '@type': '@id',
     },
-    'pav:derivedFrom': {
-      '@type': '@id',
-    },
-    'schema:isBasedOn': {
-      '@type': '@id',
+    'skos:notation': {
+      '@type': 'xsd:string',
     },
   };
 

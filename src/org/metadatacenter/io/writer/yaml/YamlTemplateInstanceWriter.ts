@@ -12,7 +12,6 @@ import { InstanceDataLinkAtom } from '../../../model/cedar/template-instance/Ins
 import { InstanceDataTypedAtom } from '../../../model/cedar/template-instance/InstanceDataTypedAtom';
 import { InstanceDataControlledAtom } from '../../../model/cedar/template-instance/InstanceDataControlledAtom';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
-import { YamlValues } from '../../../model/cedar/constants/YamlValues';
 
 export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
   private constructor(behavior: YamlWriterBehavior, writers: CedarYamlWriters) {
@@ -58,9 +57,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
       const dataAtom: InstanceDataAtomType = dataContainer.values[key];
       if (Array.isArray(dataAtom)) {
         const dataArray: JsonNode[] = JsonNode.getEmptyList();
-        const values = JsonNode.getEmpty();
-        values[YamlKeys.values] = dataArray;
-        target[key] = values;
+        target[key] = dataArray;
         dataAtom.forEach((arrayElement: InstanceDataAtomType, _index: number) => {
           const serializedData: JsonNode | null = this.serializeCommonType(arrayElement);
           if (serializedData !== null) {
@@ -129,6 +126,6 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
   }
 
   private serializeAtomLink(atom: InstanceDataLinkAtom) {
-    return { [YamlKeys.datatype]: YamlValues.iri, [YamlKeys.id]: atom.id };
+    return { [YamlKeys.id]: atom.id };
   }
 }

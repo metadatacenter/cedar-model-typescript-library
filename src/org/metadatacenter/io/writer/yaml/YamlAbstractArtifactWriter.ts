@@ -52,15 +52,6 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
     return node;
   }
 
-  // protected macroNameAndDescriptionTemplate(artifact: AbstractSchemaArtifact): JsonNode {
-  //   const node: JsonNode = JsonNode.getEmpty();
-  //   node[YamlKeys.name] = artifact.schema_name;
-  //   if (artifact.schema_description !== null && artifact.schema_description !== '') {
-  //     node[YamlKeys.description] = artifact.schema_description;
-  //   }
-  //   return node;
-  // }
-
   protected macroStatusAndVersion(artifact: AbstractSchemaArtifact): JsonNode {
     const svObject: JsonNode = JsonNode.getEmpty();
     if (artifact.bibo_status !== BiboStatus.NULL) {
@@ -157,7 +148,7 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
     return previousVersion;
   }
 
-  protected macroAnnotations(artifact: AbstractSchemaArtifact): JsonNode {
+  protected macroAnnotations(artifact: AbstractArtifact): JsonNode {
     return this.annotationsWriter.write(artifact.annotations);
   }
 

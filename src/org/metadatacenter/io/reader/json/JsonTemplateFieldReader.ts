@@ -105,7 +105,7 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     const field: TemplateField = JsonTemplateFieldReader.readFieldSpecificAttributes(fieldSourceObject, childInfo, parsingResult, path);
     this.readNonReportableAttributes(field, fieldSourceObject);
     this.readReportableAttributes(field, fieldSourceObject, parsingResult, path);
-    this.readAnnotations(field, fieldSourceObject, parsingResult, path);
+    this.readAnnotations(field, fieldSourceObject);
     return new JsonTemplateFieldReaderResult(field, parsingResult, fieldSourceObject);
   }
 

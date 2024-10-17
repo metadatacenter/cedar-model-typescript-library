@@ -37,12 +37,7 @@ export abstract class JsonAbstractArtifactReader {
     container.pav_lastUpdatedOn = IsoDate.forValue(ReaderUtil.getString(sourceObject, JsonSchema.pavLastUpdatedOn));
   }
 
-  protected readAnnotations(
-    artifact: AbstractArtifact,
-    artifactSourceObject: JsonNode,
-    _parsingResult: JsonArtifactParsingResult,
-    _topPath: JsonPath,
-  ) {
+  protected readAnnotations(artifact: AbstractArtifact, artifactSourceObject: JsonNode) {
     const annotations = new Annotations();
     const annotationsNode: JsonNode | null = ReaderUtil.getNodeOrNull(artifactSourceObject, CedarModel.annotations);
     if (annotationsNode !== null) {

@@ -61,7 +61,7 @@ export class JsonTemplateElementReader extends JsonContainerArtifactReader {
 
     this.readNonReportableAttributes(element, elementSourceObject);
     this.readReportableAttributes(element, elementSourceObject, parsingResult, topPath);
-    this.readAnnotations(element, elementSourceObject, parsingResult, topPath);
+    this.readAnnotations(element, elementSourceObject);
     this.readInstanceTypeSpecification(element, elementSourceObject, parsingResult);
     this.readAndValidateChildrenInfo(element, elementSourceObject, parsingResult, topPath);
 

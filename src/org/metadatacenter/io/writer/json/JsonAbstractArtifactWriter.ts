@@ -106,7 +106,7 @@ export abstract class JsonAbstractArtifactWriter extends AbstractArtifactWriter 
     return schemaIdentifier;
   }
 
-  protected macroAnnotations(artifact: AbstractSchemaArtifact): JsonNode {
+  protected macroAnnotations(artifact: AbstractArtifact): JsonNode {
     return this.annotationsWriter.write(artifact.annotations);
   }
 }

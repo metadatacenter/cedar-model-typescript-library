@@ -3,7 +3,6 @@ import { Annotations } from '../../../model/cedar/annotation/Annotations';
 import { AnnotationAtId } from '../../../model/cedar/annotation/AnnotationAtId';
 import { AnnotationAtValue } from '../../../model/cedar/annotation/AnnotationAtValue';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
-import { YamlValues } from '../../../model/cedar/constants/YamlValues';
 import { YamlWriterBehavior } from '../../../behavior/YamlWriterBehavior';
 
 export class YamlAnnotationsWriter {
@@ -21,13 +20,11 @@ export class YamlAnnotationsWriter {
         const src = annotations.get(name);
         if (src instanceof AnnotationAtId) {
           const annotation = {
-            [YamlKeys.datatype]: YamlValues.iri,
-            [YamlKeys.value]: src.getAtId(),
+            [YamlKeys.id]: src.getAtId(),
           };
           annotationMap[name] = annotation;
         } else if (src instanceof AnnotationAtValue) {
           const annotation = {
-            [YamlKeys.datatype]: YamlValues.string,
             [YamlKeys.value]: src.getAtValue(),
           };
           annotationMap[name] = annotation;

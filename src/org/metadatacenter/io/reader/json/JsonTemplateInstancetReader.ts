@@ -20,7 +20,6 @@ import { InstanceDataEmptyNode } from '../../../model/cedar/template-instance/In
 import { InstanceDataAttributeValueFieldName } from '../../../model/cedar/template-instance/InstanceDataAttributeValueFieldName';
 import { InstanceDataAttributeValueField } from '../../../model/cedar/template-instance/InstanceDataAttributeValueField';
 import { CedarModel } from '../../../model/cedar/constants/CedarModel';
-import { InstanceDataAnnotations } from '../../../model/cedar/template-instance/InstanceDataAnnotations';
 
 export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactReader {
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.TEMPLATE_INSTANCE;
@@ -76,6 +75,7 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
 
   protected readInstanceData(sourceObject: JsonNode, instance: TemplateInstance, path: JsonPath): void {
     instance.dataContainer = this.readInstanceContainer(sourceObject, path);
+    this.readAnnotations(instance, sourceObject);
   }
 
   private readInstanceContainer(sourceObject: JsonNode, path: JsonPath): InstanceDataContainer {
@@ -135,25 +135,7 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
         ret.id = atId;
       }
     }
-
-    this.parseAnnotations(sourceObject, ret);
     return ret;
-  }
-
-  private parseAnnotations(sourceObject: JsonNode, ret: InstanceDataContainer) {
-    if (Object.hasOwn(sourceObject, CedarModel.annotations)) {
-      const anno: InstanceDataAnnotations = new InstanceDataAnnotations();
-      const annoNode = ReaderUtil.getNode(sourceObject, CedarModel.annotations);
-      Object.keys(annoNode).forEach((key: string) => {
-        const aNode = ReaderUtil.getNode(annoNode, key);
-        if (Object.hasOwn(aNode, JsonSchema.atId)) {
-          anno.add(key, new InstanceDataLinkAtom(ReaderUtil.getString(aNode, JsonSchema.atId)));
-        } else if (Object.hasOwn(aNode, JsonSchema.atValue)) {
-          anno.add(key, new InstanceDataStringAtom(ReaderUtil.getString(aNode, JsonSchema.atValue)));
-        }
-      });
-      ret.annotations = anno;
-    }
   }
 
   private parseNode(sourceObject: JsonNode | string, path: JsonPath): InstanceDataAtomType {

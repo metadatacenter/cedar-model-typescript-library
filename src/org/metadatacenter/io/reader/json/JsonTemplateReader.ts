@@ -16,7 +16,6 @@ import { JsonTemplateElementReader } from './JsonTemplateElementReader';
 import { JsonContainerArtifactReader } from './JsonContainerArtifactReader';
 import { Template } from '../../../model/cedar/template/Template';
 import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
-import { UiInputType } from '../../../model/cedar/types/wrapped-types/UiInputType';
 
 export class JsonTemplateReader extends JsonContainerArtifactReader {
   private readonly elementReader: JsonTemplateElementReader;
@@ -63,7 +62,7 @@ export class JsonTemplateReader extends JsonContainerArtifactReader {
 
     this.readNonReportableAttributes(template, templateSourceObject);
     this.readReportableAttributes(template, templateSourceObject, parsingResult, topPath);
-    this.readAnnotations(template, templateSourceObject, parsingResult, topPath);
+    this.readAnnotations(template, templateSourceObject);
     this.readInstanceTypeSpecification(template, templateSourceObject, parsingResult);
     this.readAndValidateChildrenInfo(template, templateSourceObject, parsingResult, topPath);
 

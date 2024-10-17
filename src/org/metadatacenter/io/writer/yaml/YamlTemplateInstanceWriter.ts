@@ -8,7 +8,6 @@ import { InstanceDataContainer } from '../../../model/cedar/template-instance/In
 import { InstanceDataAtomType } from '../../../model/cedar/template-instance/InstanceDataAtomType';
 import { InstanceDataAttributeValueField } from '../../../model/cedar/template-instance/InstanceDataAttributeValueField';
 import { InstanceDataStringAtom } from '../../../model/cedar/template-instance/InstanceDataStringAtom';
-import { InstanceDataAtomStringOrLinkType } from '../../../model/cedar/template-instance/InstanceDataAtomStringOrLinkType';
 import { InstanceDataLinkAtom } from '../../../model/cedar/template-instance/InstanceDataLinkAtom';
 import { InstanceDataTypedAtom } from '../../../model/cedar/template-instance/InstanceDataTypedAtom';
 import { InstanceDataControlledAtom } from '../../../model/cedar/template-instance/InstanceDataControlledAtom';
@@ -34,6 +33,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
       ...this.macroDerivedFrom(instance),
       ...this.macroProvenance(instance),
       ...this.getDataTree(instance),
+      ...this.macroAnnotations(instance),
     };
     return template;
   }
@@ -72,19 +72,10 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
         if (serializedData !== null) {
           target[key] = serializedData;
         }
-        // if (dataAtom instanceof InstanceDataAttributeValueField) {
-        //   const keyList: string[] = [];
-        //   Object.keys(dataAtom.values).forEach((subKey) => {
-        //     keyList.push(subKey);
-        //   });
-        //   target[key] = keyList;
-        // }
       }
     });
 
     this.serializeAttributeValueFields(dataContainer, into);
-
-    this.serializeAnnotations(dataContainer, into);
   }
 
   private serializeAttributeValueFields(dataContainer: InstanceDataContainer, into: JsonNode) {
@@ -105,30 +96,6 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
         }
       }
     });
-  }
-
-  private serializeAnnotations(dataContainer: InstanceDataContainer, into: JsonNode) {
-    // TODO: I have an annotation writer, check if that could be reused: YamlAnnotationsWriter
-    // TODO: Check the reader as well, could be uniformed
-    if (dataContainer.annotations !== null) {
-      const annotations = dataContainer.annotations;
-      if (annotations.values !== null) {
-        const aValues = annotations.values;
-        const jsonAnnotationContainer: JsonNode = JsonNode.getEmpty();
-        Object.keys(aValues).forEach((key) => {
-          if (Object.hasOwn(aValues, key)) {
-            const dataAtom: InstanceDataAtomStringOrLinkType = aValues[key];
-            if (dataAtom instanceof InstanceDataStringAtom) {
-              jsonAnnotationContainer[key] = this.serializeAtomStringWithType(dataAtom);
-            }
-            if (dataAtom instanceof InstanceDataLinkAtom) {
-              jsonAnnotationContainer[key] = this.serializeAtomLink(dataAtom);
-            }
-          }
-        });
-        into[YamlKeys.annotations] = jsonAnnotationContainer;
-      }
-    }
   }
 
   private serializeCommonType(atom: InstanceDataAtomType): JsonNode | null {
@@ -159,10 +126,6 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
 
   private serializeAtomString(atom: InstanceDataStringAtom) {
     return { [YamlKeys.value]: atom.value };
-  }
-
-  private serializeAtomStringWithType(atom: InstanceDataStringAtom) {
-    return { [YamlKeys.datatype]: YamlValues.string, [YamlKeys.value]: atom.value };
   }
 
   private serializeAtomLink(atom: InstanceDataLinkAtom) {

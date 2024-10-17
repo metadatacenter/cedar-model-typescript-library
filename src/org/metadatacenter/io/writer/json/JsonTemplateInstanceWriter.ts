@@ -14,8 +14,6 @@ import { InstanceDataTypedAtom } from '../../../model/cedar/template-instance/In
 import { InstanceDataAttributeValueField } from '../../../model/cedar/template-instance/InstanceDataAttributeValueField';
 import { InstanceDataControlledAtom } from '../../../model/cedar/template-instance/InstanceDataControlledAtom';
 import { InstanceDataLinkAtom } from '../../../model/cedar/template-instance/InstanceDataLinkAtom';
-import { InstanceDataAtomStringOrLinkType } from '../../../model/cedar/template-instance/InstanceDataAtomStringOrLinkType';
-import { CedarModel } from '../../../model/cedar/constants/CedarModel';
 
 export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
   private constructor(behavior: JsonWriterBehavior, writers: CedarJsonWriters) {
@@ -84,8 +82,6 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
 
     this.serializeAttributeValueFields(dataContainer, into);
 
-    this.serializeAnnotations(dataContainer, into);
-
     const atContext: JsonNode = JsonNode.getEmpty();
     Object.keys(dataContainer.iris).forEach((key) => {
       atContext[key] = dataContainer.iris[key];
@@ -137,28 +133,6 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
     });
   }
 
-  private serializeAnnotations(dataContainer: InstanceDataContainer, into: JsonNode) {
-    if (dataContainer.annotations !== null) {
-      const annotations = dataContainer.annotations;
-      if (annotations.values !== null) {
-        const aValues = annotations.values;
-        const jsonAnnotationContainer: JsonNode = JsonNode.getEmpty();
-        Object.keys(aValues).forEach((key) => {
-          if (Object.hasOwn(aValues, key)) {
-            const dataAtom: InstanceDataAtomStringOrLinkType = aValues[key];
-            if (dataAtom instanceof InstanceDataStringAtom) {
-              jsonAnnotationContainer[key] = this.serializeAtomString(dataAtom);
-            }
-            if (dataAtom instanceof InstanceDataLinkAtom) {
-              jsonAnnotationContainer[key] = this.serializeAtomLink(dataAtom);
-            }
-          }
-        });
-        into[CedarModel.annotations] = jsonAnnotationContainer;
-      }
-    }
-  }
-
   public getAsJsonString(instance: TemplateInstance, indent: number = 2): string {
     return JSON.stringify(this.getAsJsonNode(instance), null, indent);
   }
@@ -171,6 +145,7 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
       [JsonSchema.atId]: this.atomicWriter.write(instance.at_id),
       ...this.macroSchemaNameAndDescription(instance),
       ...this.getDataTree(instance),
+      ...this.macroAnnotations(instance),
       [JsonSchema.atContext]: extendedContext,
       ...this.macroIsBasedOn(instance),
       ...this.macroProvenance(instance, this.atomicWriter),

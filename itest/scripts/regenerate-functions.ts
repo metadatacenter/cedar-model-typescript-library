@@ -29,7 +29,7 @@ export const execPromise = promisify(exec);
 
 export const javaBaseCommandForJson: string = `java -cp ${process.env.CEDAR_HOME}/cedar-artifact-library/target/cedar-artifact-library-${process.env.CEDAR_VERSION}-jar-with-dependencies.jar org.metadatacenter.artifacts.model.tools.ArtifactConvertor -jf`;
 
-export const javaBaseCommandForYaml: string = `java -cp ${process.env.CEDAR_HOME}/cedar-artifact-library/target/cedar-artifact-library-${process.env.CEDAR_VERSION}-jar-with-dependencies.jar org.metadatacenter.artifacts.model.tools.ArtifactConvertor -yf`;
+export const javaBaseCommandForYaml: string = `java -cp ${process.env.CEDAR_HOME}/cedar-artifact-library/target/cedar-artifact-library-${process.env.CEDAR_VERSION}-jar-with-dependencies.jar org.metadatacenter.artifacts.model.tools.ArtifactConvertor -yf -yq`;
 
 export async function runJavaCommand(command: string) {
   try {
@@ -103,62 +103,81 @@ export async function generateInstanceJsonUsingJava(instanceNumbers: number[] = 
 
 // ------------------------------------------------------------------------------------------------
 
-async function generateForTemplatesJavaYaml() {
+async function generateForTemplatesJavaYaml(isCompact: boolean) {
   for (const templateTestNumber of templateTestNumbers) {
     const testResource: TestResource = TestResource.template(templateTestNumber);
     const jsonInputPath: string = TestUtil.getReferenceJsonFileName(testResource);
-    const yamlOutputPath: string = TestUtil.getJavaGeneratedYamlFileName(testResource);
-    const command = `${javaBaseCommandForYaml} -tsf ${jsonInputPath} -f ${yamlOutputPath}`;
+    const yamlOutputPath: string = TestUtil.getJavaGeneratedYamlFileName(testResource, isCompact);
+    let command = `${javaBaseCommandForYaml} -tsf ${jsonInputPath} -f ${yamlOutputPath}`;
+    if (isCompact) {
+      command += ' -cy';
+    }
     console.log(command);
     await runJavaCommand(command);
   }
 }
 
-async function generateForElementsJavaYaml() {
+async function generateForElementsJavaYaml(isCompact: boolean) {
   for (const elementTestNumber of elementTestNumbers) {
     const testResource: TestResource = TestResource.element(elementTestNumber);
     const jsonInputPath: string = TestUtil.getReferenceJsonFileName(testResource);
-    const yamlOutputPath: string = TestUtil.getJavaGeneratedYamlFileName(testResource);
-    const command = `${javaBaseCommandForYaml} -esf ${jsonInputPath} -f ${yamlOutputPath}`;
+    const yamlOutputPath: string = TestUtil.getJavaGeneratedYamlFileName(testResource, isCompact);
+    let command = `${javaBaseCommandForYaml} -esf ${jsonInputPath} -f ${yamlOutputPath}`;
+    if (isCompact) {
+      command += ' -cy';
+    }
     console.log(command);
     await runJavaCommand(command);
   }
 }
 
-async function generateForFieldsJavaYaml() {
+async function generateForFieldsJavaYaml(isCompact: boolean) {
   for (const fieldTestNumber of fieldTestNumbers) {
     const testResource: TestResource = TestResource.field(fieldTestNumber);
     const jsonInputPath: string = TestUtil.getReferenceJsonFileName(testResource);
-    const yamlOutputPath: string = TestUtil.getJavaGeneratedYamlFileName(testResource);
-    const command = `${javaBaseCommandForYaml} -fsf ${jsonInputPath} -f ${yamlOutputPath}`;
+    const yamlOutputPath: string = TestUtil.getJavaGeneratedYamlFileName(testResource, isCompact);
+    let command = `${javaBaseCommandForYaml} -fsf ${jsonInputPath} -f ${yamlOutputPath}`;
+    if (isCompact) {
+      command += ' -cy';
+    }
     console.log(command);
     await runJavaCommand(command);
   }
 }
 
-async function generateForInstancesJavaYaml(instanceNumbers: number[] = []) {
+async function generateForInstancesJavaYaml(instanceNumbers: number[] = [], isCompact: boolean) {
   if (instanceNumbers.length == 0) {
     instanceNumbers = instanceTestNumbers;
   }
   for (const fieldTestNumber of instanceNumbers) {
     const testResource: TestResource = TestResource.instance(fieldTestNumber);
     const jsonInputPath: string = TestUtil.getReferenceJsonFileName(testResource);
-    const jsonOutputPath: string = TestUtil.getJavaGeneratedYamlFileName(testResource);
-    const command = `${javaBaseCommandForYaml} -tif ${jsonInputPath} -f ${jsonOutputPath}`;
+    const yamlOutputPath: string = TestUtil.getJavaGeneratedYamlFileName(testResource, isCompact);
+    let command = `${javaBaseCommandForYaml} -tif ${jsonInputPath} -f ${yamlOutputPath}`;
+    if (isCompact) {
+      command += ' -cy';
+    }
     console.log(command);
     await runJavaCommand(command);
   }
 }
 
 export async function generateAllYamlUsingJava() {
-  await generateForFieldsJavaYaml();
-  await generateForElementsJavaYaml();
-  await generateForTemplatesJavaYaml();
-  await generateForInstancesJavaYaml();
+  await generateForFieldsJavaYaml(false);
+  await generateForElementsJavaYaml(false);
+  await generateForTemplatesJavaYaml(false);
+  await generateForInstancesJavaYaml([], false);
 }
 
-export async function generateInstanceYamlUsingJava(instanceNumbers: number[] = []) {
-  await generateForInstancesJavaYaml(instanceNumbers);
+export async function generateAllCompactYamlUsingJava() {
+  await generateForFieldsJavaYaml(true);
+  await generateForElementsJavaYaml(true);
+  await generateForTemplatesJavaYaml(true);
+  await generateForInstancesJavaYaml([], true);
+}
+
+export async function generateInstanceYamlUsingJava(instanceNumbers: number[] = [], isCompact: boolean) {
+  await generateForInstancesJavaYaml(instanceNumbers, isCompact);
 }
 
 // ------------------------------------------------------------------------------------------------

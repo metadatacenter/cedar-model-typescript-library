@@ -53,8 +53,12 @@ export class TestUtil {
     return path.join(testResource.getDirectory(), testResource.getFile('-generated-ts-model-lib.json'));
   }
 
-  static getJavaGeneratedYamlFileName(testResource: TestResource): string {
-    return path.join(testResource.getDirectory(), testResource.getFile('-generated-java-artifact-lib.yaml'));
+  static getJavaGeneratedYamlFileName(testResource: TestResource, isCompact: boolean): string {
+    if (isCompact) {
+      return path.join(testResource.getDirectory(), testResource.getFile('-generated-java-artifact-lib.compact.yaml'));
+    } else {
+      return path.join(testResource.getDirectory(), testResource.getFile('-generated-java-artifact-lib.yaml'));
+    }
   }
 
   static getJavaGeneratedJsonFileName(testResource: TestResource): string {
@@ -89,8 +93,8 @@ export class TestUtil {
     return this.readResourceAsString(this.getOwnGeneratedJsonFileName(testResource));
   }
 
-  static readJavaLibYaml(testResource: TestResource): string {
-    return this.readResourceAsString(this.getJavaGeneratedYamlFileName(testResource));
+  static readJavaLibYaml(testResource: TestResource, isCompact: boolean): string {
+    return this.readResourceAsString(this.getJavaGeneratedYamlFileName(testResource, isCompact));
   }
 
   static readJavaLibJson(testResource: TestResource): string {
@@ -109,13 +113,13 @@ export class TestUtil {
     }
   }
 
-  static getArtifactPath(testResource: TestResource, source: CompareFileSource, format: CompareFileFormat): string {
+  static getArtifactPath(testResource: TestResource, source: CompareFileSource, format: CompareFileFormat, isCompact: boolean): string {
     if (source === CompareFileSource.REF) {
       return this.getReferencePath(testResource, format);
     } else if (source === CompareFileSource.TS_LIB) {
       return this.getTSLibPath(testResource, format);
     } else if (source === CompareFileSource.JAVA_LIB) {
-      return this.getJavaLibPath(testResource, format);
+      return this.getJavaLibPath(testResource, format, isCompact);
     } else {
       return '';
     }
@@ -141,11 +145,11 @@ export class TestUtil {
     }
   }
 
-  private static getJavaLibPath(testResource: TestResource, format: CompareFileFormat): string {
+  private static getJavaLibPath(testResource: TestResource, format: CompareFileFormat, isCompact: boolean): string {
     if (format === CompareFileFormat.JSON) {
       return this.getJavaLibJsonPath(testResource);
     } else if (format === CompareFileFormat.YAML) {
-      return this.getJavaLibYamlPath(testResource);
+      return this.getJavaLibYamlPath(testResource, isCompact);
     } else {
       return '';
     }
@@ -171,8 +175,8 @@ export class TestUtil {
     return this.getJavaGeneratedJsonFileName(testResource);
   }
 
-  static getJavaLibYamlPath(testResource: TestResource): string {
-    return this.getJavaGeneratedYamlFileName(testResource);
+  static getJavaLibYamlPath(testResource: TestResource, isCompact: boolean): string {
+    return this.getJavaGeneratedYamlFileName(testResource, isCompact);
   }
 
   private static readReference(testResource: TestResource, format: CompareFileFormat): string {
@@ -199,7 +203,7 @@ export class TestUtil {
     if (format === CompareFileFormat.JSON) {
       return this.readJavaLibJson(testResource);
     } else if (format === CompareFileFormat.YAML) {
-      return this.readJavaLibYaml(testResource);
+      return this.readJavaLibYaml(testResource, false);
     } else {
       return '';
     }

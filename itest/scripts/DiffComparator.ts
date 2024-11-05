@@ -15,8 +15,8 @@ export class DiffComparator {
   ) {
     for (const testNumber of testNumbers) {
       const testResource: TestResource = TestResource.artifact(testNumber, artifactType);
-      const leftFile = TestUtil.getArtifactPath(testResource, leftSource, format);
-      const rightFile = TestUtil.getArtifactPath(testResource, rightSource, format);
+      const leftFile = TestUtil.getArtifactPath(testResource, leftSource, format, false);
+      const rightFile = TestUtil.getArtifactPath(testResource, rightSource, format, false);
 
       console.log('----------------------------------');
       console.log('\n\n\n');

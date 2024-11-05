@@ -18,15 +18,21 @@ export abstract class YamlTemplateFieldWriterInternal extends YamlAbstractArtifa
     super(behavior, writers);
   }
 
-  public getAsYamlString(field: TemplateField): string {
-    return SimpleYamlSerializer.serialize(this.getYamlAsJsonNode(field, ChildDeploymentInfo.empty()));
+  public getAsYamlString(field: TemplateField, isCompact: boolean = false): string {
+    return SimpleYamlSerializer.serialize(this.getYamlAsJsonNode(field, ChildDeploymentInfo.empty(), isCompact));
   }
 
   public getYamlAsJsonNode(field: TemplateField): JsonNode;
 
   public getYamlAsJsonNode(field: TemplateField, childInfo: AbstractChildDeploymentInfo): JsonNode;
 
-  public getYamlAsJsonNode(field: TemplateField, childInfo: AbstractChildDeploymentInfo = ChildDeploymentInfo.empty()): JsonNode {
+  public getYamlAsJsonNode(field: TemplateField, childInfo: AbstractChildDeploymentInfo, isCompact: boolean): JsonNode;
+
+  public getYamlAsJsonNode(
+    field: TemplateField,
+    childInfo: AbstractChildDeploymentInfo = ChildDeploymentInfo.empty(),
+    isCompact: boolean = false,
+  ): JsonNode {
     // Build ui wrapper
     const uiObject: JsonNode = this.buildUIObject(field, childInfo);
 
@@ -38,15 +44,15 @@ export abstract class YamlTemplateFieldWriterInternal extends YamlAbstractArtifa
       ...this.macroType(field),
       ...this.macroNameAndDescription(field),
       ...this.macroSchemaIdentifier(field),
-      ...this.macroId(field),
-      ...this.macroStatusAndVersion(field),
+      ...this.macroId(field, isCompact),
+      ...this.macroStatusAndVersion(field, isCompact),
       ...this.macroSkos(field),
       ...uiObject,
       ...vcObject,
       ...this.macroValueRecommendation(field),
-      ...this.macroPreviousVersion(field),
-      ...this.macroDerivedFrom(field),
-      ...this.macroProvenance(field),
+      ...this.macroPreviousVersion(field, isCompact),
+      ...this.macroDerivedFrom(field, isCompact),
+      ...this.macroProvenance(field, isCompact),
       ...this.macroAnnotations(field),
     };
   }

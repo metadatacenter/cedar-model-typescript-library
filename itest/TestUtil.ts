@@ -45,8 +45,9 @@ export class TestUtil {
     return path.join(testResource.getDirectory(), testResource.getFile('.yaml'));
   }
 
-  static getOwnGeneratedYamlFileName(testResource: TestResource): string {
-    return path.join(testResource.getDirectory(), testResource.getFile('-generated-ts-model-lib.yaml'));
+  static getOwnGeneratedYamlFileName(testResource: TestResource, isCompact: boolean): string {
+    const suffix: string = isCompact ? '.compact' : '';
+    return path.join(testResource.getDirectory(), testResource.getFile(`-generated-ts-model-lib${suffix}.yaml`));
   }
 
   static getOwnGeneratedJsonFileName(testResource: TestResource): string {
@@ -77,8 +78,8 @@ export class TestUtil {
     return this.readResourceAsString(this.getReferenceYamlFileName(testResource));
   }
 
-  static writeSerializedYaml(testResource: TestResource, content: string): void {
-    this.writeOutsideResource(this.getOwnGeneratedYamlFileName(testResource), content);
+  static writeSerializedYaml(testResource: TestResource, content: string, isCompact: boolean): void {
+    this.writeOutsideResource(this.getOwnGeneratedYamlFileName(testResource, isCompact), content);
   }
 
   static writeSerializedJson(testResource: TestResource, content: string): void {
@@ -86,7 +87,7 @@ export class TestUtil {
   }
 
   static readTSLibYaml(testResource: TestResource): string {
-    return this.readResourceAsString(this.getOwnGeneratedYamlFileName(testResource));
+    return this.readResourceAsString(this.getOwnGeneratedYamlFileName(testResource, false));
   }
 
   static readTSLibJson(testResource: TestResource): string {
@@ -168,7 +169,7 @@ export class TestUtil {
   }
 
   static getTSLibYamlPath(testResource: TestResource): string {
-    return this.getOwnGeneratedYamlFileName(testResource);
+    return this.getOwnGeneratedYamlFileName(testResource, false);
   }
 
   static getJavaLibJsonPath(testResource: TestResource): string {

@@ -22,34 +22,36 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
     return new YamlTemplateInstanceWriter(behavior, writers);
   }
 
-  public getYamlAsJsonNode(instance: TemplateInstance): JsonNode {
+  public getYamlAsJsonNode(instance: TemplateInstance, isCompact: boolean = false): JsonNode {
     // build the final object
     const template: JsonNode = {
       ...this.macroType(instance),
       ...this.macroNameAndDescription(instance),
-      ...this.macroId(instance),
+      ...this.macroId(instance, isCompact),
       ...this.macroIsBasedOn(instance),
-      ...this.macroDerivedFrom(instance),
-      ...this.macroProvenance(instance),
-      ...this.getDataTree(instance),
+      ...this.macroDerivedFrom(instance, isCompact),
+      ...this.macroProvenance(instance, isCompact),
+      ...this.getDataTree(instance, isCompact),
       ...this.macroAnnotations(instance),
     };
     return template;
   }
 
-  public getAsYamlString(instance: TemplateInstance): string {
-    return SimpleYamlSerializer.serialize(this.getYamlAsJsonNode(instance));
+  public getAsYamlString(instance: TemplateInstance, isCompact: boolean = false): string {
+    return SimpleYamlSerializer.serialize(this.getYamlAsJsonNode(instance, isCompact));
   }
 
-  private getDataTree(instance: TemplateInstance): JsonNode {
+  private getDataTree(instance: TemplateInstance, isCompact: boolean): JsonNode {
     const ret: JsonNode = JsonNode.getEmpty();
-    this.serializeDataLevelInto(instance.dataContainer, ret);
+    this.serializeDataLevelInto(instance.dataContainer, ret, isCompact);
     return ret;
   }
 
-  private serializeDataLevelInto(dataContainer: InstanceDataContainer, into: JsonNode) {
+  private serializeDataLevelInto(dataContainer: InstanceDataContainer, into: JsonNode, isCompact: boolean): void {
     if (dataContainer.id !== null) {
-      into[YamlKeys.id] = dataContainer.id;
+      if (!isCompact) {
+        into[YamlKeys.id] = dataContainer.id;
+      }
     }
     const target = JsonNode.getEmpty();
     into[YamlKeys.children] = target;
@@ -59,13 +61,13 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
         const dataArray: JsonNode[] = JsonNode.getEmptyList();
         target[key] = dataArray;
         dataAtom.forEach((arrayElement: InstanceDataAtomType, _index: number) => {
-          const serializedData: JsonNode | null = this.serializeCommonType(arrayElement);
+          const serializedData: JsonNode | null = this.serializeCommonType(arrayElement, isCompact);
           if (serializedData !== null) {
             dataArray.push(serializedData);
           }
         });
       } else {
-        const serializedData: JsonNode | null = this.serializeCommonType(dataAtom);
+        const serializedData: JsonNode | null = this.serializeCommonType(dataAtom, isCompact);
         if (serializedData !== null) {
           target[key] = serializedData;
         }
@@ -95,7 +97,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
     });
   }
 
-  private serializeCommonType(atom: InstanceDataAtomType): JsonNode | null {
+  private serializeCommonType(atom: InstanceDataAtomType, isCompact: boolean): JsonNode | null {
     if (atom instanceof InstanceDataStringAtom) {
       return this.serializeAtomString(atom);
     }
@@ -110,7 +112,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
     }
     if (atom instanceof InstanceDataContainer) {
       const elementContainer: JsonNode = JsonNode.getEmpty();
-      this.serializeDataLevelInto(atom, elementContainer);
+      this.serializeDataLevelInto(atom, elementContainer, isCompact);
       return elementContainer;
     }
 

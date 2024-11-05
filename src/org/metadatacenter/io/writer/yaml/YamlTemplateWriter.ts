@@ -15,7 +15,7 @@ export class YamlTemplateWriter extends YamlAbstractContainerArtifactWriter {
     return new YamlTemplateWriter(behavior, writers);
   }
 
-  public getYamlAsJsonNode(template: Template): JsonNode {
+  public getYamlAsJsonNode(template: Template, isCompact: boolean = false): JsonNode {
     const uiObject: JsonNode = JsonNode.getEmpty();
     if (template.header !== null) {
       uiObject[YamlKeys.header] = template.header;
@@ -28,15 +28,15 @@ export class YamlTemplateWriter extends YamlAbstractContainerArtifactWriter {
       ...this.macroType(template),
       ...this.macroNameAndDescription(template),
       ...this.macroSchemaIdentifier(template),
-      ...this.macroId(template),
-      ...this.macroStatusAndVersion(template),
+      ...this.macroId(template, isCompact),
+      ...this.macroStatusAndVersion(template, isCompact),
       ...uiObject,
-      ...this.macroPreviousVersion(template),
-      ...this.macroDerivedFrom(template),
-      ...this.macroProvenance(template),
+      ...this.macroPreviousVersion(template, isCompact),
+      ...this.macroDerivedFrom(template, isCompact),
+      ...this.macroProvenance(template, isCompact),
       ...this.macroAnnotations(template),
     };
-    const children: JsonNode[] = this.getChildListAsJSON(template);
+    const children: JsonNode[] = this.getChildListAsJSON(template, isCompact);
     if (children.length > 0) {
       element[YamlKeys.children] = children;
     }
@@ -44,7 +44,7 @@ export class YamlTemplateWriter extends YamlAbstractContainerArtifactWriter {
     return element;
   }
 
-  public getAsYamlString(template: Template): string {
-    return SimpleYamlSerializer.serialize(this.getYamlAsJsonNode(template));
+  public getAsYamlString(template: Template, isCompact: boolean = false): string {
+    return SimpleYamlSerializer.serialize(this.getYamlAsJsonNode(template, isCompact));
   }
 }

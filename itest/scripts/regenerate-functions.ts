@@ -284,7 +284,7 @@ export function generateInstanceJsonUsingTypeScript(instanceNumbers: number[] = 
 
 // ------------------------------------------------------------------------------------------------
 
-function generateForTemplatesTSYaml() {
+function generateForTemplatesTSYaml(isCompact: boolean) {
   for (const templateTestNumber of templateTestNumbers) {
     try {
       const testResource: TestResource = TestResource.template(templateTestNumber);
@@ -295,9 +295,9 @@ function generateForTemplatesTSYaml() {
       const writers: CedarYamlWriters = CedarWriters.yaml().getStrict();
       const yamlWriter: YamlTemplateWriter = writers.getTemplateWriter();
 
-      const stringified = yamlWriter.getAsYamlString(jsonTemplateReaderResult.template);
+      const stringified = yamlWriter.getAsYamlString(jsonTemplateReaderResult.template, isCompact);
 
-      TestUtil.writeSerializedYaml(testResource, stringified);
+      TestUtil.writeSerializedYaml(testResource, stringified, isCompact);
     } catch (error) {
       console.error(`Failed to process template file: ${templateTestNumber}`, error);
       throw error;
@@ -305,7 +305,7 @@ function generateForTemplatesTSYaml() {
   }
 }
 
-function generateForElementsTSYaml() {
+function generateForElementsTSYaml(isCompact: boolean) {
   for (const templateElementTestNumber of elementTestNumbers) {
     try {
       const testResource: TestResource = TestResource.element(templateElementTestNumber);
@@ -316,9 +316,9 @@ function generateForElementsTSYaml() {
       const writers: CedarYamlWriters = CedarWriters.yaml().getStrict();
       const yamlWriter: YamlTemplateElementWriter = writers.getTemplateElementWriter();
 
-      const stringified = yamlWriter.getAsYamlString(jsonTemplateElementReaderResult.element);
+      const stringified = yamlWriter.getAsYamlString(jsonTemplateElementReaderResult.element, isCompact);
 
-      TestUtil.writeSerializedYaml(testResource, stringified);
+      TestUtil.writeSerializedYaml(testResource, stringified, isCompact);
     } catch (error) {
       console.error(`Failed to process templateElement file: ${templateElementTestNumber}`, error);
       throw error;
@@ -326,7 +326,7 @@ function generateForElementsTSYaml() {
   }
 }
 
-function generateForFieldsTSYaml() {
+function generateForFieldsTSYaml(isCompact: boolean) {
   for (const templateFieldTestNumber of fieldTestNumbers) {
     try {
       const testResource: TestResource = TestResource.field(templateFieldTestNumber);
@@ -337,9 +337,9 @@ function generateForFieldsTSYaml() {
       const writers: CedarYamlWriters = CedarWriters.yaml().getStrict();
       const yamlWriter: YamlTemplateFieldWriter = writers.getFieldWriterForField(jsonTemplateFieldReaderResult.field);
 
-      const stringified = yamlWriter.getAsYamlString(jsonTemplateFieldReaderResult.field);
+      const stringified = yamlWriter.getAsYamlString(jsonTemplateFieldReaderResult.field, isCompact);
 
-      TestUtil.writeSerializedYaml(testResource, stringified);
+      TestUtil.writeSerializedYaml(testResource, stringified, isCompact);
     } catch (error) {
       console.error(`Failed to process templateField file: ${templateFieldTestNumber}`, error);
       throw error;
@@ -347,7 +347,7 @@ function generateForFieldsTSYaml() {
   }
 }
 
-function generateForInstancesTSYaml(instanceNumbers: number[]) {
+function generateForInstancesTSYaml(instanceNumbers: number[], isCompact: boolean) {
   if (instanceNumbers.length == 0) {
     instanceNumbers = instanceTestNumbers;
   }
@@ -361,9 +361,9 @@ function generateForInstancesTSYaml(instanceNumbers: number[]) {
       const writers: CedarYamlWriters = CedarWriters.yaml().getStrict();
       const yamlWriter: YamlTemplateInstanceWriter = writers.getTemplateInstanceWriter();
 
-      const stringified = yamlWriter.getAsYamlString(jsonTemplateInstanceReaderResult.instance);
+      const stringified = yamlWriter.getAsYamlString(jsonTemplateInstanceReaderResult.instance, isCompact);
 
-      TestUtil.writeSerializedYaml(testResource, stringified);
+      TestUtil.writeSerializedYaml(testResource, stringified, isCompact);
     } catch (error) {
       console.error(`Failed to process templateInstance file: ${templateInstanceTestNumber}`, error);
       throw error;
@@ -372,12 +372,19 @@ function generateForInstancesTSYaml(instanceNumbers: number[]) {
 }
 
 export function generateAllYamlUsingTypeScript() {
-  generateForFieldsTSYaml();
-  generateForElementsTSYaml();
-  generateForTemplatesTSYaml();
-  generateForInstancesTSYaml([]);
+  generateForFieldsTSYaml(false);
+  generateForElementsTSYaml(false);
+  generateForTemplatesTSYaml(false);
+  generateForInstancesTSYaml([], false);
 }
 
-export function generateInstanceYamlUsingTypeScript(instanceNumbers: number[] = []) {
-  generateForInstancesTSYaml(instanceNumbers);
+export function generateAllCompactYamlUsingTypeScript() {
+  generateForFieldsTSYaml(true);
+  generateForElementsTSYaml(true);
+  generateForTemplatesTSYaml(true);
+  generateForInstancesTSYaml([], true);
+}
+
+export function generateInstanceYamlUsingTypeScript(instanceNumbers: number[] = [], isCompact: boolean) {
+  generateForInstancesTSYaml(instanceNumbers, isCompact);
 }

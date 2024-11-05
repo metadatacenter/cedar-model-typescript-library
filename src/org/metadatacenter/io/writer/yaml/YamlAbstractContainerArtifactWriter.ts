@@ -9,7 +9,7 @@ import { WriterUtil } from '../WriterUtil';
 import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
 
 export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractArtifactWriter {
-  protected getChildListAsJSON(container: AbstractContainerArtifact): JsonNode[] {
+  protected getChildListAsJSON(container: AbstractContainerArtifact, isCompact: boolean): JsonNode[] {
     const childList: JsonNode[] = JsonNode.getEmptyList();
 
     container
@@ -26,15 +26,15 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
             if (child instanceof TemplateField) {
               childDefinition = {
                 ...childDefinition,
-                ...this.writers.getFieldWriterForType(child.cedarFieldType).getYamlAsJsonNode(child, childMetaAbstract),
+                ...this.writers.getFieldWriterForType(child.cedarFieldType).getYamlAsJsonNode(child, childMetaAbstract, isCompact),
               };
             } else {
               childDefinition = {
                 ...childDefinition,
-                ...this.writers.getTemplateElementWriter().getYamlAsJsonNode(child),
+                ...this.writers.getTemplateElementWriter().getYamlAsJsonNode(child, isCompact),
               };
             }
-            const deploymentInfo: JsonNode = this.getDeploymentInfo(child, childMetaAbstract);
+            const deploymentInfo: JsonNode = this.getDeploymentInfo(child, childMetaAbstract, isCompact);
             if (JsonNode.hasEntries(deploymentInfo)) {
               childDefinition[YamlKeys.configuration] = deploymentInfo;
             }
@@ -46,7 +46,7 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
     return childList;
   }
 
-  private getDeploymentInfo(child: TemplateChild | null, childMeta: AbstractChildDeploymentInfo): JsonNode {
+  private getDeploymentInfo(child: TemplateChild | null, childMeta: AbstractChildDeploymentInfo, isCompact: boolean): JsonNode {
     const childConfiguration: JsonNode = JsonNode.getEmpty();
     if (childMeta instanceof AbstractDynamicChildDeploymentInfo) {
       if (childMeta.requiredValue) {
@@ -59,7 +59,9 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
         childConfiguration[YamlKeys.recommended] = true;
       }
       if (childMeta.iri !== null) {
-        childConfiguration[YamlKeys.propertyIri] = childMeta.iri;
+        if (!isCompact) {
+          childConfiguration[YamlKeys.propertyIri] = childMeta.iri;
+        }
       }
     }
     if (childMeta.label !== null && childMeta.label !== child?.schema_name) {

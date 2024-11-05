@@ -4,6 +4,7 @@ import {
   generateAllYamlUsingJava,
   generateAllCompactYamlUsingJava,
   generateAllYamlUsingTypeScript,
+  generateAllCompactYamlUsingTypeScript,
 } from './regenerate-functions';
 
 generateAllJsonUsingJava().catch((error) => {
@@ -24,3 +25,4 @@ generateAllCompactYamlUsingJava().catch((error) => {
 generateAllJsonUsingTypeScript();
 
 generateAllYamlUsingTypeScript();
+generateAllCompactYamlUsingTypeScript();

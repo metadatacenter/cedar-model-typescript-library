@@ -53,7 +53,7 @@ You should see something similar:
 ```shell
 /opt/homebrew/lib
 ├── @angular/cli@17.3.0
-├── cedar-model-typescript-library@0.7.0 -> ./../../../Users/egyedia/CEDAR/cedar-model-typescript-library/dist
+├── cedar-model-typescript-library@0.8.0 -> ./../../../Users/egyedia/CEDAR/cedar-model-typescript-library/dist
 ├── ember-cli@5.7.0
 ├── gulp@4.0.2
 ├── npm@10.5.0

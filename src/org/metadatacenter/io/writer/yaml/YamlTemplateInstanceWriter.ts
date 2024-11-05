@@ -24,7 +24,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
 
   public getYamlAsJsonNode(instance: TemplateInstance, isCompact: boolean = false): JsonNode {
     // build the final object
-    const template: JsonNode = {
+    return {
       ...this.macroType(instance),
       ...this.macroNameAndDescription(instance),
       ...this.macroId(instance, isCompact),
@@ -33,8 +33,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
       ...this.macroProvenance(instance, isCompact),
       ...this.getDataTree(instance, isCompact),
       ...this.macroAnnotations(instance),
-    };
-    return template;
+    } as JsonNode;
   }
 
   public getAsYamlString(instance: TemplateInstance, isCompact: boolean = false): string {

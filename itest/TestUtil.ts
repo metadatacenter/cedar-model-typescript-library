@@ -18,15 +18,13 @@ export class TestUtil {
   }
 
   static readResourceAsString(filePath: string): string {
-    const fileContent = fs.readFileSync(filePath, 'utf8');
-    return fileContent;
+    return fs.readFileSync(filePath, 'utf8');
   }
 
   static readOutsideResourceAsString(resourceFolder: string, fileName: string): string {
     const projectRoot = process.cwd();
     const filePath = path.join(projectRoot, resourceFolder, fileName);
-    const fileContent = fs.readFileSync(filePath, 'utf8');
-    return fileContent;
+    return fs.readFileSync(filePath, 'utf8');
   }
 
   static writeOutsideResource(filePath: string, content: string): void {

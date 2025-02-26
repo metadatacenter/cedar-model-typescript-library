@@ -37,6 +37,8 @@ import { YamlValueConstraintsActionWriter } from '../../../model/cedar/field/dyn
 import { YamlWriterBehavior } from '../../../behavior/YamlWriterBehavior';
 import { YamlFieldWriterBoolean } from '../../../model/cedar/field/dynamic/boolean/YamlFieldWriterBoolean';
 import { YamlTemplateInstanceWriter } from './YamlTemplateInstanceWriter';
+import { YamlFieldWriterExtRor } from '../../../model/cedar/field/dynamic/ext-ror/YamlFieldWriterExtRor';
+import { YamlFieldWriterExtOrcid } from '../../../model/cedar/field/dynamic/ext-orcid/YamlFieldWriterExtOrcid';
 
 export class CedarYamlWriters {
   private readonly behavior: YamlWriterBehavior;
@@ -65,6 +67,8 @@ export class CedarYamlWriters {
       [CedarFieldType.PHONE_NUMBER, new YamlFieldWriterPhoneNumber(behavior, this)],
       [CedarFieldType.EMAIL, new YamlFieldWriterEmail(behavior, this)],
       [CedarFieldType.LINK, new YamlFieldWriterLink(behavior, this)],
+      [CedarFieldType.EXT_ROR, new YamlFieldWriterExtRor(behavior, this)],
+      [CedarFieldType.EXT_ORCID, new YamlFieldWriterExtOrcid(behavior, this)],
       [CedarFieldType.NUMERIC, new YamlFieldWriterNumeric(behavior, this)],
       [CedarFieldType.TEMPORAL, new YamlFieldWriterTemporal(behavior, this)],
       [CedarFieldType.RADIO, new YamlFieldWriterRadio(behavior, this)],

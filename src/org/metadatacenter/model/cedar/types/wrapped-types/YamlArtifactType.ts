@@ -9,6 +9,8 @@ export const YamlArtifactTypeValues = {
   CONTROLLED_TERM: 'controlled-term-field',
   TEXTAREA: 'text-area-field',
   LINK: 'link-field',
+  EXT_ROR: 'ext-ror-field',
+  EXT_ORCID: 'ext-orcid-field',
   TEMPORAL: 'temporal-field',
   EMAIL: 'email-field',
   NUMERIC: 'numeric-field',
@@ -51,6 +53,8 @@ export class YamlArtifactType {
   public static CONTROLLED_TERM = new YamlArtifactType(YamlArtifactTypeValues.CONTROLLED_TERM, CedarFieldCategory.DYNAMIC);
   public static TEXTAREA = new YamlArtifactType(YamlArtifactTypeValues.TEXTAREA, CedarFieldCategory.DYNAMIC);
   public static LINK = new YamlArtifactType(YamlArtifactTypeValues.LINK, CedarFieldCategory.DYNAMIC);
+  public static EXT_ROR = new YamlArtifactType(YamlArtifactTypeValues.EXT_ROR, CedarFieldCategory.DYNAMIC);
+  public static EXT_ORCID = new YamlArtifactType(YamlArtifactTypeValues.EXT_ORCID, CedarFieldCategory.DYNAMIC);
   public static TEMPORAL = new YamlArtifactType(YamlArtifactTypeValues.TEMPORAL, CedarFieldCategory.DYNAMIC);
   public static EMAIL = new YamlArtifactType(YamlArtifactTypeValues.EMAIL, CedarFieldCategory.DYNAMIC);
   public static NUMERIC = new YamlArtifactType(YamlArtifactTypeValues.NUMERIC, CedarFieldCategory.DYNAMIC);
@@ -81,6 +85,8 @@ export class YamlArtifactType {
       YamlArtifactType.CONTROLLED_TERM,
       YamlArtifactType.TEXTAREA,
       YamlArtifactType.LINK,
+      YamlArtifactType.EXT_ROR,
+      YamlArtifactType.EXT_ORCID,
       YamlArtifactType.TEMPORAL,
       YamlArtifactType.EMAIL,
       YamlArtifactType.NUMERIC,

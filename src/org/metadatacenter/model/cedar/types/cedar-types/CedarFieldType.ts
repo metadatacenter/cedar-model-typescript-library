@@ -6,6 +6,8 @@ export const CedarFieldTypeValues = {
   TEXTAREA: 'DYNAMIC-textarea',
   CONTROLLED_TERM: 'DYNAMIC-controlled-term',
   LINK: 'DYNAMIC-link',
+  EXT_ROR: 'DYNAMIC-ext-ror',
+  EXT_ORCID: 'DYNAMIC-ext-orcid',
   TEMPORAL: 'DYNAMIC-temporal',
   EMAIL: 'DYNAMIC-email',
   NUMERIC: 'DYNAMIC-numeric',
@@ -61,6 +63,8 @@ export class CedarFieldType {
       CedarFieldType.TEXTAREA,
       CedarFieldType.CONTROLLED_TERM,
       CedarFieldType.LINK,
+      CedarFieldType.EXT_ROR,
+      CedarFieldType.EXT_ORCID,
       CedarFieldType.TEMPORAL,
       CedarFieldType.EMAIL,
       CedarFieldType.NUMERIC,
@@ -88,6 +92,8 @@ export class CedarFieldType {
     false,
   );
   public static LINK = new CedarFieldType(CedarFieldTypeValues.LINK, UiInputType.LINK, YamlArtifactType.LINK, false);
+  public static EXT_ROR = new CedarFieldType(CedarFieldTypeValues.EXT_ROR, UiInputType.EXT_ROR, YamlArtifactType.EXT_ROR, false);
+  public static EXT_ORCID = new CedarFieldType(CedarFieldTypeValues.EXT_ORCID, UiInputType.EXT_ORCID, YamlArtifactType.EXT_ORCID, false);
   public static TEMPORAL = new CedarFieldType(CedarFieldTypeValues.TEMPORAL, UiInputType.TEMPORAL, YamlArtifactType.TEMPORAL, false);
   public static EMAIL = new CedarFieldType(CedarFieldTypeValues.EMAIL, UiInputType.EMAIL, YamlArtifactType.EMAIL, false);
   public static NUMERIC = new CedarFieldType(CedarFieldTypeValues.NUMERIC, UiInputType.NUMERIC, YamlArtifactType.NUMERIC, false);

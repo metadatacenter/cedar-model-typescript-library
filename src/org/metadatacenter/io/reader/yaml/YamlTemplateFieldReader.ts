@@ -35,6 +35,8 @@ import { YamlFieldReaderRadio } from '../../../model/cedar/field/dynamic/radio/Y
 import { YamlFieldReaderControlledTerm } from '../../../model/cedar/field/dynamic/controlled-term/YamlFieldReaderControlledTerm';
 import { YamlFieldReaderBoolean } from '../../../model/cedar/field/dynamic/boolean/YamlFieldReaderBoolean';
 import { YamlArtifactParsingResult } from '../../../model/cedar/util/compare/YamlArtifactParsingResult';
+import { YamlFieldReaderExtRor } from '../../../model/cedar/field/dynamic/ext-ror/YamlFieldReaderExtRor';
+import { YamlFieldReaderExtOrcid } from '../../../model/cedar/field/dynamic/ext-orcid/YamlFieldReaderExtOrcid';
 
 export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
   private constructor(behavior: YamlReaderBehavior) {
@@ -54,6 +56,8 @@ export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
     [YamlArtifactType.TEXTAREA, new YamlFieldReaderTextArea()],
     [YamlArtifactType.CONTROLLED_TERM, new YamlFieldReaderControlledTerm()],
     [YamlArtifactType.LINK, new YamlFieldReaderLink()],
+    [YamlArtifactType.EXT_ROR, new YamlFieldReaderExtRor()],
+    [YamlArtifactType.EXT_ORCID, new YamlFieldReaderExtOrcid()],
     [YamlArtifactType.TEMPORAL, new YamlFieldReaderTemporal()],
     [YamlArtifactType.EMAIL, new YamlFieldReaderEmail()],
     [YamlArtifactType.NUMERIC, new YamlFieldReaderNumeric()],
@@ -137,10 +141,7 @@ export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
       return true;
     }
     const valueSets: Array<JsonNode> = ReaderUtil.getNodeList(vcNode, CedarModel.valueSets);
-    if (valueSets.length > 0) {
-      return true;
-    }
-    return false;
+    return valueSets.length > 0;
   }
 
   private static getCedarFieldType(fieldSourceObject: JsonNode, uiInputType: UiInputType): CedarFieldType {

@@ -40,6 +40,8 @@ import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploy
 import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
 import { JsonFieldReaderBoolean } from '../../../model/cedar/field/dynamic/boolean/JsonFieldReaderBoolean';
 import { Language } from '../../../model/cedar/types/wrapped-types/Language';
+import { JsonFieldReaderExtRor } from '../../../model/cedar/field/dynamic/ext-ror/JsonFieldReaderExtRor';
+import { JsonFieldReaderExtOrcid } from '../../../model/cedar/field/dynamic/ext-orcid/JsonFieldReaderExtOrcid';
 
 export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
   protected constructor(behavior: JsonReaderBehavior) {
@@ -63,6 +65,8 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     [CedarFieldType.TEXTAREA, new JsonFieldReaderTextArea()],
     [CedarFieldType.CONTROLLED_TERM, new JsonFieldReaderControlledTerm()],
     [CedarFieldType.LINK, new JsonFieldReaderLink()],
+    [CedarFieldType.EXT_ROR, new JsonFieldReaderExtRor()],
+    [CedarFieldType.EXT_ORCID, new JsonFieldReaderExtOrcid()],
     [CedarFieldType.TEMPORAL, new JsonFieldReaderTemporal()],
     [CedarFieldType.EMAIL, new JsonFieldReaderEmail()],
     [CedarFieldType.NUMERIC, new JsonFieldReaderNumeric()],
@@ -215,10 +219,7 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
       return true;
     }
     const valueSets: Array<JsonNode> = ReaderUtil.getNodeList(vcNode, CedarModel.valueSets);
-    if (valueSets.length > 0) {
-      return true;
-    }
-    return false;
+    return valueSets.length > 0;
   }
 
   private static getCedarFieldType(fieldSourceObject: JsonNode, uiInputType: UiInputType): CedarFieldType {

@@ -139,6 +139,10 @@ import { YamlTemplateElementReaderResult } from './org/metadatacenter/io/reader/
 import { YamlArtifactReaderResult } from './org/metadatacenter/io/reader/yaml/YamlArtifactReaderResult';
 import { YamlTemplateInstanceReaderResult } from './org/metadatacenter/io/reader/yaml/YamlTemplateInstanceReaderResult';
 import { Language } from './org/metadatacenter/model/cedar/types/wrapped-types/Language';
+import { ExtRorField } from './org/metadatacenter/model/cedar/field/dynamic/ext-ror/ExtRorField';
+import { ExtRorFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/ext-ror/ExtRorFieldBuilder';
+import { ExtOrcidField } from './org/metadatacenter/model/cedar/field/dynamic/ext-orcid/ExtOrcidField';
+import { ExtOrcidFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/ext-orcid/ExtOrcidFieldBuilder';
 // It is needed, do not remove, even if it looks unused
 export { JsonTemplateFieldWriterInternal as JsonTemplateFieldWriter };
 export { YamlTemplateFieldWriterInternal as YamlTemplateFieldWriter };
@@ -173,6 +177,8 @@ export { CheckboxField, CheckboxFieldBuilder };
 export { ControlledTermField, ControlledTermFieldBuilder };
 export { EmailField, EmailFieldBuilder };
 export { LinkField, LinkFieldBuilder };
+export { ExtRorField, ExtRorFieldBuilder };
+export { ExtOrcidField, ExtOrcidFieldBuilder };
 export { SingleChoiceListField, SingleChoiceListFieldBuilder };
 export { MultipleChoiceListField, MultipleChoiceListFieldBuilder };
 export { NumericField, NumericFieldBuilder };

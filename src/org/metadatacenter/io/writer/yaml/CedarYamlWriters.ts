@@ -39,6 +39,7 @@ import { YamlFieldWriterBoolean } from '../../../model/cedar/field/dynamic/boole
 import { YamlTemplateInstanceWriter } from './YamlTemplateInstanceWriter';
 import { YamlFieldWriterExtRor } from '../../../model/cedar/field/dynamic/ext-ror/YamlFieldWriterExtRor';
 import { YamlFieldWriterExtOrcid } from '../../../model/cedar/field/dynamic/ext-orcid/YamlFieldWriterExtOrcid';
+import { YamlFieldWriterExtPfas } from '../../../model/cedar/field/dynamic/ext-pfas/YamlFieldWriterExtPfas';
 
 export class CedarYamlWriters {
   private readonly behavior: YamlWriterBehavior;
@@ -69,6 +70,7 @@ export class CedarYamlWriters {
       [CedarFieldType.LINK, new YamlFieldWriterLink(behavior, this)],
       [CedarFieldType.EXT_ROR, new YamlFieldWriterExtRor(behavior, this)],
       [CedarFieldType.EXT_ORCID, new YamlFieldWriterExtOrcid(behavior, this)],
+      [CedarFieldType.EXT_PFAS, new YamlFieldWriterExtPfas(behavior, this)],
       [CedarFieldType.NUMERIC, new YamlFieldWriterNumeric(behavior, this)],
       [CedarFieldType.TEMPORAL, new YamlFieldWriterTemporal(behavior, this)],
       [CedarFieldType.RADIO, new YamlFieldWriterRadio(behavior, this)],

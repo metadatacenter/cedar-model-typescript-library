@@ -56,6 +56,7 @@ import { TemplateElement } from './org/metadatacenter/model/cedar/element/Templa
 import { TemplateElementBuilder } from './org/metadatacenter/model/cedar/element/TemplateElementBuilder';
 import { Template } from './org/metadatacenter/model/cedar/template/Template';
 import { TemplateBuilder } from './org/metadatacenter/model/cedar/template/TemplateBuilder';
+import { TemplateInstanceBuilder } from './org/metadatacenter/model/cedar/template-instance/TemplateInstanceBuilder';
 
 import { JsonNode } from './org/metadatacenter/model/cedar/types/basic-types/JsonNode';
 import { IsoDate } from './org/metadatacenter/model/cedar/types/wrapped-types/IsoDate';
@@ -143,6 +144,8 @@ import { ExtRorField } from './org/metadatacenter/model/cedar/field/dynamic/ext-
 import { ExtRorFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/ext-ror/ExtRorFieldBuilder';
 import { ExtOrcidField } from './org/metadatacenter/model/cedar/field/dynamic/ext-orcid/ExtOrcidField';
 import { ExtOrcidFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/ext-orcid/ExtOrcidFieldBuilder';
+import { ExtPfasField } from './org/metadatacenter/model/cedar/field/dynamic/ext-pfas/ExtPfasField';
+import { ExtPfasFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/ext-pfas/ExtPfasFieldBuilder';
 // It is needed, do not remove, even if it looks unused
 export { JsonTemplateFieldWriterInternal as JsonTemplateFieldWriter };
 export { YamlTemplateFieldWriterInternal as YamlTemplateFieldWriter };
@@ -179,6 +182,7 @@ export { EmailField, EmailFieldBuilder };
 export { LinkField, LinkFieldBuilder };
 export { ExtRorField, ExtRorFieldBuilder };
 export { ExtOrcidField, ExtOrcidFieldBuilder };
+export { ExtPfasField, ExtPfasFieldBuilder };
 export { SingleChoiceListField, SingleChoiceListFieldBuilder };
 export { MultipleChoiceListField, MultipleChoiceListFieldBuilder };
 export { NumericField, NumericFieldBuilder };
@@ -197,6 +201,7 @@ export { TemplateElement, TemplateElementBuilder };
 export { Template, TemplateBuilder };
 
 export { TemplateInstance };
+export { TemplateInstanceBuilder };
 
 export { ControlledTermDefaultValueBuilder };
 export { ControlledTermBranchBuilder };

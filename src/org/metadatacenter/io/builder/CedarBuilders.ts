@@ -15,6 +15,7 @@ import { CheckboxFieldBuilder } from '../../model/cedar/field/dynamic/checkbox/C
 import { ControlledTermFieldBuilder } from '../../model/cedar/field/dynamic/controlled-term/ControlledTermFieldBuilder';
 import { TemplateBuilder } from '../../model/cedar/template/TemplateBuilder';
 import { TemplateElementBuilder } from '../../model/cedar/element/TemplateElementBuilder';
+import { TemplateInstanceBuilder } from '../../model/cedar/template-instance/TemplateInstanceBuilder';
 import { TextFieldBuilderImpl } from '../../model/cedar/field/dynamic/textfield/TextFieldBuilderImpl';
 import { TextAreaBuilderImpl } from '../../model/cedar/field/dynamic/textarea/TextAreaBuilderImpl';
 import { TextAreaBuilder } from '../../model/cedar/field/dynamic/textarea/TextAreaBuilder';
@@ -46,6 +47,10 @@ export abstract class CedarBuilders {
 
   static templateElementBuilder(): TemplateElementBuilder {
     return new TemplateElementBuilder();
+  }
+
+  static templateInstanceBuilder(): TemplateInstanceBuilder {
+    return new TemplateInstanceBuilder();
   }
 
   static textFieldBuilder(): TextFieldBuilder {

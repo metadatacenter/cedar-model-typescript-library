@@ -43,6 +43,7 @@ import { JsonFieldWriterBoolean } from '../../../model/cedar/field/dynamic/boole
 import { JsonTemplateInstanceWriter } from './JsonTemplateInstanceWriter';
 import { JsonFieldWriterExtRor } from '../../../model/cedar/field/dynamic/ext-ror/JsonFieldWriterExtRor';
 import { JsonFieldWriterExtOrcid } from '../../../model/cedar/field/dynamic/ext-orcid/JsonFieldWriterExtOrcid';
+import { JsonFieldWriterExtPfas } from '../../../model/cedar/field/dynamic/ext-pfas/JsonFieldWriterExtPfas';
 
 export class CedarJsonWriters {
   private readonly behavior: JsonWriterBehavior;
@@ -73,6 +74,7 @@ export class CedarJsonWriters {
       [CedarFieldType.LINK, new JsonFieldWriterLink(behavior, this)],
       [CedarFieldType.EXT_ROR, new JsonFieldWriterExtRor(behavior, this)],
       [CedarFieldType.EXT_ORCID, new JsonFieldWriterExtOrcid(behavior, this)],
+      [CedarFieldType.EXT_PFAS, new JsonFieldWriterExtPfas(behavior, this)],
       [CedarFieldType.NUMERIC, new JsonFieldWriterNumeric(behavior, this)],
       [CedarFieldType.TEMPORAL, new JsonFieldWriterTemporal(behavior, this)],
       [CedarFieldType.RADIO, new JsonFieldWriterRadio(behavior, this)],

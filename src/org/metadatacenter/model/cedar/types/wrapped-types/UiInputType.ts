@@ -4,6 +4,7 @@ export const UiInputTypeValues = {
   LINK: 'link',
   EXT_ROR: 'ext-ror',
   EXT_ORCID: 'ext-orcid',
+  EXT_PFAS: 'ext-pfas',
   TEMPORAL: 'temporal',
   EMAIL: 'email',
   NUMERIC: 'numeric',
@@ -39,6 +40,7 @@ export class UiInputType {
   public static LINK = new UiInputType(UiInputTypeValues.LINK);
   public static EXT_ROR = new UiInputType(UiInputTypeValues.EXT_ROR);
   public static EXT_ORCID = new UiInputType(UiInputTypeValues.EXT_ORCID);
+  public static EXT_PFAS = new UiInputType(UiInputTypeValues.EXT_PFAS);
   public static TEMPORAL = new UiInputType(UiInputTypeValues.TEMPORAL);
   public static EMAIL = new UiInputType(UiInputTypeValues.EMAIL);
   public static NUMERIC = new UiInputType(UiInputTypeValues.NUMERIC);
@@ -64,6 +66,7 @@ export class UiInputType {
       UiInputType.LINK,
       UiInputType.EXT_ROR,
       UiInputType.EXT_ORCID,
+      UiInputType.EXT_PFAS,
       UiInputType.TEMPORAL,
       UiInputType.EMAIL,
       UiInputType.NUMERIC,

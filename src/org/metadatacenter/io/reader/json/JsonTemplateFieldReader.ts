@@ -42,6 +42,7 @@ import { JsonFieldReaderBoolean } from '../../../model/cedar/field/dynamic/boole
 import { Language } from '../../../model/cedar/types/wrapped-types/Language';
 import { JsonFieldReaderExtRor } from '../../../model/cedar/field/dynamic/ext-ror/JsonFieldReaderExtRor';
 import { JsonFieldReaderExtOrcid } from '../../../model/cedar/field/dynamic/ext-orcid/JsonFieldReaderExtOrcid';
+import { JsonFieldReaderExtPfas } from '../../../model/cedar/field/dynamic/ext-pfas/JsonFieldReaderExtPfas';
 
 export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
   protected constructor(behavior: JsonReaderBehavior) {
@@ -67,6 +68,7 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     [CedarFieldType.LINK, new JsonFieldReaderLink()],
     [CedarFieldType.EXT_ROR, new JsonFieldReaderExtRor()],
     [CedarFieldType.EXT_ORCID, new JsonFieldReaderExtOrcid()],
+    [CedarFieldType.EXT_PFAS, new JsonFieldReaderExtPfas()],
     [CedarFieldType.TEMPORAL, new JsonFieldReaderTemporal()],
     [CedarFieldType.EMAIL, new JsonFieldReaderEmail()],
     [CedarFieldType.NUMERIC, new JsonFieldReaderNumeric()],

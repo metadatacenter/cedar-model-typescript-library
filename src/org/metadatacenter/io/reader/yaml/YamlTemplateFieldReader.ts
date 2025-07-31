@@ -37,6 +37,7 @@ import { YamlFieldReaderBoolean } from '../../../model/cedar/field/dynamic/boole
 import { YamlArtifactParsingResult } from '../../../model/cedar/util/compare/YamlArtifactParsingResult';
 import { YamlFieldReaderExtRor } from '../../../model/cedar/field/dynamic/ext-ror/YamlFieldReaderExtRor';
 import { YamlFieldReaderExtOrcid } from '../../../model/cedar/field/dynamic/ext-orcid/YamlFieldReaderExtOrcid';
+import { YamlFieldReaderExtPfas } from '../../../model/cedar/field/dynamic/ext-pfas/YamlFieldReaderExtPfas';
 
 export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
   private constructor(behavior: YamlReaderBehavior) {
@@ -58,6 +59,7 @@ export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
     [YamlArtifactType.LINK, new YamlFieldReaderLink()],
     [YamlArtifactType.EXT_ROR, new YamlFieldReaderExtRor()],
     [YamlArtifactType.EXT_ORCID, new YamlFieldReaderExtOrcid()],
+    [YamlArtifactType.EXT_PFAS, new YamlFieldReaderExtPfas()],
     [YamlArtifactType.TEMPORAL, new YamlFieldReaderTemporal()],
     [YamlArtifactType.EMAIL, new YamlFieldReaderEmail()],
     [YamlArtifactType.NUMERIC, new YamlFieldReaderNumeric()],

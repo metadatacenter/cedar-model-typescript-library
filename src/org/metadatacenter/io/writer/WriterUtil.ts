@@ -1,7 +1,6 @@
 import { TemplateChild } from '../../model/cedar/types/basic-types/TemplateChild';
 import { ChildDeploymentInfoAlwaysMultiple } from '../../model/cedar/deployment/ChildDeploymentInfoAlwaysMultiple';
 import { ChildDeploymentInfo } from '../../model/cedar/deployment/ChildDeploymentInfo';
-import { AttributeValueFieldImpl } from '../../model/cedar/field/dynamic/attribute-value/AttributeValueFieldImpl';
 import { AbstractChildDeploymentInfo } from '../../model/cedar/deployment/AbstractChildDeploymentInfo';
 
 export abstract class WriterUtil {
@@ -16,15 +15,10 @@ export abstract class WriterUtil {
       // always multi-instance: Checkbox, Attribute-Value, MultipleChoiceList
       if (childMetaAbstract instanceof ChildDeploymentInfoAlwaysMultiple) {
         isMultiInstance = true;
-        if (child instanceof AttributeValueFieldImpl) {
-          minItems = 0;
-        } else {
-          if (childMetaAbstract.requiredValue) {
-            minItems = 1;
-          } else {
-            minItems = 0;
-          }
-        }
+        // The rule now lives on the deployment info, so a consumer reading the
+        // parsed model and this writer cannot give different answers.
+        minItems = childMetaAbstract.minItems;
+        maxItems = childMetaAbstract.maxItems;
       }
     } else if (child.isSingleInstanceByDefinition()) {
       // always single instance: Radio

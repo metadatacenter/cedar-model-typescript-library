@@ -20,6 +20,7 @@ import { JsonTemplateElementReader } from './JsonTemplateElementReader';
 import { JsonContainerArtifactContent } from '../../../model/cedar/util/serialization/JsonContainerArtifactContent';
 import { AbstractDynamicChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractDynamicChildDeploymentInfo';
 import { ChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/ChildDeploymentInfoBuilder';
+import { ChildDeploymentInfoAlwaysMultipleBuilder } from '../../../model/cedar/deployment/ChildDeploymentInfoAlwaysMultipleBuilder';
 import { ChildDeploymentInfoStaticBuilder } from '../../../model/cedar/deployment/ChildDeploymentInfoStaticBuilder';
 import { AbstractDynamicChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/AbstractDynamicChildDeploymentInfoBuilder';
 import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
@@ -158,12 +159,17 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
           .withDescription(childInfo.description)
           .withRecommendedValue(dynaChildInfo.recommendedValue)
           .withRequiredValue(dynaChildInfo.requiredValue);
+        const currentInfo = childInfo as any as ChildDeploymentInfo;
         if (finalChildInfoBuilder instanceof ChildDeploymentInfoBuilder) {
-          const currentInfo = childInfo as any as ChildDeploymentInfo;
           finalChildInfoBuilder
             .withMultiInstance(currentInfo.multiInstance)
             .withMinItems(currentInfo.minItems)
             .withMaxItems(currentInfo.maxItems);
+        } else if (finalChildInfoBuilder instanceof ChildDeploymentInfoAlwaysMultipleBuilder) {
+          // Always-multiple children have no multiInstance flag to set — they
+          // are multiple by definition — but a template may still state the
+          // bounds, and those have to reach the deployment info.
+          finalChildInfoBuilder.withMinItems(currentInfo.minItems).withMaxItems(currentInfo.maxItems);
         }
         const finalChildInfo = finalChildInfoBuilder.build();
         // console.log('CHILD INFO2:', finalChildInfo);

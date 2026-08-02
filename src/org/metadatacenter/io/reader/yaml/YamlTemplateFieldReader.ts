@@ -38,6 +38,10 @@ import { YamlArtifactParsingResult } from '../../../model/cedar/util/compare/Yam
 import { YamlFieldReaderExtRor } from '../../../model/cedar/field/dynamic/ext-ror/YamlFieldReaderExtRor';
 import { YamlFieldReaderExtOrcid } from '../../../model/cedar/field/dynamic/ext-orcid/YamlFieldReaderExtOrcid';
 import { YamlFieldReaderExtPfas } from '../../../model/cedar/field/dynamic/ext-pfas/YamlFieldReaderExtPfas';
+import { YamlFieldReaderExtPubmed } from '../../../model/cedar/field/dynamic/ext-pubmed/YamlFieldReaderExtPubmed';
+import { YamlFieldReaderExtRrid } from '../../../model/cedar/field/dynamic/ext-rrid/YamlFieldReaderExtRrid';
+import { YamlFieldReaderExtNihGrantId } from '../../../model/cedar/field/dynamic/ext-nih-grant-id/YamlFieldReaderExtNihGrantId';
+import { YamlFieldReaderExtDoi } from '../../../model/cedar/field/dynamic/ext-doi/YamlFieldReaderExtDoi';
 
 export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
   private constructor(behavior: YamlReaderBehavior) {
@@ -60,6 +64,10 @@ export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
     [YamlArtifactType.EXT_ROR, new YamlFieldReaderExtRor()],
     [YamlArtifactType.EXT_ORCID, new YamlFieldReaderExtOrcid()],
     [YamlArtifactType.EXT_PFAS, new YamlFieldReaderExtPfas()],
+    [YamlArtifactType.EXT_PUBMED, new YamlFieldReaderExtPubmed()],
+    [YamlArtifactType.EXT_RRID, new YamlFieldReaderExtRrid()],
+    [YamlArtifactType.EXT_NIH_GRANT_ID, new YamlFieldReaderExtNihGrantId()],
+    [YamlArtifactType.EXT_DOI, new YamlFieldReaderExtDoi()],
     [YamlArtifactType.TEMPORAL, new YamlFieldReaderTemporal()],
     [YamlArtifactType.EMAIL, new YamlFieldReaderEmail()],
     [YamlArtifactType.NUMERIC, new YamlFieldReaderNumeric()],

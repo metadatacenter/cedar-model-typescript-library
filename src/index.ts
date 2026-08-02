@@ -146,6 +146,14 @@ import { ExtOrcidField } from './org/metadatacenter/model/cedar/field/dynamic/ex
 import { ExtOrcidFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/ext-orcid/ExtOrcidFieldBuilder';
 import { ExtPfasField } from './org/metadatacenter/model/cedar/field/dynamic/ext-pfas/ExtPfasField';
 import { ExtPfasFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/ext-pfas/ExtPfasFieldBuilder';
+import { ExtPubmedField } from './org/metadatacenter/model/cedar/field/dynamic/ext-pubmed/ExtPubmedField';
+import { ExtPubmedFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/ext-pubmed/ExtPubmedFieldBuilder';
+import { ExtRridField } from './org/metadatacenter/model/cedar/field/dynamic/ext-rrid/ExtRridField';
+import { ExtRridFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/ext-rrid/ExtRridFieldBuilder';
+import { ExtNihGrantIdField } from './org/metadatacenter/model/cedar/field/dynamic/ext-nih-grant-id/ExtNihGrantIdField';
+import { ExtNihGrantIdFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/ext-nih-grant-id/ExtNihGrantIdFieldBuilder';
+import { ExtDoiField } from './org/metadatacenter/model/cedar/field/dynamic/ext-doi/ExtDoiField';
+import { ExtDoiFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/ext-doi/ExtDoiFieldBuilder';
 // It is needed, do not remove, even if it looks unused
 export { JsonTemplateFieldWriterInternal as JsonTemplateFieldWriter };
 export { YamlTemplateFieldWriterInternal as YamlTemplateFieldWriter };
@@ -183,6 +191,10 @@ export { LinkField, LinkFieldBuilder };
 export { ExtRorField, ExtRorFieldBuilder };
 export { ExtOrcidField, ExtOrcidFieldBuilder };
 export { ExtPfasField, ExtPfasFieldBuilder };
+export { ExtPubmedField, ExtPubmedFieldBuilder };
+export { ExtRridField, ExtRridFieldBuilder };
+export { ExtNihGrantIdField, ExtNihGrantIdFieldBuilder };
+export { ExtDoiField, ExtDoiFieldBuilder };
 export { SingleChoiceListField, SingleChoiceListFieldBuilder };
 export { MultipleChoiceListField, MultipleChoiceListFieldBuilder };
 export { NumericField, NumericFieldBuilder };

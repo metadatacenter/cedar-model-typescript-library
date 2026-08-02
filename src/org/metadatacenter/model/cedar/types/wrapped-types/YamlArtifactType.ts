@@ -12,6 +12,10 @@ export const YamlArtifactTypeValues = {
   EXT_ROR: 'ext-ror-field',
   EXT_ORCID: 'ext-orcid-field',
   EXT_PFAS: 'ext-pfas-field',
+  EXT_PUBMED: 'ext-pubmed-field',
+  EXT_RRID: 'ext-rrid-field',
+  EXT_NIH_GRANT_ID: 'ext-nih-grant-id-field',
+  EXT_DOI: 'ext-doi-field',
   TEMPORAL: 'temporal-field',
   EMAIL: 'email-field',
   NUMERIC: 'numeric-field',
@@ -57,6 +61,10 @@ export class YamlArtifactType {
   public static EXT_ROR = new YamlArtifactType(YamlArtifactTypeValues.EXT_ROR, CedarFieldCategory.DYNAMIC);
   public static EXT_ORCID = new YamlArtifactType(YamlArtifactTypeValues.EXT_ORCID, CedarFieldCategory.DYNAMIC);
   public static EXT_PFAS = new YamlArtifactType(YamlArtifactTypeValues.EXT_PFAS, CedarFieldCategory.DYNAMIC);
+  public static EXT_PUBMED = new YamlArtifactType(YamlArtifactTypeValues.EXT_PUBMED, CedarFieldCategory.DYNAMIC);
+  public static EXT_RRID = new YamlArtifactType(YamlArtifactTypeValues.EXT_RRID, CedarFieldCategory.DYNAMIC);
+  public static EXT_NIH_GRANT_ID = new YamlArtifactType(YamlArtifactTypeValues.EXT_NIH_GRANT_ID, CedarFieldCategory.DYNAMIC);
+  public static EXT_DOI = new YamlArtifactType(YamlArtifactTypeValues.EXT_DOI, CedarFieldCategory.DYNAMIC);
   public static TEMPORAL = new YamlArtifactType(YamlArtifactTypeValues.TEMPORAL, CedarFieldCategory.DYNAMIC);
   public static EMAIL = new YamlArtifactType(YamlArtifactTypeValues.EMAIL, CedarFieldCategory.DYNAMIC);
   public static NUMERIC = new YamlArtifactType(YamlArtifactTypeValues.NUMERIC, CedarFieldCategory.DYNAMIC);
@@ -90,6 +98,10 @@ export class YamlArtifactType {
       YamlArtifactType.EXT_ROR,
       YamlArtifactType.EXT_ORCID,
       YamlArtifactType.EXT_PFAS,
+      YamlArtifactType.EXT_PUBMED,
+      YamlArtifactType.EXT_RRID,
+      YamlArtifactType.EXT_NIH_GRANT_ID,
+      YamlArtifactType.EXT_DOI,
       YamlArtifactType.TEMPORAL,
       YamlArtifactType.EMAIL,
       YamlArtifactType.NUMERIC,

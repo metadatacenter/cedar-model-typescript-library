@@ -9,6 +9,10 @@ export const CedarFieldTypeValues = {
   EXT_ROR: 'DYNAMIC-ext-ror',
   EXT_ORCID: 'DYNAMIC-ext-orcid',
   EXT_PFAS: 'DYNAMIC-ext-pfas',
+  EXT_PUBMED: 'DYNAMIC-ext-pubmed',
+  EXT_RRID: 'DYNAMIC-ext-rrid',
+  EXT_NIH_GRANT_ID: 'DYNAMIC-ext-nih-grant-id',
+  EXT_DOI: 'DYNAMIC-ext-doi',
   TEMPORAL: 'DYNAMIC-temporal',
   EMAIL: 'DYNAMIC-email',
   NUMERIC: 'DYNAMIC-numeric',
@@ -67,6 +71,10 @@ export class CedarFieldType {
       CedarFieldType.EXT_ROR,
       CedarFieldType.EXT_ORCID,
       CedarFieldType.EXT_PFAS,
+      CedarFieldType.EXT_PUBMED,
+      CedarFieldType.EXT_RRID,
+      CedarFieldType.EXT_NIH_GRANT_ID,
+      CedarFieldType.EXT_DOI,
       CedarFieldType.TEMPORAL,
       CedarFieldType.EMAIL,
       CedarFieldType.NUMERIC,
@@ -97,6 +105,20 @@ export class CedarFieldType {
   public static EXT_ROR = new CedarFieldType(CedarFieldTypeValues.EXT_ROR, UiInputType.EXT_ROR, YamlArtifactType.EXT_ROR, false);
   public static EXT_ORCID = new CedarFieldType(CedarFieldTypeValues.EXT_ORCID, UiInputType.EXT_ORCID, YamlArtifactType.EXT_ORCID, false);
   public static EXT_PFAS = new CedarFieldType(CedarFieldTypeValues.EXT_PFAS, UiInputType.EXT_PFAS, YamlArtifactType.EXT_PFAS, false);
+  public static EXT_PUBMED = new CedarFieldType(
+    CedarFieldTypeValues.EXT_PUBMED,
+    UiInputType.EXT_PUBMED,
+    YamlArtifactType.EXT_PUBMED,
+    false,
+  );
+  public static EXT_RRID = new CedarFieldType(CedarFieldTypeValues.EXT_RRID, UiInputType.EXT_RRID, YamlArtifactType.EXT_RRID, false);
+  public static EXT_NIH_GRANT_ID = new CedarFieldType(
+    CedarFieldTypeValues.EXT_NIH_GRANT_ID,
+    UiInputType.EXT_NIH_GRANT_ID,
+    YamlArtifactType.EXT_NIH_GRANT_ID,
+    false,
+  );
+  public static EXT_DOI = new CedarFieldType(CedarFieldTypeValues.EXT_DOI, UiInputType.EXT_DOI, YamlArtifactType.EXT_DOI, false);
   public static TEMPORAL = new CedarFieldType(CedarFieldTypeValues.TEMPORAL, UiInputType.TEMPORAL, YamlArtifactType.TEMPORAL, false);
   public static EMAIL = new CedarFieldType(CedarFieldTypeValues.EMAIL, UiInputType.EMAIL, YamlArtifactType.EMAIL, false);
   public static NUMERIC = new CedarFieldType(CedarFieldTypeValues.NUMERIC, UiInputType.NUMERIC, YamlArtifactType.NUMERIC, false);

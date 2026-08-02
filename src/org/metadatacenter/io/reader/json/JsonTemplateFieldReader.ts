@@ -43,6 +43,10 @@ import { Language } from '../../../model/cedar/types/wrapped-types/Language';
 import { JsonFieldReaderExtRor } from '../../../model/cedar/field/dynamic/ext-ror/JsonFieldReaderExtRor';
 import { JsonFieldReaderExtOrcid } from '../../../model/cedar/field/dynamic/ext-orcid/JsonFieldReaderExtOrcid';
 import { JsonFieldReaderExtPfas } from '../../../model/cedar/field/dynamic/ext-pfas/JsonFieldReaderExtPfas';
+import { JsonFieldReaderExtPubmed } from '../../../model/cedar/field/dynamic/ext-pubmed/JsonFieldReaderExtPubmed';
+import { JsonFieldReaderExtRrid } from '../../../model/cedar/field/dynamic/ext-rrid/JsonFieldReaderExtRrid';
+import { JsonFieldReaderExtNihGrantId } from '../../../model/cedar/field/dynamic/ext-nih-grant-id/JsonFieldReaderExtNihGrantId';
+import { JsonFieldReaderExtDoi } from '../../../model/cedar/field/dynamic/ext-doi/JsonFieldReaderExtDoi';
 
 export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
   protected constructor(behavior: JsonReaderBehavior) {
@@ -69,6 +73,10 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     [CedarFieldType.EXT_ROR, new JsonFieldReaderExtRor()],
     [CedarFieldType.EXT_ORCID, new JsonFieldReaderExtOrcid()],
     [CedarFieldType.EXT_PFAS, new JsonFieldReaderExtPfas()],
+    [CedarFieldType.EXT_PUBMED, new JsonFieldReaderExtPubmed()],
+    [CedarFieldType.EXT_RRID, new JsonFieldReaderExtRrid()],
+    [CedarFieldType.EXT_NIH_GRANT_ID, new JsonFieldReaderExtNihGrantId()],
+    [CedarFieldType.EXT_DOI, new JsonFieldReaderExtDoi()],
     [CedarFieldType.TEMPORAL, new JsonFieldReaderTemporal()],
     [CedarFieldType.EMAIL, new JsonFieldReaderEmail()],
     [CedarFieldType.NUMERIC, new JsonFieldReaderNumeric()],

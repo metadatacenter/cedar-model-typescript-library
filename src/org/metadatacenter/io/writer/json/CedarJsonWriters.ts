@@ -44,6 +44,10 @@ import { JsonTemplateInstanceWriter } from './JsonTemplateInstanceWriter';
 import { JsonFieldWriterExtRor } from '../../../model/cedar/field/dynamic/ext-ror/JsonFieldWriterExtRor';
 import { JsonFieldWriterExtOrcid } from '../../../model/cedar/field/dynamic/ext-orcid/JsonFieldWriterExtOrcid';
 import { JsonFieldWriterExtPfas } from '../../../model/cedar/field/dynamic/ext-pfas/JsonFieldWriterExtPfas';
+import { JsonFieldWriterExtPubmed } from '../../../model/cedar/field/dynamic/ext-pubmed/JsonFieldWriterExtPubmed';
+import { JsonFieldWriterExtRrid } from '../../../model/cedar/field/dynamic/ext-rrid/JsonFieldWriterExtRrid';
+import { JsonFieldWriterExtNihGrantId } from '../../../model/cedar/field/dynamic/ext-nih-grant-id/JsonFieldWriterExtNihGrantId';
+import { JsonFieldWriterExtDoi } from '../../../model/cedar/field/dynamic/ext-doi/JsonFieldWriterExtDoi';
 
 export class CedarJsonWriters {
   private readonly behavior: JsonWriterBehavior;
@@ -75,6 +79,10 @@ export class CedarJsonWriters {
       [CedarFieldType.EXT_ROR, new JsonFieldWriterExtRor(behavior, this)],
       [CedarFieldType.EXT_ORCID, new JsonFieldWriterExtOrcid(behavior, this)],
       [CedarFieldType.EXT_PFAS, new JsonFieldWriterExtPfas(behavior, this)],
+      [CedarFieldType.EXT_PUBMED, new JsonFieldWriterExtPubmed(behavior, this)],
+      [CedarFieldType.EXT_RRID, new JsonFieldWriterExtRrid(behavior, this)],
+      [CedarFieldType.EXT_NIH_GRANT_ID, new JsonFieldWriterExtNihGrantId(behavior, this)],
+      [CedarFieldType.EXT_DOI, new JsonFieldWriterExtDoi(behavior, this)],
       [CedarFieldType.NUMERIC, new JsonFieldWriterNumeric(behavior, this)],
       [CedarFieldType.TEMPORAL, new JsonFieldWriterTemporal(behavior, this)],
       [CedarFieldType.RADIO, new JsonFieldWriterRadio(behavior, this)],

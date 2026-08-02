@@ -40,6 +40,10 @@ import { MultipleChoiceListFieldBuilderImpl } from '../../model/cedar/field/dyna
 import { ExtRorFieldBuilderImpl } from '../../model/cedar/field/dynamic/ext-ror/ExtRorFieldBuilderImpl';
 import { ExtOrcidFieldBuilderImpl } from '../../model/cedar/field/dynamic/ext-orcid/ExtOrcidFieldBuilderImpl';
 import { ExtPfasFieldBuilderImpl } from '../../model/cedar/field/dynamic/ext-pfas/ExtPfasFieldBuilderImpl';
+import { ExtPubmedFieldBuilderImpl } from '../../model/cedar/field/dynamic/ext-pubmed/ExtPubmedFieldBuilderImpl';
+import { ExtRridFieldBuilderImpl } from '../../model/cedar/field/dynamic/ext-rrid/ExtRridFieldBuilderImpl';
+import { ExtNihGrantIdFieldBuilderImpl } from '../../model/cedar/field/dynamic/ext-nih-grant-id/ExtNihGrantIdFieldBuilderImpl';
+import { ExtDoiFieldBuilderImpl } from '../../model/cedar/field/dynamic/ext-doi/ExtDoiFieldBuilderImpl';
 
 export abstract class CedarBuilders {
   static templateBuilder(): TemplateBuilder {
@@ -116,6 +120,22 @@ export abstract class CedarBuilders {
 
   static extPfasFieldBuilder(): LinkFieldBuilder {
     return ExtPfasFieldBuilderImpl.create();
+  }
+
+  static extPubmedFieldBuilder(): LinkFieldBuilder {
+    return ExtPubmedFieldBuilderImpl.create();
+  }
+
+  static extRridFieldBuilder(): LinkFieldBuilder {
+    return ExtRridFieldBuilderImpl.create();
+  }
+
+  static extNihGrantIdFieldBuilder(): LinkFieldBuilder {
+    return ExtNihGrantIdFieldBuilderImpl.create();
+  }
+
+  static extDoiFieldBuilder(): LinkFieldBuilder {
+    return ExtDoiFieldBuilderImpl.create();
   }
 
   static singleChoiceListFieldBuilder(): SingleChoiceListFieldBuilder {

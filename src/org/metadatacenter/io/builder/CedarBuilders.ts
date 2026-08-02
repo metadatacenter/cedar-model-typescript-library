@@ -39,6 +39,7 @@ import { MultipleChoiceListFieldBuilder } from '../../model/cedar/field/dynamic/
 import { MultipleChoiceListFieldBuilderImpl } from '../../model/cedar/field/dynamic/list-multiple-choice/MultipleChoiceListFieldBuilderImpl';
 import { ExtRorFieldBuilderImpl } from '../../model/cedar/field/dynamic/ext-ror/ExtRorFieldBuilderImpl';
 import { ExtOrcidFieldBuilderImpl } from '../../model/cedar/field/dynamic/ext-orcid/ExtOrcidFieldBuilderImpl';
+import { ExtPfasFieldBuilderImpl } from '../../model/cedar/field/dynamic/ext-pfas/ExtPfasFieldBuilderImpl';
 
 export abstract class CedarBuilders {
   static templateBuilder(): TemplateBuilder {
@@ -111,6 +112,10 @@ export abstract class CedarBuilders {
 
   static extOrcidFieldBuilder(): LinkFieldBuilder {
     return ExtOrcidFieldBuilderImpl.create();
+  }
+
+  static extPfasFieldBuilder(): LinkFieldBuilder {
+    return ExtPfasFieldBuilderImpl.create();
   }
 
   static singleChoiceListFieldBuilder(): SingleChoiceListFieldBuilder {

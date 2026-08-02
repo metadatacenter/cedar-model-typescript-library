@@ -4,6 +4,7 @@ import { ControlledTermOntology } from './value-constraint/ontology/ControlledTe
 import { ControlledTermValueSet } from './value-constraint/value-set/ControlledTermValueSet';
 import { ControlledTermClass } from './value-constraint/class/ControlledTermClass';
 import { ControlledTermBranch } from './value-constraint/branch/ControlledTermBranch';
+import { ControlledTermAction } from './value-constraint/action/ControlledTermAction';
 import { TemplateFieldBuilder } from '../../TemplateFieldBuilder';
 
 export interface ControlledTermFieldBuilder extends TemplateFieldBuilder {
@@ -16,6 +17,8 @@ export interface ControlledTermFieldBuilder extends TemplateFieldBuilder {
   addClass(cls: ControlledTermClass): ControlledTermFieldBuilder;
 
   addBranch(branch: ControlledTermBranch): ControlledTermFieldBuilder;
+
+  addAction(action: ControlledTermAction): ControlledTermFieldBuilder;
 
   build(): ControlledTermField;
 }

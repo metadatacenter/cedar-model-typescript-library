@@ -13,6 +13,7 @@ export abstract class AbstractChildDeploymentInfoBuilder {
 
   protected label: NullableString = null;
   protected description: NullableString = null;
+  protected hidden: boolean = false;
 
   protected constructor(child: TemplateChild, name: string) {
     this.child = child;
@@ -29,11 +30,17 @@ export abstract class AbstractChildDeploymentInfoBuilder {
     return this;
   }
 
+  public withHidden(hidden: boolean): this {
+    this.hidden = hidden;
+    return this;
+  }
+
   abstract build(): AbstractChildDeploymentInfo;
 
   protected setCommonData(info: AbstractChildDeploymentInfo) {
     info.label = this.label;
     info.description = this.description;
+    info.hidden = this.hidden;
 
     info.atType = this.atType;
     info.uiInputType = this.uiInputType;

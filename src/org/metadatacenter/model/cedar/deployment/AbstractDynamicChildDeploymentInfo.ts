@@ -6,7 +6,6 @@ export abstract class AbstractDynamicChildDeploymentInfo extends AbstractChildDe
 
   protected _requiredValue: boolean = false;
   private _recommendedValue: boolean = false;
-  protected _hidden: boolean = false;
   protected _continuePreviousLine: boolean = false;
   private _valueRecommendationEnabled: boolean = false;
 
@@ -36,14 +35,6 @@ export abstract class AbstractDynamicChildDeploymentInfo extends AbstractChildDe
 
   set recommendedValue(value: boolean) {
     this._recommendedValue = value;
-  }
-
-  get hidden(): boolean {
-    return this._hidden;
-  }
-
-  set hidden(value: boolean) {
-    this._hidden = value;
   }
 
   get continuePreviousLine(): boolean {

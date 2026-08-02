@@ -51,6 +51,10 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
       childInfo.atType = atType;
       const uiNode: JsonNode = ReaderUtil.getNode(childDefinitionNode, CedarModel.ui);
       childInfo.uiInputType = UiInputType.forValue(ReaderUtil.getString(uiNode, CedarModel.inputType));
+      // Read `hidden` here rather than leaving it to the per-type field
+      // readers. They cover the dynamic fields and nothing else, so a hidden
+      // element or a hidden static field came back visible.
+      childInfo.hidden = ReaderUtil.getBoolean(uiNode, CedarModel.Ui.hidden);
       candidateChildrenInfo.add(childInfo);
       return childInfo;
     } else {
@@ -133,7 +137,8 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
         const finalChildInfoBuilder: ChildDeploymentInfoStaticBuilder = cedarFieldReaderResult.field
           .createDeploymentBuilder(childInfo.name)
           .withLabel(childInfo.label)
-          .withDescription(childInfo.description);
+          .withDescription(childInfo.description)
+          .withHidden(childInfo.hidden);
         const finalChildInfo = finalChildInfoBuilder.build();
         container.addChild(cedarFieldReaderResult.field, finalChildInfo);
         parsingResult.merge(cedarFieldReaderResult.parsingResult);

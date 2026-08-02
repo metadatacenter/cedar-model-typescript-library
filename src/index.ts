@@ -95,6 +95,8 @@ import { CedarArtifactType } from './org/metadatacenter/model/cedar/types/cedar-
 import { JsonAbstractSchemaArtifactReader } from './org/metadatacenter/io/reader/json/JsonAbstractSchemaArtifactReader';
 import { CedarReaders } from './org/metadatacenter/io/reader/CedarReaders';
 import { AbstractSchemaArtifact } from './org/metadatacenter/model/cedar/AbstractSchemaArtifact';
+import { AbstractContainerArtifact } from './org/metadatacenter/model/cedar/AbstractContainerArtifact';
+import { CedarFieldType } from './org/metadatacenter/model/cedar/types/cedar-types/CedarFieldType';
 import { JsonAbstractArtifactWriter } from './org/metadatacenter/io/writer/json/JsonAbstractArtifactWriter';
 import { ComparisonErrorType } from './org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
 import { CedarJsonWriters } from './org/metadatacenter/io/writer/json/CedarJsonWriters';
@@ -179,6 +181,11 @@ export { JsonTemplateElementWriter, YamlTemplateElementWriter };
 export { JsonTemplateWriter, YamlTemplateWriter };
 
 export { AbstractSchemaArtifact };
+// A consumer walking a parsed template needs the container it walks and the
+// field type it branches on; both were reachable only by deep path into the
+// package. (AbstractChildDeploymentInfo, the third, was already exported.)
+export { AbstractContainerArtifact };
+export { CedarFieldType };
 export { AbstractInstanceArtifact };
 export { AbstractArtifact };
 

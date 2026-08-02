@@ -20,6 +20,7 @@ import { InstanceDataEmptyNode } from '../../../model/cedar/template-instance/In
 import { InstanceDataAttributeValueFieldName } from '../../../model/cedar/template-instance/InstanceDataAttributeValueFieldName';
 import { InstanceDataAttributeValueField } from '../../../model/cedar/template-instance/InstanceDataAttributeValueField';
 import { CedarModel } from '../../../model/cedar/constants/CedarModel';
+import { JsonTemplateInstanceContent } from '../../../model/cedar/util/serialization/JsonTemplateInstanceContent';
 
 export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactReader {
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.TEMPLATE_INSTANCE;
@@ -124,6 +125,24 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
               ret.setIri(avElementName, iri);
             }
           });
+        }
+      });
+
+      // Keep the mapping for children that carry no data.
+      //
+      // The two passes above walk `ret.values`, so they only see children the
+      // instance actually populated. A template may declare more children than
+      // the data fills, and their @context entries were being dropped — which
+      // made a round trip through this library non-idempotent for any such
+      // instance. Anything not already covered by the standard prefixes and
+      // typed entries is a child property IRI and belongs in the output.
+      Object.keys(atContext).forEach((key: string) => {
+        if (Object.hasOwn(JsonTemplateInstanceContent.CONTEXT_VERBATIM, key)) {
+          return;
+        }
+        const iri = ReaderUtil.getString(atContext, key);
+        if (iri !== null) {
+          ret.setIri(key, iri);
         }
       });
     }

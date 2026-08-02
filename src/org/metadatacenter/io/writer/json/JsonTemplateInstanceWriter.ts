@@ -14,6 +14,8 @@ import { InstanceDataTypedAtom } from '../../../model/cedar/template-instance/In
 import { InstanceDataAttributeValueField } from '../../../model/cedar/template-instance/InstanceDataAttributeValueField';
 import { InstanceDataControlledAtom } from '../../../model/cedar/template-instance/InstanceDataControlledAtom';
 import { InstanceDataLinkAtom } from '../../../model/cedar/template-instance/InstanceDataLinkAtom';
+import { InstanceDataEmptyAtom } from '../../../model/cedar/template-instance/InstanceDataEmptyAtom';
+import { InstanceDataEmptyNode } from '../../../model/cedar/template-instance/InstanceDataEmptyNode';
 
 export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
   private constructor(behavior: JsonWriterBehavior, writers: CedarJsonWriters) {
@@ -106,6 +108,14 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
       const elementContainer: JsonNode = JsonNode.getEmpty();
       this.serializeDataLevelInto(atom, elementContainer);
       return elementContainer;
+    }
+    if (atom instanceof InstanceDataEmptyAtom || atom instanceof InstanceDataEmptyNode) {
+      // An empty controlled-term field is `{}` in the instance, and it is a
+      // present-but-unfilled field rather than an absent one. Returning null
+      // here made the caller skip the key entirely, so the field disappeared
+      // from the output — the reader had already classified it correctly as an
+      // empty atom, and only the writer lost it.
+      return JsonNode.getEmpty();
     }
 
     return null;

@@ -91,9 +91,18 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
     into[JsonSchema.atContext] = atContext;
   }
 
-  private serializeCommonType(atom: InstanceDataAtomType): JsonNode | null {
+  /**
+   * One value atom as the JSON a CEDAR instance carries.
+   *
+   * The mirror of `JsonTemplateInstanceReader.readValueNode`, and public for
+   * the same reason: a consumer writing values into an instance otherwise
+   * spells the shapes out by hand — `{'@value': …}` here, `{'@id': …,
+   * 'rdfs:label': …}` there — and the two ends drift. Values only; an element
+   * is a container and needs a writer with the rest of the instance in hand.
+   */
+  public static writeValueNode(atom: InstanceDataAtomType): JsonNode | null {
     if (atom instanceof InstanceDataStringAtom) {
-      return this.serializeAtomString(atom);
+      return { [JsonSchema.atValue]: atom.value };
     }
     if (atom instanceof InstanceDataTypedAtom) {
       return { [JsonSchema.atValue]: atom.value, [JsonSchema.atType]: atom.type };
@@ -102,12 +111,7 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
       return { [JsonSchema.atId]: atom.id, [JsonSchema.rdfsLabel]: atom.label };
     }
     if (atom instanceof InstanceDataLinkAtom) {
-      return this.serializeAtomLink(atom);
-    }
-    if (atom instanceof InstanceDataContainer) {
-      const elementContainer: JsonNode = JsonNode.getEmpty();
-      this.serializeDataLevelInto(atom, elementContainer);
-      return elementContainer;
+      return { [JsonSchema.atId]: atom.id };
     }
     if (atom instanceof InstanceDataEmptyAtom || atom instanceof InstanceDataEmptyNode) {
       // An empty controlled-term field is `{}` in the instance, and it is a
@@ -117,16 +121,20 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
       // empty atom, and only the writer lost it.
       return JsonNode.getEmpty();
     }
-
     return null;
+  }
+
+  private serializeCommonType(atom: InstanceDataAtomType): JsonNode | null {
+    if (atom instanceof InstanceDataContainer) {
+      const elementContainer: JsonNode = JsonNode.getEmpty();
+      this.serializeDataLevelInto(atom, elementContainer);
+      return elementContainer;
+    }
+    return JsonTemplateInstanceWriter.writeValueNode(atom);
   }
 
   private serializeAtomString(atom: InstanceDataStringAtom) {
     return { [JsonSchema.atValue]: atom.value };
-  }
-
-  private serializeAtomLink(atom: InstanceDataLinkAtom) {
-    return { [JsonSchema.atId]: atom.id };
   }
 
   private serializeAttributeValueFields(dataContainer: InstanceDataContainer, into: JsonNode) {

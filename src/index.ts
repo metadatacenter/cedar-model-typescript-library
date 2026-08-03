@@ -106,6 +106,15 @@ import { CedarYamlReaders } from './org/metadatacenter/io/reader/yaml/CedarYamlR
 import { AbstractInstanceArtifact } from './org/metadatacenter/model/cedar/AbstractInstanceArtifact';
 import { AbstractArtifact } from './org/metadatacenter/model/cedar/AbstractArtifact';
 import { TemplateInstance } from './org/metadatacenter/model/cedar/template-instance/TemplateInstance';
+import { InstanceDataContainer } from './org/metadatacenter/model/cedar/template-instance/InstanceDataContainer';
+import { InstanceDataAttributeValueField } from './org/metadatacenter/model/cedar/template-instance/InstanceDataAttributeValueField';
+import { InstanceDataAttributeValueFieldName } from './org/metadatacenter/model/cedar/template-instance/InstanceDataAttributeValueFieldName';
+import { InstanceDataEmptyNode } from './org/metadatacenter/model/cedar/template-instance/InstanceDataEmptyNode';
+import { InstanceDataEmptyAtom } from './org/metadatacenter/model/cedar/template-instance/InstanceDataEmptyAtom';
+import { InstanceDataStringAtom } from './org/metadatacenter/model/cedar/template-instance/InstanceDataStringAtom';
+import { InstanceDataTypedAtom } from './org/metadatacenter/model/cedar/template-instance/InstanceDataTypedAtom';
+import { InstanceDataLinkAtom } from './org/metadatacenter/model/cedar/template-instance/InstanceDataLinkAtom';
+import { InstanceDataControlledAtom } from './org/metadatacenter/model/cedar/template-instance/InstanceDataControlledAtom';
 import { JsonTemplateInstanceReader } from './org/metadatacenter/io/reader/json/JsonTemplateInstancetReader';
 import { JsonAbstractInstanceArtifactReader } from './org/metadatacenter/io/reader/json/JsonAbstractInstanceArtifactReader';
 import { JsonAbstractArtifactReader } from './org/metadatacenter/io/reader/json/JsonAbstractArtifactReader';
@@ -220,6 +229,18 @@ export { TemplateElement, TemplateElementBuilder };
 export { Template, TemplateBuilder };
 
 export { TemplateInstance };
+// Walking a parsed instance means naming the node types it is built from.
+export {
+  InstanceDataContainer,
+  InstanceDataAttributeValueField,
+  InstanceDataAttributeValueFieldName,
+  InstanceDataEmptyNode,
+  InstanceDataEmptyAtom,
+  InstanceDataStringAtom,
+  InstanceDataTypedAtom,
+  InstanceDataLinkAtom,
+  InstanceDataControlledAtom,
+};
 export { TemplateInstanceBuilder };
 
 export { ControlledTermDefaultValueBuilder };

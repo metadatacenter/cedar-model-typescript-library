@@ -3,6 +3,7 @@ import { InstanceDataContainer } from '../../../../../../src/org/metadatacenter/
 import { InstanceDataLinkAtom } from '../../../../../../src/org/metadatacenter/model/cedar/template-instance/InstanceDataLinkAtom';
 import { InstanceDataControlledAtom } from '../../../../../../src/org/metadatacenter/model/cedar/template-instance/InstanceDataControlledAtom';
 import { InstanceDataStringAtom } from '../../../../../../src/org/metadatacenter/model/cedar/template-instance/InstanceDataStringAtom';
+import { InstanceDataEmptyNode } from '../../../../../../src/org/metadatacenter/model/cedar/template-instance/InstanceDataEmptyNode';
 
 /**
  * Telling an element apart from an IRI-valued field, when the element has not
@@ -76,5 +77,31 @@ describe('reading an instance whose elements have no @context', () => {
     const term = container.values['term'];
     expect(term instanceof InstanceDataControlledAtom).toBe(true);
     expect((term as InstanceDataControlledAtom).label).toBe('Term');
+  });
+});
+
+/**
+ * `null` is how an element with no occurrences is written. Every branch of
+ * `parseNode` began with `Object.hasOwn`, which throws on it, so an instance
+ * carrying one took the reader down instead of parsing.
+ */
+describe('reading an instance containing nulls', () => {
+  test('a null child parses as an empty node', () => {
+    const container = read({ '@id': 'https://example.org/i/1', element: null } as unknown as JsonNode);
+    expect(container.values['element'] instanceof InstanceDataEmptyNode).toBe(true);
+  });
+
+  test('a null inside a list parses as an empty node', () => {
+    const container = read({ element: [null, { field: { '@value': 'v' } }] } as unknown as JsonNode);
+    const list = container.values['element'] as unknown as unknown[];
+    expect(list[0] instanceof InstanceDataEmptyNode).toBe(true);
+    expect(list[1] instanceof InstanceDataContainer).toBe(true);
+  });
+
+  test('a value of null is still a value', () => {
+    const container = read({ field: { '@value': null } } as unknown as JsonNode);
+    const atom = container.values['field'] as InstanceDataStringAtom;
+    expect(atom instanceof InstanceDataStringAtom).toBe(true);
+    expect(atom.value).toBeNull();
   });
 });

@@ -170,7 +170,14 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     CedarModel.skosNotation,
   ]);
 
-  private parseNode(sourceObject: JsonNode | string, path: JsonPath): InstanceDataAtomType {
+  private parseNode(sourceObject: JsonNode | string | null, path: JsonPath): InstanceDataAtomType {
+    // `null` is how an element with no occurrences is written, and it reaches
+    // here both on its own and as a member of a list. Every check below starts
+    // with `Object.hasOwn`, which throws on it, so an instance containing one
+    // took the reader down rather than parsing.
+    if (sourceObject === null || sourceObject === undefined) {
+      return new InstanceDataEmptyNode();
+    }
     if (typeof sourceObject === 'string') {
       return new InstanceDataAttributeValueFieldName(sourceObject);
     }

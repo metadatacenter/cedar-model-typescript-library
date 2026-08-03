@@ -12,6 +12,7 @@ import { InstanceDataAtomType } from '../../../model/cedar/template-instance/Ins
 import { InstanceDataStringAtom } from '../../../model/cedar/template-instance/InstanceDataStringAtom';
 import { InstanceDataTypedAtom } from '../../../model/cedar/template-instance/InstanceDataTypedAtom';
 import { InstanceDataAttributeValueField } from '../../../model/cedar/template-instance/InstanceDataAttributeValueField';
+import { InstanceDataAttributeValueFieldName } from '../../../model/cedar/template-instance/InstanceDataAttributeValueFieldName';
 import { InstanceDataControlledAtom } from '../../../model/cedar/template-instance/InstanceDataControlledAtom';
 import { InstanceDataLinkAtom } from '../../../model/cedar/template-instance/InstanceDataLinkAtom';
 import { InstanceDataEmptyAtom } from '../../../model/cedar/template-instance/InstanceDataEmptyAtom';
@@ -62,6 +63,19 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
         const dataArray: JsonNode[] = JsonNode.getEmptyList();
         into[key] = dataArray;
         dataAtom.forEach((arrayElement: InstanceDataAtomType, _index: number) => {
+          if (arrayElement instanceof InstanceDataAttributeValueFieldName) {
+            // An attribute-value slot holds the attribute's *name*, and a list
+            // can hold names alongside unfilled slots — a field with two slots
+            // where the user has named one. `packAttributeValues` only folds a
+            // list into an attribute-value field when every entry is a name, so
+            // a part-named list arrives here as an ordinary list and the names
+            // in it were dropped on the floor: the field came back missing the
+            // attribute the user had named, while the property it pointed at
+            // stayed behind as an orphan.
+            const attributeName: string | null = (arrayElement as InstanceDataAttributeValueFieldName).name;
+            dataArray.push(attributeName as unknown as JsonNode);
+            return;
+          }
           const serializedData: JsonNode | null = this.serializeCommonType(arrayElement);
           if (serializedData !== null) {
             dataArray.push(serializedData);

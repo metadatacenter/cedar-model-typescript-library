@@ -106,6 +106,7 @@ import { CedarYamlReaders } from './org/metadatacenter/io/reader/yaml/CedarYamlR
 import { AbstractInstanceArtifact } from './org/metadatacenter/model/cedar/AbstractInstanceArtifact';
 import { AbstractArtifact } from './org/metadatacenter/model/cedar/AbstractArtifact';
 import { TemplateInstance } from './org/metadatacenter/model/cedar/template-instance/TemplateInstance';
+import { InstanceDataAtomType } from './org/metadatacenter/model/cedar/template-instance/InstanceDataAtomType';
 import { InstanceDataContainer } from './org/metadatacenter/model/cedar/template-instance/InstanceDataContainer';
 import { InstanceDataAttributeValueField } from './org/metadatacenter/model/cedar/template-instance/InstanceDataAttributeValueField';
 import { InstanceDataAttributeValueFieldName } from './org/metadatacenter/model/cedar/template-instance/InstanceDataAttributeValueFieldName';
@@ -231,6 +232,7 @@ export { Template, TemplateBuilder };
 export { TemplateInstance };
 // Walking a parsed instance means naming the node types it is built from.
 export {
+  InstanceDataAtomType,
   InstanceDataContainer,
   InstanceDataAttributeValueField,
   InstanceDataAttributeValueFieldName,

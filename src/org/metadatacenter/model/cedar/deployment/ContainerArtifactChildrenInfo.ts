@@ -90,21 +90,53 @@ export class ContainerArtifactChildrenInfo {
     return descriptionMap;
   }
 
-  public getIRIMap(): { [key: string]: { [key in typeof JsonSchema.enum]: Array<NullableString> } } {
-    const iriMap: { [key: string]: { [key in typeof JsonSchema.enum]: Array<string | null> } } = {};
+  /**
+   * Each child's property IRI, as a plain mapping of name to IRI.
+   *
+   * The IRI a child is addressed by in an instance's `@context`. Declared by the
+   * template where there is one, minted from the child's name where there is
+   * not — which is the interesting part, and the reason a consumer cannot simply
+   * read `childInfo.iri` and be done.
+   *
+   * Static fields and attribute-value fields are absent: neither is a property
+   * of the instance. A static field renders and holds nothing; an attribute-value
+   * field's *attributes* become properties, under names the template does not
+   * know.
+   *
+   * This is the model-level answer. `getIRIMap` wraps the same thing in the shape
+   * JSON Schema wants it in, which is a serialisation concern — a consumer that
+   * only wants the IRIs had to reach through `[JsonSchema.enum][0]` to get at
+   * them, and reaching into a JSON shape is exactly what asking the model is
+   * supposed to replace.
+   */
+  public getChildIriMap(): Record<string, string> {
+    const iriMap: Record<string, string> = {};
     this.childNameList.forEach((childName) => {
       const childInfo = this.getChildInfo(childName);
       if (childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD && childInfo.uiInputType !== UiInputType.ATTRIBUTE_VALUE) {
         if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
-          if (childInfo.iri !== null) {
-            iriMap[childInfo.name] = { [JsonSchema.enum]: [childInfo.iri] };
-          } else {
-            //TODO: Generate a random UUID here
-            const iri = 'https://schema.metadatacenter.org/properties/' + encodeURIComponent(childInfo.name).replace(/%20/g, '+');
-            iriMap[childInfo.name] = { [JsonSchema.enum]: [iri] };
-          }
+          iriMap[childInfo.name] =
+            childInfo.iri !== null
+              ? childInfo.iri
+              : 'https://schema.metadatacenter.org/properties/' + encodeURIComponent(childInfo.name).replace(/%20/g, '+');
         }
       }
+    });
+    return iriMap;
+  }
+
+  /**
+   * The same mapping in the shape a template's `@context` block takes.
+   *
+   * `{ name: { enum: [iri] } }`, which is what the JSON writer splats straight
+   * into `properties.@context.properties`. Derived from `getChildIriMap` so the
+   * two cannot disagree.
+   */
+  public getIRIMap(): { [key: string]: { [key in typeof JsonSchema.enum]: Array<NullableString> } } {
+    const iriMap: { [key: string]: { [key in typeof JsonSchema.enum]: Array<string | null> } } = {};
+    const plain = this.getChildIriMap();
+    Object.keys(plain).forEach((name) => {
+      iriMap[name] = { [JsonSchema.enum]: [plain[name]] };
     });
     return iriMap;
   }

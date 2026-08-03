@@ -82,6 +82,7 @@ import { CedarArtifactId } from './org/metadatacenter/model/cedar/types/cedar-ty
 import { ComparisonError } from './org/metadatacenter/model/cedar/util/compare/ComparisonError';
 import { RoundTrip } from './org/metadatacenter/io/roundtrip/RoundTrip';
 import { JsonSchema } from './org/metadatacenter/model/cedar/constants/JsonSchema';
+import { JsonTemplateInstanceContent } from './org/metadatacenter/model/cedar/util/serialization/JsonTemplateInstanceContent';
 import { CedarModel } from './org/metadatacenter/model/cedar/constants/CedarModel';
 import { ControlledTermActionBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/action/ControlledTermActionBuilder';
 import { YamlKeys } from './org/metadatacenter/model/cedar/constants/YamlKeys';
@@ -276,6 +277,9 @@ export { CedarArtifactId };
 export { ComparisonError };
 export { RoundTrip };
 export { JsonSchema };
+// The standard @context block every CEDAR instance carries. A consumer that
+// builds instances needs to state it, and should not restate it by hand.
+export { JsonTemplateInstanceContent };
 export { CedarModel };
 export { YamlKeys };
 export { YamlValues };

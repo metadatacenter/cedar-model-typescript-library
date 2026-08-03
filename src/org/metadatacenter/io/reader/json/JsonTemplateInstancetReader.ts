@@ -157,18 +157,42 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     return ret;
   }
 
+  /**
+   * Everything a field's value may carry, and nothing an element would.
+   * `@type` and `skos:notation` appear on controlled terms; `@id` and
+   * `rdfs:label` are the IRI-valued pair; `@value` is the literal case.
+   */
+  private static readonly VALUE_ATOM_KEYS: ReadonlySet<string> = new Set([
+    JsonSchema.atValue,
+    JsonSchema.atId,
+    JsonSchema.rdfsLabel,
+    JsonSchema.atType,
+    CedarModel.skosNotation,
+  ]);
+
   private parseNode(sourceObject: JsonNode | string, path: JsonPath): InstanceDataAtomType {
     if (typeof sourceObject === 'string') {
       return new InstanceDataAttributeValueFieldName(sourceObject);
     }
     if (Object.hasOwn(sourceObject, JsonSchema.atValue)) {
       return this.parseDataAtom(sourceObject);
-    } else if (Object.hasOwn(sourceObject, JsonSchema.atContext)) {
+    }
+    if (Object.hasOwn(sourceObject, JsonSchema.atContext)) {
       return this.parseContainer(sourceObject, path);
-    } else if (Object.hasOwn(sourceObject, JsonSchema.atId)) {
+    }
+    const keys = Object.keys(sourceObject);
+    if (keys.length === 0) {
+      return new InstanceDataEmptyNode();
+    }
+    // A value carries only value keys. Anything else holding an `@id` is an
+    // element that has simply not written its `@context` — which is what the
+    // CEDAR Embeddable Editor's "extract" form of an instance looks like, and
+    // reading `@id` alone as the signal turned every element in it into a link
+    // atom, losing the whole subtree. Judge by the whole key set instead.
+    if (keys.every((key) => JsonTemplateInstanceReader.VALUE_ATOM_KEYS.has(key))) {
       return this.parseDataAtom(sourceObject);
     }
-    return new InstanceDataEmptyNode();
+    return this.parseContainer(sourceObject, path);
   }
 
   private parseDataAtom(content: JsonNode): InstanceDataAtomType {

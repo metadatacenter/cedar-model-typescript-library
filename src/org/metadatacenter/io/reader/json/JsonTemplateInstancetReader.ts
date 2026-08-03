@@ -170,6 +170,59 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     CedarModel.skosNotation,
   ]);
 
+  /**
+   * True when this node is a field's value rather than an element.
+   *
+   * A value carries only value keys. Anything else holding an `@id` is an
+   * element that has simply not written its `@context` — which is what the
+   * CEDAR Embeddable Editor's "extract" form of an instance looks like, and
+   * reading `@id` alone as the signal turns every element in it into a link
+   * atom, losing the whole subtree.
+   *
+   * Public because consumers keep needing to ask it and keep answering it
+   * differently. CEE had three separate rules for it — one matching on exact
+   * key counts, which deleted the `@id` of any controlled term or link that
+   * also carried a `@type`.
+   */
+  public static isValueNode(sourceObject: JsonNode | string | null): boolean {
+    if (sourceObject === null || sourceObject === undefined) {
+      return false;
+    }
+    if (typeof sourceObject === 'string') {
+      // An attribute-value field's slot holds the attribute's name.
+      return true;
+    }
+    if (Object.hasOwn(sourceObject, JsonSchema.atValue)) {
+      return true;
+    }
+    if (Object.hasOwn(sourceObject, JsonSchema.atContext)) {
+      return false;
+    }
+    const keys = Object.keys(sourceObject);
+    return keys.length > 0 && keys.every((key) => JsonTemplateInstanceReader.VALUE_ATOM_KEYS.has(key));
+  }
+
+  /**
+   * Classify one value node on its own, without a surrounding instance.
+   *
+   * The type is the answer to what the value *is*: a `InstanceDataLinkAtom`
+   * carries its IRI, a `InstanceDataControlledAtom` its label, a
+   * `InstanceDataStringAtom` its literal. A consumer holding a bare node — a
+   * validator, a report — otherwise has to re-derive that from the keys.
+   */
+  public static readValueNode(sourceObject: JsonNode | string | null): InstanceDataAtomType {
+    if (sourceObject === null || sourceObject === undefined) {
+      return new InstanceDataEmptyNode();
+    }
+    if (typeof sourceObject === 'string') {
+      return new InstanceDataAttributeValueFieldName(sourceObject);
+    }
+    if (!JsonTemplateInstanceReader.isValueNode(sourceObject)) {
+      return new InstanceDataEmptyNode();
+    }
+    return JsonTemplateInstanceReader.parseDataAtom(sourceObject);
+  }
+
   private parseNode(sourceObject: JsonNode | string | null, path: JsonPath): InstanceDataAtomType {
     // `null` is how an element with no occurrences is written, and it reaches
     // here both on its own and as a member of a list. Every check below starts
@@ -181,28 +234,16 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     if (typeof sourceObject === 'string') {
       return new InstanceDataAttributeValueFieldName(sourceObject);
     }
-    if (Object.hasOwn(sourceObject, JsonSchema.atValue)) {
-      return this.parseDataAtom(sourceObject);
+    if (JsonTemplateInstanceReader.isValueNode(sourceObject)) {
+      return JsonTemplateInstanceReader.parseDataAtom(sourceObject);
     }
-    if (Object.hasOwn(sourceObject, JsonSchema.atContext)) {
-      return this.parseContainer(sourceObject, path);
-    }
-    const keys = Object.keys(sourceObject);
-    if (keys.length === 0) {
+    if (Object.keys(sourceObject).length === 0) {
       return new InstanceDataEmptyNode();
-    }
-    // A value carries only value keys. Anything else holding an `@id` is an
-    // element that has simply not written its `@context` — which is what the
-    // CEDAR Embeddable Editor's "extract" form of an instance looks like, and
-    // reading `@id` alone as the signal turned every element in it into a link
-    // atom, losing the whole subtree. Judge by the whole key set instead.
-    if (keys.every((key) => JsonTemplateInstanceReader.VALUE_ATOM_KEYS.has(key))) {
-      return this.parseDataAtom(sourceObject);
     }
     return this.parseContainer(sourceObject, path);
   }
 
-  private parseDataAtom(content: JsonNode): InstanceDataAtomType {
+  private static parseDataAtom(content: JsonNode): InstanceDataAtomType {
     if (Object.hasOwn(content, JsonSchema.atValue)) {
       const value = ReaderUtil.getString(content, JsonSchema.atValue);
       const type = ReaderUtil.getString(content, JsonSchema.atType);

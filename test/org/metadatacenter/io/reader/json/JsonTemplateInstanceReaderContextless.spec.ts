@@ -1,4 +1,4 @@
-import { CedarReaders, JsonNode } from '../../../../../../src';
+import { CedarReaders, JsonNode, JsonTemplateInstanceReader } from '../../../../../../src';
 import { InstanceDataContainer } from '../../../../../../src/org/metadatacenter/model/cedar/template-instance/InstanceDataContainer';
 import { InstanceDataLinkAtom } from '../../../../../../src/org/metadatacenter/model/cedar/template-instance/InstanceDataLinkAtom';
 import { InstanceDataControlledAtom } from '../../../../../../src/org/metadatacenter/model/cedar/template-instance/InstanceDataControlledAtom';
@@ -103,5 +103,55 @@ describe('reading an instance containing nulls', () => {
     const atom = container.values['field'] as InstanceDataStringAtom;
     expect(atom instanceof InstanceDataStringAtom).toBe(true);
     expect(atom.value).toBeNull();
+  });
+});
+
+/**
+ * Classifying one node on its own.
+ *
+ * The same question the reader answers while walking an instance, asked
+ * directly. Consumers holding a bare node kept re-deriving it from the keys and
+ * kept getting it subtly different — CEE had three rules, one of which matched
+ * on exact key counts and so deleted the `@id` of any controlled term or link
+ * that also carried a `@type`.
+ */
+describe('classifying a node on its own', () => {
+  const reader = () => CedarReaders.json().getFebruary2024().getTemplateInstanceReader();
+
+  test.each([
+    ['a literal', { '@value': 'x' }, true],
+    ['a literal with a type', { '@value': '1', '@type': 'xsd:int' }, true],
+    ['a link', { '@id': 'https://example.org/x' }, true],
+    ['a link with a type', { '@id': 'https://example.org/x', '@type': 'xsd:anyURI' }, true],
+    ['a controlled term', { '@id': 'https://example.org/x', 'rdfs:label': 'X' }, true],
+    ['a controlled term with a notation', { '@id': 'https://example.org/x', 'rdfs:label': 'X', 'skos:notation': 'N' }, true],
+    ['an element', { field: { '@value': 'x' } }, false],
+    ['an element carrying an @id', { '@id': 'https://example.org/e', field: { '@value': 'x' } }, false],
+    ['an element carrying a @context', { '@context': {}, field: { '@value': 'x' } }, false],
+    ['an empty object', {}, false],
+  ] as [string, JsonNode, boolean][])('%s is a value node: %j -> %s', (_label, node, expected) => {
+    expect(JsonTemplateInstanceReader.isValueNode(node)).toBe(expected);
+  });
+
+  test('null is not a value node', () => {
+    expect(JsonTemplateInstanceReader.isValueNode(null)).toBe(false);
+  });
+
+  test('an attribute name is a value node', () => {
+    expect(JsonTemplateInstanceReader.isValueNode('colour')).toBe(true);
+  });
+
+  test('readValueNode gives the type, and the type gives the value', () => {
+    expect((reader() && JsonTemplateInstanceReader.readValueNode({ '@value': 'x' })) instanceof InstanceDataStringAtom).toBe(true);
+    const link = JsonTemplateInstanceReader.readValueNode({ '@id': 'https://example.org/x', '@type': 'xsd:anyURI' });
+    expect(link instanceof InstanceDataLinkAtom).toBe(true);
+    expect((link as InstanceDataLinkAtom).id).toBe('https://example.org/x');
+    const term = JsonTemplateInstanceReader.readValueNode({ '@id': 'https://example.org/x', 'rdfs:label': 'X' });
+    expect(term instanceof InstanceDataControlledAtom).toBe(true);
+    expect((term as InstanceDataControlledAtom).label).toBe('X');
+  });
+
+  test('an element is not read as a value', () => {
+    expect(JsonTemplateInstanceReader.readValueNode({ field: { '@value': 'x' } }) instanceof InstanceDataEmptyNode).toBe(true);
   });
 });

@@ -16,6 +16,26 @@ export class CedarYamlReaders {
     return new CedarYamlReaders(YamlReaderBehavior.STRICT);
   }
 
+  /**
+   * The named accessors the JSON side has had all along.
+   *
+   * Without them a consumer reading YAML has to import the concrete reader by
+   * deep path, which makes the two serialisations look less interchangeable
+   * than they are — the whole point being that either one yields the same
+   * `Template`.
+   */
+  public getTemplateReader(): YamlTemplateReader {
+    return YamlTemplateReader.getStrict();
+  }
+
+  public getTemplateElementReader(): YamlTemplateElementReader {
+    return YamlTemplateElementReader.getStrict();
+  }
+
+  public getTemplateFieldReader(): YamlTemplateFieldReader {
+    return YamlTemplateFieldReader.getStrict();
+  }
+
   public getReaderForArtifactType(cedarArtifactType: CedarArtifactType): YamlAbstractArtifactReader {
     switch (cedarArtifactType) {
       case CedarArtifactType.TEMPLATE:

@@ -1,4 +1,5 @@
 import { CedarArtifactType } from '../types/cedar-types/CedarArtifactType';
+import { CedarModel } from '../constants/CedarModel';
 import { JsonSchema } from '../constants/JsonSchema';
 import { UiInputType } from '../types/wrapped-types/UiInputType';
 import { NullableString } from '../types/basic-types/NullableString';
@@ -118,7 +119,7 @@ export class ContainerArtifactChildrenInfo {
           iriMap[childInfo.name] =
             childInfo.iri !== null
               ? childInfo.iri
-              : 'https://schema.metadatacenter.org/properties/' + encodeURIComponent(childInfo.name).replace(/%20/g, '+');
+              : CedarModel.propertyIriPrefix + encodeURIComponent(childInfo.name).replace(/%20/g, '+');
         }
       }
     });

@@ -262,7 +262,12 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
         return new InstanceDataControlledAtom(id, label);
       }
     }
-    return new InstanceDataEmptyAtom();
+    // Neither a literal nor an IRI, so there is no value here — but the node was
+    // not empty either, or `isValueNode` would not have sent it this way. The
+    // usual case is `{"rdfs:label": "..."}`: a label with nothing to label.
+    // Carrying what was dropped lets a consumer report it instead of showing an
+    // empty field for no stated reason.
+    return new InstanceDataEmptyAtom(content);
   }
 
   private packAttributeValues(dataContainer: InstanceDataContainer) {

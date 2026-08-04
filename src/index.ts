@@ -93,6 +93,8 @@ import { CedarFieldCategory } from './org/metadatacenter/model/cedar/types/cedar
 import { YamlTemplateFieldReader } from './org/metadatacenter/io/reader/yaml/YamlTemplateFieldReader';
 import { YamlTemplateElementReader } from './org/metadatacenter/io/reader/yaml/YamlTemplateElementReader';
 import { YamlTemplateReader } from './org/metadatacenter/io/reader/yaml/YamlTemplateReader';
+import { YamlTemplateInstanceReader } from './org/metadatacenter/io/reader/yaml/YamlTemplateInstanceReader';
+import { InstanceInflater } from './org/metadatacenter/model/cedar/template-instance/InstanceInflater';
 import { CedarArtifactType } from './org/metadatacenter/model/cedar/types/cedar-types/CedarArtifactType';
 import { JsonAbstractSchemaArtifactReader } from './org/metadatacenter/io/reader/json/JsonAbstractSchemaArtifactReader';
 import { CedarReaders } from './org/metadatacenter/io/reader/CedarReaders';
@@ -187,6 +189,8 @@ export { JsonAbstractArtifactWriter };
 export { JsonTemplateFieldReader, YamlTemplateFieldReader };
 export { JsonTemplateElementReader, YamlTemplateElementReader };
 export { JsonTemplateReader, YamlTemplateReader };
+export { YamlTemplateInstanceReader };
+export { InstanceInflater };
 export { JsonTemplateInstanceReader };
 
 export { JsonTemplateElementWriter, YamlTemplateElementWriter };

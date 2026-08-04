@@ -4,6 +4,7 @@ import { YamlAbstractArtifactReader } from './YamlAbstractArtifactReader';
 import { YamlTemplateReader } from './YamlTemplateReader';
 import { YamlTemplateElementReader } from './YamlTemplateElementReader';
 import { YamlTemplateFieldReader } from './YamlTemplateFieldReader';
+import { YamlTemplateInstanceReader } from './YamlTemplateInstanceReader';
 
 export class CedarYamlReaders {
   private readonly behavior: YamlReaderBehavior;
@@ -34,6 +35,10 @@ export class CedarYamlReaders {
 
   public getTemplateFieldReader(): YamlTemplateFieldReader {
     return YamlTemplateFieldReader.getStrict();
+  }
+
+  public getTemplateInstanceReader(): YamlTemplateInstanceReader {
+    return YamlTemplateInstanceReader.getForBehavior(this.behavior);
   }
 
   public getReaderForArtifactType(cedarArtifactType: CedarArtifactType): YamlAbstractArtifactReader {

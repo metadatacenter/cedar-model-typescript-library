@@ -44,6 +44,8 @@ import { YamlFieldReaderExtNihGrantId } from '../../../model/cedar/field/dynamic
 import { YamlFieldReaderExtDoi } from '../../../model/cedar/field/dynamic/ext-doi/YamlFieldReaderExtDoi';
 
 export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
+  protected knownArtifactType: CedarArtifactType = CedarArtifactType.TEMPLATE_FIELD;
+
   private constructor(behavior: YamlReaderBehavior) {
     super(behavior);
   }

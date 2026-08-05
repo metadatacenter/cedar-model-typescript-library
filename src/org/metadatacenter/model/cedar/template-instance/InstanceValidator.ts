@@ -6,6 +6,8 @@ import { InstanceDataEmptyNode } from './InstanceDataEmptyNode';
 import { InstanceDataStringAtom } from './InstanceDataStringAtom';
 import { InstanceDataTypedAtom } from './InstanceDataTypedAtom';
 import { InstanceDataAttributeValueField } from './InstanceDataAttributeValueField';
+import { InstanceDataLinkAtom } from './InstanceDataLinkAtom';
+import { InstanceDataControlledAtom } from './InstanceDataControlledAtom';
 import { AbstractContainerArtifact } from '../AbstractContainerArtifact';
 import { AbstractChildDeploymentInfo } from '../deployment/AbstractChildDeploymentInfo';
 import { AbstractDynamicChildDeploymentInfo } from '../deployment/AbstractDynamicChildDeploymentInfo';
@@ -56,6 +58,10 @@ const LOCATION = 'InstanceValidator';
  * value for one — that is how CEDAR represents "not filled in", and the
  * template's own schema permits it. So emptiness is never an error here; only
  * absence is.
+ *
+ * Emptiness has a legal spelling, though, and `{"@id": null}` is not it. A
+ * literal's `@value` may be null; an `@id` may not, and an unfilled link is
+ * written `{}`. That asymmetry is checked — see `validateIri`.
  *
  * Nor does this police the atom kind of every field. Only temporal and numeric
  * fields have a declared datatype to check against. Inferring the rest from
@@ -213,9 +219,42 @@ export class InstanceValidator {
       return;
     }
 
+    InstanceValidator.validateIri(value, path, result);
+
     const expectedType = InstanceValidator.declaredValueType(child);
     if (expectedType !== null) {
       InstanceValidator.validateTypedValue(value, expectedType, path, result);
+    }
+  }
+
+  /**
+   * `{"@id": null}` is not an empty value. It is a malformed one.
+   *
+   * `@value` and `@id` are not symmetrical here, and the difference is easy to
+   * miss. A literal's `@value` may be null — JSON-LD allows it and CEDAR
+   * declares the property `["string", "null"]`, which is how an unfilled
+   * literal is written. An `@id` may not: JSON-LD requires an IRI, and CEDAR
+   * declares it `{"type": "string", "format": "uri"}` with no null branch. An
+   * unfilled link or controlled-term field is written `{}` instead, which the
+   * reader returns as an empty node.
+   *
+   * So a link atom carrying a null id came from a document that should not
+   * exist, and nothing else notices: the reader accepts it and the writer emits
+   * it back unchanged. None of the 120 instances in the shared corpus contains
+   * one.
+   *
+   * This is a structural rule rather than a datatype one, so it applies to any
+   * field. The instance's own top-level `@id` is a different matter — an unsaved
+   * instance legitimately has none — and is not reached here, which walks only
+   * the children the template declares.
+   */
+  private static validateIri(value: InstanceDataAtomType, path: JsonPath, result: JsonArtifactParsingResult): void {
+    const hasNullIri =
+      (value instanceof InstanceDataLinkAtom || value instanceof InstanceDataControlledAtom) && value.id === null;
+    if (hasNullIri) {
+      result.addBlueprintComparisonError(
+        new ComparisonError(LOCATION, ComparisonErrorType.MISSING_VALUE_IN_REAL_OBJECT, path.add(JsonSchema.atId), 'an IRI', null),
+      );
     }
   }
 

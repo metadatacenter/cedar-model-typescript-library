@@ -177,6 +177,51 @@ describe('a value with the wrong @type', () => {
   });
 });
 
+describe('@value and @id are not symmetrical', () => {
+  /**
+   * A literal's `@value` may be null — JSON-LD allows it and CEDAR declares the
+   * property `["string", "null"]`, which is how an unfilled literal is written.
+   * An `@id` may not: JSON-LD requires an IRI and CEDAR declares it
+   * `{"type": "string", "format": "uri"}` with no null branch. An unfilled link
+   * is written `{}` instead.
+   *
+   * Nothing else catches the difference. The reader accepts `{"@id": null}` and
+   * the writer emits it back unchanged, so a document carrying one survives a
+   * round trip intact.
+   */
+  it('accepts a null @value', () => {
+    expect(errorsOf({ ...complete(), _note: { '@value': null } })).toStrictEqual([]);
+  });
+
+  it('rejects a null @id', () => {
+    const errors = errorsOf({ ...complete(), _note: { '@id': null } });
+    expect(errors).toHaveLength(1);
+    expect(errors[0]).toContain('missingValueInRealObject');
+    expect(errors[0]).toContain('@id');
+  });
+
+  it('accepts {} as the way an unfilled link is written', () => {
+    expect(errorsOf({ ...complete(), _note: {} })).toStrictEqual([]);
+  });
+
+  it('accepts a real IRI', () => {
+    expect(errorsOf({ ...complete(), _note: { '@id': 'https://example.org/a' } })).toStrictEqual([]);
+  });
+
+  it('reports a null @id inside a list, at its index', () => {
+    const errors = errorsOf({ ...complete(), _tags: [{ '@value': 'a' }, { '@id': null }] });
+    expect(errors).toHaveLength(1);
+    expect(errors[0]).toContain('@id');
+    expect(errors[0]).toContain('1');
+  });
+
+  it('reports a null @id inside an element', () => {
+    const errors = errorsOf({ ...complete(), _addr: { _city: { '@id': null } } });
+    expect(errors).toHaveLength(1);
+    expect(errors[0]).toContain('_city');
+  });
+});
+
 describe('a property the template requires', () => {
   /**
    * A template lists every non-static, non-attribute-value child in its JSON

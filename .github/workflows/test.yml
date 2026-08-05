@@ -1,0 +1,72 @@
+name: Test
+
+# Pushes to develop only, for now. Pull requests and the release branches can be
+# added once this has proved itself; starting narrow means a red badge here means
+# develop is red, and nothing else.
+on:
+  push:
+    branches:
+      - develop
+
+permissions:
+  contents: read
+
+concurrency:
+  group: test-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    # Nothing here renders or screenshots, so the cheapest runner is the right one.
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      # The two checkouts have to end up as siblings. `cedar-test-artifacts` is a
+      # symlink in this repo pointing at `../cedar-test-artifacts`, so a lone
+      # checkout leaves it dangling — and `pretest.js` reads the corpus with no
+      # guard, so the whole suite fails before running a single test.
+      - name: Check out the library
+        uses: actions/checkout@v4
+        with:
+          path: cedar-model-typescript-library
+
+      # Pinned to develop deliberately. This repository's default branch is main,
+      # and main carries no templates at all — the 123 artifact directories live
+      # on develop. Taking the default would hand CI an empty corpus.
+      - name: Check out the shared test artifacts
+        uses: actions/checkout@v4
+        with:
+          repository: metadatacenter/cedar-test-artifacts
+          ref: develop
+          path: cedar-test-artifacts
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.20.2
+          cache: npm
+          cache-dependency-path: cedar-model-typescript-library/package-lock.json
+
+      - name: Install
+        working-directory: cedar-model-typescript-library
+        run: npm ci
+
+      - name: Confirm the corpus resolved through the symlink
+        working-directory: cedar-model-typescript-library
+        # Cheap, and it fails with a sentence rather than leaving someone to read
+        # a hundred ENOENTs from pretest.
+        run: |
+          test -d cedar-test-artifacts/artifacts/cee-suite \
+            || { echo "cedar-test-artifacts did not resolve; the two checkouts are not siblings"; exit 1; }
+
+      - name: Test
+        working-directory: cedar-model-typescript-library
+        run: npm test
+
+      # The dist is what consumers install, and it is built by a separate webpack
+      # pass that the test run never exercises. It has broken independently of the
+      # tests before.
+      - name: Build the distributable
+        working-directory: cedar-model-typescript-library
+        run: npm run build

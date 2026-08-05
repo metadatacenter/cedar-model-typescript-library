@@ -97,6 +97,7 @@ import { YamlTemplateElementReader } from './org/metadatacenter/io/reader/yaml/Y
 import { YamlTemplateReader } from './org/metadatacenter/io/reader/yaml/YamlTemplateReader';
 import { YamlTemplateInstanceReader } from './org/metadatacenter/io/reader/yaml/YamlTemplateInstanceReader';
 import { InstanceInflater } from './org/metadatacenter/model/cedar/template-instance/InstanceInflater';
+import { InstanceValidator } from './org/metadatacenter/model/cedar/template-instance/InstanceValidator';
 import { CedarArtifactType } from './org/metadatacenter/model/cedar/types/cedar-types/CedarArtifactType';
 import { JsonAbstractSchemaArtifactReader } from './org/metadatacenter/io/reader/json/JsonAbstractSchemaArtifactReader';
 import { CedarReaders } from './org/metadatacenter/io/reader/CedarReaders';
@@ -193,6 +194,7 @@ export { JsonTemplateElementReader, YamlTemplateElementReader };
 export { JsonTemplateReader, YamlTemplateReader };
 export { YamlTemplateInstanceReader };
 export { InstanceInflater };
+export { InstanceValidator };
 export { JsonTemplateInstanceReader };
 
 export { JsonTemplateElementWriter, YamlTemplateElementWriter };

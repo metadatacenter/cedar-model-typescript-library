@@ -41,6 +41,18 @@ jobs:
           ref: develop
           path: cedar-test-artifacts
 
+      # A third sibling. The integration tests under itest/ read reference
+      # templates from `../cedar-artifact-library/src/test/resources/templates/`,
+      # which passes locally on a full CEDAR working copy and failed here on the
+      # first run for the same reason the corpus would have: it simply was not
+      # there. Default branch is fine for this one — main and develop carry the
+      # same 93 templates.
+      - name: Check out the CEDAR artifact library
+        uses: actions/checkout@v4
+        with:
+          repository: metadatacenter/cedar-artifact-library
+          path: cedar-artifact-library
+
       - name: Use Node.js 20
         uses: actions/setup-node@v4
         with:
@@ -52,13 +64,15 @@ jobs:
         working-directory: cedar-model-typescript-library
         run: npm ci
 
-      - name: Confirm the corpus resolved through the symlink
+      - name: Confirm both external resource trees resolved
         working-directory: cedar-model-typescript-library
         # Cheap, and it fails with a sentence rather than leaving someone to read
         # a hundred ENOENTs from pretest.
         run: |
           test -d cedar-test-artifacts/artifacts/cee-suite \
-            || { echo "cedar-test-artifacts did not resolve; the two checkouts are not siblings"; exit 1; }
+            || { echo "cedar-test-artifacts did not resolve; the checkouts are not siblings"; exit 1; }
+          test -d ../cedar-artifact-library/src/test/resources/templates \
+            || { echo "cedar-artifact-library is missing; itest/ reads reference templates from it"; exit 1; }
 
       - name: Test
         working-directory: cedar-model-typescript-library

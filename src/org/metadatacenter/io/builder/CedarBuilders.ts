@@ -12,6 +12,7 @@ import { StaticImageFieldBuilder } from '../../model/cedar/field/static/image/St
 import { LinkFieldBuilder } from '../../model/cedar/field/dynamic/link/LinkFieldBuilder';
 import { RadioFieldBuilder } from '../../model/cedar/field/dynamic/radio/RadioFieldBuilder';
 import { CheckboxFieldBuilder } from '../../model/cedar/field/dynamic/checkbox/CheckboxFieldBuilder';
+import { BooleanFieldBuilder } from '../../model/cedar/field/dynamic/boolean/BooleanFieldBuilder';
 import { ControlledTermFieldBuilder } from '../../model/cedar/field/dynamic/controlled-term/ControlledTermFieldBuilder';
 import { TemplateBuilder } from '../../model/cedar/template/TemplateBuilder';
 import { TemplateElementBuilder } from '../../model/cedar/element/TemplateElementBuilder';
@@ -27,6 +28,7 @@ import { LinkFieldBuilderImpl } from '../../model/cedar/field/dynamic/link/LinkF
 import { EmailFieldBuilderImpl } from '../../model/cedar/field/dynamic/email/EmailFieldBuilderImpl';
 import { AttributeValueFieldBuilderImpl } from '../../model/cedar/field/dynamic/attribute-value/AttributeValueFieldBuilderImpl';
 import { CheckboxFieldBuilderImpl } from '../../model/cedar/field/dynamic/checkbox/CheckboxFieldBuilderImpl';
+import { BooleanFieldBuilderImpl } from '../../model/cedar/field/dynamic/boolean/BooleanFieldBuilderImpl';
 import { ControlledTermFieldBuilderImpl } from '../../model/cedar/field/dynamic/controlled-term/ControlledTermFieldBuilderImpl';
 import { StaticImageFieldBuilderImpl } from '../../model/cedar/field/static/image/StaticImageFieldBuilderImpl';
 import { StaticPageBreakFieldBuilderImpl } from '../../model/cedar/field/static/page-break/StaticPageBreakFieldBuilderImpl';
@@ -152,6 +154,10 @@ export abstract class CedarBuilders {
 
   static checkboxFieldBuilder(): CheckboxFieldBuilder {
     return CheckboxFieldBuilderImpl.create();
+  }
+
+  static booleanFieldBuilder(): BooleanFieldBuilder {
+    return BooleanFieldBuilderImpl.create();
   }
 
   static controlledTermFieldBuilder(): ControlledTermFieldBuilder {

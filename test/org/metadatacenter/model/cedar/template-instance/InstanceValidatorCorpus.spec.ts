@@ -51,10 +51,10 @@ const KNOWN_NONCONFORMANT: Record<string, number> = {
 
 const pairs = (): Array<[string, string, string]> => {
   if (!fs.existsSync(CORPUS)) {
-    // Loud, not skipped. The corpus is a symlink to a sibling checkout and the
+    // Loud, not skipped. The corpus is committed to this repository and the
     // whole suite already depends on it — `pretest.js` reads it unguarded — so
     // its absence is a broken working copy, not a reason to pass quietly.
-    throw new Error(`the shared corpus is missing at ${CORPUS}; check out cedar-test-artifacts beside this repo`);
+    throw new Error(`the corpus is missing at ${CORPUS}; it is committed to this repository, so the working copy is incomplete`);
   }
   return fs
     .readdirSync(CORPUS)

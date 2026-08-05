@@ -36,7 +36,7 @@ const DELIBERATE_FAILURES = ['cee-suite/086', 'templates/003'];
 
 const templates = (): Array<[string, string]> => {
   if (!fs.existsSync(CORPUS)) {
-    throw new Error(`the shared corpus is missing at ${CORPUS}; check out cedar-test-artifacts beside this repo`);
+    throw new Error(`the corpus is missing at ${CORPUS}; it is committed to this repository, so the working copy is incomplete`);
   }
   const found: Array<[string, string]> = [];
   for (const group of fs.readdirSync(CORPUS)) {

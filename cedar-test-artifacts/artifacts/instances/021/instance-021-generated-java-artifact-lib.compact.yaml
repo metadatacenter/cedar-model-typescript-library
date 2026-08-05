@@ -1,0 +1,12 @@
+type: "instance"
+name: "With Email metadata"
+isBasedOn: "https://repo.metadatacenter.org/templates/d9d52596-1a0e-464b-9207-b848faf2205d"
+children:
+  Untitled:
+    id: "http://purl.obolibrary.org/obo/DOID_0060318"
+    label: "acute promyelocytic leukemia"
+annotations:
+  https://datacite.com/doi:
+    id: "https://doi.org/10.82658/8vc1-abcd"
+  foo:
+    value: "bar"

@@ -1,0 +1,11 @@
+type: "template"
+name: "#025 Template with hidden field"
+children:
+  - key: "Hidden field"
+    type: "text-field"
+    name: "Hidden field"
+    description: "Hidden field help text"
+    prefLabel: "Hidden field preferred"
+    default: "default value"
+    configuration:
+      hidden: true

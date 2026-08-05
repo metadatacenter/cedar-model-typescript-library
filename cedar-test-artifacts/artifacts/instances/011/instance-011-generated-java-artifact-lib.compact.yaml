@@ -1,0 +1,13 @@
+type: "instance"
+name: "With Email metadata"
+isBasedOn: "https://repo.metadatacenter.org/templates/d9d52596-1a0e-464b-9207-b848faf2205d"
+children:
+  Single Select Element:
+    - children:
+        Single Select in Element:
+          value: "Option 1"
+    - children:
+        Single Select in Element:
+          value: "Option 2"
+  Single Select Standalone:
+    value: "Option 4"

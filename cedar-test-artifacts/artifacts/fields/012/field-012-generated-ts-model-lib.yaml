@@ -1,0 +1,11 @@
+type: "single-select-list-field"
+name: "List single"
+id: "https://repo.metadatacenter.org/template-fields/be1a9f80-1f3f-429a-a7c7-4510a329c9ec"
+status: "draft"
+version: "0.0.1"
+modelVersion: "1.6.0"
+values:
+  - label: "Untitled-0"
+  - label: "Untitled-1"
+createdOn: "2021-11-18T20:26:08-01:00"
+modifiedOn: "2021-11-18T20:26:08Z"

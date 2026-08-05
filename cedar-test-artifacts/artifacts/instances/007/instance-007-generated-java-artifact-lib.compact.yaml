@@ -1,0 +1,6 @@
+type: "instance"
+name: "With Email metadata"
+isBasedOn: "https://repo.metadatacenter.org/templates/d9d52596-1a0e-464b-9207-b848faf2205d"
+children:
+  Email field name:
+    - value: "bob@bob.bob"

@@ -1,0 +1,17 @@
+type: "template"
+name: "Template with Text Field 1"
+children:
+  - key: "Text Field 1"
+    type: "text-field"
+    name: "Text Field 1"
+    description: "Help text for this field"
+    prefLabel: "Preferred label value"
+    altLabels:
+      - "Alternate label 1"
+      - "Alternate label 2"
+    default: "Default Value"
+    minLength: 10
+    maxLength: 100
+    regex: "^[A-Z][^A-Z]*$"
+    configuration:
+      valueRecommendation: true

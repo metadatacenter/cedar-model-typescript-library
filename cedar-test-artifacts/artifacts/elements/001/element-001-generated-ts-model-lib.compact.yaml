@@ -1,0 +1,7 @@
+type: "element"
+name: "#001 Element with attribute-value"
+children:
+  - key: "Attribute-Value"
+    type: "attribute-value-field"
+    name: "Attribute-Value"
+    description: "Help Text"

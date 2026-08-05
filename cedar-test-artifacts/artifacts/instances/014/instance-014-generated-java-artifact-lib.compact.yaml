@@ -1,0 +1,12 @@
+type: "instance"
+name: "14 - two level deep metadata"
+isBasedOn: "https://repo.metadatacenter.org/templates/5e56a512-8aa8-4072-b3a3-b78d231263cc"
+children:
+  Element of Element:
+    children:
+      Text Field 1:
+        value: "Value 1"
+      Single Text Element:
+        children:
+          Text Field in Element:
+            value: "Value 2"

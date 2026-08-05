@@ -1,0 +1,7 @@
+type: "ext-orcid-field"
+name: "ORCID Field"
+description: "ORCID Help"
+status: "draft"
+version: "0.0.1"
+modelVersion: "1.6.0"
+prefLabel: "ORCID Preferred"

@@ -1,0 +1,85 @@
+type: "template"
+name: "Catalog"
+description: "DCAT v3 template for data catalog metadata"
+children:
+  - key: "Read & Understood Catalog"
+    type: "element"
+    name: "Read & Understood Catalog"
+    children:
+      - key: "Read & Understood - RT"
+        type: "static-rich-text"
+        name: "Read & Understood - RT"
+        content: "<p>Welcome to the Catalog form which follows the metadata schema set by DCAT. The DCAT Catalog&nbsp;<span id=\"docs-internal-guid-b8aefd18-7fff-e625-51b8-aef58b481e19\"><span style=\"font-size: 11pt; font-family: Arial; color: rgb(67, 67, 67); background-color: transparent; font-variant-numeric: normal; font-variant-east-asian: normal; vertical-align: baseline; white-space: pre-wrap;\">is a collection of datasets, like a folder you might create in a directory to organize your results. The Catalog metadata describes attributes of this high-level collection and </span></span>helps to increase the FAIRness of your research outputs.</p>\n\n<p>Whenever you see a blue hyperlink in this form, use the right mouse button to open a new window.</p>\n\n<p>Many fields are optional. Those marked with a red asterisk are mandatory.&nbsp;<span style=\"background-color: rgb(255, 255, 255);\">(1...N) means that you are allowed to give multiple answers, but you need to provide at least one answer.&nbsp;</span>Use the copy symbol if you want to add more than one item as described in section 6c in the guidelines. Use toggle view to get an overview of the entered values. Watch this&nbsp;<a href=\"http://www.youtube.com/watch?v=lgWBkdJ1fnM\" style=\"background-color: rgb(255, 255, 255);\">video&nbsp;</a>to find out how.</p>\n\n<p>Complete the form in English.</p>\n\n<p>Further information can be found in the&nbsp;<a href=\"https://osf.io/kt7y2/\" style=\"background-color: rgb(255, 255, 255);\">guidelines</a>.</p>\n\n<p>&nbsp;</p>\n\n<p dir=\"ltr\" style=\"margin-top: 12pt; margin-bottom: 0pt; line-height: 1.38; text-align: justify; background-color: rgb(255, 255, 255); padding: 0pt 0pt 12pt;\">&nbsp;</p>\n"
+      - key: "Read & Understood"
+        type: "checkbox-field"
+        name: "Read & Understood"
+        prefLabel: "Read & Understood"
+        values:
+          - label: "I have read & understood"
+        configuration:
+          required: true
+  - key: "catalogTitleRT"
+    type: "static-rich-text"
+    name: "catalogTitleRT"
+    prefLabel: "Catalog Title RT"
+    content: "<p><span style=\"font-size: 16px; background-color: rgb(238, 238, 238);\">Please provide a title of the catalog.</span></p>\n"
+  - key: "catalogTitle"
+    type: "text-field"
+    name: "catalogTitle"
+    prefLabel: "Catalog Title"
+    configuration:
+      required: true
+  - key: "catalogDescriptionRT"
+    type: "static-rich-text"
+    name: "catalogDescriptionRT"
+    prefLabel: "Catalog Description RT"
+    content: "<p>Please provide a description of the catalog.</p>\n"
+  - key: "catalogDescription"
+    type: "text-field"
+    name: "catalogDescription"
+    prefLabel: "Catalog Description"
+    configuration:
+      required: true
+  - key: "publisherRT"
+    type: "static-rich-text"
+    name: "publisherRT"
+    prefLabel: "Publisher RT"
+    content: "<p>Please provide a URI (globally unique, persistent and resolvable identifier) of the entity that holds, archives, publishes prints, distributes, releases, issues, or produces the catalog being described.</p>\n"
+  - key: "publisher"
+    type: "link-field"
+    name: "publisher"
+    prefLabel: "Publisher"
+    configuration:
+      required: true
+  - key: "licenseRT"
+    type: "static-rich-text"
+    name: "licenseRT"
+    description: "Help Text"
+    prefLabel: "License RT"
+    content: "<p><span style=\"background-color: rgb(255, 255, 255);\">Please select a legal document under which the dataset is made reusable.</span></p>\n"
+  - key: "license"
+    type: "controlled-term-field"
+    name: "license"
+    prefLabel: "License"
+    datatype: "iri"
+    values:
+      - type: "branch"
+        ontologyName: "Ontology for Generic Dataset Metadata Template (FDC-GDMT)"
+        acronym: "FDC-GDMT"
+        termLabel: "License Identifier"
+        iri: "http://vocab.fairdatacollective.org/gdmt/LicenseIdentifier"
+        maxDepth: 0
+  - key: "datasetMetadataInstanceIDRT"
+    type: "static-rich-text"
+    name: "datasetMetadataInstanceIDRT"
+    description: "Help Text"
+    prefLabel: "Dataset Metadata Instance ID RT"
+    content: "<p>Please provide the ID(s) of Dataset metadata instance(s). They can be found, only after you have created these instances. If you have not yet created them, or should more dataset be created in the future, you can return to this field later and update. Once Dataset metadata Instances are created, you will find them in your personal CEDAR workspace. After opening a Dataset metadata instance, you should&nbsp;copy the URL in the address bar of your web browser, taking only the part after &quot;..edit/&quot; but before the &quot;?&quot;.&nbsp;</p>\n"
+  - key: "datasetMetadataInstanceIdentifier"
+    type: "link-field"
+    name: "datasetMetadataInstanceIdentifier"
+    prefLabel: "Dataset Metadata Instance ID (1..N)"
+    configuration:
+      required: true
+      multiple: true
+      minItems: 1

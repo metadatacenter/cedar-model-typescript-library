@@ -1,0 +1,15 @@
+type: "multi-select-list-field"
+name: "Ulnar CMAP aaaaaa aaaaaa aaaaaa aaaaaa aaaaaa aaaaaa aaaaaa aaaaaa \taaaaaa \raaaaaa \\aaaaaa aaaaaa \nmedian abc\nxyz\\n123\n meters. \n\nIn ca"
+description: "\\n\n"
+identifier: "7yiCUqs2se"
+prefLabel: "Ulnar CMAP median"
+altLabels:
+  - "Ulnar CMAP median"
+  - "Ulnar CMAP median PhenX"
+  - "Ulnar compound muscle action potential - CMAP - median [PhenX]"
+values:
+  - label: "4 - (0.1-1.1)"
+  - label: "1 - (>4 mV)"
+  - label: "2 - (2.8-3.9)"
+  - label: "3 - (1.2-2.7)"
+  - label: "5 - Absent"

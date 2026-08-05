@@ -1,0 +1,10 @@
+type: "template"
+name: "#012 Template with Email field"
+children:
+  - key: "Email field"
+    type: "email-field"
+    name: "Email field"
+    description: "Email field help text"
+    prefLabel: "Email field preferred"
+    configuration:
+      required: true

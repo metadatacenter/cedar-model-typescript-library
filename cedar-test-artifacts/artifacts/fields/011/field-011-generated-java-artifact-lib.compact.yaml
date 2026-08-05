@@ -1,0 +1,5 @@
+type: "single-select-list-field"
+name: "List single"
+values:
+  - label: "Untitled-0"
+  - label: "Untitled-1"

@@ -1,0 +1,12 @@
+type: "template"
+name: "Untitled"
+description: "Untitled description"
+children:
+  - key: "_text_field_"
+    type: "text-field"
+    name: "Textfield"
+    description: "Help Text"
+    prefLabel: "Textfield preferred label"
+    altLabels:
+      - "Textfield Alt1"
+      - "Textfield Alt2"

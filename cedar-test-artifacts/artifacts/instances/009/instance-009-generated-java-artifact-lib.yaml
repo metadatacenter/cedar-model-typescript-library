@@ -1,0 +1,30 @@
+type: "instance"
+name: "With Email metadata"
+id: "https://repo.metadatacenter.org/template-instances/1da98ce2-9b74-4257-af64-e6ef1c143f6e"
+isBasedOn: "https://repo.metadatacenter.org/templates/d9d52596-1a0e-464b-9207-b848faf2205d"
+createdOn: "2020-07-17T15:36:46-07:00"
+createdBy: "https://metadatacenter.org/users/2fa8910d-96e7-4e2f-ae60-4dfa8ec9877d"
+modifiedOn: "2020-07-17T15:36:46-07:00"
+modifiedBy: "https://metadatacenter.org/users/2fa8910d-96e7-4e2f-ae60-4dfa8ec9877d"
+children:
+  Checkbox Element:
+    - id: "https://repo.metadatacenter.org/template-element-instances/5c7eb617-1796-41d2-b5ba-34f25dc7dfd2"
+      children:
+        Checkbox in Element:
+          - value: "Option 1"
+    - id: "https://repo.metadatacenter.org/template-element-instances/c2d272cb-ba8d-476a-b764-c8371e832e41"
+      children:
+        Checkbox in Element:
+          - value: "Option 1"
+          - value: "Option 2"
+    - id: "https://repo.metadatacenter.org/template-element-instances/c73d1444-0812-47e7-8218-b80df8d568dc"
+      children:
+        Checkbox in Element:
+          - value: "Option 3"
+          - value: "Option 4"
+          - value: "Option 5"
+    - id: "https://repo.metadatacenter.org/template-element-instances/e53af5f7-cc94-4ccd-a9ee-7abff2107d09"
+  Checkbox Standalone:
+    - value: "Option 1"
+    - value: "Option 3"
+    - value: "Option 5"

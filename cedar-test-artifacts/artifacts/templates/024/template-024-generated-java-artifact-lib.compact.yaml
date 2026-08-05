@@ -1,0 +1,21 @@
+type: "template"
+name: "#024 Template with simple controlled field"
+children:
+  - key: "Controlled"
+    type: "controlled-term-field"
+    name: "Controlled"
+    description: "Help Text"
+    datatype: "iri"
+    values:
+      - type: "class"
+        label: "Music"
+        acronym: "MESH"
+        termType: "class"
+        termLabel: "Music"
+        iri: "http://purl.bioontology.org/ontology/MESH/D009146"
+    configuration:
+      required: true
+      valueRecommendation: true
+      multiple: true
+      minItems: 4
+      maxItems: 7

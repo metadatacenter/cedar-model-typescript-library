@@ -1,0 +1,25 @@
+type: "instance"
+name: "Template with multi-element metadata"
+isBasedOn: "https://repo.metadatacenter.org/templates/e26d7ff6-3a92-4445-85e4-fb2648c62500"
+children:
+  Multiple Choice Element:
+    - children:
+        Multiple Choice in Element (radio):
+          value: "Option 1"
+    - children:
+        Multiple Choice in Element (radio):
+          value: "Option 2"
+    - children:
+        Multiple Choice in Element (radio):
+          value: "Option 3"
+    - children:
+        Multiple Choice in Element (radio):
+          value: "Option 4"
+    - children:
+        Multiple Choice in Element (radio):
+          value: "Option 5"
+    - children:
+        Multiple Choice in Element (radio):
+          value: null
+  Multiple Choice Standalone:
+    value: "Option 1"

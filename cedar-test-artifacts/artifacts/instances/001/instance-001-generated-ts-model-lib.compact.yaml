@@ -1,0 +1,7 @@
+type: "instance"
+name: "01 - single field metadata"
+description: "01 - description"
+isBasedOn: "https://repo.metadatacenter.org/templates/ec3f500f-ddca-4ec1-9196-29932f9304fd"
+children:
+  Single Text Field:
+    value: "text value"

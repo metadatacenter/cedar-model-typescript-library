@@ -1,0 +1,10 @@
+type: "boolean"
+name: "Boolean Field"
+description: "Boolean Help"
+prefLabel: "Boolean Preferred"
+datatype: "xsd:boolean"
+nullEnabled: true
+default: null
+trueLabel: "True"
+falseLabel: "False"
+nullLabel: "Null"

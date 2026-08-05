@@ -1,0 +1,21 @@
+type: "instance"
+name: "With Email metadata"
+isBasedOn: "https://repo.metadatacenter.org/templates/d9d52596-1a0e-464b-9207-b848faf2205d"
+children:
+  Checkbox Element:
+    - children:
+        Checkbox in Element:
+          - value: "Option 1"
+    - children:
+        Checkbox in Element:
+          - value: "Option 1"
+          - value: "Option 2"
+    - children:
+        Checkbox in Element:
+          - value: "Option 3"
+          - value: "Option 4"
+          - value: "Option 5"
+  Checkbox Standalone:
+    - value: "Option 1"
+    - value: "Option 3"
+    - value: "Option 5"

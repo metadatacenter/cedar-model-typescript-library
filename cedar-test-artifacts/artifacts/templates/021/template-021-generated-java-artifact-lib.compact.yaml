@@ -1,0 +1,23 @@
+type: "template"
+name: "#021 Template with MultipleChoice"
+children:
+  - key: "Multiple choice with default"
+    type: "radio-field"
+    name: "Multiple choice with default"
+    description: "Help Text"
+    values:
+      - label: "Option 1"
+      - label: "Option 2"
+        selected: true
+      - label: "Option 3"
+      - label: "Option 4"
+      - label: "Option 5"
+  - key: "Multiple choice without default"
+    type: "radio-field"
+    name: "Multiple choice without default"
+    description: "Help Text"
+    values:
+      - label: "Option 1"
+      - label: "Option2"
+    configuration:
+      required: true

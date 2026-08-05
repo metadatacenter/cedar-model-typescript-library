@@ -1,0 +1,8 @@
+type: "template"
+name: "#022 Template with AttributeValue"
+children:
+  - key: "ATTR-Value"
+    type: "attribute-value-field"
+    name: "ATTR-Value"
+    description: "Some help text here"
+    prefLabel: "Attribute Value"

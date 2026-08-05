@@ -123,7 +123,7 @@ import { InstanceDataStringAtom } from './org/metadatacenter/model/cedar/templat
 import { InstanceDataTypedAtom } from './org/metadatacenter/model/cedar/template-instance/InstanceDataTypedAtom';
 import { InstanceDataLinkAtom } from './org/metadatacenter/model/cedar/template-instance/InstanceDataLinkAtom';
 import { InstanceDataControlledAtom } from './org/metadatacenter/model/cedar/template-instance/InstanceDataControlledAtom';
-import { JsonTemplateInstanceReader } from './org/metadatacenter/io/reader/json/JsonTemplateInstancetReader';
+import { JsonTemplateInstanceReader } from './org/metadatacenter/io/reader/json/JsonTemplateInstanceReader';
 import { JsonAbstractInstanceArtifactReader } from './org/metadatacenter/io/reader/json/JsonAbstractInstanceArtifactReader';
 import { JsonAbstractArtifactReader } from './org/metadatacenter/io/reader/json/JsonAbstractArtifactReader';
 import { JsonTemplateReaderResult } from './org/metadatacenter/io/reader/json/JsonTemplateReaderResult';

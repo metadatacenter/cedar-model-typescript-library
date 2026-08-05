@@ -5,7 +5,7 @@ import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
 import { JsonTemplateReader } from './JsonTemplateReader';
 import { JsonTemplateElementReader } from './JsonTemplateElementReader';
 import { JsonReaderBehavior } from '../../../behavior/JsonReaderBehavior';
-import { JsonTemplateInstanceReader } from './JsonTemplateInstancetReader';
+import { JsonTemplateInstanceReader } from './JsonTemplateInstanceReader';
 import { JsonAbstractArtifactReader } from './JsonAbstractArtifactReader';
 import { JsonTemplateFieldReader } from './JsonTemplateFieldReader';
 

@@ -184,13 +184,24 @@ const parseOf = (source: JsonNode) =>
     .getTemplateInstanceReader()
     .readFromObject(source, undefined as never).parsingResult;
 
+/**
+ * A complete instance, envelope included, so these tests answer only the
+ * question they are about. An `@context` of `{}` and absent provenance are
+ * themselves reported now, and this fixture used to carry both — which made
+ * `adheresToBlueprint` false here for reasons that have nothing to do with an
+ * `@id`. See `JsonTemplateInstanceReaderEnvelope.spec.ts` for those.
+ */
 const instanceWith = (values: object): JsonNode =>
   ({
     '@id': 'https://repo.metadatacenter.org/template-instances/1',
-    '@context': {},
+    '@context': { schema: 'http://schema.org/' },
     'schema:isBasedOn': 'https://repo.metadatacenter.org/templates/1',
     'schema:name': 'n',
     'schema:description': '',
+    'pav:createdOn': '2026-01-01T00:00:00-07:00',
+    'pav:createdBy': 'https://metadatacenter.org/users/1',
+    'pav:lastUpdatedOn': '2026-01-01T00:00:00-07:00',
+    'oslc:modifiedBy': 'https://metadatacenter.org/users/1',
     ...values,
   }) as JsonNode;
 

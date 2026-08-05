@@ -5,7 +5,6 @@ import { InstanceDataEmptyAtom } from './InstanceDataEmptyAtom';
 import { InstanceDataEmptyNode } from './InstanceDataEmptyNode';
 import { InstanceDataStringAtom } from './InstanceDataStringAtom';
 import { InstanceDataTypedAtom } from './InstanceDataTypedAtom';
-import { InstanceDataAttributeValueField } from './InstanceDataAttributeValueField';
 import { InstanceDataLinkAtom } from './InstanceDataLinkAtom';
 import { InstanceDataControlledAtom } from './InstanceDataControlledAtom';
 import { AbstractContainerArtifact } from '../AbstractContainerArtifact';
@@ -135,20 +134,7 @@ export class InstanceValidator {
   ): void {
     const isMulti = childInfo?.isMultiInAnyWay() ?? false;
 
-    /**
-     * An empty list is not read as an empty array: `[]` comes back as an
-     * `InstanceDataAttributeValueField`, because with no template in hand the
-     * reader cannot tell one from the other. On a child the template declares
-     * multi, it can only be the empty list, so it is counted as one — otherwise
-     * every unfilled multi child reads as a cardinality mismatch. Worth
-     * revisiting in the reader; treating it here keeps the false positive out
-     * of the verdict meanwhile.
-     */
-    const values: Array<InstanceDataAtomType> | null = Array.isArray(value)
-      ? value
-      : isMulti && value instanceof InstanceDataAttributeValueField
-        ? []
-        : null;
+    const values: Array<InstanceDataAtomType> | null = Array.isArray(value) ? value : null;
     const isList = values !== null;
 
     if (isMulti !== isList) {

@@ -75,9 +75,72 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     // one, so anything reported here was rooted at the document rather than
     // where the document actually sits. It mattered for nothing while nothing
     // was reported; it does now.
-    this.readInstanceData(instanceSourceObject, instance, topPath ?? new JsonPath(), parsingResult);
+    const path = topPath ?? new JsonPath();
+    this.readInstanceData(instanceSourceObject, instance, path, parsingResult);
+    JsonTemplateInstanceReader.reportEnvelope(instanceSourceObject, path, parsingResult);
 
     return new JsonTemplateInstanceReaderResult(instance, parsingResult, instanceSourceObject);
+  }
+
+  /**
+   * The keys a saved instance carries around its data.
+   *
+   * `@context` binds every child name to an IRI, `schema:isBasedOn` identifies
+   * the template the document claims to instantiate, `@id` names the document
+   * itself, and the four provenance keys record who wrote it and when. Together
+   * they are the difference between an instance and a bag of values.
+   */
+  private static readonly ENVELOPE_KEYS: ReadonlyArray<string> = [
+    JsonSchema.atContext,
+    JsonSchema.atId,
+    JsonSchema.schemaIsBasedOn,
+    JsonSchema.pavCreatedOn,
+    JsonSchema.pavCreatedBy,
+    JsonSchema.oslcModifiedBy,
+    JsonSchema.pavLastUpdatedOn,
+  ];
+
+  /**
+   * What the envelope is missing, as warnings.
+   *
+   * `knownKeys` listed the envelope and nothing consulted it, so an instance
+   * with no `@id`, no `schema:isBasedOn`, no provenance and an empty `@context`
+   * read as clean — the reader skipped those keys as "known" and never asked
+   * whether they were there. That is the whole of
+   * https://github.com/metadatacenter/cedar-model-typescript-library/issues/2.
+   *
+   * Warnings rather than errors, and the corpus is the reason: 29 of its 121
+   * instances carry no envelope at all. They are not malformed. An instance has
+   * no `@id` or provenance until it is saved, and the CEDAR Embeddable Editor's
+   * "extract" form strips `@context` from documents it passes around. Rejecting
+   * those would make the reader unable to open documents that demonstrably
+   * exist, which is the same trap the template reader avoids for pre-2024 forms.
+   *
+   * So the two verdicts split the answer: `wasSuccessful` stays true, because
+   * the document read and the values are usable, while `adheresToBlueprint`
+   * turns false, because this is not what a complete instance looks like. A
+   * caller that wants to know before saving asks the second one.
+   */
+  private static reportEnvelope(sourceObject: JsonNode, path: JsonPath, parsingResult: JsonArtifactParsingResult): void {
+    for (const key of JsonTemplateInstanceReader.ENVELOPE_KEYS) {
+      if (!Object.hasOwn(sourceObject, key)) {
+        parsingResult.addBlueprintComparisonWarning(
+          new ComparisonError('JsonTemplateInstanceReader', ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, path.add(key), key),
+        );
+        continue;
+      }
+      // Present and empty is its own case. `pav:createdOn: null` is how a
+      // document that was never saved spells the key it has no value for, and an
+      // `@context` of `{}` binds nothing — neither is more complete than the
+      // absence, so neither passes quietly.
+      const value = ReaderUtil.getNode(sourceObject, key);
+      const empty = value === null || value === undefined || (key === JsonSchema.atContext && Object.keys(value).length === 0);
+      if (empty) {
+        parsingResult.addBlueprintComparisonWarning(
+          new ComparisonError('JsonTemplateInstanceReader', ComparisonErrorType.MISSING_VALUE_IN_REAL_OBJECT, path.add(key), key, null),
+        );
+      }
+    }
   }
 
   protected readInstanceData(
@@ -116,8 +179,16 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     });
     this.packAttributeValues(ret);
 
-    if (Object.hasOwn(sourceObject, JsonSchema.atContext)) {
-      const atContext = ReaderUtil.getNode(sourceObject, JsonSchema.atContext);
+    // `"@context": null` is a present key with nothing in it, and every lookup
+    // below starts with `Object.hasOwn`, which throws on null — so a document
+    // carrying one took the reader down instead of parsing. The same trap as a
+    // null child in `parseNode`. There are no mappings to read either way, and
+    // `reportEnvelope` is what says the context is missing.
+    const atContextNode = Object.hasOwn(sourceObject, JsonSchema.atContext)
+      ? ReaderUtil.getNode(sourceObject, JsonSchema.atContext)
+      : null;
+    if (atContextNode !== null && atContextNode !== undefined) {
+      const atContext = atContextNode;
       // add iri mapping for regular fields
       Object.keys(ret.values).forEach((key) => {
         const iri = ReaderUtil.getString(atContext, key);
@@ -333,7 +404,21 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
             foundNonAttributeValueName = true;
           }
         });
-        if (!foundNonAttributeValueName) {
+        /**
+         * `[]` is an empty list, not an empty attribute-value field.
+         *
+         * What identifies an attribute-value field is that its slots hold
+         * attribute *names*. An empty array holds none, so nothing in it points
+         * that way — but "every entry is a name" is vacuously true of it, and it
+         * was being folded into an attribute-value field on that alone. Any
+         * multi child the user simply had not filled came back as one, and a
+         * consumer holding the template then saw a cardinality mismatch on every
+         * unfilled multi child in the document.
+         *
+         * Both shapes still serialize to `[]`, so no round trip changes; what
+         * changes is that the empty list is read as the empty list it is.
+         */
+        if (value.length > 0 && !foundNonAttributeValueName) {
           const avField = new InstanceDataAttributeValueField(key);
           newAttributeValues.push(avField);
           value.forEach((arrayElement: InstanceDataAttributeValueFieldName, _index: number) => {

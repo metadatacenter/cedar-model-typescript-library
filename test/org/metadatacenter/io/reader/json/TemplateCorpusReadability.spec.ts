@@ -89,6 +89,52 @@ describe('reading the shared template corpus', () => {
   });
 
   /**
+   * A warned template is the case that separates the two verdicts. It reads, so
+   * a caller can use it; it is not in the canonical form, so a caller judging it
+   * should be told. While `adheresToBlueprint` was a second errors-only check
+   * there was nowhere for the stricter answer to come from.
+   */
+  it('reads an older form successfully without calling it canonical', () => {
+    const warned = all
+      .map(([name, file]) => {
+        const result = CedarReaders.json()
+          .getFebruary2024()
+          .getTemplateReader()
+          .readFromObject(JSON.parse(fs.readFileSync(file, 'utf8'))).parsingResult;
+        return { name, result };
+      })
+      .filter(({ result }) => result.getBlueprintComparisonWarningCount() > 0);
+
+    expect(warned.length).toBeGreaterThan(15);
+    for (const { name, result } of warned) {
+      expect(`${name}: successful=${result.wasSuccessful()} adheres=${result.adheresToBlueprint()}`).toBe(
+        `${name}: successful=true adheres=false`,
+      );
+    }
+  });
+
+  /**
+   * The other side of it: a template with nothing recorded against it answers
+   * true to both, so the stricter check has not simply become unsatisfiable.
+   */
+  it('calls a clean template both successful and canonical', () => {
+    const clean = all
+      .map(([name, file]) => {
+        const result = CedarReaders.json()
+          .getFebruary2024()
+          .getTemplateReader()
+          .readFromObject(JSON.parse(fs.readFileSync(file, 'utf8'))).parsingResult;
+        return { name, result };
+      })
+      .filter(({ result }) => result.getBlueprintComparisonWarningCount() === 0 && result.getBlueprintComparisonErrorCount() === 0);
+
+    expect(clean.length).toBeGreaterThan(50);
+    for (const { name, result } of clean) {
+      expect(`${name}: adheres=${result.adheresToBlueprint()}`).toBe(`${name}: adheres=true`);
+    }
+  });
+
+  /**
    * If this ever reaches zero, the leniency has spread into STRICT and the two
    * behaviors have collapsed into one.
    */

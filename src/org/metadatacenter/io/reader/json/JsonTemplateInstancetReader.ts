@@ -1,6 +1,8 @@
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { JsonArtifactParsingResult } from '../../../model/cedar/util/compare/JsonArtifactParsingResult';
+import { ComparisonError } from '../../../model/cedar/util/compare/ComparisonError';
+import { ComparisonErrorType } from '../../../model/cedar/util/compare/ComparisonErrorType';
 import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
 import { JsonReaderBehavior } from '../../../behavior/JsonReaderBehavior';
 import { JsonAbstractInstanceArtifactReader } from './JsonAbstractInstanceArtifactReader';
@@ -63,31 +65,40 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     return this.readFromObject(instanceObject, new JsonPath());
   }
 
-  public readFromObject(instanceSourceObject: JsonNode, _topPath: JsonPath): JsonTemplateInstanceReaderResult {
+  public readFromObject(instanceSourceObject: JsonNode, topPath?: JsonPath): JsonTemplateInstanceReaderResult {
     const parsingResult: JsonArtifactParsingResult = new JsonArtifactParsingResult();
     const instance = TemplateInstance.buildEmptyWithNullValues();
 
     this.readNonReportableAttributes(instance, instanceSourceObject);
 
-    this.readInstanceData(instanceSourceObject, instance, new JsonPath());
+    // The caller's path was accepted and then discarded in favour of a fresh
+    // one, so anything reported here was rooted at the document rather than
+    // where the document actually sits. It mattered for nothing while nothing
+    // was reported; it does now.
+    this.readInstanceData(instanceSourceObject, instance, topPath ?? new JsonPath(), parsingResult);
 
     return new JsonTemplateInstanceReaderResult(instance, parsingResult, instanceSourceObject);
   }
 
-  protected readInstanceData(sourceObject: JsonNode, instance: TemplateInstance, path: JsonPath): void {
-    instance.dataContainer = this.readInstanceContainer(sourceObject, path);
+  protected readInstanceData(
+    sourceObject: JsonNode,
+    instance: TemplateInstance,
+    path: JsonPath,
+    parsingResult: JsonArtifactParsingResult,
+  ): void {
+    instance.dataContainer = this.readInstanceContainer(sourceObject, path, parsingResult);
     this.readAnnotations(instance, sourceObject);
   }
 
-  private readInstanceContainer(sourceObject: JsonNode, path: JsonPath): InstanceDataContainer {
-    return this.parseContainer(sourceObject, path);
+  private readInstanceContainer(sourceObject: JsonNode, path: JsonPath, parsingResult: JsonArtifactParsingResult): InstanceDataContainer {
+    return this.parseContainer(sourceObject, path, parsingResult);
   }
 
   protected isKnownKey(key: string): boolean {
     return Object.hasOwn(this.knownKeys, key);
   }
 
-  private parseContainer(sourceObject: JsonNode, path: JsonPath): InstanceDataContainer {
+  private parseContainer(sourceObject: JsonNode, path: JsonPath, parsingResult: JsonArtifactParsingResult): InstanceDataContainer {
     const ret: InstanceDataContainer = new InstanceDataContainer();
     Object.keys(sourceObject).forEach((key) => {
       if (!this.isKnownKey(key)) {
@@ -96,10 +107,10 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
           const arrayContainer: InstanceDataAtomList = [];
           ret.setValue(key, arrayContainer);
           content.forEach((arrayElement: JsonNode, index: number) => {
-            arrayContainer[index] = this.parseNode(arrayElement, path.add(key, index));
+            arrayContainer[index] = this.parseNode(arrayElement, path.add(key, index), parsingResult);
           });
         } else {
-          ret.setValue(key, this.parseNode(content, path.add(key)));
+          ret.setValue(key, this.parseNode(content, path.add(key), parsingResult));
         }
       }
     });
@@ -223,7 +234,11 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     return JsonTemplateInstanceReader.parseDataAtom(sourceObject);
   }
 
-  private parseNode(sourceObject: JsonNode | string | null, path: JsonPath): InstanceDataAtomType {
+  private parseNode(
+    sourceObject: JsonNode | string | null,
+    path: JsonPath,
+    parsingResult: JsonArtifactParsingResult,
+  ): InstanceDataAtomType {
     // `null` is how an element with no occurrences is written, and it reaches
     // here both on its own and as a member of a list. Every check below starts
     // with `Object.hasOwn`, which throws on it, so an instance containing one
@@ -235,12 +250,48 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
       return new InstanceDataAttributeValueFieldName(sourceObject);
     }
     if (JsonTemplateInstanceReader.isValueNode(sourceObject)) {
-      return JsonTemplateInstanceReader.parseDataAtom(sourceObject);
+      const atom = JsonTemplateInstanceReader.parseDataAtom(sourceObject);
+      JsonTemplateInstanceReader.reportNullIri(atom, path, parsingResult);
+      return atom;
     }
     if (Object.keys(sourceObject).length === 0) {
       return new InstanceDataEmptyNode();
     }
-    return this.parseContainer(sourceObject, path);
+    return this.parseContainer(sourceObject, path, parsingResult);
+  }
+
+  /**
+   * `{"@id": null}` is malformed, and was being preserved rather than reported.
+   *
+   * `@value` and `@id` are not symmetrical. A literal's `@value` may be null —
+   * JSON-LD permits it and CEDAR declares the property `["string", "null"]`,
+   * which is how an unfilled literal is written. An `@id` may not: JSON-LD
+   * requires an IRI, and CEDAR's templates declare it
+   * `{"type": "string", "format": "uri"}` with no null branch. An unfilled link
+   * or controlled-term field is written `{}`.
+   *
+   * The round trip made this invisible. The reader took `{"@id": null}` as a
+   * link atom holding a null id and the writer emitted it straight back, so the
+   * document survived intact and no stage objected. Reporting it here is the
+   * point at which the library stops passing an invalid document through in
+   * silence.
+   *
+   * The node is still parsed and preserved — fidelity is not the thing being
+   * fixed. What changes is that the verdict now says so.
+   */
+  private static reportNullIri(atom: InstanceDataAtomType, path: JsonPath, parsingResult: JsonArtifactParsingResult): void {
+    const nullIri = (atom instanceof InstanceDataLinkAtom || atom instanceof InstanceDataControlledAtom) && atom.id === null;
+    if (nullIri) {
+      parsingResult.addBlueprintComparisonError(
+        new ComparisonError(
+          'JsonTemplateInstanceReader',
+          ComparisonErrorType.MISSING_VALUE_IN_REAL_OBJECT,
+          path.add(JsonSchema.atId),
+          'an IRI',
+          null,
+        ),
+      );
+    }
   }
 
   private static parseDataAtom(content: JsonNode): InstanceDataAtomType {

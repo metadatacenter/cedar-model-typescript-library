@@ -21,8 +21,10 @@ import { InstanceDataEmptyNode } from '../../../../../../src/org/metadatacenter/
  * so anything holding a child property is an element whatever else it has.
  */
 const read = (source: JsonNode): InstanceDataContainer =>
-  CedarReaders.json().getFebruary2024().getTemplateInstanceReader().readFromObject(source, undefined as never)
-    .instance.dataContainer;
+  CedarReaders.json()
+    .getFebruary2024()
+    .getTemplateInstanceReader()
+    .readFromObject(source, undefined as never).instance.dataContainer;
 
 describe('reading an instance whose elements have no @context', () => {
   test('an element carrying only @id is still an element', () => {
@@ -153,5 +155,92 @@ describe('classifying a node on its own', () => {
 
   test('an element is not read as a value', () => {
     expect(JsonTemplateInstanceReader.readValueNode({ field: { '@value': 'x' } }) instanceof InstanceDataEmptyNode).toBe(true);
+  });
+});
+
+/**
+ * A malformed `@id`, reported rather than passed through.
+ *
+ * `@value` and `@id` are not symmetrical. A literal's `@value` may be null —
+ * JSON-LD permits it, and CEDAR declares the property `["string", "null"]`,
+ * which is how an unfilled literal is written. An `@id` may not: JSON-LD
+ * requires an IRI, and CEDAR's templates declare it
+ * `{"type": "string", "format": "uri"}` with no null branch. An unfilled link or
+ * controlled-term field is written `{}`.
+ *
+ * The round trip is what made this invisible: the reader took `{"@id": null}` as
+ * a link atom with a null id and the writer emitted it straight back, so the
+ * document survived intact and no stage objected. The node is still parsed and
+ * preserved — that fidelity is deliberate — but the verdict now says it is
+ * wrong.
+ *
+ * This is also the first thing the instance reader reports at all. Its
+ * `parsingResult` was constructed and returned without a single write, so
+ * `adheresToBlueprint()` answered true for every instance ever passed to it.
+ */
+const parseOf = (source: JsonNode) =>
+  CedarReaders.json()
+    .getFebruary2024()
+    .getTemplateInstanceReader()
+    .readFromObject(source, undefined as never).parsingResult;
+
+const instanceWith = (values: object): JsonNode =>
+  ({
+    '@id': 'https://repo.metadatacenter.org/template-instances/1',
+    '@context': {},
+    'schema:isBasedOn': 'https://repo.metadatacenter.org/templates/1',
+    'schema:name': 'n',
+    'schema:description': '',
+    ...values,
+  }) as JsonNode;
+
+describe('a null @id', () => {
+  test('is reported', () => {
+    const result = parseOf(instanceWith({ link: { '@id': null } }));
+    expect(result.getBlueprintComparisonErrorCount()).toBe(1);
+    expect(result.adheresToBlueprint()).toBe(false);
+  });
+
+  test('names the field and @id in its path', () => {
+    const error = parseOf(instanceWith({ link: { '@id': null } })).getBlueprintComparisonErrors()[0];
+    expect(JSON.stringify(error.errorPath)).toContain('link');
+    expect(JSON.stringify(error.errorPath)).toContain('@id');
+  });
+
+  test('is still parsed and preserved, not dropped', () => {
+    const container = read(instanceWith({ link: { '@id': null } }));
+    const atom = container.values['link'];
+    expect(atom instanceof InstanceDataLinkAtom).toBe(true);
+    expect((atom as InstanceDataLinkAtom).id).toBeNull();
+  });
+
+  test('is reported inside a list, at its index', () => {
+    const result = parseOf(instanceWith({ links: [{ '@id': 'https://example.org/a' }, { '@id': null }] }));
+    expect(result.getBlueprintComparisonErrorCount()).toBe(1);
+    expect(JSON.stringify(result.getBlueprintComparisonErrors()[0].errorPath)).toContain('1');
+  });
+
+  test('is reported inside an element', () => {
+    const result = parseOf(instanceWith({ el: { child: { '@id': null } } }));
+    expect(result.getBlueprintComparisonErrorCount()).toBe(1);
+    expect(JSON.stringify(result.getBlueprintComparisonErrors()[0].errorPath)).toContain('child');
+  });
+});
+
+describe('what a null @id is not', () => {
+  test('a null @value is legal and is not reported', () => {
+    expect(parseOf(instanceWith({ literal: { '@value': null } })).getBlueprintComparisonErrorCount()).toBe(0);
+  });
+
+  test('{} is how an unfilled link is written, and is not reported', () => {
+    expect(parseOf(instanceWith({ link: {} })).getBlueprintComparisonErrorCount()).toBe(0);
+  });
+
+  test('a real IRI is not reported', () => {
+    expect(parseOf(instanceWith({ link: { '@id': 'https://example.org/a' } })).getBlueprintComparisonErrorCount()).toBe(0);
+  });
+
+  test('a correct instance still adheres', () => {
+    expect(parseOf(instanceWith({ literal: { '@value': 'x' } })).adheresToBlueprint()).toBe(true);
   });
 });

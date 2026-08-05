@@ -1,10 +1,10 @@
 const fs = require('fs').promises;
 const path = require('path');
-const fieldsTestFolderPath = '../cedar-test-artifacts/artifacts/fields';
-const elementsTestFolderPath = '../cedar-test-artifacts/artifacts/elements';
-const templatesTestFolderPath = '../cedar-test-artifacts/artifacts/templates';
-const instancesTestFolderPath = '../cedar-test-artifacts/artifacts/instances';
-const ceeSuiteTestFolderPath = '../cedar-test-artifacts/artifacts/cee-suite';
+const fieldsTestFolderPath = 'cedar-test-artifacts/artifacts/fields';
+const elementsTestFolderPath = 'cedar-test-artifacts/artifacts/elements';
+const templatesTestFolderPath = 'cedar-test-artifacts/artifacts/templates';
+const instancesTestFolderPath = 'cedar-test-artifacts/artifacts/instances';
+const ceeSuiteTestFolderPath = 'cedar-test-artifacts/artifacts/cee-suite';
 
 async function generateTestCases() {
   let fieldTestNumbers = [];

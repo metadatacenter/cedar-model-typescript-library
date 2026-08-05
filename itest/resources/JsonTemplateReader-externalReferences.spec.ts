@@ -38,7 +38,7 @@ describe('JSONTemplateReader - CEDAR reference templates', () => {
   // files = ['SimpleTemplateWithAttributeValues.json'];
 
   test.each(files)('reads template %s from CEDAR Artifact Library', (fileName) => {
-    const templateSource = TestUtil.readOutsideResourceAsString('../cedar-artifact-library/src/test/resources/templates/', fileName);
+    const templateSource = TestUtil.readOutsideResourceAsString('cedar-artifact-library/src/test/resources/templates/', fileName);
     const reader: JsonTemplateReader = JsonTemplateReader.getStrict();
     const jsonTemplateReaderResult: JsonTemplateReaderResult = reader.readFromString(templateSource);
     expect(jsonTemplateReaderResult).not.toBeNull();

@@ -22,65 +22,27 @@ jobs:
     timeout-minutes: 15
 
     steps:
-      # The two checkouts have to end up as siblings. `cedar-test-artifacts` is a
-      # symlink in this repo pointing at `../cedar-test-artifacts`, so a lone
-      # checkout leaves it dangling — and `pretest.js` reads the corpus with no
-      # guard, so the whole suite fails before running a single test.
+      # One checkout. The test corpus (`cedar-test-artifacts/`) and the reference
+      # templates (`cedar-artifact-library/src/test/resources/templates/`) are
+      # vendored into this repository, so nothing has to be assembled from
+      # sibling clones.
       - name: Check out the library
         uses: actions/checkout@v4
-        with:
-          path: cedar-model-typescript-library
-
-      # Pinned to develop deliberately. This repository's default branch is main,
-      # and main carries no templates at all — the 123 artifact directories live
-      # on develop. Taking the default would hand CI an empty corpus.
-      - name: Check out the shared test artifacts
-        uses: actions/checkout@v4
-        with:
-          repository: metadatacenter/cedar-test-artifacts
-          ref: develop
-          path: cedar-test-artifacts
-
-      # A third sibling. The integration tests under itest/ read reference
-      # templates from `../cedar-artifact-library/src/test/resources/templates/`,
-      # which passes locally on a full CEDAR working copy and failed here on the
-      # first run for the same reason the corpus would have: it simply was not
-      # there. Default branch is fine for this one — main and develop carry the
-      # same 93 templates.
-      - name: Check out the CEDAR artifact library
-        uses: actions/checkout@v4
-        with:
-          repository: metadatacenter/cedar-artifact-library
-          path: cedar-artifact-library
 
       - name: Use Node.js 20
         uses: actions/setup-node@v4
         with:
           node-version: 20.20.2
           cache: npm
-          cache-dependency-path: cedar-model-typescript-library/package-lock.json
 
       - name: Install
-        working-directory: cedar-model-typescript-library
         run: npm ci
 
-      - name: Confirm both external resource trees resolved
-        working-directory: cedar-model-typescript-library
-        # Cheap, and it fails with a sentence rather than leaving someone to read
-        # a hundred ENOENTs from pretest.
-        run: |
-          test -d cedar-test-artifacts/artifacts/cee-suite \
-            || { echo "cedar-test-artifacts did not resolve; the checkouts are not siblings"; exit 1; }
-          test -d ../cedar-artifact-library/src/test/resources/templates \
-            || { echo "cedar-artifact-library is missing; itest/ reads reference templates from it"; exit 1; }
-
       - name: Test
-        working-directory: cedar-model-typescript-library
         run: npm test
 
       # The dist is what consumers install, and it is built by a separate webpack
       # pass that the test run never exercises. It has broken independently of the
       # tests before.
       - name: Build the distributable
-        working-directory: cedar-model-typescript-library
         run: npm run build

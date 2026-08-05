@@ -59,7 +59,8 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
       candidateChildrenInfo.add(childInfo);
       return childInfo;
     } else {
-      parsingResult.addBlueprintComparisonError(
+      this.reportBlueprintDifference(
+        parsingResult,
         new ComparisonError('jtr09', ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, path.add(childCandidateName, JsonSchema.atType)),
       );
       return null;
@@ -192,7 +193,8 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
     // Children present in the 'properties' but not in the 'order' will also result in error
     for (const childInfo of candidateChildrenInfo.children) {
       if (!containerUIOrder.includes(childInfo.name)) {
-        parsingResult.addBlueprintComparisonError(
+        this.reportBlueprintDifference(
+          parsingResult,
           new ComparisonError(
             'jtr08',
             ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
@@ -218,7 +220,8 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
       if (candidate !== null && candidate !== undefined) {
         finalChildrenInfo.add(candidate);
       } else {
-        parsingResult.addBlueprintComparisonError(
+        this.reportBlueprintDifference(
+          parsingResult,
           new ComparisonError(
             'jtr07',
             ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
@@ -295,7 +298,8 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
     // Check if all the keys of the "required" blueprint are present in the template's "required"
     for (const key of requiredPartial) {
       if (!elementRequiredMap.has(key)) {
-        parsingResult.addBlueprintComparisonError(
+        this.reportBlueprintDifference(
+          parsingResult,
           new ComparisonError('jtr01', ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, path.add(JsonSchema.required), key),
         );
       }
@@ -315,7 +319,8 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
     const childNames: Array<string> = candidateChildrenInfo.getChildrenNamesForRequired();
     for (const childName of childNames) {
       if (!elementRequiredMap.has(childName)) {
-        parsingResult.addBlueprintComparisonError(
+        this.reportBlueprintDifference(
+          parsingResult,
           new ComparisonError('jtr02', ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, path.add(JsonSchema.required), childName),
         );
       }
@@ -324,7 +329,8 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
     // Check if "required" contains extra nodes (not in blueprint, not in children name list)
     for (const key of elementRequired) {
       if (!requiredPartialKeyMap.has(key) && !candidateChildrenInfo.has(key)) {
-        parsingResult.addBlueprintComparisonError(
+        this.reportBlueprintDifference(
+          parsingResult,
           new ComparisonError('jtr03', ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT, path.add(JsonSchema.required), key),
         );
       }
@@ -341,7 +347,8 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
     const containerUIPLabels = ReaderUtil.getStringMap(containerUI, CedarModel.propertyLabels);
     for (const childInfo of candidateChildrenInfo.children) {
       if (containerUIPLabels === null || !containerUIPLabels.has(childInfo.name)) {
-        parsingResult.addBlueprintComparisonError(
+        this.reportBlueprintDifference(
+          parsingResult,
           new ComparisonError(
             'jtr04',
             ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
@@ -358,7 +365,8 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
     const containerUIPDescriptions = ReaderUtil.getStringMap(containerUI, CedarModel.propertyDescriptions);
     for (const childInfo of candidateChildrenInfo.children) {
       if (containerUIPDescriptions === null || !containerUIPDescriptions.has(childInfo.name)) {
-        parsingResult.addBlueprintComparisonError(
+        this.reportBlueprintDifference(
+          parsingResult,
           new ComparisonError(
             'jtr05',
             ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
@@ -369,6 +377,28 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
       } else {
         childInfo.description = containerUIPDescriptions.get(childInfo.name) ?? null;
       }
+    }
+  }
+
+  /**
+   * A blueprint difference, reported at the severity the behavior asks for.
+   *
+   * The blueprint describes what the library writes today; the templates CEDAR
+   * served between 2018 and 2024 sometimes differ from it, because the canonical
+   * form moved while they stayed as they were emitted. Rejecting those would
+   * make the reader unable to open documents that demonstrably exist, so under a
+   * behavior that tolerates known issues they are recorded as warnings instead.
+   * `STRICT` keeps treating every one as an error.
+   *
+   * The difference is never discarded — a warning is still retrievable through
+   * `getBlueprintComparisonWarnings`, so a caller that wants the stricter reading
+   * can still get it without re-reading the document.
+   */
+  protected reportBlueprintDifference(parsingResult: JsonArtifactParsingResult, error: ComparisonError): void {
+    if (this.behavior.useWarningForKnownIssues() && JsonObjectComparator.isKnownProductionVariation(error.errorPath)) {
+      parsingResult.addBlueprintComparisonWarning(error);
+    } else {
+      parsingResult.addBlueprintComparisonError(error);
     }
   }
 
@@ -386,7 +416,8 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
         const iriEnum: JsonNode = ReaderUtil.getNode(elementIRIMap, childInfo.name);
         const iriList: Array<string> = ReaderUtil.getStringList(iriEnum, JsonSchema.enum);
         if (iriList === null || iriList.length != 1) {
-          parsingResult.addBlueprintComparisonError(
+          this.reportBlueprintDifference(
+            parsingResult,
             new ComparisonError(
               'jtr06',
               ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,

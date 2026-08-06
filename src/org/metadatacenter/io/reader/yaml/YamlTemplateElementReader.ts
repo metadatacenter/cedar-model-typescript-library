@@ -32,7 +32,7 @@ export class YamlTemplateElementReader extends YamlContainerArtifactReader {
     let elementObject;
     try {
       elementObject = YAML.parse(elementSourceString);
-    } catch (Exception) {
+    } catch {
       elementObject = {};
     }
     return this.readFromObject(elementObject, ChildDeploymentInfo.empty(), new JsonPath());

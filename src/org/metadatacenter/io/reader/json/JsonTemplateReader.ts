@@ -50,7 +50,7 @@ export class JsonTemplateReader extends JsonContainerArtifactReader {
     let templateObject;
     try {
       templateObject = JSON.parse(templateSourceString);
-    } catch (Exception) {
+    } catch {
       templateObject = {};
     }
     return this.readFromObject(templateObject);

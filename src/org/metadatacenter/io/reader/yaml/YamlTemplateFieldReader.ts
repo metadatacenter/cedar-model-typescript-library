@@ -88,7 +88,7 @@ export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
     let fieldObject;
     try {
       fieldObject = YAML.parse(fieldSourceString);
-    } catch (Exception) {
+    } catch {
       fieldObject = {};
     }
     return this.readFromObject(fieldObject, ChildDeploymentInfo.empty(), new JsonPath());

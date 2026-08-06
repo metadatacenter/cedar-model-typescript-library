@@ -47,7 +47,7 @@ export class JsonTemplateElementReader extends JsonContainerArtifactReader {
     let elementObject;
     try {
       elementObject = JSON.parse(elementSourceString);
-    } catch (Exception) {
+    } catch {
       elementObject = {};
     }
     return this.readFromObject(elementObject, new JsonPath());

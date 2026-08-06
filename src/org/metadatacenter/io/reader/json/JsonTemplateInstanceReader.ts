@@ -59,7 +59,7 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     let instanceObject;
     try {
       instanceObject = JSON.parse(instanceSourceString);
-    } catch (Exception) {
+    } catch {
       instanceObject = {};
     }
     return this.readFromObject(instanceObject, new JsonPath());

@@ -98,7 +98,7 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     let fieldObject;
     try {
       fieldObject = JSON.parse(fieldSourceString);
-    } catch (Exception) {
+    } catch {
       fieldObject = {};
     }
     return this.readFromObject(fieldObject);

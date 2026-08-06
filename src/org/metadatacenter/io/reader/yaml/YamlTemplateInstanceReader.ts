@@ -46,7 +46,7 @@ export class YamlTemplateInstanceReader {
     let instanceObject;
     try {
       instanceObject = YAML.parse(instanceSourceString);
-    } catch (Exception) {
+    } catch {
       instanceObject = {};
     }
     return this.readFromObject(instanceObject);

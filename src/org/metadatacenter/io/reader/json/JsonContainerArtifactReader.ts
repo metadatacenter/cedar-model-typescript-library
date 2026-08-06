@@ -160,17 +160,16 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
           .withDescription(childInfo.description)
           .withRecommendedValue(dynaChildInfo.recommendedValue)
           .withRequiredValue(dynaChildInfo.requiredValue);
-        const currentInfo = childInfo as any as ChildDeploymentInfo;
-        if (finalChildInfoBuilder instanceof ChildDeploymentInfoBuilder) {
+        if (finalChildInfoBuilder instanceof ChildDeploymentInfoBuilder && childInfo instanceof ChildDeploymentInfo) {
           finalChildInfoBuilder
-            .withMultiInstance(currentInfo.multiInstance)
-            .withMinItems(currentInfo.minItems)
-            .withMaxItems(currentInfo.maxItems);
+            .withMultiInstance(childInfo.multiInstance)
+            .withMinItems(childInfo.minItems)
+            .withMaxItems(childInfo.maxItems);
         } else if (finalChildInfoBuilder instanceof ChildDeploymentInfoAlwaysMultipleBuilder) {
           // Always-multiple children have no multiInstance flag to set — they
           // are multiple by definition — but a template may still state the
           // bounds, and those have to reach the deployment info.
-          finalChildInfoBuilder.withMinItems(currentInfo.minItems).withMaxItems(currentInfo.maxItems);
+          finalChildInfoBuilder.withMinItems(dynaChildInfo.minItems).withMaxItems(dynaChildInfo.maxItems);
         }
         const finalChildInfo = finalChildInfoBuilder.build();
         // console.log('CHILD INFO2:', finalChildInfo);

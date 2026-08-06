@@ -235,8 +235,7 @@ export class InstanceValidator {
    * the children the template declares.
    */
   private static validateIri(value: InstanceDataAtomType, path: JsonPath, result: JsonArtifactParsingResult): void {
-    const hasNullIri =
-      (value instanceof InstanceDataLinkAtom || value instanceof InstanceDataControlledAtom) && value.id === null;
+    const hasNullIri = (value instanceof InstanceDataLinkAtom || value instanceof InstanceDataControlledAtom) && value.id === null;
     if (hasNullIri) {
       result.addBlueprintComparisonError(
         new ComparisonError(LOCATION, ComparisonErrorType.MISSING_VALUE_IN_REAL_OBJECT, path.add(JsonSchema.atId), 'an IRI', null),

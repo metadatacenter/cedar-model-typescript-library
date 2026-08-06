@@ -184,9 +184,7 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     // carrying one took the reader down instead of parsing. The same trap as a
     // null child in `parseNode`. There are no mappings to read either way, and
     // `reportEnvelope` is what says the context is missing.
-    const atContextNode = Object.hasOwn(sourceObject, JsonSchema.atContext)
-      ? ReaderUtil.getNode(sourceObject, JsonSchema.atContext)
-      : null;
+    const atContextNode = Object.hasOwn(sourceObject, JsonSchema.atContext) ? ReaderUtil.getNode(sourceObject, JsonSchema.atContext) : null;
     if (atContextNode !== null && atContextNode !== undefined) {
       const atContext = atContextNode;
       // add iri mapping for regular fields

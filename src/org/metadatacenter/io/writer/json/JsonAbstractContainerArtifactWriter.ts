@@ -71,8 +71,8 @@ export abstract class JsonAbstractContainerArtifactWriter extends JsonAbstractAr
   protected expandInstanceTypeSpecification(container: AbstractContainerArtifact, extendedProperties: JsonNode) {
     // Inject instance type specification, if present
     if (container.instanceTypeSpecification !== null) {
-      const atTypeNode = extendedProperties[JsonSchema.atType];
-      const oneOfNode: Array<JsonNode> = (atTypeNode as any as JsonNode)[JsonSchema.oneOf] as Array<JsonNode>;
+      const atTypeNode = ReaderUtil.getNode(extendedProperties, JsonSchema.atType);
+      const oneOfNode = ReaderUtil.getNodeList(atTypeNode, JsonSchema.oneOf);
       oneOfNode.forEach((item: JsonNode) => {
         const itemType = ReaderUtil.getString(item, JsonSchema.type);
         if (itemType == 'string') {

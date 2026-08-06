@@ -39,7 +39,7 @@ export class TemplateInstanceBuilder extends AbstractArtifactBuilder {
 
   public build(): TemplateInstance {
     const templateInstance: TemplateInstance = TemplateInstance.buildEmptyWithNullValues();
-    
+
     // Set properties from AbstractArtifact
     templateInstance.at_id = this.at_id;
     templateInstance.pav_createdOn = this.pav_createdOn;
@@ -56,4 +56,4 @@ export class TemplateInstanceBuilder extends AbstractArtifactBuilder {
 
     return templateInstance;
   }
-} 
+}

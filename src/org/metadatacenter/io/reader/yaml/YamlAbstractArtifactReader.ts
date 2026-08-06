@@ -14,7 +14,6 @@ import { AnnotationAtValue } from '../../../model/cedar/annotation/AnnotationAtV
 import { YamlReaderBehavior } from '../../../behavior/YamlReaderBehavior';
 import { ReaderUtil } from '../ReaderUtil';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
-import { YamlValues } from '../../../model/cedar/constants/YamlValues';
 import { YamlArtifactParsingResult } from '../../../model/cedar/util/compare/YamlArtifactParsingResult';
 import { Language } from '../../../model/cedar/types/wrapped-types/Language';
 

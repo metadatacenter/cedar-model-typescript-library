@@ -15,8 +15,6 @@ import { TemplateElement } from '../../../model/cedar/element/TemplateElement';
 import { JsonContainerArtifactReader } from './JsonContainerArtifactReader';
 import { JsonTemplateElementContent } from '../../../model/cedar/util/serialization/JsonTemplateElementContent';
 import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
-import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
-import { UiInputType } from '../../../model/cedar/types/wrapped-types/UiInputType';
 
 export class JsonTemplateElementReader extends JsonContainerArtifactReader {
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.TEMPLATE_ELEMENT;

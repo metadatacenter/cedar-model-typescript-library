@@ -117,9 +117,7 @@ export class ContainerArtifactChildrenInfo {
       if (childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD && childInfo.uiInputType !== UiInputType.ATTRIBUTE_VALUE) {
         if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
           iriMap[childInfo.name] =
-            childInfo.iri !== null
-              ? childInfo.iri
-              : CedarModel.propertyIriPrefix + encodeURIComponent(childInfo.name).replace(/%20/g, '+');
+            childInfo.iri !== null ? childInfo.iri : CedarModel.propertyIriPrefix + encodeURIComponent(childInfo.name).replace(/%20/g, '+');
         }
       }
     });

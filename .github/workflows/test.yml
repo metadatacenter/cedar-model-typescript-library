@@ -1,12 +1,14 @@
 name: Test
 
-# Pushes to develop only, for now. Pull requests and the release branches can be
-# added once this has proved itself; starting narrow means a red badge here means
-# develop is red, and nothing else.
 on:
   push:
     branches:
       - develop
+      - main
+  pull_request:
+    branches:
+      - develop
+      - main
 
 permissions:
   contents: read
@@ -37,6 +39,12 @@ jobs:
 
       - name: Install
         run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type-check
+        run: npm run typecheck
 
       - name: Test
         run: npm test

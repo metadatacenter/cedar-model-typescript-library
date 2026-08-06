@@ -133,9 +133,6 @@ import { JsonTemplateElementReaderResult } from './org/metadatacenter/io/reader/
 import { JsonTemplateFieldReaderResult } from './org/metadatacenter/io/reader/json/JsonTemplateFieldReaderResult';
 import { JsonTemplateInstanceReaderResult } from './org/metadatacenter/io/reader/json/JsonTemplateInstanceReaderResult';
 
-// It is needed, do not remove, even if it looks unused
-import { JsonTemplateFieldWriter } from './org/metadatacenter/io/writer/json/JsonTemplateFieldWriter';
-import { YamlTemplateFieldWriter } from './org/metadatacenter/io/writer/yaml/YamlTemplateFieldWriter';
 import { PavVersion } from './org/metadatacenter/model/cedar/types/wrapped-types/PavVersion';
 import { TemplateChild } from './org/metadatacenter/model/cedar/types/basic-types/TemplateChild';
 import { ChildDeploymentInfoStatic } from './org/metadatacenter/model/cedar/deployment/ChildDeploymentInfoStatic';

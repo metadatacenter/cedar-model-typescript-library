@@ -26,7 +26,7 @@ import { JsonTemplateInstanceContent } from '../../../model/cedar/util/serializa
 
 export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactReader {
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.TEMPLATE_INSTANCE;
-  protected knownKeys = {
+  protected knownKeys: Record<string, boolean> = {
     [JsonSchema.atId]: true,
     [JsonSchema.oslcModifiedBy]: true,
     [JsonSchema.pavLastUpdatedOn]: true,

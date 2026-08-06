@@ -47,8 +47,7 @@ jobs:
       - name: Test with coverage thresholds
         run: npm run test:coverage
 
-      # The dist is what consumers install, and it is built by a separate webpack
-      # pass that the test run never exercises. It has broken independently of the
-      # tests before.
-      - name: Build the distributable
-        run: npm run build
+      # Build the exact tarball consumers receive, install it into an isolated
+      # project, and exercise CommonJS, ESM, and the shipped declarations.
+      - name: Build and smoke-test the distributable
+        run: npm run test:package

@@ -10,6 +10,14 @@ module.exports = [
   },
   js.configs.recommended,
   {
+    files: ['eslint.config.js', 'smoke-test-package.js'],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      globals: globals.node,
+      sourceType: 'commonjs',
+    },
+  },
+  {
     files: ['src/**/*.ts'],
     languageOptions: {
       ecmaVersion: 'latest',

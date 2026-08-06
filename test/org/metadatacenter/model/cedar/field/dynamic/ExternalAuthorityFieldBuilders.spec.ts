@@ -66,6 +66,17 @@ describe('external authority field builders', () => {
     expect(backparsed['schema:name']).toBe(`Schema name of this ${inputType} field`);
   });
 
+  test.each([...CASES, ['Link', () => CedarBuilders.linkFieldBuilder(), 'link']])(
+    '%s omits SKOS notation under the February 2024 compatibility behavior',
+    (_label, make) => {
+      const field = make().withTitle('compatibility').build();
+      const writers = CedarWriters.json().getFebruary2024();
+      const properties = writers.getFieldWriterForField(field).getAsJsonNode(field).properties;
+
+      expect(properties).not.toHaveProperty('skos:notation');
+    },
+  );
+
   test.each(CASES)('%s deploys as a single-instance child', (_label, make) => {
     const backparsed = deployInto(make().withTitle('f').build(), 'the_field', false);
     expect(backparsed['properties']['the_field']['type']).toBe('object');

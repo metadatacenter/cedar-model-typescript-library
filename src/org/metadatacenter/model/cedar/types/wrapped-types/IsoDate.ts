@@ -51,8 +51,8 @@ export class IsoDate {
     // Regex to insert colon in timezone offset if missing
     isoDateString = isoDateString.replace(/([+-]\d{2})(\d{2})$/, '$1:$2');
 
-    const date = new Date(isoDateString);
     const timezoneOffset = isoDateString.match(/Z|([+-])([01]\d):?([0-5]\d)$/)?.[0] ?? 'Z';
+    const date = new Date(timezoneOffset === 'Z' && !isoDateString.endsWith('Z') ? `${isoDateString}Z` : isoDateString);
     return new IsoDate(date, timezoneOffset);
   }
 
@@ -65,8 +65,9 @@ export class IsoDate {
   public static getCurrentGMTOffset(): string {
     const offset = new Date().getTimezoneOffset();
 
-    const hours = Math.abs(Math.floor(offset / 60));
-    const minutes = Math.abs(offset % 60);
+    const absoluteOffset = Math.abs(offset);
+    const hours = Math.floor(absoluteOffset / 60);
+    const minutes = absoluteOffset % 60;
 
     const hoursFormatted = hours.toString().padStart(2, '0');
     const minutesFormatted = minutes.toString().padStart(2, '0');

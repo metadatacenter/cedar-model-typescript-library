@@ -45,4 +45,11 @@ describe('reader facade dispatch', () => {
     expect(() => CedarJsonReaders.getStrict().getReaderForArtifactType(CedarArtifactType.NULL)).toThrow('No JSON reader available');
     expect(() => CedarYamlReaders.getStrict().getReaderForArtifactType(CedarArtifactType.NULL)).toThrow('No YAML reader available');
   });
+
+  test('a template without a UI block keeps optional header and footer absent', () => {
+    const result = CedarJsonReaders.getStrict().getTemplateReader().readFromObject(JsonNode.getEmpty());
+
+    expect(result.template.header).toBeNull();
+    expect(result.template.footer).toBeNull();
+  });
 });

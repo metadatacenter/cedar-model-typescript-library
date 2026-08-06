@@ -6,5 +6,4 @@
 
 ## Toolchain
 
-- [ ] Upgrade to Jest 30 after restoring at least 90% branch coverage under its changed instrumentation model.
-- [ ] Upgrade beyond TypeScript 5.9 after TypeScript ESLint supports the newer compiler line.
+- [ ] Upgrade to TypeScript 7 after both TypeScript ESLint and `ts-jest` support the newer compiler line.

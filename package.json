@@ -7,6 +7,8 @@
   "scripts": {
     "pretest": "node pretest.js",
     "test": "jest",
+    "pretest:coverage": "node pretest.js",
+    "test:coverage": "jest --coverage --runInBand",
     "lint": "eslint src --ext .ts",
     "typecheck": "tsc --noEmit --project tsconfig.json",
     "sync:package-version": "node sync-package-version.js",

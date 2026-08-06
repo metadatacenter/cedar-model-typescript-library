@@ -41,7 +41,7 @@ export class CedarYamlReaders {
     return YamlTemplateInstanceReader.getForBehavior(this.behavior);
   }
 
-  public getReaderForArtifactType(cedarArtifactType: CedarArtifactType): YamlAbstractArtifactReader {
+  public getReaderForArtifactType(cedarArtifactType: CedarArtifactType): YamlAbstractArtifactReader | YamlTemplateInstanceReader {
     switch (cedarArtifactType) {
       case CedarArtifactType.TEMPLATE:
         return YamlTemplateReader.getStrict();
@@ -51,6 +51,8 @@ export class CedarYamlReaders {
         return YamlTemplateFieldReader.getStrict();
       case CedarArtifactType.STATIC_TEMPLATE_FIELD:
         return YamlTemplateFieldReader.getStrict();
+      case CedarArtifactType.TEMPLATE_INSTANCE:
+        return YamlTemplateInstanceReader.getForBehavior(this.behavior);
       default:
         throw new Error(`No YAML reader available for CedarArtifactType: ${cedarArtifactType}`);
     }

@@ -14,5 +14,15 @@ export class JsonFieldWriterStaticImage extends JsonStaticFieldWriter {
     if (field.content !== null) {
       uiNode[CedarModel.content] = field.content;
     }
+    if (field.width !== null || field.height !== null) {
+      const sizeNode = JsonNode.getEmpty();
+      if (field.width !== null) {
+        sizeNode[CedarModel.width] = field.width;
+      }
+      if (field.height !== null) {
+        sizeNode[CedarModel.height] = field.height;
+      }
+      uiNode[CedarModel.size] = sizeNode;
+    }
   }
 }

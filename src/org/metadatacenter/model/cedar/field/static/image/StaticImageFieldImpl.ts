@@ -6,6 +6,8 @@ import { ChildDeploymentInfoStaticBuilder } from '../../../deployment/ChildDeplo
 
 export class StaticImageFieldImpl extends TemplateField implements StaticImageField {
   public content: string | null = null;
+  public width: number | null = null;
+  public height: number | null = null;
 
   private constructor() {
     super();

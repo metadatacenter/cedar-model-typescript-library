@@ -376,10 +376,13 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     if (Object.hasOwn(content, JsonSchema.atId)) {
       const id = ReaderUtil.getString(content, JsonSchema.atId);
       const label = ReaderUtil.getString(content, JsonSchema.rdfsLabel);
+      // `fromParsedNode` on both: a document that arrives with a null `@id` is
+      // preserved as it came and reported by `reportNullIri`, rather than
+      // refused here. See the note on that method.
       if (label === null) {
-        return new InstanceDataLinkAtom(id);
+        return InstanceDataLinkAtom.fromParsedNode(id);
       } else {
-        return new InstanceDataControlledAtom(id, label);
+        return InstanceDataControlledAtom.fromParsedNode(id, label);
       }
     }
     // Neither a literal nor an IRI, so there is no value here — but the node was

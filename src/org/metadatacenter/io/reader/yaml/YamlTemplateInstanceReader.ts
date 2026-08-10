@@ -146,7 +146,7 @@ export class YamlTemplateInstanceReader {
     if (Object.hasOwn(node, YamlKeys.id)) {
       const id = ReaderUtil.getString(node, YamlKeys.id);
       const label = ReaderUtil.getString(node, YamlKeys.label);
-      return label === null ? new InstanceDataLinkAtom(id) : new InstanceDataControlledAtom(id, label);
+      return label === null ? InstanceDataLinkAtom.fromParsedNode(id) : InstanceDataControlledAtom.fromParsedNode(id, label);
     }
     return new InstanceDataEmptyNode();
   }

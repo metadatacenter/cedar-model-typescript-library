@@ -41,21 +41,18 @@ const cases: Array<[string, any]> = [
   ['numeric int', base(CedarBuilders.numericFieldBuilder()).withNumberType(NumberType.INT).build()],
   ['numeric min', base(CedarBuilders.numericFieldBuilder()).withNumberType(NumberType.DECIMAL).withMinValue(0).build()],
   ['numeric max', base(CedarBuilders.numericFieldBuilder()).withNumberType(NumberType.DECIMAL).withMaxValue(99).build()],
-  [
-    'numeric decimals',
-    base(CedarBuilders.numericFieldBuilder()).withNumberType(NumberType.DECIMAL).withDecimalPlaces(2).build(),
-  ],
-  [
-    'numeric unit',
-    base(CedarBuilders.numericFieldBuilder()).withNumberType(NumberType.DECIMAL).withUnitOfMeasure('kg').build(),
-  ],
+  ['numeric decimals', base(CedarBuilders.numericFieldBuilder()).withNumberType(NumberType.DECIMAL).withDecimalPlaces(2).build()],
+  ['numeric unit', base(CedarBuilders.numericFieldBuilder()).withNumberType(NumberType.DECIMAL).withUnitOfMeasure('kg').build()],
   [
     'temporal date',
     base(CedarBuilders.temporalFieldBuilder()).withTemporalType(TemporalType.DATE).withTemporalGranularity(TemporalGranularity.DAY).build(),
   ],
   [
     'temporal time',
-    base(CedarBuilders.temporalFieldBuilder()).withTemporalType(TemporalType.TIME).withTemporalGranularity(TemporalGranularity.MINUTE).build(),
+    base(CedarBuilders.temporalFieldBuilder())
+      .withTemporalType(TemporalType.TIME)
+      .withTemporalGranularity(TemporalGranularity.MINUTE)
+      .build(),
   ],
   [
     'temporal datetime with timezone',

@@ -8,6 +8,8 @@ import {
   ControlledTermClassBuilder,
   ControlledTermOntologyBuilder,
   ControlledTermValueSetBuilder,
+  BioportalTermType,
+  Iri,
   JsonNode,
   SchemaVersion,
 } from '../../../../../src';
@@ -48,11 +50,46 @@ describe('writer edge cases', () => {
 
   test('controlled-term constraints have useful standalone JSON representations', () => {
     const writers = CedarWriters.json().getStrict();
-    const branch = new ControlledTermBranchBuilder().withName('branch').build();
-    const clazz = new ControlledTermClassBuilder().withLabel('class').build();
-    const ontology = new ControlledTermOntologyBuilder().withName('ontology').build();
-    const valueSet = new ControlledTermValueSetBuilder().withName('values').build();
-    const action = new ControlledTermActionBuilder().withAction('delete').build();
+    /*
+     * Complete constraints, because the builders now refuse a partial one — a
+     * constraint naming no ontology cannot be resolved by anything. Each was
+     * built here with a single field set, which is what made the check worth
+     * adding: this test wanted an object to hand a writer and the builders were
+     * happy to supply an unusable one.
+     *
+     * The claims are unchanged. What each writer produces standing alone, and
+     * that the two optional fields are omitted when unset, is the subject.
+     */
+    const branch = new ControlledTermBranchBuilder()
+      .withName('branch')
+      .withSource('DOID')
+      .withAcronym('DOID')
+      .withUri(new Iri('http://purl.obolibrary.org/obo/DOID_4'))
+      .build();
+    const clazz = new ControlledTermClassBuilder()
+      .withLabel('class')
+      .withPrefLabel('class')
+      .withSource('DOID')
+      .withType(BioportalTermType.ONTOLOGY_CLASS)
+      .withUri(new Iri('http://purl.obolibrary.org/obo/DOID_4'))
+      .build();
+    const ontology = new ControlledTermOntologyBuilder()
+      .withName('ontology')
+      .withAcronym('DOID')
+      .withUri(new Iri('https://data.bioontology.org/ontologies/DOID'))
+      .build();
+    const valueSet = new ControlledTermValueSetBuilder()
+      .withName('values')
+      .withVsCollection('CEDARVS')
+      .withUri(new Iri('https://cadsr.nci.nih.gov/metadata/CADSR-VS/1'))
+      .build();
+    const action = new ControlledTermActionBuilder()
+      .withAction('delete')
+      .withSource('DOID')
+      .withType(BioportalTermType.ONTOLOGY_CLASS)
+      .withTermUri(new Iri('http://purl.obolibrary.org/obo/DOID_4'))
+      .withSourceUri(new Iri('https://data.bioontology.org/ontologies/DOID'))
+      .build();
 
     const branchJson = JSON.parse(
       (writers.getWriterForValueConstraint(branch) as JsonValueConstraintsBranchWriter).getAsJsonString(branch),

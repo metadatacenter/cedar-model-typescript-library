@@ -1,10 +1,4 @@
-import {
-  CedarBuilders,
-  CedarWriters,
-  YamlTemplateElementReader,
-  YamlTemplateFieldReader,
-  YamlTemplateReader,
-} from '../../../../../src';
+import { CedarBuilders, CedarWriters, YamlTemplateElementReader, YamlTemplateFieldReader, YamlTemplateReader } from '../../../../../src';
 
 /**
  * A YAML-sourced artifact carries a valid title and description.

@@ -19,10 +19,8 @@ import {
  * library to the same.
  */
 describe('YamlFieldReaderNumeric datatype default', () => {
-  const yamlOf = (field: NumericField): string =>
-    CedarWriters.yaml().getStrict().getFieldWriterForField(field).getAsYamlString(field);
-  const jsonOf = (field: NumericField): string =>
-    CedarWriters.json().getStrict().getFieldWriterForField(field).getAsJsonString(field);
+  const yamlOf = (field: NumericField): string => CedarWriters.yaml().getStrict().getFieldWriterForField(field).getAsYamlString(field);
+  const jsonOf = (field: NumericField): string => CedarWriters.json().getStrict().getFieldWriterForField(field).getAsJsonString(field);
 
   const numberTypeReadFromYaml = (field: NumericField): NumberType => {
     const result = YamlTemplateFieldReader.getStrict().readFromString(yamlOf(field));

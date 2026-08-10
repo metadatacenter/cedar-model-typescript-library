@@ -54,7 +54,10 @@ const templateWith = (field: JsonNode, bounds?: { minItems?: number; maxItems?: 
 const boundsOf = (source: JsonNode) => {
   const template: Template = CedarReaders.json().getFebruary2024().getTemplateReader().readFromObject(source).template;
   const info = template.getChildInfo('Boxes')!;
-  return { minItems: (info as unknown as { minItems: number | null }).minItems, maxItems: (info as unknown as { maxItems: number | null }).maxItems };
+  return {
+    minItems: (info as unknown as { minItems: number | null }).minItems,
+    maxItems: (info as unknown as { maxItems: number | null }).maxItems,
+  };
 };
 
 describe('bounds on an always-multiple child', () => {

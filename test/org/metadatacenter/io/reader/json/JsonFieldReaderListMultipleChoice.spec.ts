@@ -70,8 +70,7 @@ const readChoices = (source: JsonNode): ListField => {
 const readStandalone = (multipleChoice: boolean | undefined): ListField => {
   const source = listTemplate(multipleChoice, false);
   const field = (source['properties'] as JsonNode)['Choices'] as JsonNode;
-  return CedarReaders.json().getFebruary2024().getTemplateFieldReader().readFromObject(field)
-    .field as unknown as ListField;
+  return CedarReaders.json().getFebruary2024().getTemplateFieldReader().readFromObject(field).field as unknown as ListField;
 };
 
 describe('JsonFieldReaderList multipleChoice', () => {

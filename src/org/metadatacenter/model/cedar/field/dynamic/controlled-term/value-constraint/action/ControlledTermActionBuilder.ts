@@ -1,5 +1,6 @@
 import { Iri } from '../../../../../types/wrapped-types/Iri';
 import { ControlledTermAction } from './ControlledTermAction';
+import { ValueConstraintRequirements } from '../ValueConstraintRequirements';
 import { BioportalTermType } from '../../../../../types/bioportal-types/BioportalTermType';
 
 export class ControlledTermActionBuilder {
@@ -41,6 +42,11 @@ export class ControlledTermActionBuilder {
   }
 
   public build(): ControlledTermAction {
+    ValueConstraintRequirements.requireText(this._action, 'an action', 'A controlled-term action');
+    ValueConstraintRequirements.requireIri(this._termUri, 'a term URI', 'A controlled-term action');
+    ValueConstraintRequirements.requireIri(this._sourceUri, 'a source URI', 'A controlled-term action');
+    ValueConstraintRequirements.requireText(this._source, 'a source', 'A controlled-term action');
+    ValueConstraintRequirements.requireTermType(this._type, 'A controlled-term action');
     return new ControlledTermAction(this._to, this._action, this._termUri, this._sourceUri, this._source, this._type);
   }
 }

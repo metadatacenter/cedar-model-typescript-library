@@ -46,9 +46,7 @@ describe('ExtPfasFieldBuilder', () => {
       .withIri('https://schema.metadatacenter.org/properties/fac2de3a-937e-4573-810a-c1653e658cde')
       .build();
 
-    const element: TemplateElement = (CedarBuilders.templateElementBuilder() as TemplateElementBuilder)
-      .addChild(field, deployment)
-      .build();
+    const element: TemplateElement = (CedarBuilders.templateElementBuilder() as TemplateElementBuilder).addChild(field, deployment).build();
 
     const writer: JsonTemplateElementWriter = CedarWriters.json().getStrict().getTemplateElementWriter();
     const backparsed = JSON.parse(JSON.stringify(writer.getAsJsonNode(element), null, 2));
@@ -67,9 +65,7 @@ describe('ExtPfasFieldBuilder', () => {
       .withMaxItems(10)
       .build();
 
-    const element: TemplateElement = (CedarBuilders.templateElementBuilder() as TemplateElementBuilder)
-      .addChild(field, deployment)
-      .build();
+    const element: TemplateElement = (CedarBuilders.templateElementBuilder() as TemplateElementBuilder).addChild(field, deployment).build();
 
     const writer: JsonTemplateElementWriter = CedarWriters.json().getStrict().getTemplateElementWriter();
     const backparsed = JSON.parse(JSON.stringify(writer.getAsJsonNode(element), null, 2));

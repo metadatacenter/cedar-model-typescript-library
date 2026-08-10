@@ -1,5 +1,6 @@
 import { Iri } from '../../../../../types/wrapped-types/Iri';
 import { ControlledTermOntology } from './ControlledTermOntology';
+import { ValueConstraintRequirements } from '../ValueConstraintRequirements';
 
 export class ControlledTermOntologyBuilder {
   private acronym: string = '';
@@ -28,6 +29,9 @@ export class ControlledTermOntologyBuilder {
   }
 
   public build(): ControlledTermOntology {
+    ValueConstraintRequirements.requireIri(this.uri, 'a URI', 'An ontology constraint');
+    ValueConstraintRequirements.requireText(this.acronym, 'an acronym', 'An ontology constraint');
+    ValueConstraintRequirements.requireText(this.name, 'a name', 'An ontology constraint');
     return new ControlledTermOntology(this.acronym, this.name, this.numTerms, this.uri);
   }
 }

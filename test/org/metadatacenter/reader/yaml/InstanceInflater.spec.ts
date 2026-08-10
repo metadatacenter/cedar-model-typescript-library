@@ -1,10 +1,4 @@
-import {
-  CedarBuilders,
-  CedarReaders,
-  CedarWriters,
-  InstanceInflater,
-  NumberType,
-} from '../../../../../src';
+import { CedarBuilders, CedarReaders, CedarWriters, InstanceInflater, NumberType } from '../../../../../src';
 
 /**
  * A YAML instance, inflated with its template, writes back as a valid JSON
@@ -25,7 +19,10 @@ const field = (name: string) =>
     .build();
 
 const dep = (artifact: any, prop: string) =>
-  artifact.createDeploymentBuilder(prop).withIri(`https://schema.metadatacenter.org/properties/${prop.slice(1)}`).build();
+  artifact
+    .createDeploymentBuilder(prop)
+    .withIri(`https://schema.metadatacenter.org/properties/${prop.slice(1)}`)
+    .build();
 
 const city = field('city');
 const element = CedarBuilders.templateElementBuilder()

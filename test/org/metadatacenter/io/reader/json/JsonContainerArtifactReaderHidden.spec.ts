@@ -36,7 +36,9 @@ const element = (name: string, hidden: boolean): JsonNode => ({
   '@type': 'https://schema.metadatacenter.org/core/TemplateElement',
   '@context': {},
   type: 'object',
-  _ui: hidden ? { order: [], propertyLabels: {}, propertyDescriptions: {}, hidden: true } : { order: [], propertyLabels: {}, propertyDescriptions: {} },
+  _ui: hidden
+    ? { order: [], propertyLabels: {}, propertyDescriptions: {}, hidden: true }
+    : { order: [], propertyLabels: {}, propertyDescriptions: {} },
   required: ['@context', '@id'],
   properties: { '@context': { properties: {} } },
   'schema:name': name,
@@ -65,8 +67,7 @@ const templateWith = (children: Record<string, JsonNode>): JsonNode => {
   };
 };
 
-const read = (source: JsonNode): Template =>
-  CedarReaders.json().getFebruary2024().getTemplateReader().readFromObject(source).template;
+const read = (source: JsonNode): Template => CedarReaders.json().getFebruary2024().getTemplateReader().readFromObject(source).template;
 
 describe('reading _ui.hidden', () => {
   test('a hidden dynamic field is reported hidden', () => {

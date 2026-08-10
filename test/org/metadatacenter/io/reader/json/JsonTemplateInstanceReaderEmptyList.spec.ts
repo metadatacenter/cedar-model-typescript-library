@@ -36,10 +36,14 @@ const instanceWith = (values: object) => ({
 });
 
 const read = (values: object) =>
-  CedarJsonReaders.getStrict().getTemplateInstanceReader().readFromString(JSON.stringify(instanceWith(values))).instance.dataContainer;
+  CedarJsonReaders.getStrict()
+    .getTemplateInstanceReader()
+    .readFromString(JSON.stringify(instanceWith(values))).instance.dataContainer;
 
 const roundTrip = (values: object): JsonNode => {
-  const result = CedarJsonReaders.getStrict().getTemplateInstanceReader().readFromString(JSON.stringify(instanceWith(values)));
+  const result = CedarJsonReaders.getStrict()
+    .getTemplateInstanceReader()
+    .readFromString(JSON.stringify(instanceWith(values)));
   return CedarWriters.json().getStrict().getTemplateInstanceWriter().getAsJsonNode(result.instance);
 };
 

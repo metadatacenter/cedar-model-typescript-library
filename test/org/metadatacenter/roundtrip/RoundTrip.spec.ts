@@ -12,10 +12,10 @@ import {
   IsoDate,
   JsonAbstractArtifactReader,
   JsonPath,
-  JsonSchema,
   RoundTrip,
   SchemaVersion,
 } from '../../../../src';
+import { JsonSchema } from '../../../../src/org/metadatacenter/model/cedar/constants/JsonSchema';
 
 describe('RoundTrip', () => {
   test('build an object, does the roundtrip', () => {

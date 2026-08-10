@@ -84,6 +84,7 @@ import { CedarArtifactId } from './org/metadatacenter/model/cedar/types/cedar-ty
 import { ComparisonError } from './org/metadatacenter/model/cedar/util/compare/ComparisonError';
 import { RoundTrip } from './org/metadatacenter/io/roundtrip/RoundTrip';
 import { JsonSchema } from './org/metadatacenter/model/cedar/constants/JsonSchema';
+import { PropertyIri } from './org/metadatacenter/model/cedar/types/wrapped-types/PropertyIri';
 import { JsonTemplateInstanceWriter } from './org/metadatacenter/io/writer/json/JsonTemplateInstanceWriter';
 import { JsonTemplateInstanceContent } from './org/metadatacenter/model/cedar/util/serialization/JsonTemplateInstanceContent';
 import { CedarModel } from './org/metadatacenter/model/cedar/constants/CedarModel';
@@ -283,13 +284,33 @@ export { BioportalTermType };
 export { CedarArtifactId };
 export { ComparisonError };
 export { RoundTrip };
-export { JsonSchema };
+export { PropertyIri };
+
+/*
+ * `JsonSchema`, `YamlKeys` and `CedarModel` are deliberately not exported.
+ *
+ * They are the spelling tables this library's readers and writers use to talk to
+ * each other about a document — `@id`, `@value`, `_ui`, `$schema`. That CEDAR
+ * happens to be written in JSON-LD is this library's business: a consumer works
+ * in artifacts, and how one is written down is asked for by name at the edge,
+ * from a writer.
+ *
+ * Exporting them made the opposite true. A consumer reaching for `JsonSchema.atId`
+ * looks like it is using the model and is in fact reading a key, and it will keep
+ * compiling if the model gains a second serialization that spells the same thing
+ * differently — which YAML already does: `id`, `value`, `label`, and no context
+ * block at all.
+ *
+ * Nothing outside this library read them for a model reason. What consumers
+ * actually needed were two facts filed in with the keys: the namespace property
+ * IRIs are minted in, which is `PropertyIri` above, and a default name for a
+ * duplicate attribute, which was one consumer's product decision and has gone
+ * back to it.
+ */
 // The standard @context block every CEDAR instance carries. A consumer that
 // builds instances needs to state it, and should not restate it by hand.
 export { JsonTemplateInstanceContent };
 export { JsonTemplateInstanceWriter };
-export { CedarModel };
-export { YamlKeys };
 export { YamlValues };
 export { CedarFieldCategory };
 export { CedarArtifactType };

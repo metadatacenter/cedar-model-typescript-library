@@ -1,4 +1,5 @@
 import { CedarArtifactType } from '../types/cedar-types/CedarArtifactType';
+import { PropertyIri } from '../types/wrapped-types/PropertyIri';
 import { CedarModel } from '../constants/CedarModel';
 import { JsonSchema } from '../constants/JsonSchema';
 import { UiInputType } from '../types/wrapped-types/UiInputType';
@@ -116,8 +117,7 @@ export class ContainerArtifactChildrenInfo {
       const childInfo = this.getChildInfo(childName);
       if (childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD && childInfo.uiInputType !== UiInputType.ATTRIBUTE_VALUE) {
         if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
-          iriMap[childInfo.name] =
-            childInfo.iri !== null ? childInfo.iri : CedarModel.propertyIriPrefix + encodeURIComponent(childInfo.name).replace(/%20/g, '+');
+          iriMap[childInfo.name] = childInfo.iri !== null ? childInfo.iri : PropertyIri.forName(childInfo.name);
         }
       }
     });

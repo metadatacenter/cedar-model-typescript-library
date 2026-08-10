@@ -5,9 +5,9 @@ import {
   JsonNode,
   JsonObjectComparator,
   JsonPath,
-  JsonSchema,
   YamlObjectComparator,
 } from '../../../../../../../src';
+import { JsonSchema } from '../../../../../../../src/org/metadatacenter/model/cedar/constants/JsonSchema';
 import { JsonReaderBehavior } from '../../../../../../../src/org/metadatacenter/behavior/JsonReaderBehavior';
 
 const comparable = (value: unknown): JsonNode => value as JsonNode;

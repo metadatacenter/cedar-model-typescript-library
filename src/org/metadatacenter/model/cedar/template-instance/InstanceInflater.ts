@@ -3,6 +3,7 @@ import { InstanceDataContainer } from './InstanceDataContainer';
 import { InstanceDataAtomType } from './InstanceDataAtomType';
 import { InstanceDataEmptyNode } from './InstanceDataEmptyNode';
 import { AbstractContainerArtifact } from '../AbstractContainerArtifact';
+import { CedarArtifactType } from '../types/cedar-types/CedarArtifactType';
 import { TemplateElement } from '../element/TemplateElement';
 import { Template } from '../template/Template';
 
@@ -45,6 +46,16 @@ export class InstanceInflater {
       const child = template.getChild(name);
       let value: InstanceDataAtomType = container.values[name];
       if (value === undefined) {
+        // A static field is not a property of the instance, so it gets no slot.
+        // `getChildIriMap` above already refuses it a property IRI for exactly
+        // that reason; adding a slot here contradicted it and produced an
+        // instance carrying `"Page break 1": {}` — a property with no `@context`
+        // entry, which is neither valid JSON-LD nor what CEDAR writes. An
+        // instance that genuinely carries one keeps it, through the pass below
+        // that preserves what the template does not name.
+        if (template.getChildInfo(name)?.atType === CedarArtifactType.STATIC_TEMPLATE_FIELD) {
+          return;
+        }
         value = new InstanceDataEmptyNode();
       }
       if (child instanceof TemplateElement) {

@@ -169,6 +169,20 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
     return JSON.stringify(this.getAsJsonNode(instance), null, indent);
   }
 
+  /**
+   * The instance's data, without the envelope wrapped around it.
+   *
+   * The same tree `getAsJsonNode` puts the envelope on top of, which the writer
+   * has always built and kept to itself. A consumer that shows a user what an
+   * instance holds, or hands it to something that only wants the values, had to
+   * write the whole artifact and then delete the envelope keys out of it again —
+   * which means knowing what they are, and getting it wrong when the model gains
+   * one.
+   */
+  public getDataAsJsonNode(instance: TemplateInstance): JsonNode {
+    return this.getDataTree(instance);
+  }
+
   public getAsJsonNode(instance: TemplateInstance): JsonNode {
     const extendedContext: JsonNode = this.buildContext(instance);
 

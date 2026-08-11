@@ -89,3 +89,78 @@ describe('InstanceInflater', () => {
     expect(dataKeys).toEqual(['_note', '_count', '_addr']);
   });
 });
+
+/**
+ * An attribute-value field is the one child whose empty slot is not an empty node.
+ *
+ * Every other omitted child is re-added as `{}` and read back as an unfilled field.
+ * This one is written as a list of the attribute names it holds, so naming none is
+ * `[]`, and `{}` is a shape no reader of a CEDAR instance produces for it.
+ */
+describe('InstanceInflater on an attribute-value field', () => {
+  const label = field('label');
+  const attributes = CedarBuilders.attributeValueFieldBuilder()
+    .withAtId('https://repo.metadatacenter.org/template-fields/attributes')
+    .withSchemaName('attributes')
+    .withSchemaDescription('attributes')
+    .build();
+  const avTemplate = CedarBuilders.templateBuilder()
+    .withAtId('https://repo.metadatacenter.org/templates/t2')
+    .withSchemaName('T2')
+    .withSchemaDescription('T2')
+    .addChild(label, dep(label, '_label'))
+    .addChild(attributes, dep(attributes, '_attributes'))
+    .build();
+
+  const jsonWriter = CedarWriters.json().getStrict().getTemplateInstanceWriter();
+  const jsonReader = CedarReaders.json().getStrict().getTemplateInstanceReader();
+
+  const inflatedFrom = (yaml: string) => {
+    const instance = CedarReaders.yaml().getStrict().getTemplateInstanceReader().readFromString(yaml).instance;
+    InstanceInflater.inflate(instance, avTemplate);
+    return JSON.parse(jsonWriter.getAsJsonString(instance));
+  };
+
+  const sparse = `type: "instance"
+name: "AV Instance"
+isBasedOn: "https://repo.metadatacenter.org/templates/t2"
+children:
+  _label:
+    value: "hello"
+`;
+
+  test('an omitted attribute-value field is re-added as an empty list', () => {
+    expect(inflatedFrom(sparse)._attributes).toEqual([]);
+  });
+
+  test('and not as the empty node every other omitted child gets', () => {
+    const out = inflatedFrom(sparse);
+    expect(out._label).toEqual({ '@value': 'hello' });
+    expect(out._attributes).not.toEqual({});
+  });
+
+  /*
+   * The property that makes the shape the right one rather than merely a different
+   * one: what inflating produces is what reading the result produces, so a document
+   * does not change shape by being passed through the two in either order.
+   */
+  test('the inflated instance reads back unchanged', () => {
+    const inflated = inflatedFrom(sparse);
+    const reread = JSON.parse(jsonWriter.getAsJsonString(jsonReader.readFromString(JSON.stringify(inflated)).instance));
+    expect(reread._attributes).toEqual([]);
+  });
+
+  test('attributes the instance already names are preserved', () => {
+    const named = {
+      ...inflatedFrom(sparse),
+      _attributes: ['colour'],
+      colour: { '@value': 'red' },
+    };
+    const instance = jsonReader.readFromString(JSON.stringify(named)).instance;
+    InstanceInflater.inflate(instance, avTemplate);
+    const out = JSON.parse(jsonWriter.getAsJsonString(instance));
+
+    expect(out._attributes).toEqual(['colour']);
+    expect(out.colour).toEqual({ '@value': 'red' });
+  });
+});

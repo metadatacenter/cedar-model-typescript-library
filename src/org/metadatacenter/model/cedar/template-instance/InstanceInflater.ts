@@ -4,7 +4,9 @@ import { InstanceDataAtomType } from './InstanceDataAtomType';
 import { InstanceDataEmptyNode } from './InstanceDataEmptyNode';
 import { AbstractContainerArtifact } from '../AbstractContainerArtifact';
 import { CedarArtifactType } from '../types/cedar-types/CedarArtifactType';
+import { CedarFieldType } from '../types/cedar-types/CedarFieldType';
 import { TemplateElement } from '../element/TemplateElement';
+import { TemplateField } from '../field/TemplateField';
 import { Template } from '../template/Template';
 
 /**
@@ -56,7 +58,15 @@ export class InstanceInflater {
         if (template.getChildInfo(name)?.atType === CedarArtifactType.STATIC_TEMPLATE_FIELD) {
           return;
         }
-        value = new InstanceDataEmptyNode();
+        // An attribute-value field naming no attribute is an empty list, not an
+        // empty node. The two are not interchangeable: an empty node writes as
+        // `{}`, which is not a shape CEDAR gives this field and which reads back
+        // as itself, so the wrong shape survives once written. `packAttributeValues`
+        // settles the same question the same way at read time — an empty array is
+        // the empty list it looks like — and the two have to agree, or inflating
+        // an instance produces something reading it never would.
+        value =
+          child instanceof TemplateField && child.cedarFieldType === CedarFieldType.ATTRIBUTE_VALUE ? [] : new InstanceDataEmptyNode();
       }
       if (child instanceof TemplateElement) {
         if (value instanceof InstanceDataContainer) {

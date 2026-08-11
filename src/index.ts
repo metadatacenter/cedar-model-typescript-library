@@ -83,13 +83,10 @@ import { ChildDeploymentInfoBuilder } from './org/metadatacenter/model/cedar/dep
 import { CedarArtifactId } from './org/metadatacenter/model/cedar/types/cedar-types/CedarArtifactId';
 import { ComparisonError } from './org/metadatacenter/model/cedar/util/compare/ComparisonError';
 import { RoundTrip } from './org/metadatacenter/io/roundtrip/RoundTrip';
-import { JsonSchema } from './org/metadatacenter/model/cedar/constants/JsonSchema';
 import { PropertyIri } from './org/metadatacenter/model/cedar/types/wrapped-types/PropertyIri';
 import { JsonTemplateInstanceWriter } from './org/metadatacenter/io/writer/json/JsonTemplateInstanceWriter';
 import { JsonTemplateInstanceContent } from './org/metadatacenter/model/cedar/util/serialization/JsonTemplateInstanceContent';
-import { CedarModel } from './org/metadatacenter/model/cedar/constants/CedarModel';
 import { ControlledTermActionBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/action/ControlledTermActionBuilder';
-import { YamlKeys } from './org/metadatacenter/model/cedar/constants/YamlKeys';
 import { YamlValues } from './org/metadatacenter/model/cedar/constants/YamlValues';
 import { BioportalTermType } from './org/metadatacenter/model/cedar/types/bioportal-types/BioportalTermType';
 import { CedarFieldCategory } from './org/metadatacenter/model/cedar/types/cedar-types/CedarFieldCategory';

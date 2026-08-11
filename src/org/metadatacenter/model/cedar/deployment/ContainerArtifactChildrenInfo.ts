@@ -1,6 +1,5 @@
 import { CedarArtifactType } from '../types/cedar-types/CedarArtifactType';
 import { PropertyIri } from '../types/wrapped-types/PropertyIri';
-import { CedarModel } from '../constants/CedarModel';
 import { JsonSchema } from '../constants/JsonSchema';
 import { UiInputType } from '../types/wrapped-types/UiInputType';
 import { NullableString } from '../types/basic-types/NullableString';

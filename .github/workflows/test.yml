@@ -47,6 +47,9 @@ jobs:
       - name: Test with coverage thresholds
         run: npm run test:coverage
 
+      - name: Verify Java/TypeScript instance YAML parity
+        run: npm run parity:yaml:instances
+
       # Build the exact tarball consumers receive, install it into an isolated
       # project, and exercise CommonJS, ESM, and the shipped declarations.
       - name: Build and smoke-test the distributable

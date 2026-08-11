@@ -27,9 +27,13 @@ import { YamlTemplateInstanceWriter } from '../../src/org/metadatacenter/io/writ
 
 export const execPromise = promisify(exec);
 
-export const javaBaseCommandForJson: string = `java -cp ${process.env.CEDAR_HOME}/cedar-artifact-library/target/cedar-artifact-library-${process.env.CEDAR_VERSION}-jar-with-dependencies.jar org.metadatacenter.artifacts.model.tools.ArtifactConvertor -jf`;
+const javaArtifactLibraryJar =
+  process.env.CEDAR_ARTIFACT_LIBRARY_JAR ??
+  `${process.env.CEDAR_HOME}/cedar-artifact-library/target/cedar-artifact-library-${process.env.CEDAR_VERSION}-jar-with-dependencies.jar`;
 
-export const javaBaseCommandForYaml: string = `java -cp ${process.env.CEDAR_HOME}/cedar-artifact-library/target/cedar-artifact-library-${process.env.CEDAR_VERSION}-jar-with-dependencies.jar org.metadatacenter.artifacts.model.tools.ArtifactConvertor -yf -yq`;
+export const javaBaseCommandForJson: string = `java -cp ${javaArtifactLibraryJar} org.metadatacenter.artifacts.model.tools.ArtifactConvertor -jif -jof`;
+
+export const javaBaseCommandForYaml: string = `java -cp ${javaArtifactLibraryJar} org.metadatacenter.artifacts.model.tools.ArtifactConvertor -jif -yof -yq`;
 
 export async function runJavaCommand(command: string) {
   try {
@@ -40,6 +44,7 @@ export async function runJavaCommand(command: string) {
     }
   } catch (error) {
     console.error('Execution error:', error);
+    throw error;
   }
 }
 

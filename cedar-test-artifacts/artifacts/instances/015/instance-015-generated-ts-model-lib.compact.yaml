@@ -1,9 +1,11 @@
 type: "instance"
 name: "With Email metadata"
+id: "https://repo.metadatacenter.org/template-instances/1da98ce2-9b74-4257-af64-e6ef1c143f6e"
 isBasedOn: "https://repo.metadatacenter.org/templates/d9d52596-1a0e-464b-9207-b848faf2205d"
 children:
   Rich Text Element:
-    - children:
+    - id: "https://repo.metadatacenter.org/template-element-instances/dec637dd-ff34-4440-bc91-938ff0b75eef"
+      children:
         Controlled in Rich Text Element:
           id: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C101161"
           label: "Agonizing Pain"

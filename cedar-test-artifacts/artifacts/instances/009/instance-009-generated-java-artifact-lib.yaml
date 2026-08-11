@@ -23,7 +23,8 @@ children:
           - value: "Option 3"
           - value: "Option 4"
           - value: "Option 5"
-    - id: "https://repo.metadatacenter.org/template-element-instances/e53af5f7-cc94-4ccd-a9ee-7abff2107d09"
+    - type: "element-instance"
+      id: "https://repo.metadatacenter.org/template-element-instances/e53af5f7-cc94-4ccd-a9ee-7abff2107d09"
   Checkbox Standalone:
     - value: "Option 1"
     - value: "Option 3"

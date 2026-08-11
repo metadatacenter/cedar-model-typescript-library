@@ -67,6 +67,7 @@ describe('InstanceInflater', () => {
   const instance = CedarReaders.yaml().getStrict().getTemplateInstanceReader().readFromString(sparseYaml).instance;
   InstanceInflater.inflate(instance, template);
   const json = JSON.parse(CedarWriters.json().getStrict().getTemplateInstanceWriter().getAsJsonString(instance));
+  const yaml = CedarWriters.yaml().getStrict().getTemplateInstanceWriter().getAsYamlString(instance);
 
   test('the @context gains a property IRI for each template field', () => {
     expect(json['@context']._note).toBe('https://schema.metadatacenter.org/properties/note');
@@ -87,6 +88,13 @@ describe('InstanceInflater', () => {
     expect(Object.hasOwn(json, '_count')).toBe(true);
     const dataKeys = Object.keys(json).filter((k) => k.startsWith('_'));
     expect(dataKeys).toEqual(['_note', '_count', '_addr']);
+  });
+
+  test('writing the inflated model back to YAML restores the sparse canonical form', () => {
+    expect(yaml).toContain('_note:');
+    expect(yaml).toContain('_addr:');
+    expect(yaml).not.toContain('_count:');
+    expect(yaml).not.toContain('value: null');
   });
 });
 
@@ -131,6 +139,15 @@ children:
 
   test('an omitted attribute-value field is re-added as an empty list', () => {
     expect(inflatedFrom(sparse)._attributes).toEqual([]);
+  });
+
+  test('an inflated empty attribute-value field stays omitted from YAML', () => {
+    const instance = CedarReaders.yaml().getStrict().getTemplateInstanceReader().readFromString(sparse).instance;
+    InstanceInflater.inflate(instance, avTemplate);
+    const yaml = CedarWriters.yaml().getStrict().getTemplateInstanceWriter().getAsYamlString(instance);
+
+    expect(yaml).not.toContain('_attributes:');
+    expect(yaml).not.toContain('[]');
   });
 
   test('and not as the empty node every other omitted child gets', () => {

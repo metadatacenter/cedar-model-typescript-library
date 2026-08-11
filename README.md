@@ -28,6 +28,10 @@ npx ts-node ./itest/scripts/regenerate-all-files.ts
 
 ## Compare generated files
 ```shell
+# Regenerates expanded and compact TypeScript instance YAML and fails if any
+# of the 21 shared Java/TypeScript outputs differs.
+npm run parity:yaml:instances
+
 npx ts-node ./itest/scripts/compare-verbatim-ts-java-yaml-files.ts
 npx ts-node ./itest/scripts/compare-verbatim-ref-java-yaml-files.ts
 npx ts-node ./itest/scripts/compare-verbatim-ref-ts-yaml-files.ts

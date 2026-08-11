@@ -21,6 +21,8 @@ import { ComparisonError } from '../../../model/cedar/util/compare/ComparisonErr
 import { YamlComparisonErrorType } from '../../../model/cedar/util/compare/YamlComparisonErrorType';
 import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
 
+const ELEMENT_INSTANCE_TYPE = 'element-instance';
+
 /**
  * Read a CEDAR template instance from YAML into the same `TemplateInstance` the
  * JSON reader produces — the serialization the `YamlTemplateInstanceWriter`
@@ -127,10 +129,8 @@ export class YamlTemplateInstanceReader {
       }
       const avField = new InstanceDataAttributeValueField(key);
       Object.keys(avNode).forEach((attrName) => {
-        const literal = ReaderUtil.getString(avNode as JsonNode, YamlKeys.value);
         const inner = (avNode as JsonNode)[attrName];
-        const value = literal !== null ? literal : ReaderUtil.getString(inner as JsonNode, YamlKeys.value);
-        avField.addValue(attrName, new InstanceDataStringAtom(value));
+        avField.addValue(attrName, new InstanceDataStringAtom(this.parseAttributeValue(inner)));
       });
       container.setValue(key, avField);
     });
@@ -142,6 +142,17 @@ export class YamlTemplateInstanceReader {
     return container;
   }
 
+  private parseAttributeValue(node: unknown): string | null {
+    if (typeof node === 'string') {
+      return node;
+    }
+    if (node !== null && typeof node === 'object' && !Array.isArray(node)) {
+      const value = (node as JsonNode)[YamlKeys.value];
+      return typeof value === 'string' ? value : null;
+    }
+    return null;
+  }
+
   private parseNode(node: JsonNode | string | null): InstanceDataAtomType {
     if (node === null || node === undefined) {
       return new InstanceDataEmptyNode();
@@ -150,7 +161,7 @@ export class YamlTemplateInstanceReader {
       return new InstanceDataStringAtom(node);
     }
     // An element carries a `children` block; a value never does.
-    if (Object.hasOwn(node, YamlKeys.children)) {
+    if (Object.hasOwn(node, YamlKeys.children) || ReaderUtil.getString(node, YamlKeys.type) === ELEMENT_INSTANCE_TYPE) {
       return this.parseContainer(node);
     }
     if (Object.hasOwn(node, YamlKeys.value)) {

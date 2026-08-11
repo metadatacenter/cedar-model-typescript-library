@@ -1,10 +1,12 @@
 type: "instance"
 name: "With Email metadata"
+id: "https://repo.metadatacenter.org/template-instances/1da98ce2-9b74-4257-af64-e6ef1c143f6e"
 isBasedOn: "https://repo.metadatacenter.org/templates/d9d52596-1a0e-464b-9207-b848faf2205d"
 children:
   Sample Standalone Text:
     - value: "My sample default value"
   Sample Element:
+    id: "https://repo.metadatacenter.org/template-element-instances/4f63f0c1-3641-4290-9c4d-33d34d8a372a"
     children:
       Sample Text:
         - id: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C140659"

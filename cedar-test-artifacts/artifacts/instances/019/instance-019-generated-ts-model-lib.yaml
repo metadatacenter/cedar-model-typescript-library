@@ -13,11 +13,6 @@ children:
         Paragraph Field Multiple Inside Element:
           - value: "Para\ngraph\n1/1"
           - value: "Para\ngraph\n1/2"
-        Text Field in Paragraph Element:
-          - value: null
-        Numeric Field Multiple Inside Paragraph Element:
-          - datatype: "xsd:double"
-            value: null
     - id: "https://repo.metadatacenter.org/template-element-instances/ee691eea-c30b-4556-9ef2-42501ae30051"
       children:
         Paragraph Field Multiple Inside Element:
@@ -26,6 +21,4 @@ children:
           - value: "Text field 1"
         Numeric Field Multiple Inside Paragraph Element:
           - datatype: "xsd:double"
-            value: "120"
-  Paragraph Standalone:
-    - value: null
+            value: 120

@@ -1,4 +1,4 @@
-import { elementTestNumbers, fieldTestNumbers, templateTestNumbers } from '../resources/generatedTestCases';
+import { elementTestNumbers, fieldTestNumbers, instanceTestNumbers, templateTestNumbers } from '../resources/generatedTestCases';
 import { CedarArtifactType } from '../../src';
 import { VerbatimComparator } from './VerbatimComparator';
 import { CompareFileSource } from '../../src/org/metadatacenter/model/cedar/types/helper-types/CompareFileSource';
@@ -22,6 +22,13 @@ comparator.compare(
 comparator.compare(
   templateTestNumbers,
   CedarArtifactType.TEMPLATE,
+  CompareFileSource.TS_LIB,
+  CompareFileSource.JAVA_LIB,
+  CompareFileFormat.YAML,
+);
+comparator.compare(
+  instanceTestNumbers,
+  CedarArtifactType.TEMPLATE_INSTANCE,
   CompareFileSource.TS_LIB,
   CompareFileSource.JAVA_LIB,
   CompareFileFormat.YAML,

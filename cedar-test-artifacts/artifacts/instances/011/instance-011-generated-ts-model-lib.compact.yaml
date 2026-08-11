@@ -1,16 +1,18 @@
 type: "instance"
 name: "With Email metadata"
+id: "https://repo.metadatacenter.org/template-instances/1da98ce2-9b74-4257-af64-e6ef1c143f6e"
 isBasedOn: "https://repo.metadatacenter.org/templates/d9d52596-1a0e-464b-9207-b848faf2205d"
 children:
   Single Select Element:
-    - children:
+    - id: "https://repo.metadatacenter.org/template-element-instances/2500f1f9-24b9-4f9a-88c5-6f09a7b4865f"
+      children:
         Single Select in Element:
           value: "Option 1"
-    - children:
+    - id: "https://repo.metadatacenter.org/template-element-instances/f9c077a1-3818-41e0-805f-55d3d364b1cc"
+      children:
         Single Select in Element:
           value: "Option 2"
-    - children:
-        Single Select in Element:
-          value: null
+    - type: "element-instance"
+      id: "https://repo.metadatacenter.org/template-element-instances/903d67ba-5b6f-4b5b-9ef6-7556024e5443"
   Single Select Standalone:
     value: "Option 4"

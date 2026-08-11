@@ -13,9 +13,27 @@ import {
 
 const edgeCaseYaml = `type: "instance"
 name: "Edge cases"
+id: "https://example.org/instances/edge-cases"
 children:
   _scalar: "plain text"
   _empty:
+  _nullLiteral:
+    value:
+  _nullTyped:
+    datatype: "xsd:dateTime"
+    value:
+  _dateTyped:
+    datatype: "xsd:date"
+    value: "2026-08-11"
+  _numericSpellings:
+    - datatype: "xsd:decimal"
+      value: "12.5"
+    - datatype: "xsd:long"
+      value: "9007199254740992"
+    - datatype: "xsd:int"
+      value: "010"
+  _blankLink:
+    id: ""
   _list:
     - "first"
     - value: "2"
@@ -25,6 +43,13 @@ children:
     id: "https://example.org/e1"
     children:
       _inside: "nested text"
+  _emptyNested:
+    children: {}
+  _elements:
+    - type: "element-instance"
+    - children:
+        _inside:
+          value: "second"
   _link:
     id: "https://example.org/link"
   _term:
@@ -40,6 +65,9 @@ _attributes:
     value: "one"
 _directAttributes:
   value: "direct"
+_nullAttributes:
+  absent:
+    value:
 `;
 
 describe('YAML instance edge cases', () => {
@@ -94,10 +122,76 @@ describe('YAML instance edge cases', () => {
 
     expect(children._scalar).toEqual({ value: 'plain text' });
     expect(children._empty).toBeUndefined();
-    expect(children._list).toEqual([{ value: 'first' }, { datatype: 'xsd:integer', value: '2' }]);
+    expect(children._nullLiteral).toBeUndefined();
+    expect(children._nullTyped).toBeUndefined();
+    expect(children._dateTyped).toEqual({ datatype: 'xsd:date', value: '2026-08-11' });
+    expect(children._numericSpellings).toEqual([
+      { datatype: 'xsd:decimal', value: 12.5 },
+      { datatype: 'xsd:long', value: '9007199254740992' },
+      { datatype: 'xsd:int', value: '010' },
+    ]);
+    expect(children._blankLink).toBeUndefined();
+    expect(children._list).toEqual([{ value: 'first' }, { datatype: 'xsd:integer', value: 2 }]);
     expect((children._nested as JsonNode).id).toBe('https://example.org/e1');
-    expect(((compact.children as JsonNode)._nested as JsonNode).id).toBeUndefined();
+    expect(children._emptyNested).toBeUndefined();
+    expect(children._elements).toEqual([
+      { type: 'element-instance' },
+      { children: { _inside: { value: 'second' } } },
+    ]);
+    expect(compact.id).toBe('https://example.org/instances/edge-cases');
+    expect(((compact.children as JsonNode)._nested as JsonNode).id).toBe('https://example.org/e1');
     expect(expanded._attributes).toEqual({ first: { value: 'one' } });
+    expect(expanded._nullAttributes).toBeUndefined();
     expect(expanded._unsupportedAttributes).toBeUndefined();
+  });
+
+  test('never writes nulls, empty mappings, or empty lists', () => {
+    const output = writer.getYamlAsJsonNode(reader.readFromString(edgeCaseYaml).instance);
+
+    const assertCanonical = (value: unknown, path: string): void => {
+      if (value === null) {
+        throw new Error(`Unexpected null at ${path}`);
+      }
+      if (Array.isArray(value)) {
+        if (value.length === 0) {
+          throw new Error(`Unexpected empty list at ${path}`);
+        }
+        value.forEach((entry, index) => assertCanonical(entry, `${path}[${index}]`));
+      } else if (typeof value === 'object') {
+        const record = value as Record<string, unknown>;
+        if (Object.keys(record).length === 0) {
+          throw new Error(`Unexpected empty mapping at ${path}`);
+        }
+        Object.entries(record).forEach(([key, entry]) => assertCanonical(entry, `${path}.${key}`));
+      }
+    };
+
+    assertCanonical(output, '$');
+  });
+
+  test('an empty repeated element stub survives write, read, and write', () => {
+    const repeatedElements = `type: "instance"
+name: "Repeated elements"
+children:
+  _elements:
+    - type: "element-instance"
+    - children:
+        _inside:
+          value: "second"
+`;
+    const once = writer.getAsYamlString(reader.readFromString(repeatedElements).instance);
+    const twice = writer.getAsYamlString(reader.readFromString(once).instance);
+
+    expect(twice).toBe(once);
+    expect(once).toContain('type: "element-instance"');
+  });
+
+  test('compact YAML preserves instance identity through a round trip', () => {
+    const once = writer.getAsYamlString(reader.readFromString(edgeCaseYaml).instance, true);
+    const twice = writer.getAsYamlString(reader.readFromString(once).instance, true);
+
+    expect(twice).toBe(once);
+    expect(once).toContain('id: "https://example.org/instances/edge-cases"');
+    expect(once).toContain('id: "https://example.org/e1"');
   });
 });

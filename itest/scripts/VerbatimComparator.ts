@@ -11,18 +11,20 @@ export class VerbatimComparator {
     leftSource: CompareFileSource,
     rightSource: CompareFileSource,
     format: CompareFileFormat,
+    isCompact: boolean = false,
   ) {
     let compared = 0;
     const skipped: number[] = [];
     let differing = 0;
+    let failed = 0;
 
     for (const testNumber of testNumbers) {
       const testResource: TestResource = TestResource.artifact(testNumber, artifactType);
       let left: string;
       let right: string;
       try {
-        left = TestUtil.readArtifact(testResource, leftSource, format);
-        right = TestUtil.readArtifact(testResource, rightSource, format);
+        left = TestUtil.readArtifact(testResource, leftSource, format, isCompact);
+        right = TestUtil.readArtifact(testResource, rightSource, format, isCompact);
       } catch (error) {
         // A case with output from only one library is skipped, not failed.
         // Several are deliberate: boolean fields have no Java counterpart
@@ -34,6 +36,7 @@ export class VerbatimComparator {
           continue;
         }
         console.error(`Failed to process ${artifactType.getYamlValue()} ${testNumber}!`, error);
+        failed++;
         continue;
       }
 
@@ -45,6 +48,10 @@ export class VerbatimComparator {
     }
 
     const skippedNote = skipped.length > 0 ? `, ${skipped.length} skipped — no output on one side: ${skipped.join(', ')}` : '';
-    console.log(`${artifactType.getYamlValue()}: ${compared} compared, ${differing} differing${skippedNote}`);
+    const compactNote = isCompact ? ' (compact)' : '';
+    console.log(`${artifactType.getYamlValue()}${compactNote}: ${compared} compared, ${differing} differing${skippedNote}`);
+    if (differing > 0 || failed > 0) {
+      process.exitCode = 1;
+    }
   }
 }

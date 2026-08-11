@@ -28,6 +28,7 @@ children:
       children:
         Multiple Choice in Element (radio):
           value: "Option 5"
-    - id: "https://repo.metadatacenter.org/template-element-instances/89c67f8e-da51-4c2a-83e8-c227f0f4e4db"
+    - type: "element-instance"
+      id: "https://repo.metadatacenter.org/template-element-instances/89c67f8e-da51-4c2a-83e8-c227f0f4e4db"
   Multiple Choice Standalone:
     value: "Option 1"

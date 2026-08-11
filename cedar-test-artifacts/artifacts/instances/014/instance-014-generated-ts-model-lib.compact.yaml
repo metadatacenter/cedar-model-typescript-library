@@ -1,12 +1,15 @@
 type: "instance"
 name: "14 - two level deep metadata"
+id: "https://repo.metadatacenter.org/template-instances/66e46c72-d310-451f-93a9-368cf3d483ee"
 isBasedOn: "https://repo.metadatacenter.org/templates/5e56a512-8aa8-4072-b3a3-b78d231263cc"
 children:
   Element of Element:
+    id: "https://repo.metadatacenter.org/template-element-instances/78cc37d8-81d9-47cd-bc4e-5cc0e48e499b"
     children:
       Text Field 1:
         value: "Value 1"
       Single Text Element:
+        id: "https://repo.metadatacenter.org/template-element-instances/3999c42d-68b1-4486-b45b-c6a64c9b5b8a"
         children:
           Text Field in Element:
             value: "Value 2"

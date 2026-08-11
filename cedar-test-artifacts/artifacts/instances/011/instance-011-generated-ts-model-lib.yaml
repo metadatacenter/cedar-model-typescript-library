@@ -16,9 +16,7 @@ children:
       children:
         Single Select in Element:
           value: "Option 2"
-    - id: "https://repo.metadatacenter.org/template-element-instances/903d67ba-5b6f-4b5b-9ef6-7556024e5443"
-      children:
-        Single Select in Element:
-          value: null
+    - type: "element-instance"
+      id: "https://repo.metadatacenter.org/template-element-instances/903d67ba-5b6f-4b5b-9ef6-7556024e5443"
   Single Select Standalone:
     value: "Option 4"

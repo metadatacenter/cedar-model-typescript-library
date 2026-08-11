@@ -68,6 +68,47 @@ describe('attribute-value name policy', () => {
   });
 });
 
+describe('assertValid says which conflict it refused, and where', () => {
+  it('names a reserved attribute', () => {
+    const container = new InstanceDataContainer();
+    const attributes = new InstanceDataAttributeValueField('_attributes');
+    attributes.addValue('@context', new InstanceDataStringAtom('reserved'));
+    container.setValue('_attributes', attributes);
+
+    expect(() => AttributeValueNamePolicy.assertValid(container)).toThrow(
+      /"@context" at \/_attributes\/@context is reserved for instance metadata/,
+    );
+  });
+
+  it('names a collision with an ordinary sibling', () => {
+    expect(() => AttributeValueNamePolicy.assertValid(collidingContainer())).toThrow(
+      /"_title" at \/_attributes\/_title collides with another child in the same object/,
+    );
+  });
+
+  it('names the other field an attribute is already used by', () => {
+    const container = new InstanceDataContainer();
+    for (const groupName of ['_first', '_second']) {
+      const group = new InstanceDataAttributeValueField(groupName);
+      group.addValue('shared', new InstanceDataStringAtom(groupName));
+      container.setValue(groupName, group);
+    }
+
+    expect(() => AttributeValueNamePolicy.assertValid(container)).toThrow(
+      /"shared" at \/_second\/shared is also used by attribute-value field "_first"/,
+    );
+  });
+
+  it('passes a container that holds no conflict', () => {
+    const container = new InstanceDataContainer();
+    const attributes = new InstanceDataAttributeValueField('_attributes');
+    attributes.addValue('colour', new InstanceDataStringAtom('blue'));
+    container.setValue('_attributes', attributes);
+
+    expect(() => AttributeValueNamePolicy.assertValid(container)).not.toThrow();
+  });
+});
+
 describe('writers fail before a collision can overwrite data', () => {
   it.each([
     ['JSON', () => CedarWriters.json().getStrict().getTemplateInstanceWriter().getAsJsonNode(instanceWith(collidingContainer()))],

@@ -132,7 +132,7 @@ export class AttributeValueNamePolicy {
       } else if (Array.isArray(value)) {
         const attributeNames = value
           .filter((item): item is InstanceDataAttributeValueFieldName => item instanceof InstanceDataAttributeValueFieldName)
-          .map((item) => item.name ?? '');
+          .map((item) => item.name);
         if (attributeNames.length > 0) {
           groups.push({ name, attributeNames, unpacked: true });
         }

@@ -187,6 +187,22 @@ children:
     expect(once).toContain('type: "element-instance"');
   });
 
+  test('an empty repeated element keeps the identifier it arrived with', () => {
+    const identifiedStub = `type: "instance"
+name: "Repeated elements"
+children:
+  _elements:
+    - type: "element-instance"
+      id: "https://example.org/occurrence-1"
+    - type: "element-instance"
+`;
+    const once = writer.getAsYamlString(reader.readFromString(identifiedStub).instance);
+    const twice = writer.getAsYamlString(reader.readFromString(once).instance);
+
+    expect(once).toContain('id: "https://example.org/occurrence-1"');
+    expect(twice).toBe(once);
+  });
+
   test('compact YAML preserves instance identity through a round trip', () => {
     const once = writer.getAsYamlString(reader.readFromString(edgeCaseYaml).instance, true);
     const twice = writer.getAsYamlString(reader.readFromString(once).instance, true);

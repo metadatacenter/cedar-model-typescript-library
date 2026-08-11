@@ -2,6 +2,7 @@ import {
   CedarReaders,
   CedarWriters,
   InstanceDataAttributeValueField,
+  InstanceDataAttributeValueFieldName,
   InstanceDataContainer,
   InstanceDataControlledAtom,
   InstanceDataEmptyNode,
@@ -126,12 +127,12 @@ describe('YAML instance edge cases', () => {
     expect(children._nullTyped).toBeUndefined();
     expect(children._dateTyped).toEqual({ datatype: 'xsd:date', value: '2026-08-11' });
     expect(children._numericSpellings).toEqual([
-      { datatype: 'xsd:decimal', value: 12.5 },
+      { datatype: 'xsd:decimal', value: '12.5' },
       { datatype: 'xsd:long', value: '9007199254740992' },
       { datatype: 'xsd:int', value: '010' },
     ]);
     expect(children._blankLink).toBeUndefined();
-    expect(children._list).toEqual([{ value: 'first' }, { datatype: 'xsd:integer', value: 2 }]);
+    expect(children._list).toEqual([{ value: 'first' }, { datatype: 'xsd:integer', value: '2' }]);
     expect((children._nested as JsonNode).id).toBe('https://example.org/e1');
     expect(children._emptyNested).toBeUndefined();
     expect(children._elements).toEqual([
@@ -193,5 +194,28 @@ children:
     expect(twice).toBe(once);
     expect(once).toContain('id: "https://example.org/instances/edge-cases"');
     expect(once).toContain('id: "https://example.org/e1"');
+  });
+
+  test('writes CEE editable attribute-value fields under their field names', () => {
+    const instance = reader.readFromString('type: "instance"\nname: "Editable attributes"\n').instance;
+    instance.dataContainer.setValue('My AV Field 1', [
+      new InstanceDataAttributeValueFieldName('A11'),
+      new InstanceDataAttributeValueFieldName('A12'),
+    ]);
+    instance.dataContainer.setValue('A11', new InstanceDataStringAtom('V11'));
+    instance.dataContainer.setValue('A12', new InstanceDataStringAtom('V12'));
+    instance.dataContainer.setValue('My AV Field 2', [
+      new InstanceDataAttributeValueFieldName('A21'),
+      new InstanceDataAttributeValueFieldName('A22'),
+    ]);
+    instance.dataContainer.setValue('A21', new InstanceDataStringAtom('V21'));
+    instance.dataContainer.setValue('A22', new InstanceDataStringAtom('V22'));
+
+    const output = writer.getYamlAsJsonNode(instance);
+
+    expect(output.children).toBeUndefined();
+    expect(output['My AV Field 1']).toEqual({ A11: { value: 'V11' }, A12: { value: 'V12' } });
+    expect(output['My AV Field 2']).toEqual({ A21: { value: 'V21' }, A22: { value: 'V22' } });
+    expect(writer.getAsYamlString(reader.readFromObject(output).instance)).toBe(writer.getAsYamlString(instance));
   });
 });

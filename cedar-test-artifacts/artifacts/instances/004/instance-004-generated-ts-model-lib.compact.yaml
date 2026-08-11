@@ -5,9 +5,9 @@ isBasedOn: "https://repo.metadatacenter.org/templates/5f6c22fa-d424-435d-9fb9-c9
 children:
   Number 1:
     datatype: "xsd:decimal"
-    value: 123.456
+    value: "123.456"
   Number 2:
     - datatype: "xsd:long"
-      value: 20000
+      value: "20000"
     - datatype: "xsd:long"
-      value: 10000
+      value: "10000"

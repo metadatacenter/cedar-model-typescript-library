@@ -13,26 +13,9 @@ import { InstanceDataTypedAtom } from '../../../model/cedar/template-instance/In
 import { InstanceDataControlledAtom } from '../../../model/cedar/template-instance/InstanceDataControlledAtom';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 import { AttributeValueNamePolicy } from '../../../model/cedar/template-instance/AttributeValueNamePolicy';
+import { InstanceDataAttributeValueFieldName } from '../../../model/cedar/template-instance/InstanceDataAttributeValueFieldName';
 
 const ELEMENT_INSTANCE_TYPE = 'element-instance';
-const XSD_NUMERIC_TYPES = new Set([
-  'xsd:decimal',
-  'xsd:integer',
-  'xsd:long',
-  'xsd:int',
-  'xsd:short',
-  'xsd:byte',
-  'xsd:nonPositiveInteger',
-  'xsd:negativeInteger',
-  'xsd:nonNegativeInteger',
-  'xsd:unsignedLong',
-  'xsd:unsignedInt',
-  'xsd:unsignedShort',
-  'xsd:unsignedByte',
-  'xsd:positiveInteger',
-  'xsd:float',
-  'xsd:double',
-]);
 
 export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
   private constructor(behavior: YamlWriterBehavior, writers: CedarYamlWriters) {
@@ -72,7 +55,15 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
 
   private serializeDataLevelInto(dataContainer: InstanceDataContainer, into: JsonNode, isCompact: boolean): void {
     const target = JsonNode.getEmpty();
+    const unpackedAttributeValueGroups = this.getUnpackedAttributeValueGroups(dataContainer);
+    const unpackedAttributeNames = new Set(Array.from(unpackedAttributeValueGroups.values()).flat());
     Object.keys(dataContainer.values).forEach((key) => {
+      // CEE edits attribute-value fields as a list of name slots plus sibling
+      // value atoms. They belong at the container level under their field name,
+      // not in `children` as unrelated ordinary fields.
+      if (unpackedAttributeValueGroups.has(key) || unpackedAttributeNames.has(key)) {
+        return;
+      }
       const dataAtom: InstanceDataAtomType = dataContainer.values[key];
       if (Array.isArray(dataAtom)) {
         const dataArray: JsonNode[] = JsonNode.getEmptyList();
@@ -112,10 +103,14 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
       }
       into[YamlKeys.children] = target;
     }
-    this.serializeAttributeValueFields(dataContainer, into);
+    this.serializeAttributeValueFields(dataContainer, into, unpackedAttributeValueGroups);
   }
 
-  private serializeAttributeValueFields(dataContainer: InstanceDataContainer, into: JsonNode) {
+  private serializeAttributeValueFields(
+    dataContainer: InstanceDataContainer,
+    into: JsonNode,
+    unpackedGroups: ReadonlyMap<string, string[]>,
+  ) {
     Object.keys(dataContainer.values).forEach((key) => {
       const dataAtom: InstanceDataAtomType = dataContainer.values[key];
       if (dataAtom instanceof InstanceDataAttributeValueField) {
@@ -136,6 +131,39 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
         }
       }
     });
+
+    for (const [groupName, attributeNames] of unpackedGroups) {
+      const wrapper: JsonNode = JsonNode.getEmpty();
+      for (const attributeName of attributeNames) {
+        const atom = dataContainer.values[attributeName];
+        if (atom instanceof InstanceDataStringAtom) {
+          const serialized = this.serializeAtomString(atom);
+          if (serialized !== null) {
+            wrapper[attributeName] = serialized;
+          }
+        }
+      }
+      if (JsonNode.hasEntries(wrapper)) {
+        into[groupName] = wrapper;
+      }
+    }
+  }
+
+  private getUnpackedAttributeValueGroups(dataContainer: InstanceDataContainer): Map<string, string[]> {
+    const groups = new Map<string, string[]>();
+    for (const [key, value] of Object.entries(dataContainer.values)) {
+      if (!Array.isArray(value)) {
+        continue;
+      }
+      const names = value
+        .filter((item): item is InstanceDataAttributeValueFieldName => item instanceof InstanceDataAttributeValueFieldName)
+        .map((item) => item.name)
+        .filter((name) => name.length > 0);
+      if (names.length > 0) {
+        groups.set(key, names);
+      }
+    }
+    return groups;
   }
 
   private serializeCommonType(atom: InstanceDataAtomType, isCompact: boolean): JsonNode | null {
@@ -143,9 +171,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
       return this.serializeAtomString(atom);
     }
     if (atom instanceof InstanceDataTypedAtom) {
-      return atom.value === null
-        ? null
-        : { [YamlKeys.datatype]: atom.type, [YamlKeys.value]: this.renderTypedValue(atom.value, atom.type) };
+      return atom.value === null ? null : { [YamlKeys.datatype]: atom.type, [YamlKeys.value]: atom.value };
     }
     if (atom instanceof InstanceDataControlledAtom) {
       const controlled: JsonNode = JsonNode.getEmpty();
@@ -179,21 +205,5 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
 
   private hasId(id: string | null): id is string {
     return id !== null && id !== '';
-  }
-
-  /** Match Java's readable YAML representation without changing unsafe numeric strings. */
-  private renderTypedValue(value: string, type: string): string | number {
-    if (!XSD_NUMERIC_TYPES.has(type)) {
-      return value;
-    }
-    if (/^-?(0|[1-9]\d*)$/.test(value)) {
-      const parsed = Number(value);
-      return Number.isSafeInteger(parsed) ? parsed : value;
-    }
-    if (/^-?(0|[1-9]\d*)\.\d+$/.test(value)) {
-      const parsed = Number(value);
-      return Number.isFinite(parsed) ? parsed : value;
-    }
-    return value;
   }
 }

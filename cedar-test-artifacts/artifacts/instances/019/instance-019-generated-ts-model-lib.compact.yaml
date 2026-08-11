@@ -17,4 +17,4 @@ children:
           - value: "Text field 1"
         Numeric Field Multiple Inside Paragraph Element:
           - datatype: "xsd:double"
-            value: 120
+            value: "120"

@@ -7,7 +7,7 @@ children:
     value: "Text Value"
   Numeric Field Simple:
     datatype: "xsd:decimal"
-    value: 1234
+    value: "1234"
   Phone Field Multiple:
     - value: "650-686-8815"
     - value: "650-686-8816"

@@ -23,6 +23,7 @@ import { InstanceDataAttributeValueFieldName } from '../../../model/cedar/templa
 import { InstanceDataAttributeValueField } from '../../../model/cedar/template-instance/InstanceDataAttributeValueField';
 import { CedarModel } from '../../../model/cedar/constants/CedarModel';
 import { JsonTemplateInstanceContent } from '../../../model/cedar/util/serialization/JsonTemplateInstanceContent';
+import { AttributeValueNamePolicy } from '../../../model/cedar/template-instance/AttributeValueNamePolicy';
 
 export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactReader {
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.TEMPLATE_INSTANCE;
@@ -177,6 +178,20 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
         }
       }
     });
+    // Nested containers run through this method in their own right. Report
+    // only this level here so a nested conflict is not repeated once for every
+    // ancestor on the way back out of the recursive parse.
+    for (const conflict of AttributeValueNamePolicy.findConflicts(ret).filter((candidate) => candidate.path.length === 0)) {
+      parsingResult.addBlueprintComparisonError(
+        new ComparisonError(
+          'JsonTemplateInstanceReader',
+          ComparisonErrorType.VALUE_MISMATCH,
+          path.add(...conflict.path, conflict.groupName, conflict.name),
+          'a unique, non-reserved attribute-value name',
+          conflict.name,
+        ),
+      );
+    }
     this.packAttributeValues(ret);
 
     // `"@context": null` is a present key with nothing in it, and every lookup

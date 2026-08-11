@@ -17,6 +17,7 @@ import { InstanceDataControlledAtom } from '../../../model/cedar/template-instan
 import { InstanceDataLinkAtom } from '../../../model/cedar/template-instance/InstanceDataLinkAtom';
 import { InstanceDataEmptyAtom } from '../../../model/cedar/template-instance/InstanceDataEmptyAtom';
 import { InstanceDataEmptyNode } from '../../../model/cedar/template-instance/InstanceDataEmptyNode';
+import { AttributeValueNamePolicy } from '../../../model/cedar/template-instance/AttributeValueNamePolicy';
 
 export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
   private constructor(behavior: JsonWriterBehavior, writers: CedarJsonWriters) {
@@ -170,6 +171,7 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
   }
 
   public getAsJsonNode(instance: TemplateInstance): JsonNode {
+    AttributeValueNamePolicy.assertValid(instance.dataContainer);
     const extendedContext: JsonNode = this.buildContext(instance);
 
     // build the final object

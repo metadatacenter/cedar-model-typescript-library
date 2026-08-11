@@ -16,6 +16,10 @@ import { InstanceDataLinkAtom } from '../../../model/cedar/template-instance/Ins
 import { InstanceDataControlledAtom } from '../../../model/cedar/template-instance/InstanceDataControlledAtom';
 import { InstanceDataEmptyNode } from '../../../model/cedar/template-instance/InstanceDataEmptyNode';
 import { InstanceDataAttributeValueField } from '../../../model/cedar/template-instance/InstanceDataAttributeValueField';
+import { AttributeValueNamePolicy } from '../../../model/cedar/template-instance/AttributeValueNamePolicy';
+import { ComparisonError } from '../../../model/cedar/util/compare/ComparisonError';
+import { YamlComparisonErrorType } from '../../../model/cedar/util/compare/YamlComparisonErrorType';
+import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
 
 /**
  * Read a CEDAR template instance from YAML into the same `TemplateInstance` the
@@ -63,6 +67,17 @@ export class YamlTemplateInstanceReader {
     instance.schema_isBasedOn = CedarArtifactId.forValue(ReaderUtil.getString(source, YamlKeys.isBasedOn));
 
     instance.dataContainer = this.parseContainer(source);
+    for (const conflict of AttributeValueNamePolicy.findConflicts(instance.dataContainer)) {
+      parsingResult.addBlueprintComparisonError(
+        new ComparisonError(
+          'YamlTemplateInstanceReader',
+          YamlComparisonErrorType.VALUE_MISMATCH,
+          new JsonPath(...conflict.path, conflict.groupName, conflict.name),
+          'a unique, non-reserved attribute-value name',
+          conflict.name,
+        ),
+      );
+    }
     return new YamlTemplateInstanceReaderResult(instance, parsingResult, source);
   }
 

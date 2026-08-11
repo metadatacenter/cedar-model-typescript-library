@@ -20,6 +20,10 @@ import { ComparisonErrorType } from '../util/compare/ComparisonErrorType';
 import { JsonPath } from '../util/path/JsonPath';
 import { JsonSchema } from '../constants/JsonSchema';
 import { UiInputType } from '../types/wrapped-types/UiInputType';
+import { InstanceDataAttributeValueField } from './InstanceDataAttributeValueField';
+import { InstanceDataAttributeValueFieldName } from './InstanceDataAttributeValueFieldName';
+import { AttributeValueNamePolicy } from './AttributeValueNamePolicy';
+import { CedarArtifactType } from '../types/cedar-types/CedarArtifactType';
 
 const LOCATION = 'InstanceValidator';
 
@@ -93,6 +97,35 @@ export class InstanceValidator {
   ): void {
     const info = template.getChildrenInfo();
 
+    for (const conflict of AttributeValueNamePolicy.findConflicts(container).filter((candidate) => candidate.path.length === 0)) {
+      result.addBlueprintComparisonError(
+        new ComparisonError(
+          LOCATION,
+          ComparisonErrorType.VALUE_MISMATCH,
+          path.add(conflict.groupName, conflict.name),
+          'a unique, non-reserved attribute-value name',
+          conflict.name,
+        ),
+      );
+    }
+
+    for (const [groupName, attributeNames] of InstanceValidator.attributeValueGroups(container)) {
+      for (const attributeName of attributeNames) {
+        const conflictingChild = info.get(attributeName);
+        if (conflictingChild !== null && conflictingChild.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD) {
+          result.addBlueprintComparisonError(
+            new ComparisonError(
+              LOCATION,
+              ComparisonErrorType.VALUE_MISMATCH,
+              path.add(groupName, attributeName),
+              'a name different from every serializable template child',
+              attributeName,
+            ),
+          );
+        }
+      }
+    }
+
     for (const name of info.getChildrenNamesForRequiredInProperties()) {
       if (!Object.hasOwn(container.values, name)) {
         result.addBlueprintComparisonError(
@@ -122,6 +155,24 @@ export class InstanceValidator {
       }
       InstanceValidator.validateChild(name, value, childInfo, template.getChild(name), path.add(name), result);
     }
+  }
+
+  private static attributeValueGroups(container: InstanceDataContainer): Array<[string, string[]]> {
+    const groups: Array<[string, string[]]> = [];
+    for (const [name, value] of Object.entries(container.values)) {
+      if (value instanceof InstanceDataAttributeValueField) {
+        groups.push([name, Object.keys(value.values)]);
+      } else if (Array.isArray(value)) {
+        const names = value
+          .filter((item): item is InstanceDataAttributeValueFieldName => item instanceof InstanceDataAttributeValueFieldName)
+          .map((item) => item.name ?? '')
+          .filter((item) => item.length > 0);
+        if (names.length > 0) {
+          groups.push([name, names]);
+        }
+      }
+    }
+    return groups;
   }
 
   private static validateChild(

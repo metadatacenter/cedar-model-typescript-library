@@ -12,6 +12,7 @@ import { InstanceDataLinkAtom } from '../../../model/cedar/template-instance/Ins
 import { InstanceDataTypedAtom } from '../../../model/cedar/template-instance/InstanceDataTypedAtom';
 import { InstanceDataControlledAtom } from '../../../model/cedar/template-instance/InstanceDataControlledAtom';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
+import { AttributeValueNamePolicy } from '../../../model/cedar/template-instance/AttributeValueNamePolicy';
 
 export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
   private constructor(behavior: YamlWriterBehavior, writers: CedarYamlWriters) {
@@ -23,6 +24,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
   }
 
   public getYamlAsJsonNode(instance: TemplateInstance, isCompact: boolean = false): JsonNode {
+    AttributeValueNamePolicy.assertValid(instance.dataContainer);
     // build the final object
     return {
       ...this.macroType(instance),

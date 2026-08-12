@@ -1,0 +1,8 @@
+type: "instance"
+name: "15 - phone field metadata"
+description: "15 - description"
+id: "https://repo.metadatacenter.org/template-instances/19f5261e-9259-45ec-b961-b3d17c92f27f"
+isBasedOn: "https://repo.metadatacenter.org/templates/ec3f500f-ddca-4ec1-9196-29932f9304fd"
+children:
+  Phone Field:
+    value: "650 686 8888"

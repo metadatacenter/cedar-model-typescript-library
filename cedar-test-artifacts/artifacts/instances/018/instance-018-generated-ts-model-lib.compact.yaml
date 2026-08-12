@@ -1,0 +1,37 @@
+type: "instance"
+name: "With Email metadata"
+id: "https://repo.metadatacenter.org/template-instances/1da98ce2-9b74-4257-af64-e6ef1c143f6e"
+isBasedOn: "https://repo.metadatacenter.org/templates/d9d52596-1a0e-464b-9207-b848faf2205d"
+children:
+  Datetime Element:
+    - id: "https://repo.metadatacenter.org/template-element-instances/689c7c17-e23d-4fdb-a150-5b7efa7c3f68"
+      children:
+        Datetime in Element:
+          - datatype: "xsd:date"
+            value: "2023-08-01"
+          - datatype: "xsd:date"
+            value: "2023-08-02"
+    - id: "https://repo.metadatacenter.org/template-element-instances/73f6d3cb-b614-4e5a-a4b8-f1d4baf2056b"
+      children:
+        Datetime in Element:
+          - datatype: "xsd:date"
+            value: "2023-08-11"
+          - datatype: "xsd:date"
+            value: "2023-08-12"
+          - datatype: "xsd:date"
+            value: "2023-08-13"
+  Date Year Month:
+    - datatype: "xsd:date"
+      value: "2023-08-01"
+    - datatype: "xsd:date"
+      value: "2022-08-01"
+  Time Only:
+    - datatype: "xsd:time"
+      value: "16:16:00"
+    - datatype: "xsd:time"
+      value: "16:18:00-10:00"
+  Date and Time:
+    - datatype: "xsd:dateTime"
+      value: "2023-08-05T16:16:17.0-10:00"
+    - datatype: "xsd:dateTime"
+      value: "2023-08-31T18:21:05.123-08:00"

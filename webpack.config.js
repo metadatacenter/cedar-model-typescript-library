@@ -31,6 +31,13 @@ module.exports = [
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: 'index.esm.js',
+      // Without this the bundle exports nothing but `default`: webpack builds
+      // an ES module and then keeps the entry's named exports to itself, so
+      // `import { CedarReaders } from 'cedar-model-typescript-library'`
+      // resolves to undefined at runtime and fails on first use. The package
+      // manifest pointed `main` at the CommonJS build, so nothing consumed this
+      // file and nothing noticed.
+      library: { type: 'module' },
     },
     experiments: {
       outputModule: true, // Native ES Module output

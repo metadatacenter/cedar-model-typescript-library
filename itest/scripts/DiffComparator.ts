@@ -29,6 +29,7 @@ export class DiffComparator {
           const diffOutput = execSync(diffCommand, { encoding: 'utf8', stdio: 'pipe' });
           if (diffOutput) {
             console.log(`DIFF FOUND for ${artifactType.getYamlValue()} ${testNumber}:\n${diffOutput}`);
+            process.exitCode = 1;
           } else {
             console.log(`No differences found for ${artifactType.getYamlValue()} ${testNumber}.`);
           }
@@ -36,13 +37,16 @@ export class DiffComparator {
           // Check if the error is a result of differences found (exit code 1)
           if (error.status === 1 && error.stdout) {
             console.log(`DIFF FOUND for ${artifactType.getYamlValue()} ${testNumber}:\n${error.stdout}`);
+            process.exitCode = 1;
           } else {
             // Any other error (non-diff related)
             console.error(`Error running diff for ${artifactType.getYamlValue()} ${testNumber}:`, error.message);
+            process.exitCode = 1;
           }
         }
       } catch (error: any) {
         console.error(`Failed to process ${artifactType.getYamlValue()} ${testNumber}!`, error.message);
+        process.exitCode = 1;
       }
       console.log('\n\n\n');
     }

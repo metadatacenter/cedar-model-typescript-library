@@ -28,7 +28,4 @@ export class JsonSchema {
   static items: string = 'items';
 
   // special properties used to add attribute-value fields to the model
-  static reservedAttributeName: string = '__reserved__attribute_name';
-  static reservedAttributeValue: string = '__reserved__attribute_value';
-  static reservedDefaultAttributeName: string = 'Attribute Value Field';
 }

@@ -17,6 +17,8 @@ export class YamlFieldReaderImage extends YamlTemplateFieldTypeSpecificReader {
   ): StaticImageField {
     const field = StaticImageFieldImpl.buildEmpty();
     field.content = ReaderUtil.getString(fieldSourceObject, YamlKeys.content);
+    field.width = ReaderUtil.getNumber(fieldSourceObject, YamlKeys.width);
+    field.height = ReaderUtil.getNumber(fieldSourceObject, YamlKeys.height);
     return field;
   }
 }

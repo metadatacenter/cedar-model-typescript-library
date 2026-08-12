@@ -3,9 +3,5 @@
   "trailingComma": "all",
   "tabWidth": 2,
   "semi": true,
-  "printWidth": 140,
-
-  "importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
-  "importOrderSeparation": true,
-  "importOrderSortSpecifiers": true
+  "printWidth": 140
 }

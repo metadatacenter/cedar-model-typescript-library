@@ -11,10 +11,16 @@ export class YamlFieldWriterStaticImage extends YamlStaticFieldWriter {
   }
 
   protected override expandUINodeForYAML(field: StaticImageField): JsonNode {
+    const ret = JsonNode.getEmpty();
     if (field.content !== null) {
-      return { [YamlKeys.content]: field.content };
-    } else {
-      return JsonNode.getEmpty();
+      ret[YamlKeys.content] = field.content;
     }
+    if (field.width !== null) {
+      ret[YamlKeys.width] = field.width;
+    }
+    if (field.height !== null) {
+      ret[YamlKeys.height] = field.height;
+    }
+    return ret;
   }
 }

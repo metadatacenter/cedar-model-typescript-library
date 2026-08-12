@@ -1,0 +1,26 @@
+type: "template"
+name: "#018 Template with checkbox"
+children:
+  - key: "My checkbox 1"
+    type: "checkbox-field"
+    name: "My checkbox 1"
+    description: "Help Text"
+    prefLabel: "Required checkbox"
+    values:
+      - label: "Option 1"
+      - label: "Option 2"
+        selected: true
+      - label: "Option 3"
+        selected: true
+      - label: "Option 4"
+    configuration:
+      required: true
+  - key: "My checkbox 2"
+    type: "checkbox-field"
+    name: "My checkbox 2"
+    description: "Help Text"
+    prefLabel: "Non-required checkbox"
+    values:
+      - label: "Radio 1"
+      - label: "Radio 2"
+      - label: "Radio 3"

@@ -40,6 +40,10 @@ import { YamlTemplateInstanceWriter } from './YamlTemplateInstanceWriter';
 import { YamlFieldWriterExtRor } from '../../../model/cedar/field/dynamic/ext-ror/YamlFieldWriterExtRor';
 import { YamlFieldWriterExtOrcid } from '../../../model/cedar/field/dynamic/ext-orcid/YamlFieldWriterExtOrcid';
 import { YamlFieldWriterExtPfas } from '../../../model/cedar/field/dynamic/ext-pfas/YamlFieldWriterExtPfas';
+import { YamlFieldWriterExtPubmed } from '../../../model/cedar/field/dynamic/ext-pubmed/YamlFieldWriterExtPubmed';
+import { YamlFieldWriterExtRrid } from '../../../model/cedar/field/dynamic/ext-rrid/YamlFieldWriterExtRrid';
+import { YamlFieldWriterExtNihGrantId } from '../../../model/cedar/field/dynamic/ext-nih-grant-id/YamlFieldWriterExtNihGrantId';
+import { YamlFieldWriterExtDoi } from '../../../model/cedar/field/dynamic/ext-doi/YamlFieldWriterExtDoi';
 
 export class CedarYamlWriters {
   private readonly behavior: YamlWriterBehavior;
@@ -71,6 +75,10 @@ export class CedarYamlWriters {
       [CedarFieldType.EXT_ROR, new YamlFieldWriterExtRor(behavior, this)],
       [CedarFieldType.EXT_ORCID, new YamlFieldWriterExtOrcid(behavior, this)],
       [CedarFieldType.EXT_PFAS, new YamlFieldWriterExtPfas(behavior, this)],
+      [CedarFieldType.EXT_PUBMED, new YamlFieldWriterExtPubmed(behavior, this)],
+      [CedarFieldType.EXT_RRID, new YamlFieldWriterExtRrid(behavior, this)],
+      [CedarFieldType.EXT_NIH_GRANT_ID, new YamlFieldWriterExtNihGrantId(behavior, this)],
+      [CedarFieldType.EXT_DOI, new YamlFieldWriterExtDoi(behavior, this)],
       [CedarFieldType.NUMERIC, new YamlFieldWriterNumeric(behavior, this)],
       [CedarFieldType.TEMPORAL, new YamlFieldWriterTemporal(behavior, this)],
       [CedarFieldType.RADIO, new YamlFieldWriterRadio(behavior, this)],

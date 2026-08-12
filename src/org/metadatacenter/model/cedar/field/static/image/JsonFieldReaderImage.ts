@@ -18,6 +18,9 @@ export class JsonFieldReaderImage extends JsonTemplateFieldTypeSpecificReader {
     const field = StaticImageFieldImpl.buildEmpty();
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
     field.content = ReaderUtil.getString(uiNode, CedarModel.content);
+    const sizeNode = ReaderUtil.getNode(uiNode, CedarModel.size);
+    field.width = ReaderUtil.getNumber(sizeNode, CedarModel.width);
+    field.height = ReaderUtil.getNumber(sizeNode, CedarModel.height);
     return field;
   }
 }

@@ -19,6 +19,8 @@ import { AttributeValueField } from './org/metadatacenter/model/cedar/field/dyna
 import { AttributeValueFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/attribute-value/AttributeValueFieldBuilder';
 import { CheckboxField } from './org/metadatacenter/model/cedar/field/dynamic/checkbox/CheckboxField';
 import { CheckboxFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/checkbox/CheckboxFieldBuilder';
+import { BooleanField } from './org/metadatacenter/model/cedar/field/dynamic/boolean/BooleanField';
+import { BooleanFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/boolean/BooleanFieldBuilder';
 import { ControlledTermField } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/ControlledTermField';
 import { ControlledTermFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/ControlledTermFieldBuilder';
 import { EmailField } from './org/metadatacenter/model/cedar/field/dynamic/email/EmailField';
@@ -81,20 +83,25 @@ import { ChildDeploymentInfoBuilder } from './org/metadatacenter/model/cedar/dep
 import { CedarArtifactId } from './org/metadatacenter/model/cedar/types/cedar-types/CedarArtifactId';
 import { ComparisonError } from './org/metadatacenter/model/cedar/util/compare/ComparisonError';
 import { RoundTrip } from './org/metadatacenter/io/roundtrip/RoundTrip';
-import { JsonSchema } from './org/metadatacenter/model/cedar/constants/JsonSchema';
-import { CedarModel } from './org/metadatacenter/model/cedar/constants/CedarModel';
+import { PropertyIri } from './org/metadatacenter/model/cedar/types/wrapped-types/PropertyIri';
+import { JsonTemplateInstanceWriter } from './org/metadatacenter/io/writer/json/JsonTemplateInstanceWriter';
+import { JsonTemplateInstanceContent } from './org/metadatacenter/model/cedar/util/serialization/JsonTemplateInstanceContent';
 import { ControlledTermActionBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/action/ControlledTermActionBuilder';
-import { YamlKeys } from './org/metadatacenter/model/cedar/constants/YamlKeys';
 import { YamlValues } from './org/metadatacenter/model/cedar/constants/YamlValues';
 import { BioportalTermType } from './org/metadatacenter/model/cedar/types/bioportal-types/BioportalTermType';
 import { CedarFieldCategory } from './org/metadatacenter/model/cedar/types/cedar-types/CedarFieldCategory';
 import { YamlTemplateFieldReader } from './org/metadatacenter/io/reader/yaml/YamlTemplateFieldReader';
 import { YamlTemplateElementReader } from './org/metadatacenter/io/reader/yaml/YamlTemplateElementReader';
 import { YamlTemplateReader } from './org/metadatacenter/io/reader/yaml/YamlTemplateReader';
+import { YamlTemplateInstanceReader } from './org/metadatacenter/io/reader/yaml/YamlTemplateInstanceReader';
+import { InstanceInflater } from './org/metadatacenter/model/cedar/template-instance/InstanceInflater';
+import { InstanceValidator } from './org/metadatacenter/model/cedar/template-instance/InstanceValidator';
 import { CedarArtifactType } from './org/metadatacenter/model/cedar/types/cedar-types/CedarArtifactType';
 import { JsonAbstractSchemaArtifactReader } from './org/metadatacenter/io/reader/json/JsonAbstractSchemaArtifactReader';
 import { CedarReaders } from './org/metadatacenter/io/reader/CedarReaders';
 import { AbstractSchemaArtifact } from './org/metadatacenter/model/cedar/AbstractSchemaArtifact';
+import { AbstractContainerArtifact } from './org/metadatacenter/model/cedar/AbstractContainerArtifact';
+import { CedarFieldType } from './org/metadatacenter/model/cedar/types/cedar-types/CedarFieldType';
 import { JsonAbstractArtifactWriter } from './org/metadatacenter/io/writer/json/JsonAbstractArtifactWriter';
 import { ComparisonErrorType } from './org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
 import { CedarJsonWriters } from './org/metadatacenter/io/writer/json/CedarJsonWriters';
@@ -104,7 +111,18 @@ import { CedarYamlReaders } from './org/metadatacenter/io/reader/yaml/CedarYamlR
 import { AbstractInstanceArtifact } from './org/metadatacenter/model/cedar/AbstractInstanceArtifact';
 import { AbstractArtifact } from './org/metadatacenter/model/cedar/AbstractArtifact';
 import { TemplateInstance } from './org/metadatacenter/model/cedar/template-instance/TemplateInstance';
-import { JsonTemplateInstanceReader } from './org/metadatacenter/io/reader/json/JsonTemplateInstancetReader';
+import { InstanceDataAtomType } from './org/metadatacenter/model/cedar/template-instance/InstanceDataAtomType';
+import { InstanceDataContainer } from './org/metadatacenter/model/cedar/template-instance/InstanceDataContainer';
+import { InstanceDataAttributeValueField } from './org/metadatacenter/model/cedar/template-instance/InstanceDataAttributeValueField';
+import { InstanceDataAttributeValueFieldName } from './org/metadatacenter/model/cedar/template-instance/InstanceDataAttributeValueFieldName';
+import { AttributeValueNamePolicy } from './org/metadatacenter/model/cedar/template-instance/AttributeValueNamePolicy';
+import { InstanceDataEmptyNode } from './org/metadatacenter/model/cedar/template-instance/InstanceDataEmptyNode';
+import { InstanceDataEmptyAtom } from './org/metadatacenter/model/cedar/template-instance/InstanceDataEmptyAtom';
+import { InstanceDataStringAtom } from './org/metadatacenter/model/cedar/template-instance/InstanceDataStringAtom';
+import { InstanceDataTypedAtom } from './org/metadatacenter/model/cedar/template-instance/InstanceDataTypedAtom';
+import { InstanceDataLinkAtom } from './org/metadatacenter/model/cedar/template-instance/InstanceDataLinkAtom';
+import { InstanceDataControlledAtom } from './org/metadatacenter/model/cedar/template-instance/InstanceDataControlledAtom';
+import { JsonTemplateInstanceReader } from './org/metadatacenter/io/reader/json/JsonTemplateInstanceReader';
 import { JsonAbstractInstanceArtifactReader } from './org/metadatacenter/io/reader/json/JsonAbstractInstanceArtifactReader';
 import { JsonAbstractArtifactReader } from './org/metadatacenter/io/reader/json/JsonAbstractArtifactReader';
 import { JsonTemplateReaderResult } from './org/metadatacenter/io/reader/json/JsonTemplateReaderResult';
@@ -114,9 +132,6 @@ import { JsonTemplateElementReaderResult } from './org/metadatacenter/io/reader/
 import { JsonTemplateFieldReaderResult } from './org/metadatacenter/io/reader/json/JsonTemplateFieldReaderResult';
 import { JsonTemplateInstanceReaderResult } from './org/metadatacenter/io/reader/json/JsonTemplateInstanceReaderResult';
 
-// It is needed, do not remove, even if it looks unused
-import { JsonTemplateFieldWriter } from './org/metadatacenter/io/writer/json/JsonTemplateFieldWriter';
-import { YamlTemplateFieldWriter } from './org/metadatacenter/io/writer/yaml/YamlTemplateFieldWriter';
 import { PavVersion } from './org/metadatacenter/model/cedar/types/wrapped-types/PavVersion';
 import { TemplateChild } from './org/metadatacenter/model/cedar/types/basic-types/TemplateChild';
 import { ChildDeploymentInfoStatic } from './org/metadatacenter/model/cedar/deployment/ChildDeploymentInfoStatic';
@@ -146,6 +161,14 @@ import { ExtOrcidField } from './org/metadatacenter/model/cedar/field/dynamic/ex
 import { ExtOrcidFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/ext-orcid/ExtOrcidFieldBuilder';
 import { ExtPfasField } from './org/metadatacenter/model/cedar/field/dynamic/ext-pfas/ExtPfasField';
 import { ExtPfasFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/ext-pfas/ExtPfasFieldBuilder';
+import { ExtPubmedField } from './org/metadatacenter/model/cedar/field/dynamic/ext-pubmed/ExtPubmedField';
+import { ExtPubmedFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/ext-pubmed/ExtPubmedFieldBuilder';
+import { ExtRridField } from './org/metadatacenter/model/cedar/field/dynamic/ext-rrid/ExtRridField';
+import { ExtRridFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/ext-rrid/ExtRridFieldBuilder';
+import { ExtNihGrantIdField } from './org/metadatacenter/model/cedar/field/dynamic/ext-nih-grant-id/ExtNihGrantIdField';
+import { ExtNihGrantIdFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/ext-nih-grant-id/ExtNihGrantIdFieldBuilder';
+import { ExtDoiField } from './org/metadatacenter/model/cedar/field/dynamic/ext-doi/ExtDoiField';
+import { ExtDoiFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/ext-doi/ExtDoiFieldBuilder';
 // It is needed, do not remove, even if it looks unused
 export { JsonTemplateFieldWriterInternal as JsonTemplateFieldWriter };
 export { YamlTemplateFieldWriterInternal as YamlTemplateFieldWriter };
@@ -165,24 +188,37 @@ export { JsonAbstractArtifactWriter };
 export { JsonTemplateFieldReader, YamlTemplateFieldReader };
 export { JsonTemplateElementReader, YamlTemplateElementReader };
 export { JsonTemplateReader, YamlTemplateReader };
+export { YamlTemplateInstanceReader };
+export { InstanceInflater };
+export { InstanceValidator };
 export { JsonTemplateInstanceReader };
 
 export { JsonTemplateElementWriter, YamlTemplateElementWriter };
 export { JsonTemplateWriter, YamlTemplateWriter };
 
 export { AbstractSchemaArtifact };
+// A consumer walking a parsed template needs the container it walks and the
+// field type it branches on; both were reachable only by deep path into the
+// package. (AbstractChildDeploymentInfo, the third, was already exported.)
+export { AbstractContainerArtifact };
+export { CedarFieldType };
 export { AbstractInstanceArtifact };
 export { AbstractArtifact };
 
 export { TemplateField };
 export { AttributeValueField, AttributeValueFieldBuilder };
 export { CheckboxField, CheckboxFieldBuilder };
+export { BooleanField, BooleanFieldBuilder };
 export { ControlledTermField, ControlledTermFieldBuilder };
 export { EmailField, EmailFieldBuilder };
 export { LinkField, LinkFieldBuilder };
 export { ExtRorField, ExtRorFieldBuilder };
 export { ExtOrcidField, ExtOrcidFieldBuilder };
 export { ExtPfasField, ExtPfasFieldBuilder };
+export { ExtPubmedField, ExtPubmedFieldBuilder };
+export { ExtRridField, ExtRridFieldBuilder };
+export { ExtNihGrantIdField, ExtNihGrantIdFieldBuilder };
+export { ExtDoiField, ExtDoiFieldBuilder };
 export { SingleChoiceListField, SingleChoiceListFieldBuilder };
 export { MultipleChoiceListField, MultipleChoiceListFieldBuilder };
 export { NumericField, NumericFieldBuilder };
@@ -201,6 +237,20 @@ export { TemplateElement, TemplateElementBuilder };
 export { Template, TemplateBuilder };
 
 export { TemplateInstance };
+// Walking a parsed instance means naming the node types it is built from.
+export {
+  InstanceDataAtomType,
+  InstanceDataContainer,
+  InstanceDataAttributeValueField,
+  InstanceDataAttributeValueFieldName,
+  AttributeValueNamePolicy,
+  InstanceDataEmptyNode,
+  InstanceDataEmptyAtom,
+  InstanceDataStringAtom,
+  InstanceDataTypedAtom,
+  InstanceDataLinkAtom,
+  InstanceDataControlledAtom,
+};
 export { TemplateInstanceBuilder };
 
 export { ControlledTermDefaultValueBuilder };
@@ -233,9 +283,33 @@ export { BioportalTermType };
 export { CedarArtifactId };
 export { ComparisonError };
 export { RoundTrip };
-export { JsonSchema };
-export { CedarModel };
-export { YamlKeys };
+export { PropertyIri };
+
+/*
+ * `JsonSchema`, `YamlKeys` and `CedarModel` are deliberately not exported.
+ *
+ * They are the spelling tables this library's readers and writers use to talk to
+ * each other about a document — `@id`, `@value`, `_ui`, `$schema`. That CEDAR
+ * happens to be written in JSON-LD is this library's business: a consumer works
+ * in artifacts, and how one is written down is asked for by name at the edge,
+ * from a writer.
+ *
+ * Exporting them made the opposite true. A consumer reaching for `JsonSchema.atId`
+ * looks like it is using the model and is in fact reading a key, and it will keep
+ * compiling if the model gains a second serialization that spells the same thing
+ * differently — which YAML already does: `id`, `value`, `label`, and no context
+ * block at all.
+ *
+ * Nothing outside this library read them for a model reason. What consumers
+ * actually needed were two facts filed in with the keys: the namespace property
+ * IRIs are minted in, which is `PropertyIri` above, and a default name for a
+ * duplicate attribute, which was one consumer's product decision and has gone
+ * back to it.
+ */
+// The standard @context block every CEDAR instance carries. A consumer that
+// builds instances needs to state it, and should not restate it by hand.
+export { JsonTemplateInstanceContent };
+export { JsonTemplateInstanceWriter };
 export { YamlValues };
 export { CedarFieldCategory };
 export { CedarArtifactType };

@@ -20,6 +20,7 @@ import { JsonTemplateElementReader } from './JsonTemplateElementReader';
 import { JsonContainerArtifactContent } from '../../../model/cedar/util/serialization/JsonContainerArtifactContent';
 import { AbstractDynamicChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractDynamicChildDeploymentInfo';
 import { ChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/ChildDeploymentInfoBuilder';
+import { ChildDeploymentInfoAlwaysMultipleBuilder } from '../../../model/cedar/deployment/ChildDeploymentInfoAlwaysMultipleBuilder';
 import { ChildDeploymentInfoStaticBuilder } from '../../../model/cedar/deployment/ChildDeploymentInfoStaticBuilder';
 import { AbstractDynamicChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/AbstractDynamicChildDeploymentInfoBuilder';
 import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
@@ -51,10 +52,15 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
       childInfo.atType = atType;
       const uiNode: JsonNode = ReaderUtil.getNode(childDefinitionNode, CedarModel.ui);
       childInfo.uiInputType = UiInputType.forValue(ReaderUtil.getString(uiNode, CedarModel.inputType));
+      // Read `hidden` here rather than leaving it to the per-type field
+      // readers. They cover the dynamic fields and nothing else, so a hidden
+      // element or a hidden static field came back visible.
+      childInfo.hidden = ReaderUtil.getBoolean(uiNode, CedarModel.Ui.hidden);
       candidateChildrenInfo.add(childInfo);
       return childInfo;
     } else {
-      parsingResult.addBlueprintComparisonError(
+      this.reportBlueprintDifference(
+        parsingResult,
         new ComparisonError('jtr09', ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, path.add(childCandidateName, JsonSchema.atType)),
       );
       return null;
@@ -133,7 +139,8 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
         const finalChildInfoBuilder: ChildDeploymentInfoStaticBuilder = cedarFieldReaderResult.field
           .createDeploymentBuilder(childInfo.name)
           .withLabel(childInfo.label)
-          .withDescription(childInfo.description);
+          .withDescription(childInfo.description)
+          .withHidden(childInfo.hidden);
         const finalChildInfo = finalChildInfoBuilder.build();
         container.addChild(cedarFieldReaderResult.field, finalChildInfo);
         parsingResult.merge(cedarFieldReaderResult.parsingResult);
@@ -153,12 +160,16 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
           .withDescription(childInfo.description)
           .withRecommendedValue(dynaChildInfo.recommendedValue)
           .withRequiredValue(dynaChildInfo.requiredValue);
-        if (finalChildInfoBuilder instanceof ChildDeploymentInfoBuilder) {
-          const currentInfo = childInfo as any as ChildDeploymentInfo;
+        if (finalChildInfoBuilder instanceof ChildDeploymentInfoBuilder && childInfo instanceof ChildDeploymentInfo) {
           finalChildInfoBuilder
-            .withMultiInstance(currentInfo.multiInstance)
-            .withMinItems(currentInfo.minItems)
-            .withMaxItems(currentInfo.maxItems);
+            .withMultiInstance(childInfo.multiInstance)
+            .withMinItems(childInfo.minItems)
+            .withMaxItems(childInfo.maxItems);
+        } else if (finalChildInfoBuilder instanceof ChildDeploymentInfoAlwaysMultipleBuilder) {
+          // Always-multiple children have no multiInstance flag to set — they
+          // are multiple by definition — but a template may still state the
+          // bounds, and those have to reach the deployment info.
+          finalChildInfoBuilder.withMinItems(dynaChildInfo.minItems).withMaxItems(dynaChildInfo.maxItems);
         }
         const finalChildInfo = finalChildInfoBuilder.build();
         // console.log('CHILD INFO2:', finalChildInfo);
@@ -181,7 +192,8 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
     // Children present in the 'properties' but not in the 'order' will also result in error
     for (const childInfo of candidateChildrenInfo.children) {
       if (!containerUIOrder.includes(childInfo.name)) {
-        parsingResult.addBlueprintComparisonError(
+        this.reportBlueprintDifference(
+          parsingResult,
           new ComparisonError(
             'jtr08',
             ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
@@ -207,7 +219,8 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
       if (candidate !== null && candidate !== undefined) {
         finalChildrenInfo.add(candidate);
       } else {
-        parsingResult.addBlueprintComparisonError(
+        this.reportBlueprintDifference(
+          parsingResult,
           new ComparisonError(
             'jtr07',
             ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
@@ -284,7 +297,8 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
     // Check if all the keys of the "required" blueprint are present in the template's "required"
     for (const key of requiredPartial) {
       if (!elementRequiredMap.has(key)) {
-        parsingResult.addBlueprintComparisonError(
+        this.reportBlueprintDifference(
+          parsingResult,
           new ComparisonError('jtr01', ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, path.add(JsonSchema.required), key),
         );
       }
@@ -304,7 +318,8 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
     const childNames: Array<string> = candidateChildrenInfo.getChildrenNamesForRequired();
     for (const childName of childNames) {
       if (!elementRequiredMap.has(childName)) {
-        parsingResult.addBlueprintComparisonError(
+        this.reportBlueprintDifference(
+          parsingResult,
           new ComparisonError('jtr02', ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, path.add(JsonSchema.required), childName),
         );
       }
@@ -313,7 +328,8 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
     // Check if "required" contains extra nodes (not in blueprint, not in children name list)
     for (const key of elementRequired) {
       if (!requiredPartialKeyMap.has(key) && !candidateChildrenInfo.has(key)) {
-        parsingResult.addBlueprintComparisonError(
+        this.reportBlueprintDifference(
+          parsingResult,
           new ComparisonError('jtr03', ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT, path.add(JsonSchema.required), key),
         );
       }
@@ -330,7 +346,8 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
     const containerUIPLabels = ReaderUtil.getStringMap(containerUI, CedarModel.propertyLabels);
     for (const childInfo of candidateChildrenInfo.children) {
       if (containerUIPLabels === null || !containerUIPLabels.has(childInfo.name)) {
-        parsingResult.addBlueprintComparisonError(
+        this.reportBlueprintDifference(
+          parsingResult,
           new ComparisonError(
             'jtr04',
             ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
@@ -347,7 +364,8 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
     const containerUIPDescriptions = ReaderUtil.getStringMap(containerUI, CedarModel.propertyDescriptions);
     for (const childInfo of candidateChildrenInfo.children) {
       if (containerUIPDescriptions === null || !containerUIPDescriptions.has(childInfo.name)) {
-        parsingResult.addBlueprintComparisonError(
+        this.reportBlueprintDifference(
+          parsingResult,
           new ComparisonError(
             'jtr05',
             ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
@@ -358,6 +376,28 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
       } else {
         childInfo.description = containerUIPDescriptions.get(childInfo.name) ?? null;
       }
+    }
+  }
+
+  /**
+   * A blueprint difference, reported at the severity the behavior asks for.
+   *
+   * The blueprint describes what the library writes today; the templates CEDAR
+   * served between 2018 and 2024 sometimes differ from it, because the canonical
+   * form moved while they stayed as they were emitted. Rejecting those would
+   * make the reader unable to open documents that demonstrably exist, so under a
+   * behavior that tolerates known issues they are recorded as warnings instead.
+   * `STRICT` keeps treating every one as an error.
+   *
+   * The difference is never discarded — a warning is still retrievable through
+   * `getBlueprintComparisonWarnings`, so a caller that wants the stricter reading
+   * can still get it without re-reading the document.
+   */
+  protected reportBlueprintDifference(parsingResult: JsonArtifactParsingResult, error: ComparisonError): void {
+    if (this.behavior.useWarningForKnownIssues() && JsonObjectComparator.isKnownProductionVariation(error.errorPath)) {
+      parsingResult.addBlueprintComparisonWarning(error);
+    } else {
+      parsingResult.addBlueprintComparisonError(error);
     }
   }
 
@@ -375,7 +415,8 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
         const iriEnum: JsonNode = ReaderUtil.getNode(elementIRIMap, childInfo.name);
         const iriList: Array<string> = ReaderUtil.getStringList(iriEnum, JsonSchema.enum);
         if (iriList === null || iriList.length != 1) {
-          parsingResult.addBlueprintComparisonError(
+          this.reportBlueprintDifference(
+            parsingResult,
             new ComparisonError(
               'jtr06',
               ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,

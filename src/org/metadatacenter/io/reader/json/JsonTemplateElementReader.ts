@@ -15,8 +15,6 @@ import { TemplateElement } from '../../../model/cedar/element/TemplateElement';
 import { JsonContainerArtifactReader } from './JsonContainerArtifactReader';
 import { JsonTemplateElementContent } from '../../../model/cedar/util/serialization/JsonTemplateElementContent';
 import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
-import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
-import { UiInputType } from '../../../model/cedar/types/wrapped-types/UiInputType';
 
 export class JsonTemplateElementReader extends JsonContainerArtifactReader {
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.TEMPLATE_ELEMENT;
@@ -49,7 +47,7 @@ export class JsonTemplateElementReader extends JsonContainerArtifactReader {
     let elementObject;
     try {
       elementObject = JSON.parse(elementSourceString);
-    } catch (Exception) {
+    } catch {
       elementObject = {};
     }
     return this.readFromObject(elementObject, new JsonPath());
@@ -149,6 +147,6 @@ export class JsonTemplateElementReader extends JsonContainerArtifactReader {
     if (pCRequired != null && pCRequired.length == 0) {
       ReaderUtil.deleteNodeKey(atContext, JsonSchema.required);
     }
-    JsonObjectComparator.compareToLeft(parsingResult, blueprint, elementProperties, path.add(JsonSchema.properties));
+    JsonObjectComparator.compareToLeft(parsingResult, blueprint, elementProperties, path.add(JsonSchema.properties), this.behavior);
   }
 }

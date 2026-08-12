@@ -4,6 +4,7 @@ import { YamlAbstractArtifactReader } from './YamlAbstractArtifactReader';
 import { YamlTemplateReader } from './YamlTemplateReader';
 import { YamlTemplateElementReader } from './YamlTemplateElementReader';
 import { YamlTemplateFieldReader } from './YamlTemplateFieldReader';
+import { YamlTemplateInstanceReader } from './YamlTemplateInstanceReader';
 
 export class CedarYamlReaders {
   private readonly behavior: YamlReaderBehavior;
@@ -16,7 +17,31 @@ export class CedarYamlReaders {
     return new CedarYamlReaders(YamlReaderBehavior.STRICT);
   }
 
-  public getReaderForArtifactType(cedarArtifactType: CedarArtifactType): YamlAbstractArtifactReader {
+  /**
+   * The named accessors the JSON side has had all along.
+   *
+   * Without them a consumer reading YAML has to import the concrete reader by
+   * deep path, which makes the two serialisations look less interchangeable
+   * than they are — the whole point being that either one yields the same
+   * `Template`.
+   */
+  public getTemplateReader(): YamlTemplateReader {
+    return YamlTemplateReader.getStrict();
+  }
+
+  public getTemplateElementReader(): YamlTemplateElementReader {
+    return YamlTemplateElementReader.getStrict();
+  }
+
+  public getTemplateFieldReader(): YamlTemplateFieldReader {
+    return YamlTemplateFieldReader.getStrict();
+  }
+
+  public getTemplateInstanceReader(): YamlTemplateInstanceReader {
+    return YamlTemplateInstanceReader.getForBehavior(this.behavior);
+  }
+
+  public getReaderForArtifactType(cedarArtifactType: CedarArtifactType): YamlAbstractArtifactReader | YamlTemplateInstanceReader {
     switch (cedarArtifactType) {
       case CedarArtifactType.TEMPLATE:
         return YamlTemplateReader.getStrict();
@@ -26,6 +51,8 @@ export class CedarYamlReaders {
         return YamlTemplateFieldReader.getStrict();
       case CedarArtifactType.STATIC_TEMPLATE_FIELD:
         return YamlTemplateFieldReader.getStrict();
+      case CedarArtifactType.TEMPLATE_INSTANCE:
+        return YamlTemplateInstanceReader.getForBehavior(this.behavior);
       default:
         throw new Error(`No YAML reader available for CedarArtifactType: ${cedarArtifactType}`);
     }

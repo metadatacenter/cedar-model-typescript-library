@@ -1,5 +1,6 @@
 import { Iri } from '../../../../../types/wrapped-types/Iri';
 import { ControlledTermClass } from './ControlledTermClass';
+import { ValueConstraintRequirements } from '../ValueConstraintRequirements';
 import { BioportalTermType } from '../../../../../types/bioportal-types/BioportalTermType';
 
 export class ControlledTermClassBuilder {
@@ -35,6 +36,11 @@ export class ControlledTermClassBuilder {
   }
 
   public build(): ControlledTermClass {
+    ValueConstraintRequirements.requireIri(this._uri, 'a URI', 'A class constraint');
+    ValueConstraintRequirements.requireText(this._label, 'a label', 'A class constraint');
+    ValueConstraintRequirements.requireText(this._prefLabel, 'a preferred label', 'A class constraint');
+    ValueConstraintRequirements.requireText(this._source, 'a source', 'A class constraint');
+    ValueConstraintRequirements.requireTermType(this._type, 'A class constraint');
     return new ControlledTermClass(this._label, this._source, this._type, this._prefLabel, this._uri);
   }
 }

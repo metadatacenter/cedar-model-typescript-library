@@ -3,10 +3,7 @@ import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
 import { TemplateField } from '../../../model/cedar/field/TemplateField';
 import { ReaderUtil } from '../ReaderUtil';
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
-import { CedarModel } from '../../../model/cedar/constants/CedarModel';
 import { YamlFieldReaderEmail } from '../../../model/cedar/field/dynamic/email/YamlFieldReaderEmail';
-import { UiInputType } from '../../../model/cedar/types/wrapped-types/UiInputType';
-import { CedarFieldType } from '../../../model/cedar/types/cedar-types/CedarFieldType';
 import { YamlTemplateFieldReaderResult } from './YamlTemplateFieldReaderResult';
 import { UnknownTemplateField } from '../../../model/cedar/field/UnknownTemplateField';
 import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
@@ -38,8 +35,14 @@ import { YamlArtifactParsingResult } from '../../../model/cedar/util/compare/Yam
 import { YamlFieldReaderExtRor } from '../../../model/cedar/field/dynamic/ext-ror/YamlFieldReaderExtRor';
 import { YamlFieldReaderExtOrcid } from '../../../model/cedar/field/dynamic/ext-orcid/YamlFieldReaderExtOrcid';
 import { YamlFieldReaderExtPfas } from '../../../model/cedar/field/dynamic/ext-pfas/YamlFieldReaderExtPfas';
+import { YamlFieldReaderExtPubmed } from '../../../model/cedar/field/dynamic/ext-pubmed/YamlFieldReaderExtPubmed';
+import { YamlFieldReaderExtRrid } from '../../../model/cedar/field/dynamic/ext-rrid/YamlFieldReaderExtRrid';
+import { YamlFieldReaderExtNihGrantId } from '../../../model/cedar/field/dynamic/ext-nih-grant-id/YamlFieldReaderExtNihGrantId';
+import { YamlFieldReaderExtDoi } from '../../../model/cedar/field/dynamic/ext-doi/YamlFieldReaderExtDoi';
 
 export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
+  protected knownArtifactType: CedarArtifactType = CedarArtifactType.TEMPLATE_FIELD;
+
   private constructor(behavior: YamlReaderBehavior) {
     super(behavior);
   }
@@ -60,6 +63,10 @@ export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
     [YamlArtifactType.EXT_ROR, new YamlFieldReaderExtRor()],
     [YamlArtifactType.EXT_ORCID, new YamlFieldReaderExtOrcid()],
     [YamlArtifactType.EXT_PFAS, new YamlFieldReaderExtPfas()],
+    [YamlArtifactType.EXT_PUBMED, new YamlFieldReaderExtPubmed()],
+    [YamlArtifactType.EXT_RRID, new YamlFieldReaderExtRrid()],
+    [YamlArtifactType.EXT_NIH_GRANT_ID, new YamlFieldReaderExtNihGrantId()],
+    [YamlArtifactType.EXT_DOI, new YamlFieldReaderExtDoi()],
     [YamlArtifactType.TEMPORAL, new YamlFieldReaderTemporal()],
     [YamlArtifactType.EMAIL, new YamlFieldReaderEmail()],
     [YamlArtifactType.NUMERIC, new YamlFieldReaderNumeric()],
@@ -81,7 +88,7 @@ export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
     let fieldObject;
     try {
       fieldObject = YAML.parse(fieldSourceString);
-    } catch (Exception) {
+    } catch {
       fieldObject = {};
     }
     return this.readFromObject(fieldObject, ChildDeploymentInfo.empty(), new JsonPath());
@@ -126,36 +133,5 @@ export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
     }
 
     return UnknownTemplateField.build();
-  }
-
-  private static fieldHasValueConstraint(fieldSourceObject: JsonNode) {
-    const vcNode: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
-    const ontologies: Array<JsonNode> = ReaderUtil.getNodeList(vcNode, CedarModel.ontologies);
-    if (ontologies.length > 0) {
-      return true;
-    }
-    const branches: Array<JsonNode> = ReaderUtil.getNodeList(vcNode, CedarModel.branches);
-    if (branches.length > 0) {
-      return true;
-    }
-    const classes: Array<JsonNode> = ReaderUtil.getNodeList(vcNode, CedarModel.classes);
-    if (classes.length > 0) {
-      return true;
-    }
-    const valueSets: Array<JsonNode> = ReaderUtil.getNodeList(vcNode, CedarModel.valueSets);
-    return valueSets.length > 0;
-  }
-
-  private static getCedarFieldType(fieldSourceObject: JsonNode, uiInputType: UiInputType): CedarFieldType {
-    let fieldType: CedarFieldType = CedarFieldType.forUiInputType(uiInputType);
-    // The map used in the method will guarantee that TEXT is always returned, but we double-check anyway
-    if (fieldType === CedarFieldType.TEXT || fieldType === CedarFieldType.CONTROLLED_TERM) {
-      if (this.fieldHasValueConstraint(fieldSourceObject)) {
-        fieldType = CedarFieldType.CONTROLLED_TERM;
-      } else {
-        fieldType = CedarFieldType.TEXT;
-      }
-    }
-    return fieldType;
   }
 }

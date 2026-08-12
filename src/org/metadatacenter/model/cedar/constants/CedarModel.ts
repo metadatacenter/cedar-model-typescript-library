@@ -53,6 +53,19 @@ export class CedarModel {
 
   static annotations = '_annotations';
 
+  /**
+   * The IRI prefix a child property is addressed by in an instance's `@context`.
+   *
+   * Was commented out here while the same string stayed hardcoded in
+   * `ContainerArtifactChildrenInfo.getChildIriMap`, which mints one for any child
+   * whose template declares none — so the prefix existed twice, once as a literal
+   * and once as a comment. CEE mints the same shape for a newly named
+   * attribute-value property and had its own copy of the constant to do it.
+   *
+   * One definition, used by both.
+   */
+  static propertyIriPrefix = 'https://schema.metadatacenter.org/properties/';
+
   // static baseTemplateURL = 'https://schema.metadatacenter.org';
   // static templateFieldType = CedarModel.baseTemplateURL + '/core/TemplateField';
   // static templateElementType = CedarModel.baseTemplateURL + '/core/TemplateElement';

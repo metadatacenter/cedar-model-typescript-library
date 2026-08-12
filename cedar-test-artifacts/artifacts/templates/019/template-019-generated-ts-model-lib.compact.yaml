@@ -1,0 +1,15 @@
+type: "template"
+name: "#019 Template with Pick from a list SingleSelect"
+children:
+  - key: "Pick from"
+    type: "single-select-list-field"
+    name: "Pick from"
+    description: "Help Text"
+    prefLabel: "Pick from a list"
+    values:
+      - label: "Option 1"
+      - label: "Option 2"
+        selected: true
+      - label: "Option 3"
+    configuration:
+      required: true

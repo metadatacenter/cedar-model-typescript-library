@@ -1,0 +1,27 @@
+type: "instance"
+name: "With Email metadata"
+id: "https://repo.metadatacenter.org/template-instances/1da98ce2-9b74-4257-af64-e6ef1c143f6e"
+isBasedOn: "https://repo.metadatacenter.org/templates/d9d52596-1a0e-464b-9207-b848faf2205d"
+children:
+  Attribute Value Element Multiple:
+    - id: "https://repo.metadatacenter.org/template-element-instances/f0276a67-e20b-4819-9c85-1b045e12fcaa"
+      children:
+        Checkbox Field in Attribute Value:
+          - value: "Option 2"
+          - value: "Option 4"
+  Attribute Value Element Single:
+    id: "https://repo.metadatacenter.org/template-element-instances/9e9b1a60-c0c4-4f29-b0e7-d927c520780c"
+    children:
+      Text Box Multiple:
+        - value: "text box multiple 1"
+        - value: "text box multiple 2"
+    Attribute Value Field From Single:
+      Attribute Value Field Single 1:
+        value: "value 1"
+      Attribute Value Field Single 2:
+        value: "value 2"
+Attribute Value Field Root:
+  Attribute Value Field Root 1:
+    value: "value 1"
+  Attribute Value Field Root 2:
+    value: "value 2"

@@ -8,7 +8,6 @@ export class AbstractDynamicChildDeploymentInfoBuilder extends AbstractChildDepl
   protected iri: NullableString = null;
   protected requiredValue: boolean = false;
   protected recommendedValue: boolean = false;
-  protected hidden: boolean = false;
   protected continuePreviousLine: boolean = false;
   protected valueRecommendationEnabled: boolean = false;
 
@@ -28,11 +27,6 @@ export class AbstractDynamicChildDeploymentInfoBuilder extends AbstractChildDepl
 
   public withRecommendedValue(recommendedValue: boolean): this {
     this.recommendedValue = recommendedValue;
-    return this;
-  }
-
-  public withHidden(hidden: boolean): this {
-    this.hidden = hidden;
     return this;
   }
 
@@ -57,7 +51,6 @@ export class AbstractDynamicChildDeploymentInfoBuilder extends AbstractChildDepl
     info.iri = this.iri;
     info.requiredValue = this.requiredValue;
     info.recommendedValue = this.recommendedValue;
-    info.hidden = this.hidden;
     info.continuePreviousLine = this.continuePreviousLine;
     info.valueRecommendationEnabled = this.valueRecommendationEnabled;
   }

@@ -1,0 +1,14 @@
+type: "instance"
+name: "With Multiple element metadata"
+id: "https://repo.metadatacenter.org/template-instances/b102f719-a0e1-424c-8e27-f9e71d0136b4"
+isBasedOn: "https://repo.metadatacenter.org/templates/4690b6c0-5bb8-4030-ae93-69450e343326"
+children:
+  Single Text Element:
+    - id: "https://repo.metadatacenter.org/template-element-instances/9b212ce9-56d7-4894-90b2-ce07ee228c95"
+      children:
+        Text Field in Element:
+          value: "ABC"
+    - id: "https://repo.metadatacenter.org/template-element-instances/1db2798a-ad59-474f-ad00-c0d67fbe993f"
+      children:
+        Text Field in Element:
+          value: "XYZ"

@@ -1,0 +1,7 @@
+type: "ext-ror-field"
+name: "ROR Field"
+description: "ROR Help"
+status: "draft"
+version: "0.0.1"
+modelVersion: "1.6.0"
+prefLabel: "ROR Preferred"

@@ -23,17 +23,5 @@ export class ComparisonError {
     this.errorPath = errorPath;
     this.expectedValue = expectedValue;
     this.encounteredValue = encounteredValue;
-    // eslint-disable-next-line no-constant-condition
-    if (false) {
-      this.parseStackTrace();
-    }
-  }
-  private parseStackTrace() {
-    const logError = new Error();
-    if (logError && logError.stack) {
-      const stackLines = logError.stack.split('\n');
-      // Store the top three lines of the stack, excluding the constructs
-      this.stackTopLines = stackLines.slice(3, 12);
-    }
   }
 }

@@ -50,7 +50,7 @@ export class JsonTemplateReader extends JsonContainerArtifactReader {
     let templateObject;
     try {
       templateObject = JSON.parse(templateSourceString);
-    } catch (Exception) {
+    } catch {
       templateObject = {};
     }
     return this.readFromObject(templateObject);
@@ -149,6 +149,6 @@ export class JsonTemplateReader extends JsonContainerArtifactReader {
       atContext[TemplateProperty.additionalProperties] =
         JsonTemplateFieldContentDynamic.ADDITIONAL_PROPERTIES_VERBATIM_ATTRIBUTE_VALUE_INSIDE;
     }
-    JsonObjectComparator.compareToLeft(parsingResult, blueprint, templateProperties, path.add(JsonSchema.properties));
+    JsonObjectComparator.compareToLeft(parsingResult, blueprint, templateProperties, path.add(JsonSchema.properties), this.behavior);
   }
 }

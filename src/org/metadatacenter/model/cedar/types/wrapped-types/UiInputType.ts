@@ -5,6 +5,10 @@ export const UiInputTypeValues = {
   EXT_ROR: 'ext-ror',
   EXT_ORCID: 'ext-orcid',
   EXT_PFAS: 'ext-pfas',
+  EXT_PUBMED: 'ext-pubmed',
+  EXT_RRID: 'ext-rrid',
+  EXT_NIH_GRANT_ID: 'ext-nih-grant-id',
+  EXT_DOI: 'ext-doi',
   TEMPORAL: 'temporal',
   EMAIL: 'email',
   NUMERIC: 'numeric',
@@ -41,6 +45,10 @@ export class UiInputType {
   public static EXT_ROR = new UiInputType(UiInputTypeValues.EXT_ROR);
   public static EXT_ORCID = new UiInputType(UiInputTypeValues.EXT_ORCID);
   public static EXT_PFAS = new UiInputType(UiInputTypeValues.EXT_PFAS);
+  public static EXT_PUBMED = new UiInputType(UiInputTypeValues.EXT_PUBMED);
+  public static EXT_RRID = new UiInputType(UiInputTypeValues.EXT_RRID);
+  public static EXT_NIH_GRANT_ID = new UiInputType(UiInputTypeValues.EXT_NIH_GRANT_ID);
+  public static EXT_DOI = new UiInputType(UiInputTypeValues.EXT_DOI);
   public static TEMPORAL = new UiInputType(UiInputTypeValues.TEMPORAL);
   public static EMAIL = new UiInputType(UiInputTypeValues.EMAIL);
   public static NUMERIC = new UiInputType(UiInputTypeValues.NUMERIC);
@@ -67,6 +75,10 @@ export class UiInputType {
       UiInputType.EXT_ROR,
       UiInputType.EXT_ORCID,
       UiInputType.EXT_PFAS,
+      UiInputType.EXT_PUBMED,
+      UiInputType.EXT_RRID,
+      UiInputType.EXT_NIH_GRANT_ID,
+      UiInputType.EXT_DOI,
       UiInputType.TEMPORAL,
       UiInputType.EMAIL,
       UiInputType.NUMERIC,

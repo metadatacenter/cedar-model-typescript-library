@@ -6,5 +6,13 @@ export interface StaticImageField extends TemplateField {
 
   get content(): string | null;
 
+  set width(width: number | null);
+
+  get width(): number | null;
+
+  set height(height: number | null);
+
+  get height(): number | null;
+
   createDeploymentBuilder(childName: string): ChildDeploymentInfoStaticBuilder;
 }

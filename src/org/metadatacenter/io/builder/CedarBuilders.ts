@@ -12,6 +12,7 @@ import { StaticImageFieldBuilder } from '../../model/cedar/field/static/image/St
 import { LinkFieldBuilder } from '../../model/cedar/field/dynamic/link/LinkFieldBuilder';
 import { RadioFieldBuilder } from '../../model/cedar/field/dynamic/radio/RadioFieldBuilder';
 import { CheckboxFieldBuilder } from '../../model/cedar/field/dynamic/checkbox/CheckboxFieldBuilder';
+import { BooleanFieldBuilder } from '../../model/cedar/field/dynamic/boolean/BooleanFieldBuilder';
 import { ControlledTermFieldBuilder } from '../../model/cedar/field/dynamic/controlled-term/ControlledTermFieldBuilder';
 import { TemplateBuilder } from '../../model/cedar/template/TemplateBuilder';
 import { TemplateElementBuilder } from '../../model/cedar/element/TemplateElementBuilder';
@@ -27,6 +28,7 @@ import { LinkFieldBuilderImpl } from '../../model/cedar/field/dynamic/link/LinkF
 import { EmailFieldBuilderImpl } from '../../model/cedar/field/dynamic/email/EmailFieldBuilderImpl';
 import { AttributeValueFieldBuilderImpl } from '../../model/cedar/field/dynamic/attribute-value/AttributeValueFieldBuilderImpl';
 import { CheckboxFieldBuilderImpl } from '../../model/cedar/field/dynamic/checkbox/CheckboxFieldBuilderImpl';
+import { BooleanFieldBuilderImpl } from '../../model/cedar/field/dynamic/boolean/BooleanFieldBuilderImpl';
 import { ControlledTermFieldBuilderImpl } from '../../model/cedar/field/dynamic/controlled-term/ControlledTermFieldBuilderImpl';
 import { StaticImageFieldBuilderImpl } from '../../model/cedar/field/static/image/StaticImageFieldBuilderImpl';
 import { StaticPageBreakFieldBuilderImpl } from '../../model/cedar/field/static/page-break/StaticPageBreakFieldBuilderImpl';
@@ -39,6 +41,11 @@ import { MultipleChoiceListFieldBuilder } from '../../model/cedar/field/dynamic/
 import { MultipleChoiceListFieldBuilderImpl } from '../../model/cedar/field/dynamic/list-multiple-choice/MultipleChoiceListFieldBuilderImpl';
 import { ExtRorFieldBuilderImpl } from '../../model/cedar/field/dynamic/ext-ror/ExtRorFieldBuilderImpl';
 import { ExtOrcidFieldBuilderImpl } from '../../model/cedar/field/dynamic/ext-orcid/ExtOrcidFieldBuilderImpl';
+import { ExtPfasFieldBuilderImpl } from '../../model/cedar/field/dynamic/ext-pfas/ExtPfasFieldBuilderImpl';
+import { ExtPubmedFieldBuilderImpl } from '../../model/cedar/field/dynamic/ext-pubmed/ExtPubmedFieldBuilderImpl';
+import { ExtRridFieldBuilderImpl } from '../../model/cedar/field/dynamic/ext-rrid/ExtRridFieldBuilderImpl';
+import { ExtNihGrantIdFieldBuilderImpl } from '../../model/cedar/field/dynamic/ext-nih-grant-id/ExtNihGrantIdFieldBuilderImpl';
+import { ExtDoiFieldBuilderImpl } from '../../model/cedar/field/dynamic/ext-doi/ExtDoiFieldBuilderImpl';
 
 export abstract class CedarBuilders {
   static templateBuilder(): TemplateBuilder {
@@ -113,6 +120,26 @@ export abstract class CedarBuilders {
     return ExtOrcidFieldBuilderImpl.create();
   }
 
+  static extPfasFieldBuilder(): LinkFieldBuilder {
+    return ExtPfasFieldBuilderImpl.create();
+  }
+
+  static extPubmedFieldBuilder(): LinkFieldBuilder {
+    return ExtPubmedFieldBuilderImpl.create();
+  }
+
+  static extRridFieldBuilder(): LinkFieldBuilder {
+    return ExtRridFieldBuilderImpl.create();
+  }
+
+  static extNihGrantIdFieldBuilder(): LinkFieldBuilder {
+    return ExtNihGrantIdFieldBuilderImpl.create();
+  }
+
+  static extDoiFieldBuilder(): LinkFieldBuilder {
+    return ExtDoiFieldBuilderImpl.create();
+  }
+
   static singleChoiceListFieldBuilder(): SingleChoiceListFieldBuilder {
     return SingleChoiceListFieldBuilderImpl.create();
   }
@@ -127,6 +154,10 @@ export abstract class CedarBuilders {
 
   static checkboxFieldBuilder(): CheckboxFieldBuilder {
     return CheckboxFieldBuilderImpl.create();
+  }
+
+  static booleanFieldBuilder(): BooleanFieldBuilder {
+    return BooleanFieldBuilderImpl.create();
   }
 
   static controlledTermFieldBuilder(): ControlledTermFieldBuilder {

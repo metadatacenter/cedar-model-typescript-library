@@ -1,0 +1,19 @@
+type: "element"
+name: "BioSample Descriptor"
+description: "BioSample Descriptor"
+children:
+  - key: "title"
+    type: "text-field"
+    name: "Title"
+    configuration:
+      overrideDescription: "Title description"
+  - key: "description"
+    type: "text-field"
+    name: "Description"
+    configuration:
+      overrideDescription: "Description description"
+  - key: "externalLink"
+    type: "text-field"
+    name: "External Link"
+    configuration:
+      overrideDescription: "External Link description"

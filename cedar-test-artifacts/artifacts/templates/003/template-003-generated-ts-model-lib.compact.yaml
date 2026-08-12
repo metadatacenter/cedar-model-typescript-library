@@ -1,0 +1,8 @@
+type: "template"
+name: "Untitled"
+description: "Untitled description"
+children:
+  - key: "TextfieldChild"
+    type: "text-field"
+    name: "Textfield"
+    description: "Help Text"

@@ -1,0 +1,17 @@
+type: "element"
+name: "Copy of Medium of performance"
+children:
+  - key: "Type of medium of performance"
+    type: "controlled-term-field"
+    name: "Type of medium of performance"
+    datatype: "iri"
+    values:
+      - type: "branch"
+        ontologyName: "undefined (PMO)"
+        acronym: "PMO"
+        termLabel: "Medium of performance"
+        iri: "http://performedmusicontology.org/ontology/MediumOfPerformance"
+        maxDepth: 0
+  - key: "Doubling Medium of performance"
+    type: "text-field"
+    name: "Doubling Medium of performance"

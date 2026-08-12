@@ -1,5 +1,6 @@
 import { Iri } from '../../../../types/wrapped-types/Iri';
 import { ControlledTermDefaultValue } from './ControlledTermDefaultValue';
+import { ValueConstraintRequirements } from './ValueConstraintRequirements';
 
 export class ControlledTermDefaultValueBuilder {
   private termUri: Iri = Iri.empty();
@@ -16,6 +17,8 @@ export class ControlledTermDefaultValueBuilder {
   }
 
   public build(): ControlledTermDefaultValue {
+    ValueConstraintRequirements.requireIri(this.termUri, 'a term URI', 'A controlled-term default value');
+    ValueConstraintRequirements.requireText(this.rdfsLabel, 'a label', 'A controlled-term default value');
     return new ControlledTermDefaultValue(this.termUri, this.rdfsLabel);
   }
 }

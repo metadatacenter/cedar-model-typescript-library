@@ -1,5 +1,6 @@
 import { Iri } from '../../../../../types/wrapped-types/Iri';
 import { ControlledTermBranch } from './ControlledTermBranch';
+import { ValueConstraintRequirements } from '../ValueConstraintRequirements';
 
 export class ControlledTermBranchBuilder {
   private _source: string = '';
@@ -34,6 +35,10 @@ export class ControlledTermBranchBuilder {
   }
 
   public build(): ControlledTermBranch {
+    ValueConstraintRequirements.requireIri(this._uri, 'a URI', 'A branch constraint');
+    ValueConstraintRequirements.requireText(this._source, 'a source', 'A branch constraint');
+    ValueConstraintRequirements.requireText(this._acronym, 'an acronym', 'A branch constraint');
+    ValueConstraintRequirements.requireText(this._name, 'a name', 'A branch constraint');
     return new ControlledTermBranch(this._source, this._acronym, this._name, this._maxDepth, this._uri);
   }
 }

@@ -1,0 +1,8 @@
+type: "template"
+name: "#017 Template with phone"
+children:
+  - key: "Phone number"
+    type: "phone-number-field"
+    name: "Phone number"
+    description: "Help Text"
+    prefLabel: "Phone number preferred label"

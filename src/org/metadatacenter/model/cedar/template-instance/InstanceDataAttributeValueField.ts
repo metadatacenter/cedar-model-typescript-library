@@ -1,7 +1,7 @@
 import { InstanceDataAtomType } from './InstanceDataAtomType';
 
 export class InstanceDataAttributeValueField {
-  private _name: string | null = null;
+  private readonly _name: string;
   private _values: { [key: string]: InstanceDataAtomType } = {};
   private _iris: { [key: string]: string };
 
@@ -15,7 +15,7 @@ export class InstanceDataAttributeValueField {
     this._values[name] = value;
   }
 
-  get name(): string | null {
+  get name(): string {
     return this._name;
   }
 

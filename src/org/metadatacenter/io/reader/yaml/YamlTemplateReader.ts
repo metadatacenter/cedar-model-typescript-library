@@ -37,7 +37,7 @@ export class YamlTemplateReader extends YamlContainerArtifactReader {
     let templateObject;
     try {
       templateObject = YAML.parse(templateSourceString);
-    } catch (Exception) {
+    } catch {
       templateObject = {};
     }
     return this.readFromObject(templateObject);

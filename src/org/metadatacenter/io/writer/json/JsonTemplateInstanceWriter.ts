@@ -12,8 +12,12 @@ import { InstanceDataAtomType } from '../../../model/cedar/template-instance/Ins
 import { InstanceDataStringAtom } from '../../../model/cedar/template-instance/InstanceDataStringAtom';
 import { InstanceDataTypedAtom } from '../../../model/cedar/template-instance/InstanceDataTypedAtom';
 import { InstanceDataAttributeValueField } from '../../../model/cedar/template-instance/InstanceDataAttributeValueField';
+import { InstanceDataAttributeValueFieldName } from '../../../model/cedar/template-instance/InstanceDataAttributeValueFieldName';
 import { InstanceDataControlledAtom } from '../../../model/cedar/template-instance/InstanceDataControlledAtom';
 import { InstanceDataLinkAtom } from '../../../model/cedar/template-instance/InstanceDataLinkAtom';
+import { InstanceDataEmptyAtom } from '../../../model/cedar/template-instance/InstanceDataEmptyAtom';
+import { InstanceDataEmptyNode } from '../../../model/cedar/template-instance/InstanceDataEmptyNode';
+import { AttributeValueNamePolicy } from '../../../model/cedar/template-instance/AttributeValueNamePolicy';
 
 export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
   private constructor(behavior: JsonWriterBehavior, writers: CedarJsonWriters) {
@@ -60,6 +64,19 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
         const dataArray: JsonNode[] = JsonNode.getEmptyList();
         into[key] = dataArray;
         dataAtom.forEach((arrayElement: InstanceDataAtomType, _index: number) => {
+          if (arrayElement instanceof InstanceDataAttributeValueFieldName) {
+            // An attribute-value slot holds the attribute's *name*, and a list
+            // can hold names alongside unfilled slots — a field with two slots
+            // where the user has named one. `packAttributeValues` only folds a
+            // list into an attribute-value field when every entry is a name, so
+            // a part-named list arrives here as an ordinary list and the names
+            // in it were dropped on the floor: the field came back missing the
+            // attribute the user had named, while the property it pointed at
+            // stayed behind as an orphan.
+            const attributeName: string | null = (arrayElement as InstanceDataAttributeValueFieldName).name;
+            dataArray.push(attributeName as unknown as JsonNode);
+            return;
+          }
           const serializedData: JsonNode | null = this.serializeCommonType(arrayElement);
           if (serializedData !== null) {
             dataArray.push(serializedData);
@@ -89,9 +106,18 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
     into[JsonSchema.atContext] = atContext;
   }
 
-  private serializeCommonType(atom: InstanceDataAtomType): JsonNode | null {
+  /**
+   * One value atom as the JSON a CEDAR instance carries.
+   *
+   * The mirror of `JsonTemplateInstanceReader.readValueNode`, and public for
+   * the same reason: a consumer writing values into an instance otherwise
+   * spells the shapes out by hand — `{'@value': …}` here, `{'@id': …,
+   * 'rdfs:label': …}` there — and the two ends drift. Values only; an element
+   * is a container and needs a writer with the rest of the instance in hand.
+   */
+  public static writeValueNode(atom: InstanceDataAtomType): JsonNode | null {
     if (atom instanceof InstanceDataStringAtom) {
-      return this.serializeAtomString(atom);
+      return { [JsonSchema.atValue]: atom.value };
     }
     if (atom instanceof InstanceDataTypedAtom) {
       return { [JsonSchema.atValue]: atom.value, [JsonSchema.atType]: atom.type };
@@ -100,23 +126,30 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
       return { [JsonSchema.atId]: atom.id, [JsonSchema.rdfsLabel]: atom.label };
     }
     if (atom instanceof InstanceDataLinkAtom) {
-      return this.serializeAtomLink(atom);
+      return { [JsonSchema.atId]: atom.id };
     }
+    if (atom instanceof InstanceDataEmptyAtom || atom instanceof InstanceDataEmptyNode) {
+      // An empty controlled-term field is `{}` in the instance, and it is a
+      // present-but-unfilled field rather than an absent one. Returning null
+      // here made the caller skip the key entirely, so the field disappeared
+      // from the output — the reader had already classified it correctly as an
+      // empty atom, and only the writer lost it.
+      return JsonNode.getEmpty();
+    }
+    return null;
+  }
+
+  private serializeCommonType(atom: InstanceDataAtomType): JsonNode | null {
     if (atom instanceof InstanceDataContainer) {
       const elementContainer: JsonNode = JsonNode.getEmpty();
       this.serializeDataLevelInto(atom, elementContainer);
       return elementContainer;
     }
-
-    return null;
+    return JsonTemplateInstanceWriter.writeValueNode(atom);
   }
 
   private serializeAtomString(atom: InstanceDataStringAtom) {
     return { [JsonSchema.atValue]: atom.value };
-  }
-
-  private serializeAtomLink(atom: InstanceDataLinkAtom) {
-    return { [JsonSchema.atId]: atom.id };
   }
 
   private serializeAttributeValueFields(dataContainer: InstanceDataContainer, into: JsonNode) {
@@ -138,6 +171,7 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
   }
 
   public getAsJsonNode(instance: TemplateInstance): JsonNode {
+    AttributeValueNamePolicy.assertValid(instance.dataContainer);
     const extendedContext: JsonNode = this.buildContext(instance);
 
     // build the final object

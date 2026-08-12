@@ -1,0 +1,5 @@
+type: "text-area-field"
+name: "Description"
+description: "An account of the resource contained in the Data File; may include but is not limited to: an abstract, a table of contents, a graphical representation, or a free-text account of the resource."
+identifier: "description"
+prefLabel: "Description"

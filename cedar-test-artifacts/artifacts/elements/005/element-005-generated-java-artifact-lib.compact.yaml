@@ -1,0 +1,18 @@
+type: "element"
+name: "#002 Element with three fields"
+children:
+  - key: "Text field"
+    type: "text-field"
+    name: "Text field"
+    description: "Help Text"
+    configuration:
+      recommended: true
+  - key: "Email"
+    type: "email-field"
+    name: "Email"
+    description: "Help Text"
+  - key: "Numeric"
+    type: "numeric-field"
+    name: "Numeric"
+    description: "Help Text"
+    datatype: "xsd:decimal"

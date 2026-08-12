@@ -1,0 +1,4 @@
+type: "ext-pubmed-field"
+name: "PubMed Field"
+description: "PubMed Help"
+prefLabel: "PubMed Preferred"

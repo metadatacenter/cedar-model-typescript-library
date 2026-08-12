@@ -18,7 +18,16 @@ export class YamlFieldReaderNumeric extends YamlTemplateFieldTypeSpecificReader 
   ): NumericField {
     const field = NumericFieldImpl.buildEmpty();
 
-    field.valueConstraints.numberType = NumberType.forValue(ReaderUtil.getString(fieldSourceObject, YamlKeys.datatype));
+    // Only override the type when the YAML states one, so an unspecified datatype
+    // keeps the empty field's default of xsd:decimal. This matches
+    // JsonFieldReaderNumeric, which guards the same assignment, and the Java
+    // library, whose JSON and YAML readers both default a missing numeric type to
+    // xsd:decimal. Assigning unconditionally clobbered that default with null on
+    // the YAML side, so the same numeric field read as JSON and as YAML disagreed.
+    const datatype = ReaderUtil.getString(fieldSourceObject, YamlKeys.datatype);
+    if (datatype !== null) {
+      field.valueConstraints.numberType = NumberType.forValue(datatype);
+    }
     field.valueConstraints.minValue = ReaderUtil.getNumber(fieldSourceObject, YamlKeys.minValue);
     field.valueConstraints.maxValue = ReaderUtil.getNumber(fieldSourceObject, YamlKeys.maxValue);
     field.valueConstraints.decimalPlaces = ReaderUtil.getNumber(fieldSourceObject, YamlKeys.decimalPlaces);

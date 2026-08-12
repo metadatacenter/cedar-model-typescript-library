@@ -1,0 +1,31 @@
+type: "instance"
+name: "Complex template metadata"
+id: "https://repo.metadatacenter.org/template-instances/593c3c2d-14b9-4e8e-9ce8-a7dbbb8e1c01"
+isBasedOn: "https://repo.metadatacenter.org/templates/a29c046d-3c19-4213-be02-f5b6457cac9b"
+createdOn: "2024-10-17T13:15:26-07:00"
+createdBy: "https://metadatacenter.org/users/2fa8910d-96e7-4e2f-ae60-4dfa8ec9877d"
+modifiedOn: "2024-10-17T13:15:26-07:00"
+modifiedBy: "https://metadatacenter.org/users/2fa8910d-96e7-4e2f-ae60-4dfa8ec9877d"
+children:
+  Text Field Simple:
+    value: "Text Value"
+  Numeric Field Simple:
+    datatype: "xsd:decimal"
+    value: "1234"
+  Phone Field Multiple:
+    - value: "650-686-8815"
+    - value: "650-686-8816"
+  Element as Single:
+    id: "https://repo.metadatacenter.org/template-element-instances/0e408f4e-fc4a-4418-a9a8-c041901031a4"
+    children:
+      Text Field inside Element:
+        value: "Single text value"
+  Element as Multi:
+    - id: "https://repo.metadatacenter.org/template-element-instances/88dca08a-ff55-415b-b1f8-e78572a88d03"
+      children:
+        Text Field inside Element:
+          value: "Multi text value 1"
+    - id: "https://repo.metadatacenter.org/template-element-instances/23587e15-7671-4e76-a852-6623d0279322"
+      children:
+        Text Field inside Element:
+          value: "Multi text value 2"

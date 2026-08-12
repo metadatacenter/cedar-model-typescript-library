@@ -1,0 +1,8 @@
+type: "template"
+name: "#032 Template with previous version"
+children:
+  - key: "Field name"
+    type: "text-field"
+    name: "Field name"
+    description: "Help Text"
+    prefLabel: "preferred label"

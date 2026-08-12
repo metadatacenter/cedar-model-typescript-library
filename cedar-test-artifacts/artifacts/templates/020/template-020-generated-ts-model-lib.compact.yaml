@@ -1,0 +1,16 @@
+type: "template"
+name: "#020 Template with Pick from a list MultiSelect"
+children:
+  - key: "MultiSelect"
+    type: "multi-select-list-field"
+    name: "MultiSelect"
+    description: "Help Text"
+    prefLabel: "MultiSelect Pick from a list"
+    default: "Option 11"
+    values:
+      - label: "Option 1"
+        selected: true
+      - label: "Option 2"
+      - label: "Option 3"
+        selected: true
+      - label: "Option 4"

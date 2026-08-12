@@ -32,6 +32,8 @@ describe('StaticImageFieldBuilder', () => {
       .withPreferredLabel('Preferred label')
       .withAlternateLabels(['Alt label 1', 'Alt label 2', 'Alt label 3'])
       .withContent('https://upload.wikimedia.org/wikipedia/en/3/34/RickAstleyNeverGonnaGiveYouUp7InchSingleCover.jpg')
+      .withHeight(1080)
+      .withWidth(1920)
       .build();
 
     const writers: CedarJsonWriters = CedarWriters.json().getStrict();
@@ -51,6 +53,10 @@ describe('StaticImageFieldBuilder', () => {
     expect(backparsed['_ui']['_content']).toBe(
       'https://upload.wikimedia.org/wikipedia/en/3/34/RickAstleyNeverGonnaGiveYouUp7InchSingleCover.jpg',
     );
+
+    expect(backparsed['_ui']['_size']).toBeDefined();
+    expect(backparsed['_ui']['_size']['width']).toBe(1920);
+    expect(backparsed['_ui']['_size']['height']).toBe(1080);
 
     expect(backparsed['_ui']['valueRecommendationEnabled']).toBeUndefined();
 

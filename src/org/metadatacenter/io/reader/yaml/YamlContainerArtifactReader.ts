@@ -77,11 +77,10 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
               .withRequiredValue(childDeploymentInfo.requiredValue)
               .withValueRecommendationEnabled(childDeploymentInfo.valueRecommendationEnabled);
             if (finalChildInfoBuilder2 instanceof ChildDeploymentInfoBuilder) {
-              const currentInfo = childDeploymentInfo as any as ChildDeploymentInfo;
               finalChildInfoBuilder2
-                .withMultiInstance(currentInfo.multiInstance)
-                .withMinItems(currentInfo.minItems)
-                .withMaxItems(currentInfo.maxItems);
+                .withMultiInstance(childDeploymentInfo.multiInstance)
+                .withMinItems(childDeploymentInfo.minItems)
+                .withMaxItems(childDeploymentInfo.maxItems);
             }
           }
           const finalChildInfo = finalChildInfoBuilder.build();

@@ -1,0 +1,56 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+
+permissions:
+  contents: read
+
+concurrency:
+  group: test-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    # Nothing here renders or screenshots, so the cheapest runner is the right one.
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      # One checkout. The test corpus (`cedar-test-artifacts/`) and the reference
+      # templates (`cedar-artifact-library/src/test/resources/templates/`) are
+      # vendored into this repository, so nothing has to be assembled from
+      # sibling clones.
+      - name: Check out the library
+        uses: actions/checkout@v7
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v7
+        with:
+          node-version: 20.20.2
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type-check
+        run: npm run typecheck
+
+      - name: Test with coverage thresholds
+        run: npm run test:coverage
+
+      - name: Verify Java/TypeScript instance YAML parity
+        run: npm run parity:yaml:instances
+
+      # Build the exact tarball consumers receive, install it into an isolated
+      # project, and exercise CommonJS, ESM, and the shipped declarations.
+      - name: Build and smoke-test the distributable
+        run: npm run test:package

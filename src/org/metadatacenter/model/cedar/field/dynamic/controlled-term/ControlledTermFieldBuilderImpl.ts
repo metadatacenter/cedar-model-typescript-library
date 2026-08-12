@@ -5,6 +5,7 @@ import { ControlledTermOntology } from './value-constraint/ontology/ControlledTe
 import { ControlledTermValueSet } from './value-constraint/value-set/ControlledTermValueSet';
 import { ControlledTermClass } from './value-constraint/class/ControlledTermClass';
 import { ControlledTermBranch } from './value-constraint/branch/ControlledTermBranch';
+import { ControlledTermAction } from './value-constraint/action/ControlledTermAction';
 import { TemplateFieldBuilder } from '../../TemplateFieldBuilder';
 import { ControlledTermFieldBuilder } from './ControlledTermFieldBuilder';
 import { ControlledTermFieldImpl } from './ControlledTermFieldImpl';
@@ -42,6 +43,11 @@ export class ControlledTermFieldBuilderImpl extends TemplateFieldBuilder impleme
 
   public addBranch(branch: ControlledTermBranch): ControlledTermFieldBuilder {
     this.valueConstraints.branches.push(branch);
+    return this;
+  }
+
+  public addAction(action: ControlledTermAction): ControlledTermFieldBuilder {
+    this.valueConstraints.actions.push(action);
     return this;
   }
 

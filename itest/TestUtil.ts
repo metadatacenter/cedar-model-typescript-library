@@ -84,8 +84,8 @@ export class TestUtil {
     this.writeOutsideResource(this.getOwnGeneratedJsonFileName(testResource), content);
   }
 
-  static readTSLibYaml(testResource: TestResource): string {
-    return this.readResourceAsString(this.getOwnGeneratedYamlFileName(testResource, false));
+  static readTSLibYaml(testResource: TestResource, isCompact: boolean = false): string {
+    return this.readResourceAsString(this.getOwnGeneratedYamlFileName(testResource, isCompact));
   }
 
   static readTSLibJson(testResource: TestResource): string {
@@ -100,13 +100,18 @@ export class TestUtil {
     return this.readResourceAsString(this.getJavaGeneratedJsonFileName(testResource));
   }
 
-  static readArtifact(testResource: TestResource, source: CompareFileSource, format: CompareFileFormat): string {
+  static readArtifact(
+    testResource: TestResource,
+    source: CompareFileSource,
+    format: CompareFileFormat,
+    isCompact: boolean = false,
+  ): string {
     if (source === CompareFileSource.REF) {
       return this.readReference(testResource, format);
     } else if (source === CompareFileSource.TS_LIB) {
-      return this.readTSLib(testResource, format);
+      return this.readTSLib(testResource, format, isCompact);
     } else if (source === CompareFileSource.JAVA_LIB) {
-      return this.readJavaLib(testResource, format);
+      return this.readJavaLib(testResource, format, isCompact);
     } else {
       return '';
     }
@@ -188,21 +193,21 @@ export class TestUtil {
     }
   }
 
-  private static readTSLib(testResource: TestResource, format: CompareFileFormat): string {
+  private static readTSLib(testResource: TestResource, format: CompareFileFormat, isCompact: boolean): string {
     if (format === CompareFileFormat.JSON) {
       return this.readTSLibJson(testResource);
     } else if (format === CompareFileFormat.YAML) {
-      return this.readTSLibYaml(testResource);
+      return this.readTSLibYaml(testResource, isCompact);
     } else {
       return '';
     }
   }
 
-  private static readJavaLib(testResource: TestResource, format: CompareFileFormat): string {
+  private static readJavaLib(testResource: TestResource, format: CompareFileFormat, isCompact: boolean): string {
     if (format === CompareFileFormat.JSON) {
       return this.readJavaLibJson(testResource);
     } else if (format === CompareFileFormat.YAML) {
-      return this.readJavaLibYaml(testResource, false);
+      return this.readJavaLibYaml(testResource, isCompact);
     } else {
       return '';
     }

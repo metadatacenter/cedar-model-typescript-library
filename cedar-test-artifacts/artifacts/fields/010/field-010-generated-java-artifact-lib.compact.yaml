@@ -1,0 +1,5 @@
+type: "multi-select-list-field"
+name: "List multi"
+values:
+  - label: "Untitled-0"
+  - label: "Untitled-1"

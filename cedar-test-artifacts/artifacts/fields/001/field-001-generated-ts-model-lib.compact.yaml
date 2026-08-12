@@ -1,0 +1,17 @@
+type: "text-field"
+name: "#001 Text Field"
+description: "Text field help text"
+prefLabel: "Text field preferred"
+altLabels:
+  - "alt label1"
+  - "alt label 2"
+  - "alt label 3"
+default: "default value"
+minLength: 10
+maxLength: 100
+regex: "regex"
+annotations:
+  https://datacite.com/doi:
+    id: "https://doi.org/10.82658/8vc1-abcd"
+  foo:
+    value: "bar"

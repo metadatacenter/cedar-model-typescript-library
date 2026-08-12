@@ -6,7 +6,7 @@ const os = require('node:os');
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
 
-const packageName = '@org.metadatacenter/cedar-model-typescript-library';
+const packageName = 'cedar-model-typescript-library';
 const repositoryRoot = __dirname;
 const temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'cedar-package-smoke-'));
 const npmCommand = process.platform === 'win32' ? 'npm.cmd' : 'npm';

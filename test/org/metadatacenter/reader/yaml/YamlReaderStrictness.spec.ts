@@ -3,7 +3,8 @@ import { YamlTemplateElementReader, YamlTemplateFieldReader, YamlTemplateInstanc
 // What this library refuses, the Java library refuses too: a document in the compact form given to a
 // reader that was not asked for it, and a field type it does not know. Both used to be absorbed —
 // the first into an artifact with an absent model version, the second into a typeless field that
-// reported success and then broke whichever writer was handed it.
+// reported success and then broke whichever writer was handed it. The unknown type used here is
+// `boolean`, the spelling this library wrote before the boolean field was renamed `boolean-field`.
 
 const fullField = `type: "text-field"
 name: "Study Name"
@@ -74,11 +75,17 @@ children:
 });
 
 describe('an unknown field type is refused', () => {
-  test('the Java library spelling of a boolean field is not a type this library knows', () => {
-    // The two libraries name this type differently: "boolean" here, "boolean-field" there. Reading
-    // the other's spelling produced a field with no type at all, and reported success.
-    const foreign = fullField.replace('type: "text-field"', 'type: "boolean-field"');
-    expect(() => YamlTemplateFieldReader.getStrict().readFromString(foreign)).toThrow(/Unknown field type "boolean-field"/);
+  test('a spelling this library once wrote is not a type it knows now', () => {
+    // The boolean field's token was `boolean` until it was renamed to `boolean-field`, which is what
+    // every other field type is called and what the Java library has always written. A document
+    // carrying the old spelling is refused rather than read into a field with no type.
+    const old = fullField.replace('type: "text-field"', 'type: "boolean"');
+    expect(() => YamlTemplateFieldReader.getStrict().readFromString(old)).toThrow(/Unknown field type "boolean"/);
+  });
+
+  test('the boolean field reads under the name every other field type uses', () => {
+    const boolean = fullField.replace('type: "text-field"', 'type: "boolean-field"');
+    expect(YamlTemplateFieldReader.getStrict().readFromString(boolean).field.schema_name).toBe('Study Name');
   });
 
   test('a type that is not a field type at all is refused', () => {
@@ -93,10 +100,10 @@ describe('an unknown field type is refused', () => {
   });
 
   test('an unknown child type is refused inside a template, and the path says where', () => {
-    const foreignChild = fullTemplate.replace('    type: "text-field"', '    type: "boolean-field"');
+    const foreignChild = fullTemplate.replace('    type: "text-field"', '    type: "boolean"');
     // The container refuses it before the field reader sees it, and names the child.
     expect(() => YamlTemplateReader.getStrict().readFromString(foreignChild)).toThrow(
-      /Unknown child type "boolean-field" at \/children\/Study Name\//,
+      /Unknown child type "boolean" at \/children\/Study Name\//,
     );
   });
 
@@ -107,10 +114,10 @@ id: "https://repo.metadatacenter.org/template-elements/e1"
 modelVersion: "1.6.0"
 children:
   - key: "City"
-    type: "boolean-field"
+    type: "boolean"
     name: "City"
     modelVersion: "1.6.0"
 `;
-    expect(() => YamlTemplateElementReader.getStrict().readFromString(element)).toThrow(/Unknown child type "boolean-field"/);
+    expect(() => YamlTemplateElementReader.getStrict().readFromString(element)).toThrow(/Unknown child type "boolean"/);
   });
 });

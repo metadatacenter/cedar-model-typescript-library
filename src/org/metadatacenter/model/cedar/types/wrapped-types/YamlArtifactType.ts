@@ -25,7 +25,7 @@ export const YamlArtifactTypeValues = {
   CHECKBOX: 'checkbox-field',
   RADIO: 'radio-field',
   ATTRIBUTE_VALUE: 'attribute-value-field',
-  BOOLEAN: 'boolean',
+  BOOLEAN: 'boolean-field',
 
   PAGE_BREAK: 'static-page-break',
   SECTION_BREAK: 'static-section-break',

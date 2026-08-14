@@ -16,6 +16,7 @@
       "@type": "xsd:long"
     },
     {
+      "@value": null,
       "@type": "xsd:long"
     }
   ],

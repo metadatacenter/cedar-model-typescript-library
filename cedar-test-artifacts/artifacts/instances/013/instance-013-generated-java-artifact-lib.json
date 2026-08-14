@@ -50,7 +50,9 @@
       "Attribute Value Field Single 2": "https://schema.metadatacenter.org/properties/bb26c067-dbda-43f1-ab40-ee1fe3b2ed13"
     }
   },
-  "Attribute Value Field Root 3": {},
+  "Attribute Value Field Root 3": {
+    "@value": null
+  },
   "Attribute Value Field Root 2": {
     "@value": "value 2"
   },

@@ -23,7 +23,9 @@
     },
     {
       "@id": "https://repo.metadatacenter.org/template-element-instances/903d67ba-5b6f-4b5b-9ef6-7556024e5443",
-      "Single Select in Element": {},
+      "Single Select in Element": {
+        "@value": null
+      },
       "@context": {
         "Single Select in Element": "https://schema.metadatacenter.org/properties/133f2af3-cadd-4c8e-8ebb-69f812cb74da"
       }

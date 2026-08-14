@@ -48,7 +48,9 @@
     {
       "@id": "https://repo.metadatacenter.org/template-element-instances/e53af5f7-cc94-4ccd-a9ee-7abff2107d09",
       "Checkbox in Element": [
-        {}
+        {
+          "@value": null
+        }
       ],
       "@context": {
         "Checkbox in Element": "https://schema.metadatacenter.org/properties/97ff4997-8092-4230-8581-e26abf5d5ceb"

@@ -14,10 +14,13 @@
         }
       ],
       "Text Field in Paragraph Element": [
-        {}
+        {
+          "@value": null
+        }
       ],
       "Numeric Field Multiple Inside Paragraph Element": [
         {
+          "@value": null,
           "@type": "xsd:double"
         }
       ],
@@ -53,7 +56,9 @@
     }
   ],
   "Paragraph Standalone": [
-    {}
+    {
+      "@value": null
+    }
   ],
   "@context": {
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",

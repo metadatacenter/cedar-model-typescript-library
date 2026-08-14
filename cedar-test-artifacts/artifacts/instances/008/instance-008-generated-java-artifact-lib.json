@@ -50,7 +50,9 @@
     },
     {
       "@id": "https://repo.metadatacenter.org/template-element-instances/89c67f8e-da51-4c2a-83e8-c227f0f4e4db",
-      "Multiple Choice in Element (radio)": {},
+      "Multiple Choice in Element (radio)": {
+        "@value": null
+      },
       "@context": {
         "Multiple Choice in Element (radio)": "https://schema.metadatacenter.org/properties/5756b073-0b9d-475d-a1a2-33f6547b3891"
       }

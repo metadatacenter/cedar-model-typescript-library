@@ -19,9 +19,12 @@ export class YamlFieldReaderBoolean extends YamlTemplateFieldTypeSpecificReader 
 
     field.valueConstraints.defaultValue = ReaderUtil.getBooleanOrNullOrUndefined(fieldSourceObject, YamlKeys.default);
     field.valueConstraints.nullEnabled = ReaderUtil.getBooleanOrNull(fieldSourceObject, YamlKeys.nullEnabled);
-    field.valueConstraints.trueLabel = ReaderUtil.getString(fieldSourceObject, YamlKeys.trueLabel);
-    field.valueConstraints.falseLabel = ReaderUtil.getString(fieldSourceObject, YamlKeys.falseLabel);
-    field.valueConstraints.nullLabel = ReaderUtil.getString(fieldSourceObject, YamlKeys.nullLabel);
+    const labels: JsonNode = ReaderUtil.getNode(fieldSourceObject, YamlKeys.labels);
+    if (labels !== null) {
+      field.valueConstraints.trueLabel = ReaderUtil.getString(labels, YamlKeys.trueLabel);
+      field.valueConstraints.falseLabel = ReaderUtil.getString(labels, YamlKeys.falseLabel);
+      field.valueConstraints.nullLabel = ReaderUtil.getString(labels, YamlKeys.nullLabel);
+    }
 
     return field;
   }

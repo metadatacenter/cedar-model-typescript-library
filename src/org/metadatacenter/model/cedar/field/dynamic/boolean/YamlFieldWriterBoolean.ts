@@ -4,7 +4,6 @@ import { YamlTemplateFieldWriterInternal } from '../../../../../io/writer/yaml/Y
 import { YamlKeys } from '../../../constants/YamlKeys';
 import { YamlWriterBehavior } from '../../../../../behavior/YamlWriterBehavior';
 import { CedarYamlWriters } from '../../../../../io/writer/yaml/CedarYamlWriters';
-import { XsdDatatype } from '../../../constants/XsdDatatype';
 import { BooleanField } from './BooleanField';
 
 export class YamlFieldWriterBoolean extends YamlTemplateFieldWriterInternal {
@@ -13,21 +12,25 @@ export class YamlFieldWriterBoolean extends YamlTemplateFieldWriterInternal {
   }
 
   override expandValueConstraintsNodeForYAML(vcNode: JsonNode, field: BooleanField, _childInfo: ChildDeploymentInfo): void {
-    vcNode[YamlKeys.datatype] = XsdDatatype.BOOLEAN;
-    if (field.valueConstraints.nullEnabled !== null) {
-      vcNode[YamlKeys.nullEnabled] = field.valueConstraints.nullEnabled;
-    }
+    // The boolean field's datatype is implied by the field type, and no other library writes it.
     if (field.valueConstraints.defaultValue !== undefined) {
       vcNode[YamlKeys.default] = field.valueConstraints.defaultValue;
     }
+    if (field.valueConstraints.nullEnabled !== null) {
+      vcNode[YamlKeys.nullEnabled] = field.valueConstraints.nullEnabled;
+    }
+    const labels: JsonNode = JsonNode.getEmpty();
     if (field.valueConstraints.trueLabel != null) {
-      vcNode[YamlKeys.trueLabel] = field.valueConstraints.trueLabel;
+      labels[YamlKeys.trueLabel] = field.valueConstraints.trueLabel;
     }
     if (field.valueConstraints.falseLabel != null) {
-      vcNode[YamlKeys.falseLabel] = field.valueConstraints.falseLabel;
+      labels[YamlKeys.falseLabel] = field.valueConstraints.falseLabel;
     }
     if (field.valueConstraints.nullLabel != null) {
-      vcNode[YamlKeys.nullLabel] = field.valueConstraints.nullLabel;
+      labels[YamlKeys.nullLabel] = field.valueConstraints.nullLabel;
+    }
+    if (JsonNode.hasEntries(labels)) {
+      vcNode[YamlKeys.labels] = labels;
     }
   }
 }

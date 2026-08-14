@@ -94,7 +94,11 @@ export class YamlKeys {
   };
 
   static nullEnabled: string = 'nullEnabled';
-  static trueLabel: string = 'trueLabel';
-  static falseLabel: string = 'falseLabel';
-  static nullLabel: string = 'nullLabel';
+  // A boolean field's labels are a block keyed by the value they label, as the JSON nests them and as
+  // the Java library writes them. They were three flat keys here, which neither of the other two
+  // recognised, so the labels were lost whenever a document crossed between them.
+  static labels: string = 'labels';
+  static trueLabel: string = 'true';
+  static falseLabel: string = 'false';
+  static nullLabel: string = 'null';
 }

@@ -5,9 +5,9 @@ status: "draft"
 version: "0.0.1"
 modelVersion: "1.6.0"
 prefLabel: "Boolean Preferred"
-datatype: "xsd:boolean"
-nullEnabled: true
 default: true
-trueLabel: "True"
-falseLabel: "False"
-nullLabel: "Null"
+nullEnabled: true
+labels:
+  "true": "True"
+  "false": "False"
+  "null": "Null"

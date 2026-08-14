@@ -25,11 +25,23 @@ export class PropertyIri {
   /**
    * The IRI for a property with this name.
    *
-   * What the template writer uses for a child whose template declares no IRI of
-   * its own. Spaces become `+` rather than `%20`, which is what CEDAR writes.
+   * What the writer uses for a child whose artifact declares no IRI of its own. The name is encoded
+   * exactly as the Java library encodes it, which is Java's `URLEncoder`: form encoding, so a space
+   * becomes `+`, and `!`, `'`, `(`, `)` and `~` are escaped even though a URI path would take them
+   * literally. `encodeURIComponent` alone leaves those five alone, which is what made the two
+   * libraries mint different IRIs for the same field — `Dose+(mg)` here against `Dose+%28mg%29`
+   * there. Whether form encoding is the right choice for a path segment is another question; what
+   * matters here is that one function answers it for both libraries.
    */
   static forName(name: string): string {
-    return CedarModel.propertyIriPrefix + encodeURIComponent(name).replace(/%20/g, '+');
+    return CedarModel.propertyIriPrefix + PropertyIri.formUrlEncode(name);
+  }
+
+  /** Java's `URLEncoder.encode(name, UTF_8)`, character for character. */
+  private static formUrlEncode(name: string): string {
+    return encodeURIComponent(name)
+      .replace(/%20/g, '+')
+      .replace(/[!'()~]/g, (character) => `%${character.charCodeAt(0).toString(16).toUpperCase()}`);
   }
 
   /**

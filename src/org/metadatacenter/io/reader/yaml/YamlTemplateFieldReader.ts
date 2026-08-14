@@ -29,7 +29,6 @@ import { YamlFieldReaderSingleSelectList } from '../../../model/cedar/field/dyna
 import { YamlFieldReaderMultiSelectList } from '../../../model/cedar/field/dynamic/list-multiple-choice/YamlFieldReaderMultiSelectList';
 import { YamlFieldReaderRadio } from '../../../model/cedar/field/dynamic/radio/YamlFieldReaderRadio';
 import { YamlFieldReaderControlledTerm } from '../../../model/cedar/field/dynamic/controlled-term/YamlFieldReaderControlledTerm';
-import { YamlFieldReaderBoolean } from '../../../model/cedar/field/dynamic/boolean/YamlFieldReaderBoolean';
 import { YamlArtifactParsingResult } from '../../../model/cedar/util/compare/YamlArtifactParsingResult';
 import { YamlFieldReaderExtRor } from '../../../model/cedar/field/dynamic/ext-ror/YamlFieldReaderExtRor';
 import { YamlFieldReaderExtOrcid } from '../../../model/cedar/field/dynamic/ext-orcid/YamlFieldReaderExtOrcid';
@@ -83,7 +82,6 @@ export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
     [YamlArtifactType.SINGLE_SELECT_LIST, new YamlFieldReaderSingleSelectList()],
     [YamlArtifactType.MULTI_SELECT_LIST, new YamlFieldReaderMultiSelectList()],
     [YamlArtifactType.ATTRIBUTE_VALUE, new YamlFieldReaderAttributeValue()],
-    [YamlArtifactType.BOOLEAN, new YamlFieldReaderBoolean()],
     [YamlArtifactType.PAGE_BREAK, new YamlFieldReaderPageBreak()],
     [YamlArtifactType.SECTION_BREAK, new YamlFieldReaderSectionBreak()],
     [YamlArtifactType.IMAGE, new YamlFieldReaderImage()],

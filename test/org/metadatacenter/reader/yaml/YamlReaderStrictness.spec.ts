@@ -3,8 +3,9 @@ import { YamlTemplateElementReader, YamlTemplateFieldReader, YamlTemplateInstanc
 // What this library refuses, the Java library refuses too: a document in the compact form given to a
 // reader that was not asked for it, and a field type it does not know. Both used to be absorbed —
 // the first into an artifact with an absent model version, the second into a typeless field that
-// reported success and then broke whichever writer was handed it. The unknown type used here is
-// `boolean`, the spelling this library wrote before the boolean field was renamed `boolean-field`.
+// reported success and then broke whichever writer was handed it. The unknown types used here are the
+// spellings of the boolean field, a type since removed for having no user interface and no way to
+// author one.
 
 const fullField = `type: "text-field"
 name: "Study Name"
@@ -75,17 +76,13 @@ children:
 });
 
 describe('an unknown field type is refused', () => {
-  test('a spelling this library once wrote is not a type it knows now', () => {
-    // The boolean field's token was `boolean` until it was renamed to `boolean-field`, which is what
-    // every other field type is called and what the Java library has always written. A document
-    // carrying the old spelling is refused rather than read into a field with no type.
-    const old = fullField.replace('type: "text-field"', 'type: "boolean"');
-    expect(() => YamlTemplateFieldReader.getStrict().readFromString(old)).toThrow(/Unknown field type "boolean"/);
-  });
-
-  test('the boolean field reads under the name every other field type uses', () => {
-    const boolean = fullField.replace('type: "text-field"', 'type: "boolean-field"');
-    expect(YamlTemplateFieldReader.getStrict().readFromString(boolean).field.schema_name).toBe('Study Name');
+  test.each(['boolean', 'boolean-field'])('the retired boolean field type is refused: %s', (retired: string) => {
+    // The boolean field was a model type with no user interface and no way to author one: the
+    // embeddable editor had no component for it and the template designer did not offer it. It is
+    // gone, under either spelling it once had, and a document carrying one is refused rather than
+    // read into a field with no type.
+    const old = fullField.replace('type: "text-field"', `type: "${retired}"`);
+    expect(() => YamlTemplateFieldReader.getStrict().readFromString(old)).toThrow(new RegExp(`Unknown field type "${retired}"`));
   });
 
   test('a type that is not a field type at all is refused', () => {

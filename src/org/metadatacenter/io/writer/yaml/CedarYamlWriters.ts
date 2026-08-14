@@ -35,7 +35,6 @@ import { YamlValueConstraintsBranchWriter } from '../../../model/cedar/field/dyn
 import { YamlValueConstraintsValueSetWriter } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/value-set/YamlValueConstraintsValueSetWriter';
 import { YamlValueConstraintsActionWriter } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/action/YamlValueConstraintsActionWriter';
 import { YamlWriterBehavior } from '../../../behavior/YamlWriterBehavior';
-import { YamlFieldWriterBoolean } from '../../../model/cedar/field/dynamic/boolean/YamlFieldWriterBoolean';
 import { YamlTemplateInstanceWriter } from './YamlTemplateInstanceWriter';
 import { YamlFieldWriterExtRor } from '../../../model/cedar/field/dynamic/ext-ror/YamlFieldWriterExtRor';
 import { YamlFieldWriterExtOrcid } from '../../../model/cedar/field/dynamic/ext-orcid/YamlFieldWriterExtOrcid';
@@ -86,7 +85,6 @@ export class CedarYamlWriters {
       [CedarFieldType.SINGLE_SELECT_LIST, new YamlFieldWriterList(behavior, this)],
       [CedarFieldType.MULTIPLE_SELECT_LIST, new YamlFieldWriterList(behavior, this)],
       [CedarFieldType.ATTRIBUTE_VALUE, new YamlFieldWriterAttributeValue(behavior, this)],
-      [CedarFieldType.BOOLEAN, new YamlFieldWriterBoolean(behavior, this)],
     ]);
 
     this.yamlStaticFieldWriters = new Map<CedarFieldType, YamlTemplateFieldWriterInternal>([

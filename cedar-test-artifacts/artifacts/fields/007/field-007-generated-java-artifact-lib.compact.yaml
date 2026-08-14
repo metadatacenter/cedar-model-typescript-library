@@ -1,9 +1,0 @@
-type: "boolean-field"
-name: "Boolean Field"
-description: "Boolean Help"
-prefLabel: "Boolean Preferred"
-nullEnabled: true
-labels:
-  "true": "True"
-  "false": "False"
-  "null": "Null"

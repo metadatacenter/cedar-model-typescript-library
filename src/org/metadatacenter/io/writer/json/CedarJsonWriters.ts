@@ -39,7 +39,6 @@ import { JsonAbstractArtifactWriter } from './JsonAbstractArtifactWriter';
 import { Template } from '../../../model/cedar/template/Template';
 import { TemplateElement } from '../../../model/cedar/element/TemplateElement';
 import { AbstractArtifact } from '../../../model/cedar/AbstractArtifact';
-import { JsonFieldWriterBoolean } from '../../../model/cedar/field/dynamic/boolean/JsonFieldWriterBoolean';
 import { JsonTemplateInstanceWriter } from './JsonTemplateInstanceWriter';
 import { JsonFieldWriterExtRor } from '../../../model/cedar/field/dynamic/ext-ror/JsonFieldWriterExtRor';
 import { JsonFieldWriterExtOrcid } from '../../../model/cedar/field/dynamic/ext-orcid/JsonFieldWriterExtOrcid';
@@ -90,7 +89,6 @@ export class CedarJsonWriters {
       [CedarFieldType.SINGLE_SELECT_LIST, new JsonFieldWriterList(behavior, this)],
       [CedarFieldType.MULTIPLE_SELECT_LIST, new JsonFieldWriterList(behavior, this)],
       [CedarFieldType.ATTRIBUTE_VALUE, new JsonFieldWriterAttributeValue(behavior, this)],
-      [CedarFieldType.BOOLEAN, new JsonFieldWriterBoolean(behavior, this)],
     ]);
 
     this.jsonStaticFieldWriters = new Map<CedarFieldType, JsonTemplateFieldWriterInternal>([

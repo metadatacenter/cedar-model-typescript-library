@@ -2,6 +2,9 @@ import YAML from 'yaml';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { CedarArtifactId } from '../../../model/cedar/types/cedar-types/CedarArtifactId';
 import { YamlReaderBehavior } from '../../../behavior/YamlReaderBehavior';
+import { YamlAbstractArtifactReader } from './YamlAbstractArtifactReader';
+import { CedarUser } from '../../../model/cedar/types/cedar-types/CedarUser';
+import { IsoDate } from '../../../model/cedar/types/wrapped-types/IsoDate';
 import { YamlArtifactParsingResult } from '../../../model/cedar/util/compare/YamlArtifactParsingResult';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 import { ReaderUtil } from '../ReaderUtil';
@@ -37,8 +40,10 @@ const ELEMENT_INSTANCE_TYPE = 'element-instance';
  * the empty slots the template's JSON Schema requires. Both are template data;
  * `InstanceInflater` reconstructs them. This reader's job is the values.
  */
-export class YamlTemplateInstanceReader {
-  private constructor(_behavior: YamlReaderBehavior) {}
+export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
+  private constructor(behavior: YamlReaderBehavior) {
+    super(behavior);
+  }
 
   public static getStrict(): YamlTemplateInstanceReader {
     return new YamlTemplateInstanceReader(YamlReaderBehavior.STRICT);
@@ -67,6 +72,14 @@ export class YamlTemplateInstanceReader {
     instance.schema_description = ReaderUtil.getString(source, YamlKeys.description);
     instance.at_id = CedarArtifactId.forValue(ReaderUtil.getString(source, YamlKeys.id));
     instance.schema_isBasedOn = CedarArtifactId.forValue(ReaderUtil.getString(source, YamlKeys.isBasedOn));
+    instance.pav_derivedFrom = CedarArtifactId.forValue(ReaderUtil.getString(source, YamlKeys.derivedFrom));
+    // The writer emits an instance's provenance and its annotations; both were read by nobody, so
+    // either one was lost by writing what had just been read.
+    instance.pav_createdBy = CedarUser.forValue(ReaderUtil.getString(source, YamlKeys.createdBy));
+    instance.pav_createdOn = IsoDate.forValue(ReaderUtil.getString(source, YamlKeys.createdOn));
+    instance.oslc_modifiedBy = CedarUser.forValue(ReaderUtil.getString(source, YamlKeys.modifiedBy));
+    instance.pav_lastUpdatedOn = IsoDate.forValue(ReaderUtil.getString(source, YamlKeys.modifiedOn));
+    this.readAnnotations(instance, source, parsingResult, new JsonPath());
 
     instance.dataContainer = this.parseContainer(source);
     for (const conflict of AttributeValueNamePolicy.findConflicts(instance.dataContainer)) {
@@ -96,6 +109,14 @@ export class YamlTemplateInstanceReader {
     YamlKeys.isBasedOn,
     YamlKeys.derivedFrom,
     YamlKeys.children,
+    // An annotation block is the artifact's, not a field named `annotations`: left unreserved, the
+    // attribute-value fallback below claimed it, and an annotation carrying an IRI rather than a
+    // literal came out of that as a null-valued attribute the writer then dropped.
+    YamlKeys.annotations,
+    YamlKeys.createdOn,
+    YamlKeys.createdBy,
+    YamlKeys.modifiedOn,
+    YamlKeys.modifiedBy,
   ]);
 
   private parseContainer(node: JsonNode): InstanceDataContainer {

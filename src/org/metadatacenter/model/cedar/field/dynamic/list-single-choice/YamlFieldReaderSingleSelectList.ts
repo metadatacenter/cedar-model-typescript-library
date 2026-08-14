@@ -14,7 +14,7 @@ export class YamlFieldReaderSingleSelectList extends YamlTemplateFieldTypeSpecif
     _path: JsonPath,
   ): SingleChoiceListField {
     const field = SingleChoiceListFieldImpl.buildEmpty();
-    YamlTemplateFieldTypeSpecificReader.readAndStoreListOptions(fieldSourceObject, field);
+    YamlTemplateFieldTypeSpecificReader.readAndStoreListValueConstraints(fieldSourceObject, field);
     return field;
   }
 }

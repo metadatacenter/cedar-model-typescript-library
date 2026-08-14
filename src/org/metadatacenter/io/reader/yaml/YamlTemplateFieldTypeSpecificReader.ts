@@ -19,7 +19,13 @@ export abstract class YamlTemplateFieldTypeSpecificReader {
     return UnknownTemplateField.build();
   }
 
-  protected static readAndStoreListOptions(fieldSourceObject: JsonNode, field: ListField) {
+  /**
+   * A list field's value constraints are its options and, when one is set, the value the field takes
+   * by default. The writer emits the default as `default` beside the options; leaving it unread made
+   * writing what had just been read drop it.
+   */
+  protected static readAndStoreListValueConstraints(fieldSourceObject: JsonNode, field: ListField) {
+    field.valueConstraints.defaultValue = ReaderUtil.getString(fieldSourceObject, YamlKeys.default);
     const literals: Array<JsonNode> = ReaderUtil.getNodeList(fieldSourceObject, YamlKeys.values);
     if (literals !== null) {
       literals.forEach((literal) => {

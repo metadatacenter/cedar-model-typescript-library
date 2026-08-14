@@ -26,6 +26,8 @@ type Kind = 'template' | 'element' | 'field' | 'instance';
 interface Roundtrip {
   compact: string;
   again: string;
+  full: string;
+  fullAgain: string;
   id: string | null;
   name: string | null;
 }
@@ -38,9 +40,12 @@ function roundTrip(kind: Kind, testNumber: number): Roundtrip {
     const writer = writers.getTemplateWriter();
     const compact = writer.getAsYamlString(template, true);
     const reread = YamlTemplateReader.getStrict().readFromString(compact).template;
+    const full = writer.getAsYamlString(template, false);
     return {
       compact,
       again: writer.getAsYamlString(reread, true),
+      full,
+      fullAgain: writer.getAsYamlString(YamlTemplateReader.getStrict().readFromString(full).template, false),
       id: reread.at_id.getValue(),
       name: reread.schema_name,
     };
@@ -51,9 +56,12 @@ function roundTrip(kind: Kind, testNumber: number): Roundtrip {
     const writer = writers.getTemplateElementWriter();
     const compact = writer.getAsYamlString(element, true);
     const reread = YamlTemplateElementReader.getStrict().readFromString(compact).element;
+    const full = writer.getAsYamlString(element, false);
     return {
       compact,
       again: writer.getAsYamlString(reread, true),
+      full,
+      fullAgain: writer.getAsYamlString(YamlTemplateElementReader.getStrict().readFromString(full).element, false),
       id: reread.at_id.getValue(),
       name: reread.schema_name,
     };
@@ -64,9 +72,13 @@ function roundTrip(kind: Kind, testNumber: number): Roundtrip {
     const writer = writers.getFieldWriterForField(field);
     const compact = writer.getAsYamlString(field, true);
     const reread = YamlTemplateFieldReader.getStrict().readFromString(compact).field;
+    const full = writer.getAsYamlString(field, false);
+    const fromFull = YamlTemplateFieldReader.getStrict().readFromString(full).field;
     return {
       compact,
       again: writers.getFieldWriterForField(reread).getAsYamlString(reread, true),
+      full,
+      fullAgain: writers.getFieldWriterForField(fromFull).getAsYamlString(fromFull, false),
       id: reread.at_id.getValue(),
       name: reread.schema_name,
     };
@@ -76,9 +88,12 @@ function roundTrip(kind: Kind, testNumber: number): Roundtrip {
   const writer = writers.getTemplateInstanceWriter();
   const compact = writer.getAsYamlString(instance, true);
   const reread = YamlTemplateInstanceReader.getStrict().readFromString(compact).instance;
+  const full = writer.getAsYamlString(instance, false);
   return {
     compact,
     again: writer.getAsYamlString(reread, true),
+    full,
+    fullAgain: writer.getAsYamlString(YamlTemplateInstanceReader.getStrict().readFromString(full).instance, false),
     id: reread.at_id.getValue(),
     name: reread.schema_name,
   };
@@ -106,16 +121,6 @@ function sourceId(kind: Kind, testNumber: number): string | null {
   }
 }
 
-// Two asymmetries in the YAML pair keep a case from returning what it wrote. Both show in the full
-// form as well, so neither belongs to the compact form, and both are excluded here by name rather
-// than passed over silently.
-//
-//  - template 20: a list field whose value constraints carry a scalar defaultValue writes it as
-//    `default`, and no list-field YAML reader reads that key back.
-//  - instance 21: an IRI annotation is written and not read back. The same instance also loses its
-//    provenance through the full form, which the compact form does not carry in the first place.
-const unstableThroughTheYamlReader: Partial<Record<Kind, number[]>> = { template: [20], instance: [21] };
-
 const cases: Array<[Kind, number[]]> = [
   ['template', templateTestNumbers],
   ['element', elementTestNumbers],
@@ -127,10 +132,12 @@ describe.each(cases)('compact YAML round trip: %s', (kind: Kind, testNumbers: nu
   test.each(testNumbers)(`${kind} %i survives a compact round trip`, (testNumber: number) => {
     const result = roundTrip(kind, testNumber);
 
-    // Writing what was read must reproduce the document, or the form is not a round trip.
-    if (!(unstableThroughTheYamlReader[kind] ?? []).includes(testNumber)) {
-      expect(result.again).toEqual(result.compact);
-    }
+    // Writing what was read must reproduce the document, or the form is not a round trip. The full
+    // form is asserted beside it: what a form carries and a reader ignores is lost either way, and
+    // three such asymmetries — a list field's default, an instance's annotations, an instance's
+    // provenance — were found through this comparison rather than through the compact form itself.
+    expect(result.again).toEqual(result.compact);
+    expect(result.fullAgain).toEqual(result.full);
 
     // The identifier is the artifact. Losing it through the compact form would leave a document
     // that reads back as a different, anonymous artifact. Some corpus fixtures carry no identifier

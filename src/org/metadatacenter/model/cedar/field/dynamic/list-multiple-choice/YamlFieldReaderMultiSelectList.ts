@@ -14,7 +14,7 @@ export class YamlFieldReaderMultiSelectList extends YamlTemplateFieldTypeSpecifi
     _path: JsonPath,
   ): MultipleChoiceListField {
     const field = MultipleChoiceListFieldImpl.buildEmpty();
-    YamlTemplateFieldTypeSpecificReader.readAndStoreListOptions(fieldSourceObject, field);
+    YamlTemplateFieldTypeSpecificReader.readAndStoreListValueConstraints(fieldSourceObject, field);
     return field;
   }
 }

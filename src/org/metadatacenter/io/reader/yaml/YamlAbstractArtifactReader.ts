@@ -1,3 +1,4 @@
+import { AbstractArtifact } from '../../../model/cedar/AbstractArtifact';
 import { AbstractSchemaArtifact } from '../../../model/cedar/AbstractSchemaArtifact';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { CedarArtifactId } from '../../../model/cedar/types/cedar-types/CedarArtifactId';
@@ -66,7 +67,7 @@ export abstract class YamlAbstractArtifactReader {
   }
 
   protected readAnnotations(
-    artifact: AbstractSchemaArtifact,
+    artifact: AbstractArtifact,
     artifactSourceObject: JsonNode,
     _parsingResult: YamlArtifactParsingResult,
     _topPath: JsonPath,

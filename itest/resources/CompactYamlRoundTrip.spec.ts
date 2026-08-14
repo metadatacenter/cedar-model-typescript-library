@@ -39,7 +39,7 @@ function roundTrip(kind: Kind, testNumber: number): Roundtrip {
     const template = JsonTemplateReader.getStrict().readFromString(TestUtil.readReferenceJson(resource)).template;
     const writer = writers.getTemplateWriter();
     const compact = writer.getAsYamlString(template, true);
-    const reread = YamlTemplateReader.getStrict().readFromString(compact).template;
+    const reread = YamlTemplateReader.getStrictForCompact().readFromString(compact).template;
     const full = writer.getAsYamlString(template, false);
     return {
       compact,
@@ -55,7 +55,7 @@ function roundTrip(kind: Kind, testNumber: number): Roundtrip {
     const element = JsonTemplateElementReader.getStrict().readFromString(TestUtil.readReferenceJson(resource)).element;
     const writer = writers.getTemplateElementWriter();
     const compact = writer.getAsYamlString(element, true);
-    const reread = YamlTemplateElementReader.getStrict().readFromString(compact).element;
+    const reread = YamlTemplateElementReader.getStrictForCompact().readFromString(compact).element;
     const full = writer.getAsYamlString(element, false);
     return {
       compact,
@@ -71,7 +71,7 @@ function roundTrip(kind: Kind, testNumber: number): Roundtrip {
     const field = JsonTemplateFieldReader.getStrict().readFromString(TestUtil.readReferenceJson(resource)).field;
     const writer = writers.getFieldWriterForField(field);
     const compact = writer.getAsYamlString(field, true);
-    const reread = YamlTemplateFieldReader.getStrict().readFromString(compact).field;
+    const reread = YamlTemplateFieldReader.getStrictForCompact().readFromString(compact).field;
     const full = writer.getAsYamlString(field, false);
     const fromFull = YamlTemplateFieldReader.getStrict().readFromString(full).field;
     return {

@@ -16,17 +16,25 @@ export class YamlTemplateReader extends YamlContainerArtifactReader {
   private readonly elementReader: YamlTemplateElementReader;
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.TEMPLATE;
 
-  private constructor(behavior: YamlReaderBehavior) {
-    super(behavior);
-    this.elementReader = YamlTemplateElementReader.getForBehavior(behavior);
+  private constructor(behavior: YamlReaderBehavior, isCompact: boolean = false) {
+    super(behavior, isCompact);
+    this.elementReader = YamlTemplateElementReader.getForBehavior(behavior, isCompact);
   }
 
   public static getStrict(): YamlTemplateReader {
     return new YamlTemplateReader(YamlReaderBehavior.STRICT);
   }
 
-  public static getForBehavior(behavior: YamlReaderBehavior): YamlTemplateReader {
-    return new YamlTemplateReader(behavior);
+  /**
+   * A reader for the compact form, which omits the model version and the rest of what the system
+   * records about an artifact. Asking for it is the only way to read that form.
+   */
+  public static getStrictForCompact(): YamlTemplateReader {
+    return new YamlTemplateReader(YamlReaderBehavior.STRICT, true);
+  }
+
+  public static getForBehavior(behavior: YamlReaderBehavior, isCompact: boolean = false): YamlTemplateReader {
+    return new YamlTemplateReader(behavior, isCompact);
   }
 
   protected override getElementReader(): YamlTemplateElementReader {

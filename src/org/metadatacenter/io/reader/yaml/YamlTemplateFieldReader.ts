@@ -5,7 +5,6 @@ import { ReaderUtil } from '../ReaderUtil';
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
 import { YamlFieldReaderEmail } from '../../../model/cedar/field/dynamic/email/YamlFieldReaderEmail';
 import { YamlTemplateFieldReaderResult } from './YamlTemplateFieldReaderResult';
-import { UnknownTemplateField } from '../../../model/cedar/field/UnknownTemplateField';
 import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
 import { YamlAbstractArtifactReader } from './YamlAbstractArtifactReader';
 import { YamlReaderBehavior } from '../../../behavior/YamlReaderBehavior';
@@ -43,16 +42,24 @@ import { YamlFieldReaderExtDoi } from '../../../model/cedar/field/dynamic/ext-do
 export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.TEMPLATE_FIELD;
 
-  private constructor(behavior: YamlReaderBehavior) {
-    super(behavior);
+  private constructor(behavior: YamlReaderBehavior, isCompact: boolean = false) {
+    super(behavior, isCompact);
   }
 
   public static getStrict(): YamlTemplateFieldReader {
     return new YamlTemplateFieldReader(YamlReaderBehavior.STRICT);
   }
 
-  public static getForBehavior(behavior: YamlReaderBehavior): YamlTemplateFieldReader {
-    return new YamlTemplateFieldReader(behavior);
+  /**
+   * A reader for the compact form, which omits the model version and the rest of what the system
+   * records about an artifact. Asking for it is the only way to read that form.
+   */
+  public static getStrictForCompact(): YamlTemplateFieldReader {
+    return new YamlTemplateFieldReader(YamlReaderBehavior.STRICT, true);
+  }
+
+  public static getForBehavior(behavior: YamlReaderBehavior, isCompact: boolean = false): YamlTemplateFieldReader {
+    return new YamlTemplateFieldReader(behavior, isCompact);
   }
 
   static readerMap = new Map<YamlArtifactType, YamlTemplateFieldTypeSpecificReader>([
@@ -132,6 +139,9 @@ export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
       return templateField;
     }
 
-    return UnknownTemplateField.build();
+    // A type this library does not know is not a field it can carry. Returning a typeless field
+    // instead reported success and left the artifact holding something no writer can write, so the
+    // failure surfaced later and somewhere else. The Java library refuses the same input here.
+    throw new Error(`Unknown field type "${ReaderUtil.getString(fieldSourceObject, YamlKeys.type)}" at ${path.toString()}`);
   }
 }

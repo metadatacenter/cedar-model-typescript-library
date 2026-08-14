@@ -21,9 +21,17 @@ import { Language } from '../../../model/cedar/types/wrapped-types/Language';
 export abstract class YamlAbstractArtifactReader {
   protected behavior: YamlReaderBehavior;
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.NULL;
+  /**
+   * Whether compact input is expected. The compact form omits the model version, so a reader that
+   * has not been asked for it treats an absent model version as what it is — a document it was not
+   * given the form of. Reading compact input has to be asked for, as it does in the Java library,
+   * whose reader takes the same flag and whose converter selects it with -cy on the way in.
+   */
+  protected readonly isCompact: boolean;
 
-  protected constructor(behavior: YamlReaderBehavior) {
+  protected constructor(behavior: YamlReaderBehavior, isCompact: boolean = false) {
     this.behavior = behavior;
+    this.isCompact = isCompact;
   }
 
   /** The word CEDAR puts in a derived title/description: "template", "element" or "field". */
@@ -57,7 +65,13 @@ export abstract class YamlAbstractArtifactReader {
     container.pav_createdOn = IsoDate.forValue(ReaderUtil.getString(sourceObject, YamlKeys.createdOn));
     container.oslc_modifiedBy = CedarUser.forValue(ReaderUtil.getString(sourceObject, YamlKeys.modifiedBy));
     container.pav_lastUpdatedOn = IsoDate.forValue(ReaderUtil.getString(sourceObject, YamlKeys.modifiedOn));
-    container.schema_schemaVersion = SchemaVersion.forValue(ReaderUtil.getString(sourceObject, YamlKeys.modelVersion));
+    const modelVersion: string | null = ReaderUtil.getString(sourceObject, YamlKeys.modelVersion);
+    if (modelVersion === null && !this.isCompact) {
+      throw new Error(
+        `No ${YamlKeys.modelVersion} present. A document without one is the compact form, which a reader has to be asked for.`,
+      );
+    }
+    container.schema_schemaVersion = SchemaVersion.forValue(modelVersion);
     container.pav_version = PavVersion.forValue(ReaderUtil.getString(sourceObject, YamlKeys.version));
     container.bibo_status = BiboStatus.forYamlValue(ReaderUtil.getString(sourceObject, YamlKeys.status));
     container.pav_derivedFrom = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, YamlKeys.derivedFrom));

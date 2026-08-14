@@ -18,9 +18,11 @@ import { YamlArtifactParsingResult } from '../../../model/cedar/util/compare/Yam
 export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactReader {
   protected fieldReader: YamlTemplateFieldReader;
 
-  protected constructor(behavior: YamlReaderBehavior) {
-    super(behavior);
-    this.fieldReader = YamlTemplateFieldReader.getForBehavior(behavior);
+  protected constructor(behavior: YamlReaderBehavior, isCompact: boolean = false) {
+    super(behavior, isCompact);
+    // A child carries the model version in the full form and omits it in the compact one, so the
+    // reader that reads the children needs the same answer as the reader of the artifact around them.
+    this.fieldReader = YamlTemplateFieldReader.getForBehavior(behavior, isCompact);
   }
 
   protected abstract getElementReader(): YamlTemplateElementReader;
@@ -92,7 +94,15 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
             path.add(YamlKeys.children, name),
           );
           container.addChild(elementReadingResult.element, childDeploymentInfo);
+        } else {
+          // A child whose type this library does not know used to be skipped, leaving a container
+          // that read successfully with a child missing. The Java library refuses it.
+          throw new Error(`Unknown child type "${type}" at ${path.add(YamlKeys.children, name).toString()}`);
         }
+      } else {
+        // A child with no key cannot be deployed into a container, and dropping it silently loses a
+        // field the document declared.
+        throw new Error(`A child without a ${YamlKeys.key} at ${path.add(YamlKeys.children).toString()}`);
       }
     });
   }

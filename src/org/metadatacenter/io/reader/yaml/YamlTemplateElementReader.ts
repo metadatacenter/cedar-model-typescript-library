@@ -12,16 +12,24 @@ import { YamlArtifactParsingResult } from '../../../model/cedar/util/compare/Yam
 export class YamlTemplateElementReader extends YamlContainerArtifactReader {
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.TEMPLATE_ELEMENT;
 
-  private constructor(behavior: YamlReaderBehavior) {
-    super(behavior);
+  private constructor(behavior: YamlReaderBehavior, isCompact: boolean = false) {
+    super(behavior, isCompact);
   }
 
   public static getStrict(): YamlTemplateElementReader {
     return new YamlTemplateElementReader(YamlReaderBehavior.STRICT);
   }
 
-  public static getForBehavior(behavior: YamlReaderBehavior): YamlTemplateElementReader {
-    return new YamlTemplateElementReader(behavior);
+  /**
+   * A reader for the compact form, which omits the model version and the rest of what the system
+   * records about an artifact. Asking for it is the only way to read that form.
+   */
+  public static getStrictForCompact(): YamlTemplateElementReader {
+    return new YamlTemplateElementReader(YamlReaderBehavior.STRICT, true);
+  }
+
+  public static getForBehavior(behavior: YamlReaderBehavior, isCompact: boolean = false): YamlTemplateElementReader {
+    return new YamlTemplateElementReader(behavior, isCompact);
   }
 
   protected override getElementReader(): YamlTemplateElementReader {

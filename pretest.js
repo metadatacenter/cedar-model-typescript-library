@@ -1,5 +1,6 @@
 const fs = require('fs').promises;
 const path = require('path');
+const prettier = require('prettier');
 const fieldsTestFolderPath = 'cedar-test-artifacts/artifacts/fields';
 const elementsTestFolderPath = 'cedar-test-artifacts/artifacts/elements';
 const templatesTestFolderPath = 'cedar-test-artifacts/artifacts/templates';
@@ -81,7 +82,13 @@ async function generateTestCases() {
     `export const templateTestNumbers: number[] = ${numberArrayToString(templateTestNumbers)};\n` +
     `export const instanceTestNumbers: number[] = ${numberArrayToString(instanceTestNumbers)};\n` +
     `export const ceeSuiteTestMap = ${ceeJsonString};\n`;
-  await fs.writeFile('itest/resources/generatedTestCases.ts', content, { encoding: 'utf8' });
+  // The file is checked in, so it has to come out of here formatted the way the repository formats
+  // everything else. Written raw, it differed from its committed self on every run — same numbers,
+  // different line breaks — and left the working tree dirty after each test run.
+  const generatedFile = 'itest/resources/generatedTestCases.ts';
+  const prettierOptions = await prettier.resolveConfig(generatedFile);
+  const formatted = await prettier.format(content, { ...prettierOptions, filepath: generatedFile });
+  await fs.writeFile(generatedFile, formatted, { encoding: 'utf8' });
 }
 
 generateTestCases();

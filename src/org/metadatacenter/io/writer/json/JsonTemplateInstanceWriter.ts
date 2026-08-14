@@ -55,9 +55,12 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
   }
 
   private serializeDataLevelInto(dataContainer: InstanceDataContainer, into: JsonNode) {
-    if (dataContainer.id !== null) {
-      into[JsonSchema.atId] = dataContainer.id;
-    }
+    // An element instance carries an identifier whether or not it has one: a template's schema lists
+    // @id among an element instance's required properties, so omitting the key leaves an instance that
+    // does not validate. A null is what an absent identifier looks like — an empty string is refused,
+    // and inventing a URI, as the Java library used to, asserts an identity the artifact does not have
+    // and makes every rendering differ from the last.
+    into[JsonSchema.atId] = dataContainer.id === '' ? null : dataContainer.id;
     Object.keys(dataContainer.values).forEach((key) => {
       const dataAtom: InstanceDataAtomType = dataContainer.values[key];
       if (Array.isArray(dataAtom)) {

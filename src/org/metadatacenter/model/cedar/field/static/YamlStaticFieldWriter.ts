@@ -34,7 +34,7 @@ export class YamlStaticFieldWriter extends YamlTemplateFieldWriterInternal {
       ...this.macroType(field),
       ...this.macroNameAndDescription(field),
       ...this.macroSchemaIdentifier(field),
-      ...this.macroId(field, isCompact),
+      ...this.macroId(field),
       ...this.macroStatusAndVersion(field, isCompact),
       ...this.macroSkos(field),
       ...this.expandUINodeForYAML(field),

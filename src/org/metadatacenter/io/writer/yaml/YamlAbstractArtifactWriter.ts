@@ -120,12 +120,17 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
     return typeAndId;
   }
 
-  protected macroId(artifact: AbstractArtifact, isCompact: boolean): JsonNode {
+  /**
+   * The identifier is written in both forms. What the compact form drops is the content the system
+   * records about an artifact — its provenance, version and status — and an artifact's identity is
+   * not among them: dropping it leaves a document that reads back as a different, anonymous
+   * artifact. The Java library keeps it too, and the servers recognize a compact body by finding an
+   * id with none of the system-recorded keys beside it.
+   */
+  protected macroId(artifact: AbstractArtifact): JsonNode {
     const typeAndId: JsonNode = JsonNode.getEmpty();
-    if (!isCompact) {
-      if (artifact.at_id !== CedarArtifactId.NULL) {
-        typeAndId[YamlKeys.id] = this.atomicWriter.write(artifact.at_id);
-      }
+    if (artifact.at_id !== CedarArtifactId.NULL) {
+      typeAndId[YamlKeys.id] = this.atomicWriter.write(artifact.at_id);
     }
     return typeAndId;
   }

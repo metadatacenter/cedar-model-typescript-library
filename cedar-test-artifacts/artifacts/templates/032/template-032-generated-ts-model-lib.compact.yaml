@@ -1,8 +1,10 @@
 type: "template"
 name: "#032 Template with previous version"
+id: "https://repo.metadatacenter.org/templates/e14f48e1-de0c-4263-b450-e791b10d2734"
 children:
   - key: "Field name"
     type: "text-field"
     name: "Field name"
     description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/13f188c6-7a9a-441f-9c69-027321f983f0"
     prefLabel: "preferred label"

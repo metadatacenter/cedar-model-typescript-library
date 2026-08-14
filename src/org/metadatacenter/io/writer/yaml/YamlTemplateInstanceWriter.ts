@@ -34,7 +34,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
       ...this.macroNameAndDescription(instance),
       // Instance identity is data, not optional provenance. Java keeps it in
       // both expanded and compact YAML so either form round-trips unchanged.
-      ...this.macroId(instance, false),
+      ...this.macroId(instance),
       ...this.macroIsBasedOn(instance),
       ...this.macroDerivedFrom(instance, isCompact),
       ...this.macroProvenance(instance, isCompact),

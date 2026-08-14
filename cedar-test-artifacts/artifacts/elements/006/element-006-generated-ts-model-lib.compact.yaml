@@ -1,9 +1,11 @@
 type: "element"
 name: "Copy of Medium of performance"
+id: "https://repo.metadatacenter.org/template-elements/06a37f39-53c7-48bf-b2f1-505765feaaea"
 children:
   - key: "Type of medium of performance"
     type: "controlled-term-field"
     name: "Type of medium of performance"
+    id: "https://repo.metadatacenter.org/template-fields/c565c78f-040c-47e3-bd50-ea92f2fc9efc"
     datatype: "iri"
     values:
       - type: "branch"
@@ -15,3 +17,4 @@ children:
   - key: "Doubling Medium of performance"
     type: "text-field"
     name: "Doubling Medium of performance"
+    id: "https://repo.metadatacenter.org/template-fields/4261e0ea-b95c-479f-84a2-a45593a5e6ce"

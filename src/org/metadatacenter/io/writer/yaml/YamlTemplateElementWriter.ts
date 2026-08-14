@@ -21,7 +21,7 @@ export class YamlTemplateElementWriter extends YamlAbstractContainerArtifactWrit
       ...this.macroType(element),
       ...this.macroNameAndDescription(element),
       ...this.macroSchemaIdentifier(element),
-      ...this.macroId(element, isCompact),
+      ...this.macroId(element),
       ...this.macroStatusAndVersion(element, isCompact),
       ...this.macroPreviousVersion(element, isCompact),
       ...this.macroDerivedFrom(element, isCompact),

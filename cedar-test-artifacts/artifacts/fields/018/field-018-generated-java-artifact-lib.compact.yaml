@@ -1,0 +1,5 @@
+type: "ext-rrid-field"
+name: "RRID Field"
+description: "RRID Help"
+id: "https://repo.metadatacenter.org/template-fields/c4823eff-c14d-43d9-b4fe-3626cad7b9f3"
+prefLabel: "RRID Preferred"

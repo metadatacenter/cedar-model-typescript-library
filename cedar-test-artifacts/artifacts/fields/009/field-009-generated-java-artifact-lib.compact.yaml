@@ -1,3 +1,4 @@
 type: "static-rich-text"
 name: "Static rich text"
+id: "https://repo.metadatacenter.org/template-fields/ad4a9ae0-9791-48fc-adc1-aaa4b566bc05"
 content: "<p>Text content</p>\n"

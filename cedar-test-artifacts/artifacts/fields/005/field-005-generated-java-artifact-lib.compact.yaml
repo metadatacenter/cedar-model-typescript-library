@@ -1,0 +1,10 @@
+type: "boolean-field"
+name: "Boolean Field"
+description: "Boolean Help"
+prefLabel: "Boolean Preferred"
+default: true
+nullEnabled: true
+labels:
+  "true": "True"
+  "false": "False"
+  "null": "Null"

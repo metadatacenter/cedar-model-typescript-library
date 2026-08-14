@@ -66,3 +66,6 @@ children:
     createdBy: "https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95"
     modifiedOn: "2024-03-04T12:26:33-08:00"
     modifiedBy: "https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95"
+    configuration:
+      width: 192
+      height: 108

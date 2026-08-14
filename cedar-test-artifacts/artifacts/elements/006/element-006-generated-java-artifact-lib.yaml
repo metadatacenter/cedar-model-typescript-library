@@ -4,6 +4,7 @@ id: "https://repo.metadatacenter.org/template-elements/06a37f39-53c7-48bf-b2f1-5
 status: "draft"
 version: "0.0.1"
 modelVersion: "1.6.0"
+instanceType: "http://data.bioontology.org/ontologies/PMO/classes/http%3A%2F%2Fperformedmusicontology.org%2Fontology%2FMediumOfPerformance"
 createdOn: "2018-01-18T20:35:34-08:00"
 createdBy: "https://metadatacenter.org/users/8348c43f-19fd-41ad-aafb-a5b70c278679"
 modifiedOn: "2018-01-18T20:39:45-08:00"
@@ -17,11 +18,11 @@ children:
     datatype: "iri"
     values:
       - type: "branch"
-        ontologyName: "undefined (PMO)"
-        acronym: "PMO"
-        termLabel: "Medium of performance"
-        iri: "http://performedmusicontology.org/ontology/MediumOfPerformance"
-        maxDepth: 0
+        sourceAcronym: "PMO"
+        sourceName: "undefined (PMO)"
+        termBaseIri: "http://performedmusicontology.org/ontology/MediumOfPerformance"
+        termBaseLabel: "Medium of performance"
+        termMaxDepth: 0
     createdOn: "2018-01-18T20:39:45-08:00"
     createdBy: "https://metadatacenter.org/users/8348c43f-19fd-41ad-aafb-a5b70c278679"
     modifiedOn: "2018-01-18T20:39:45-08:00"

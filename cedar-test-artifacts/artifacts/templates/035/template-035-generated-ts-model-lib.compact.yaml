@@ -15,7 +15,7 @@ children:
   - key: "Licenca"
     type: "link-field"
     name: "Licenca"
-    description: "Link para a descriÃÂÃÂ§ÃÂÃÂ£o da licenca"
+    description: "Link para a descrição da licenca"
     configuration:
       required: true
   - key: "Versao"
@@ -27,7 +27,7 @@ children:
   - key: "Publicado"
     type: "temporal-field"
     name: "Publicado"
-    description: "Data de criacao da distribuiÃÂÃÂ§ÃÂÃÂ£o de entrada"
+    description: "Data de criacao da distribuição de entrada"
     datatype: "xsd:dateTime"
     granularity: "second"
     inputTimeFormat: "12h"

@@ -14,6 +14,7 @@
     "generate:yaml:instances:ts": "CEDAR_HOME=. ts-node ./itest/scripts/regenerate-yaml-instances-with-ts-lib.ts",
     "parity:yaml:instances": "npm run generate:yaml:instances:ts && CEDAR_HOME=. ts-node ./itest/scripts/compare-verbatim-ts-java-yaml-instance-files.ts",
     "parity:yaml:compact": "npm run generate:yaml:compact:ts && CEDAR_HOME=. ts-node ./itest/scripts/compare-verbatim-ts-java-yaml-compact-files.ts",
+    "parity:yaml": "npm run generate:yaml:ts && npm run generate:yaml:compact:ts && CEDAR_HOME=. ts-node ./itest/scripts/verify-ts-java-yaml-parity.ts",
     "lint": "eslint \"src/**/*.ts\" eslint.config.js smoke-test-package.js",
     "typecheck": "tsc --noEmit --project tsconfig.json",
     "sync:package-version": "node sync-package-version.js",

@@ -91,6 +91,7 @@ export class YamlKeys {
     static termIri: string = 'termIri';
     static termType: string = 'termType';
     static termLabel: string = 'termLabel';
+    static termDisplayLabel: string = 'termDisplayLabel';
     static termBaseIri: string = 'termBaseIri';
     static termBaseLabel: string = 'termBaseLabel';
     static termMaxDepth: string = 'termMaxDepth';

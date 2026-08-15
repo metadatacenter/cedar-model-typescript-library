@@ -181,7 +181,7 @@ describe('the source-explicit keys', () => {
   });
 });
 
-describe('what the entry no longer carries', () => {
+describe('what the entry carries once, and what it no longer carries', () => {
   test("an ontology's address is reconstructed from its acronym", () => {
     const yaml = yamlOf(field((b) => b.addOntology(ontology().build())));
     expect(yaml).not.toContain(ONTOLOGY_ADDRESS.getValue());
@@ -190,11 +190,22 @@ describe('what the entry no longer carries', () => {
     );
   });
 
-  test('a class has one label, and it is the preferred one', () => {
+  test('a class says what the ontology calls the term, and what the template calls it', () => {
     const displayLabelDiffers = field((b) => b.addClass(term().withLabel('Cell (as the author named it)').build()));
-    expect(yamlOf(displayLabelDiffers)).not.toContain('Cell (as the author named it)');
+    const yaml = yamlOf(displayLabelDiffers);
+    expect(yaml).toContain('termLabel: "cell"');
+    expect(yaml).toContain('termDisplayLabel: "Cell (as the author named it)"');
 
     const [readClass] = readBack(displayLabelDiffers).valueConstraints.classes;
+    expect(readClass.prefLabel).toBe('cell');
+    expect(readClass.label).toBe('Cell (as the author named it)');
+  });
+
+  test('a class whose labels agree says so once', () => {
+    const sameLabel = field((b) => b.addClass(term().build()));
+    expect(yamlOf(sameLabel)).not.toContain('termDisplayLabel');
+
+    const [readClass] = readBack(sameLabel).valueConstraints.classes;
     expect(readClass.prefLabel).toBe('cell');
     expect(readClass.label).toBe('cell');
   });

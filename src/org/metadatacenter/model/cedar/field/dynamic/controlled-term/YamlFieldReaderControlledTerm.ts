@@ -40,11 +40,13 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
         field.valueConstraints.ontologies.push(ontologyBuilder.build());
       } else if (type === YamlValues.Controlled.class) {
         const prefLabel = ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.termLabel);
+        // A display label of the template's own where the author set one, the ontology's preferred
+        // label otherwise.
+        const displayLabel = ReaderUtil.getString(valueNode, YamlKeys.Controlled.termDisplayLabel);
         const classBuilder = new ControlledTermClassBuilder()
           .withUri(ReaderUtil.getURI(valueNode, YamlKeys.Controlled.termIri))
           .withSource(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceAcronym))
-          // One label per class in this dialect: the display label is the preferred label.
-          .withLabel(prefLabel)
+          .withLabel(displayLabel ?? prefLabel)
           .withPrefLabel(prefLabel)
           .withType(BioportalTermType.forYamlValue(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.termType)));
         this.readSourceAndVersion(valueNode, classBuilder);

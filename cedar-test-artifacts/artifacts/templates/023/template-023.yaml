@@ -32,6 +32,7 @@ children:
         termIri: "http://purl.bioontology.org/ontology/MESH/D009146"
         termType: "class"
         termLabel: "Music"
+        termDisplayLabel: "Music UI Label added in the editor"
       - type: "branch"
         sourceAcronym: "MESH"
         sourceName: "Medical Subject Headings (MESH)"

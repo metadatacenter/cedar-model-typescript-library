@@ -80,6 +80,7 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
 
     instance.schema_name = ReaderUtil.getString(source, YamlKeys.name);
     instance.schema_description = ReaderUtil.getString(source, YamlKeys.description);
+    YamlTemplateInstanceReader.refuseEmptyIdentifier(source);
     instance.at_id = CedarArtifactId.forValue(ReaderUtil.getString(source, YamlKeys.id));
     instance.schema_isBasedOn = CedarArtifactId.forValue(ReaderUtil.getString(source, YamlKeys.isBasedOn));
     instance.pav_derivedFrom = CedarArtifactId.forValue(ReaderUtil.getString(source, YamlKeys.derivedFrom));
@@ -166,6 +167,7 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
       container.setValue(key, avField);
     });
 
+    YamlTemplateInstanceReader.refuseEmptyIdentifier(node);
     const id = ReaderUtil.getString(node, YamlKeys.id);
     if (id !== null) {
       container.id = id;
@@ -201,6 +203,7 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
       return datatype === null ? new InstanceDataStringAtom(value) : new InstanceDataTypedAtom(value, datatype);
     }
     if (Object.hasOwn(node, YamlKeys.id)) {
+      YamlTemplateInstanceReader.refuseEmptyIdentifier(node);
       const id = ReaderUtil.getString(node, YamlKeys.id);
       const label = ReaderUtil.getString(node, YamlKeys.label);
       return label === null ? InstanceDataLinkAtom.fromParsedNode(id) : InstanceDataControlledAtom.fromParsedNode(id, label);

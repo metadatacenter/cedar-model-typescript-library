@@ -47,6 +47,7 @@ export abstract class YamlAbstractArtifactReader {
 
   protected readNonReportableAttributes(container: AbstractSchemaArtifact, sourceObject: JsonNode): void {
     // Read in non-reportable properties
+    YamlAbstractArtifactReader.refuseEmptyIdentifier(sourceObject);
     container.at_id = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, YamlKeys.id));
     container.schema_name = ReaderUtil.getString(sourceObject, YamlKeys.name);
     container.schema_description = ReaderUtil.getString(sourceObject, YamlKeys.description);
@@ -89,6 +90,20 @@ export abstract class YamlAbstractArtifactReader {
    * artifact's children freshly derived property IRIs. Children keep their identifiers, since a child
    * names the artifact it was copied from.
    */
+  /**
+   * An empty string is not an identifier, and it is not an absence of one either.
+   *
+   * Documents carry it where one has not been assigned — half the element occurrences in the shared
+   * corpus once did — and reading it as though the key were absent hides that from whoever wrote it. A
+   * key that is not to be answered yet is written `null` or left out.
+   */
+  protected static refuseEmptyIdentifier(sourceObject: JsonNode, key: string = YamlKeys.id): void {
+    const raw = ReaderUtil.getString(sourceObject, key);
+    if (raw !== null && raw.trim() === '') {
+      throw new Error(`An empty string is not a URI at "${key}"; write null or leave the key out where there is no value.`);
+    }
+  }
+
   protected refuseIdentifierAtDocumentRoot(sourceObject: JsonNode): void {
     // Only of a document in the compact form. The compact reader also accepts a full one, where the
     // model version says so and the identifier belongs; an instance carries no model version in either

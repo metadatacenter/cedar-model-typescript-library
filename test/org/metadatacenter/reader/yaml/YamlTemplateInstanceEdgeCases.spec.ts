@@ -33,8 +33,6 @@ children:
       value: "9007199254740992"
     - datatype: "xsd:int"
       value: "010"
-  _blankLink:
-    id: ""
   _list:
     - "first"
     - value: "2"
@@ -70,6 +68,21 @@ _nullAttributes:
   absent:
     value:
 `;
+
+describe('an empty identifier is refused rather than dropped', () => {
+  // `id: ""` is what a document writes where an identifier has not been assigned — half the element
+  // occurrences in the shared corpus once did. Reading it as though the key were absent dropped the
+  // node silently, which is what this used to assert; the value a document should carry there is null.
+  test.each([
+    ['a link value', 'type: "instance"\nname: "I"\nchildren:\n  _blankLink:\n    id: ""\n'],
+    ['an element occurrence', 'type: "instance"\nname: "I"\nchildren:\n  _nested:\n    id: ""\n    children:\n      _inner:\n        value: "v"\n'],
+    ['the instance itself', 'type: "instance"\nname: "I"\nid: ""\n'],
+  ])('%s', (_label: string, yaml: string) => {
+    expect(() => CedarReaders.yaml().getStrict().getTemplateInstanceReader().readFromString(yaml)).toThrow(
+      /empty string is not a URI/,
+    );
+  });
+});
 
 describe('YAML instance edge cases', () => {
   const reader = CedarReaders.yaml().getStrict().getTemplateInstanceReader();
@@ -131,7 +144,6 @@ describe('YAML instance edge cases', () => {
       { datatype: 'xsd:long', value: '9007199254740992' },
       { datatype: 'xsd:int', value: '010' },
     ]);
-    expect(children._blankLink).toBeUndefined();
     expect(children._list).toEqual([{ value: 'first' }, { datatype: 'xsd:integer', value: '2' }]);
     expect((children._nested as JsonNode).id).toBe('https://example.org/e1');
     expect(children._emptyNested).toBeUndefined();

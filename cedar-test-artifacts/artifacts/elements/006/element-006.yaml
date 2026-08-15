@@ -17,11 +17,11 @@ children:
     datatype: "iri"
     values:
       - type: "branch"
-        ontologyName: "undefined (PMO)"
-        acronym: "PMO"
-        termLabel: "Medium of performance"
-        iri: "http://performedmusicontology.org/ontology/MediumOfPerformance"
-        maxDepth: 0
+        sourceAcronym: "PMO"
+        sourceName: "undefined (PMO)"
+        termBaseIri: "http://performedmusicontology.org/ontology/MediumOfPerformance"
+        termBaseLabel: "Medium of performance"
+        termMaxDepth: 0
     createdOn: "2018-01-18T20:39:45-08:00"
     createdBy: "https://metadatacenter.org/users/8348c43f-19fd-41ad-aafb-a5b70c278679"
     modifiedOn: "2018-01-18T20:39:45-08:00"

@@ -22,6 +22,7 @@ export class JsonValueConstraintsOntologyWriter extends AbstractJsonControlledTe
     if (ontology.numTerms !== null) {
       ret[CedarModel.ValueConstraints.numTerms] = ontology.numTerms;
     }
+    this.writeSourceAndVersion(ret, ontology);
     return ret;
   }
 }

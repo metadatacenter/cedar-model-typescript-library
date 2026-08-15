@@ -13,9 +13,16 @@ import { VerbatimComparator } from './VerbatimComparator';
 import { CompareFileSource } from '../../src/org/metadatacenter/model/cedar/types/helper-types/CompareFileSource';
 import { CompareFileFormat } from '../../src/org/metadatacenter/model/cedar/types/helper-types/CompareFileFormat';
 
-// The value-constraint key naming: this library writes acronym / ontologyName / termLabel / iri /
-// maxDepth where the Java library writes sourceAcronym / sourceName. Each library refuses the other's
-// document for these, so the divergence is a model-owner decision rather than a rendering detail.
+// Four divergences remain, none of them about value-constraint naming, which both libraries now spell
+// the same way:
+//
+//   instanceType     element 6, templates 7 and 35 — this library does not write the key.
+//   _ui size         template 9 — width and height sit beside the field here, under `configuration:`
+//                    in the Java library.
+//   propertyIri      template 22 — written here under `configuration:`, not written there. Full form
+//                    only: the compact form drops the key on both sides.
+//   prefLabel        template 29 — five fields carry one there and none here. The same template also
+//                    reads one field as a multi-select where the Java library reads a single-select.
 const KNOWN_DIVERGENCES: Array<{
   testNumbers: number[];
   artifactType: CedarArtifactType;
@@ -27,9 +34,8 @@ const KNOWN_DIVERGENCES: Array<{
   {
     testNumbers: templateTestNumbers,
     artifactType: CedarArtifactType.TEMPLATE,
-    full: [7, 9, 22, 23, 24, 28, 29, 30, 35, 36],
-    // Template 22's difference shows only in the full form.
-    compact: [7, 9, 23, 24, 28, 29, 30, 35, 36],
+    full: [7, 9, 22, 29, 35],
+    compact: [7, 9, 29, 35],
   },
   { testNumbers: instanceTestNumbers, artifactType: CedarArtifactType.TEMPLATE_INSTANCE, full: [], compact: [] },
 ];

@@ -14,12 +14,15 @@ export class YamlValueConstraintsValueSetWriter extends AbstractYamlControlledTe
   override getAsJsonNode(valueSet: ControlledTermValueSet): JsonNode {
     const ret = JsonNode.getEmpty();
     ret[YamlKeys.type] = YamlValues.Controlled.valueSet;
-    ret[YamlKeys.Controlled.acronym] = valueSet.vsCollection;
-    ret[YamlKeys.Controlled.valueSetName] = valueSet.name;
-    ret[YamlKeys.Controlled.iri] = this.atomicWriter.write(valueSet.uri);
+    this.writeSourceSystem(ret, valueSet);
+    ret[YamlKeys.Controlled.sourceAcronym] = valueSet.vsCollection;
+    this.writeSourceIri(ret, valueSet);
+    ret[YamlKeys.Controlled.termBaseIri] = this.atomicWriter.write(valueSet.uri);
+    ret[YamlKeys.Controlled.termBaseLabel] = valueSet.name;
     if (valueSet.numTerms !== null) {
-      ret[YamlKeys.Controlled.numTerms] = valueSet.numTerms;
+      ret[YamlKeys.Controlled.termCount] = valueSet.numTerms;
     }
+    this.writeVersion(ret, valueSet);
     return ret;
   }
 }

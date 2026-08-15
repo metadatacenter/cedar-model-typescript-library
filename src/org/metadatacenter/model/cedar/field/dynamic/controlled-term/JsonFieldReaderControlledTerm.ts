@@ -15,6 +15,8 @@ import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { ControlledTermAction } from './value-constraint/action/ControlledTermAction';
 import { BioportalTermType } from '../../../types/bioportal-types/BioportalTermType';
 import { ControlledTermFieldImpl } from './ControlledTermFieldImpl';
+import { ControlledTermVersion } from './value-constraint/ControlledTermVersion';
+import { Iri } from '../../../types/wrapped-types/Iri';
 
 export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecificReader {
   override read(
@@ -46,6 +48,7 @@ export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecific
         ReaderUtil.getStringOrEmpty(o, CedarModel.ValueConstraints.name),
         ReaderUtil.getNumberOrNull(o, CedarModel.ValueConstraints.numTerms),
         ReaderUtil.getURI(o, CedarModel.ValueConstraints.uri),
+        ...JsonFieldReaderControlledTerm.readSourceAndVersion(o),
       );
       ret.push(ontology);
     });
@@ -61,6 +64,7 @@ export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecific
         BioportalTermType.forJsonValue(ReaderUtil.getStringOrEmpty(c, CedarModel.ValueConstraints.type)),
         ReaderUtil.getStringOrEmpty(c, CedarModel.ValueConstraints.prefLabel),
         ReaderUtil.getURI(c, CedarModel.ValueConstraints.uri),
+        ...JsonFieldReaderControlledTerm.readSourceAndVersion(c),
       );
       ret.push(clazz);
     });
@@ -76,6 +80,7 @@ export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecific
         ReaderUtil.getStringOrEmpty(b, CedarModel.ValueConstraints.name),
         ReaderUtil.getNumberOrZero(b, CedarModel.ValueConstraints.maxDepth),
         ReaderUtil.getURI(b, CedarModel.ValueConstraints.uri),
+        ...JsonFieldReaderControlledTerm.readSourceAndVersion(b),
       );
       ret.push(branch);
     });
@@ -85,13 +90,14 @@ export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecific
   private getValueSets(nodeList: Array<JsonNode>): Array<ControlledTermValueSet> {
     const ret: Array<ControlledTermValueSet> = [];
     nodeList.forEach((vs) => {
-      const branch = new ControlledTermValueSet(
+      const valueSet = new ControlledTermValueSet(
         ReaderUtil.getStringOrEmpty(vs, CedarModel.ValueConstraints.vsCollection),
         ReaderUtil.getStringOrEmpty(vs, CedarModel.ValueConstraints.name),
         ReaderUtil.getNumberOrNull(vs, CedarModel.ValueConstraints.numTerms),
         ReaderUtil.getURI(vs, CedarModel.ValueConstraints.uri),
+        ...JsonFieldReaderControlledTerm.readSourceAndVersion(vs),
       );
-      ret.push(branch);
+      ret.push(valueSet);
     });
     return ret;
   }
@@ -110,6 +116,24 @@ export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecific
       ret.push(action);
     });
     return ret;
+  }
+
+  /**
+   * The three source-explicit keys, in the order every constraint constructor takes them. Optional and
+   * usually absent: a constraint written before they existed has none, and reads as it always did.
+   */
+  private static readSourceAndVersion(node: JsonNode): [Iri | null, string | null, ControlledTermVersion | null] {
+    const iri = ReaderUtil.getURI(node, CedarModel.ValueConstraints.iri);
+    const versionNode: JsonNode | null = ReaderUtil.getNodeOrNull(node, CedarModel.ValueConstraints.version);
+    const version =
+      versionNode === null
+        ? null
+        : new ControlledTermVersion(
+            ReaderUtil.getStringOrEmpty(versionNode, CedarModel.ValueConstraints.versionId),
+            ReaderUtil.getString(versionNode, CedarModel.ValueConstraints.versionEffectiveDate),
+            ReaderUtil.getString(versionNode, CedarModel.ValueConstraints.versionDeclaredVersion),
+          );
+    return [iri.isEmpty() ? null : iri, ReaderUtil.getString(node, CedarModel.ValueConstraints.sourceSystem), version];
   }
 
   private getDefaultValue(node: JsonNode | null): ControlledTermDefaultValue | null {

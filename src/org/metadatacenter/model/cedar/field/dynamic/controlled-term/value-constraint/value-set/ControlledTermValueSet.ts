@@ -1,5 +1,6 @@
 import { Iri } from '../../../../../types/wrapped-types/Iri';
 import { ControlledTermAbstractValueConstraint } from '../ControlledTermAbstractValueConstraint';
+import { ControlledTermVersion } from '../ControlledTermVersion';
 
 export class ControlledTermValueSet extends ControlledTermAbstractValueConstraint {
   static className = 'ControlledTermValueSet';
@@ -9,8 +10,16 @@ export class ControlledTermValueSet extends ControlledTermAbstractValueConstrain
   private readonly _uri: Iri;
   private readonly _numTerms: number | null = 0;
 
-  constructor(vsCollection: string, name: string, numTerms: number | null, uri: Iri) {
-    super();
+  constructor(
+    vsCollection: string,
+    name: string,
+    numTerms: number | null,
+    uri: Iri,
+    iri: Iri | null = null,
+    sourceSystem: string | null = null,
+    version: ControlledTermVersion | null = null,
+  ) {
+    super(iri, sourceSystem, version);
     this._vsCollection = vsCollection;
     this._name = name;
     this._uri = uri;

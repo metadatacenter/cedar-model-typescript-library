@@ -15,6 +15,8 @@ import { ControlledTermValueSetBuilder } from './value-constraint/value-set/Cont
 import { ControlledTermActionBuilder } from './value-constraint/action/ControlledTermActionBuilder';
 import { ControlledTermFieldImpl } from './ControlledTermFieldImpl';
 import { YamlArtifactParsingResult } from '../../../util/compare/YamlArtifactParsingResult';
+import { Iri } from '../../../types/wrapped-types/Iri';
+import { ControlledTermVersion } from './value-constraint/ControlledTermVersion';
 
 export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecificReader {
   override read(
@@ -30,33 +32,39 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
       const type = ReaderUtil.getString(valueNode, YamlKeys.type);
       if (type === YamlValues.Controlled.ontology) {
         const ontologyBuilder = new ControlledTermOntologyBuilder()
-          .withAcronym(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.acronym))
-          .withName(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.ontologyName))
-          .withUri(ReaderUtil.getURI(valueNode, YamlKeys.Controlled.iri))
-          .withNumTerms(ReaderUtil.getNumberOrNull(valueNode, YamlKeys.Controlled.numTerms));
+          .withAcronym(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceAcronym))
+          .withName(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceName))
+          .withUri(this.deriveOntologyUri(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceAcronym)))
+          .withNumTerms(ReaderUtil.getNumberOrNull(valueNode, YamlKeys.Controlled.termCount));
+        this.readSourceAndVersion(valueNode, ontologyBuilder);
         field.valueConstraints.ontologies.push(ontologyBuilder.build());
       } else if (type === YamlValues.Controlled.class) {
+        const prefLabel = ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.termLabel);
         const classBuilder = new ControlledTermClassBuilder()
-          .withUri(ReaderUtil.getURI(valueNode, YamlKeys.Controlled.iri))
-          .withSource(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.acronym))
-          .withLabel(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.label))
-          .withPrefLabel(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.termLabel))
-          .withType(BioportalTermType.forYamlValue(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.type)));
+          .withUri(ReaderUtil.getURI(valueNode, YamlKeys.Controlled.termIri))
+          .withSource(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceAcronym))
+          // One label per class in this dialect: the display label is the preferred label.
+          .withLabel(prefLabel)
+          .withPrefLabel(prefLabel)
+          .withType(BioportalTermType.forYamlValue(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.termType)));
+        this.readSourceAndVersion(valueNode, classBuilder);
         field.valueConstraints.classes.push(classBuilder.build());
       } else if (type === YamlValues.Controlled.branch) {
         const branchBuilder = new ControlledTermBranchBuilder()
-          .withUri(ReaderUtil.getURI(valueNode, YamlKeys.Controlled.iri))
-          .withSource(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.ontologyName))
-          .withName(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.termLabel))
-          .withAcronym(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.acronym))
-          .withMaxDepth(ReaderUtil.getNumberOrZero(valueNode, YamlKeys.Controlled.maxDepth));
+          .withUri(ReaderUtil.getURI(valueNode, YamlKeys.Controlled.termBaseIri))
+          .withSource(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceName))
+          .withName(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.termBaseLabel))
+          .withAcronym(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceAcronym))
+          .withMaxDepth(ReaderUtil.getNumberOrZero(valueNode, YamlKeys.Controlled.termMaxDepth));
+        this.readSourceAndVersion(valueNode, branchBuilder);
         field.valueConstraints.branches.push(branchBuilder.build());
       } else if (type === YamlValues.Controlled.valueSet) {
         const valueSetBuilder = new ControlledTermValueSetBuilder()
-          .withUri(ReaderUtil.getURI(valueNode, YamlKeys.Controlled.iri))
-          .withNumTerms(ReaderUtil.getNumberOrZero(valueNode, YamlKeys.Controlled.numTerms))
-          .withVsCollection(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.acronym))
-          .withName(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.valueSetName));
+          .withUri(ReaderUtil.getURI(valueNode, YamlKeys.Controlled.termBaseIri))
+          .withNumTerms(ReaderUtil.getNumberOrZero(valueNode, YamlKeys.Controlled.termCount))
+          .withVsCollection(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceAcronym))
+          .withName(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.termBaseLabel));
+        this.readSourceAndVersion(valueNode, valueSetBuilder);
         field.valueConstraints.valueSets.push(valueSetBuilder.build());
       }
     });
@@ -81,4 +89,43 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
     });
     return field;
   }
+
+  /**
+   * Reconstruct an ontology's BioPortal address from its acronym.
+   *
+   * The entry carries no such key: the address is derivable, and what identifies the ontology across
+   * systems is its `sourceIri`. The model and the JSON Schema it renders to still require the address,
+   * and BioPortal — the only system served today, and what an absent `sourceSystem` means — addresses
+   * every ontology the same way. Another system would need its own rule.
+   */
+  private deriveOntologyUri(acronym: string): Iri {
+    return new Iri(`https://data.bioontology.org/ontologies/${acronym}`);
+  }
+
+  /** The keys every constraint kind shares: which vocabulary, on which system, at which snapshot. */
+  private readSourceAndVersion(valueNode: JsonNode, builder: SourceExplicitBuilder): void {
+    const sourceIri = ReaderUtil.getURI(valueNode, YamlKeys.Controlled.sourceIri);
+    if (!sourceIri.isEmpty()) {
+      builder.withIri(sourceIri);
+    }
+    builder.withSourceSystem(ReaderUtil.getString(valueNode, YamlKeys.Controlled.sourceSystem));
+
+    const versionNode: JsonNode | null = ReaderUtil.getNodeOrNull(valueNode, YamlKeys.version);
+    if (versionNode !== null) {
+      builder.withVersion(
+        new ControlledTermVersion(
+          ReaderUtil.getStringOrEmpty(versionNode, YamlKeys.Controlled.versionId),
+          ReaderUtil.getString(versionNode, YamlKeys.Controlled.versionEffectiveDate),
+          ReaderUtil.getString(versionNode, YamlKeys.Controlled.versionDeclaredVersion),
+        ),
+      );
+    }
+  }
+}
+
+/** What the four constraint builders have in common, which is what the shared keys are read into. */
+interface SourceExplicitBuilder {
+  withIri(iri: Iri | null): unknown;
+  withSourceSystem(sourceSystem: string | null): unknown;
+  withVersion(version: ControlledTermVersion | null): unknown;
 }

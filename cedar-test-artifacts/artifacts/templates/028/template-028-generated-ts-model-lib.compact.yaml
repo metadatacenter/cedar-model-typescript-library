@@ -76,11 +76,11 @@ children:
     datatype: "iri"
     values:
       - type: "branch"
-        ontologyName: "Ontology for Generic Dataset Metadata Template (FDC-GDMT)"
-        acronym: "FDC-GDMT"
-        termLabel: "License Identifier"
-        iri: "http://vocab.fairdatacollective.org/gdmt/LicenseIdentifier"
-        maxDepth: 0
+        sourceAcronym: "FDC-GDMT"
+        sourceName: "Ontology for Generic Dataset Metadata Template (FDC-GDMT)"
+        termBaseIri: "http://vocab.fairdatacollective.org/gdmt/LicenseIdentifier"
+        termBaseLabel: "License Identifier"
+        termMaxDepth: 0
   - key: "datasetMetadataInstanceIDRT"
     type: "static-rich-text"
     name: "datasetMetadataInstanceIDRT"

@@ -90,6 +90,16 @@ export class CedarModel {
     static termUri: string = 'termUri';
     static sourceUri: string = 'sourceUri';
 
+    // The source-explicit keys. All optional, and a constraint written before they existed carries
+    // none of them: `iri` is the source ontology's canonical identity, `sourceSystem` names the system
+    // serving it, and `version` pins one snapshot.
+    static iri: string = 'iri';
+    static sourceSystem: string = 'sourceSystem';
+    static version: string = 'version';
+    static versionId: string = 'id';
+    static versionEffectiveDate: string = 'effectiveDate';
+    static versionDeclaredVersion: string = 'declaredVersion';
+
     static action: string = 'action';
     static to: string = 'to';
 

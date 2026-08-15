@@ -10,11 +10,10 @@ children:
     datatype: "iri"
     values:
       - type: "class"
-        label: "Music"
-        acronym: "MESH"
+        sourceAcronym: "MESH"
+        termIri: "http://purl.bioontology.org/ontology/MESH/D009146"
         termType: "class"
         termLabel: "Music"
-        iri: "http://purl.bioontology.org/ontology/MESH/D009146"
     configuration:
       required: true
       valueRecommendation: true

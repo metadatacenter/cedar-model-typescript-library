@@ -14,12 +14,16 @@ export class YamlValueConstraintsOntologyWriter extends AbstractYamlControlledTe
   override getAsJsonNode(ontology: ControlledTermOntology): JsonNode {
     const ret = JsonNode.getEmpty();
     ret[YamlKeys.type] = YamlValues.Controlled.ontology;
-    ret[YamlKeys.Controlled.acronym] = ontology.acronym;
-    ret[YamlKeys.Controlled.ontologyName] = ontology.name;
-    ret[YamlKeys.Controlled.iri] = this.atomicWriter.write(ontology.uri);
+    this.writeSourceSystem(ret, ontology);
+    ret[YamlKeys.Controlled.sourceAcronym] = ontology.acronym;
+    ret[YamlKeys.Controlled.sourceName] = ontology.name;
+    this.writeSourceIri(ret, ontology);
+    // The ontology's BioPortal address is not written: it is derivable from the acronym, and the
+    // reader reconstructs it.
     if (ontology.numTerms !== null) {
-      ret[YamlKeys.Controlled.numTerms] = ontology.numTerms;
+      ret[YamlKeys.Controlled.termCount] = ontology.numTerms;
     }
+    this.writeVersion(ret, ontology);
     return ret;
   }
 }

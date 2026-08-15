@@ -77,20 +77,29 @@ export class YamlKeys {
   static configuration: string = 'configuration';
 
   static Controlled = class {
-    static label: string = 'label';
-    static acronym: string = 'acronym';
-    static ontologyName: string = 'ontologyName';
-    static iri: string = 'iri';
-    static numTerms: string = 'numTerms';
+    // A value-constraint entry names a vocabulary and a term within it, and the two groups of keys say
+    // which: `source*` is the vocabulary, `term*` the term or branch. The keys were once a mix of
+    // `acronym`, `ontologyName`, `iri` and `valueSetName`, where `iri` identified a different thing in
+    // each of the four entry kinds and no key said which vocabulary system served it.
+    static sourceSystem: string = 'sourceSystem';
+    static sourceAcronym: string = 'sourceAcronym';
+    static sourceName: string = 'sourceName';
+    static sourceIri: string = 'sourceIri';
+    static termIri: string = 'termIri';
     static termType: string = 'termType';
     static termLabel: string = 'termLabel';
-    static maxDepth: string = 'maxDepth';
-    static valueSetName: string = 'valueSetName';
+    static termBaseIri: string = 'termBaseIri';
+    static termBaseLabel: string = 'termBaseLabel';
+    static termMaxDepth: string = 'termMaxDepth';
+    static termCount: string = 'termCount';
+
+    // The version triple, nested under `version`. Absent means the entry resolves against the latest
+    // snapshot of its source.
+    static versionId: string = 'id';
+    static versionEffectiveDate: string = 'effectiveDate';
+    static versionDeclaredVersion: string = 'declaredVersion';
 
     static to: string = 'to';
-    static termIri: string = 'termIri';
-    static sourceIri: string = 'sourceIri';
-    static sourceAcronym: string = 'sourceAcronym';
   };
 
   static nullEnabled: string = 'nullEnabled';

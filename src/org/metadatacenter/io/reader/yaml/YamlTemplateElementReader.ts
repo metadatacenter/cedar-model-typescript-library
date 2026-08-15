@@ -65,6 +65,7 @@ export class YamlTemplateElementReader extends YamlContainerArtifactReader {
 
   protected readNonReportableAttributes(element: TemplateElement, elementSourceObject: JsonNode) {
     super.readNonReportableAttributes(element, elementSourceObject);
+    element.instanceTypeSpecification = ReaderUtil.getString(elementSourceObject, YamlKeys.instanceType);
     element.skos_prefLabel = ReaderUtil.getString(elementSourceObject, YamlKeys.prefLabel);
     element.skos_altLabel = ReaderUtil.getFilteredStringList(elementSourceObject, YamlKeys.altLabels);
   }

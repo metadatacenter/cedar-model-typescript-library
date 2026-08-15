@@ -1,4 +1,3 @@
-import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
 import { ReaderUtil } from '../ReaderUtil';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
@@ -70,21 +69,14 @@ export class YamlTemplateReader extends YamlContainerArtifactReader {
     template.footer = ReaderUtil.getString(templateSourceObject, YamlKeys.footer);
   }
 
+  /**
+   * The type an instance of this template declares itself to be.
+   *
+   * A key of its own here. This read the JSON Schema shape the key stands for — an enum of one buried
+   * in the `@type` property specification — which no YAML document carries, so a template's instance
+   * type was lost on every read.
+   */
   private readInstanceTypeSpecification(template: Template, templateSourceObject: JsonNode, _parsingResult: YamlArtifactParsingResult) {
-    const properties: JsonNode = ReaderUtil.getNode(templateSourceObject, JsonSchema.properties);
-    if (properties !== null) {
-      const atType: JsonNode = ReaderUtil.getNode(properties, JsonSchema.atType);
-      if (atType !== null) {
-        const oneOf: Array<JsonNode> = ReaderUtil.getNodeList(atType, JsonSchema.oneOf);
-        if (oneOf !== null) {
-          oneOf.forEach((item) => {
-            const oneOfEnum = ReaderUtil.getStringList(item, JsonSchema.enum);
-            if (oneOfEnum != null && oneOfEnum.length > 0) {
-              template.instanceTypeSpecification = oneOfEnum[0];
-            }
-          });
-        }
-      }
-    }
+    template.instanceTypeSpecification = ReaderUtil.getString(templateSourceObject, YamlKeys.instanceType);
   }
 }

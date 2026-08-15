@@ -39,6 +39,9 @@ export class YamlKeys {
   static modifiedBy: string = 'modifiedBy';
   static isBasedOn: string = 'isBasedOn';
 
+  /** The type an instance of this template or element declares itself to be. */
+  static instanceType: string = 'instanceType';
+
   static annotations: string = 'annotations';
   static value: string = 'value';
 

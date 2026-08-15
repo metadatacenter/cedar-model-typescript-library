@@ -11,6 +11,7 @@ import { YamlAnnotationsWriter } from './YamlAnnotationsWriter';
 import { CedarUser } from '../../../model/cedar/types/cedar-types/CedarUser';
 import { IsoDate } from '../../../model/cedar/types/wrapped-types/IsoDate';
 import { TemplateElement } from '../../../model/cedar/element/TemplateElement';
+import { AbstractContainerArtifact } from '../../../model/cedar/AbstractContainerArtifact';
 import { YamlArtifactType } from '../../../model/cedar/types/wrapped-types/YamlArtifactType';
 import { Template } from '../../../model/cedar/template/Template';
 import { YamlWriterBehavior } from '../../../behavior/YamlWriterBehavior';
@@ -64,6 +65,21 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
       svObject[YamlKeys.modelVersion] = this.atomicWriter.write(SchemaVersion.CURRENT);
     }
     return svObject;
+  }
+
+  /**
+   * The type an instance of this container declares itself to be.
+   *
+   * The JSON Schema states it as an enum of one inside the `@type` property specification, which is
+   * where both libraries read it from; the YAML says it in a key. Kept in the compact form too, since
+   * it is part of what the artifact says rather than something the system recorded about it.
+   */
+  protected macroInstanceType(container: AbstractContainerArtifact): JsonNode {
+    const ret: JsonNode = JsonNode.getEmpty();
+    if (container.instanceTypeSpecification !== null) {
+      ret[YamlKeys.instanceType] = container.instanceTypeSpecification;
+    }
+    return ret;
   }
 
   /** An element carries a preferred label and alternatives as a field does, and the JSON writer has

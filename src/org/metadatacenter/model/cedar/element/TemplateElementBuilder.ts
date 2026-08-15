@@ -5,6 +5,13 @@ import { AbstractChildDeploymentInfo } from '../deployment/AbstractChildDeployme
 
 export class TemplateElementBuilder extends AbstractArtifactBuilder {
   private children: Array<[TemplateChild, AbstractChildDeploymentInfo]> = [];
+  private instanceTypeSpecification: string | null = null;
+
+  /** The type an instance of this element declares itself to be. */
+  public withInstanceTypeSpecification(instanceTypeSpecification: string): TemplateElementBuilder {
+    this.instanceTypeSpecification = instanceTypeSpecification;
+    return this;
+  }
 
   public addChild(child: TemplateChild, deploymentInfo: AbstractChildDeploymentInfo): TemplateElementBuilder {
     this.children.push([child, deploymentInfo]);
@@ -14,6 +21,7 @@ export class TemplateElementBuilder extends AbstractArtifactBuilder {
   public build(): TemplateElement {
     const templateElement: TemplateElement = TemplateElement.buildEmptyWithNullValues();
     super.buildInternal(templateElement);
+    templateElement.instanceTypeSpecification = this.instanceTypeSpecification;
 
     this.children.forEach(([child, deploymentInfo]: [TemplateChild, AbstractChildDeploymentInfo]) => {
       templateElement.addChild(child, deploymentInfo);

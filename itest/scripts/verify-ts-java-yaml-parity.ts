@@ -13,10 +13,8 @@ import { VerbatimComparator } from './VerbatimComparator';
 import { CompareFileSource } from '../../src/org/metadatacenter/model/cedar/types/helper-types/CompareFileSource';
 import { CompareFileFormat } from '../../src/org/metadatacenter/model/cedar/types/helper-types/CompareFileFormat';
 
-// Four divergences remain, none of them about value-constraint naming, which both libraries now spell
-// the same way:
+// Two divergences remain, over two templates:
 //
-//   instanceType     element 6, templates 7 and 35 — this library does not write the key.
 //   propertyIri      templates 22 and 29 — written here under `configuration:`, not written there.
 //                    Full form only: the compact form drops the key on both sides.
 //   multipleChoice   template 29 — a list field wrapped in an array is read as a multi-select here
@@ -29,12 +27,12 @@ const KNOWN_DIVERGENCES: Array<{
   compact: number[];
 }> = [
   { testNumbers: fieldTestNumbers, artifactType: CedarArtifactType.TEMPLATE_FIELD, full: [], compact: [] },
-  { testNumbers: elementTestNumbers, artifactType: CedarArtifactType.TEMPLATE_ELEMENT, full: [6], compact: [6] },
+  { testNumbers: elementTestNumbers, artifactType: CedarArtifactType.TEMPLATE_ELEMENT, full: [], compact: [] },
   {
     testNumbers: templateTestNumbers,
     artifactType: CedarArtifactType.TEMPLATE,
-    full: [7, 22, 29, 35],
-    compact: [7, 29, 35],
+    full: [22, 29],
+    compact: [29],
   },
   { testNumbers: instanceTestNumbers, artifactType: CedarArtifactType.TEMPLATE_INSTANCE, full: [], compact: [] },
 ];

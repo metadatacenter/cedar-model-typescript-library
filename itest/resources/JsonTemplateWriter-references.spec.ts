@@ -11,8 +11,12 @@ import { TestUtil } from '../TestUtil';
 import { templateTestNumbers } from './generatedTestCases';
 import { TestResource } from '../TestResource';
 
+// Templates 4, 9 and 37 are skipped because their sources are invalid where this library is not: each
+// carries a page or section break whose `_ui` omits `_content`, which the CEDAR meta-schema requires of
+// every static field. The writer supplies the key, so the output no longer matches the source it was
+// read from — and the source, put through the canonical validator, is rejected while the output passes.
 describe('JsonTemplateWriter-references', () => {
-  TestUtil.testNumbers(templateTestNumbers, [3, 29, 35, 22], []).forEach((templateTestNumber) => {
+  TestUtil.testNumbers(templateTestNumbers, [3, 4, 9, 22, 29, 35, 37], []).forEach((templateTestNumber) => {
     it(`should correctly read the JSON template, and create the same JSON output as the reference: ${templateTestNumber}`, async () => {
       let compareResult: JsonArtifactParsingResult | null = null;
       try {

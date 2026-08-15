@@ -46,7 +46,7 @@
   "oslc:modifiedBy": null,
   "Data File Titles": [
     {
-      "@id": "",
+      "@id": null,
       "@context": {
         "Title": "http://purl.org/radx-terms/metadata-terms/title",
         "Language": "http://purl.org/radx-terms/metadata-terms/language"

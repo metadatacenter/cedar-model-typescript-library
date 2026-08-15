@@ -6,6 +6,7 @@ import { YamlAbstractArtifactWriter } from './YamlAbstractArtifactWriter';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 import { AbstractDynamicChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractDynamicChildDeploymentInfo';
 import { WriterUtil } from '../WriterUtil';
+import { isSizedStaticField } from '../../../model/cedar/field/static/SizedStaticField';
 import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
 
 export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractArtifactWriter {
@@ -98,6 +99,18 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
         if (maxItems !== null) {
           childConfiguration[YamlKeys.maxItems] = maxItems;
         }
+      }
+    }
+
+    // A static field's display size is the parent's business, so it goes here rather than among the
+    // field's own keys — where it sat, and where the specification puts it only for a field written
+    // standalone, with no parent to hold it.
+    if (isSizedStaticField(child)) {
+      if (child.width !== null) {
+        childConfiguration[YamlKeys.width] = child.width;
+      }
+      if (child.height !== null) {
+        childConfiguration[YamlKeys.height] = child.height;
       }
     }
     return childConfiguration;

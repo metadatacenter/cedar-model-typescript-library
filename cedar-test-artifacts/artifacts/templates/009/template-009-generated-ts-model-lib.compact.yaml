@@ -34,5 +34,6 @@ children:
     description: "Help Text"
     id: "https://repo.metadatacenter.org/template-fields/adc5e2fe-a9ba-46b8-aa38-64501fda8888"
     content: "qf6-_JLZ3lw"
-    width: 192
-    height: 108
+    configuration:
+      width: 192
+      height: 108

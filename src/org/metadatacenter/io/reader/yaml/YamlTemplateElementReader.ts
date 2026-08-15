@@ -8,6 +8,8 @@ import YAML from 'yaml';
 import { YamlContainerArtifactReader } from './YamlContainerArtifactReader';
 import { YamlTemplateElementReaderResult } from './YamlTemplateElementReaderResult';
 import { YamlArtifactParsingResult } from '../../../model/cedar/util/compare/YamlArtifactParsingResult';
+import { ReaderUtil } from '../ReaderUtil';
+import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 
 export class YamlTemplateElementReader extends YamlContainerArtifactReader {
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.TEMPLATE_ELEMENT;
@@ -63,5 +65,7 @@ export class YamlTemplateElementReader extends YamlContainerArtifactReader {
 
   protected readNonReportableAttributes(element: TemplateElement, elementSourceObject: JsonNode) {
     super.readNonReportableAttributes(element, elementSourceObject);
+    element.skos_prefLabel = ReaderUtil.getString(elementSourceObject, YamlKeys.prefLabel);
+    element.skos_altLabel = ReaderUtil.getFilteredStringList(elementSourceObject, YamlKeys.altLabels);
   }
 }

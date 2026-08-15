@@ -66,13 +66,15 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
     return svObject;
   }
 
-  protected macroSkos(field: TemplateField): JsonNode {
+  /** An element carries a preferred label and alternatives as a field does, and the JSON writer has
+   *  always written both for either. */
+  protected macroSkos(artifact: TemplateField | TemplateElement): JsonNode {
     const skosObject: JsonNode = JsonNode.getEmpty();
-    if (field.skos_prefLabel !== null) {
-      skosObject[YamlKeys.prefLabel] = field.skos_prefLabel;
+    if (artifact.skos_prefLabel !== null) {
+      skosObject[YamlKeys.prefLabel] = artifact.skos_prefLabel;
     }
-    if (field.skos_altLabel !== null && field.skos_altLabel.length > 0) {
-      skosObject[YamlKeys.altLabels] = field.skos_altLabel;
+    if (artifact.skos_altLabel !== null && artifact.skos_altLabel.length > 0) {
+      skosObject[YamlKeys.altLabels] = artifact.skos_altLabel;
     }
     return skosObject;
   }

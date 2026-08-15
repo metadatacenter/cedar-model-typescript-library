@@ -10,6 +10,7 @@ children:
     description: "The name or title of the Data File being described. Mutliple titles may be specified in different languages. At least one Data File Title element is required."
     identifier: "data_file_title"
     id: "http://example.org/4b5a9fea-e611-4d6b-9a4b-253a5af23167"
+    prefLabel: "Data File Title"
     children:
       - key: "Title"
         type: "text-field"
@@ -284,6 +285,7 @@ children:
     description: "Information used to identify the Data File being described."
     identifier: "data_file_identity"
     id: "http://example.org/8e620f80-d728-44ed-9154-61e1c549494d"
+    prefLabel: "Data File Identity"
     children:
       - key: "Identifier"
         type: "text-field"
@@ -326,12 +328,14 @@ children:
     name: "Data File Content"
     identifier: "data_file_content"
     id: "http://example.org/499c2665-465b-49da-b58a-a7e1348c7854"
+    prefLabel: "Data File Content"
   - key: "Data File Version"
     type: "element"
     name: "Data File Version"
     description: "Version of the resource being described."
     identifier: "data_file_version"
     id: "http://example.org/15e4c2d4-6ed8-4af0-bb58-ecd7853c0402"
+    prefLabel: "Data File Version"
     children:
       - key: "Version"
         type: "text-field"
@@ -346,6 +350,7 @@ children:
     description: "Language in which the data file being described is provided."
     identifier: "data_file_language"
     id: "http://example.org/4aa68b9d-d530-4c42-ba0c-5c6ff0dccf5d"
+    prefLabel: "Data File Language"
     children:
       - key: "Primary Language"
         type: "single-select-list-field"
@@ -862,6 +867,7 @@ children:
     description: "Concepts (keywords, classification, or free text terms) that define the data file or purpose (subjects which can be addressed) using the data file."
     identifier: "data_file_subjects"
     id: "http://example.org/7523027b-fb46-4b14-8f6e-89bb037688a1"
+    prefLabel: "Data File Subjects"
     children:
       - key: "Subject Identifier"
         type: "controlled-term-field"
@@ -909,6 +915,7 @@ children:
     description: "Summary of the Data File and its contents."
     identifier: "data_file_description"
     id: "http://example.org/c2110782-7528-44d7-a837-6bbeeaf5c2cf"
+    prefLabel: "Data File Description"
     children:
       - key: "Description"
         type: "text-area-field"
@@ -1200,6 +1207,7 @@ children:
     description: "Information about the Data Dictionary associated with the Data File"
     identifier: "data_file_dictionary"
     id: "http://example.org/b6c180f5-c83e-456f-bcec-4414ddfa5c31"
+    prefLabel: "Data File Dictionary"
     children:
       - key: "Data Dictionary File Name"
         type: "text-field"
@@ -1214,6 +1222,7 @@ children:
     description: "Information about the person or organization that created the data file."
     identifier: "data_file_creator"
     id: "http://example.org/4f8c54b4-62ae-40c2-aeb2-b6812873d67d"
+    prefLabel: "Data File Creator"
     children:
       - key: "Creator Type"
         type: "controlled-term-field"
@@ -1354,6 +1363,7 @@ children:
     description: "Information about a resource related to the data file being described. Resources may be publications, manuals, depositories, web pages, or other entities that related to this data set and its creation and use."
     identifier: "data_file_related_resource"
     id: "http://example.org/2f6e7bb3-a1be-4aeb-818c-1d6d14592082"
+    prefLabel: "Data File Related Resource"
     children:
       - key: "Related Resource Identifier"
         type: "text-field"
@@ -1415,6 +1425,7 @@ children:
     description: "An entity that contributed in bringing into existence the data file being described. Contributors can be people or organizations. While data file creators are also contributors, data file creators should be provided in the Data File Creator section instead of here"
     identifier: "data_file_contributor"
     id: "http://example.org/8da65de3-77fb-485d-9e9d-6a7f3c5e31d6"
+    prefLabel: "Data File Contributor"
     children:
       - key: "Contributor Type"
         type: "controlled-term-field"
@@ -1555,6 +1566,7 @@ children:
     description: "Way in which the data file may or may not be accessed and used."
     identifier: "data_file_rights"
     id: "http://example.org/c3da0c82-30d9-462c-aadf-c3f760b34e77"
+    prefLabel: "Data File Rights"
     children:
       - key: "License Name"
         type: "controlled-term-field"
@@ -1596,6 +1608,7 @@ children:
     description: "A relevant date related to the data file being described. Such dates pertain to some data-file-related event, for example \"creation date\", \"submission date\" etc. Dates are specified as a pair containing the actual date (in ISO-8601 format) and the event that the date relates to. See individual fields for specific examples.\n\nThe dates of some types of events can be captured by the RADx Data Hub, for example the \"Submitted\" date/time."
     identifier: "data_file_date"
     id: "http://example.org/7c44a378-c718-4e82-b772-6d26e6d69a84"
+    prefLabel: "Data File Date"
     children:
       - key: "Event Type"
         type: "controlled-term-field"
@@ -1630,6 +1643,7 @@ children:
     description: "The research study for which this data file was created."
     identifier: "data_file_parent_study"
     id: "http://example.org/c0492a63-44cf-480a-8939-e088800c6dda"
+    prefLabel: "Data File Parent Study"
     children:
       - key: "PHS Identifier"
         type: "text-field"
@@ -1705,6 +1719,7 @@ children:
     description: "The sources of funding that enabled and drove the creation of the data file. (Non-monetary sources are described under Contributor.) Each funding source may be described as a separate element (set of fields)."
     identifier: "data_file_funding_source"
     id: "http://example.org/7df0487c-0003-49a5-a9dd-bd8b04e3ad54"
+    prefLabel: "Data File Funding Source"
     children:
       - key: "Award Title"
         type: "text-field"
@@ -1774,6 +1789,7 @@ children:
     description: "Details about a specific (non-Data Hub) distribution for this data file. If the only available distribution for the Data File is in the RADx Data Hub, there is no need to fill out Distribution information."
     identifier: "data_file_distribution"
     id: "http://example.org/e1d80540-a679-45e9-a90d-6fbf581484fd"
+    prefLabel: "Data File Distribution"
     children:
       - key: "Distribution Publisher"
         type: "text-field"
@@ -1891,6 +1907,7 @@ children:
         description: "Publication date of this distribution the data file."
         identifier: "data_file_publication_date"
         id: "http://example.org/dca75cfd-b95c-476d-baaf-741051f8a964"
+        prefLabel: "Data File Publication Date"
         children:
           - key: "Data File Publication Date"
             type: "temporal-field"
@@ -1930,6 +1947,7 @@ children:
     description: "Characteristics of the data within the data file, particularly of the cohorts in the data file. This section provides multiple ways to enter such information; it is only necessary to enter the information in one of these formats."
     identifier: "data_characteristics_summary"
     id: "http://example.org/3e02db47-46b9-4f3b-8837-f36b4bb312f0"
+    prefLabel: "Data Characteristics Summary"
     children:
       - key: "Data Characteristics Table in HTML"
         type: "text-area-field"
@@ -1965,6 +1983,7 @@ children:
     description: "Physical or conceptual entity (agent) that creates the data streams that make up the described data file. This is a physical or conceptual entity that creates the data streams that make up the described data file. The data source may or may not be associated with a fixed location; for example, a series of discrete sensors deployed over time, either to a single location or to a series of locations, may be considered a single data source in some systems."
     identifier: "data_source"
     id: "http://example.org/34450e11-af81-4831-9b8a-f257a6a9ec89"
+    prefLabel: "Data Source"
     children:
       - key: "Data Source Name"
         type: "text-field"
@@ -2013,6 +2032,7 @@ children:
     description: "A collection of one or more variable records that contribute to this data file. Each data stream originates from a single data source (e.g., sensor, process, or person). A data stream can grow over time. "
     identifier: "data_stream"
     id: "http://example.org/966c8dd1-86ae-460f-8019-02d834b64047"
+    prefLabel: "Data Stream"
     children:
       - key: "Data Stream Name"
         type: "text-field"
@@ -2078,6 +2098,7 @@ children:
     description: "Process (activity) used to make the data file or product."
     identifier: "data_file_creation_process"
     id: "http://example.org/75ed160c-9958-45cd-9b59-3e7361f558cc"
+    prefLabel: "Data File Creation Process"
     children:
       - key: "Process Name"
         type: "text-field"
@@ -2116,6 +2137,7 @@ children:
     description: "A temporal description that specifies the temporal coverage of the data contained within the data file associated with this metadata."
     identifier: "data_file_temporal_coverage"
     id: "http://example.org/35f40cfa-8b4f-4a4a-80b0-1e861bac815b"
+    prefLabel: "Data File Temporal Coverage"
     children:
       - key: "Temporal Extent Minimum Value"
         type: "temporal-field"
@@ -2158,6 +2180,7 @@ children:
     description: "A geospatial description that specifies the geographical coverage of the data contained within the data file associated with this metadata."
     identifier: "data_file_spatial_coverage"
     id: "http://example.org/b7472751-a0b7-47bd-b545-8dbe6b954248"
+    prefLabel: "Data File Spatial Coverage"
     children:
       - key: "Bounding Box"
         type: "element"
@@ -2165,6 +2188,7 @@ children:
         description: "A geographical bounding box that specifies the geographical coverage of the data contained within the data file associated with this metadata."
         identifier: "bounding_box"
         id: "http://example.org/05f7b65e-002e-4089-966a-fad2a2e41915"
+        prefLabel: "Bounding Box"
         children:
           - key: "Maximum Latitude"
             type: "text-field"
@@ -2204,6 +2228,7 @@ children:
         description: "A list of geographical coordinates that specifies the external bounday of the polygon that describes the coverage of the data contained within the data file being described."
         identifier: "bounding_shape"
         id: "http://example.org/f1d5f5a1-21d6-4494-a2ca-b291570e8b30"
+        prefLabel: "Bounding Shape"
         children:
           - key: "Point Number"
             type: "numeric-field"
@@ -2241,6 +2266,7 @@ children:
         description: "A region specified by the totality of one or more place names"
         identifier: "data_file_geopolitical_coverage"
         id: "http://example.org/f38f4f10-6788-4471-9f87-9451ed58a9a6"
+        prefLabel: "Data File Geopolitical Coverage"
         children:
           - key: "Geopolitical region "
             type: "text-field"
@@ -2264,6 +2290,7 @@ children:
     description: "The elevation range encompassed by the data within the data file being described."
     identifier: "data_file_elevation_coverage"
     id: "http://example.org/ad9eb2fd-db0c-4d5c-ba09-6c2c0096d4eb"
+    prefLabel: "Data File Elevation Coverage"
     children:
       - key: "Vertical Extent Minimum Value"
         type: "numeric-field"
@@ -2306,6 +2333,7 @@ children:
     description: "Information about the data file or metadata submission that does not fit into the other categories"
     identifier: "auxiliary_metadata"
     id: "http://example.org/47f674d8-a134-4bdb-9b71-96178cb1c489"
+    prefLabel: "Auxiliary Metadata"
     children:
       - key: "Data File Descriptive Key-Value Pair"
         type: "attribute-value-field"

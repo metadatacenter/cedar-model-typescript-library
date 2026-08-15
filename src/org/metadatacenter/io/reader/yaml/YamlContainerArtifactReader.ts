@@ -8,6 +8,7 @@ import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarA
 import { ReaderUtil } from '../ReaderUtil';
 import { YamlTemplateElementReader } from './YamlTemplateElementReader';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
+import { isSizedStaticField } from '../../../model/cedar/field/static/SizedStaticField';
 import { YamlArtifactType } from '../../../model/cedar/types/wrapped-types/YamlArtifactType';
 import { CedarFieldType } from '../../../model/cedar/types/cedar-types/CedarFieldType';
 import { AbstractContainerArtifact } from '../../../model/cedar/AbstractContainerArtifact';
@@ -62,6 +63,14 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
           childDeploymentInfo.uiInputType = cedarFieldType.getUiInputType();
 
           const fieldReadingResult = this.fieldReader.readFromObject(childNode, childDeploymentInfo, path.add(YamlKeys.children, name));
+
+          // A child's display size is written by its parent, into `configuration`, so it is read back
+          // from there. The field readers take it from the field's own keys, which is where a field
+          // written standalone carries it.
+          if (isSizedStaticField(fieldReadingResult.field)) {
+            fieldReadingResult.field.width = ReaderUtil.getNumber(configuration, YamlKeys.width);
+            fieldReadingResult.field.height = ReaderUtil.getNumber(configuration, YamlKeys.height);
+          }
 
           const finalChildInfoBuilder = fieldReadingResult.field
             .createDeploymentBuilder(childDeploymentInfo.name)

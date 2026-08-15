@@ -15,6 +15,11 @@ export class YamlStaticFieldWriter extends YamlTemplateFieldWriterInternal {
     return super.expandUINodeForYAML(_field);
   }
 
+  /** The display size of a static field that has one; empty for the static fields that do not. */
+  protected expandSizeForYAML(_field: TemplateField): JsonNode {
+    return JsonNode.getEmpty();
+  }
+
   protected buildUIObject(field: TemplateField): JsonNode {
     return this.expandUINodeForYAML(field);
   }
@@ -38,6 +43,8 @@ export class YamlStaticFieldWriter extends YamlTemplateFieldWriterInternal {
       ...this.macroStatusAndVersion(field, isCompact),
       ...this.macroSkos(field),
       ...this.expandUINodeForYAML(field),
+      // A child's size is written by the parent, into that child's `configuration`.
+      ...(_childInfo.hasParent() ? JsonNode.getEmpty() : this.expandSizeForYAML(field)),
       ...this.macroProvenance(field, isCompact),
       ...this.macroDerivedFrom(field, isCompact),
       ...this.macroPreviousVersion(field, isCompact),

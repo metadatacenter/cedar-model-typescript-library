@@ -24,6 +24,7 @@ children:
     createdBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
     modifiedOn: "2022-10-13T12:45:10-07:00"
     modifiedBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
+    prefLabel: "Data File Title"
     children:
       - key: "Title"
         type: "text-field"
@@ -315,6 +316,7 @@ children:
     createdBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
     modifiedOn: "2022-10-13T12:45:10-07:00"
     modifiedBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
+    prefLabel: "Data File Identity"
     children:
       - key: "Identifier"
         type: "text-field"
@@ -386,6 +388,7 @@ children:
     createdBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
     modifiedOn: "2022-10-13T12:45:10-07:00"
     modifiedBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
+    prefLabel: "Data File Content"
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/082bb4ce-bf1e-41f5-9ee0-bd420ceb7cef"
   - key: "Data File Version"
@@ -401,6 +404,7 @@ children:
     createdBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
     modifiedOn: "2022-10-13T12:45:10-07:00"
     modifiedBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
+    prefLabel: "Data File Version"
     children:
       - key: "Version"
         type: "text-field"
@@ -429,6 +433,7 @@ children:
     createdBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
     modifiedOn: "2022-10-13T12:45:10-07:00"
     modifiedBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
+    prefLabel: "Data File Language"
     children:
       - key: "Primary Language"
         type: "single-select-list-field"
@@ -964,6 +969,7 @@ children:
     createdBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
     modifiedOn: "2022-10-13T12:45:10-07:00"
     modifiedBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
+    prefLabel: "Data File Subjects"
     children:
       - key: "Subject Identifier"
         type: "controlled-term-field"
@@ -1037,6 +1043,7 @@ children:
     createdBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
     modifiedOn: "2022-10-13T12:45:10-07:00"
     modifiedBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
+    prefLabel: "Data File Description"
     children:
       - key: "Description"
         type: "text-area-field"
@@ -1350,6 +1357,7 @@ children:
     createdBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
     modifiedOn: "2022-10-13T12:45:10-07:00"
     modifiedBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
+    prefLabel: "Data File Dictionary"
     children:
       - key: "Data Dictionary File Name"
         type: "text-field"
@@ -1378,6 +1386,7 @@ children:
     createdBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
     modifiedOn: "2022-10-13T12:45:10-07:00"
     modifiedBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
+    prefLabel: "Data File Creator"
     children:
       - key: "Creator Type"
         type: "controlled-term-field"
@@ -1589,6 +1598,7 @@ children:
     createdBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
     modifiedOn: "2022-10-13T12:45:10-07:00"
     modifiedBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
+    prefLabel: "Data File Related Resource"
     children:
       - key: "Related Resource Identifier"
         type: "text-field"
@@ -1683,6 +1693,7 @@ children:
     createdBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
     modifiedOn: "2022-10-13T12:45:10-07:00"
     modifiedBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
+    prefLabel: "Data File Contributor"
     children:
       - key: "Contributor Type"
         type: "controlled-term-field"
@@ -1894,6 +1905,7 @@ children:
     createdBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
     modifiedOn: "2022-10-13T12:45:10-07:00"
     modifiedBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
+    prefLabel: "Data File Rights"
     children:
       - key: "License Name"
         type: "controlled-term-field"
@@ -1957,6 +1969,7 @@ children:
     createdBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
     modifiedOn: "2022-10-13T12:45:10-07:00"
     modifiedBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
+    prefLabel: "Data File Date"
     children:
       - key: "Event Type"
         type: "controlled-term-field"
@@ -2009,6 +2022,7 @@ children:
     createdBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
     modifiedOn: "2022-10-13T12:45:10-07:00"
     modifiedBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
+    prefLabel: "Data File Parent Study"
     children:
       - key: "PHS Identifier"
         type: "text-field"
@@ -2125,6 +2139,7 @@ children:
     createdBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
     modifiedOn: "2022-10-13T12:45:10-07:00"
     modifiedBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
+    prefLabel: "Data File Funding Source"
     children:
       - key: "Award Title"
         type: "text-field"
@@ -2236,6 +2251,7 @@ children:
     createdBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
     modifiedOn: "2022-10-13T12:45:10-07:00"
     modifiedBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
+    prefLabel: "Data File Distribution"
     children:
       - key: "Distribution Publisher"
         type: "text-field"
@@ -2415,6 +2431,7 @@ children:
         status: "draft"
         version: "0.0.1"
         modelVersion: "1.6.0"
+        prefLabel: "Data File Publication Date"
         children:
           - key: "Data File Publication Date"
             type: "temporal-field"
@@ -2473,6 +2490,7 @@ children:
     createdBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
     modifiedOn: "2022-10-13T12:45:10-07:00"
     modifiedBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
+    prefLabel: "Data Characteristics Summary"
     children:
       - key: "Data Characteristics Table in HTML"
         type: "text-area-field"
@@ -2537,6 +2555,7 @@ children:
     createdBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
     modifiedOn: "2022-10-13T12:45:10-07:00"
     modifiedBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
+    prefLabel: "Data Source"
     children:
       - key: "Data Source Name"
         type: "text-field"
@@ -2612,6 +2631,7 @@ children:
     createdBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
     modifiedOn: "2022-10-13T12:45:10-07:00"
     modifiedBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
+    prefLabel: "Data Stream"
     children:
       - key: "Data Stream Name"
         type: "text-field"
@@ -2713,6 +2733,7 @@ children:
     createdBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
     modifiedOn: "2022-10-13T12:45:10-07:00"
     modifiedBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
+    prefLabel: "Data File Creation Process"
     children:
       - key: "Process Name"
         type: "text-field"
@@ -2779,6 +2800,7 @@ children:
     createdBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
     modifiedOn: "2022-10-13T12:45:10-07:00"
     modifiedBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
+    prefLabel: "Data File Temporal Coverage"
     children:
       - key: "Temporal Extent Minimum Value"
         type: "temporal-field"
@@ -2849,6 +2871,7 @@ children:
     createdBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
     modifiedOn: "2022-10-13T12:45:10-07:00"
     modifiedBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
+    prefLabel: "Data File Spatial Coverage"
     children:
       - key: "Bounding Box"
         type: "element"
@@ -2859,6 +2882,7 @@ children:
         status: "draft"
         version: "0.0.1"
         modelVersion: "1.6.0"
+        prefLabel: "Bounding Box"
         children:
           - key: "Maximum Latitude"
             type: "text-field"
@@ -2922,6 +2946,7 @@ children:
         status: "draft"
         version: "0.0.1"
         modelVersion: "1.6.0"
+        prefLabel: "Bounding Shape"
         children:
           - key: "Point Number"
             type: "numeric-field"
@@ -2978,6 +3003,7 @@ children:
         status: "draft"
         version: "0.0.1"
         modelVersion: "1.6.0"
+        prefLabel: "Data File Geopolitical Coverage"
         children:
           - key: "Geopolitical region "
             type: "text-field"
@@ -3014,6 +3040,7 @@ children:
     createdBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
     modifiedOn: "2022-10-13T12:45:10-07:00"
     modifiedBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
+    prefLabel: "Data File Elevation Coverage"
     children:
       - key: "Vertical Extent Minimum Value"
         type: "numeric-field"
@@ -3084,6 +3111,7 @@ children:
     createdBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
     modifiedOn: "2022-10-13T12:45:10-07:00"
     modifiedBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
+    prefLabel: "Auxiliary Metadata"
     children:
       - key: "Data File Descriptive Key-Value Pair"
         type: "attribute-value-field"

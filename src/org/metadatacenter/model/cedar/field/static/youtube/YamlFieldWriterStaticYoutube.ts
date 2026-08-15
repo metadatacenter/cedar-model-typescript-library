@@ -15,6 +15,11 @@ export class YamlFieldWriterStaticYoutube extends YamlStaticFieldWriter {
     if (field.videoId !== null) {
       ret[YamlKeys.content] = field.videoId;
     }
+    return ret;
+  }
+
+  protected override expandSizeForYAML(field: StaticYoutubeField): JsonNode {
+    const ret = JsonNode.getEmpty();
     if (field.width !== null) {
       ret[YamlKeys.width] = field.width;
     }

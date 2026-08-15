@@ -339,42 +339,29 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
   protected extractUIPreferredLabelsAndDescriptions(
     containerUI: JsonNode,
     candidateChildrenInfo: ContainerArtifactChildrenInfo,
-    parsingResult: JsonArtifactParsingResult,
-    path: JsonPath,
+    _parsingResult: JsonArtifactParsingResult,
+    _path: JsonPath,
   ) {
-    // Extract _ui/propertyLabels
+    // A container labels the children it chooses to. An entry is read where there is one and the child
+    // keeps none where there is not — the field's own name and description are what a form falls back
+    // to. This once demanded an entry for every child, which the meta-schema does not: `propertyLabels`
+    // is required, its contents are not, and an empty one is a valid template. The demand also made
+    // documents the Java library writes unreadable here.
     const containerUIPLabels = ReaderUtil.getStringMap(containerUI, CedarModel.propertyLabels);
-    for (const childInfo of candidateChildrenInfo.children) {
-      if (containerUIPLabels === null || !containerUIPLabels.has(childInfo.name)) {
-        this.reportBlueprintDifference(
-          parsingResult,
-          new ComparisonError(
-            'jtr04',
-            ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-            path.add(CedarModel.ui, CedarModel.propertyLabels),
-            childInfo.name,
-          ),
-        );
-      } else {
-        childInfo.label = containerUIPLabels.get(childInfo.name) ?? null;
+    if (containerUIPLabels !== null) {
+      for (const childInfo of candidateChildrenInfo.children) {
+        if (containerUIPLabels.has(childInfo.name)) {
+          childInfo.label = containerUIPLabels.get(childInfo.name) ?? null;
+        }
       }
     }
 
-    // Extract _ui/propertyDescriptions
     const containerUIPDescriptions = ReaderUtil.getStringMap(containerUI, CedarModel.propertyDescriptions);
-    for (const childInfo of candidateChildrenInfo.children) {
-      if (containerUIPDescriptions === null || !containerUIPDescriptions.has(childInfo.name)) {
-        this.reportBlueprintDifference(
-          parsingResult,
-          new ComparisonError(
-            'jtr05',
-            ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-            path.add(CedarModel.ui, CedarModel.propertyDescriptions),
-            childInfo.name,
-          ),
-        );
-      } else {
-        childInfo.description = containerUIPDescriptions.get(childInfo.name) ?? null;
+    if (containerUIPDescriptions !== null) {
+      for (const childInfo of candidateChildrenInfo.children) {
+        if (containerUIPDescriptions.has(childInfo.name)) {
+          childInfo.description = containerUIPDescriptions.get(childInfo.name) ?? null;
+        }
       }
     }
   }

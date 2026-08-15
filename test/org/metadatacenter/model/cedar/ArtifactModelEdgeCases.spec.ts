@@ -32,7 +32,7 @@ describe('artifact model edge cases', () => {
     expect(field.skos_altLabel).toEqual(['first', 'second']);
   });
 
-  test('containers expose typed child lookup, fallback labels, and generated IRIs', () => {
+  test('containers expose typed child lookup, declared labels, and generated IRIs', () => {
     const field: TextField = CedarBuilders.textFieldBuilder().withSchemaName('Fallback label').build();
     const nested: TemplateElement = CedarBuilders.templateElementBuilder().withSchemaName('Nested element').build();
     const container: TemplateElement = CedarBuilders.templateElementBuilder()
@@ -45,9 +45,13 @@ describe('artifact model edge cases', () => {
     expect(container.getElement('field without iri')).toBeNull();
     expect(container.getElement('nested')).toBe(nested);
     expect(container.getField('nested')).toBeNull();
-    expect(container.getChildrenInfo().getPropertyLabelMap(container)).toEqual({
-      'field without iri': 'Fallback label',
-      nested: 'Nested element',
+    // Empty: neither child was given a label by this container, and a child's own name is not one.
+    expect(container.getChildrenInfo().getPropertyLabelMap(container)).toEqual({});
+    const labelled = CedarBuilders.templateElementBuilder()
+      .addChild(field, field.createDeploymentBuilder('field without iri').withLabel('As the parent asks for it').build())
+      .build();
+    expect(labelled.getChildrenInfo().getPropertyLabelMap(labelled)).toEqual({
+      'field without iri': 'As the parent asks for it',
     });
     expect(container.getChildrenInfo().getChildIriMap()['field without iri']).toBe(
       'https://schema.metadatacenter.org/properties/field%20without%20iri',

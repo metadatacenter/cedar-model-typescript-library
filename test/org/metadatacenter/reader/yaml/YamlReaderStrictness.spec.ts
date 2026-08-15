@@ -92,9 +92,9 @@ describe('a compact document cannot name the artifact it describes', () => {
   test('a template, an element and a field are all refused', () => {
     expect(() => YamlTemplateReader.getStrictForCompact().readFromString(named(compactTemplate))).toThrow(/cannot carry an id/);
     expect(() => YamlTemplateFieldReader.getStrictForCompact().readFromString(named(compactField))).toThrow(/cannot carry an id/);
-    expect(() =>
-      YamlTemplateElementReader.getStrictForCompact().readFromString(named(`type: "element"\nname: "Study element"\n`)),
-    ).toThrow(/cannot carry an id/);
+    expect(() => YamlTemplateElementReader.getStrictForCompact().readFromString(named(`type: "element"\nname: "Study element"\n`))).toThrow(
+      /cannot carry an id/,
+    );
   });
 
   test('an instance is refused by the compact reader and read by the ordinary one', () => {

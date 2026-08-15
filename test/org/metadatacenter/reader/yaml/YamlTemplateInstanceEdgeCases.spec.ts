@@ -75,12 +75,13 @@ describe('an empty identifier is refused rather than dropped', () => {
   // node silently, which is what this used to assert; the value a document should carry there is null.
   test.each([
     ['a link value', 'type: "instance"\nname: "I"\nchildren:\n  _blankLink:\n    id: ""\n'],
-    ['an element occurrence', 'type: "instance"\nname: "I"\nchildren:\n  _nested:\n    id: ""\n    children:\n      _inner:\n        value: "v"\n'],
+    [
+      'an element occurrence',
+      'type: "instance"\nname: "I"\nchildren:\n  _nested:\n    id: ""\n    children:\n      _inner:\n        value: "v"\n',
+    ],
     ['the instance itself', 'type: "instance"\nname: "I"\nid: ""\n'],
   ])('%s', (_label: string, yaml: string) => {
-    expect(() => CedarReaders.yaml().getStrict().getTemplateInstanceReader().readFromString(yaml)).toThrow(
-      /empty string is not a URI/,
-    );
+    expect(() => CedarReaders.yaml().getStrict().getTemplateInstanceReader().readFromString(yaml)).toThrow(/empty string is not a URI/);
   });
 
   // The JSON reader is the one production documents arrive through, and it read the empty string as
@@ -163,10 +164,7 @@ describe('YAML instance edge cases', () => {
     expect(children._list).toEqual([{ value: 'first' }, { datatype: 'xsd:integer', value: '2' }]);
     expect((children._nested as JsonNode).id).toBe('https://example.org/e1');
     expect(children._emptyNested).toBeUndefined();
-    expect(children._elements).toEqual([
-      { type: 'element-instance' },
-      { children: { _inside: { value: 'second' } } },
-    ]);
+    expect(children._elements).toEqual([{ type: 'element-instance' }, { children: { _inside: { value: 'second' } } }]);
     // The compact form does not name the instance it describes; a nested element occurrence keeps its
     // own identifier, which is data rather than something a repository assigns.
     expect(compact.id).toBeUndefined();

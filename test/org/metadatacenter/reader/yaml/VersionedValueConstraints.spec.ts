@@ -181,6 +181,45 @@ describe('the source-explicit keys', () => {
   });
 });
 
+describe('value recommendation', () => {
+  // The one field-level key a controlled-term field carries beyond its constraints, and the writer
+  // states it only when it is on.
+  test('is written when the field asks for it, and left out when it does not', () => {
+    const asking = field((b) => b.addOntology(ontology().build()));
+    (asking as ControlledTermFieldImpl).valueRecommendationEnabled = true;
+
+    expect(yamlOf(asking)).toContain('valueRecommendation: true');
+    expect(yamlOf(field((b) => b.addOntology(ontology().build())))).not.toContain('valueRecommendation');
+  });
+});
+
+describe('a pinned version on the other entry kinds', () => {
+  // The ontology case above pins all three parts. These cover the rest: a version naming only the
+  // snapshot, on the kinds whose writers take their own path through the shared version block.
+  test('a branch pins with the snapshot alone', () => {
+    const yaml = yamlOf(field((b) => b.addBranch(branch().withVersion(new ControlledTermVersion('7a8b9c0d1e2f')).build())));
+
+    expect(yaml).toContain('id: "7a8b9c0d1e2f"');
+    expect(yaml).not.toContain('effectiveDate');
+    expect(yaml).not.toContain('declaredVersion');
+  });
+
+  test('a class pins with a date, and a value set with the source\'s own version string', () => {
+    const yaml = yamlOf(
+      field((b) =>
+        b
+          .addClass(term().withVersion(new ControlledTermVersion('3c4d5e6f7a8b', '2026-04-20')).build())
+          .addValueSet(valueSet().withVersion(new ControlledTermVersion('9e0f1a2b3c4d', null, '2.3')).build()),
+      ),
+    );
+
+    expect(yaml).toContain('id: "3c4d5e6f7a8b"');
+    expect(yaml).toContain('effectiveDate: "2026-04-20"');
+    expect(yaml).toContain('id: "9e0f1a2b3c4d"');
+    expect(yaml).toContain('declaredVersion: "2.3"');
+  });
+});
+
 describe('what the entry carries once, and what it no longer carries', () => {
   test("an ontology's address is reconstructed from its acronym", () => {
     const yaml = yamlOf(field((b) => b.addOntology(ontology().build())));

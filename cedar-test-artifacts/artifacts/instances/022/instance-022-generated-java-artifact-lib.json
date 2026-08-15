@@ -22,9 +22,7 @@
     "Identifier": {
       "@value": null
     },
-    "Identifier Type": {
-      "@value": null
-    },
+    "Identifier Type": {},
     "File Name": {
       "@value": "S18/projectS18_DATA_origcopy.csv"
     },
@@ -125,9 +123,7 @@
       "Creator Identifier": {
         "@value": null
       },
-      "Creator Identifier Scheme": {
-        "@value": null
-      },
+      "Creator Identifier Scheme": {},
       "Creator Email": {
         "@value": "sharon_rounds@brown.edu"
       },
@@ -137,9 +133,7 @@
       "Creator Affiliation Identifier": {
         "@value": null
       },
-      "Creator Affiliation Identifier Scheme": {
-        "@value": null
-      },
+      "Creator Affiliation Identifier Scheme": {},
       "Creator Role": {
         "@id": "http://vocab.fairdatacollective.org/gdmt/ProjectLeader",
         "rdfs:label": "Project Leader"
@@ -176,9 +170,7 @@
       "Creator Identifier": {
         "@value": null
       },
-      "Creator Identifier Scheme": {
-        "@value": null
-      },
+      "Creator Identifier Scheme": {},
       "Creator Email": {
         "@value": "RADx-UP-CDCC@dm.duke.edu"
       },
@@ -188,9 +180,7 @@
       "Creator Affiliation Identifier": {
         "@value": null
       },
-      "Creator Affiliation Identifier Scheme": {
-        "@value": null
-      },
+      "Creator Affiliation Identifier Scheme": {},
       "Creator Role": {
         "@id": "http://vocab.fairdatacollective.org/gdmt/DataManager",
         "rdfs:label": "Data Manager"
@@ -227,9 +217,7 @@
       "Creator Identifier": {
         "@value": null
       },
-      "Creator Identifier Scheme": {
-        "@value": null
-      },
+      "Creator Identifier Scheme": {},
       "Creator Email": {
         "@value": null
       },
@@ -239,9 +227,7 @@
       "Creator Affiliation Identifier": {
         "@value": null
       },
-      "Creator Affiliation Identifier Scheme": {
-        "@value": null
-      },
+      "Creator Affiliation Identifier Scheme": {},
       "Creator Role": {
         "@id": "http://vocab.fairdatacollective.org/gdmt/DataCollector",
         "rdfs:label": "Data Collector"
@@ -267,15 +253,11 @@
       "Related Resource Identifier": {
         "@value": null
       },
-      "Related Resource Identifier Type": {
-        "@value": null
-      },
+      "Related Resource Identifier Type": {},
       "Related Resource File Name": {
         "@value": null
       },
-      "Related Resource Type Category": {
-        "@value": null
-      },
+      "Related Resource Type Category": {},
       "Related Resource Relation": {
         "@value": null
       },
@@ -307,24 +289,18 @@
       "Contributor Identifier": {
         "@value": null
       },
-      "Contributor Identifier Scheme": {
-        "@value": null
-      },
+      "Contributor Identifier Scheme": {},
       "Contributor Affiliation": {
         "@value": null
       },
       "Contributor Affiliation Identifier": {
         "@value": null
       },
-      "Contributor Affiliation Identifier Scheme": {
-        "@value": null
-      },
+      "Contributor Affiliation Identifier Scheme": {},
       "Contributor Email": {
         "@value": null
       },
-      "Contributor Role": {
-        "@value": null
-      },
+      "Contributor Role": {},
       "@context": {
         "Contributor Type": "http://purl.org/radx-terms/metadata-terms/contributorType",
         "Contributor Name": "http://purl.org/radx-terms/metadata-terms/contributorName",
@@ -343,9 +319,7 @@
   "Data File Rights": [
     {
       "@id": null,
-      "License Name": {
-        "@value": null
-      },
+      "License Name": {},
       "License Text": {
         "@value": null
       },
@@ -358,9 +332,7 @@
   "Data File Dates": [
     {
       "@id": null,
-      "Event Type": {
-        "@value": null
-      },
+      "Event Type": {},
       "Date": {
         "@value": null,
         "@type": "xsd:dateTime"
@@ -411,9 +383,7 @@
       "Award Title": {
         "@value": null
       },
-      "Award Page URL": {
-        "@value": null
-      },
+      "Award Page URL": {},
       "Award Local Identifier": {
         "@value": "3 U54 GM115677-05S1"
       },
@@ -443,24 +413,16 @@
       "Distribution Publisher": {
         "@value": null
       },
-      "Distribution Publisher Identifier": {
-        "@value": null
-      },
-      "Distribution Publisher Identifier Scheme": {
-        "@value": null
-      },
+      "Distribution Publisher Identifier": {},
+      "Distribution Publisher Identifier Scheme": {},
       "Distribution Identifier": {
         "@value": null
       },
-      "Distribution Identifier Type": {
-        "@value": null
-      },
+      "Distribution Identifier Type": {},
       "Distribution Format": {
         "@value": null
       },
-      "Distribution Media Type": {
-        "@value": null
-      },
+      "Distribution Media Type": {},
       "Distribution Size": {
         "@value": null
       },
@@ -531,9 +493,7 @@
       "Data Source Identifier": {
         "@value": null
       },
-      "Data Source Identifier Scheme": {
-        "@value": null
-      },
+      "Data Source Identifier Scheme": {},
       "@context": {
         "Data Source Name": "http://purl.org/radx-terms/metadata-terms/dataSourceName",
         "Data Source Identifier": "http://purl.org/radx-terms/metadata-terms/dataSourceIdentifier",
@@ -550,9 +510,7 @@
       "Data Stream Identifier": {
         "@value": null
       },
-      "Data Stream Identifier Scheme": {
-        "@value": null
-      },
+      "Data Stream Identifier Scheme": {},
       "Data Stream Variable Names": [
         {
           "@value": null
@@ -700,9 +658,7 @@
       "Vertical Extent Datum": {
         "@value": null
       },
-      "Vertical Extent Datum IRI": {
-        "@value": null
-      },
+      "Vertical Extent Datum IRI": {},
       "@context": {
         "Vertical Extent Minimum Value": "http://purl.org/radx-terms/metadata-terms/minElevation",
         "Vertical Extent Maximum Value": "http://purl.org/radx-terms/metadata-terms/maxElevation",

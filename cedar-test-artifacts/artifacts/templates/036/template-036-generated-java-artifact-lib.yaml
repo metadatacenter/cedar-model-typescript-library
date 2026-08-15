@@ -26,7 +26,6 @@ children:
         sourceAcronym: "CADSR-VS"
         termBaseIri: "https://cadsr.nci.nih.gov/metadata/CADSR-VS/20c76e5a73776dc5af1d26329ccb712f42e0e255"
         termBaseLabel: "Neoplasm"
-        termCount: 0
     actions:
       - action: "move"
         to: 0

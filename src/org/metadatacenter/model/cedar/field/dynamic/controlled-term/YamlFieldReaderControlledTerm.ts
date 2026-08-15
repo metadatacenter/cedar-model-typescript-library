@@ -63,7 +63,9 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
       } else if (type === YamlValues.Controlled.valueSet) {
         const valueSetBuilder = new ControlledTermValueSetBuilder()
           .withUri(ReaderUtil.getURI(valueNode, YamlKeys.Controlled.termBaseIri))
-          .withNumTerms(ReaderUtil.getNumberOrZero(valueNode, YamlKeys.Controlled.termCount))
+          // Absent means the count is unknown, as it does for an ontology; zero would claim the set
+          // is empty, which is a different thing and one the schema takes literally.
+          .withNumTerms(ReaderUtil.getNumberOrNull(valueNode, YamlKeys.Controlled.termCount))
           .withVsCollection(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceAcronym))
           .withName(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.termBaseLabel));
         this.readSourceAndVersion(valueNode, valueSetBuilder);

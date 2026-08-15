@@ -7,7 +7,7 @@ export class ControlledTermValueSetBuilder {
   private _vsCollection: string = '';
   private _name: string = '';
   private _uri: Iri = Iri.empty();
-  private _numTerms: number = 0;
+  private _numTerms: number | null = null;
   private _iri: Iri | null = null;
   private _sourceSystem: string | null = null;
   private _version: ControlledTermVersion | null = null;
@@ -27,7 +27,8 @@ export class ControlledTermValueSetBuilder {
     return this;
   }
 
-  public withNumTerms(numTerms: number): ControlledTermValueSetBuilder {
+  /** How many terms the set holds; null where that is not known, as on the ontology builder. */
+  public withNumTerms(numTerms: number | null): ControlledTermValueSetBuilder {
     this._numTerms = numTerms;
     return this;
   }

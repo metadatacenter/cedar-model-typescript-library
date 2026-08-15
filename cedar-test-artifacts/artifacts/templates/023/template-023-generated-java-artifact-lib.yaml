@@ -43,7 +43,6 @@ children:
         sourceAcronym: "CADSR-VS"
         termBaseIri: "https://cadsr.nci.nih.gov/metadata/CADSR-VS/ad5886076616ec6c35558648aca5abf942d6147a"
         termBaseLabel: "Progressive Disease"
-        termCount: 0
     createdOn: "2024-03-11T15:26:26-07:00"
     createdBy: "https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95"
     modifiedOn: "2024-03-11T15:26:26-07:00"

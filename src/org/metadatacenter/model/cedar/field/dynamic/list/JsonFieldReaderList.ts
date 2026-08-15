@@ -22,12 +22,13 @@ export class JsonFieldReaderList extends JsonTemplateFieldTypeSpecificReader {
 
     const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
     if (valueConstraints != null) {
-      let multipleChoice: boolean;
-      if (childInfo.isStandalone()) {
-        multipleChoice = ReaderUtil.getBoolean(valueConstraints, CedarModel.multipleChoice);
-      } else {
-        multipleChoice = childInfo.multiInstance;
-      }
+      // Whether several options can be picked at once is what `multipleChoice` says, wherever the
+      // field sits. A child field took it from the property's cardinality instead — how many instances
+      // of the field there are, which is a different question — so a list offering one option, written
+      // as a repeatable field, was read as a multi-select and written back with `multipleChoice: true`
+      // over the `false` its template declared. The Java library reads the declared value, and this
+      // follows it.
+      const multipleChoice: boolean = ReaderUtil.getBoolean(valueConstraints, CedarModel.multipleChoice);
       if (multipleChoice) {
         field = MultipleChoiceListFieldImpl.buildEmpty();
       }

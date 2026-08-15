@@ -608,7 +608,7 @@ children:
           - label: "zh-TW"
           - label: "zu"
       - key: "Other Language"
-        type: "multi-select-list-field"
+        type: "single-select-list-field"
         name: "Other Language"
         description: "A language in which the data file being described is provided."
         identifier: "other_language"
@@ -861,6 +861,9 @@ children:
           - label: "zh-SG"
           - label: "zh-TW"
           - label: "zu"
+        configuration:
+          multiple: true
+          minItems: 1
   - key: "Data File Subjects"
     type: "element"
     name: "Data File Subjects"

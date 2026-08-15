@@ -1,11 +1,11 @@
 import { ListField } from '../list/ListField';
 import { ValueConstraintsListField } from '../list/ValueConstraintsListField';
-import { ChildDeploymentInfoAlwaysSingleBuilder } from '../../../deployment/ChildDeploymentInfoAlwaysSingleBuilder';
+import { ChildDeploymentInfoBuilder } from '../../../deployment/ChildDeploymentInfoBuilder';
 
 export interface SingleChoiceListField extends ListField {
   get valueConstraints(): ValueConstraintsListField;
 
   get multipleChoice(): boolean;
 
-  createDeploymentBuilder(childName: string): ChildDeploymentInfoAlwaysSingleBuilder;
+  createDeploymentBuilder(childName: string): ChildDeploymentInfoBuilder;
 }

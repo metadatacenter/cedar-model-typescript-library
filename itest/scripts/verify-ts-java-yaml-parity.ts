@@ -13,13 +13,11 @@ import { VerbatimComparator } from './VerbatimComparator';
 import { CompareFileSource } from '../../src/org/metadatacenter/model/cedar/types/helper-types/CompareFileSource';
 import { CompareFileFormat } from '../../src/org/metadatacenter/model/cedar/types/helper-types/CompareFileFormat';
 
-// Two divergences remain, over two templates:
+// One divergence remains:
 //
 //   propertyIri      templates 22 and 29 — written here under `configuration:`, not written there.
-//                    Full form only: the compact form drops the key on both sides.
-//   multipleChoice   template 29 — a list field wrapped in an array is read as a multi-select here
-//                    and as a repeatable single-select there. Which is right is a model question:
-//                    reading it as declared makes a corpus instance stop validating.
+//                    Full form only: the compact form drops the key on both sides, so the compact
+//                    comparison is clean throughout.
 const KNOWN_DIVERGENCES: Array<{
   testNumbers: number[];
   artifactType: CedarArtifactType;
@@ -32,7 +30,7 @@ const KNOWN_DIVERGENCES: Array<{
     testNumbers: templateTestNumbers,
     artifactType: CedarArtifactType.TEMPLATE,
     full: [22, 29],
-    compact: [29],
+    compact: [],
   },
   { testNumbers: instanceTestNumbers, artifactType: CedarArtifactType.TEMPLATE_INSTANCE, full: [], compact: [] },
 ];

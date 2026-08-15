@@ -696,7 +696,7 @@ children:
         configuration:
           propertyIri: "http://purl.org/radx-terms/metadata-terms/primaryLanguage"
       - key: "Other Language"
-        type: "multi-select-list-field"
+        type: "single-select-list-field"
         name: "Other Language"
         description: "A language in which the data file being described is provided."
         identifier: "other_language"
@@ -954,6 +954,8 @@ children:
           - label: "zu"
         configuration:
           propertyIri: "http://purl.org/radx-terms/metadata-terms/otherLanguage"
+          multiple: true
+          minItems: 1
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/380eaafe-985f-4a10-b511-affbb2872fe1"
   - key: "Data File Subjects"

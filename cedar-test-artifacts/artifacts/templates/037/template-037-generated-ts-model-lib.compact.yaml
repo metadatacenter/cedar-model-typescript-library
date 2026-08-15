@@ -1,7 +1,6 @@
 type: "template"
 name: "Instrument"
 description: "Description"
-id: "https://repo.metadatacenter.net/templates/123cc888-af46-4389-a216-c77be8e1a6dd"
 children:
   - key: "hardware"
     type: "element"

@@ -1,6 +1,5 @@
 type: "element"
 name: "#003 Element with another element"
-id: "https://repo.metadatacenter.org/template-elements/34c95bb0-d51a-416e-a6a8-08fa10f7c6eb"
 children:
   - key: "#002 Element with three fields"
     type: "element"

@@ -1,6 +1,5 @@
 type: "template"
 name: "#020 Template with Pick from a list MultiSelect"
-id: "https://repo.metadatacenter.org/templates/17953945-2ff3-4eaa-ad52-f1dc41228b65"
 children:
   - key: "MultiSelect"
     type: "multi-select-list-field"

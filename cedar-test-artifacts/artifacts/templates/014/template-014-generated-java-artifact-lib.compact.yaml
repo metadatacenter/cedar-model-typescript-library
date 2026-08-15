@@ -1,6 +1,5 @@
 type: "template"
 name: "#014 Template with various numbers"
-id: "https://repo.metadatacenter.org/templates/e08e0c7a-5a0d-46d7-8430-6ced51296e95"
 children:
   - key: "Decimal"
     type: "numeric-field"

@@ -27,11 +27,18 @@ export class YamlStaticFieldWriter extends YamlTemplateFieldWriterInternal {
   override getYamlAsJsonNode(field: TemplateField): JsonNode;
   override getYamlAsJsonNode(field: TemplateField, childInfo: AbstractChildDeploymentInfo): JsonNode;
   override getYamlAsJsonNode(field: TemplateField, childInfo: AbstractChildDeploymentInfo, isCompact: boolean): JsonNode;
+  override getYamlAsJsonNode(
+    field: TemplateField,
+    childInfo: AbstractChildDeploymentInfo,
+    isCompact: boolean,
+    isDocumentRoot: boolean,
+  ): JsonNode;
 
   override getYamlAsJsonNode(
     field: TemplateField,
     _childInfo: AbstractChildDeploymentInfo = ChildDeploymentInfo.empty(),
     isCompact: boolean = false,
+    isDocumentRoot: boolean = true,
   ): JsonNode {
     // Build ui wrapper
     //const uiObject: JsonNode = this.buildUIObject(field);
@@ -39,7 +46,7 @@ export class YamlStaticFieldWriter extends YamlTemplateFieldWriterInternal {
       ...this.macroType(field),
       ...this.macroNameAndDescription(field),
       ...this.macroSchemaIdentifier(field),
-      ...this.macroId(field),
+      ...this.macroId(field, isCompact, isDocumentRoot),
       ...this.macroStatusAndVersion(field, isCompact),
       ...this.macroSkos(field),
       ...this.expandUINodeForYAML(field),

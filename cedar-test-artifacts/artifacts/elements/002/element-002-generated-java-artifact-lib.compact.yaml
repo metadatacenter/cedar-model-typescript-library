@@ -1,6 +1,5 @@
 type: "element"
 name: "#002 Element with three fields"
-id: "https://repo.metadatacenter.org/template-elements/bdb047d1-0713-4ee9-9cf6-c09bb48022f5"
 children:
   - key: "Text field"
     type: "text-field"

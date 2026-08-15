@@ -1,6 +1,5 @@
 type: "template"
 name: "Template with simple link"
-id: "https://repo.metadatacenter.org/templates/c395555a-eb46-4e66-8bd0-5eba2e98371a"
 children:
   - key: "Linkfield"
     type: "link-field"

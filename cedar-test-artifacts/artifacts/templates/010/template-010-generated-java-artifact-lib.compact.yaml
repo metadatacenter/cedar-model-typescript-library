@@ -1,6 +1,5 @@
 type: "template"
 name: "#010 Template with DateTime field"
-id: "https://repo.metadatacenter.org/templates/d58504c7-6926-4b12-a42e-776f99c7df60"
 children:
   - key: "Simple date"
     type: "temporal-field"

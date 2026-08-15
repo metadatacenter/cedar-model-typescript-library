@@ -45,6 +45,7 @@ export class YamlTemplateElementReader extends YamlContainerArtifactReader {
     } catch {
       elementObject = {};
     }
+    this.refuseIdentifierAtDocumentRoot(elementObject);
     return this.readFromObject(elementObject, ChildDeploymentInfo.empty(), new JsonPath());
   }
 

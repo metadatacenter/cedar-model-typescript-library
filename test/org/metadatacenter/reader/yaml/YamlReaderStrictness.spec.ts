@@ -1,4 +1,10 @@
-import { YamlTemplateElementReader, YamlTemplateFieldReader, YamlTemplateInstanceReader, YamlTemplateReader } from '../../../../../src';
+import {
+  CedarWriters,
+  YamlTemplateElementReader,
+  YamlTemplateFieldReader,
+  YamlTemplateInstanceReader,
+  YamlTemplateReader,
+} from '../../../../../src';
 
 // What this library refuses, the Java library refuses too: a document in the compact form given to a
 // reader that was not asked for it, and a field type it does not know. Both used to be absorbed —
@@ -13,9 +19,9 @@ id: "https://repo.metadatacenter.org/template-fields/f1"
 modelVersion: "1.6.0"
 `;
 
+// The compact form names neither the artifact it describes nor what a repository records about it.
 const compactField = `type: "text-field"
 name: "Study Name"
-id: "https://repo.metadatacenter.org/template-fields/f1"
 `;
 
 const fullTemplate = `type: "template"
@@ -33,7 +39,6 @@ children:
 
 const compactTemplate = `type: "template"
 name: "Study"
-id: "https://repo.metadatacenter.org/templates/t1"
 children:
   - key: "Study Name"
     type: "text-field"
@@ -72,6 +77,50 @@ children:
     value: "A study"
 `;
     expect(YamlTemplateInstanceReader.getStrict().readFromString(instance).instance.schema_name).toBe('Study metadata');
+  });
+});
+
+// The compact form describes an artifact being authored, so it does not name the artifact it
+// describes: a repository assigns that identifier on save, as it assigns the provenance. A document
+// that names one is refused rather than quietly read, since reading it would leave an author believing
+// the document still refers to that stored artifact while a conversion gave its children freshly
+// derived property IRIs. A reference to another artifact — an instance's isBasedOn — is untouched, and
+// so is a child's own identifier.
+describe('a compact document cannot name the artifact it describes', () => {
+  const named = (yaml: string) => yaml.replace('name: "Study', 'id: "https://repo.metadatacenter.org/x/1"\nname: "Study');
+
+  test('a template, an element and a field are all refused', () => {
+    expect(() => YamlTemplateReader.getStrictForCompact().readFromString(named(compactTemplate))).toThrow(/cannot carry an id/);
+    expect(() => YamlTemplateFieldReader.getStrictForCompact().readFromString(named(compactField))).toThrow(/cannot carry an id/);
+    expect(() =>
+      YamlTemplateElementReader.getStrictForCompact().readFromString(named(`type: "element"\nname: "Study element"\n`)),
+    ).toThrow(/cannot carry an id/);
+  });
+
+  test('an instance is refused by the compact reader and read by the ordinary one', () => {
+    const instance = `type: "instance"
+id: "https://repo.metadatacenter.org/template-instances/i1"
+name: "Study metadata"
+isBasedOn: "https://repo.metadatacenter.org/templates/t1"
+`;
+    expect(() => YamlTemplateInstanceReader.getStrictForCompact().readFromString(instance)).toThrow(/cannot carry an id/);
+    expect(YamlTemplateInstanceReader.getStrict().readFromString(instance).instance.schema_name).toBe('Study metadata');
+  });
+
+  test('a child keeps its own identifier', () => {
+    const childWithId = `type: "template"
+name: "Study"
+children:
+  - key: "Study Name"
+    type: "text-field"
+    name: "Study Name"
+    id: "https://repo.metadatacenter.org/template-fields/f1"
+`;
+    const template = YamlTemplateReader.getStrictForCompact().readFromString(childWithId).template;
+    expect(template.getChildrenInfo().getChildIriMap()['Study Name']).toBeDefined();
+    expect(CedarWriters.yaml().getStrict().getTemplateWriter().getAsYamlString(template, true)).toContain(
+      'id: "https://repo.metadatacenter.org/template-fields/f1"',
+    );
   });
 });
 

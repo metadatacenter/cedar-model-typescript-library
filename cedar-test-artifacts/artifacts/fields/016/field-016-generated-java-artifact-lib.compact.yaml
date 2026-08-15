@@ -1,5 +1,4 @@
 type: "ext-pfas-field"
 name: "PFAS Field"
 description: "PFAS Help"
-id: "https://repo.metadatacenter.org/template-fields/a2601cdd-a92b-41b7-92dc-1404a8b597f1"
 prefLabel: "PFAS Preferred"

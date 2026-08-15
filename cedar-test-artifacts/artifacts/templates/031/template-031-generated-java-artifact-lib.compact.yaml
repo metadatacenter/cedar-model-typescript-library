@@ -1,6 +1,5 @@
 type: "template"
 name: "#101 Template with one elements"
-id: "https://repo.metadatacenter.org/templates/d4660935-6488-46ea-9074-68815f88b271"
 children:
   - key: "#002 Element with three fields"
     type: "element"

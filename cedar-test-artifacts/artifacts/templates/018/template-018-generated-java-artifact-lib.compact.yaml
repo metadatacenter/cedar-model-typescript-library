@@ -1,6 +1,5 @@
 type: "template"
 name: "#018 Template with checkbox"
-id: "https://repo.metadatacenter.org/templates/cb92ca40-3717-4533-93c4-5efee2aed2fd"
 children:
   - key: "My checkbox 1"
     type: "checkbox-field"

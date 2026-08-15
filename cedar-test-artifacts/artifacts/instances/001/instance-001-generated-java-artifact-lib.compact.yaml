@@ -1,7 +1,6 @@
 type: "instance"
 name: "01 - single field metadata"
 description: "01 - description"
-id: "https://repo.metadatacenter.org/template-instances/19f5261e-9259-45ec-b961-b3d17c92f27f"
 isBasedOn: "https://repo.metadatacenter.org/templates/ec3f500f-ddca-4ec1-9196-29932f9304fd"
 children:
   Single Text Field:

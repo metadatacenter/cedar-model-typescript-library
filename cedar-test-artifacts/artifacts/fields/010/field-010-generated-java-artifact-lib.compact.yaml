@@ -1,6 +1,5 @@
 type: "multi-select-list-field"
 name: "List multi"
-id: "https://repo.metadatacenter.org/template-fields/be1a9f80-1f3f-429a-a7c7-4510a329c9ec"
 values:
   - label: "Untitled-0"
   - label: "Untitled-1"

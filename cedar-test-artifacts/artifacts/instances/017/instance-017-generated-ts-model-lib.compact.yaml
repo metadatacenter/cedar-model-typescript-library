@@ -1,6 +1,5 @@
 type: "instance"
 name: "With Email metadata"
-id: "https://repo.metadatacenter.org/template-instances/1da98ce2-9b74-4257-af64-e6ef1c143f6e"
 isBasedOn: "https://repo.metadatacenter.org/templates/d9d52596-1a0e-464b-9207-b848faf2205d"
 children:
   Datetime Field 1 (month/year):

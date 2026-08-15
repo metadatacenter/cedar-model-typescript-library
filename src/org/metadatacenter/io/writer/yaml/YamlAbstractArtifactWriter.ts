@@ -145,9 +145,17 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
    * artifact. The Java library keeps it too, and the servers recognize a compact body by finding an
    * id with none of the system-recorded keys beside it.
    */
-  protected macroId(artifact: AbstractArtifact): JsonNode {
+  /**
+   * The artifact's own identifier.
+   *
+   * The compact form describes an artifact being authored rather than one already stored, so the
+   * document does not name the artifact it describes: a repository assigns that on save, as it assigns
+   * the provenance. A child keeps its identifier in both forms — it names the artifact it was copied
+   * from, which does exist — which is why the position matters and not only the form.
+   */
+  protected macroId(artifact: AbstractArtifact, isCompact: boolean = false, isDocumentRoot: boolean = true): JsonNode {
     const typeAndId: JsonNode = JsonNode.getEmpty();
-    if (artifact.at_id !== CedarArtifactId.NULL) {
+    if (artifact.at_id !== CedarArtifactId.NULL && !(isCompact && isDocumentRoot)) {
       typeAndId[YamlKeys.id] = this.atomicWriter.write(artifact.at_id);
     }
     return typeAndId;

@@ -1,6 +1,5 @@
 type: "template"
 name: "Template with multi field"
-id: "https://repo.metadatacenter.org/templates/a4b6bc3a-dc47-4af1-9b7b-61fbdf1c4dce"
 children:
   - key: "Textfield"
     type: "text-field"

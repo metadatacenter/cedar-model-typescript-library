@@ -139,7 +139,9 @@ describe('YAML instance edge cases', () => {
       { type: 'element-instance' },
       { children: { _inside: { value: 'second' } } },
     ]);
-    expect(compact.id).toBe('https://example.org/instances/edge-cases');
+    // The compact form does not name the instance it describes; a nested element occurrence keeps its
+    // own identifier, which is data rather than something a repository assigns.
+    expect(compact.id).toBeUndefined();
     expect(((compact.children as JsonNode)._nested as JsonNode).id).toBe('https://example.org/e1');
     expect(expanded._attributes).toEqual({ first: { value: 'one' } });
     expect(expanded._nullAttributes).toBeUndefined();
@@ -203,12 +205,12 @@ children:
     expect(twice).toBe(once);
   });
 
-  test('compact YAML preserves instance identity through a round trip', () => {
+  test('compact YAML drops the instance identifier and keeps its children through a round trip', () => {
     const once = writer.getAsYamlString(reader.readFromString(edgeCaseYaml).instance, true);
     const twice = writer.getAsYamlString(reader.readFromString(once).instance, true);
 
     expect(twice).toBe(once);
-    expect(once).toContain('id: "https://example.org/instances/edge-cases"');
+    expect(once).not.toContain('id: "https://example.org/instances/edge-cases"');
     expect(once).toContain('id: "https://example.org/e1"');
   });
 

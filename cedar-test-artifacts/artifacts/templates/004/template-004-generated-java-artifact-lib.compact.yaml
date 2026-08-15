@@ -1,6 +1,5 @@
 type: "template"
 name: "Template with page breaks"
-id: "https://repo.metadatacenter.org/templates/96e25233-2b5a-42a2-a78b-65921f7ef308"
 children:
   - key: "Field 1"
     type: "text-field"

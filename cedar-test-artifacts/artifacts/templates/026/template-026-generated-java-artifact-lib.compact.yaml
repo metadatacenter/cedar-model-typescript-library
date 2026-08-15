@@ -1,7 +1,6 @@
 type: "template"
 name: "Untitled"
 description: "Untitled description"
-id: "https://repo.metadatacenter.org/templates/bc8c543f-ed3f-4420-9b52-1cdbcc55f983"
 children:
   - key: "_text_field_"
     type: "text-field"

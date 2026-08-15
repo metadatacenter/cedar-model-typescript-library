@@ -1,7 +1,6 @@
 type: "template"
 name: "Test Template"
 identifier: "e0ef7a86-8a58-485b-ab7f-3e4fffcba6f1"
-id: "https://repo.metadatacenter.org/templates/65c97bd4-1fb2-4355-8007-4edfe4370362"
 children:
   - key: "Title"
     type: "text-field"

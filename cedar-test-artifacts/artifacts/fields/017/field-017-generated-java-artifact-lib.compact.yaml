@@ -1,5 +1,4 @@
 type: "ext-pubmed-field"
 name: "PubMed Field"
 description: "PubMed Help"
-id: "https://repo.metadatacenter.org/template-fields/b3712dee-b03c-42c8-a3ed-2515b9c6a8e2"
 prefLabel: "PubMed Preferred"

@@ -1,6 +1,5 @@
 type: "instance"
 name: "14 - two level deep metadata"
-id: "https://repo.metadatacenter.org/template-instances/66e46c72-d310-451f-93a9-368cf3d483ee"
 isBasedOn: "https://repo.metadatacenter.org/templates/5e56a512-8aa8-4072-b3a3-b78d231263cc"
 children:
   Element of Element:

@@ -1,6 +1,5 @@
 type: "template"
 name: "#030 Template with actions"
-id: "https://repo.metadatacenter.org/templates/7563ef7a-c390-4a31-bcab-bb6ea27bfb7b"
 children:
   - key: "Untitled"
     type: "controlled-term-field"

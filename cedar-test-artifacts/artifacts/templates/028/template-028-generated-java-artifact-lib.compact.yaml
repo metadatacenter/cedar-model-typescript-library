@@ -1,7 +1,6 @@
 type: "template"
 name: "Catalog"
 description: "DCAT v3 template for data catalog metadata"
-id: "https://repo.metadatacenter.org/templates/5a1651a1-7f30-497d-a1be-1ac62c92734f"
 children:
   - key: "Read & Understood Catalog"
     type: "element"

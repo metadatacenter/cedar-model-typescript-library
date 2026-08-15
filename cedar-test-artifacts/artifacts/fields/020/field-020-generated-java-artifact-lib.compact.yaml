@@ -1,5 +1,4 @@
 type: "ext-doi-field"
 name: "DOI Field"
 description: "DOI Help"
-id: "https://repo.metadatacenter.org/template-fields/e6a45011-e36f-45fb-d61a-5848ecf9d115"
 prefLabel: "DOI Preferred"

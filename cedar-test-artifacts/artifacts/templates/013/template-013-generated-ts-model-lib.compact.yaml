@@ -1,6 +1,5 @@
 type: "template"
 name: "#013 Template with Numeric Field"
-id: "https://repo.metadatacenter.org/templates/bd1b5602-ffd1-4696-885d-d727dba8a644"
 children:
   - key: "Numeric field"
     type: "numeric-field"

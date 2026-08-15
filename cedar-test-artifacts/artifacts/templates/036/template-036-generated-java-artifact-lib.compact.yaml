@@ -1,6 +1,5 @@
 type: "template"
 name: "Values from ValueSets"
-id: "https://repo.pprod.metadatacenter.org/templates/a10522bf-6683-44bf-9018-4c8350312af2"
 children:
   - key: "Neoplasm"
     type: "controlled-term-field"

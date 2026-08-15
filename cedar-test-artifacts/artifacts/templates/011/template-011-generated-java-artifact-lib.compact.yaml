@@ -1,6 +1,5 @@
 type: "template"
 name: "#11 Template with multi field with pref and alt labels"
-id: "https://repo.metadatacenter.org/templates/71ab8aa7-84fb-4f42-a863-25ae82146fca"
 children:
   - key: "TextField1"
     type: "text-field"

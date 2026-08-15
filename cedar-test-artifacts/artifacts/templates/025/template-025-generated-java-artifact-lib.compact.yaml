@@ -1,6 +1,5 @@
 type: "template"
 name: "#025 Template with hidden field"
-id: "https://repo.metadatacenter.org/templates/295e8d40-f633-4576-9e64-2598947ef002"
 children:
   - key: "Hidden field"
     type: "text-field"

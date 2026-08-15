@@ -28,7 +28,7 @@ export class YamlTemplateWriter extends YamlAbstractContainerArtifactWriter {
       ...this.macroType(template),
       ...this.macroNameAndDescription(template),
       ...this.macroSchemaIdentifier(template),
-      ...this.macroId(template),
+      ...this.macroId(template, isCompact, true),
       ...this.macroStatusAndVersion(template, isCompact),
       ...this.macroInstanceType(template),
       ...uiObject,

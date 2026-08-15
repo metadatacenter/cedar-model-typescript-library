@@ -80,6 +80,27 @@ export abstract class YamlAbstractArtifactReader {
     container.language = Language.forValue(ReaderUtil.getString(sourceObject, YamlKeys.language));
   }
 
+  /**
+   * A compact document may not name the artifact it describes.
+   *
+   * The compact form is for an artifact being authored, not one already stored: it leaves out what a
+   * repository assigns, and an identifier is the first of those. Ignoring an `id` written here would
+   * let an author believe the document still refers to a stored artifact, while a conversion gave that
+   * artifact's children freshly derived property IRIs. Children keep their identifiers, since a child
+   * names the artifact it was copied from.
+   */
+  protected refuseIdentifierAtDocumentRoot(sourceObject: JsonNode): void {
+    // Only of a document in the compact form. The compact reader also accepts a full one, where the
+    // model version says so and the identifier belongs; an instance carries no model version in either
+    // form, so asking for this reader is itself the statement that the document is compact.
+    const isCompactDocument = ReaderUtil.getString(sourceObject, YamlKeys.modelVersion) === null;
+    if (this.isCompact && isCompactDocument && ReaderUtil.getString(sourceObject, YamlKeys.id) !== null) {
+      throw new Error(
+        `A compact document describes an artifact being authored, so it cannot carry an ${YamlKeys.id}. Use the full form to represent a stored artifact.`,
+      );
+    }
+  }
+
   protected readAnnotations(
     artifact: AbstractArtifact,
     artifactSourceObject: JsonNode,

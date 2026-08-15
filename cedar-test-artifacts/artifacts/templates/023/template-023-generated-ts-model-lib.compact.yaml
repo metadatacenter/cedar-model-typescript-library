@@ -1,6 +1,5 @@
 type: "template"
 name: "#023 Template with controlled field"
-id: "https://repo.metadatacenter.org/templates/a35e97be-a5e7-4a28-a3c4-3ba62bf980e5"
 children:
   - key: "Controlled 1"
     type: "controlled-term-field"

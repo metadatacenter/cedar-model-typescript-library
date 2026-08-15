@@ -1,6 +1,5 @@
 type: "element"
 name: "#001 Element with attribute-value"
-id: "https://repo.metadatacenter.org/template-elements/8a57aa93-3a95-41c1-97be-1cc43fba1634"
 children:
   - key: "Attribute-Value"
     type: "attribute-value-field"

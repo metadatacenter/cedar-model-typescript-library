@@ -1,7 +1,6 @@
 type: "template"
 name: "(2.0) [VODAN-BR] Distribuicao Template"
 description: "Template para a planilha de distribuicao do VODAN-BR"
-id: "https://repo.metadatacenter.org/templates/0043b899-ac60-428d-b6eb-e694c4a1bc9f"
 instanceType: "http://data.bioontology.org/ontologies/DCAT/classes/http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23Distribution"
 children:
   - key: "Titulo"

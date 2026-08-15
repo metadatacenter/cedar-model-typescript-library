@@ -139,13 +139,14 @@ describe.each(cases)('compact YAML round trip: %s', (kind: Kind, testNumbers: nu
     expect(result.again).toEqual(result.compact);
     expect(result.fullAgain).toEqual(result.full);
 
-    // The identifier is the artifact. Losing it through the compact form would leave a document
-    // that reads back as a different, anonymous artifact. Some corpus fixtures carry no identifier
-    // to begin with; what matters is that the form does not invent or drop one.
+    // The compact form describes an artifact being authored rather than one already stored, so it does
+    // not name the artifact it describes — a repository assigns that identifier on save, as it assigns
+    // the provenance — and an artifact read back from it is anonymous by construction. Its children
+    // keep their identifiers, which the round-trip comparison above covers.
     const expectedId = sourceId(kind, testNumber);
-    expect(result.id).toEqual(expectedId);
+    expect(result.id).toBeNull();
     if (expectedId !== null) {
-      expect(result.compact).toContain(`id: "${expectedId}"`);
+      expect(result.compact).not.toContain(`id: "${expectedId}"`);
     }
 
     // The name is what the form is for.

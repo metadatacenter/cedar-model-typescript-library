@@ -1,6 +1,5 @@
 type: "template"
 name: "Template with Static Fields"
-id: "https://repo.metadatacenter.org/templates/8ebf7294-7ae0-457c-b9c0-99df809176f8"
 children:
   - key: "Page break field"
     type: "static-page-break"

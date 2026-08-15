@@ -27,12 +27,12 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
             if (child instanceof TemplateField) {
               childDefinition = {
                 ...childDefinition,
-                ...this.writers.getFieldWriterForType(child.cedarFieldType).getYamlAsJsonNode(child, childMetaAbstract, isCompact),
+                ...this.writers.getFieldWriterForType(child.cedarFieldType).getYamlAsJsonNode(child, childMetaAbstract, isCompact, false),
               };
             } else {
               childDefinition = {
                 ...childDefinition,
-                ...this.writers.getTemplateElementWriter().getYamlAsJsonNode(child, isCompact),
+                ...this.writers.getTemplateElementWriter().getYamlAsJsonNode(child, isCompact, false),
               };
             }
             const deploymentInfo: JsonNode = this.getDeploymentInfo(child, childMetaAbstract, isCompact);

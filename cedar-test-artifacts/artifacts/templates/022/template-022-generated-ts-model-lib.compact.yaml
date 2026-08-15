@@ -1,6 +1,5 @@
 type: "template"
 name: "#022 Template with AttributeValue"
-id: "https://repo.metadatacenter.org/templates/7253af07-3704-466c-8ba5-249659faf7ca"
 children:
   - key: "ATTR-Value"
     type: "attribute-value-field"

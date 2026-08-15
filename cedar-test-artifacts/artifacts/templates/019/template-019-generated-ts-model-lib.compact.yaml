@@ -1,6 +1,5 @@
 type: "template"
 name: "#019 Template with Pick from a list SingleSelect"
-id: "https://repo.metadatacenter.org/templates/35f02de3-11ff-43b1-ac9f-0b6ff47844cf"
 children:
   - key: "Pick from"
     type: "single-select-list-field"

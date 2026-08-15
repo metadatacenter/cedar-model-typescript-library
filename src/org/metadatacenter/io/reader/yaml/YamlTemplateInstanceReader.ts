@@ -41,16 +41,25 @@ const ELEMENT_INSTANCE_TYPE = 'element-instance';
  * `InstanceInflater` reconstructs them. This reader's job is the values.
  */
 export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
-  private constructor(behavior: YamlReaderBehavior) {
-    super(behavior);
+  private constructor(behavior: YamlReaderBehavior, isCompact: boolean = false) {
+    super(behavior, isCompact);
   }
 
   public static getStrict(): YamlTemplateInstanceReader {
     return new YamlTemplateInstanceReader(YamlReaderBehavior.STRICT);
   }
 
-  public static getForBehavior(behavior: YamlReaderBehavior): YamlTemplateInstanceReader {
-    return new YamlTemplateInstanceReader(behavior);
+  /**
+   * A reader for the compact form, which names neither the instance nor what a repository records
+   * about it. An instance has no model version to give the ordinary reader away, so asking for this
+   * one is what says which form is meant — and it is what refuses a document that names its instance.
+   */
+  public static getStrictForCompact(): YamlTemplateInstanceReader {
+    return new YamlTemplateInstanceReader(YamlReaderBehavior.STRICT, true);
+  }
+
+  public static getForBehavior(behavior: YamlReaderBehavior, isCompact: boolean = false): YamlTemplateInstanceReader {
+    return new YamlTemplateInstanceReader(behavior, isCompact);
   }
 
   public readFromString(instanceSourceString: string): YamlTemplateInstanceReaderResult {
@@ -60,6 +69,7 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
     } catch {
       instanceObject = {};
     }
+    this.refuseIdentifierAtDocumentRoot(instanceObject);
     return this.readFromObject(instanceObject);
   }
 

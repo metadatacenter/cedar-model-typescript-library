@@ -1,5 +1,4 @@
 type: "ext-nih-grant-id-field"
 name: "NIH Grant Field"
 description: "NIH Grant Help"
-id: "https://repo.metadatacenter.org/template-fields/d5934f00-d25e-44ea-c50f-4737dbe8c004"
 prefLabel: "NIH Grant Preferred"

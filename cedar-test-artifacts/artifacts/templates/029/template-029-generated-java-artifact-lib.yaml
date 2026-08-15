@@ -2540,6 +2540,8 @@ children:
         version: "0.9.1"
         modelVersion: "1.6.0"
         prefLabel: "Data Characteristics Table in Key-Value Pairs"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/7ca56d90-7c21-4a3e-8fa7-1a09060624ea"
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/3b3b2079-ae91-4c3f-8681-7bc1928fef17"
   - key: "Data Source"
@@ -3123,6 +3125,8 @@ children:
         version: "0.9.1"
         modelVersion: "1.6.0"
         prefLabel: "Data File Descriptive Key-Value Pair"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/880d32df-5a49-4200-8f66-e2b53723a360"
       - key: "Additional Commentary"
         type: "text-area-field"
         name: "Additional Commentary"

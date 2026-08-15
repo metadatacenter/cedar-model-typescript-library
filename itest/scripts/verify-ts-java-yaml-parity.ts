@@ -13,11 +13,8 @@ import { VerbatimComparator } from './VerbatimComparator';
 import { CompareFileSource } from '../../src/org/metadatacenter/model/cedar/types/helper-types/CompareFileSource';
 import { CompareFileFormat } from '../../src/org/metadatacenter/model/cedar/types/helper-types/CompareFileFormat';
 
-// One divergence remains:
-//
-//   propertyIri      templates 22 and 29 — written here under `configuration:`, not written there.
-//                    Full form only: the compact form drops the key on both sides, so the compact
-//                    comparison is clean throughout.
+// Nothing diverges. Every artifact in the corpus comes out of the two libraries byte for byte the
+// same, in both forms, so any difference this run reports is a regression in one of them.
 const KNOWN_DIVERGENCES: Array<{
   testNumbers: number[];
   artifactType: CedarArtifactType;
@@ -26,12 +23,7 @@ const KNOWN_DIVERGENCES: Array<{
 }> = [
   { testNumbers: fieldTestNumbers, artifactType: CedarArtifactType.TEMPLATE_FIELD, full: [], compact: [] },
   { testNumbers: elementTestNumbers, artifactType: CedarArtifactType.TEMPLATE_ELEMENT, full: [], compact: [] },
-  {
-    testNumbers: templateTestNumbers,
-    artifactType: CedarArtifactType.TEMPLATE,
-    full: [22, 29],
-    compact: [],
-  },
+  { testNumbers: templateTestNumbers, artifactType: CedarArtifactType.TEMPLATE, full: [], compact: [] },
   { testNumbers: instanceTestNumbers, artifactType: CedarArtifactType.TEMPLATE_INSTANCE, full: [], compact: [] },
 ];
 

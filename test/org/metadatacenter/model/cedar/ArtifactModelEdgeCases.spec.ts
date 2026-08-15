@@ -50,7 +50,7 @@ describe('artifact model edge cases', () => {
       nested: 'Nested element',
     });
     expect(container.getChildrenInfo().getChildIriMap()['field without iri']).toBe(
-      'https://schema.metadatacenter.org/properties/field+without+iri',
+      'https://schema.metadatacenter.org/properties/field%20without%20iri',
     );
     expect(container.getChildrenInfo().getOnlyElementNamesForPropertiesContextRequired()).toEqual(['nested']);
   });

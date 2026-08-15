@@ -82,6 +82,22 @@ describe('an empty identifier is refused rather than dropped', () => {
       /empty string is not a URI/,
     );
   });
+
+  // The JSON reader is the one production documents arrive through, and it read the empty string as
+  // an absent key: the document came back with null in its place and nothing said so.
+  test('the JSON reader refuses it too', () => {
+    const instance = {
+      '@id': 'https://repo.metadatacenter.org/template-instances/i1',
+      '@context': {},
+      'schema:name': 'I',
+      'schema:description': '',
+      'schema:isBasedOn': 'https://repo.metadatacenter.org/templates/t1',
+      address: { '@context': {}, '@id': '', street: { '@value': 'x' } },
+    };
+    expect(() => CedarReaders.json().getStrict().getTemplateInstanceReader().readFromString(JSON.stringify(instance))).toThrow(
+      /empty string is not a URI/,
+    );
+  });
 });
 
 describe('YAML instance edge cases', () => {

@@ -244,6 +244,7 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
 
     // add @id
     if (Object.hasOwn(sourceObject, JsonSchema.atId)) {
+      JsonTemplateInstanceReader.refuseEmptyIdentifier(sourceObject);
       const atId = ReaderUtil.getString(sourceObject, JsonSchema.atId);
       if (atId !== null) {
         ret.id = atId;
@@ -389,6 +390,7 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
       }
     }
     if (Object.hasOwn(content, JsonSchema.atId)) {
+      JsonTemplateInstanceReader.refuseEmptyIdentifier(content);
       const id = ReaderUtil.getString(content, JsonSchema.atId);
       const label = ReaderUtil.getString(content, JsonSchema.rdfsLabel);
       // `fromParsedNode` on both: a document that arrives with a null `@id` is

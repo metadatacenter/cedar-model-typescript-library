@@ -6,7 +6,7 @@
 // The artifacts below are known to differ, and the run passes only if exactly they do. An artifact
 // that starts differing fails the build. One that stops differing fails it too, so that closing a
 // divergence is recorded here rather than leaving an allowance nobody revisits. The reasons live in
-// cedar-development/ops/MODEL-LIBRARY-PARITY.md.
+// cedar-development/ops/BACKEND-RUNBOOK.md, under "YAML is a native artifact format".
 import { elementTestNumbers, fieldTestNumbers, instanceTestNumbers, templateTestNumbers } from '../resources/generatedTestCases';
 import { CedarArtifactType } from '../../src';
 import { VerbatimComparator } from './VerbatimComparator';
@@ -44,6 +44,6 @@ for (const { testNumbers, artifactType, full, compact } of KNOWN_DIVERGENCES) {
 if (process.exitCode) {
   console.log(
     '\nThe two libraries no longer diverge exactly where they are recorded to. Regenerate both sides if a\n' +
-      'writer changed, or update this script and MODEL-LIBRARY-PARITY.md if a divergence opened or closed.',
+      'writer changed, or update this script and the backend runbook if a divergence opened or closed.',
   );
 }

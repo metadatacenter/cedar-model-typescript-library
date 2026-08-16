@@ -35,16 +35,4 @@ export class PropertyIri {
   static forName(name: string): string {
     return CedarModel.propertyIriPrefix + encodeURIComponent(name);
   }
-
-  /**
-   * The IRI for a property identified by something other than its name.
-   *
-   * For a property whose name is the user's to change — an attribute-value
-   * field's, say — where deriving the IRI from the name would give it a new
-   * identity on every keystroke. The caller supplies the unique part, because
-   * what makes it unique is the caller's to decide.
-   */
-  static forId(id: string): string {
-    return CedarModel.propertyIriPrefix + id;
-  }
 }

@@ -49,10 +49,6 @@ describe('a property IRI minted from a name', () => {
     expect(PropertyIri.forName('a+b')).toBe(`${NAMESPACE}a%2Bb`);
   });
 
-  test('an identifier supplied by the caller is used as it stands', () => {
-    expect(PropertyIri.forId('c651f360-612c-4664-9d11-175819245c8b')).toBe(`${NAMESPACE}c651f360-612c-4664-9d11-175819245c8b`);
-  });
-
   test('the namespace is the one every CEDAR property IRI lives in', () => {
     expect(PropertyIri.namespace).toBe(NAMESPACE);
   });

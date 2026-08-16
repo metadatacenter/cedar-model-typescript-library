@@ -17,5 +17,10 @@ export abstract class JsonAbstractInstanceArtifactReader extends JsonAbstractArt
   protected readNonReportableAttributes(container: AbstractInstanceArtifact, sourceObject: JsonNode): void {
     super.readNonReportableAttributes(container, sourceObject);
     container.schema_isBasedOn = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, JsonSchema.schemaIsBasedOn));
+    // The writer emits an instance's `pav:derivedFrom` and nothing read it, so a document that named
+    // what it was copied from lost that on the way through. The YAML instance reader has always read
+    // it; this is the JSON side catching up, and it is guarded like every other identifier.
+    JsonAbstractInstanceArtifactReader.refuseEmptyIdentifier(sourceObject, JsonSchema.pavDerivedFrom);
+    container.pav_derivedFrom = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, JsonSchema.pavDerivedFrom));
   }
 }

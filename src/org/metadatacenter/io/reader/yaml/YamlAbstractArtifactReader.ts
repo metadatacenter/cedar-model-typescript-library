@@ -75,6 +75,7 @@ export abstract class YamlAbstractArtifactReader {
     container.schema_schemaVersion = SchemaVersion.forValue(modelVersion);
     container.pav_version = PavVersion.forValue(ReaderUtil.getString(sourceObject, YamlKeys.version));
     container.bibo_status = BiboStatus.forYamlValue(ReaderUtil.getString(sourceObject, YamlKeys.status));
+    YamlAbstractArtifactReader.refuseEmptyIdentifier(sourceObject, YamlKeys.derivedFrom);
     container.pav_derivedFrom = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, YamlKeys.derivedFrom));
     container.pav_previousVersion = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, YamlKeys.previousVersion));
     container.schema_identifier = ReaderUtil.getString(sourceObject, YamlKeys.identifier);

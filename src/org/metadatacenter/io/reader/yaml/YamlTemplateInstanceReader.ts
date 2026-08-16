@@ -83,6 +83,7 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
     YamlTemplateInstanceReader.refuseEmptyIdentifier(source);
     instance.at_id = CedarArtifactId.forValue(ReaderUtil.getString(source, YamlKeys.id));
     instance.schema_isBasedOn = CedarArtifactId.forValue(ReaderUtil.getString(source, YamlKeys.isBasedOn));
+    YamlTemplateInstanceReader.refuseEmptyIdentifier(source, YamlKeys.derivedFrom);
     instance.pav_derivedFrom = CedarArtifactId.forValue(ReaderUtil.getString(source, YamlKeys.derivedFrom));
     // The writer emits an instance's provenance and its annotations; both were read by nobody, so
     // either one was lost by writing what had just been read.

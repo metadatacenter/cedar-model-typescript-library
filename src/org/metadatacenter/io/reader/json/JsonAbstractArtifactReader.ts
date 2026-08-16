@@ -19,9 +19,15 @@ export abstract class JsonAbstractArtifactReader {
    *
    * A document carries it where one has not been assigned — half the element occurrences in the shared
    * corpus once did — and reading it as though the key were absent hides that from whoever wrote it,
-   * then writes `null` back in its place. The value for an identifier not yet assigned is `null`. Only
-   * `@id` is held to this: `pav:derivedFrom` carries an empty string on 437 corpus artifacts, so
-   * tightening the rest needs a decision and a migration.
+   * then writes `null` back in its place. The value for an identifier not yet assigned is `null`.
+   *
+   * The meta-schema agrees where it can. It types both `@id` and `pav:derivedFrom` as a string with
+   * `format: uri`, and the validator does assert that format — it rejects `"not a uri at all"`. What it
+   * accepts is the empty string, because `""` is a well-formed relative URI reference. So the rule the
+   * schema means is one the schema cannot state, and a reader is where it gets stated.
+   *
+   * `pav:derivedFrom` differs from `@id` in what absence means: it is optional, so a document that is
+   * derived from nothing leaves the key out rather than writing `null`.
    */
   protected static refuseEmptyIdentifier(sourceObject: JsonNode, key: string = JsonSchema.atId): void {
     const raw = ReaderUtil.getString(sourceObject, key);

@@ -4,6 +4,7 @@ import {
   CedarReaders,
   CedarWriters,
   InstanceDataAttributeValueField,
+  InstanceDataAttributeValueFieldName,
   InstanceDataContainer,
   InstanceDataStringAtom,
   InstanceValidator,
@@ -115,6 +116,26 @@ describe('writers fail before a collision can overwrite data', () => {
     ['YAML', () => CedarWriters.yaml().getStrict().getTemplateInstanceWriter().getYamlAsJsonNode(instanceWith(collidingContainer()))],
   ])('%s rejects the conflicting model', (_format, write) => {
     expect(write).toThrow(/_title.*collides/);
+  });
+});
+
+describe('writers keep pending attribute rows out of artifacts', () => {
+  it('omits an unnamed slot while retaining named attributes', () => {
+    const container = new InstanceDataContainer();
+    container.setValue('_attributes', [
+      new InstanceDataAttributeValueFieldName(''),
+      new InstanceDataAttributeValueFieldName('   '),
+      new InstanceDataAttributeValueFieldName('colour'),
+    ]);
+    container.setValue('colour', new InstanceDataStringAtom('blue'));
+
+    const written = CedarWriters.json().getStrict().getTemplateInstanceWriter().getAsJsonNode(instanceWith(container));
+
+    expect(written._attributes).toEqual(['colour']);
+    expect(written.colour).toEqual({'@value': 'blue'});
+
+    const yaml = CedarWriters.yaml().getStrict().getTemplateInstanceWriter().getYamlAsJsonNode(instanceWith(container));
+    expect(yaml._attributes).toEqual({colour: {value: 'blue'}});
   });
 });
 

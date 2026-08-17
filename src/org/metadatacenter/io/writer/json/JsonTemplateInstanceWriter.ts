@@ -84,7 +84,12 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
             // attribute the user had named, while the property it pointed at
             // stayed behind as an orphan.
             const attributeName: string | null = (arrayElement as InstanceDataAttributeValueFieldName).name;
-            dataArray.push(attributeName as unknown as JsonNode);
+            // An unnamed row is editor state, not an attribute. Keep it in the
+            // in-memory list so the user can finish typing, but never let an
+            // empty property name escape in a serializable artifact.
+            if (attributeName.trim().length > 0) {
+              dataArray.push(attributeName as unknown as JsonNode);
+            }
             return;
           }
           const serializedData: JsonNode | null = this.serializeCommonType(arrayElement);

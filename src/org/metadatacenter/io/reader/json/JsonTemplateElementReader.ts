@@ -147,6 +147,7 @@ export class JsonTemplateElementReader extends JsonContainerArtifactReader {
     if (pCRequired != null && pCRequired.length == 0) {
       ReaderUtil.deleteNodeKey(atContext, JsonSchema.required);
     }
+    JsonTemplateElementContent.acceptEitherIdTyping(blueprint, elementProperties);
     JsonObjectComparator.compareToLeft(parsingResult, blueprint, elementProperties, path.add(JsonSchema.properties), this.behavior);
   }
 }

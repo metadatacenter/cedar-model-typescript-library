@@ -50,7 +50,7 @@
         },
         "@id": {
           "format": "uri",
-          "type": "string"
+          "type": [ "string", "null" ]
         },
         "@type": {
           "oneOf": [

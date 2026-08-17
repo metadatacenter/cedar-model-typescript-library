@@ -344,7 +344,7 @@
           ]
         },
         "@id": {
-          "type": "string",
+          "type": [ "string", "null" ],
           "format": "uri"
         },
         "@type": {
@@ -426,7 +426,7 @@
                 ]
               },
               "@id": {
-                "type": "string",
+                "type": [ "string", "null" ],
                 "format": "uri"
               },
               "@type": {
@@ -508,7 +508,7 @@
                       ]
                     },
                     "@id": {
-                      "type": "string",
+                      "type": [ "string", "null" ],
                       "format": "uri"
                     },
                     "@type": {

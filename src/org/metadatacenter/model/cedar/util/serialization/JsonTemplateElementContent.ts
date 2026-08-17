@@ -14,8 +14,12 @@ export class JsonTemplateElementContent {
       required: [],
       additionalProperties: false,
     },
+    // As a template types its own instance's `@id`. An occurrence of this element has no identity
+    // until the instance is uploaded, and null is what a document carries meanwhile; typed as a bare
+    // string, the template refused a draft the server itself would fill. A document typed the older
+    // way reads as it always did — see `acceptEitherIdTyping`.
     '@id': {
-      type: 'string',
+      type: ['string', 'null'],
       format: 'uri',
     },
     '@type': {
@@ -36,6 +40,32 @@ export class JsonTemplateElementContent {
       ],
     },
   };
+
+  /**
+   * The `@id` typing a stored element carries, which is not the one written now.
+   *
+   * An occurrence has no identity until its instance is uploaded, so a template written since the
+   * server took that over types the key `["string", "null"]`. Everything written before types it
+   * `"string"`, and both are documents this library has to read: nothing rewrites a stored artifact,
+   * and an artifact is not wrong for predating a rule. A reader accepts either; only a writer moves.
+   */
+  public static readonly LEGACY_ID_TYPING: JsonNode = {
+    type: 'string',
+    format: 'uri',
+  };
+
+  /**
+   * The blueprint, with the `@id` typing the document actually carries.
+   *
+   * Comparison is verbatim, so the blueprint has to name the accepted form the document chose, or a
+   * stored element reads as departing from the model for a key it types exactly as it was told to.
+   */
+  public static acceptEitherIdTyping(blueprint: JsonNode, documentProperties: JsonNode): void {
+    const stated = ReaderUtil.getNode(documentProperties, '@id');
+    if (stated !== null && JSON.stringify(stated) === JSON.stringify(JsonTemplateElementContent.LEGACY_ID_TYPING)) {
+      blueprint['@id'] = ReaderUtil.deepClone(JsonTemplateElementContent.LEGACY_ID_TYPING) as JsonNode;
+    }
+  }
 
   public static REQUIRED_PARTIAL_KEY_MAP: Map<string, boolean>;
   public static PROPERTIES_PARTIAL_KEY_MAP: Map<string, boolean> = new Map();

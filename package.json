@@ -38,7 +38,7 @@
   },
   "homepage": "https://github.com/metadatacenter/cedar-model-typescript-library#readme",
   "engines": {
-    "node": ">=20.19.0"
+    "node": "^24.15.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

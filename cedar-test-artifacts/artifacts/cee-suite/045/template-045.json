@@ -2655,7 +2655,7 @@
             "$schema": "http://json-schema.org/draft-04/schema#"
           },
           "@id": {
-            "type": "string",
+            "type": [ "string", "null" ],
             "format": "uri"
           }
         },
@@ -4309,7 +4309,7 @@
             "$schema": "http://json-schema.org/draft-04/schema#"
           },
           "@id": {
-            "type": "string",
+            "type": [ "string", "null" ],
             "format": "uri"
           }
         },
@@ -5376,7 +5376,7 @@
           "$schema": "http://json-schema.org/draft-04/schema#"
         },
         "@id": {
-          "type": "string",
+          "type": [ "string", "null" ],
           "format": "uri"
         },
         "Study Title": {
@@ -5821,7 +5821,7 @@
           "$schema": "http://json-schema.org/draft-04/schema#"
         },
         "@id": {
-          "type": "string",
+          "type": [ "string", "null" ],
           "format": "uri"
         },
         "@type": {

@@ -815,7 +815,7 @@
           "required" : [ "Descricao", "Parte de", "Direitos de acesso" ]
         },
         "@id" : {
-          "type" : "string",
+          "type" : [ "string", "null" ],
           "format" : "uri"
         },
         "@type" : {
@@ -1136,7 +1136,7 @@
           "required" : [ "Modo", "Agente" ]
         },
         "@id" : {
-          "type" : "string",
+          "type" : [ "string", "null" ],
           "format" : "uri"
         },
         "@type" : {

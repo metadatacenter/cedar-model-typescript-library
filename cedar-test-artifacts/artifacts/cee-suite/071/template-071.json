@@ -113,7 +113,7 @@
         },
         "@id": {
           "format": "uri",
-          "type": "string"
+          "type": [ "string", "null" ]
         },
         "@type": {
           "oneOf": [
@@ -600,7 +600,7 @@
           },
           "@id": {
             "format": "uri",
-            "type": "string"
+            "type": [ "string", "null" ]
           },
           "@type": {
             "oneOf": [
@@ -1208,7 +1208,7 @@
         },
         "@id": {
           "format": "uri",
-          "type": "string"
+          "type": [ "string", "null" ]
         },
         "@type": {
           "oneOf": [
@@ -1796,7 +1796,7 @@
         },
         "@id": {
           "format": "uri",
-          "type": "string"
+          "type": [ "string", "null" ]
         },
         "@type": {
           "oneOf": [
@@ -2124,7 +2124,7 @@
           },
           "@id": {
             "format": "uri",
-            "type": "string"
+            "type": [ "string", "null" ]
           },
           "@type": {
             "oneOf": [
@@ -2813,7 +2813,7 @@
         },
         "@id": {
           "format": "uri",
-          "type": "string"
+          "type": [ "string", "null" ]
         },
         "@type": {
           "oneOf": [
@@ -5091,7 +5091,7 @@
           },
           "@id": {
             "format": "uri",
-            "type": "string"
+            "type": [ "string", "null" ]
           },
           "@type": {
             "oneOf": [
@@ -5517,7 +5517,7 @@
           },
           "@id": {
             "format": "uri",
-            "type": "string"
+            "type": [ "string", "null" ]
           },
           "@type": {
             "oneOf": [
@@ -6216,7 +6216,7 @@
           },
           "@id": {
             "format": "uri",
-            "type": "string"
+            "type": [ "string", "null" ]
           },
           "@type": {
             "oneOf": [
@@ -7508,7 +7508,7 @@
           },
           "@id": {
             "format": "uri",
-            "type": "string"
+            "type": [ "string", "null" ]
           },
           "@type": {
             "oneOf": [
@@ -8008,7 +8008,7 @@
           },
           "@id": {
             "format": "uri",
-            "type": "string"
+            "type": [ "string", "null" ]
           },
           "@type": {
             "oneOf": [
@@ -8615,7 +8615,7 @@
           },
           "@id": {
             "format": "uri",
-            "type": "string"
+            "type": [ "string", "null" ]
           },
           "@type": {
             "oneOf": [
@@ -10008,7 +10008,7 @@
           },
           "@id": {
             "format": "uri",
-            "type": "string"
+            "type": [ "string", "null" ]
           },
           "@type": {
             "oneOf": [
@@ -10357,7 +10357,7 @@
           },
           "@id": {
             "format": "uri",
-            "type": "string"
+            "type": [ "string", "null" ]
           },
           "@type": {
             "oneOf": [
@@ -11563,7 +11563,7 @@
           },
           "@id": {
             "format": "uri",
-            "type": "string"
+            "type": [ "string", "null" ]
           },
           "@type": {
             "oneOf": [
@@ -12013,7 +12013,7 @@
           },
           "@id": {
             "format": "uri",
-            "type": "string"
+            "type": [ "string", "null" ]
           },
           "@type": {
             "oneOf": [
@@ -12352,7 +12352,7 @@
               },
               "@id": {
                 "format": "uri",
-                "type": "string"
+                "type": [ "string", "null" ]
               },
               "@type": {
                 "oneOf": [
@@ -13518,7 +13518,7 @@
           },
           "@id": {
             "format": "uri",
-            "type": "string"
+            "type": [ "string", "null" ]
           },
           "@type": {
             "oneOf": [
@@ -14308,7 +14308,7 @@
           },
           "@id": {
             "format": "uri",
-            "type": "string"
+            "type": [ "string", "null" ]
           },
           "@type": {
             "oneOf": [
@@ -14619,7 +14619,7 @@
           },
           "@id": {
             "format": "uri",
-            "type": "string"
+            "type": [ "string", "null" ]
           },
           "@type": {
             "oneOf": [
@@ -14675,7 +14675,7 @@
                 },
                 "@id": {
                   "format": "uri",
-                  "type": "string"
+                  "type": [ "string", "null" ]
                 },
                 "@type": {
                   "oneOf": [
@@ -15166,7 +15166,7 @@
                 },
                 "@id": {
                   "format": "uri",
-                  "type": "string"
+                  "type": [ "string", "null" ]
                 },
                 "@type": {
                   "oneOf": [
@@ -15554,7 +15554,7 @@
                 },
                 "@id": {
                   "format": "uri",
-                  "type": "string"
+                  "type": [ "string", "null" ]
                 },
                 "@type": {
                   "oneOf": [
@@ -15869,7 +15869,7 @@
           },
           "@id": {
             "format": "uri",
-            "type": "string"
+            "type": [ "string", "null" ]
           },
           "@type": {
             "oneOf": [
@@ -17062,7 +17062,7 @@
         },
         "@id": {
           "format": "uri",
-          "type": "string"
+          "type": [ "string", "null" ]
         },
         "@type": {
           "oneOf": [
@@ -17287,7 +17287,7 @@
           },
           "@id": {
             "format": "uri",
-            "type": "string"
+            "type": [ "string", "null" ]
           },
           "@type": {
             "oneOf": [

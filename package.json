@@ -1,6 +1,6 @@
 {
   "name": "cedar-model-typescript-library",
-  "version": "1.0.0-dev.20260815.e01215d",
+  "version": "1.0.0-dev.20260816.4d7c6a9",
   "description": "CEDAR Model Typescript Library - a library to work with fields, elements, templates and instances implemented in TypeScript",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

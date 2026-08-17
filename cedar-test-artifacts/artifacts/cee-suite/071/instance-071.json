@@ -536,9 +536,7 @@
     "Data Characteristics Table in TSV": {
       "@value": null
     },
-    "Data Characteristics Table in Key-Value Pairs": [
-      ""
-    ]
+    "Data Characteristics Table in Key-Value Pairs": []
   },
   "Data Sources": [
     {
@@ -729,9 +727,7 @@
       "Data File Descriptive Key-Value Pairs": "http://purl.org/radx-terms/metadata-terms/auxiliaryMetadataKeyValuePair",
       "Additional Commentary": "http://purl.org/radx-terms/metadata-terms/auxiliaryMetadataCommentary"
     },
-    "Data File Descriptive Key-Value Pairs": [
-      ""
-    ],
+    "Data File Descriptive Key-Value Pairs": [],
     "Additional Commentary": [
       {
         "@value": null

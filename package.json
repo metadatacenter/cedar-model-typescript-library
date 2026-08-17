@@ -19,7 +19,7 @@
     "typecheck": "tsc --noEmit --project tsconfig.json",
     "sync:package-version": "node sync-package-version.js",
     "version": "npm run sync:package-version",
-    "build": "npm run sync:package-version && webpack && cp package-dist.json dist/package.json && cp README-dist.md dist/README.md",
+    "build": "npm run sync:package-version && webpack && cp package-dist.json dist/package.json && cp README-dist.md dist/README.md && cp license.txt dist/license.txt",
     "test:package": "npm run build && node smoke-test-package.js",
     "build:watch": "webpack --watch",
     "prettier": "prettier --write .",

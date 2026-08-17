@@ -11,7 +11,7 @@
   },
   "keywords": ["CEDAR", "Model", "TypeScript", "Library"],
   "author": "Metadatacenter.org - Attila L. Egyedi",
-  "license": "ISC",
+  "license": "BSD-2-Clause",
   "bugs": {
     "url": "https://github.com/metadatacenter/cedar-model-typescript-library/issues"
   },

@@ -1,5 +1,4 @@
 import { CedarArtifactType } from '../types/cedar-types/CedarArtifactType';
-import { PropertyIri } from '../types/wrapped-types/PropertyIri';
 import { JsonSchema } from '../constants/JsonSchema';
 import { UiInputType } from '../types/wrapped-types/UiInputType';
 import { NullableString } from '../types/basic-types/NullableString';
@@ -119,7 +118,13 @@ export class ContainerArtifactChildrenInfo {
       const childInfo = this.getChildInfo(childName);
       if (childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD && childInfo.uiInputType !== UiInputType.ATTRIBUTE_VALUE) {
         if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
-          iriMap[childInfo.name] = childInfo.iri !== null ? childInfo.iri : PropertyIri.forName(childInfo.name);
+          // A child with no IRI of its own gets no mapping. The IRI is identity, so the repository
+          // assigns it when the artifact is uploaded, as it assigns an attribute's; deriving one from
+          // the child's name asserted an identity nothing had assigned, and one that would change the
+          // moment the author renamed the child.
+          if (childInfo.iri !== null) {
+            iriMap[childInfo.name] = childInfo.iri;
+          }
         }
       }
     });

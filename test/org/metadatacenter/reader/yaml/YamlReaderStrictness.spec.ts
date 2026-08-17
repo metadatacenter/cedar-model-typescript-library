@@ -117,7 +117,9 @@ children:
     id: "https://repo.metadatacenter.org/template-fields/f1"
 `;
     const template = YamlTemplateReader.getStrictForCompact().readFromString(childWithId).template;
-    expect(template.getChildrenInfo().getChildIriMap()['Study Name']).toBeDefined();
+    // The child's own identifier survives; what it has no property IRI for, the repository assigns on
+    // upload rather than the reader deriving one from the name.
+    expect(template.getChildrenInfo().getChildIriMap()['Study Name']).toBeUndefined();
     expect(CedarWriters.yaml().getStrict().getTemplateWriter().getAsYamlString(template, true)).toContain(
       'id: "https://repo.metadatacenter.org/template-fields/f1"',
     );

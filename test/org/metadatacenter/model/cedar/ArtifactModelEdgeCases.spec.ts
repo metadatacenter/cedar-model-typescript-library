@@ -32,7 +32,7 @@ describe('artifact model edge cases', () => {
     expect(field.skos_altLabel).toEqual(['first', 'second']);
   });
 
-  test('containers expose typed child lookup, declared labels, and generated IRIs', () => {
+  test('containers expose typed child lookup, declared labels, and the IRIs children carry', () => {
     const field: TextField = CedarBuilders.textFieldBuilder().withSchemaName('Fallback label').build();
     const nested: TemplateElement = CedarBuilders.templateElementBuilder().withSchemaName('Nested element').build();
     const container: TemplateElement = CedarBuilders.templateElementBuilder()
@@ -53,9 +53,10 @@ describe('artifact model edge cases', () => {
     expect(labelled.getChildrenInfo().getPropertyLabelMap(labelled)).toEqual({
       'field without iri': 'As the parent asks for it',
     });
-    expect(container.getChildrenInfo().getChildIriMap()['field without iri']).toBe(
-      'https://schema.metadatacenter.org/properties/field%20without%20iri',
-    );
+    // A child that declares no IRI gets no mapping: the IRI is identity, and the repository assigns
+    // it when the artifact is uploaded. Deriving one from the child's name is what this used to do,
+    // and a name is exactly what identity cannot be built from — the author can change it.
+    expect(container.getChildrenInfo().getChildIriMap()['field without iri']).toBeUndefined();
     expect(container.getChildrenInfo().getOnlyElementNamesForPropertiesContextRequired()).toEqual(['nested']);
   });
 

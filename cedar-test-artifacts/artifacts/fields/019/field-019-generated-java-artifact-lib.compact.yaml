@@ -1,4 +1,4 @@
-type: "ext-nih-grant-id-field"
+type: ext-nih-grant-id-field
 name: "NIH Grant Field"
 description: "NIH Grant Help"
 prefLabel: "NIH Grant Preferred"

@@ -69,7 +69,7 @@ describe('YamlTemplateInstanceReader', () => {
   test('every value kind is present after reading YAML', () => {
     const yaml = yamlWriter.getAsYamlString(modelFromYaml);
     expect(yaml).toContain('value: "hello"'); // literal
-    expect(yaml).toContain('datatype: "xsd:decimal"'); // typed
+    expect(yaml).toContain('datatype: xsd:decimal'); // typed
     expect(yaml).toContain('label: "Homo sapiens"'); // controlled term
     expect(yaml).toContain('https://example.org/thing'); // link
     expect(yaml).toContain('value: "Palo Alto"'); // value nested in an element

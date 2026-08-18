@@ -1,8 +1,8 @@
-type: "template"
+type: template
 name: "Template with multi field"
 children:
   - key: "Textfield"
-    type: "text-field"
+    type: text-field
     name: "Textfield"
     description: "Help Text"
     id: "https://repo.metadatacenter.org/template-fields/16ae272a-364c-4770-a6d2-f9c2685de5c4"

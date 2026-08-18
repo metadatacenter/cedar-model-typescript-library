@@ -1,4 +1,4 @@
-type: "instance"
+type: instance
 name: "15 - phone field metadata"
 description: "15 - description"
 isBasedOn: "https://repo.metadatacenter.org/templates/ec3f500f-ddca-4ec1-9196-29932f9304fd"

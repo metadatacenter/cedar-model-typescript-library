@@ -1,4 +1,4 @@
-type: "instance"
+type: instance
 name: "Template with multi-element metadata"
 id: "https://repo.metadatacenter.org/template-instances/32d6ec76-59e3-46cb-b335-61450202d80a"
 isBasedOn: "https://repo.metadatacenter.org/templates/e26d7ff6-3a92-4445-85e4-fb2648c62500"
@@ -28,7 +28,7 @@ children:
       children:
         Multiple Choice in Element (radio):
           value: "Option 5"
-    - type: "element-instance"
+    - type: element-instance
       id: "https://repo.metadatacenter.org/template-element-instances/89c67f8e-da51-4c2a-83e8-c227f0f4e4db"
   Multiple Choice Standalone:
     value: "Option 1"

@@ -1,4 +1,4 @@
-type: "instance"
+type: instance
 name: "With Multiple element metadata"
 isBasedOn: "https://repo.metadatacenter.org/templates/4690b6c0-5bb8-4030-ae93-69450e343326"
 children:

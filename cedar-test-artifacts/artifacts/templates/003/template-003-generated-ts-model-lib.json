@@ -191,6 +191,11 @@
               ]
             }
           }
+        },
+        "TextfieldChild": {
+          "enum": [
+            "https://schema.metadatacenter.org/properties/TextfieldChild"
+          ]
         }
       },
       "required": [
@@ -204,7 +209,8 @@
         "pav:createdOn",
         "pav:createdBy",
         "pav:lastUpdatedOn",
-        "oslc:modifiedBy"
+        "oslc:modifiedBy",
+        "TextfieldChild"
       ],
       "additionalProperties": false
     },

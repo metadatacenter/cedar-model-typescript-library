@@ -1,11 +1,11 @@
-type: "text-field"
+type: text-field
 name: "Subject Identifier Scheme"
 description: "The name of the scheme or authority used for the Subject Identifier."
 identifier: "subject_identifier_scheme"
 id: "https://repo.metadatacenter.org/template-fields/de2525eb-3b58-4aaf-9f99-5bd140145303"
-status: "draft"
-version: "0.9.1"
-modelVersion: "1.6.0"
+status: draft
+version: 0.9.1
+modelVersion: 1.6.0
 prefLabel: "Subject Identifier Scheme"
 createdOn: "2022-10-13T12:44:16-07:00"
 createdBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"

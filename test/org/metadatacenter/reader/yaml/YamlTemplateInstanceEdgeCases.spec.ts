@@ -212,7 +212,7 @@ children:
     const twice = writer.getAsYamlString(reader.readFromString(once).instance);
 
     expect(twice).toBe(once);
-    expect(once).toContain('type: "element-instance"');
+    expect(once).toContain('type: element-instance');
   });
 
   test('an empty repeated element keeps the identifier it arrived with', () => {

@@ -1,8 +1,8 @@
-type: "template"
+type: template
 name: "#022 Template with AttributeValue"
 children:
   - key: "ATTR-Value"
-    type: "attribute-value-field"
+    type: attribute-value-field
     name: "ATTR-Value"
     description: "Some help text here"
     id: "https://repo.metadatacenter.org/template-fields/bb91de17-9fa7-4cb2-885d-13617e7b3f08"

@@ -1,17 +1,17 @@
-type: "template"
+type: template
 name: "#024 Template with simple controlled field"
 children:
   - key: "Controlled"
-    type: "controlled-term-field"
+    type: controlled-term-field
     name: "Controlled"
     description: "Help Text"
     id: "https://repo.metadatacenter.org/template-fields/8fbf3e19-5c8a-4b72-9463-c1769fc73f96"
-    datatype: "iri"
+    datatype: iri
     values:
-      - type: "class"
+      - type: class
         sourceAcronym: "MESH"
         termIri: "http://purl.bioontology.org/ontology/MESH/D009146"
-        termType: "class"
+        termType: class
         termLabel: "Music"
     configuration:
       required: true

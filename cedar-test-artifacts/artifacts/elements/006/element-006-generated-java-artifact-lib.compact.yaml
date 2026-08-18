@@ -1,20 +1,20 @@
-type: "element"
+type: element
 name: "Copy of Medium of performance"
 instanceType: "http://data.bioontology.org/ontologies/PMO/classes/http%3A%2F%2Fperformedmusicontology.org%2Fontology%2FMediumOfPerformance"
 children:
   - key: "Type of medium of performance"
-    type: "controlled-term-field"
+    type: controlled-term-field
     name: "Type of medium of performance"
     id: "https://repo.metadatacenter.org/template-fields/c565c78f-040c-47e3-bd50-ea92f2fc9efc"
-    datatype: "iri"
+    datatype: iri
     values:
-      - type: "branch"
+      - type: branch
         sourceAcronym: "PMO"
         sourceName: "undefined (PMO)"
         termBaseIri: "http://performedmusicontology.org/ontology/MediumOfPerformance"
         termBaseLabel: "Medium of performance"
         termMaxDepth: 0
   - key: "Doubling Medium of performance"
-    type: "text-field"
+    type: text-field
     name: "Doubling Medium of performance"
     id: "https://repo.metadatacenter.org/template-fields/4261e0ea-b95c-479f-84a2-a45593a5e6ce"

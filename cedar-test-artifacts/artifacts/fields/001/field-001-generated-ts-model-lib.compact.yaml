@@ -1,4 +1,4 @@
-type: "text-field"
+type: text-field
 name: "#001 Text Field"
 description: "Text field help text"
 prefLabel: "Text field preferred"

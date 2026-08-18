@@ -1,11 +1,11 @@
-type: "instance"
+type: instance
 name: "Complex template metadata"
 isBasedOn: "https://repo.metadatacenter.org/templates/a29c046d-3c19-4213-be02-f5b6457cac9b"
 children:
   Text Field Simple:
     value: "Text Value"
   Numeric Field Simple:
-    datatype: "xsd:decimal"
+    datatype: xsd:decimal
     value: "1234"
   Phone Field Multiple:
     - value: "650-686-8815"

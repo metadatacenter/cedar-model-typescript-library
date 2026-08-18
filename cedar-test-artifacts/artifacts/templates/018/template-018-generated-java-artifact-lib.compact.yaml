@@ -1,8 +1,8 @@
-type: "template"
+type: template
 name: "#018 Template with checkbox"
 children:
   - key: "My checkbox 1"
-    type: "checkbox-field"
+    type: checkbox-field
     name: "My checkbox 1"
     description: "Help Text"
     id: "https://repo.metadatacenter.org/template-fields/bc68d373-562f-4725-9e67-433999363deb"
@@ -17,7 +17,7 @@ children:
     configuration:
       required: true
   - key: "My checkbox 2"
-    type: "checkbox-field"
+    type: checkbox-field
     name: "My checkbox 2"
     description: "Help Text"
     id: "https://repo.metadatacenter.org/template-fields/bd25e554-c588-48ce-824f-8383cd3eafcc"

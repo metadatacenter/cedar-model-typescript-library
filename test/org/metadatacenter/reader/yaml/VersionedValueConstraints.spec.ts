@@ -94,7 +94,7 @@ describe('a value-constraint entry names its source and its term', () => {
     const yaml = yamlOf(field((b) => b.addClass(term().build())));
     expect(yaml).toContain('sourceAcronym: "CL"');
     expect(yaml).toContain(`termIri: "${TERM.getValue()}"`);
-    expect(yaml).toContain('termType: "class"');
+    expect(yaml).toContain('termType: class');
     expect(yaml).toContain('termLabel: "cell"');
   });
 

@@ -1,9 +1,9 @@
-type: "template"
+type: template
 name: "Untitled"
 description: "Untitled description"
 children:
   - key: "TextfieldChild"
-    type: "text-field"
+    type: text-field
     name: "Textfield"
     description: "Help Text"
     id: "https://repo.metadatacenter.org/template-fields/9efde92f-63b9-427f-b071-36ea57de1b7e"

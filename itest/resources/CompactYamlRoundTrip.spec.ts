@@ -172,8 +172,8 @@ describe('what the compact form leaves out', () => {
     const full = writer.getAsYamlString(template, false);
     const compact = writer.getAsYamlString(template, true);
     for (const key of systemRecordedKeys) {
-      expect(full).toContain(`${key}: "`);
-      expect(compact).not.toContain(`${key}: "`);
+      expect(full).toContain(`${key}:`);
+      expect(compact).not.toContain(`${key}:`);
     }
     // And the identifier is in both.
     expect(full).toContain('id: "');

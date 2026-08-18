@@ -1,8 +1,8 @@
-type: "template"
+type: template
 name: "#017 Template with phone"
 children:
   - key: "Phone number"
-    type: "phone-number-field"
+    type: phone-number-field
     name: "Phone number"
     description: "Help Text"
     id: "https://repo.metadatacenter.org/template-fields/18ebc951-238b-4ee0-ac75-a4bbf53efc18"

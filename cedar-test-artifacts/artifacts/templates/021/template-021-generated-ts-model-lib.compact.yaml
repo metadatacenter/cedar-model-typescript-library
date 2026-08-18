@@ -1,8 +1,8 @@
-type: "template"
+type: template
 name: "#021 Template with MultipleChoice"
 children:
   - key: "Multiple choice with default"
-    type: "radio-field"
+    type: radio-field
     name: "Multiple choice with default"
     description: "Help Text"
     id: "https://repo.metadatacenter.org/template-fields/beda1f11-147e-4e3b-b544-6fe823952382"
@@ -14,7 +14,7 @@ children:
       - label: "Option 4"
       - label: "Option 5"
   - key: "Multiple choice without default"
-    type: "radio-field"
+    type: radio-field
     name: "Multiple choice without default"
     description: "Help Text"
     id: "https://repo.metadatacenter.org/template-fields/8a0f2936-94c9-4cab-9a55-05afb4538c0f"

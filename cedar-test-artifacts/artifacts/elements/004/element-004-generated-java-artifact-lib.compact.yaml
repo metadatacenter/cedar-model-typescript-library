@@ -1,21 +1,21 @@
-type: "element"
+type: element
 name: "BioSample Descriptor"
 description: "BioSample Descriptor"
 children:
   - key: "title"
-    type: "text-field"
+    type: text-field
     name: "Title"
     id: "https://repo.metadatacenter.net/template-fields/34f6c221-667d-4255-93a8-dcabe46939d8"
     configuration:
       overrideDescription: "Title description"
   - key: "description"
-    type: "text-field"
+    type: text-field
     name: "Description"
     id: "https://repo.metadatacenter.net/template-fields/fb9e046f-e9ac-4e54-bc78-2603c9338152"
     configuration:
       overrideDescription: "Description description"
   - key: "externalLink"
-    type: "text-field"
+    type: text-field
     name: "External Link"
     id: "https://repo.metadatacenter.net/template-fields/47d7a72d-e578-4106-8e9b-40a5a6f3ef84"
     configuration:

@@ -1,26 +1,26 @@
-type: "template"
+type: template
 name: "#010 Template with DateTime field"
 children:
   - key: "Simple date"
-    type: "temporal-field"
+    type: temporal-field
     name: "Simple date"
     description: "Help text"
     id: "https://repo.metadatacenter.org/template-fields/d44a1d82-5457-4dce-95f9-0400c7b4cb80"
     prefLabel: "Simple date preferred"
-    datatype: "xsd:date"
-    granularity: "day"
+    datatype: xsd:date
+    granularity: day
   - key: "Simple time"
-    type: "temporal-field"
+    type: temporal-field
     name: "Simple time"
     description: "Help Text"
     id: "https://repo.metadatacenter.org/template-fields/40db78e1-834d-46f8-92c3-d8a57571bf0a"
     prefLabel: "Simple time preferred"
-    datatype: "xsd:time"
-    granularity: "second"
-    inputTimeFormat: "12h"
+    datatype: xsd:time
+    granularity: second
+    inputTimeFormat: 12h
     inputTimeZone: true
   - key: "Complex datetime"
-    type: "temporal-field"
+    type: temporal-field
     name: "Complex datetime"
     description: "Help Text 2"
     id: "https://repo.metadatacenter.org/template-fields/2d2a43fc-c599-4852-a996-333a1b998a6f"
@@ -28,9 +28,9 @@ children:
     altLabels:
       - "Alt label 1"
       - "Alt label 2"
-    datatype: "xsd:dateTime"
-    granularity: "decimalSecond"
-    inputTimeFormat: "12h"
+    datatype: xsd:dateTime
+    granularity: decimalSecond
+    inputTimeFormat: 12h
     inputTimeZone: true
     configuration:
       required: true

@@ -1,4 +1,4 @@
-type: "instance"
+type: instance
 name: "01 - single field metadata"
 description: "01 - description"
 id: "https://repo.metadatacenter.org/template-instances/19f5261e-9259-45ec-b961-b3d17c92f27f"

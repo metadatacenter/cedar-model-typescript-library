@@ -1,4 +1,4 @@
-type: "multi-select-list-field"
+type: multi-select-list-field
 name: "List multi"
 values:
   - label: "Untitled-0"

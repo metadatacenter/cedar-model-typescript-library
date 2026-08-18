@@ -1,4 +1,4 @@
-type: "template"
+type: template
 name: "Template with extra"
 description: "Template desc"
 identifier: "template-identifier"
@@ -7,7 +7,7 @@ header: "Template header"
 footer: "Template footer"
 children:
   - key: "Text field"
-    type: "text-field"
+    type: text-field
     name: "Text field"
     description: "Help Text"
     id: "tmp-1709246251573-870301"

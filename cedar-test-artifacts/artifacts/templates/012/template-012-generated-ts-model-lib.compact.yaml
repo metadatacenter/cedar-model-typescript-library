@@ -1,8 +1,8 @@
-type: "template"
+type: template
 name: "#012 Template with Email field"
 children:
   - key: "Email field"
-    type: "email-field"
+    type: email-field
     name: "Email field"
     description: "Email field help text"
     id: "https://repo.metadatacenter.org/template-fields/4cb127ae-2f02-4bb2-8a21-01dcde965066"

@@ -1,4 +1,4 @@
-type: "ext-pfas-field"
+type: ext-pfas-field
 name: "PFAS Field"
 description: "PFAS Help"
 prefLabel: "PFAS Preferred"

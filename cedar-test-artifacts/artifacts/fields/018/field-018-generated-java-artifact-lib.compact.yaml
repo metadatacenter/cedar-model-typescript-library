@@ -1,4 +1,4 @@
-type: "ext-rrid-field"
+type: ext-rrid-field
 name: "RRID Field"
 description: "RRID Help"
 prefLabel: "RRID Preferred"

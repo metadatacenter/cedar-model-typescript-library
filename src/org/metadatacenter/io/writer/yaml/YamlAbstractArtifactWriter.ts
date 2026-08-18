@@ -139,23 +139,16 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
   }
 
   /**
-   * The identifier is written in both forms. What the compact form drops is the content the system
-   * records about an artifact — its provenance, version and status — and an artifact's identity is
-   * not among them: dropping it leaves a document that reads back as a different, anonymous
-   * artifact. The Java library keeps it too, and the servers recognize a compact body by finding an
-   * id with none of the system-recorded keys beside it.
-   */
-  /**
    * The artifact's own identifier.
    *
-   * The compact form describes an artifact being authored rather than one already stored, so the
-   * document does not name the artifact it describes: a repository assigns that on save, as it assigns
-   * the provenance. A child keeps its identifier in both forms — it names the artifact it was copied
-   * from, which does exist — which is why the position matters and not only the form.
+   * Compact schema YAML is an identity-free structural description. Repository identifiers belong
+   * to stored schema artifacts, including embedded fields and elements, and therefore appear only in
+   * the full form. The position parameter remains for source compatibility with existing specialized
+   * writers; compactness alone determines whether an identifier is emitted.
    */
-  protected macroId(artifact: AbstractArtifact, isCompact: boolean = false, isDocumentRoot: boolean = true): JsonNode {
+  protected macroId(artifact: AbstractArtifact, isCompact: boolean = false, _isDocumentRoot: boolean = true): JsonNode {
     const typeAndId: JsonNode = JsonNode.getEmpty();
-    if (artifact.at_id !== CedarArtifactId.NULL && !(isCompact && isDocumentRoot)) {
+    if (artifact.at_id !== CedarArtifactId.NULL && !isCompact) {
       typeAndId[YamlKeys.id] = this.atomicWriter.write(artifact.at_id);
     }
     return typeAndId;

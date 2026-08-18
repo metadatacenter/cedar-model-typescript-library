@@ -5,7 +5,6 @@ children:
     type: text-field
     name: "TextField1"
     description: "Help Text"
-    id: "https://repo.metadatacenter.org/template-fields/372bc0d4-3ca4-46b6-b09b-04d4df12a0e1"
     prefLabel: "TextField 1 preferred label"
     altLabels:
       - "TextField1 Alt1"

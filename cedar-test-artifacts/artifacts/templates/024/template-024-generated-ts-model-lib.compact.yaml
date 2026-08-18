@@ -5,7 +5,6 @@ children:
     type: controlled-term-field
     name: "Controlled"
     description: "Help Text"
-    id: "https://repo.metadatacenter.org/template-fields/8fbf3e19-5c8a-4b72-9463-c1769fc73f96"
     datatype: iri
     values:
       - type: class

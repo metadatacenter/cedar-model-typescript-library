@@ -5,4 +5,3 @@ children:
     type: attribute-value-field
     name: "Attribute-Value"
     description: "Help Text"
-    id: "https://repo.metadatacenter.org/template-fields/162ab456-e5ec-400c-a713-c46c29adf3b8"

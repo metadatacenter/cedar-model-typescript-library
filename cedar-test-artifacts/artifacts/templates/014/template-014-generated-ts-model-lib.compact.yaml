@@ -5,29 +5,24 @@ children:
     type: numeric-field
     name: "Decimal"
     description: "Help Text"
-    id: "tmp-1709772870674-279341"
     datatype: xsd:decimal
   - key: "Long"
     type: numeric-field
     name: "Long"
     description: "Help Text"
-    id: "tmp-1709772896270-304937"
     datatype: xsd:long
   - key: "Integer"
     type: numeric-field
     name: "Integer"
     description: "Help Text"
-    id: "tmp-1709772919935-328601"
     datatype: xsd:int
   - key: "Double"
     type: numeric-field
     name: "Double"
     description: "Help Text"
-    id: "tmp-1709772946038-354705"
     datatype: xsd:double
   - key: "Float"
     type: numeric-field
     name: "Float"
     description: "Help Text"
-    id: "tmp-1709772964268-372935"
     datatype: xsd:float

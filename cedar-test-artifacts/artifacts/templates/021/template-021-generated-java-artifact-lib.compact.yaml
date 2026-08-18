@@ -5,7 +5,6 @@ children:
     type: radio-field
     name: "Multiple choice with default"
     description: "Help Text"
-    id: "https://repo.metadatacenter.org/template-fields/beda1f11-147e-4e3b-b544-6fe823952382"
     values:
       - label: "Option 1"
       - label: "Option 2"
@@ -17,7 +16,6 @@ children:
     type: radio-field
     name: "Multiple choice without default"
     description: "Help Text"
-    id: "https://repo.metadatacenter.org/template-fields/8a0f2936-94c9-4cab-9a55-05afb4538c0f"
     values:
       - label: "Option 1"
       - label: "Option2"

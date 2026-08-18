@@ -5,4 +5,3 @@ children:
     type: link-field
     name: "Linkfield"
     description: "Help Text"
-    id: "https://repo.metadatacenter.org/template-fields/c10d0f70-0e5d-405c-9f84-fafa7693cc63"

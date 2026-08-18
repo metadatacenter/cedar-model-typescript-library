@@ -5,7 +5,6 @@ children:
     type: controlled-term-field
     name: "Untitled"
     description: "Help Text"
-    id: "https://repo.metadatacenter.org/template-fields/ded5aa1e-b665-4897-b5b3-2084eff12a0c"
     datatype: iri
     values:
       - type: ontology

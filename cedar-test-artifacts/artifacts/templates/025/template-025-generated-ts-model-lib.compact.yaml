@@ -5,7 +5,6 @@ children:
     type: text-field
     name: "Hidden field"
     description: "Hidden field help text"
-    id: "https://repo.metadatacenter.org/template-fields/98e1ba09-3792-4831-92d4-f9bd481310ac"
     prefLabel: "Hidden field preferred"
     default: "default value"
     configuration:

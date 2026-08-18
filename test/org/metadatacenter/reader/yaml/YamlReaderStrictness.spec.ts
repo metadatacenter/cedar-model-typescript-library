@@ -84,8 +84,8 @@ children:
 // describes: a repository assigns that identifier on save, as it assigns the provenance. A document
 // that names one is refused rather than quietly read, since reading it would leave an author believing
 // the document still refers to that stored artifact while a conversion gave its children freshly
-// derived property IRIs. A reference to another artifact — an instance's isBasedOn — is untouched, and
-// so is a child's own identifier.
+// derived property IRIs. A reference to another artifact — an instance's isBasedOn — is untouched. A
+// legacy compact child identifier is accepted on input, but canonical compact output omits it.
 describe('a compact document cannot name the artifact it describes', () => {
   const named = (yaml: string) => yaml.replace('name: "Study', 'id: "https://repo.metadatacenter.org/x/1"\nname: "Study');
 
@@ -107,7 +107,7 @@ isBasedOn: "https://repo.metadatacenter.org/templates/t1"
     expect(YamlTemplateInstanceReader.getStrict().readFromString(instance).instance.schema_name).toBe('Study metadata');
   });
 
-  test('a child keeps its own identifier', () => {
+  test('a legacy child identifier is accepted but omitted from canonical compact output', () => {
     const childWithId = `type: "template"
 name: "Study"
 children:
@@ -117,10 +117,10 @@ children:
     id: "https://repo.metadatacenter.org/template-fields/f1"
 `;
     const template = YamlTemplateReader.getStrictForCompact().readFromString(childWithId).template;
-    // The child's own identifier survives; what it has no property IRI for, the repository assigns on
-    // upload rather than the reader deriving one from the name.
+    // Reading remains tolerant of compact YAML emitted before schema identity was removed at every
+    // depth. Rewriting it produces the current identity-free compact form.
     expect(template.getChildrenInfo().getChildIriMap()['Study Name']).toBeUndefined();
-    expect(CedarWriters.yaml().getStrict().getTemplateWriter().getAsYamlString(template, true)).toContain(
+    expect(CedarWriters.yaml().getStrict().getTemplateWriter().getAsYamlString(template, true)).not.toContain(
       'id: "https://repo.metadatacenter.org/template-fields/f1"',
     );
   });

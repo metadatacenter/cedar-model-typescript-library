@@ -5,7 +5,6 @@ children:
     type: text-field
     name: "Textfield"
     description: "Help Text"
-    id: "https://repo.metadatacenter.org/template-fields/16ae272a-364c-4770-a6d2-f9c2685de5c4"
     configuration:
       multiple: true
       minItems: 0

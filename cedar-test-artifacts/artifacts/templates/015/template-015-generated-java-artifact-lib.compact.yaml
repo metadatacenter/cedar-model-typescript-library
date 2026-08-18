@@ -5,7 +5,6 @@ children:
     type: numeric-field
     name: "Complex number"
     description: "Help Text"
-    id: "https://repo.metadatacenter.org/template-fields/005c1ca8-0c7f-4114-b647-df9d3af0e35d"
     altLabels:
       - "Alt label 1"
       - "Alt label 2"

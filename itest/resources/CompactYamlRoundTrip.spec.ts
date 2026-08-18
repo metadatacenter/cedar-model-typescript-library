@@ -12,12 +12,12 @@ import {
 import { elementTestNumbers, fieldTestNumbers, instanceTestNumbers, templateTestNumbers } from './generatedTestCases';
 import { TestResource } from '../TestResource';
 import { TestUtil } from '../TestUtil';
+import YAML from 'yaml';
 
-// The compact form is the same artifact with the content the system records about it left out: the
-// model version, the version, the status and the provenance. Everything else it must carry, or a
-// reader cannot recover the artifact it came from. These cases are the corpus artifacts themselves,
-// each written compact and read back, so the coverage follows the corpus rather than a fixture
-// written by hand.
+// Compact schema YAML is an identity-free structural description. It leaves out repository-assigned
+// identifiers at every schema-artifact depth, together with the model version, version, status and
+// provenance. These cases are the corpus artifacts themselves, each written compact and read back,
+// so the coverage follows the corpus rather than a fixture written by hand.
 
 const systemRecordedKeys = ['modelVersion', 'version', 'status', 'createdOn', 'createdBy', 'modifiedOn', 'modifiedBy'];
 
@@ -128,6 +128,24 @@ const cases: Array<[Kind, number[]]> = [
   ['instance', instanceTestNumbers],
 ];
 
+function schemaArtifactIds(yaml: string): string[] {
+  const identifiers: string[] = [];
+  const collect = (artifact: unknown): void => {
+    if (artifact === null || typeof artifact !== 'object' || Array.isArray(artifact)) {
+      return;
+    }
+    const node = artifact as Record<string, unknown>;
+    if (typeof node.id === 'string') {
+      identifiers.push(node.id);
+    }
+    if (Array.isArray(node.children)) {
+      node.children.forEach(collect);
+    }
+  };
+  collect(YAML.parse(yaml));
+  return identifiers;
+}
+
 describe.each(cases)('compact YAML round trip: %s', (kind: Kind, testNumbers: number[]) => {
   test.each(testNumbers)(`${kind} %i survives a compact round trip`, (testNumber: number) => {
     const result = roundTrip(kind, testNumber);
@@ -141,12 +159,15 @@ describe.each(cases)('compact YAML round trip: %s', (kind: Kind, testNumbers: nu
 
     // The compact form describes an artifact being authored rather than one already stored, so it does
     // not name the artifact it describes — a repository assigns that identifier on save, as it assigns
-    // the provenance — and an artifact read back from it is anonymous by construction. Its children
-    // keep their identifiers, which the round-trip comparison above covers.
+    // the provenance — and an artifact read back from it is anonymous by construction. Embedded
+    // schema artifacts are anonymous for the same reason.
     const expectedId = sourceId(kind, testNumber);
     expect(result.id).toBeNull();
     if (expectedId !== null) {
       expect(result.compact).not.toContain(`id: "${expectedId}"`);
+    }
+    if (kind !== 'instance') {
+      expect(schemaArtifactIds(result.compact)).toEqual([]);
     }
 
     // The name is what the form is for.
@@ -175,8 +196,9 @@ describe('what the compact form leaves out', () => {
       expect(full).toContain(`${key}:`);
       expect(compact).not.toContain(`${key}:`);
     }
-    // And the identifier is in both.
-    expect(full).toContain('id: "');
-    expect(compact).toContain('id: "');
+    // Repository identity belongs to the full form, at the root and among its embedded schema
+    // artifacts. The compact form contains neither.
+    expect(schemaArtifactIds(full).length).toBeGreaterThan(0);
+    expect(schemaArtifactIds(compact)).toEqual([]);
   });
 });

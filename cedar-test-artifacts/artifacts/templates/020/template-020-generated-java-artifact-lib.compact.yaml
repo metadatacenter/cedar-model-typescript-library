@@ -5,7 +5,6 @@ children:
     type: multi-select-list-field
     name: "MultiSelect"
     description: "Help Text"
-    id: "https://repo.metadatacenter.org/template-fields/dd01ffec-ab1a-4ae9-b882-d57254d07b57"
     prefLabel: "MultiSelect Pick from a list"
     default: "Option 11"
     values:

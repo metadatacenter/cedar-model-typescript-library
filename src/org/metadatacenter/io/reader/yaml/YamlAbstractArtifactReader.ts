@@ -88,8 +88,9 @@ export abstract class YamlAbstractArtifactReader {
    * The compact form is for an artifact being authored, not one already stored: it leaves out what a
    * repository assigns, and an identifier is the first of those. Ignoring an `id` written here would
    * let an author believe the document still refers to a stored artifact, while a conversion gave that
-   * artifact's children freshly derived property IRIs. Children keep their identifiers, since a child
-   * names the artifact it was copied from.
+   * artifact's children freshly derived property IRIs. Older compact documents may carry child
+   * identifiers; the reader accepts those for compatibility, while canonical compact output omits
+   * schema-artifact identity at every depth.
    */
   /**
    * An empty artifact or occurrence `id` is not an identifier, and it is not an absence of one either.

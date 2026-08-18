@@ -32,7 +32,7 @@ jobs:
       # 24.19.0, the version `.nvmrc` names and CEE builds with. This was 20.20.2,
       # which outlived Node 20's own support: that line left maintenance in April
       # 2026, so every tarball published after it was built on a runtime no longer
-      # receiving security patches. The whole gate — lint, typecheck, 954 tests and
+      # receiving security patches. The whole gate — lint, typecheck, 1,168 tests and
       # the packed-consumer smoke test that imports the real tarball — passes
       # unchanged on 24.
       - name: Use Node.js 24
@@ -59,6 +59,12 @@ jobs:
       # have are named in the script, so one opening or closing fails here.
       - name: Verify Java/TypeScript YAML parity
         run: npm run parity:yaml
+
+      # The lock records the exact Java and shared-corpus revisions and hashes every vendored input
+      # and Java-generated fixture. TypeScript output is regenerated live, then compared as JSON
+      # structure (so harmless key order and pretty-printing cannot hide or invent drift).
+      - name: Verify Java lock and Java/TypeScript JSON parity
+        run: npm run parity:json
 
       # Build the exact tarball consumers receive, install it into an isolated
       # project, and exercise CommonJS, ESM, and the shipped declarations.

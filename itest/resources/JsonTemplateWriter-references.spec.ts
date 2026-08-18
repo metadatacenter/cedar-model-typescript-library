@@ -10,14 +10,14 @@ import {
 import { TestUtil } from '../TestUtil';
 import { templateTestNumbers } from './generatedTestCases';
 import { TestResource } from '../TestResource';
+import { JSON_TEMPLATE_ROUND_TRIP_DIVERGENCES, diagnosticsFor } from './compatibilityExpectations';
 
-// Templates 4, 9 and 37 are skipped because their sources are invalid where this library is not: each
-// carries a page or section break whose `_ui` omits `_content`, which the CEDAR meta-schema requires of
-// every static field. The writer supplies the key, so the output no longer matches the source it was
-// read from — and the source, put through the canonical validator, is rejected while the output passes.
+// Every historical case runs. Sources that differ from today's canonical writer are declared in
+// compatibilityExpectations.ts with their exact parse and round-trip diagnostic counts, so a repaired
+// case fails until its now-stale declaration is removed.
 describe('JsonTemplateWriter-references', () => {
-  TestUtil.testNumbers(templateTestNumbers, [3, 4, 9, 22, 29, 35, 37], []).forEach((templateTestNumber) => {
-    it(`should correctly read the JSON template, and create the same JSON output as the reference: ${templateTestNumber}`, async () => {
+  TestUtil.testNumbers(templateTestNumbers, [], []).forEach((templateTestNumber) => {
+    it(`has the declared JSON round-trip behavior for template ${templateTestNumber}`, async () => {
       let compareResult: JsonArtifactParsingResult | null = null;
       try {
         const testResource: TestResource = TestResource.template(templateTestNumber);
@@ -27,8 +27,10 @@ describe('JsonTemplateWriter-references', () => {
         const jsonTemplateReaderResult: JsonTemplateReaderResult = reader.readFromString(artifactSource);
         expect(jsonTemplateReaderResult).not.toBeNull();
         const parsingResult: JsonArtifactParsingResult = jsonTemplateReaderResult.parsingResult;
-        // TestUtil.p(parsingResult);
-        //expect(parsingResult.wasSuccessful()).toBe(true);
+        expect({
+          errors: parsingResult.getBlueprintComparisonErrorCount(),
+          warnings: parsingResult.getBlueprintComparisonWarningCount(),
+        }).toStrictEqual(diagnosticsFor(JSON_TEMPLATE_ROUND_TRIP_DIVERGENCES, templateTestNumber));
 
         const writers: CedarJsonWriters = CedarWriters.json().getStrict();
         const writer: JsonTemplateWriter = writers.getTemplateWriter();
@@ -39,8 +41,9 @@ describe('JsonTemplateWriter-references', () => {
         // TestUtil.p(compareResult);
         // console.log(compareResult.getBlueprintComparisonErrorCount());
 
-        expect(compareResult.wasSuccessful()).toBe(true);
-        expect(compareResult.getBlueprintComparisonErrorCount()).toBe(0);
+        const expected = JSON_TEMPLATE_ROUND_TRIP_DIVERGENCES[String(templateTestNumber)];
+        expect(compareResult.getBlueprintComparisonErrorCount()).toBe(expected?.roundTripErrors ?? 0);
+        expect(compareResult.getBlueprintComparisonWarningCount()).toBe(expected?.roundTripWarnings ?? 0);
       } catch (error) {
         TestUtil.p(compareResult);
         console.error(`Failed to process template file: ${templateTestNumber}`, error);

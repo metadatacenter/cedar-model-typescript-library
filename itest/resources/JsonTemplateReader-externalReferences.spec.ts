@@ -1,85 +1,43 @@
-import {
-  CedarJsonWriters,
-  CedarWriters,
-  JsonArtifactParsingResult,
-  JsonTemplateReader,
-  JsonTemplateReaderResult,
-  JsonTemplateWriter,
-  RoundTrip,
-} from '../../src';
-import { TestUtil } from '../TestUtil';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+import { CedarReaders, CedarWriters, JsonArtifactParsingResult } from '../../src';
+import { EXTERNAL_TEMPLATE_DIAGNOSTICS, diagnosticsFor } from './compatibilityExpectations';
 
-describe('JSONTemplateReader - CEDAR reference templates', () => {
-  const files = [
-    // 'ADVANCETemplate.json', // TODO: fix the file or the algorithm
-    'CODEX.json',
-    'DESI.json',
-    'DataCiteTemplate.json',
-    'LC-MS.json',
-    'MALDI.json',
-    'MultiInstanceFieldTemplate.json',
-    'NanoSplits.json',
-    // 'RADxMetadataSpecification.json', // TODO: fix the file or the algorithm
-    'SIMS.json',
-    'SampleBlock.json',
-    // 'SampleFieldWithActions.json', Currently only parsing templates
-    'SampleSection.json',
-    'SampleSuspension.json',
-    'SimpleTemplate.json',
-    // 'SimpleTemplateWithAttributeValues.json', // TODO: this is successful at the moment
-    'TemplateWithActions.json',
-    'HuBMAP/CODEX.json',
-    'HuBMAP/DESI.json',
-    'HuBMAP/LC-MS.json',
-    'HuBMAP/MALDI.json',
-    'HuBMAP/NanoSplits.json',
-    'HuBMAP/SIMS.json',
-  ];
-  // files = ['SimpleTemplateWithAttributeValues.json'];
+const REFERENCE_ROOT = path.resolve(__dirname, '../../cedar-artifact-library/src/test/resources/templates');
 
-  test.each(files)('reads template %s from CEDAR Artifact Library', (fileName) => {
-    const templateSource = TestUtil.readOutsideResourceAsString('cedar-artifact-library/src/test/resources/templates/', fileName);
-    const reader: JsonTemplateReader = JsonTemplateReader.getStrict();
-    const jsonTemplateReaderResult: JsonTemplateReaderResult = reader.readFromString(templateSource);
-    expect(jsonTemplateReaderResult).not.toBeNull();
+const referenceFiles = (directory: string): string[] =>
+  fs
+    .readdirSync(directory, { withFileTypes: true })
+    .flatMap((entry) => {
+      const absolute = path.join(directory, entry.name);
+      return entry.isDirectory() ? referenceFiles(absolute) : [absolute];
+    })
+    .filter((file) => file.endsWith('.json'))
+    .sort();
 
-    const parsingResult: JsonArtifactParsingResult = jsonTemplateReaderResult.parsingResult;
-    if (!parsingResult.wasSuccessful()) {
-      // console.log('Parsing errors found for:', fileName);
-      // TestUtil.p(parsingResult.getBlueprintComparisonErrors());
-    }
-    // expect(parsingResult.wasSuccessful()).toBe(true);
+const files = referenceFiles(REFERENCE_ROOT).map((file) => [path.relative(REFERENCE_ROOT, file), file] as const);
 
-    const writers: CedarJsonWriters = CedarWriters.json().getStrict();
-    const writer: JsonTemplateWriter = writers.getTemplateWriter();
+const diagnostics = (result: JsonArtifactParsingResult): { errors: number; warnings: number } => ({
+  errors: result.getBlueprintComparisonErrorCount(),
+  warnings: result.getBlueprintComparisonWarningCount(),
+});
 
-    const compareResult: JsonArtifactParsingResult = RoundTrip.compare(jsonTemplateReaderResult, writer);
+describe('vendored Java reference-template compatibility', () => {
+  it('contains the complete pinned inventory', () => {
+    expect(files).toHaveLength(93);
+  });
 
-    // TestUtil.p(compareResult);
-    // TestUtil.p(writer.getAsJsonNode(jsonTemplateReaderResult.template));
-    // TestUtil.p(jsonTemplateReaderResult.template);
+  test.each(files)('%s has only its declared compatibility diagnostics', (relativeName, file) => {
+    const result = CedarReaders.json().getFebruary2024().getTemplateReader().readFromString(fs.readFileSync(file, 'utf8'));
 
-    expect(compareResult.wasSuccessful()).toBe(false);
-    //expect(compareResult.getBlueprintComparisonErrorCount()).toBe(3);
+    expect(diagnostics(result.parsingResult)).toStrictEqual(diagnosticsFor(EXTERNAL_TEMPLATE_DIAGNOSTICS, relativeName));
 
-    // const uiPagesMissing = new ComparisonError(
-    //   ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-    //   new CedarJsonPath(CedarModel.ui, CedarModel.pages),
-    // );
-    // expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
-    //
-    // const requiredControlled1Unexpected = new ComparisonError(
-    //   ComparisonErrorType.UNEXPECTED_VALUE_IN_REAL_OBJECT,
-    //   new CedarJsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.required, 11),
-    //   undefined,
-    //   'Controlled',
-    // );
-    // expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(requiredControlled1Unexpected);
-    //
-    // const skosNotationControlled1Unexpected = new ComparisonError(
-    //   ComparisonErrorType.UNEXPECTED_KEY_IN_REAL_OBJECT,
-    //   new CedarJsonPath(JsonSchema.properties, 'Controlled', JsonSchema.items, JsonSchema.properties, CedarModel.skosNotation),
-    // );
-    // expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(skosNotationControlled1Unexpected);
+    const emitted = CedarWriters.json().getFebruary2024().getTemplateWriter().getAsJsonNode(result.template);
+    expect(Object.keys(emitted).length).toBeGreaterThan(0);
+  });
+
+  it('has no stale diagnostic declaration', () => {
+    const present = new Set(files.map(([relativeName]) => relativeName));
+    expect(Object.keys(EXTERNAL_TEMPLATE_DIAGNOSTICS).filter((name) => !present.has(name))).toStrictEqual([]);
   });
 });

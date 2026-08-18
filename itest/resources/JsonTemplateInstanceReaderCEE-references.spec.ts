@@ -1,65 +1,60 @@
-import {
-  CedarJsonWriters,
-  CedarWriters,
-  JsonArtifactParsingResult,
-  JsonTemplateInstanceReader,
-  JsonTemplateInstanceReaderResult,
-  JsonTemplateReader,
-  JsonTemplateReaderResult,
-  JsonTemplateWriter,
-  RoundTrip,
-  TemplateInstance,
-} from '../../src';
+import { CedarReaders, CedarWriters, JsonArtifactParsingResult } from '../../src';
 import { TestUtil } from '../TestUtil';
 import { ceeSuiteTestMap } from './generatedTestCases';
 import { TestResource } from '../TestResource';
-import { JsonTemplateInstanceWriter } from '../../src/org/metadatacenter/io/writer/json/JsonTemplateInstanceWriter';
+import { CEE_INSTANCE_DIAGNOSTICS, CEE_TEMPLATE_DIAGNOSTICS, diagnosticsFor } from './compatibilityExpectations';
 
-describe('JsonTemplateInstanceReaderCEE-references', () => {
-  TestUtil.testMap(ceeSuiteTestMap, [], [8]).forEach(([ceeTestNumber, testDefinition]) => {
-    it(`should correctly read the JSON template instance, and create the same JSON output as the reference: ${ceeTestNumber}`, async () => {
-      const testResource: TestResource = TestResource.ceeSuite(ceeTestNumber);
-      let templateSource: string = '';
-      let instanceSource: string = '';
-      if (testDefinition.template) {
-        templateSource = TestUtil.readReferenceJson(testResource);
-        //console.log(templateSource);
-      }
-      if (testDefinition.instance) {
-        instanceSource = TestUtil.readReferenceInstanceJson(testResource);
-        //console.log(instanceSource);
-      }
+interface Diagnostics {
+  errors: number;
+  warnings: number;
+}
 
-      let comparisonResult: JsonArtifactParsingResult = new JsonArtifactParsingResult();
-      try {
-        const templateReader: JsonTemplateReader = JsonTemplateReader.getStrict();
-        const jsonTemplateReaderResult: JsonTemplateReaderResult = templateReader.readFromString(templateSource);
-        expect(jsonTemplateReaderResult).not.toBeNull();
-        const parsingResult: JsonArtifactParsingResult = jsonTemplateReaderResult.parsingResult;
-        //expect(parsingResult.wasSuccessful()).toBe(true);
+const diagnostics = (result: JsonArtifactParsingResult): Diagnostics => ({
+  errors: result.getBlueprintComparisonErrorCount(),
+  warnings: result.getBlueprintComparisonWarningCount(),
+});
 
-        const writers: CedarJsonWriters = CedarWriters.json().getStrict();
-        const writer: JsonTemplateWriter = writers.getTemplateWriter();
-        // console.log(writer.getAsJsonString(jsonElementReaderResult.element));
+const cases = TestUtil.testMap(ceeSuiteTestMap, [], []);
+const templateCases = cases.filter(([, definition]) => definition.template);
+const instanceCases = cases.filter(([, definition]) => definition.instance);
 
-        comparisonResult = RoundTrip.compare(jsonTemplateReaderResult, writer);
-        // expect(comparisonResult.wasSuccessful()).toBe(true);
-        // expect(comparisonResult.getBlueprintComparisonErrorCount()).toBe(0);
-        // expect(comparisonResult.getBlueprintComparisonWarningCount()).toBe(0);
+describe('CEE compatibility corpus', () => {
+  it('contains the complete committed fixture inventory', () => {
+    expect(templateCases).toHaveLength(85);
+    expect(instanceCases).toHaveLength(57);
+  });
 
-        const instanceReader: JsonTemplateInstanceReader = JsonTemplateInstanceReader.getStrict();
-        const jsonTemplateInstanceReaderResult: JsonTemplateInstanceReaderResult = instanceReader.readFromString(instanceSource);
-        expect(jsonTemplateInstanceReaderResult).not.toBeNull();
-        const instance: TemplateInstance = jsonTemplateInstanceReaderResult.instance;
-        // TestUtil.p(instance);
-        // TestUtil.p(instance.dataContainer);
-        const templateInstanceWriter: JsonTemplateInstanceWriter = CedarWriters.json().getStrict().getTemplateInstanceWriter();
-        templateInstanceWriter.getAsJsonNode(instance);
-      } catch (error) {
-        TestUtil.p(comparisonResult.getBlueprintComparisonErrors());
-        console.error(`Failed to process template file: ${ceeTestNumber}`, error);
-        throw error;
-      }
-    });
+  it.each(templateCases)('template %i has only its declared compatibility diagnostics', (testNumber) => {
+    const resource = TestResource.ceeSuite(testNumber);
+    const result = CedarReaders.json().getFebruary2024().getTemplateReader().readFromString(TestUtil.readReferenceJson(resource));
+
+    expect(diagnostics(result.parsingResult)).toStrictEqual(
+      diagnosticsFor(CEE_TEMPLATE_DIAGNOSTICS, testNumber.toString().padStart(3, '0')),
+    );
+
+    const emitted = CedarWriters.json().getFebruary2024().getTemplateWriter().getAsJsonNode(result.template);
+    expect(Object.keys(emitted).length).toBeGreaterThan(0);
+  });
+
+  it.each(instanceCases)('instance %i has only its declared compatibility diagnostics', (testNumber) => {
+    const resource = TestResource.ceeSuite(testNumber);
+    const result = CedarReaders.json()
+      .getFebruary2024()
+      .getTemplateInstanceReader()
+      .readFromString(TestUtil.readReferenceInstanceJson(resource));
+
+    expect(diagnostics(result.parsingResult)).toStrictEqual(
+      diagnosticsFor(CEE_INSTANCE_DIAGNOSTICS, testNumber.toString().padStart(3, '0')),
+    );
+
+    const emitted = CedarWriters.json().getFebruary2024().getTemplateInstanceWriter().getAsJsonNode(result.instance);
+    expect(Object.keys(emitted).length).toBeGreaterThan(0);
+  });
+
+  it('has no stale diagnostic declaration', () => {
+    const knownTemplates = new Set(templateCases.map(([number]) => number.toString().padStart(3, '0')));
+    const knownInstances = new Set(instanceCases.map(([number]) => number.toString().padStart(3, '0')));
+    expect(Object.keys(CEE_TEMPLATE_DIAGNOSTICS).filter((id) => !knownTemplates.has(id))).toStrictEqual([]);
+    expect(Object.keys(CEE_INSTANCE_DIAGNOSTICS).filter((id) => !knownInstances.has(id))).toStrictEqual([]);
   });
 });

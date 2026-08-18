@@ -2,9 +2,10 @@ import { CedarWriters, CedarYamlWriters, JsonTemplateReader, YamlTemplateWriter 
 import { TestUtil } from '../TestUtil';
 import { templateTestNumbers } from './generatedTestCases';
 import { TestResource } from '../TestResource';
+import { YAML_TEMPLATE_PARSE_DIVERGENCES, diagnosticsFor } from './compatibilityExpectations';
 
 describe('YAMLTemplateWriter-references', () => {
-  TestUtil.testNumbers(templateTestNumbers, [3], []).forEach((templateTestNumber) => {
+  TestUtil.testNumbers(templateTestNumbers, [], []).forEach((templateTestNumber) => {
     it(`should correctly read the JSON template, and create the same YAML output as the reference: ${templateTestNumber}`, async () => {
       try {
         const testResource: TestResource = TestResource.template(templateTestNumber);
@@ -14,8 +15,10 @@ describe('YAMLTemplateWriter-references', () => {
         const jsonTemplateReaderResult = reader.readFromString(artifactSource);
         expect(jsonTemplateReaderResult).not.toBeNull();
         const parsingResult = jsonTemplateReaderResult.parsingResult;
-        // TestUtil.p(parsingResult.getBlueprintComparisonErrors());
-        expect(parsingResult.wasSuccessful()).toBe(true);
+        expect({
+          errors: parsingResult.getBlueprintComparisonErrorCount(),
+          warnings: parsingResult.getBlueprintComparisonWarningCount(),
+        }).toStrictEqual(diagnosticsFor(YAML_TEMPLATE_PARSE_DIVERGENCES, templateTestNumber));
 
         const writers: CedarYamlWriters = CedarWriters.yaml().getStrict();
         const yamlWriter: YamlTemplateWriter = writers.getTemplateWriter();

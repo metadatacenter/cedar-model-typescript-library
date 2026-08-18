@@ -101,6 +101,18 @@ describe('JsonFieldReaderList multipleChoice', () => {
     expect(property['items']['_valueConstraints']['multipleChoice']).toBe(false);
   });
 
+  test('a legacy object-shaped multi-select is written back as an array', () => {
+    const source = listTemplate(true, false);
+    const template: Template = CedarReaders.json().getFebruary2024().getTemplateReader().readFromObject(source).template;
+    const written = JSON.parse(CedarWriters.json().getStrict().getTemplateWriter().getAsJsonString(template));
+    const property = written['properties']['Choices'];
+
+    expect(property['type']).toBe('array');
+    expect(property['minItems']).toBe(0);
+    expect(property['items']['type']).toBe('object');
+    expect(property['items']['_valueConstraints']['multipleChoice']).toBe(true);
+  });
+
   /** A field read on its own has no property around it, and the declared value is all there is. */
   test('standalone, the declared value is the only signal', () => {
     expect(readStandalone(true) instanceof MultipleChoiceListFieldImpl).toBe(true);

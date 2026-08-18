@@ -25,7 +25,9 @@ export abstract class JsonAbstractSchemaArtifactReader extends JsonAbstractArtif
     container.schema_schemaVersion = SchemaVersion.forValue(ReaderUtil.getString(sourceObject, JsonSchema.schemaVersion));
     container.pav_version = PavVersion.forValue(ReaderUtil.getString(sourceObject, JsonSchema.pavVersion));
     container.bibo_status = BiboStatus.forJsonValue(ReaderUtil.getString(sourceObject, JsonSchema.biboStatus));
-    JsonAbstractSchemaArtifactReader.refuseEmptyIdentifier(sourceObject, JsonSchema.pavDerivedFrom);
+    // Older Designer/exporter generations wrote an empty string when no source artifact existed.
+    // CedarArtifactId maps that legacy spelling to NULL, and the writer then omits the optional key.
+    // Do not reject it at the read boundary: production artifacts must remain openable.
     container.pav_derivedFrom = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, JsonSchema.pavDerivedFrom));
     container.pav_previousVersion = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, JsonSchema.pavPreviousVersion));
     container.schema_identifier = ReaderUtil.getString(sourceObject, JsonSchema.schemaIdentifier);

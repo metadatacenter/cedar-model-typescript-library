@@ -5,13 +5,13 @@ import { CedarReaders, CedarWriters } from '../../../../src';
  *
  * It names the artifact this one was copied from, and it is optional: an artifact derived from
  * nothing leaves the key out. An empty string says neither — it is not an identifier, and it is not
- * the absence of one — and 289 schema artifacts in the shared corpus carried one, against 41 naming a
- * real IRI.
+ * the absence of one. The production inventory nevertheless found it throughout legacy schema
+ * cohorts, including artifacts that developers must still be able to open in Designer.
  *
  * The meta-schema types the key as a string with `format: uri` and the validator does assert that
  * format, rejecting `"not a uri at all"`. What it accepts is `""`, because an empty relative
- * reference is a well-formed URI. So the rule the schema means is one the schema cannot state, and
- * the reader states it: the same refusal `@id` already gets.
+ * reference is a well-formed URI. Persistence validation therefore enforces the rule for new writes,
+ * while readers treat the legacy spelling as absence and writers omit it on a round trip.
  */
 const TEMPLATE = (derivedFrom: unknown) => ({
   '@id': 'https://repo.metadatacenter.org/templates/t1',
@@ -45,17 +45,27 @@ const readInstance = (source: object) =>
 describe('pav:derivedFrom as an empty string', () => {
   const DERIVED = 'https://repo.metadatacenter.org/templates/t0';
 
-  test('is refused on a schema artifact, in JSON', () => {
-    expect(() => readTemplate(TEMPLATE(''))).toThrow(/empty string is not a URI/);
+  test('loads a legacy empty value on a schema artifact and omits it when written', () => {
+    const template = readTemplate(TEMPLATE('')).template;
+
+    expect(template.pav_derivedFrom?.getValue()).toBeNull();
+    const written = JSON.parse(CedarWriters.json().getStrict().getTemplateWriter().getAsJsonString(template));
+    expect(written).not.toHaveProperty('pav:derivedFrom');
   });
 
-  test('is refused on an instance, in JSON', () => {
-    expect(() => readInstance(INSTANCE(''))).toThrow(/empty string is not a URI/);
+  test('loads a legacy empty value on an instance and omits it when written', () => {
+    const instance = readInstance(INSTANCE('')).instance;
+
+    expect(instance.pav_derivedFrom?.getValue()).toBeNull();
+    const written = JSON.parse(CedarWriters.json().getStrict().getTemplateInstanceWriter().getAsJsonString(instance));
+    expect(written).not.toHaveProperty('pav:derivedFrom');
   });
 
-  test('is refused in YAML', () => {
+  test('loads the legacy empty spelling in YAML as absence', () => {
     const yaml = 'type: "template"\nname: "T"\nmodelVersion: "1.6.0"\nderivedFrom: ""\n';
-    expect(() => CedarReaders.yaml().getStrict().getTemplateReader().readFromString(yaml)).toThrow(/empty string is not a URI/);
+    const template = CedarReaders.yaml().getStrict().getTemplateReader().readFromString(yaml).template;
+
+    expect(template.pav_derivedFrom?.getValue()).toBeNull();
   });
 
   test('a named source reads, and an absent key stays absent', () => {

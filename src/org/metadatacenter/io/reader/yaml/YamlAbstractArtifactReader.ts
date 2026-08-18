@@ -75,7 +75,7 @@ export abstract class YamlAbstractArtifactReader {
     container.schema_schemaVersion = SchemaVersion.forValue(modelVersion);
     container.pav_version = PavVersion.forValue(ReaderUtil.getString(sourceObject, YamlKeys.version));
     container.bibo_status = BiboStatus.forYamlValue(ReaderUtil.getString(sourceObject, YamlKeys.status));
-    YamlAbstractArtifactReader.refuseEmptyIdentifier(sourceObject, YamlKeys.derivedFrom);
+    // Accept the legacy empty spelling as absence; the writer omits the optional key.
     container.pav_derivedFrom = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, YamlKeys.derivedFrom));
     container.pav_previousVersion = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, YamlKeys.previousVersion));
     container.schema_identifier = ReaderUtil.getString(sourceObject, YamlKeys.identifier);
@@ -92,11 +92,12 @@ export abstract class YamlAbstractArtifactReader {
    * names the artifact it was copied from.
    */
   /**
-   * An empty string is not an identifier, and it is not an absence of one either.
+   * An empty artifact or occurrence `id` is not an identifier, and it is not an absence of one either.
    *
    * Documents carry it where one has not been assigned — half the element occurrences in the shared
    * corpus once did — and reading it as though the key were absent hides that from whoever wrote it. A
-   * key that is not to be answered yet is written `null` or left out.
+   * key that is not to be answered yet is written `null` or left out. Optional `derivedFrom` is a
+   * compatibility exception: its legacy empty spelling loads as absence and is omitted on write.
    */
   protected static refuseEmptyIdentifier(sourceObject: JsonNode, key: string = YamlKeys.id): void {
     const raw = ReaderUtil.getString(sourceObject, key);

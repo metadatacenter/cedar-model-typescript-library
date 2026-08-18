@@ -15,19 +15,15 @@ import { AnnotationAtValue } from '../../../model/cedar/annotation/AnnotationAtV
 
 export abstract class JsonAbstractArtifactReader {
   /**
-   * An identifier written as an empty string.
+   * An artifact or occurrence `@id` written as an empty string.
    *
    * A document carries it where one has not been assigned — half the element occurrences in the shared
    * corpus once did — and reading it as though the key were absent hides that from whoever wrote it,
    * then writes `null` back in its place. The value for an identifier not yet assigned is `null`.
    *
-   * The meta-schema agrees where it can. It types both `@id` and `pav:derivedFrom` as a string with
-   * `format: uri`, and the validator does assert that format — it rejects `"not a uri at all"`. What it
-   * accepts is the empty string, because `""` is a well-formed relative URI reference. So the rule the
-   * schema means is one the schema cannot state, and a reader is where it gets stated.
-   *
-   * `pav:derivedFrom` differs from `@id` in what absence means: it is optional, so a document that is
-   * derived from nothing leaves the key out rather than writing `null`.
+   * The validator's URI format accepts the empty relative reference, so the reader states the rule
+   * the schema cannot. Optional `pav:derivedFrom` is deliberately different: legacy empty values are
+   * accepted as absence so stored production artifacts can open, then omitted by the writer.
    */
   protected static refuseEmptyIdentifier(sourceObject: JsonNode, key: string = JsonSchema.atId): void {
     const raw = ReaderUtil.getString(sourceObject, key);

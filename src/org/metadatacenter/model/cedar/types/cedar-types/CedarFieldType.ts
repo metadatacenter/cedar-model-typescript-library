@@ -137,7 +137,7 @@ export class CedarFieldType {
   public static MULTIPLE_SELECT_LIST = new CedarFieldType(
     CedarFieldTypeValues.MULTIPLE_SELECT_LIST,
     UiInputType.LIST,
-    YamlArtifactType.SINGLE_SELECT_LIST,
+    YamlArtifactType.MULTI_SELECT_LIST,
     false,
   );
   public static ATTRIBUTE_VALUE = new CedarFieldType(

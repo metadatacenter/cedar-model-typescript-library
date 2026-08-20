@@ -10,7 +10,7 @@ module.exports = [
   },
   js.configs.recommended,
   {
-    files: ['eslint.config.js', 'smoke-test-package.js'],
+    files: ['eslint.config.js', 'smoke-test-package.js', 'itest/scripts/run-parity.js'],
     languageOptions: {
       ecmaVersion: 'latest',
       globals: globals.node,

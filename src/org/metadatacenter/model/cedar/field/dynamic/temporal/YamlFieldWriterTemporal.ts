@@ -7,6 +7,7 @@ import { YamlTemplateFieldWriterInternal } from '../../../../../io/writer/yaml/Y
 import { YamlKeys } from '../../../constants/YamlKeys';
 import { YamlWriterBehavior } from '../../../../../behavior/YamlWriterBehavior';
 import { CedarYamlWriters } from '../../../../../io/writer/yaml/CedarYamlWriters';
+import { TemporalDefaultValueValidator } from './TemporalDefaultValueValidator';
 
 export class YamlFieldWriterTemporal extends YamlTemplateFieldWriterInternal {
   constructor(behavior: YamlWriterBehavior, writers: CedarYamlWriters) {
@@ -14,9 +15,17 @@ export class YamlFieldWriterTemporal extends YamlTemplateFieldWriterInternal {
   }
 
   override expandValueConstraintsNodeForYAML(vcNode: JsonNode, field: TemporalField, _childInfo: ChildDeploymentInfo): void {
+    TemporalDefaultValueValidator.assertValid(
+      field.valueConstraints.temporalType,
+      field.temporalGranularity,
+      field.valueConstraints.defaultValue,
+    );
     vcNode[YamlKeys.datatype] = this.atomicWriter.write(field.valueConstraints.temporalType);
     if (field.temporalGranularity !== TemporalGranularity.NULL) {
       vcNode[YamlKeys.granularity] = this.atomicWriter.write(field.temporalGranularity);
+      if (field.valueConstraints.defaultValue != null && field.valueConstraints.defaultValue !== '') {
+        vcNode[YamlKeys.default] = field.valueConstraints.defaultValue;
+      }
       if (
         field.temporalGranularity !== TemporalGranularity.YEAR &&
         field.temporalGranularity !== TemporalGranularity.MONTH &&
@@ -29,6 +38,8 @@ export class YamlFieldWriterTemporal extends YamlTemplateFieldWriterInternal {
           vcNode[YamlKeys.inputTimeZone] = field.timezoneEnabled;
         }
       }
+    } else if (field.valueConstraints.defaultValue != null && field.valueConstraints.defaultValue !== '') {
+      vcNode[YamlKeys.default] = field.valueConstraints.defaultValue;
     }
   }
 }

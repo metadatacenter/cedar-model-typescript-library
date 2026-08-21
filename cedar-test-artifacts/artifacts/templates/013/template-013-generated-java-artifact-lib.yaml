@@ -16,6 +16,7 @@ children:
     id: "https://repo.metadatacenter.org/template-fields/66140bb4-8165-463a-8399-ea7d516cd0cd"
     modelVersion: 1.6.0
     datatype: xsd:decimal
+    default: 42.5
     createdOn: "2024-03-06T16:49:50-08:00"
     createdBy: "https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95"
     modifiedOn: "2024-03-06T16:49:50-08:00"

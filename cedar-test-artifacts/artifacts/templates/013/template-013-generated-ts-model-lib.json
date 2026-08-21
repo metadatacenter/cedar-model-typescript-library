@@ -328,6 +328,7 @@
       },
       "_valueConstraints": {
         "numberType": "xsd:decimal",
+        "defaultValue": "42.5",
         "requiredValue": false
       },
       "properties": {

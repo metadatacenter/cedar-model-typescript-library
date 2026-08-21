@@ -8,6 +8,7 @@ import { JsonWriterBehavior } from '../../../../../behavior/JsonWriterBehavior';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { CedarJsonWriters } from '../../../../../io/writer/json/CedarJsonWriters';
 import { JsonSchema } from '../../../constants/JsonSchema';
+import { TemporalDefaultValueValidator } from './TemporalDefaultValueValidator';
 
 export class JsonFieldWriterTemporal extends JsonTemplateFieldWriterInternal {
   constructor(behavior: JsonWriterBehavior, writers: CedarJsonWriters) {
@@ -28,7 +29,15 @@ export class JsonFieldWriterTemporal extends JsonTemplateFieldWriterInternal {
   }
 
   override expandValueConstraintsNode(vcNode: JsonNode, field: TemporalField, childInfo: ChildDeploymentInfo): void {
+    TemporalDefaultValueValidator.assertValid(
+      field.valueConstraints.temporalType,
+      field.temporalGranularity,
+      field.valueConstraints.defaultValue,
+    );
     vcNode[CedarModel.temporalType] = this.atomicWriter.write(field.valueConstraints.temporalType);
+    if (field.valueConstraints.defaultValue != null && field.valueConstraints.defaultValue !== '') {
+      vcNode[CedarModel.defaultValue] = field.valueConstraints.defaultValue;
+    }
     super.expandValueConstraintsNode(vcNode, field, childInfo);
   }
 

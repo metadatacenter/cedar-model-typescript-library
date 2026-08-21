@@ -6,3 +6,4 @@ children:
     name: "Numeric field"
     description: "Help Text"
     datatype: xsd:decimal
+    default: 42.5

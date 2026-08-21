@@ -13,5 +13,7 @@ export interface TemporalFieldBuilder extends TemplateFieldBuilder {
 
   withTemporalType(temporalType: TemporalType): TemporalFieldBuilder;
 
+  withDefaultValue(defaultValue: string | null): TemporalFieldBuilder;
+
   build(): TemporalField;
 }

@@ -365,7 +365,8 @@
       },
       "_valueConstraints": {
         "requiredValue": false,
-        "numberType": "xsd:long"
+        "numberType": "xsd:long",
+        "defaultValue": "9007199254740991"
       },
       "properties": {
         "@type": {
@@ -449,7 +450,8 @@
       },
       "_valueConstraints": {
         "requiredValue": false,
-        "numberType": "xsd:int"
+        "numberType": "xsd:int",
+        "defaultValue": "-2147483648"
       },
       "properties": {
         "@type": {
@@ -533,7 +535,8 @@
       },
       "_valueConstraints": {
         "requiredValue": false,
-        "numberType": "xsd:double"
+        "numberType": "xsd:double",
+        "defaultValue": "42.5"
       },
       "properties": {
         "@type": {
@@ -617,7 +620,8 @@
       },
       "_valueConstraints": {
         "requiredValue": false,
-        "numberType": "xsd:float"
+        "numberType": "xsd:float",
+        "defaultValue": "3.25"
       },
       "properties": {
         "@type": {
@@ -701,7 +705,8 @@
       },
       "_valueConstraints": {
         "requiredValue": false,
-        "numberType": "xsd:decimal"
+        "numberType": "xsd:decimal",
+        "defaultValue": "0.125"
       },
       "properties": {
         "@type": {

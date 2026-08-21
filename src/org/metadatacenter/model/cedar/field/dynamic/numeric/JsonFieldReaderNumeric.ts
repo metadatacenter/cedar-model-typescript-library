@@ -8,6 +8,7 @@ import { NumberType } from '../../../types/wrapped-types/NumberType';
 import { JsonTemplateFieldTypeSpecificReader } from '../../../../../io/reader/json/JsonTemplateFieldTypeSpecificReader';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { NumericFieldImpl } from './NumericFieldImpl';
+import { NumericDefaultValueValidator } from './NumericDefaultValueValidator';
 
 export class JsonFieldReaderNumeric extends JsonTemplateFieldTypeSpecificReader {
   override read(
@@ -29,6 +30,13 @@ export class JsonFieldReaderNumeric extends JsonTemplateFieldTypeSpecificReader 
       field.valueConstraints.maxValue = ReaderUtil.getNumber(valueConstraints, CedarModel.maxValue);
       field.valueConstraints.decimalPlaces = ReaderUtil.getNumber(valueConstraints, CedarModel.decimalPlace);
       field.valueConstraints.unitOfMeasure = ReaderUtil.getString(valueConstraints, CedarModel.unitOfMeasure);
+      field.valueConstraints.defaultValue = ReaderUtil.getNumericDefault(valueConstraints, CedarModel.defaultValue);
+      NumericDefaultValueValidator.assertValid(
+        field.valueConstraints.numberType,
+        field.valueConstraints.defaultValue,
+        field.valueConstraints.minValue,
+        field.valueConstraints.maxValue,
+      );
     }
     return field;
   }

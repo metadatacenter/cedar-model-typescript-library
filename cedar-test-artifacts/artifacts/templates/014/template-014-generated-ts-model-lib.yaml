@@ -16,6 +16,7 @@ children:
     id: "tmp-1709772870674-279341"
     modelVersion: 1.6.0
     datatype: xsd:decimal
+    default: 0.125
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/9195f216-1e3e-4b93-87c5-1b253f345a28"
   - key: "Long"
@@ -25,6 +26,7 @@ children:
     id: "tmp-1709772896270-304937"
     modelVersion: 1.6.0
     datatype: xsd:long
+    default: 9007199254740991
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/16803a8f-81fc-488b-b7af-000e0a5cabc9"
   - key: "Integer"
@@ -34,6 +36,7 @@ children:
     id: "tmp-1709772919935-328601"
     modelVersion: 1.6.0
     datatype: xsd:int
+    default: -2147483648
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/e3644868-b3ea-4f2d-864c-4b0237d59bf4"
   - key: "Double"
@@ -43,6 +46,7 @@ children:
     id: "tmp-1709772946038-354705"
     modelVersion: 1.6.0
     datatype: xsd:double
+    default: 42.5
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/f2acffd9-7e37-47cf-b6b7-39d99cfd94e3"
   - key: "Float"
@@ -52,5 +56,6 @@ children:
     id: "tmp-1709772964268-372935"
     modelVersion: 1.6.0
     datatype: xsd:float
+    default: 3.25
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/85f7c300-74f7-4e64-b915-b4c1d289300d"

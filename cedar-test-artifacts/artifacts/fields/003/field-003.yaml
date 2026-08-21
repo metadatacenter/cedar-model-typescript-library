@@ -9,6 +9,7 @@ modelVersion: 1.6.0
 prefLabel: "Study Start Date"
 datatype: xsd:date
 granularity: day
+default: "2026-08-20"
 createdOn: "2022-10-13T14:15:32-07:00"
 createdBy: "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014"
 modifiedOn: "2022-10-13T14:15:32-07:00"

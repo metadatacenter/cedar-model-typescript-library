@@ -13,5 +13,7 @@ export interface NumericFieldBuilder extends TemplateFieldBuilder {
 
   withUnitOfMeasure(unitOfMeasure: string | null): NumericFieldBuilder;
 
+  withDefaultValue(defaultValue: number | null): NumericFieldBuilder;
+
   build(): NumericField;
 }

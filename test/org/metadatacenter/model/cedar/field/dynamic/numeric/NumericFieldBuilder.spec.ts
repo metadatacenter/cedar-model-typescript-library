@@ -37,6 +37,7 @@ describe('NumericFieldBuilder', () => {
       .withMaxValue(100)
       .withDecimalPlaces(2)
       .withUnitOfMeasure('cm')
+      .withDefaultValue(42.5)
       .build();
 
     const writers: CedarJsonWriters = CedarWriters.json().getStrict();
@@ -82,6 +83,8 @@ describe('NumericFieldBuilder', () => {
     expect(backparsed['_valueConstraints']['maxValue']).toBe(100);
     expect(backparsed['_valueConstraints']['decimalPlace']).toBe(2);
     expect(backparsed['_valueConstraints']['unitOfMeasure']).toBe('cm');
+    expect(field.valueConstraints.defaultValue).toBe(42.5);
+    expect(backparsed['_valueConstraints']['defaultValue']).toBe('42.5');
   });
 
   test('creates element with one text area, single-instance', () => {

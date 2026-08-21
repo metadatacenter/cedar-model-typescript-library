@@ -5,3 +5,4 @@ identifier: "study_start_date"
 prefLabel: "Study Start Date"
 datatype: xsd:date
 granularity: day
+default: "2026-08-20"

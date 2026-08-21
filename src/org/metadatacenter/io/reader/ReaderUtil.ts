@@ -59,6 +59,44 @@ export abstract class ReaderUtil {
     }
   }
 
+  /**
+   * Read a numeric default from either of CEDAR's supported encodings.
+   *
+   * JSON writes numeric defaults as strings to satisfy the CEDAR field schema,
+   * while YAML normally uses a numeric scalar. Older JSON documents may also
+   * contain a bare number, so readers accept both and keep a number in memory.
+   */
+  public static getNumericDefault(node: JsonNode, key: string): number | null {
+    if (!Object.hasOwn(node, key) || node[key] === null || node[key] === undefined) {
+      return null;
+    }
+
+    const raw = node[key];
+    if (typeof raw === 'number') {
+      if (Number.isFinite(raw)) {
+        return raw;
+      }
+      throw new Error(`Numeric default at "${key}" must be finite.`);
+    }
+
+    if (typeof raw === 'string') {
+      const text = raw.trim();
+      if (text === '') {
+        return null;
+      }
+      if (!/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/.test(text)) {
+        throw new Error(`Numeric default at "${key}" is not a valid number: "${raw}".`);
+      }
+      const value = Number(text);
+      if (Number.isFinite(value)) {
+        return value;
+      }
+      throw new Error(`Numeric default at "${key}" must be finite.`);
+    }
+
+    throw new Error(`Numeric default at "${key}" must be a number or numeric string.`);
+  }
+
   static getNumberOrZero(node: JsonNode, key: string): number {
     if (Object.hasOwn(node, key)) {
       return node[key] as number;

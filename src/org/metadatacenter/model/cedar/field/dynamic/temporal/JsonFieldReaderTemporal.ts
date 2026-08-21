@@ -10,6 +10,7 @@ import { TemporalGranularity } from '../../../types/wrapped-types/TemporalGranul
 import { JsonTemplateFieldTypeSpecificReader } from '../../../../../io/reader/json/JsonTemplateFieldTypeSpecificReader';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { TemporalFieldImpl } from './TemporalFieldImpl';
+import { TemporalDefaultValueValidator } from './TemporalDefaultValueValidator';
 
 export class JsonFieldReaderTemporal extends JsonTemplateFieldTypeSpecificReader {
   override read(
@@ -30,7 +31,16 @@ export class JsonFieldReaderTemporal extends JsonTemplateFieldTypeSpecificReader
 
     const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
     if (valueConstraints != null) {
-      field.valueConstraints.temporalType = TemporalType.forValue(ReaderUtil.getString(valueConstraints, CedarModel.temporalType));
+      const temporalType = ReaderUtil.getString(valueConstraints, CedarModel.temporalType);
+      if (temporalType !== null) {
+        field.valueConstraints.temporalType = TemporalType.forValue(temporalType);
+      }
+      field.valueConstraints.defaultValue = ReaderUtil.getString(valueConstraints, CedarModel.defaultValue);
+      TemporalDefaultValueValidator.assertValid(
+        field.valueConstraints.temporalType,
+        field.temporalGranularity,
+        field.valueConstraints.defaultValue,
+      );
     }
     return field;
   }

@@ -36,6 +36,7 @@ describe('TemporalFieldBuilder', () => {
       .withInputTimeFormat(TimeFormat.H12)
       .withTemporalGranularity(TemporalGranularity.DECIMAL_SECOND)
       .withTemporalType(TemporalType.DATETIME)
+      .withDefaultValue('2026-08-20T14:30:00.125-07:00')
       .build();
 
     const writers: CedarJsonWriters = CedarWriters.json().getStrict();
@@ -79,7 +80,8 @@ describe('TemporalFieldBuilder', () => {
 
     expect(backparsed['_valueConstraints']['requiredValue']).toBe(false);
     expect(backparsed['_valueConstraints']['temporalType']).toBe('xsd:dateTime');
-    expect(backparsed['_valueConstraints']['defaultValue']).toBeUndefined();
+    expect(field.valueConstraints.defaultValue).toBe('2026-08-20T14:30:00.125-07:00');
+    expect(backparsed['_valueConstraints']['defaultValue']).toBe('2026-08-20T14:30:00.125-07:00');
   });
 
   test('creates element with one temporal field, single-instance', () => {

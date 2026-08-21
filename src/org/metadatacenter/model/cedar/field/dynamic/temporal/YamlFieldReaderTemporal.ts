@@ -10,6 +10,7 @@ import { YamlTemplateFieldTypeSpecificReader } from '../../../../../io/reader/ya
 import { YamlKeys } from '../../../constants/YamlKeys';
 import { TemporalFieldImpl } from './TemporalFieldImpl';
 import { YamlArtifactParsingResult } from '../../../util/compare/YamlArtifactParsingResult';
+import { TemporalDefaultValueValidator } from './TemporalDefaultValueValidator';
 
 export class YamlFieldReaderTemporal extends YamlTemplateFieldTypeSpecificReader {
   override read(
@@ -24,7 +25,16 @@ export class YamlFieldReaderTemporal extends YamlTemplateFieldTypeSpecificReader
     field.inputTimeFormat = TimeFormat.forValue(ReaderUtil.getString(fieldSourceObject, YamlKeys.inputTimeFormat));
     field.timezoneEnabled = ReaderUtil.getBoolean(fieldSourceObject, YamlKeys.inputTimeZone);
 
-    field.valueConstraints.temporalType = TemporalType.forValue(ReaderUtil.getString(fieldSourceObject, YamlKeys.datatype));
+    const temporalType = ReaderUtil.getString(fieldSourceObject, YamlKeys.datatype);
+    if (temporalType !== null) {
+      field.valueConstraints.temporalType = TemporalType.forValue(temporalType);
+    }
+    field.valueConstraints.defaultValue = ReaderUtil.getString(fieldSourceObject, YamlKeys.default);
+    TemporalDefaultValueValidator.assertValid(
+      field.valueConstraints.temporalType,
+      field.temporalGranularity,
+      field.valueConstraints.defaultValue,
+    );
     return field;
   }
 }

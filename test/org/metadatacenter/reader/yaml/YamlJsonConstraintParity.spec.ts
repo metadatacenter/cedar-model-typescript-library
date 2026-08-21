@@ -43,6 +43,7 @@ const cases: Array<[string, any]> = [
   ['numeric max', base(CedarBuilders.numericFieldBuilder()).withNumberType(NumberType.DECIMAL).withMaxValue(99).build()],
   ['numeric decimals', base(CedarBuilders.numericFieldBuilder()).withNumberType(NumberType.DECIMAL).withDecimalPlaces(2).build()],
   ['numeric unit', base(CedarBuilders.numericFieldBuilder()).withNumberType(NumberType.DECIMAL).withUnitOfMeasure('kg').build()],
+  ['numeric default value', base(CedarBuilders.numericFieldBuilder()).withNumberType(NumberType.DECIMAL).withDefaultValue(42.5).build()],
   [
     'temporal date',
     base(CedarBuilders.temporalFieldBuilder()).withTemporalType(TemporalType.DATE).withTemporalGranularity(TemporalGranularity.DAY).build(),
@@ -60,6 +61,7 @@ const cases: Array<[string, any]> = [
       .withTemporalType(TemporalType.DATETIME)
       .withTemporalGranularity(TemporalGranularity.SECOND)
       .withTimezoneEnabled(true)
+      .withDefaultValue('2026-08-20T14:30:00-07:00')
       .build(),
   ],
 ];

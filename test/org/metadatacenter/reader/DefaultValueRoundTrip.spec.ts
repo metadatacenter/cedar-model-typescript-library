@@ -9,6 +9,7 @@ import {
   TemporalType,
   YamlTemplateFieldReader,
 } from '../../../../src';
+import { ReaderUtil } from '../../../../src/org/metadatacenter/io/reader/ReaderUtil';
 
 const base = (builder: any) =>
   builder
@@ -22,6 +23,18 @@ const jsonWriterFor = (field: NumericField | TemporalField) => CedarWriters.json
 const yamlWriterFor = (field: NumericField | TemporalField) => CedarWriters.yaml().getStrict().getFieldWriterForField(field);
 
 describe('numeric and temporal declared defaults', () => {
+  test('numeric default reader distinguishes absent, blank, non-finite and wrong-typed values', () => {
+    expect(ReaderUtil.getNumericDefault({}, 'defaultValue')).toBeNull();
+    expect(ReaderUtil.getNumericDefault({ defaultValue: null }, 'defaultValue')).toBeNull();
+    expect(ReaderUtil.getNumericDefault({ defaultValue: undefined }, 'defaultValue')).toBeNull();
+    expect(ReaderUtil.getNumericDefault({ defaultValue: '   ' }, 'defaultValue')).toBeNull();
+    expect(() => ReaderUtil.getNumericDefault({ defaultValue: Number.POSITIVE_INFINITY }, 'defaultValue')).toThrow(
+      /finite/,
+    );
+    expect(() => ReaderUtil.getNumericDefault({ defaultValue: '1e309' }, 'defaultValue')).toThrow(/finite/);
+    expect(() => ReaderUtil.getNumericDefault({ defaultValue: false }, 'defaultValue')).toThrow(/number or numeric string/);
+  });
+
   test.each<[string, NumberType, number]>([
     ['decimal', NumberType.DECIMAL, 42.5],
     ['int', NumberType.INT, 2147483647],

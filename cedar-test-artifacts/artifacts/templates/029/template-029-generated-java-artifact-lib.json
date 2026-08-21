@@ -562,7 +562,10 @@
             "additionalProperties": false
           },
           "@id": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "uri"
           },
           "@type": {
@@ -1509,6 +1512,7 @@
         "pav:createdBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
         "pav:lastUpdatedOn": "2022-10-13T12:45:10-07:00",
         "oslc:modifiedBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
+        "skos:prefLabel": "Data File Title",
         "pav:version": "0.0.1",
         "bibo:status": "bibo:draft",
         "schema:schemaVersion": "1.6.0",
@@ -1602,7 +1606,10 @@
           "additionalProperties": false
         },
         "@id": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "format": "uri"
         },
         "@type": {
@@ -1987,6 +1994,7 @@
       "pav:createdBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
       "pav:lastUpdatedOn": "2022-10-13T12:45:10-07:00",
       "oslc:modifiedBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
+      "skos:prefLabel": "Data File Identity",
       "pav:version": "0.0.1",
       "bibo:status": "bibo:draft",
       "schema:schemaVersion": "1.6.0",
@@ -2037,7 +2045,10 @@
           "additionalProperties": false
         },
         "@id": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "format": "uri"
         },
         "@type": {
@@ -2068,6 +2079,7 @@
       "pav:createdBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
       "pav:lastUpdatedOn": "2022-10-13T12:45:10-07:00",
       "oslc:modifiedBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
+      "skos:prefLabel": "Data File Content",
       "pav:version": "0.0.1",
       "bibo:status": "bibo:draft",
       "schema:schemaVersion": "1.6.0",
@@ -2133,7 +2145,10 @@
           "additionalProperties": false
         },
         "@id": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "format": "uri"
         },
         "@type": {
@@ -2251,6 +2266,7 @@
       "pav:createdBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
       "pav:lastUpdatedOn": "2022-10-13T12:45:10-07:00",
       "oslc:modifiedBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
+      "skos:prefLabel": "Data File Version",
       "pav:version": "0.0.1",
       "bibo:status": "bibo:draft",
       "schema:schemaVersion": "1.6.0",
@@ -2325,7 +2341,10 @@
           "additionalProperties": false
         },
         "@id": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "format": "uri"
         },
         "@type": {
@@ -3959,7 +3978,7 @@
                 }
               ],
               "requiredValue": false,
-              "multipleChoice": true
+              "multipleChoice": false
             },
             "properties": {
               "@type": {
@@ -4017,6 +4036,7 @@
       "pav:createdBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
       "pav:lastUpdatedOn": "2022-10-13T12:45:10-07:00",
       "oslc:modifiedBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
+      "skos:prefLabel": "Data File Language",
       "pav:version": "0.0.1",
       "bibo:status": "bibo:draft",
       "schema:schemaVersion": "1.6.0",
@@ -4112,7 +4132,10 @@
             "additionalProperties": false
           },
           "@id": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "uri"
           },
           "@type": {
@@ -4497,6 +4520,7 @@
         "pav:createdBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
         "pav:lastUpdatedOn": "2022-10-13T12:45:10-07:00",
         "oslc:modifiedBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
+        "skos:prefLabel": "Data File Subjects",
         "pav:version": "0.0.1",
         "bibo:status": "bibo:draft",
         "schema:schemaVersion": "1.6.0",
@@ -4584,7 +4608,10 @@
             "additionalProperties": false
           },
           "@id": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "uri"
           },
           "@type": {
@@ -5628,6 +5655,7 @@
         "pav:createdBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
         "pav:lastUpdatedOn": "2022-10-13T12:45:10-07:00",
         "oslc:modifiedBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
+        "skos:prefLabel": "Data File Description",
         "pav:version": "0.0.1",
         "bibo:status": "bibo:draft",
         "schema:schemaVersion": "1.6.0",
@@ -5694,7 +5722,10 @@
           "additionalProperties": false
         },
         "@id": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "format": "uri"
         },
         "@type": {
@@ -5812,6 +5843,7 @@
       "pav:createdBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
       "pav:lastUpdatedOn": "2022-10-13T12:45:10-07:00",
       "oslc:modifiedBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
+      "skos:prefLabel": "Data File Dictionary",
       "pav:version": "0.0.1",
       "bibo:status": "bibo:draft",
       "schema:schemaVersion": "1.6.0",
@@ -5988,7 +6020,10 @@
             "additionalProperties": false
           },
           "@id": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "uri"
           },
           "@type": {
@@ -7168,6 +7203,7 @@
         "pav:createdBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
         "pav:lastUpdatedOn": "2022-10-13T12:45:10-07:00",
         "oslc:modifiedBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
+        "skos:prefLabel": "Data File Creator",
         "pav:version": "0.0.1",
         "bibo:status": "bibo:draft",
         "schema:schemaVersion": "1.6.0",
@@ -7273,7 +7309,10 @@
             "additionalProperties": false
           },
           "@id": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "uri"
           },
           "@type": {
@@ -7751,6 +7790,7 @@
         "pav:createdBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
         "pav:lastUpdatedOn": "2022-10-13T12:45:10-07:00",
         "oslc:modifiedBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
+        "skos:prefLabel": "Data File Related Resource",
         "pav:version": "0.0.1",
         "bibo:status": "bibo:draft",
         "schema:schemaVersion": "1.6.0",
@@ -7928,7 +7968,10 @@
             "additionalProperties": false
           },
           "@id": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "uri"
           },
           "@type": {
@@ -9108,6 +9151,7 @@
         "pav:createdBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
         "pav:lastUpdatedOn": "2022-10-13T12:45:10-07:00",
         "oslc:modifiedBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
+        "skos:prefLabel": "Data File Contributor",
         "pav:version": "0.0.1",
         "bibo:status": "bibo:draft",
         "schema:schemaVersion": "1.6.0",
@@ -9195,7 +9239,10 @@
             "additionalProperties": false
           },
           "@id": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "uri"
           },
           "@type": {
@@ -9488,6 +9535,7 @@
         "pav:createdBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
         "pav:lastUpdatedOn": "2022-10-13T12:45:10-07:00",
         "oslc:modifiedBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
+        "skos:prefLabel": "Data File Rights",
         "pav:version": "0.0.1",
         "bibo:status": "bibo:draft",
         "schema:schemaVersion": "1.6.0",
@@ -9566,7 +9614,10 @@
             "additionalProperties": false
           },
           "@id": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "uri"
           },
           "@type": {
@@ -9780,6 +9831,7 @@
         "pav:createdBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
         "pav:lastUpdatedOn": "2022-10-13T12:45:10-07:00",
         "oslc:modifiedBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
+        "skos:prefLabel": "Data File Date",
         "pav:version": "0.0.1",
         "bibo:status": "bibo:draft",
         "schema:schemaVersion": "1.6.0",
@@ -9903,7 +9955,10 @@
             "additionalProperties": false
           },
           "@id": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "uri"
           },
           "@type": {
@@ -10550,6 +10605,7 @@
         "pav:createdBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
         "pav:lastUpdatedOn": "2022-10-13T12:45:10-07:00",
         "oslc:modifiedBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
+        "skos:prefLabel": "Data File Parent Study",
         "pav:version": "0.0.1",
         "bibo:status": "bibo:draft",
         "schema:schemaVersion": "1.6.0",
@@ -10673,7 +10729,10 @@
             "additionalProperties": false
           },
           "@id": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "uri"
           },
           "@type": {
@@ -11308,6 +11367,7 @@
         "pav:createdBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
         "pav:lastUpdatedOn": "2022-10-13T12:45:10-07:00",
         "oslc:modifiedBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
+        "skos:prefLabel": "Data File Funding Source",
         "pav:version": "0.0.1",
         "bibo:status": "bibo:draft",
         "schema:schemaVersion": "1.6.0",
@@ -11485,7 +11545,10 @@
             "additionalProperties": false
           },
           "@id": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "uri"
           },
           "@type": {
@@ -12617,7 +12680,10 @@
                 "additionalProperties": false
               },
               "@id": {
-                "type": "string",
+                "type": [
+                  "string",
+                  "null"
+                ],
                 "format": "uri"
               },
               "@type": {
@@ -12836,6 +12902,7 @@
             "pav:createdBy": null,
             "pav:lastUpdatedOn": null,
             "oslc:modifiedBy": null,
+            "skos:prefLabel": "Data File Publication Date",
             "pav:version": "0.0.1",
             "bibo:status": "bibo:draft",
             "schema:schemaVersion": "1.6.0",
@@ -12867,6 +12934,7 @@
         "pav:createdBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
         "pav:lastUpdatedOn": "2022-10-13T12:45:10-07:00",
         "oslc:modifiedBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
+        "skos:prefLabel": "Data File Distribution",
         "pav:version": "0.0.1",
         "bibo:status": "bibo:draft",
         "schema:schemaVersion": "1.6.0",
@@ -12957,7 +13025,10 @@
           }
         },
         "@id": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "format": "uri"
         },
         "@type": {
@@ -13308,6 +13379,7 @@
       "pav:createdBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
       "pav:lastUpdatedOn": "2022-10-13T12:45:10-07:00",
       "oslc:modifiedBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
+      "skos:prefLabel": "Data Characteristics Summary",
       "pav:version": "0.0.1",
       "bibo:status": "bibo:draft",
       "schema:schemaVersion": "1.6.0",
@@ -13421,7 +13493,10 @@
             "additionalProperties": false
           },
           "@id": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "uri"
           },
           "@type": {
@@ -13801,6 +13876,7 @@
         "pav:createdBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
         "pav:lastUpdatedOn": "2022-10-13T12:45:10-07:00",
         "oslc:modifiedBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
+        "skos:prefLabel": "Data Source",
         "pav:version": "0.0.1",
         "bibo:status": "bibo:draft",
         "schema:schemaVersion": "1.6.0",
@@ -13915,7 +13991,10 @@
             "additionalProperties": false
           },
           "@id": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "uri"
           },
           "@type": {
@@ -14473,6 +14552,7 @@
         "pav:createdBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
         "pav:lastUpdatedOn": "2022-10-13T12:45:10-07:00",
         "oslc:modifiedBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
+        "skos:prefLabel": "Data Stream",
         "pav:version": "0.0.1",
         "bibo:status": "bibo:draft",
         "schema:schemaVersion": "1.6.0",
@@ -14569,7 +14649,10 @@
             "additionalProperties": false
           },
           "@id": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "uri"
           },
           "@type": {
@@ -14948,6 +15031,7 @@
         "pav:createdBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
         "pav:lastUpdatedOn": "2022-10-13T12:45:10-07:00",
         "oslc:modifiedBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
+        "skos:prefLabel": "Data File Creation Process",
         "pav:version": "0.0.1",
         "bibo:status": "bibo:draft",
         "schema:schemaVersion": "1.6.0",
@@ -15044,7 +15128,10 @@
             "additionalProperties": false
           },
           "@id": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "uri"
           },
           "@type": {
@@ -15429,6 +15516,7 @@
         "pav:createdBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
         "pav:lastUpdatedOn": "2022-10-13T12:45:10-07:00",
         "oslc:modifiedBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
+        "skos:prefLabel": "Data File Temporal Coverage",
         "pav:version": "0.0.1",
         "bibo:status": "bibo:draft",
         "schema:schemaVersion": "1.6.0",
@@ -15516,7 +15604,10 @@
             "additionalProperties": false
           },
           "@id": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "uri"
           },
           "@type": {
@@ -15624,7 +15715,10 @@
                   "additionalProperties": false
                 },
                 "@id": {
-                  "type": "string",
+                  "type": [
+                    "string",
+                    "null"
+                  ],
                   "format": "uri"
                 },
                 "@type": {
@@ -16004,6 +16098,7 @@
               "pav:createdBy": null,
               "pav:lastUpdatedOn": null,
               "oslc:modifiedBy": null,
+              "skos:prefLabel": "Bounding Box",
               "pav:version": "0.0.1",
               "bibo:status": "bibo:draft",
               "schema:schemaVersion": "1.6.0",
@@ -16091,7 +16186,10 @@
                   "additionalProperties": false
                 },
                 "@id": {
-                  "type": "string",
+                  "type": [
+                    "string",
+                    "null"
+                  ],
                   "format": "uri"
                 },
                 "@type": {
@@ -16392,6 +16490,7 @@
               "pav:createdBy": null,
               "pav:lastUpdatedOn": null,
               "oslc:modifiedBy": null,
+              "skos:prefLabel": "Bounding Shape",
               "pav:version": "0.0.1",
               "bibo:status": "bibo:draft",
               "schema:schemaVersion": "1.6.0",
@@ -16461,7 +16560,10 @@
                   "additionalProperties": false
                 },
                 "@id": {
-                  "type": "string",
+                  "type": [
+                    "string",
+                    "null"
+                  ],
                   "format": "uri"
                 },
                 "@type": {
@@ -16583,6 +16685,7 @@
               "pav:createdBy": null,
               "pav:lastUpdatedOn": null,
               "oslc:modifiedBy": null,
+              "skos:prefLabel": "Data File Geopolitical Coverage",
               "pav:version": "0.0.1",
               "bibo:status": "bibo:draft",
               "schema:schemaVersion": "1.6.0",
@@ -16605,6 +16708,7 @@
         "pav:createdBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
         "pav:lastUpdatedOn": "2022-10-13T12:45:10-07:00",
         "oslc:modifiedBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
+        "skos:prefLabel": "Data File Spatial Coverage",
         "pav:version": "0.0.1",
         "bibo:status": "bibo:draft",
         "schema:schemaVersion": "1.6.0",
@@ -16701,7 +16805,10 @@
             "additionalProperties": false
           },
           "@id": {
-            "type": "string",
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "uri"
           },
           "@type": {
@@ -17080,6 +17187,7 @@
         "pav:createdBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
         "pav:lastUpdatedOn": "2022-10-13T12:45:10-07:00",
         "oslc:modifiedBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
+        "skos:prefLabel": "Data File Elevation Coverage",
         "pav:version": "0.0.1",
         "bibo:status": "bibo:draft",
         "schema:schemaVersion": "1.6.0",
@@ -17152,7 +17260,10 @@
           }
         },
         "@id": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "format": "uri"
         },
         "@type": {
@@ -17333,6 +17444,7 @@
       "pav:createdBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
       "pav:lastUpdatedOn": "2022-10-13T12:45:10-07:00",
       "oslc:modifiedBy": "https://metadatacenter.org/users/819b3cfd-49a9-4e72-b5d5-18166366f014",
+      "skos:prefLabel": "Auxiliary Metadata",
       "pav:version": "0.0.1",
       "bibo:status": "bibo:draft",
       "schema:schemaVersion": "1.6.0",

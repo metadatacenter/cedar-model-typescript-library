@@ -987,7 +987,7 @@
           "$schema": "http://json-schema.org/draft-04/schema#"
         },
         "@id": {
-          "type": "string",
+          "type": [ "string", "null" ],
           "format": "uri"
         },
         "Study Title": {
@@ -5056,7 +5056,7 @@
             "$schema": "http://json-schema.org/draft-04/schema#"
           },
           "@id": {
-            "type": "string",
+            "type": [ "string", "null" ],
             "format": "uri"
           },
           "Collection Time Event": {
@@ -7135,7 +7135,7 @@
             "$schema": "http://json-schema.org/draft-04/schema#"
           },
           "@id": {
-            "type": "string",
+            "type": [ "string", "null" ],
             "format": "uri"
           },
           "Target Substrate Quality": {

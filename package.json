@@ -1,6 +1,6 @@
 {
   "name": "cedar-model-typescript-library",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "CEDAR Model Typescript Library - a library to work with fields, elements, templates and instances implemented in TypeScript",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -10,13 +10,20 @@
     "pretest:coverage": "node pretest.js",
     "test:coverage": "jest --coverage --runInBand",
     "generate:yaml:ts": "CEDAR_HOME=. ts-node ./itest/scripts/regenerate-yaml-files-with-ts-lib.ts",
+    "generate:yaml:compact:ts": "CEDAR_HOME=. ts-node ./itest/scripts/regenerate-compact-yaml-files-with-ts-lib.ts",
     "generate:yaml:instances:ts": "CEDAR_HOME=. ts-node ./itest/scripts/regenerate-yaml-instances-with-ts-lib.ts",
-    "parity:yaml:instances": "npm run generate:yaml:instances:ts && CEDAR_HOME=. ts-node ./itest/scripts/compare-verbatim-ts-java-yaml-instance-files.ts",
-    "lint": "eslint \"src/**/*.ts\" eslint.config.js smoke-test-package.js",
+    "generate:json:ts": "CEDAR_HOME=. ts-node ./itest/scripts/regenerate-json-files-with-ts-lib.ts",
+    "verify:java-lock": "ts-node ./itest/scripts/verify-java-artifact-library-lock.ts",
+    "verify:java-lock:source": "npm run verify:java-lock -- --check-siblings",
+    "parity:json": "node itest/scripts/run-parity.js json",
+    "parity:yaml:instances": "node itest/scripts/run-parity.js yaml-instances",
+    "parity:yaml:compact": "node itest/scripts/run-parity.js yaml-compact",
+    "parity:yaml": "node itest/scripts/run-parity.js yaml",
+    "lint": "eslint \"src/**/*.ts\" eslint.config.js smoke-test-package.js itest/scripts/run-parity.js",
     "typecheck": "tsc --noEmit --project tsconfig.json",
     "sync:package-version": "node sync-package-version.js",
     "version": "npm run sync:package-version",
-    "build": "npm run sync:package-version && webpack && cp package-dist.json dist/package.json && cp README-dist.md dist/README.md",
+    "build": "npm run sync:package-version && webpack && cp package-dist.json dist/package.json && cp README-dist.md dist/README.md && cp license.txt dist/license.txt",
     "test:package": "npm run build && node smoke-test-package.js",
     "build:watch": "webpack --watch",
     "prettier": "prettier --write .",
@@ -29,13 +36,13 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "BSD-2-Clause",
   "bugs": {
     "url": "https://github.com/metadatacenter/cedar-model-typescript-library/issues"
   },
   "homepage": "https://github.com/metadatacenter/cedar-model-typescript-library#readme",
   "engines": {
-    "node": ">=20.19.0"
+    "node": "^24.15.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

@@ -1,27 +1,28 @@
-type: "element"
+type: element
 name: "Copy of Medium of performance"
 id: "https://repo.metadatacenter.org/template-elements/06a37f39-53c7-48bf-b2f1-505765feaaea"
-status: "draft"
-version: "0.0.1"
-modelVersion: "1.6.0"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+instanceType: "http://data.bioontology.org/ontologies/PMO/classes/http%3A%2F%2Fperformedmusicontology.org%2Fontology%2FMediumOfPerformance"
 createdOn: "2018-01-18T20:35:34-08:00"
 createdBy: "https://metadatacenter.org/users/8348c43f-19fd-41ad-aafb-a5b70c278679"
 modifiedOn: "2018-01-18T20:39:45-08:00"
 modifiedBy: "https://metadatacenter.org/users/8348c43f-19fd-41ad-aafb-a5b70c278679"
 children:
   - key: "Type of medium of performance"
-    type: "controlled-term-field"
+    type: controlled-term-field
     name: "Type of medium of performance"
     id: "https://repo.metadatacenter.org/template-fields/c565c78f-040c-47e3-bd50-ea92f2fc9efc"
-    modelVersion: "1.6.0"
-    datatype: "iri"
+    modelVersion: 1.6.0
+    datatype: iri
     values:
-      - type: "branch"
-        ontologyName: "undefined (PMO)"
-        acronym: "PMO"
-        termLabel: "Medium of performance"
-        iri: "http://performedmusicontology.org/ontology/MediumOfPerformance"
-        maxDepth: 0
+      - type: branch
+        sourceAcronym: "PMO"
+        sourceName: "undefined (PMO)"
+        termBaseIri: "http://performedmusicontology.org/ontology/MediumOfPerformance"
+        termBaseLabel: "Medium of performance"
+        termMaxDepth: 0
     createdOn: "2018-01-18T20:39:45-08:00"
     createdBy: "https://metadatacenter.org/users/8348c43f-19fd-41ad-aafb-a5b70c278679"
     modifiedOn: "2018-01-18T20:39:45-08:00"
@@ -29,10 +30,10 @@ children:
     configuration:
       propertyIri: "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
   - key: "Doubling Medium of performance"
-    type: "text-field"
+    type: text-field
     name: "Doubling Medium of performance"
     id: "https://repo.metadatacenter.org/template-fields/4261e0ea-b95c-479f-84a2-a45593a5e6ce"
-    modelVersion: "1.6.0"
+    modelVersion: 1.6.0
     createdOn: "2018-01-18T20:39:45-08:00"
     createdBy: "https://metadatacenter.org/users/8348c43f-19fd-41ad-aafb-a5b70c278679"
     modifiedOn: "2018-01-18T20:39:45-08:00"

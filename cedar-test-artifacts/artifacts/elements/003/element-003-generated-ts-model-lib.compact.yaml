@@ -1,20 +1,20 @@
-type: "element"
+type: element
 name: "#003 Element with another element"
 children:
   - key: "#002 Element with three fields"
-    type: "element"
+    type: element
     name: "#002 Element with three fields"
     children:
       - key: "Text field"
-        type: "text-field"
+        type: text-field
         name: "Text field"
         description: "Help Text"
       - key: "Email"
-        type: "email-field"
+        type: email-field
         name: "Email"
         description: "Help Text"
       - key: "Numeric"
-        type: "numeric-field"
+        type: numeric-field
         name: "Numeric"
         description: "Help Text"
-        datatype: "xsd:decimal"
+        datatype: xsd:decimal

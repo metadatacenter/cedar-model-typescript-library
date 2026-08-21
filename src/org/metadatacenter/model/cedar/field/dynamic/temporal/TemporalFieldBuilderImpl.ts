@@ -5,12 +5,14 @@ import { TemporalGranularity } from '../../../types/wrapped-types/TemporalGranul
 import { TemporalType } from '../../../types/wrapped-types/TemporalType';
 import { TemporalFieldBuilder } from './TemporalFieldBuilder';
 import { TemporalFieldImpl } from './TemporalFieldImpl';
+import { TemporalDefaultValueValidator } from './TemporalDefaultValueValidator';
 
 export class TemporalFieldBuilderImpl extends TemplateFieldBuilder implements TemporalFieldBuilder {
   private timezoneEnabled: boolean = false;
   private inputTimeFormat: TimeFormat = TimeFormat.NULL;
   private temporalGranularity: TemporalGranularity = TemporalGranularity.NULL;
-  private temporalType: TemporalType = TemporalType.NULL;
+  private temporalType: TemporalType = TemporalType.DATETIME;
+  private defaultValue: string | null = null;
 
   private constructor() {
     super();
@@ -40,7 +42,13 @@ export class TemporalFieldBuilderImpl extends TemplateFieldBuilder implements Te
     return this;
   }
 
+  public withDefaultValue(defaultValue: string | null): TemporalFieldBuilder {
+    this.defaultValue = defaultValue;
+    return this;
+  }
+
   public build(): TemporalField {
+    TemporalDefaultValueValidator.assertValid(this.temporalType, this.temporalGranularity, this.defaultValue);
     const temporalField = TemporalFieldImpl.buildEmpty();
     super.buildInternal(temporalField);
 
@@ -48,6 +56,7 @@ export class TemporalFieldBuilderImpl extends TemplateFieldBuilder implements Te
     temporalField.inputTimeFormat = this.inputTimeFormat;
     temporalField.temporalGranularity = this.temporalGranularity;
     temporalField.valueConstraints.temporalType = this.temporalType;
+    temporalField.valueConstraints.defaultValue = this.defaultValue;
 
     return temporalField;
   }

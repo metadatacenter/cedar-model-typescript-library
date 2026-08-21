@@ -1,7 +1,0 @@
-type: "boolean"
-name: "Boolean Field"
-description: "Boolean Help"
-prefLabel: "Boolean Preferred"
-datatype: "xsd:boolean"
-trueLabel: "True"
-falseLabel: "False"

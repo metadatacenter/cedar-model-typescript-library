@@ -33,12 +33,8 @@
     "order": [
       "TextfieldChild"
     ],
-    "propertyLabels": {
-      "TextfieldChild": "Textfield"
-    },
-    "propertyDescriptions": {
-      "TextfieldChild": ""
-    }
+    "propertyLabels": {},
+    "propertyDescriptions": {}
   },
   "properties": {
     "@context": {
@@ -195,11 +191,6 @@
               ]
             }
           }
-        },
-        "TextfieldChild": {
-          "enum": [
-            "https://schema.metadatacenter.org/properties/TextfieldChild"
-          ]
         }
       },
       "required": [
@@ -213,8 +204,7 @@
         "pav:createdOn",
         "pav:createdBy",
         "pav:lastUpdatedOn",
-        "oslc:modifiedBy",
-        "TextfieldChild"
+        "oslc:modifiedBy"
       ],
       "additionalProperties": false
     },

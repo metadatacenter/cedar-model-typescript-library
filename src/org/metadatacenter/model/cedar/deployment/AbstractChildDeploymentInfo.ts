@@ -26,6 +26,17 @@ export abstract class AbstractChildDeploymentInfo {
     return this._name;
   }
 
+  /**
+   * Whether this describes a child held by a parent.
+   *
+   * A parent names every child it holds, so an unnamed deployment is the one a field written on its
+   * own carries: nothing decides anything about it, because nothing holds it. What a parent decides —
+   * the override labels, the cardinality, a static field's display size — is written only for a child.
+   */
+  hasParent(): boolean {
+    return this._name !== '';
+  }
+
   get atType(): CedarArtifactType {
     return this._atType;
   }

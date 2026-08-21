@@ -22,6 +22,7 @@ export class JsonValueConstraintsValueSetWriter extends AbstractJsonControlledTe
     if (valueSet.numTerms !== null) {
       ret[CedarModel.ValueConstraints.numTerms] = valueSet.numTerms;
     }
+    this.writeSourceAndVersion(ret, valueSet);
     return ret;
   }
 }

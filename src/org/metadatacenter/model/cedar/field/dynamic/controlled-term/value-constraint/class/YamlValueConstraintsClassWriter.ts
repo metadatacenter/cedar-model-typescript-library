@@ -14,11 +14,19 @@ export class YamlValueConstraintsClassWriter extends AbstractYamlControlledTermV
   override getAsJsonNode(clazz: ControlledTermClass): JsonNode {
     const ret = JsonNode.getEmpty();
     ret[YamlKeys.type] = YamlValues.Controlled.class;
-    ret[YamlKeys.Controlled.label] = clazz.label;
-    ret[YamlKeys.Controlled.acronym] = clazz.source;
+    this.writeSourceSystem(ret, clazz);
+    ret[YamlKeys.Controlled.sourceAcronym] = clazz.source;
+    this.writeSourceIri(ret, clazz);
+    ret[YamlKeys.Controlled.termIri] = this.atomicWriter.write(clazz.uri);
     ret[YamlKeys.Controlled.termType] = this.atomicWriter.write(clazz.type);
     ret[YamlKeys.Controlled.termLabel] = clazz.prefLabel;
-    ret[YamlKeys.Controlled.iri] = this.atomicWriter.write(clazz.uri);
+    // What the ontology calls the term, then what this template calls it, the second only where an
+    // author has made them differ. A class read back with no display label of its own takes the
+    // preferred one, so the ordinary entry stays a single key.
+    if (clazz.label !== clazz.prefLabel) {
+      ret[YamlKeys.Controlled.termDisplayLabel] = clazz.label;
+    }
+    this.writeVersion(ret, clazz);
     return ret;
   }
 }

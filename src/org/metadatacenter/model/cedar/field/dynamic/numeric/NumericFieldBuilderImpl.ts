@@ -3,13 +3,15 @@ import { TemplateFieldBuilder } from '../../TemplateFieldBuilder';
 import { NumberType } from '../../../types/wrapped-types/NumberType';
 import { NumericFieldBuilder } from './NumericFieldBuilder';
 import { NumericFieldImpl } from './NumericFieldImpl';
+import { NumericDefaultValueValidator } from './NumericDefaultValueValidator';
 
 export class NumericFieldBuilderImpl extends TemplateFieldBuilder implements NumericFieldBuilder {
-  private numberType: NumberType = NumberType.NULL;
+  private numberType: NumberType = NumberType.DECIMAL;
   private minValue: number | null = null;
   private maxValue: number | null = null;
   private decimalPlaces: number | null = null;
   private unitOfMeasure: string | null = null;
+  private defaultValue: number | null = null;
 
   private constructor() {
     super();
@@ -44,7 +46,13 @@ export class NumericFieldBuilderImpl extends TemplateFieldBuilder implements Num
     return this;
   }
 
+  public withDefaultValue(defaultValue: number | null): NumericFieldBuilder {
+    this.defaultValue = defaultValue;
+    return this;
+  }
+
   public build(): NumericField {
+    NumericDefaultValueValidator.assertValid(this.numberType, this.defaultValue, this.minValue, this.maxValue);
     const numericField = NumericFieldImpl.buildEmpty();
     super.buildInternal(numericField);
 
@@ -53,6 +61,7 @@ export class NumericFieldBuilderImpl extends TemplateFieldBuilder implements Num
     numericField.valueConstraints.maxValue = this.maxValue;
     numericField.valueConstraints.decimalPlaces = this.decimalPlaces;
     numericField.valueConstraints.unitOfMeasure = this.unitOfMeasure;
+    numericField.valueConstraints.defaultValue = this.defaultValue;
 
     return numericField;
   }

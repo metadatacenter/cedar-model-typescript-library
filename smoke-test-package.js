@@ -6,7 +6,11 @@ const os = require('node:os');
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
 
-const packageName = 'cedar-model-typescript-library';
+// The name the tarball publishes under, taken from the manifest that carries it rather than repeated
+// here: the dev channel publishes scoped to Nexus and a release publishes unscoped to npmjs, and this
+// check has to follow whichever the build is set to. It read the unscoped name whatever dist said, so
+// it passed on a release manifest and failed on a snapshot for the wrong reason.
+const packageName = require('./package-dist.json').name;
 const repositoryRoot = __dirname;
 const temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'cedar-package-smoke-'));
 const npmCommand = process.platform === 'win32' ? 'npm.cmd' : 'npm';

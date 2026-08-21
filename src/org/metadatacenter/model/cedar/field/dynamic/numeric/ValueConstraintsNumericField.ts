@@ -7,6 +7,7 @@ export class ValueConstraintsNumericField extends ValueConstraints {
   maxValue: number | null = null;
   decimalPlaces: number | null = null;
   unitOfMeasure: string | null = null;
+  defaultValue: number | null = null;
 
   public constructor() {
     super();

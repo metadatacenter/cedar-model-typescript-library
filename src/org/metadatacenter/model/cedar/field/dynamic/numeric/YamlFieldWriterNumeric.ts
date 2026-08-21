@@ -5,6 +5,7 @@ import { YamlTemplateFieldWriterInternal } from '../../../../../io/writer/yaml/Y
 import { YamlKeys } from '../../../constants/YamlKeys';
 import { YamlWriterBehavior } from '../../../../../behavior/YamlWriterBehavior';
 import { CedarYamlWriters } from '../../../../../io/writer/yaml/CedarYamlWriters';
+import { NumericDefaultValueValidator } from './NumericDefaultValueValidator';
 
 export class YamlFieldWriterNumeric extends YamlTemplateFieldWriterInternal {
   constructor(behavior: YamlWriterBehavior, writers: CedarYamlWriters) {
@@ -12,6 +13,12 @@ export class YamlFieldWriterNumeric extends YamlTemplateFieldWriterInternal {
   }
 
   override expandValueConstraintsNodeForYAML(vcNode: JsonNode, field: NumericField, _childInfo: ChildDeploymentInfo): void {
+    NumericDefaultValueValidator.assertValid(
+      field.valueConstraints.numberType,
+      field.valueConstraints.defaultValue,
+      field.valueConstraints.minValue,
+      field.valueConstraints.maxValue,
+    );
     vcNode[YamlKeys.datatype] = this.atomicWriter.write(field.valueConstraints.numberType);
     if (field.valueConstraints.minValue != null) {
       vcNode[YamlKeys.minValue] = field.valueConstraints.minValue;
@@ -24,6 +31,9 @@ export class YamlFieldWriterNumeric extends YamlTemplateFieldWriterInternal {
     }
     if (field.valueConstraints.unitOfMeasure != null) {
       vcNode[YamlKeys.unit] = field.valueConstraints.unitOfMeasure;
+    }
+    if (field.valueConstraints.defaultValue != null) {
+      vcNode[YamlKeys.default] = field.valueConstraints.defaultValue;
     }
   }
 }

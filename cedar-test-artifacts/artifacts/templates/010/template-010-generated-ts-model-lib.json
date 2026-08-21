@@ -347,6 +347,7 @@
       },
       "_valueConstraints": {
         "temporalType": "xsd:date",
+        "defaultValue": "2026-08-20",
         "requiredValue": false
       },
       "properties": {
@@ -435,6 +436,7 @@
       },
       "_valueConstraints": {
         "temporalType": "xsd:time",
+        "defaultValue": "14:30:45-07:00",
         "requiredValue": false
       },
       "properties": {
@@ -526,6 +528,7 @@
         },
         "_valueConstraints": {
           "temporalType": "xsd:dateTime",
+          "defaultValue": "2026-08-20T14:30:45.125-07:00",
           "requiredValue": true
         },
         "properties": {

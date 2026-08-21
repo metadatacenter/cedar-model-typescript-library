@@ -150,8 +150,10 @@ describe('TemplateInstanceBuilder', () => {
     const stringified = JSON.stringify(writer.getAsJsonNode(templateInstance), null, 2);
     const backparsed = JSON.parse(stringified);
 
-    // The @id in the JSON is the data container ID, not the instance ID
-    expect(backparsed['@id']).toBe('complete-instance-container-id');
+    // The document's `@id` is the artifact's own identifier, `withAtId`. The data container holds a
+    // copy of it — a read instance fills both — and `withDataId` sets that copy alone; at the root it
+    // is not what identifies the artifact, so it does not decide the key.
+    expect(backparsed['@id']).toBe('https://repo.metadatacenter.org/template-instances/f38b5ef4-a078-4d82-90c0-a9a721ad5999');
     expect(backparsed['schema:name']).toBe('Complete Test Template Instance');
     expect(backparsed['schema:description']).toBe('A complete test template instance with all properties');
     expect(backparsed['schema:isBasedOn']).toBe('https://repo.metadatacenter.org/templates/f38b5ef4-a078-4d82-90c0-a9a721ad5888');

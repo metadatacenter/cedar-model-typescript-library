@@ -32,13 +32,15 @@ export class JsonTemplateWriter extends JsonAbstractContainerArtifactWriter {
       properties[JsonSchema.atContext][JsonSchema.atLanguage] = this.atomicWriter.write(template.language);
     }
 
-    // Include the IRI mapping
+    // Include the IRI mapping. The context may require exactly the terms it declares: a child with
+    // no property IRI has no term yet, so the repository will add both when it assigns the IRI.
+    const childIriMap = template.getChildrenInfo().getIRIMap();
     properties[JsonSchema.atContext][JsonSchema.properties] = {
       ...properties[JsonSchema.atContext][JsonSchema.properties],
-      ...template.getChildrenInfo().getIRIMap(),
+      ...childIriMap,
     };
 
-    const requiredChildren: string[] = template.getChildrenInfo().getChildrenNamesForRequiredInProperties();
+    const requiredChildren: string[] = Object.keys(childIriMap);
 
     properties[JsonSchema.atContext][JsonSchema.required] = [...properties[JsonSchema.atContext][JsonSchema.required], ...requiredChildren];
 

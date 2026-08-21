@@ -8,20 +8,30 @@ import YAML from 'yaml';
 import { YamlContainerArtifactReader } from './YamlContainerArtifactReader';
 import { YamlTemplateElementReaderResult } from './YamlTemplateElementReaderResult';
 import { YamlArtifactParsingResult } from '../../../model/cedar/util/compare/YamlArtifactParsingResult';
+import { ReaderUtil } from '../ReaderUtil';
+import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 
 export class YamlTemplateElementReader extends YamlContainerArtifactReader {
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.TEMPLATE_ELEMENT;
 
-  private constructor(behavior: YamlReaderBehavior) {
-    super(behavior);
+  private constructor(behavior: YamlReaderBehavior, isCompact: boolean = false) {
+    super(behavior, isCompact);
   }
 
   public static getStrict(): YamlTemplateElementReader {
     return new YamlTemplateElementReader(YamlReaderBehavior.STRICT);
   }
 
-  public static getForBehavior(behavior: YamlReaderBehavior): YamlTemplateElementReader {
-    return new YamlTemplateElementReader(behavior);
+  /**
+   * A reader for the compact form, which omits the model version and the rest of what the system
+   * records about an artifact. Asking for it is the only way to read that form.
+   */
+  public static getStrictForCompact(): YamlTemplateElementReader {
+    return new YamlTemplateElementReader(YamlReaderBehavior.STRICT, true);
+  }
+
+  public static getForBehavior(behavior: YamlReaderBehavior, isCompact: boolean = false): YamlTemplateElementReader {
+    return new YamlTemplateElementReader(behavior, isCompact);
   }
 
   protected override getElementReader(): YamlTemplateElementReader {
@@ -35,6 +45,7 @@ export class YamlTemplateElementReader extends YamlContainerArtifactReader {
     } catch {
       elementObject = {};
     }
+    this.refuseIdentifierAtDocumentRoot(elementObject);
     return this.readFromObject(elementObject, ChildDeploymentInfo.empty(), new JsonPath());
   }
 
@@ -55,5 +66,8 @@ export class YamlTemplateElementReader extends YamlContainerArtifactReader {
 
   protected readNonReportableAttributes(element: TemplateElement, elementSourceObject: JsonNode) {
     super.readNonReportableAttributes(element, elementSourceObject);
+    element.instanceTypeSpecification = ReaderUtil.getString(elementSourceObject, YamlKeys.instanceType);
+    element.skos_prefLabel = ReaderUtil.getString(elementSourceObject, YamlKeys.prefLabel);
+    element.skos_altLabel = ReaderUtil.getFilteredStringList(elementSourceObject, YamlKeys.altLabels);
   }
 }

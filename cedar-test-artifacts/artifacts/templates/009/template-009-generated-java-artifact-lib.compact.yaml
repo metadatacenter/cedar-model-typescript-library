@@ -1,30 +1,33 @@
-type: "template"
+type: template
 name: "Template with Static Fields"
 children:
   - key: "Page break field"
-    type: "static-page-break"
+    type: static-page-break
     name: "Page break field"
     description: "Help text"
     prefLabel: "Preferred label"
   - key: "Section break"
-    type: "static-section-break"
+    type: static-section-break
     name: "Section break"
     description: "Help Text"
     prefLabel: "Preferred label"
   - key: "Image field"
-    type: "static-image"
+    type: static-image
     name: "Image field"
     description: "Help Text"
     prefLabel: "Preferred label"
     content: "https://cedar.metadatacenter.org/img/close_modal.png"
   - key: "Rich text"
-    type: "static-rich-text"
+    type: static-rich-text
     name: "Rich text"
     description: "Help Text"
     prefLabel: "Preferred label"
     content: "<p><a class=\"share workspace ng-scope active\" href=\"https://cedar.metadatacenter.org/#\" ng-class=\"{active: dc.isHomeMode()}\" ng-click=\"dc.goToMyWorkspace()\" style=\"background-color: rgb(232, 232, 232); opacity: 1; margin: 10px 0px; display: block; font-size: 16px; font-weight: bold;\" translate=\"\">Workspace</a><a class=\"share shared ng-scope\" href=\"https://cedar.metadatacenter.org/#\" ng-class=\"{active: dc.isSharedWithMeMode()}\" ng-click=\"dc.goToSharedWithMe()\" style=\"background-color: rgb(232, 232, 232); outline: 0px; margin: 10px 0px; display: block; font-size: 16px;\" translate=\"\">Shared with Me</a></p>\n"
   - key: "Video name"
-    type: "static-youtube-video"
+    type: static-youtube-video
     name: "Video name"
     description: "Help Text"
     content: "qf6-_JLZ3lw"
+    configuration:
+      width: 192
+      height: 108

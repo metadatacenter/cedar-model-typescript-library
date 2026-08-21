@@ -15,17 +15,19 @@ export class YamlTemplateElementWriter extends YamlAbstractContainerArtifactWrit
     return new YamlTemplateElementWriter(behavior, writers);
   }
 
-  public getYamlAsJsonNode(element: TemplateElement, isCompact: boolean = false): JsonNode {
+  public getYamlAsJsonNode(element: TemplateElement, isCompact: boolean = false, isDocumentRoot: boolean = true): JsonNode {
     // build the final object
     const template: JsonNode = {
       ...this.macroType(element),
       ...this.macroNameAndDescription(element),
       ...this.macroSchemaIdentifier(element),
-      ...this.macroId(element, isCompact),
+      ...this.macroId(element, isCompact, isDocumentRoot),
       ...this.macroStatusAndVersion(element, isCompact),
+      ...this.macroInstanceType(element),
       ...this.macroPreviousVersion(element, isCompact),
       ...this.macroDerivedFrom(element, isCompact),
       ...this.macroProvenance(element, isCompact),
+      ...this.macroSkos(element),
       ...this.macroAnnotations(element),
     };
     const children: JsonNode[] = this.getChildListAsJSON(element, isCompact);

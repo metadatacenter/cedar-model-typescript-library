@@ -1,3 +1,4 @@
+import { AbstractArtifact } from '../../../model/cedar/AbstractArtifact';
 import { AbstractSchemaArtifact } from '../../../model/cedar/AbstractSchemaArtifact';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { CedarArtifactId } from '../../../model/cedar/types/cedar-types/CedarArtifactId';
@@ -20,9 +21,17 @@ import { Language } from '../../../model/cedar/types/wrapped-types/Language';
 export abstract class YamlAbstractArtifactReader {
   protected behavior: YamlReaderBehavior;
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.NULL;
+  /**
+   * Whether compact input is expected. The compact form omits the model version, so a reader that
+   * has not been asked for it treats an absent model version as what it is — a document it was not
+   * given the form of. Reading compact input has to be asked for, as it does in the Java library,
+   * whose reader takes the same flag and whose converter selects it with -cy on the way in.
+   */
+  protected readonly isCompact: boolean;
 
-  protected constructor(behavior: YamlReaderBehavior) {
+  protected constructor(behavior: YamlReaderBehavior, isCompact: boolean = false) {
     this.behavior = behavior;
+    this.isCompact = isCompact;
   }
 
   /** The word CEDAR puts in a derived title/description: "template", "element" or "field". */
@@ -38,6 +47,7 @@ export abstract class YamlAbstractArtifactReader {
 
   protected readNonReportableAttributes(container: AbstractSchemaArtifact, sourceObject: JsonNode): void {
     // Read in non-reportable properties
+    YamlAbstractArtifactReader.refuseEmptyIdentifier(sourceObject);
     container.at_id = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, YamlKeys.id));
     container.schema_name = ReaderUtil.getString(sourceObject, YamlKeys.name);
     container.schema_description = ReaderUtil.getString(sourceObject, YamlKeys.description);
@@ -56,17 +66,61 @@ export abstract class YamlAbstractArtifactReader {
     container.pav_createdOn = IsoDate.forValue(ReaderUtil.getString(sourceObject, YamlKeys.createdOn));
     container.oslc_modifiedBy = CedarUser.forValue(ReaderUtil.getString(sourceObject, YamlKeys.modifiedBy));
     container.pav_lastUpdatedOn = IsoDate.forValue(ReaderUtil.getString(sourceObject, YamlKeys.modifiedOn));
-    container.schema_schemaVersion = SchemaVersion.forValue(ReaderUtil.getString(sourceObject, YamlKeys.modelVersion));
+    const modelVersion: string | null = ReaderUtil.getString(sourceObject, YamlKeys.modelVersion);
+    if (modelVersion === null && !this.isCompact) {
+      throw new Error(
+        `No ${YamlKeys.modelVersion} present. A document without one is the compact form, which a reader has to be asked for.`,
+      );
+    }
+    container.schema_schemaVersion = SchemaVersion.forValue(modelVersion);
     container.pav_version = PavVersion.forValue(ReaderUtil.getString(sourceObject, YamlKeys.version));
     container.bibo_status = BiboStatus.forYamlValue(ReaderUtil.getString(sourceObject, YamlKeys.status));
+    // Accept the legacy empty spelling as absence; the writer omits the optional key.
     container.pav_derivedFrom = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, YamlKeys.derivedFrom));
     container.pav_previousVersion = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, YamlKeys.previousVersion));
     container.schema_identifier = ReaderUtil.getString(sourceObject, YamlKeys.identifier);
     container.language = Language.forValue(ReaderUtil.getString(sourceObject, YamlKeys.language));
   }
 
+  /**
+   * A compact document may not name the artifact it describes.
+   *
+   * The compact form is for an artifact being authored, not one already stored: it leaves out what a
+   * repository assigns, and an identifier is the first of those. Ignoring an `id` written here would
+   * let an author believe the document still refers to a stored artifact, while a conversion gave that
+   * artifact's children freshly derived property IRIs. Older compact documents may carry child
+   * identifiers; the reader accepts those for compatibility, while canonical compact output omits
+   * schema-artifact identity at every depth.
+   */
+  /**
+   * An empty artifact or occurrence `id` is not an identifier, and it is not an absence of one either.
+   *
+   * Documents carry it where one has not been assigned — half the element occurrences in the shared
+   * corpus once did — and reading it as though the key were absent hides that from whoever wrote it. A
+   * key that is not to be answered yet is written `null` or left out. Optional `derivedFrom` is a
+   * compatibility exception: its legacy empty spelling loads as absence and is omitted on write.
+   */
+  protected static refuseEmptyIdentifier(sourceObject: JsonNode, key: string = YamlKeys.id): void {
+    const raw = ReaderUtil.getString(sourceObject, key);
+    if (raw !== null && raw.trim() === '') {
+      throw new Error(`An empty string is not a URI at "${key}"; write null or leave the key out where there is no value.`);
+    }
+  }
+
+  protected refuseIdentifierAtDocumentRoot(sourceObject: JsonNode): void {
+    // Only of a document in the compact form. The compact reader also accepts a full one, where the
+    // model version says so and the identifier belongs; an instance carries no model version in either
+    // form, so asking for this reader is itself the statement that the document is compact.
+    const isCompactDocument = ReaderUtil.getString(sourceObject, YamlKeys.modelVersion) === null;
+    if (this.isCompact && isCompactDocument && ReaderUtil.getString(sourceObject, YamlKeys.id) !== null) {
+      throw new Error(
+        `A compact document describes an artifact being authored, so it cannot carry an ${YamlKeys.id}. Use the full form to represent a stored artifact.`,
+      );
+    }
+  }
+
   protected readAnnotations(
-    artifact: AbstractSchemaArtifact,
+    artifact: AbstractArtifact,
     artifactSourceObject: JsonNode,
     _parsingResult: YamlArtifactParsingResult,
     _topPath: JsonPath,

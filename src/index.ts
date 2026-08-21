@@ -19,8 +19,6 @@ import { AttributeValueField } from './org/metadatacenter/model/cedar/field/dyna
 import { AttributeValueFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/attribute-value/AttributeValueFieldBuilder';
 import { CheckboxField } from './org/metadatacenter/model/cedar/field/dynamic/checkbox/CheckboxField';
 import { CheckboxFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/checkbox/CheckboxFieldBuilder';
-import { BooleanField } from './org/metadatacenter/model/cedar/field/dynamic/boolean/BooleanField';
-import { BooleanFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/boolean/BooleanFieldBuilder';
 import { ControlledTermField } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/ControlledTermField';
 import { ControlledTermFieldBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/ControlledTermFieldBuilder';
 import { EmailField } from './org/metadatacenter/model/cedar/field/dynamic/email/EmailField';
@@ -76,6 +74,7 @@ import { ControlledTermClassBuilder } from './org/metadatacenter/model/cedar/fie
 import { ControlledTermOntologyBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/ontology/ControlledTermOntologyBuilder';
 import { ControlledTermValueSetBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/value-set/ControlledTermValueSetBuilder';
 import { ControlledTermDefaultValueBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/ControlledTermDefaultValueBuilder';
+import { ControlledTermVersion } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/ControlledTermVersion';
 import { BiboStatus } from './org/metadatacenter/model/cedar/types/wrapped-types/BiboStatus';
 
 import { ChildDeploymentInfo } from './org/metadatacenter/model/cedar/deployment/ChildDeploymentInfo';
@@ -208,7 +207,6 @@ export { AbstractArtifact };
 export { TemplateField };
 export { AttributeValueField, AttributeValueFieldBuilder };
 export { CheckboxField, CheckboxFieldBuilder };
-export { BooleanField, BooleanFieldBuilder };
 export { ControlledTermField, ControlledTermFieldBuilder };
 export { EmailField, EmailFieldBuilder };
 export { LinkField, LinkFieldBuilder };
@@ -259,6 +257,7 @@ export { ControlledTermClassBuilder };
 export { ControlledTermOntologyBuilder };
 export { ControlledTermValueSetBuilder };
 export { ControlledTermActionBuilder };
+export { ControlledTermVersion };
 
 export { AbstractChildDeploymentInfo, AbstractChildDeploymentInfoBuilder };
 export { AbstractDynamicChildDeploymentInfo, AbstractDynamicChildDeploymentInfoBuilder };

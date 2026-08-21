@@ -1,9 +1,9 @@
-type: "template"
+type: template
 name: "Untitled"
 description: "Untitled description"
 children:
   - key: "_text_field_"
-    type: "text-field"
+    type: text-field
     name: "Textfield"
     description: "Help Text"
     prefLabel: "Textfield preferred label"

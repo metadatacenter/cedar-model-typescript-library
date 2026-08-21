@@ -1,4 +1,4 @@
-type: "text-area-field"
+type: text-area-field
 name: "#002 TextArea name"
 description: "TextArea help"
 prefLabel: "TextArea preferred"

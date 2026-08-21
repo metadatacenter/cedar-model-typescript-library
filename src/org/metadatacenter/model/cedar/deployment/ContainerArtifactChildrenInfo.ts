@@ -1,5 +1,4 @@
 import { CedarArtifactType } from '../types/cedar-types/CedarArtifactType';
-import { PropertyIri } from '../types/wrapped-types/PropertyIri';
 import { JsonSchema } from '../constants/JsonSchema';
 import { UiInputType } from '../types/wrapped-types/UiInputType';
 import { NullableString } from '../types/basic-types/NullableString';
@@ -62,30 +61,33 @@ export class ContainerArtifactChildrenInfo {
     return result;
   }
 
-  public getPropertyLabelMap(container: AbstractContainerArtifact): Record<string, NullableString> {
+  /**
+   * What the container says about how its children are labelled, and nothing more.
+   *
+   * A key here names a child, so a key naming none of them — which real templates carry — is dropped
+   * on the way through, along with the whole entry it stood for. What was also dropped, less
+   * defensibly, was the distinction between a child the container labels and one it does not: a child
+   * with no label of its own got the field's own name written in as if the container had asked for it,
+   * and a child with no description got an empty string. The container declares these or it does not.
+   */
+  public getPropertyLabelMap(_container: AbstractContainerArtifact): Record<string, NullableString> {
     const labelMap: { [key: string]: NullableString } = {};
     this.childNameList.forEach((childName) => {
       const childInfo = this.getChildInfo(childName);
       if (childInfo.label !== null) {
         labelMap[childInfo.name] = childInfo.label;
-      } else {
-        const child = container.getChild(childName);
-        if (child !== null && child.schema_name !== null) {
-          labelMap[childInfo.name] = child.schema_name;
-        }
       }
     });
     return labelMap;
   }
 
+  /** As the labels above: what the container declares, with nothing filled in for what it does not. */
   public getPropertyDescriptionMap(_container: AbstractContainerArtifact): Record<string, NullableString> {
     const descriptionMap: { [key: string]: NullableString } = {};
     this.childNameList.forEach((childName) => {
       const childInfo = this.getChildInfo(childName);
       if (childInfo.description !== null) {
         descriptionMap[childInfo.name] = childInfo.description;
-      } else {
-        descriptionMap[childInfo.name] = '';
       }
     });
     return descriptionMap;
@@ -116,7 +118,13 @@ export class ContainerArtifactChildrenInfo {
       const childInfo = this.getChildInfo(childName);
       if (childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD && childInfo.uiInputType !== UiInputType.ATTRIBUTE_VALUE) {
         if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
-          iriMap[childInfo.name] = childInfo.iri !== null ? childInfo.iri : PropertyIri.forName(childInfo.name);
+          // A child with no IRI of its own gets no mapping. The IRI is identity, so the repository
+          // assigns it when the artifact is uploaded, as it assigns an attribute's; deriving one from
+          // the child's name asserted an identity nothing had assigned, and one that would change the
+          // moment the author renamed the child.
+          if (childInfo.iri !== null) {
+            iriMap[childInfo.name] = childInfo.iri;
+          }
         }
       }
     });

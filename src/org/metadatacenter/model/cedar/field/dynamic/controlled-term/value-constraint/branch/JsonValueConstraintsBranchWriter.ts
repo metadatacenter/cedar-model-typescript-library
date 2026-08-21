@@ -21,6 +21,7 @@ export class JsonValueConstraintsBranchWriter extends AbstractJsonControlledTerm
     ret[CedarModel.ValueConstraints.acronym] = branch.acronym;
     ret[CedarModel.ValueConstraints.name] = branch.name;
     ret[CedarModel.ValueConstraints.maxDepth] = branch.maxDepth;
+    this.writeSourceAndVersion(ret, branch);
     return ret;
   }
 }

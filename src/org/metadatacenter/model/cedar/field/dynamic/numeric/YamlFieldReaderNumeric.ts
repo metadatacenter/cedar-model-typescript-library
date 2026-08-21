@@ -8,6 +8,7 @@ import { YamlTemplateFieldTypeSpecificReader } from '../../../../../io/reader/ya
 import { YamlKeys } from '../../../constants/YamlKeys';
 import { NumericFieldImpl } from './NumericFieldImpl';
 import { YamlArtifactParsingResult } from '../../../util/compare/YamlArtifactParsingResult';
+import { NumericDefaultValueValidator } from './NumericDefaultValueValidator';
 
 export class YamlFieldReaderNumeric extends YamlTemplateFieldTypeSpecificReader {
   override read(
@@ -32,6 +33,13 @@ export class YamlFieldReaderNumeric extends YamlTemplateFieldTypeSpecificReader 
     field.valueConstraints.maxValue = ReaderUtil.getNumber(fieldSourceObject, YamlKeys.maxValue);
     field.valueConstraints.decimalPlaces = ReaderUtil.getNumber(fieldSourceObject, YamlKeys.decimalPlaces);
     field.valueConstraints.unitOfMeasure = ReaderUtil.getString(fieldSourceObject, YamlKeys.unit);
+    field.valueConstraints.defaultValue = ReaderUtil.getNumericDefault(fieldSourceObject, YamlKeys.default);
+    NumericDefaultValueValidator.assertValid(
+      field.valueConstraints.numberType,
+      field.valueConstraints.defaultValue,
+      field.valueConstraints.minValue,
+      field.valueConstraints.maxValue,
+    );
     return field;
   }
 }

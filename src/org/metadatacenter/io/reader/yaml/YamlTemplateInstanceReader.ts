@@ -2,6 +2,9 @@ import YAML from 'yaml';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { CedarArtifactId } from '../../../model/cedar/types/cedar-types/CedarArtifactId';
 import { YamlReaderBehavior } from '../../../behavior/YamlReaderBehavior';
+import { YamlAbstractArtifactReader } from './YamlAbstractArtifactReader';
+import { CedarUser } from '../../../model/cedar/types/cedar-types/CedarUser';
+import { IsoDate } from '../../../model/cedar/types/wrapped-types/IsoDate';
 import { YamlArtifactParsingResult } from '../../../model/cedar/util/compare/YamlArtifactParsingResult';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 import { ReaderUtil } from '../ReaderUtil';
@@ -37,15 +40,26 @@ const ELEMENT_INSTANCE_TYPE = 'element-instance';
  * the empty slots the template's JSON Schema requires. Both are template data;
  * `InstanceInflater` reconstructs them. This reader's job is the values.
  */
-export class YamlTemplateInstanceReader {
-  private constructor(_behavior: YamlReaderBehavior) {}
+export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
+  private constructor(behavior: YamlReaderBehavior, isCompact: boolean = false) {
+    super(behavior, isCompact);
+  }
 
   public static getStrict(): YamlTemplateInstanceReader {
     return new YamlTemplateInstanceReader(YamlReaderBehavior.STRICT);
   }
 
-  public static getForBehavior(behavior: YamlReaderBehavior): YamlTemplateInstanceReader {
-    return new YamlTemplateInstanceReader(behavior);
+  /**
+   * A reader for the compact form, which names neither the instance nor what a repository records
+   * about it. An instance has no model version to give the ordinary reader away, so asking for this
+   * one is what says which form is meant — and it is what refuses a document that names its instance.
+   */
+  public static getStrictForCompact(): YamlTemplateInstanceReader {
+    return new YamlTemplateInstanceReader(YamlReaderBehavior.STRICT, true);
+  }
+
+  public static getForBehavior(behavior: YamlReaderBehavior, isCompact: boolean = false): YamlTemplateInstanceReader {
+    return new YamlTemplateInstanceReader(behavior, isCompact);
   }
 
   public readFromString(instanceSourceString: string): YamlTemplateInstanceReaderResult {
@@ -55,6 +69,7 @@ export class YamlTemplateInstanceReader {
     } catch {
       instanceObject = {};
     }
+    this.refuseIdentifierAtDocumentRoot(instanceObject);
     return this.readFromObject(instanceObject);
   }
 
@@ -65,8 +80,18 @@ export class YamlTemplateInstanceReader {
 
     instance.schema_name = ReaderUtil.getString(source, YamlKeys.name);
     instance.schema_description = ReaderUtil.getString(source, YamlKeys.description);
+    YamlTemplateInstanceReader.refuseEmptyIdentifier(source);
     instance.at_id = CedarArtifactId.forValue(ReaderUtil.getString(source, YamlKeys.id));
     instance.schema_isBasedOn = CedarArtifactId.forValue(ReaderUtil.getString(source, YamlKeys.isBasedOn));
+    // Accept the legacy empty spelling as absence; the writer omits the optional key.
+    instance.pav_derivedFrom = CedarArtifactId.forValue(ReaderUtil.getString(source, YamlKeys.derivedFrom));
+    // The writer emits an instance's provenance and its annotations; both were read by nobody, so
+    // either one was lost by writing what had just been read.
+    instance.pav_createdBy = CedarUser.forValue(ReaderUtil.getString(source, YamlKeys.createdBy));
+    instance.pav_createdOn = IsoDate.forValue(ReaderUtil.getString(source, YamlKeys.createdOn));
+    instance.oslc_modifiedBy = CedarUser.forValue(ReaderUtil.getString(source, YamlKeys.modifiedBy));
+    instance.pav_lastUpdatedOn = IsoDate.forValue(ReaderUtil.getString(source, YamlKeys.modifiedOn));
+    this.readAnnotations(instance, source, parsingResult, new JsonPath());
 
     instance.dataContainer = this.parseContainer(source);
     for (const conflict of AttributeValueNamePolicy.findConflicts(instance.dataContainer)) {
@@ -96,6 +121,14 @@ export class YamlTemplateInstanceReader {
     YamlKeys.isBasedOn,
     YamlKeys.derivedFrom,
     YamlKeys.children,
+    // An annotation block is the artifact's, not a field named `annotations`: left unreserved, the
+    // attribute-value fallback below claimed it, and an annotation carrying an IRI rather than a
+    // literal came out of that as a null-valued attribute the writer then dropped.
+    YamlKeys.annotations,
+    YamlKeys.createdOn,
+    YamlKeys.createdBy,
+    YamlKeys.modifiedOn,
+    YamlKeys.modifiedBy,
   ]);
 
   private parseContainer(node: JsonNode): InstanceDataContainer {
@@ -135,6 +168,7 @@ export class YamlTemplateInstanceReader {
       container.setValue(key, avField);
     });
 
+    YamlTemplateInstanceReader.refuseEmptyIdentifier(node);
     const id = ReaderUtil.getString(node, YamlKeys.id);
     if (id !== null) {
       container.id = id;
@@ -170,6 +204,7 @@ export class YamlTemplateInstanceReader {
       return datatype === null ? new InstanceDataStringAtom(value) : new InstanceDataTypedAtom(value, datatype);
     }
     if (Object.hasOwn(node, YamlKeys.id)) {
+      YamlTemplateInstanceReader.refuseEmptyIdentifier(node);
       const id = ReaderUtil.getString(node, YamlKeys.id);
       const label = ReaderUtil.getString(node, YamlKeys.label);
       return label === null ? InstanceDataLinkAtom.fromParsedNode(id) : InstanceDataControlledAtom.fromParsedNode(id, label);

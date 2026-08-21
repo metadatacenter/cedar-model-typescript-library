@@ -1,11 +1,11 @@
-type: "multi-select-list-field"
+type: multi-select-list-field
 name: "Ulnar CMAP aaaaaa aaaaaa aaaaaa aaaaaa aaaaaa aaaaaa aaaaaa aaaaaa \taaaaaa \raaaaaa \\aaaaaa aaaaaa \nmedian abc\nxyz\\n123\n meters. \n\nIn ca"
 description: "\\n\n"
 identifier: "7yiCUqs2se"
 id: "https://repo.metadatacenter.org/template-fields/005ee86f-e35f-4197-bcf0-7b4331e25739"
-status: "draft"
-version: "0.0.1"
-modelVersion: "1.6.0"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
 prefLabel: "Ulnar CMAP median"
 altLabels:
   - "Ulnar CMAP median"

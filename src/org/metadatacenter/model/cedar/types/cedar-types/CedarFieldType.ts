@@ -22,7 +22,6 @@ export const CedarFieldTypeValues = {
   SINGLE_SELECT_LIST: 'DYNAMIC-single-select-list',
   MULTIPLE_SELECT_LIST: 'DYNAMIC-multiple-select-list',
   ATTRIBUTE_VALUE: 'DYNAMIC-attribute-value',
-  BOOLEAN: 'DYNAMIC-boolean',
 
   STATIC_PAGE_BREAK: 'STATIC-page-break',
   STATIC_SECTION_BREAK: 'STATIC-section-break',
@@ -84,7 +83,6 @@ export class CedarFieldType {
       CedarFieldType.SINGLE_SELECT_LIST,
       CedarFieldType.MULTIPLE_SELECT_LIST,
       CedarFieldType.ATTRIBUTE_VALUE,
-      CedarFieldType.BOOLEAN,
       CedarFieldType.STATIC_PAGE_BREAK,
       CedarFieldType.STATIC_SECTION_BREAK,
       CedarFieldType.STATIC_IMAGE,
@@ -139,7 +137,7 @@ export class CedarFieldType {
   public static MULTIPLE_SELECT_LIST = new CedarFieldType(
     CedarFieldTypeValues.MULTIPLE_SELECT_LIST,
     UiInputType.LIST,
-    YamlArtifactType.SINGLE_SELECT_LIST,
+    YamlArtifactType.MULTI_SELECT_LIST,
     false,
   );
   public static ATTRIBUTE_VALUE = new CedarFieldType(
@@ -148,7 +146,6 @@ export class CedarFieldType {
     YamlArtifactType.ATTRIBUTE_VALUE,
     false,
   );
-  public static BOOLEAN = new CedarFieldType(CedarFieldTypeValues.BOOLEAN, UiInputType.BOOLEAN, YamlArtifactType.BOOLEAN, false);
 
   public static STATIC_PAGE_BREAK = new CedarFieldType(
     CedarFieldTypeValues.STATIC_PAGE_BREAK,

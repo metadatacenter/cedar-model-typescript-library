@@ -1,112 +1,115 @@
-type: "template"
+type: template
 name: "(2.0) [VODAN-BR] Distribuicao Template"
 description: "Template para a planilha de distribuicao do VODAN-BR"
+instanceType: "http://data.bioontology.org/ontologies/DCAT/classes/http%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23Distribution"
 children:
   - key: "Titulo"
-    type: "text-field"
+    type: text-field
     name: "Titulo"
     description: "Nome da distribuicao com tag do idioma"
     configuration:
       required: true
   - key: "Conforme"
-    type: "link-field"
+    type: link-field
     name: "Conforme"
     description: "Especificacao do esquema de metadados do catalogo ( exemplo: ShEx )"
   - key: "Licenca"
-    type: "link-field"
+    type: link-field
     name: "Licenca"
-    description: "Link para a descriÃÂÃÂ§ÃÂÃÂ£o da licenca"
+    description: "Link para a descrição da licenca"
     configuration:
       required: true
   - key: "Versao"
-    type: "text-field"
+    type: text-field
     name: "Versao"
     description: "Versao da distribuicao"
     configuration:
       required: true
   - key: "Publicado"
-    type: "temporal-field"
+    type: temporal-field
     name: "Publicado"
-    description: "Data de criacao da distribuiÃÂÃÂ§ÃÂÃÂ£o de entrada"
-    datatype: "xsd:dateTime"
-    granularity: "second"
-    inputTimeFormat: "12h"
+    description: "Data de criacao da distribuição de entrada"
+    datatype: xsd:dateTime
+    granularity: second
+    inputTimeFormat: 12h
     inputTimeZone: true
   - key: "Modificado"
-    type: "temporal-field"
+    type: temporal-field
     name: "Modificado"
     description: "Ultima data de modificacao da distribuicao de entrada"
-    datatype: "xsd:dateTime"
-    granularity: "second"
-    inputTimeFormat: "12h"
+    datatype: xsd:dateTime
+    granularity: second
+    inputTimeFormat: 12h
     inputTimeZone: true
   - key: "[VODAN-BR] Acesso"
-    type: "element"
+    type: element
     name: "[VODAN-BR] Acesso"
     description: "Elemento para o campo de \"Direitos de acesso\" do VODAN-BR"
+    instanceType: "http://data.bioontology.org/ontologies/DCT/classes/http%3A%2F%2Fpurl.org%2Fdc%2Fterms%2FRightsStatement"
     children:
       - key: "Descricao"
-        type: "text-field"
+        type: text-field
         name: "Descricao"
         description: "Descricao com tag do idioma"
       - key: "Parte de"
-        type: "link-field"
+        type: link-field
         name: "Parte de"
         description: "Relacao com o metadado pai"
         configuration:
           required: true
       - key: "Direitos de acesso"
-        type: "link-field"
+        type: link-field
         name: "Direitos de acesso"
         description: "Especificacao dos direitos de acesso"
         configuration:
           required: true
   - key: "[VODAN-BR] Autorizacao"
-    type: "element"
+    type: element
     name: "[VODAN-BR] Autorizacao"
     description: "Elemento para o campo de \"Autorizacao\" do VODAN-BR"
+    instanceType: "http://data.bioontology.org/ontologies/CEDARPC/classes/https%3A%2F%2Fdata.bioontology.org%2Fprovisional_classes%2F010d3380-8bf8-0139-8ab2-005056010074"
     children:
       - key: "Modo"
-        type: "link-field"
+        type: link-field
         name: "Modo"
         description: "Modo do acesso, como \"ler\" ou \"escrever\""
         configuration:
           required: true
       - key: "Agente"
-        type: "link-field"
+        type: link-field
         name: "Agente"
         description: "Pessoa ou organizacao para ser dada o acesso"
         configuration:
           required: true
   - key: "Descricao"
-    type: "text-field"
+    type: text-field
     name: "Descricao"
     description: "Descricao da distribuicao com tag do idioma"
   - key: "Rotulo"
-    type: "text-field"
+    type: text-field
     name: "Rotulo"
     description: "Nome da distribuicao com tag do idioma"
   - key: "URL de acesso"
-    type: "link-field"
+    type: link-field
     name: "URL de acesso"
     configuration:
       required: true
   - key: "URL de download"
-    type: "link-field"
+    type: link-field
     name: "URL de download"
     description: "Arquivo que contem a distribuicao do dataset"
     configuration:
       required: true
   - key: "Tipo de midia"
-    type: "text-field"
+    type: text-field
     name: "Tipo de midia"
     description: "Tipo de midia da distribuicao"
     configuration:
       required: true
   - key: "Formato"
-    type: "text-field"
+    type: text-field
     name: "Formato"
   - key: "Tamanho do arquivo em bytes"
-    type: "numeric-field"
+    type: numeric-field
     name: "Tamanho do arquivo em bytes"
-    datatype: "xsd:decimal"
+    datatype: xsd:decimal

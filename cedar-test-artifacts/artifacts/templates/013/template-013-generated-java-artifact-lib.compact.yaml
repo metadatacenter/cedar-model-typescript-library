@@ -1,8 +1,9 @@
-type: "template"
+type: template
 name: "#013 Template with Numeric Field"
 children:
   - key: "Numeric field"
-    type: "numeric-field"
+    type: numeric-field
     name: "Numeric field"
     description: "Help Text"
-    datatype: "xsd:decimal"
+    datatype: xsd:decimal
+    default: 42.5

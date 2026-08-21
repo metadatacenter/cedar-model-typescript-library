@@ -346,7 +346,8 @@
       },
       "_valueConstraints": {
         "requiredValue": false,
-        "temporalType": "xsd:date"
+        "temporalType": "xsd:date",
+        "defaultValue": "2026-08-20"
       },
       "properties": {
         "@type": {
@@ -434,7 +435,8 @@
       },
       "_valueConstraints": {
         "requiredValue": false,
-        "temporalType": "xsd:time"
+        "temporalType": "xsd:time",
+        "defaultValue": "14:30:45-07:00"
       },
       "properties": {
         "@type": {
@@ -525,7 +527,8 @@
         },
         "_valueConstraints": {
           "requiredValue": true,
-          "temporalType": "xsd:dateTime"
+          "temporalType": "xsd:dateTime",
+          "defaultValue": "2026-08-20T14:30:45.125-07:00"
         },
         "properties": {
           "@type": {

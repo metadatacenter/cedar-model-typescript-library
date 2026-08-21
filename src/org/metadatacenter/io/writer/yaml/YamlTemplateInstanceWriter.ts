@@ -32,9 +32,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
     return {
       ...this.macroType(instance),
       ...this.macroNameAndDescription(instance),
-      // Instance identity is data, not optional provenance. Java keeps it in
-      // both expanded and compact YAML so either form round-trips unchanged.
-      ...this.macroId(instance, false),
+      ...this.macroId(instance, isCompact, true),
       ...this.macroIsBasedOn(instance),
       ...this.macroDerivedFrom(instance, isCompact),
       ...this.macroProvenance(instance, isCompact),
@@ -49,11 +47,16 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
 
   private getDataTree(instance: TemplateInstance, isCompact: boolean): JsonNode {
     const ret: JsonNode = JsonNode.getEmpty();
-    this.serializeDataLevelInto(instance.dataContainer, ret, isCompact);
+    this.serializeDataLevelInto(instance.dataContainer, ret, isCompact, true);
     return ret;
   }
 
-  private serializeDataLevelInto(dataContainer: InstanceDataContainer, into: JsonNode, isCompact: boolean): void {
+  private serializeDataLevelInto(
+    dataContainer: InstanceDataContainer,
+    into: JsonNode,
+    isCompact: boolean,
+    isDocumentRoot: boolean = false,
+  ): void {
     const target = JsonNode.getEmpty();
     const unpackedAttributeValueGroups = this.getUnpackedAttributeValueGroups(dataContainer);
     const unpackedAttributeNames = new Set(Array.from(unpackedAttributeValueGroups.values()).flat());
@@ -98,7 +101,9 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
     // attribute-value group. Its generated JSON-LD id alone is reconstructable
     // from the template and would be ambiguous with a field in YAML.
     if (JsonNode.hasEntries(target)) {
-      if (this.hasId(dataContainer.id)) {
+      // The instance's own identifier stays out of the compact form, with the rest of what a
+      // repository assigns; a nested element occurrence keeps its own, which is data.
+      if (this.hasId(dataContainer.id) && !(isCompact && isDocumentRoot)) {
         into[YamlKeys.id] = dataContainer.id;
       }
       into[YamlKeys.children] = target;
@@ -158,7 +163,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
       const names = value
         .filter((item): item is InstanceDataAttributeValueFieldName => item instanceof InstanceDataAttributeValueFieldName)
         .map((item) => item.name)
-        .filter((name) => name.length > 0);
+        .filter((name) => name.trim().length > 0);
       if (names.length > 0) {
         groups.set(key, names);
       }

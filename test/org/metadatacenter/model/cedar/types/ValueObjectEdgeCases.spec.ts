@@ -3,6 +3,7 @@ import { AnnotationAtValue } from '../../../../../../src/org/metadatacenter/mode
 import { Annotations } from '../../../../../../src/org/metadatacenter/model/cedar/annotation/Annotations';
 import { ArtifactSchema } from '../../../../../../src/org/metadatacenter/model/cedar/types/wrapped-types/ArtifactSchema';
 import { CedarArtifactType } from '../../../../../../src/org/metadatacenter/model/cedar/types/cedar-types/CedarArtifactType';
+import { CedarFieldType } from '../../../../../../src/org/metadatacenter/model/cedar/types/cedar-types/CedarFieldType';
 import { ComparisonError } from '../../../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonError';
 import { ComparisonErrorType } from '../../../../../../src/org/metadatacenter/model/cedar/util/compare/ComparisonErrorType';
 import { IsoDate } from '../../../../../../src/org/metadatacenter/model/cedar/types/wrapped-types/IsoDate';
@@ -38,6 +39,13 @@ describe('value object edge cases', () => {
     expect(CedarArtifactType.forYamlArtifactType(YamlArtifactType.IMAGE)).toBe(CedarArtifactType.STATIC_TEMPLATE_FIELD);
     expect(CedarArtifactType.forYamlArtifactType(YamlArtifactType.TEMPLATE_INSTANCE)).toBe(CedarArtifactType.TEMPLATE_INSTANCE);
     expect(CedarArtifactType.forYamlArtifactType(YamlArtifactType.NULL)).toBe(CedarArtifactType.NULL);
+  });
+
+  test('single- and multiple-select fields map to distinct YAML artifact types in both directions', () => {
+    expect(CedarFieldType.SINGLE_SELECT_LIST.getYamlType()).toBe(YamlArtifactType.SINGLE_SELECT_LIST);
+    expect(CedarFieldType.MULTIPLE_SELECT_LIST.getYamlType()).toBe(YamlArtifactType.MULTI_SELECT_LIST);
+    expect(CedarFieldType.forYamlArtifactType(YamlArtifactType.SINGLE_SELECT_LIST)).toBe(CedarFieldType.SINGLE_SELECT_LIST);
+    expect(CedarFieldType.forYamlArtifactType(YamlArtifactType.MULTI_SELECT_LIST)).toBe(CedarFieldType.MULTIPLE_SELECT_LIST);
   });
 
   test('ISO dates preserve positive offsets, accept zone-less input, and represent null', () => {

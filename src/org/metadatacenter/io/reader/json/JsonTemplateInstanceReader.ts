@@ -242,10 +242,31 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
       });
     }
 
-    // add @id
+    // Add @id. Compatibility readers must be able to open the production form
+    // CEDAR itself once wrote for an unassigned element occurrence: "@id": "".
+    // Keep the value in the read model so the departure remains observable, but
+    // record it as a warning; the writer turns it into null, which is the
+    // canonical request for the repository to assign an occurrence identifier.
+    // STRICT still refuses it. The document root has already passed through
+    // readNonReportableAttributes, so this leniency applies only to nested
+    // containers, not to an artifact pretending its own identifier is blank.
     if (Object.hasOwn(sourceObject, JsonSchema.atId)) {
       const atId = ReaderUtil.getString(sourceObject, JsonSchema.atId);
       if (atId !== null) {
+        if (atId.trim() === '') {
+          if (!this.behavior.useWarningForKnownIssues()) {
+            JsonTemplateInstanceReader.refuseEmptyIdentifier(sourceObject);
+          }
+          parsingResult.addBlueprintComparisonWarning(
+            new ComparisonError(
+              'JsonTemplateInstanceReader',
+              ComparisonErrorType.VALUE_MISMATCH,
+              path.add(JsonSchema.atId),
+              'an absolute IRI or null while the occurrence awaits server assignment',
+              atId,
+            ),
+          );
+        }
         ret.id = atId;
       }
     }
@@ -389,6 +410,7 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
       }
     }
     if (Object.hasOwn(content, JsonSchema.atId)) {
+      JsonTemplateInstanceReader.refuseEmptyIdentifier(content);
       const id = ReaderUtil.getString(content, JsonSchema.atId);
       const label = ReaderUtil.getString(content, JsonSchema.rdfsLabel);
       // `fromParsedNode` on both: a document that arrives with a null `@id` is

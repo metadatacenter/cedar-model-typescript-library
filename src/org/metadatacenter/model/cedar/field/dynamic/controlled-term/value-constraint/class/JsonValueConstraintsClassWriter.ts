@@ -21,6 +21,7 @@ export class JsonValueConstraintsClassWriter extends AbstractJsonControlledTermV
     ret[CedarModel.ValueConstraints.label] = clazz.label;
     ret[CedarModel.ValueConstraints.prefLabel] = clazz.prefLabel;
     ret[CedarModel.ValueConstraints.type] = this.atomicWriter.write(clazz.type);
+    this.writeSourceAndVersion(ret, clazz);
     return ret;
   }
 }

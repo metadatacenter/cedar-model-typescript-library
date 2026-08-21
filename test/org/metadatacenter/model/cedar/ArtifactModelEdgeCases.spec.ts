@@ -32,7 +32,7 @@ describe('artifact model edge cases', () => {
     expect(field.skos_altLabel).toEqual(['first', 'second']);
   });
 
-  test('containers expose typed child lookup, fallback labels, and generated IRIs', () => {
+  test('containers expose typed child lookup, declared labels, and the IRIs children carry', () => {
     const field: TextField = CedarBuilders.textFieldBuilder().withSchemaName('Fallback label').build();
     const nested: TemplateElement = CedarBuilders.templateElementBuilder().withSchemaName('Nested element').build();
     const container: TemplateElement = CedarBuilders.templateElementBuilder()
@@ -45,13 +45,18 @@ describe('artifact model edge cases', () => {
     expect(container.getElement('field without iri')).toBeNull();
     expect(container.getElement('nested')).toBe(nested);
     expect(container.getField('nested')).toBeNull();
-    expect(container.getChildrenInfo().getPropertyLabelMap(container)).toEqual({
-      'field without iri': 'Fallback label',
-      nested: 'Nested element',
+    // Empty: neither child was given a label by this container, and a child's own name is not one.
+    expect(container.getChildrenInfo().getPropertyLabelMap(container)).toEqual({});
+    const labelled = CedarBuilders.templateElementBuilder()
+      .addChild(field, field.createDeploymentBuilder('field without iri').withLabel('As the parent asks for it').build())
+      .build();
+    expect(labelled.getChildrenInfo().getPropertyLabelMap(labelled)).toEqual({
+      'field without iri': 'As the parent asks for it',
     });
-    expect(container.getChildrenInfo().getChildIriMap()['field without iri']).toBe(
-      'https://schema.metadatacenter.org/properties/field+without+iri',
-    );
+    // A child that declares no IRI gets no mapping: the IRI is identity, and the repository assigns
+    // it when the artifact is uploaded. Deriving one from the child's name is what this used to do,
+    // and a name is exactly what identity cannot be built from — the author can change it.
+    expect(container.getChildrenInfo().getChildIriMap()['field without iri']).toBeUndefined();
     expect(container.getChildrenInfo().getOnlyElementNamesForPropertiesContextRequired()).toEqual(['nested']);
   });
 

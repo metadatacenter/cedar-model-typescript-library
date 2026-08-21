@@ -11,6 +11,7 @@ import { YamlAnnotationsWriter } from './YamlAnnotationsWriter';
 import { CedarUser } from '../../../model/cedar/types/cedar-types/CedarUser';
 import { IsoDate } from '../../../model/cedar/types/wrapped-types/IsoDate';
 import { TemplateElement } from '../../../model/cedar/element/TemplateElement';
+import { AbstractContainerArtifact } from '../../../model/cedar/AbstractContainerArtifact';
 import { YamlArtifactType } from '../../../model/cedar/types/wrapped-types/YamlArtifactType';
 import { Template } from '../../../model/cedar/template/Template';
 import { YamlWriterBehavior } from '../../../behavior/YamlWriterBehavior';
@@ -66,13 +67,30 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
     return svObject;
   }
 
-  protected macroSkos(field: TemplateField): JsonNode {
-    const skosObject: JsonNode = JsonNode.getEmpty();
-    if (field.skos_prefLabel !== null) {
-      skosObject[YamlKeys.prefLabel] = field.skos_prefLabel;
+  /**
+   * The type an instance of this container declares itself to be.
+   *
+   * The JSON Schema states it as an enum of one inside the `@type` property specification, which is
+   * where both libraries read it from; the YAML says it in a key. Kept in the compact form too, since
+   * it is part of what the artifact says rather than something the system recorded about it.
+   */
+  protected macroInstanceType(container: AbstractContainerArtifact): JsonNode {
+    const ret: JsonNode = JsonNode.getEmpty();
+    if (container.instanceTypeSpecification !== null) {
+      ret[YamlKeys.instanceType] = container.instanceTypeSpecification;
     }
-    if (field.skos_altLabel !== null && field.skos_altLabel.length > 0) {
-      skosObject[YamlKeys.altLabels] = field.skos_altLabel;
+    return ret;
+  }
+
+  /** An element carries a preferred label and alternatives as a field does, and the JSON writer has
+   *  always written both for either. */
+  protected macroSkos(artifact: TemplateField | TemplateElement): JsonNode {
+    const skosObject: JsonNode = JsonNode.getEmpty();
+    if (artifact.skos_prefLabel !== null) {
+      skosObject[YamlKeys.prefLabel] = artifact.skos_prefLabel;
+    }
+    if (artifact.skos_altLabel !== null && artifact.skos_altLabel.length > 0) {
+      skosObject[YamlKeys.altLabels] = artifact.skos_altLabel;
     }
     return skosObject;
   }
@@ -120,12 +138,18 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
     return typeAndId;
   }
 
-  protected macroId(artifact: AbstractArtifact, isCompact: boolean): JsonNode {
+  /**
+   * The artifact's own identifier.
+   *
+   * Compact schema YAML is an identity-free structural description. Repository identifiers belong
+   * to stored schema artifacts, including embedded fields and elements, and therefore appear only in
+   * the full form. The position parameter remains for source compatibility with existing specialized
+   * writers; compactness alone determines whether an identifier is emitted.
+   */
+  protected macroId(artifact: AbstractArtifact, isCompact: boolean = false, _isDocumentRoot: boolean = true): JsonNode {
     const typeAndId: JsonNode = JsonNode.getEmpty();
-    if (!isCompact) {
-      if (artifact.at_id !== CedarArtifactId.NULL) {
-        typeAndId[YamlKeys.id] = this.atomicWriter.write(artifact.at_id);
-      }
+    if (artifact.at_id !== CedarArtifactId.NULL && !isCompact) {
+      typeAndId[YamlKeys.id] = this.atomicWriter.write(artifact.at_id);
     }
     return typeAndId;
   }

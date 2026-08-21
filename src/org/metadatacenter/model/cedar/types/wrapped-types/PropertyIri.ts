@@ -1,46 +1,21 @@
 import { CedarModel } from '../../constants/CedarModel';
 
 /**
- * The IRI CEDAR identifies one of a container's properties by.
+ * The namespace CEDAR identifies one of a container's properties by.
  *
- * A model fact — the namespace those IRIs live in, and the two ways one is
- * arrived at — rather than a key in any serialization. It was reachable only as
- * `CedarModel.propertyIriPrefix`, a bare string in a class otherwise full of the
- * *names* a template's JSON uses for its parts: `_ui`, `$schema`,
- * `_valueConstraints`. A consumer that needed to mint a property IRI had to
- * reach into that table for a prefix and then know how the rest is built, which
- * is how CEE came to mint one a different way from the library.
+ * A model fact rather than a key in any serialization, and the whole of what a consumer needs: the
+ * IRIs themselves are the repository's to assign, so nothing here derives one. It used to, from the
+ * property's name, and that is exactly what a name cannot carry — an author renames a child and the
+ * identity underneath it would move.
  *
- * Both schemes are here so they cannot drift again. Which is right depends on
- * what the caller has: a property whose name is settled is identified from that
- * name, and one whose name the user is still typing needs an identity that does
- * not change under them.
+ * It is here at all because the namespace was reachable only as `CedarModel.propertyIriPrefix`, a
+ * bare string in a class otherwise full of the *names* a template's JSON uses for its parts: `_ui`,
+ * `$schema`, `_valueConstraints`. A consumer that wanted to recognise a property IRI had to reach
+ * into that table, which is how CEE came to mint one a different way from the library.
  */
 export class PropertyIri {
-  /** The namespace every property IRI CEDAR mints belongs to. */
+  /** The namespace every property IRI CEDAR assigns belongs to. */
   static get namespace(): string {
     return CedarModel.propertyIriPrefix;
-  }
-
-  /**
-   * The IRI for a property with this name.
-   *
-   * What the template writer uses for a child whose template declares no IRI of
-   * its own. Spaces become `+` rather than `%20`, which is what CEDAR writes.
-   */
-  static forName(name: string): string {
-    return CedarModel.propertyIriPrefix + encodeURIComponent(name).replace(/%20/g, '+');
-  }
-
-  /**
-   * The IRI for a property identified by something other than its name.
-   *
-   * For a property whose name is the user's to change — an attribute-value
-   * field's, say — where deriving the IRI from the name would give it a new
-   * identity on every keystroke. The caller supplies the unique part, because
-   * what makes it unique is the caller's to decide.
-   */
-  static forId(id: string): string {
-    return CedarModel.propertyIriPrefix + id;
   }
 }

@@ -1,4 +1,4 @@
-import { CedarReaders, JsonNode, JsonTemplateInstanceReader } from '../../../../../../src';
+import { CedarReaders, CedarWriters, JsonNode, JsonTemplateInstanceReader } from '../../../../../../src';
 import { InstanceDataContainer } from '../../../../../../src/org/metadatacenter/model/cedar/template-instance/InstanceDataContainer';
 import { InstanceDataLinkAtom } from '../../../../../../src/org/metadatacenter/model/cedar/template-instance/InstanceDataLinkAtom';
 import { InstanceDataControlledAtom } from '../../../../../../src/org/metadatacenter/model/cedar/template-instance/InstanceDataControlledAtom';
@@ -79,6 +79,45 @@ describe('reading an instance whose elements have no @context', () => {
     const term = container.values['term'];
     expect(term instanceof InstanceDataControlledAtom).toBe(true);
     expect((term as InstanceDataControlledAtom).label).toBe('Term');
+  });
+});
+
+/**
+ * A production compatibility boundary, not permission to create a new defect.
+ *
+ * Older CEDAR clients wrote an empty string while an element occurrence waited
+ * for the repository to assign its identity. CEE uses the February 2024 reader,
+ * so throwing here would make those stored instances impossible to open and
+ * repair. The compatibility reader retains and reports the old spelling; its
+ * writer emits null, and the artifact server mints the real IRI on update.
+ * STRICT remains covered by YamlTemplateInstanceEdgeCases.spec.ts and refuses
+ * the same JSON shape.
+ */
+describe('reading a legacy unassigned element occurrence identifier', () => {
+  const source = {
+    '@id': 'https://repo.metadatacenter.org/template-instances/1',
+    '@context': { schema: 'http://schema.org/' },
+    'schema:isBasedOn': 'https://repo.metadatacenter.org/templates/1',
+    element: {
+      '@context': {},
+      '@id': '',
+      field: { '@value': 'inside' },
+    },
+  } as JsonNode;
+
+  test('the compatibility reader opens it, records it, and writes the server-minting form', () => {
+    const result = CedarReaders.json().getFebruary2024().getTemplateInstanceReader().readFromObject(source);
+    const element = result.instance.dataContainer.values['element'] as InstanceDataContainer;
+
+    expect(element.id).toBe('');
+    expect(
+      result.parsingResult
+        .getBlueprintComparisonWarnings()
+        .some((warning) => JSON.stringify(warning.errorPath).includes('element') && JSON.stringify(warning.errorPath).includes('@id')),
+    ).toBe(true);
+
+    const written = CedarWriters.json().getFebruary2024().getTemplateInstanceWriter().getAsJsonNode(result.instance);
+    expect((written['element'] as JsonNode)['@id']).toBeNull();
   });
 });
 

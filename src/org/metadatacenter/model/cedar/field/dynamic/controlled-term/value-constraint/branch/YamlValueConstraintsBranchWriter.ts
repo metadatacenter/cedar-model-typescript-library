@@ -14,11 +14,14 @@ export class YamlValueConstraintsBranchWriter extends AbstractYamlControlledTerm
   override getAsJsonNode(branch: ControlledTermBranch): JsonNode {
     const ret = JsonNode.getEmpty();
     ret[YamlKeys.type] = YamlValues.Controlled.branch;
-    ret[YamlKeys.Controlled.ontologyName] = branch.source;
-    ret[YamlKeys.Controlled.acronym] = branch.acronym;
-    ret[YamlKeys.Controlled.termLabel] = branch.name;
-    ret[YamlKeys.Controlled.iri] = this.atomicWriter.write(branch.uri);
-    ret[YamlKeys.Controlled.maxDepth] = branch.maxDepth;
+    this.writeSourceSystem(ret, branch);
+    ret[YamlKeys.Controlled.sourceAcronym] = branch.acronym;
+    ret[YamlKeys.Controlled.sourceName] = branch.source;
+    this.writeSourceIri(ret, branch);
+    ret[YamlKeys.Controlled.termBaseIri] = this.atomicWriter.write(branch.uri);
+    ret[YamlKeys.Controlled.termBaseLabel] = branch.name;
+    ret[YamlKeys.Controlled.termMaxDepth] = branch.maxDepth;
+    this.writeVersion(ret, branch);
     return ret;
   }
 }

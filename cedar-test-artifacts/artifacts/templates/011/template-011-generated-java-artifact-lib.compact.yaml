@@ -1,8 +1,8 @@
-type: "template"
+type: template
 name: "#11 Template with multi field with pref and alt labels"
 children:
   - key: "TextField1"
-    type: "text-field"
+    type: text-field
     name: "TextField1"
     description: "Help Text"
     prefLabel: "TextField 1 preferred label"

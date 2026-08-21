@@ -1,7 +1,7 @@
-type: "template"
+type: template
 name: "Template with simple link"
 children:
   - key: "Linkfield"
-    type: "link-field"
+    type: link-field
     name: "Linkfield"
     description: "Help Text"

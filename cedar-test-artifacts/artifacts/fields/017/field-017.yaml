@@ -1,10 +1,10 @@
-type: "ext-pubmed-field"
+type: ext-pubmed-field
 name: "PubMed Field"
 description: "PubMed Help"
 id: "https://repo.metadatacenter.org/template-fields/b3712dee-b03c-42c8-a3ed-2515b9c6a8e2"
-status: "draft"
-version: "0.0.1"
-modelVersion: "1.6.0"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
 prefLabel: "PubMed Preferred"
 createdOn: "2025-07-31T11:31:34-07:00"
 createdBy: "https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95"

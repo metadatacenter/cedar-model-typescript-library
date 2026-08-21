@@ -30,8 +30,16 @@ export abstract class YamlTemplateFieldWriterInternal extends YamlAbstractArtifa
 
   public getYamlAsJsonNode(
     field: TemplateField,
+    childInfo: AbstractChildDeploymentInfo,
+    isCompact: boolean,
+    isDocumentRoot: boolean,
+  ): JsonNode;
+
+  public getYamlAsJsonNode(
+    field: TemplateField,
     childInfo: AbstractChildDeploymentInfo = ChildDeploymentInfo.empty(),
     isCompact: boolean = false,
+    isDocumentRoot: boolean = true,
   ): JsonNode {
     // Build ui wrapper
     const uiObject: JsonNode = this.buildUIObject(field, childInfo);
@@ -44,7 +52,7 @@ export abstract class YamlTemplateFieldWriterInternal extends YamlAbstractArtifa
       ...this.macroType(field),
       ...this.macroNameAndDescription(field),
       ...this.macroSchemaIdentifier(field),
-      ...this.macroId(field, isCompact),
+      ...this.macroId(field, isCompact, isDocumentRoot),
       ...this.macroStatusAndVersion(field, isCompact),
       ...this.macroSkos(field),
       ...uiObject,

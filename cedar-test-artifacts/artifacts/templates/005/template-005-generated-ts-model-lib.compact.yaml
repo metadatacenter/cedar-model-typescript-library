@@ -1,8 +1,8 @@
-type: "template"
+type: template
 name: "Template with multi field"
 children:
   - key: "Textfield"
-    type: "text-field"
+    type: text-field
     name: "Textfield"
     description: "Help Text"
     configuration:

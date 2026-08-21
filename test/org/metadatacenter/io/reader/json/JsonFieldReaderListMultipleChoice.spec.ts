@@ -1,4 +1,4 @@
-import { CedarReaders, JsonNode, Template } from '../../../../../../src';
+import { CedarReaders, CedarWriters, JsonNode, Template } from '../../../../../../src';
 import { ListField } from '../../../../../../src/org/metadatacenter/model/cedar/field/dynamic/list/ListField';
 import { MultipleChoiceListFieldImpl } from '../../../../../../src/org/metadatacenter/model/cedar/field/dynamic/list-multiple-choice/MultipleChoiceListFieldImpl';
 import { SingleChoiceListFieldImpl } from '../../../../../../src/org/metadatacenter/model/cedar/field/dynamic/list-single-choice/SingleChoiceListFieldImpl';
@@ -6,25 +6,19 @@ import { SingleChoiceListFieldImpl } from '../../../../../../src/org/metadatacen
 /**
  * How a list field's `multipleChoice` is decided when it is read.
  *
- * For a field read inside a template, the property's cardinality decides, and
- * a `_valueConstraints.multipleChoice` that disagrees is overwritten. That is
- * not a shortcut: a list whose answer may select several options serialises as
- * an array, so the two are meant to be the same fact stated twice, and the
- * schema is the half that governs the instance. When a template states them
- * inconsistently, the array wins. The Java artifact library normalises the same
- * way, which is what keeps the two libraries' output identical.
+ * The declared value decides, wherever the field sits. How many options an answer may select and how
+ * many times the field is asked are separate facts: `multipleChoice` states the first, and the
+ * property's cardinality — an array-typed property with `minItems`/`maxItems` — states the second.
+ * Both serialise as an array, which is what made them easy to confuse.
  *
- * Real templates do state them inconsistently. Six list fields across the
- * HuBMAP corpus and `template-029` in `cedar-test-artifacts` declare
- * `multipleChoice: false` on an array-typed property, or the reverse.
- * `template-029`'s generated output — from both libraries — shows the
- * normalisation: `false` in the source, `true` in what either library writes.
+ * A child field used to take `multipleChoice` from its cardinality, so a repeatable single-select was
+ * read as a multi-select and written back with `multipleChoice: true` over the `false` its template
+ * declared. Real templates state it that way: six list fields across the HuBMAP corpus and
+ * `template-029` in `cedar-test-artifacts` are repeatable single-selects. The Java artifact library
+ * reads the declared value, and this library follows it, which is what keeps the two outputs identical.
  *
- * Worth pinning because a reader coming to this fresh will find the standalone
- * branch below, conclude the declared value is authoritative, and be wrong
- * about every field that arrives inside a template. Anything consuming the
- * parsed model — CEE, for one, which renders a single-select or a multi-select
- * from exactly this — gets the normalised answer, not the declared one.
+ * Anything consuming the parsed model — CEE, for one, which renders a single-select or a multi-select
+ * from exactly this — now gets what the template says.
  */
 const listTemplate = (multipleChoice: boolean | undefined, asArray: boolean): JsonNode => {
   const valueConstraints: Record<string, unknown> = {
@@ -74,32 +68,52 @@ const readStandalone = (multipleChoice: boolean | undefined): ListField => {
 };
 
 describe('JsonFieldReaderList multipleChoice', () => {
-  test('inside a template, the property cardinality decides', () => {
+  test('inside a template, the declared value decides', () => {
     expect(readChoices(listTemplate(false, false)) instanceof SingleChoiceListFieldImpl).toBe(true);
     expect(readChoices(listTemplate(true, true)) instanceof MultipleChoiceListFieldImpl).toBe(true);
   });
 
-  test('a declared multipleChoice that contradicts the cardinality is overwritten', () => {
-    // template-029 is this case: multipleChoice false, property an array. Both
-    // libraries write it back out as true.
-    const arrayWins = readChoices(listTemplate(false, true));
-    expect(arrayWins instanceof MultipleChoiceListFieldImpl).toBe(true);
-    expect(arrayWins.multipleChoice).toBe(true);
+  test('a repeatable single-select stays a single-select', () => {
+    // template-029 is this case: multipleChoice false, property an array. It is a list offering one
+    // option, asked more than once.
+    const repeatable = readChoices(listTemplate(false, true));
+    expect(repeatable instanceof SingleChoiceListFieldImpl).toBe(true);
+    expect(repeatable.multipleChoice).toBe(false);
 
-    const objectWins = readChoices(listTemplate(true, false));
-    expect(objectWins instanceof SingleChoiceListFieldImpl).toBe(true);
-    expect(objectWins.multipleChoice).toBe(false);
+    const multiSelect = readChoices(listTemplate(true, false));
+    expect(multiSelect instanceof MultipleChoiceListFieldImpl).toBe(true);
+    expect(multiSelect.multipleChoice).toBe(true);
   });
 
-  test('cardinality still decides when multipleChoice is not declared at all', () => {
-    expect(readChoices(listTemplate(undefined, true)) instanceof MultipleChoiceListFieldImpl).toBe(true);
+  test('an undeclared multipleChoice is false, whatever the cardinality', () => {
+    expect(readChoices(listTemplate(undefined, true)) instanceof SingleChoiceListFieldImpl).toBe(true);
     expect(readChoices(listTemplate(undefined, false)) instanceof SingleChoiceListFieldImpl).toBe(true);
   });
 
-  /**
-   * A field read on its own has no property around it, so there is no
-   * cardinality to normalise against and the declared value is all there is.
-   */
+  test('a repeatable single-select is written back as one', () => {
+    const source = listTemplate(false, true);
+    const template: Template = CedarReaders.json().getFebruary2024().getTemplateReader().readFromObject(source).template;
+    const written = JSON.parse(CedarWriters.json().getStrict().getTemplateWriter().getAsJsonString(template));
+    const property = written['properties']['Choices'];
+
+    expect(property['type']).toBe('array');
+    expect(property['minItems']).toBe(1);
+    expect(property['items']['_valueConstraints']['multipleChoice']).toBe(false);
+  });
+
+  test('a legacy object-shaped multi-select is written back as an array', () => {
+    const source = listTemplate(true, false);
+    const template: Template = CedarReaders.json().getFebruary2024().getTemplateReader().readFromObject(source).template;
+    const written = JSON.parse(CedarWriters.json().getStrict().getTemplateWriter().getAsJsonString(template));
+    const property = written['properties']['Choices'];
+
+    expect(property['type']).toBe('array');
+    expect(property['minItems']).toBe(0);
+    expect(property['items']['type']).toBe('object');
+    expect(property['items']['_valueConstraints']['multipleChoice']).toBe(true);
+  });
+
+  /** A field read on its own has no property around it, and the declared value is all there is. */
   test('standalone, the declared value is the only signal', () => {
     expect(readStandalone(true) instanceof MultipleChoiceListFieldImpl).toBe(true);
     expect(readStandalone(false) instanceof SingleChoiceListFieldImpl).toBe(true);

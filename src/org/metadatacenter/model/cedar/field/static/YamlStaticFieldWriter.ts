@@ -15,6 +15,11 @@ export class YamlStaticFieldWriter extends YamlTemplateFieldWriterInternal {
     return super.expandUINodeForYAML(_field);
   }
 
+  /** The display size of a static field that has one; empty for the static fields that do not. */
+  protected expandSizeForYAML(_field: TemplateField): JsonNode {
+    return JsonNode.getEmpty();
+  }
+
   protected buildUIObject(field: TemplateField): JsonNode {
     return this.expandUINodeForYAML(field);
   }
@@ -22,11 +27,18 @@ export class YamlStaticFieldWriter extends YamlTemplateFieldWriterInternal {
   override getYamlAsJsonNode(field: TemplateField): JsonNode;
   override getYamlAsJsonNode(field: TemplateField, childInfo: AbstractChildDeploymentInfo): JsonNode;
   override getYamlAsJsonNode(field: TemplateField, childInfo: AbstractChildDeploymentInfo, isCompact: boolean): JsonNode;
+  override getYamlAsJsonNode(
+    field: TemplateField,
+    childInfo: AbstractChildDeploymentInfo,
+    isCompact: boolean,
+    isDocumentRoot: boolean,
+  ): JsonNode;
 
   override getYamlAsJsonNode(
     field: TemplateField,
     _childInfo: AbstractChildDeploymentInfo = ChildDeploymentInfo.empty(),
     isCompact: boolean = false,
+    isDocumentRoot: boolean = true,
   ): JsonNode {
     // Build ui wrapper
     //const uiObject: JsonNode = this.buildUIObject(field);
@@ -34,10 +46,12 @@ export class YamlStaticFieldWriter extends YamlTemplateFieldWriterInternal {
       ...this.macroType(field),
       ...this.macroNameAndDescription(field),
       ...this.macroSchemaIdentifier(field),
-      ...this.macroId(field, isCompact),
+      ...this.macroId(field, isCompact, isDocumentRoot),
       ...this.macroStatusAndVersion(field, isCompact),
       ...this.macroSkos(field),
       ...this.expandUINodeForYAML(field),
+      // A child's size is written by the parent, into that child's `configuration`.
+      ...(_childInfo.hasParent() ? JsonNode.getEmpty() : this.expandSizeForYAML(field)),
       ...this.macroProvenance(field, isCompact),
       ...this.macroDerivedFrom(field, isCompact),
       ...this.macroPreviousVersion(field, isCompact),

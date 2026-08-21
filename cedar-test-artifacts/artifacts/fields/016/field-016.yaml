@@ -1,10 +1,10 @@
-type: "ext-pfas-field"
+type: ext-pfas-field
 name: "PFAS Field"
 description: "PFAS Help"
 id: "https://repo.metadatacenter.org/template-fields/a2601cdd-a92b-41b7-92dc-1404a8b597f1"
-status: "draft"
-version: "0.0.1"
-modelVersion: "1.6.0"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
 prefLabel: "PFAS Preferred"
 createdOn: "2025-07-31T11:31:34-07:00"
 createdBy: "https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95"

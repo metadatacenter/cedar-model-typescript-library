@@ -6,14 +6,6 @@
     "@id": "http://purl.obolibrary.org/obo/DOID_0060318",
     "rdfs:label": "acute promyelocytic leukemia"
   },
-  "_annotations": {
-    "https://datacite.com/doi": {
-      "@id": "https://doi.org/10.82658/8vc1-abcd"
-    },
-    "foo": {
-      "@value": "bar"
-    }
-  },
   "@context": {
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
@@ -52,6 +44,14 @@
       "@type": "xsd:string"
     },
     "Untitled": "https://schema.metadatacenter.org/properties/97e1bf28-ebf3-457f-9155-7cdbb48b5860"
+  },
+  "_annotations": {
+    "https://datacite.com/doi": {
+      "@id": "https://doi.org/10.82658/8vc1-abcd"
+    },
+    "foo": {
+      "@value": "bar"
+    }
   },
   "schema:isBasedOn": "https://repo.metadatacenter.org/templates/d9d52596-1a0e-464b-9207-b848faf2205d",
   "pav:createdOn": "2020-07-17T15:36:46-07:00",

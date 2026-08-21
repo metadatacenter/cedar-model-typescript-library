@@ -38,7 +38,6 @@ import { UnknownTemplateField } from '../../../model/cedar/field/UnknownTemplate
 import { JsonAbstractSchemaArtifactReader } from './JsonAbstractSchemaArtifactReader';
 import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
 import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
-import { JsonFieldReaderBoolean } from '../../../model/cedar/field/dynamic/boolean/JsonFieldReaderBoolean';
 import { Language } from '../../../model/cedar/types/wrapped-types/Language';
 import { JsonFieldReaderExtRor } from '../../../model/cedar/field/dynamic/ext-ror/JsonFieldReaderExtRor';
 import { JsonFieldReaderExtOrcid } from '../../../model/cedar/field/dynamic/ext-orcid/JsonFieldReaderExtOrcid';
@@ -86,7 +85,6 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     [CedarFieldType.SINGLE_SELECT_LIST, new JsonFieldReaderList()],
     [CedarFieldType.MULTIPLE_SELECT_LIST, new JsonFieldReaderList()],
     [CedarFieldType.ATTRIBUTE_VALUE, new JsonFieldReaderAttributeValue()],
-    [CedarFieldType.BOOLEAN, new JsonFieldReaderBoolean()],
     [CedarFieldType.STATIC_PAGE_BREAK, new JsonFieldReaderPageBreak()],
     [CedarFieldType.STATIC_SECTION_BREAK, new JsonFieldReaderSectionBreak()],
     [CedarFieldType.STATIC_IMAGE, new JsonFieldReaderImage()],

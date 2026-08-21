@@ -28,7 +28,21 @@ export class TestUtil {
   }
 
   static writeOutsideResource(filePath: string, content: string): void {
+    fs.mkdirSync(path.dirname(filePath), { recursive: true });
     fs.writeFileSync(filePath, content, 'utf8');
+  }
+
+  private static getGeneratedOutputFileName(filePath: string): string {
+    const outputRoot = process.env.CEDAR_GENERATED_OUTPUT_ROOT;
+    if (!outputRoot) {
+      return filePath;
+    }
+
+    const relativePath = path.relative(process.cwd(), path.resolve(process.cwd(), filePath));
+    if (relativePath === '..' || relativePath.startsWith(`..${path.sep}`)) {
+      throw new Error(`Generated fixture path is outside the repository: ${filePath}`);
+    }
+    return path.join(outputRoot, relativePath);
   }
 
   static getReferenceJsonFileName(testResource: TestResource): string {
@@ -45,11 +59,15 @@ export class TestUtil {
 
   static getOwnGeneratedYamlFileName(testResource: TestResource, isCompact: boolean): string {
     const suffix: string = isCompact ? '.compact' : '';
-    return path.join(testResource.getDirectory(), testResource.getFile(`-generated-ts-model-lib${suffix}.yaml`));
+    return this.getGeneratedOutputFileName(
+      path.join(testResource.getDirectory(), testResource.getFile(`-generated-ts-model-lib${suffix}.yaml`)),
+    );
   }
 
   static getOwnGeneratedJsonFileName(testResource: TestResource): string {
-    return path.join(testResource.getDirectory(), testResource.getFile('-generated-ts-model-lib.json'));
+    return this.getGeneratedOutputFileName(
+      path.join(testResource.getDirectory(), testResource.getFile('-generated-ts-model-lib.json')),
+    );
   }
 
   static getJavaGeneratedYamlFileName(testResource: TestResource, isCompact: boolean): string {

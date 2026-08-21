@@ -1,0 +1,11 @@
+type: controlled-term-field
+name: "Genre"
+description: "Musical genre, bound to one MeSH class and shown under the form's own wording"
+datatype: iri
+values:
+  - type: class
+    sourceAcronym: "MESH"
+    termIri: "http://purl.bioontology.org/ontology/MESH/D009146"
+    termType: class
+    termLabel: "Music"
+    termDisplayLabel: "Music (as the form words it)"

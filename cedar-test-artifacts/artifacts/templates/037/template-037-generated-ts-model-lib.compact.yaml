@@ -1,34 +1,34 @@
-type: "template"
+type: template
 name: "Instrument"
 description: "Description"
 children:
   - key: "hardware"
-    type: "element"
+    type: element
     name: "hardware"
     description: "instrument"
     children:
       - key: "instrumentName"
-        type: "text-field"
+        type: text-field
         name: "Instrument Name"
       - key: "instrumentType"
-        type: "text-field"
+        type: text-field
         name: "Instrument Type"
     configuration:
       overrideLabel: "Hardware"
       overrideDescription: ""
   - key: "Hardware Component"
-    type: "static-section-break"
+    type: static-section-break
     name: "Hardware Component"
   - key: "hardware1"
-    type: "element"
+    type: element
     name: "hardware"
     description: "instrument"
     children:
       - key: "instrumentName"
-        type: "text-field"
+        type: text-field
         name: "Instrument Name"
       - key: "instrumentType"
-        type: "text-field"
+        type: text-field
         name: "Instrument Type"
     configuration:
       overrideLabel: "Hardware1"

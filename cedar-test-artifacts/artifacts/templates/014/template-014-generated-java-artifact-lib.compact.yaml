@@ -1,28 +1,33 @@
-type: "template"
+type: template
 name: "#014 Template with various numbers"
 children:
   - key: "Decimal"
-    type: "numeric-field"
+    type: numeric-field
     name: "Decimal"
     description: "Help Text"
-    datatype: "xsd:decimal"
+    datatype: xsd:decimal
+    default: 0.125
   - key: "Long"
-    type: "numeric-field"
+    type: numeric-field
     name: "Long"
     description: "Help Text"
-    datatype: "xsd:long"
+    datatype: xsd:long
+    default: 9007199254740991
   - key: "Integer"
-    type: "numeric-field"
+    type: numeric-field
     name: "Integer"
     description: "Help Text"
-    datatype: "xsd:int"
+    datatype: xsd:int
+    default: -2147483648
   - key: "Double"
-    type: "numeric-field"
+    type: numeric-field
     name: "Double"
     description: "Help Text"
-    datatype: "xsd:double"
+    datatype: xsd:double
+    default: 42.5
   - key: "Float"
-    type: "numeric-field"
+    type: numeric-field
     name: "Float"
     description: "Help Text"
-    datatype: "xsd:float"
+    datatype: xsd:float
+    default: 3.25

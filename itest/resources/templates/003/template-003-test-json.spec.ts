@@ -15,7 +15,10 @@ describe('JsonTemplateReader' + testResource.toString(), () => {
     const parsingResult = jsonTemplateReaderResult.parsingResult;
 
     expect(parsingResult.wasSuccessful()).toBe(false);
-    expect(parsingResult.getBlueprintComparisonErrorCount()).toBe(9);
+    // Seven, not nine: a child the template does not label is no longer an error. Its two orphan
+    // `propertyLabels`/`propertyDescriptions` keys are still dropped, as the entries they stood for
+    // name nothing this template holds.
+    expect(parsingResult.getBlueprintComparisonErrorCount()).toBe(7);
 
     // TestUtil.p(parsingResult.getBlueprintComparisonErrors());
 
@@ -34,22 +37,6 @@ describe('JsonTemplateReader' + testResource.toString(), () => {
       'TextfieldRequired',
     );
     expect(parsingResult.getBlueprintComparisonErrors()).toContainEqual(requiredTextfieldRequired);
-
-    const uiPropertyLabels = new ComparisonError(
-      'jtr04',
-      ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-      new JsonPath(CedarModel.ui, CedarModel.propertyLabels),
-      'TextfieldChild',
-    );
-    expect(parsingResult.getBlueprintComparisonErrors()).toContainEqual(uiPropertyLabels);
-
-    const uiPropertyDescriptions = new ComparisonError(
-      'jtr05',
-      ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-      new JsonPath(CedarModel.ui, CedarModel.propertyDescriptions),
-      'TextfieldChild',
-    );
-    expect(parsingResult.getBlueprintComparisonErrors()).toContainEqual(uiPropertyDescriptions);
 
     const iriMapping = new ComparisonError(
       'jtr06',

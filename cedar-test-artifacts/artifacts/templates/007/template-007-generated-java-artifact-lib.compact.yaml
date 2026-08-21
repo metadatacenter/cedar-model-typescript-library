@@ -1,11 +1,12 @@
-type: "template"
+type: template
 name: "Template with extra"
 description: "Template desc"
 identifier: "template-identifier"
+instanceType: "http://purl.bioontology.org/ontology/SNOMEDCT/224699009"
 header: "Template header"
 footer: "Template footer"
 children:
   - key: "Text field"
-    type: "text-field"
+    type: text-field
     name: "Text field"
     description: "Help Text"

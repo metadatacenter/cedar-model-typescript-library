@@ -33,8 +33,6 @@ children:
       value: "9007199254740992"
     - datatype: "xsd:int"
       value: "010"
-  _blankLink:
-    id: ""
   _list:
     - "first"
     - value: "2"
@@ -70,6 +68,38 @@ _nullAttributes:
   absent:
     value:
 `;
+
+describe('an empty identifier is refused rather than dropped', () => {
+  // `id: ""` is what a document writes where an identifier has not been assigned — half the element
+  // occurrences in the shared corpus once did. Reading it as though the key were absent dropped the
+  // node silently, which is what this used to assert; the value a document should carry there is null.
+  test.each([
+    ['a link value', 'type: "instance"\nname: "I"\nchildren:\n  _blankLink:\n    id: ""\n'],
+    [
+      'an element occurrence',
+      'type: "instance"\nname: "I"\nchildren:\n  _nested:\n    id: ""\n    children:\n      _inner:\n        value: "v"\n',
+    ],
+    ['the instance itself', 'type: "instance"\nname: "I"\nid: ""\n'],
+  ])('%s', (_label: string, yaml: string) => {
+    expect(() => CedarReaders.yaml().getStrict().getTemplateInstanceReader().readFromString(yaml)).toThrow(/empty string is not a URI/);
+  });
+
+  // The JSON reader is the one production documents arrive through, and it read the empty string as
+  // an absent key: the document came back with null in its place and nothing said so.
+  test('the JSON reader refuses it too', () => {
+    const instance = {
+      '@id': 'https://repo.metadatacenter.org/template-instances/i1',
+      '@context': {},
+      'schema:name': 'I',
+      'schema:description': '',
+      'schema:isBasedOn': 'https://repo.metadatacenter.org/templates/t1',
+      address: { '@context': {}, '@id': '', street: { '@value': 'x' } },
+    };
+    expect(() => CedarReaders.json().getStrict().getTemplateInstanceReader().readFromString(JSON.stringify(instance))).toThrow(
+      /empty string is not a URI/,
+    );
+  });
+});
 
 describe('YAML instance edge cases', () => {
   const reader = CedarReaders.yaml().getStrict().getTemplateInstanceReader();
@@ -131,15 +161,13 @@ describe('YAML instance edge cases', () => {
       { datatype: 'xsd:long', value: '9007199254740992' },
       { datatype: 'xsd:int', value: '010' },
     ]);
-    expect(children._blankLink).toBeUndefined();
     expect(children._list).toEqual([{ value: 'first' }, { datatype: 'xsd:integer', value: '2' }]);
     expect((children._nested as JsonNode).id).toBe('https://example.org/e1');
     expect(children._emptyNested).toBeUndefined();
-    expect(children._elements).toEqual([
-      { type: 'element-instance' },
-      { children: { _inside: { value: 'second' } } },
-    ]);
-    expect(compact.id).toBe('https://example.org/instances/edge-cases');
+    expect(children._elements).toEqual([{ type: 'element-instance' }, { children: { _inside: { value: 'second' } } }]);
+    // The compact form does not name the instance it describes; a nested element occurrence keeps its
+    // own identifier, which is data rather than something a repository assigns.
+    expect(compact.id).toBeUndefined();
     expect(((compact.children as JsonNode)._nested as JsonNode).id).toBe('https://example.org/e1');
     expect(expanded._attributes).toEqual({ first: { value: 'one' } });
     expect(expanded._nullAttributes).toBeUndefined();
@@ -184,7 +212,7 @@ children:
     const twice = writer.getAsYamlString(reader.readFromString(once).instance);
 
     expect(twice).toBe(once);
-    expect(once).toContain('type: "element-instance"');
+    expect(once).toContain('type: element-instance');
   });
 
   test('an empty repeated element keeps the identifier it arrived with', () => {
@@ -203,12 +231,12 @@ children:
     expect(twice).toBe(once);
   });
 
-  test('compact YAML preserves instance identity through a round trip', () => {
+  test('compact YAML drops the instance identifier and keeps its children through a round trip', () => {
     const once = writer.getAsYamlString(reader.readFromString(edgeCaseYaml).instance, true);
     const twice = writer.getAsYamlString(reader.readFromString(once).instance, true);
 
     expect(twice).toBe(once);
-    expect(once).toContain('id: "https://example.org/instances/edge-cases"');
+    expect(once).not.toContain('id: "https://example.org/instances/edge-cases"');
     expect(once).toContain('id: "https://example.org/e1"');
   });
 

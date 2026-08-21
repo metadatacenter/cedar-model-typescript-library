@@ -1,4 +1,4 @@
-type: "single-select-list-field"
+type: single-select-list-field
 name: "List single"
 values:
   - label: "Untitled-0"

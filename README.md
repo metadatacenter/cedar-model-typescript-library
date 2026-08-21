@@ -1,18 +1,29 @@
 # CEDAR Model Typescript Library
+
 A library to work with CEDAR templates and instances - implemented in TypeScript
 
 ## Build
+
 ```shell
 npm install
 npm run build
 ```
 
 ## Run the tests
+
 ```shell
 npm test
 ```
 
+## YAML scalar style
+
+Canonical YAML leaves values plain only for `type`, `modelVersion`, `status`, `version`, `datatype`,
+`action`, `granularity`, `termType`, and `inputTimeFormat`, and only when the value belongs to that
+field's CEDAR-owned vocabulary. IRIs, timestamps, external vocabularies, and user-authored strings
+remain double-quoted. The Java artifact library applies and tests the same policy.
+
 ## To regenerate reference file outputs
+
 ```shell
 # Using CEDAR Artifact Library
 npx ts-node ./itest/scripts/regenerate-json-files-with-java-lib.ts
@@ -27,6 +38,7 @@ npx ts-node ./itest/scripts/regenerate-all-files.ts
 ```
 
 ## Compare generated files
+
 ```shell
 # Regenerates expanded and compact TypeScript instance YAML and fails if any
 # of the 21 shared Java/TypeScript outputs differs.
@@ -41,19 +53,23 @@ npx ts-node ./itest/scripts/compare-content-ref-java-json-files.ts
 ```
 
 ## Development
+
 During development, you might want to use this library in a client project.
 To do so, execute this:
+
 ```shell
 npm run build
-npm run link 
+npm run link
 ```
 
 To check the globally installed packages, and check if this library is linked properly, execute:
+
 ```shell
 npm ls -g --depth=0
 ```
 
 You should see something similar:
+
 ```shell
 /opt/homebrew/lib
 ├── @angular/cli@17.3.0
@@ -66,4 +82,5 @@ You should see something similar:
 ```
 
 ## See it in action
+
 Check out the README at the companion [demo repo](https://github.com/metadatacenter/cedar-model-typescript-library-demo)

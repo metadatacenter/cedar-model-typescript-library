@@ -364,6 +364,7 @@
       },
       "_valueConstraints": {
         "numberType": "xsd:decimal",
+        "defaultValue": "0.125",
         "requiredValue": false
       },
       "properties": {
@@ -448,6 +449,7 @@
       },
       "_valueConstraints": {
         "numberType": "xsd:long",
+        "defaultValue": "9007199254740991",
         "requiredValue": false
       },
       "properties": {
@@ -532,6 +534,7 @@
       },
       "_valueConstraints": {
         "numberType": "xsd:int",
+        "defaultValue": "-2147483648",
         "requiredValue": false
       },
       "properties": {
@@ -616,6 +619,7 @@
       },
       "_valueConstraints": {
         "numberType": "xsd:double",
+        "defaultValue": "42.5",
         "requiredValue": false
       },
       "properties": {
@@ -700,6 +704,7 @@
       },
       "_valueConstraints": {
         "numberType": "xsd:float",
+        "defaultValue": "3.25",
         "requiredValue": false
       },
       "properties": {

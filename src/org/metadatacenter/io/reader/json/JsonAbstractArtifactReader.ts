@@ -14,6 +14,24 @@ import { AnnotationAtId } from '../../../model/cedar/annotation/AnnotationAtId';
 import { AnnotationAtValue } from '../../../model/cedar/annotation/AnnotationAtValue';
 
 export abstract class JsonAbstractArtifactReader {
+  /**
+   * An artifact or occurrence `@id` written as an empty string.
+   *
+   * A document carries it where one has not been assigned — half the element occurrences in the shared
+   * corpus once did — and reading it as though the key were absent hides that from whoever wrote it,
+   * then writes `null` back in its place. The value for an identifier not yet assigned is `null`.
+   *
+   * The validator's URI format accepts the empty relative reference, so the reader states the rule
+   * the schema cannot. Optional `pav:derivedFrom` is deliberately different: legacy empty values are
+   * accepted as absence so stored production artifacts can open, then omitted by the writer.
+   */
+  protected static refuseEmptyIdentifier(sourceObject: JsonNode, key: string = JsonSchema.atId): void {
+    const raw = ReaderUtil.getString(sourceObject, key);
+    if (raw !== null && raw.trim() === '') {
+      throw new Error(`An empty string is not a URI at "${key}"; write null or leave the key out where there is no value.`);
+    }
+  }
+
   protected behavior: JsonReaderBehavior;
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.NULL;
 
@@ -25,6 +43,7 @@ export abstract class JsonAbstractArtifactReader {
 
   protected readNonReportableAttributes(container: AbstractArtifact, sourceObject: JsonNode): void {
     // Read in non-reportable properties
+    JsonAbstractArtifactReader.refuseEmptyIdentifier(sourceObject);
     container.at_id = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, JsonSchema.atId));
     container.schema_name = ReaderUtil.getString(sourceObject, JsonSchema.schemaName);
     container.schema_description = ReaderUtil.getString(sourceObject, JsonSchema.schemaDescription);

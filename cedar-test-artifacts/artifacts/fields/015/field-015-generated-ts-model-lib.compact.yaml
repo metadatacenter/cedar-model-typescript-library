@@ -1,4 +1,4 @@
-type: "ext-orcid-field"
+type: ext-orcid-field
 name: "ORCID Field"
 description: "ORCID Help"
 prefLabel: "ORCID Preferred"

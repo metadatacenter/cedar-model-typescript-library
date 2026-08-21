@@ -42,6 +42,7 @@
   },
   "_valueConstraints": {
     "temporalType": "xsd:date",
+    "defaultValue": "2026-08-20",
     "requiredValue": false
   },
   "properties": {

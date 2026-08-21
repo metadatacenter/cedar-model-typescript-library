@@ -50,13 +50,23 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
 
   private getDataTree(instance: TemplateInstance): JsonNode {
     const ret: JsonNode = JsonNode.getEmpty();
-    this.serializeDataLevelInto(instance.dataContainer, ret);
+    this.serializeDataLevelInto(instance.dataContainer, ret, true);
     return ret;
   }
 
-  private serializeDataLevelInto(dataContainer: InstanceDataContainer, into: JsonNode) {
-    if (dataContainer.id !== null) {
-      into[JsonSchema.atId] = dataContainer.id;
+  private serializeDataLevelInto(dataContainer: InstanceDataContainer, into: JsonNode, isDocumentRoot: boolean = false) {
+    // An element instance carries an identifier whether or not it has one: a template's schema lists
+    // @id among an element instance's required properties, so omitting the key leaves an instance that
+    // does not validate. A null is what an absent identifier looks like — an empty string is refused,
+    // and inventing a URI, as the Java library used to, asserts an identity the artifact does not have
+    // and makes every rendering differ from the last.
+    //
+    // The root is the artifact's own identifier rather than an occurrence's, and `getAsJsonNode` has
+    // already written it from `at_id`. Writing it again here would overwrite that with the data
+    // container's copy, which a *read* instance carries and a *built* one does not — so an instance a
+    // host loaded to edit kept its IRI while one assembled through the builder lost it.
+    if (!isDocumentRoot) {
+      into[JsonSchema.atId] = dataContainer.id === '' ? null : dataContainer.id;
     }
     Object.keys(dataContainer.values).forEach((key) => {
       const dataAtom: InstanceDataAtomType = dataContainer.values[key];
@@ -74,7 +84,12 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
             // attribute the user had named, while the property it pointed at
             // stayed behind as an orphan.
             const attributeName: string | null = (arrayElement as InstanceDataAttributeValueFieldName).name;
-            dataArray.push(attributeName as unknown as JsonNode);
+            // An unnamed row is editor state, not an attribute. Keep it in the
+            // in-memory list so the user can finish typing, but never let an
+            // empty property name escape in a serializable artifact.
+            if (attributeName.trim().length > 0) {
+              dataArray.push(attributeName as unknown as JsonNode);
+            }
             return;
           }
           const serializedData: JsonNode | null = this.serializeCommonType(arrayElement);

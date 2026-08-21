@@ -28,7 +28,8 @@
     "build:watch": "webpack --watch",
     "prettier": "prettier --write .",
     "link": "cd dist && npm link",
-    "unlink": "npm uninstall -g cedar-model-typescript-library"
+    "unlink": "npm uninstall -g cedar-model-typescript-library",
+    "publish:package": "npm run test:package && npm publish dist --access public"
   },
   "repository": {
     "type": "git",

@@ -81,6 +81,24 @@ You should see something similar:
 └── typescript@5.4.2
 ```
 
+## Publishing a release
+
+```shell
+npm run publish:package
+```
+
+This builds, runs the packed-consumer smoke test, and publishes **the `dist` directory** —
+not the repository root. The distinction matters, and it is the reason this script exists.
+
+Two manifests describe this package. `package.json` is the development manifest; `build`
+copies `package-dist.json` over it as `dist/package.json`, and that is the one consumers
+receive. Only the `dist` copy declares `module`, so a release published from the root
+reaches bundlers without its ESM entry point and cannot be tree-shaken. Release 1.0.1 went
+out that way. It works, but it is not the shape 0.1.0 through 0.8.0 had.
+
+Before publishing, bump the version in `package.json` — `npm run build` propagates it to
+`package-dist.json` and refuses the build if the two disagree on the licence.
+
 ## See it in action
 
 Check out the README at the companion [demo repo](https://github.com/metadatacenter/cedar-model-typescript-library-demo)

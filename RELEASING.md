@@ -123,6 +123,21 @@ bundlers without its ESM entry point and could not be tree-shaken, and it carrie
 the development README and every devDependency into the consumer manifest. Use
 the script and this cannot happen: there is no `cd` to lose.
 
+Write the path as `./dist`, never a bare `dist`. npm 11 reads `npm publish dist`
+as a _registry spec_ rather than a folder: it fetches the unrelated package named
+`dist` from the registry and tries to publish that, failing with the baffling
+`You cannot publish over the previously published versions: 0.1.2`. The `./` is
+what makes npm treat it as a directory.
+
+To see exactly what will go out before it does:
+
+```shell
+npm publish ./dist --access public --dry-run
+```
+
+Expect `cedar-model-typescript-library@1.0.2` and roughly 850 files. Any other
+name means the manifest is wrong; `dist@0.1.2` means the `./` went missing.
+
 ### 6. Check what actually landed
 
 ```shell

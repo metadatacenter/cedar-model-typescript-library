@@ -1,5 +1,7 @@
 # CEDAR Model Typescript Library
 
+[![Test](https://github.com/metadatacenter/cedar-model-typescript-library/actions/workflows/test.yml/badge.svg?branch=develop)](https://github.com/metadatacenter/cedar-model-typescript-library/actions/workflows/test.yml)
+
 A library to work with CEDAR templates and instances - implemented in TypeScript
 
 ## Build

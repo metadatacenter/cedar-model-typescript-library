@@ -1,0 +1,91 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":semanticCommitsDisabled"
+  ],
+  "description": "Review-only external dependency updates for the CEDAR TypeScript model library. Publication and downstream wiring remain build-train responsibilities.",
+  "labels": [
+    "dependencies"
+  ],
+  "dependencyDashboard": true,
+  "dependencyDashboardTitle": "Dependency Dashboard",
+  "automerge": false,
+  "prConcurrentLimit": 4,
+  "prHourlyLimit": 2,
+  "minimumReleaseAge": "7 days",
+  "ignorePaths": [
+    "dist/**",
+    "coverage/**"
+  ],
+  "packageRules": [
+    {
+      "description": "Internal CEDAR packages are published and connected only by the immutable build train.",
+      "matchPackageNames": [
+        "/^@org\\.metadatacenter\\//"
+      ],
+      "matchDepNames": [
+        "/^@org\\.metadatacenter\\//",
+        "/^cedar-/"
+      ],
+      "enabled": false
+    },
+    {
+      "description": "Major upgrades require explicit approval in the Dependency Dashboard.",
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "dependencyDashboardApproval": true
+    },
+    {
+      "description": "Keep ESLint and TypeScript-ESLint packages compatible in one pull request.",
+      "matchPackageNames": [
+        "eslint",
+        "/^@eslint\\//",
+        "/^@typescript-eslint\\//",
+        "typescript-eslint",
+        "/^eslint-/"
+      ],
+      "groupName": "ESLint toolchain"
+    },
+    {
+      "description": "Keep Jest and its TypeScript integration compatible in one pull request.",
+      "matchPackageNames": [
+        "jest",
+        "/^@types\\/jest$/",
+        "/^jest-/",
+        "ts-jest"
+      ],
+      "groupName": "Jest toolchain"
+    },
+    {
+      "description": "Review the compiler and TypeScript build adapters together.",
+      "matchPackageNames": [
+        "typescript",
+        "ts-node",
+        "ts-loader"
+      ],
+      "groupName": "TypeScript toolchain"
+    },
+    {
+      "description": "Webpack core and CLI releases are tested together.",
+      "matchPackageNames": [
+        "webpack",
+        "webpack-cli"
+      ],
+      "groupName": "Webpack"
+    },
+    {
+      "description": "Keep package engines, .nvmrc, and the GitHub Actions runtime on one Node.js version decision.",
+      "matchDepNames": [
+        "node"
+      ],
+      "groupName": "Node.js"
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "labels": [
+      "security"
+    ]
+  }
+}

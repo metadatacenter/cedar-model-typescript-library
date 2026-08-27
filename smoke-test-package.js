@@ -55,6 +55,15 @@ try {
     packed.files.some((file) => file.path === 'index.d.ts'),
     'TypeScript declarations are missing from the tarball',
   );
+  assert.ok(
+    packed.files.some((file) => file.path === 'README.md'),
+    'README.md is missing from the tarball',
+  );
+  assert.equal(
+    fs.readFileSync(path.join(repositoryRoot, 'dist', 'README.md'), 'utf8'),
+    fs.readFileSync(path.join(repositoryRoot, 'README.md'), 'utf8'),
+    'the tarball README differs from the GitHub README',
+  );
 
   write('package.json', JSON.stringify({ name: 'cedar-package-smoke-consumer', private: true, type: 'module' }, null, 2));
   const tarball = path.join(temporaryRoot, packed.filename);

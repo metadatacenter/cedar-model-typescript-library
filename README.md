@@ -1,104 +1,127 @@
-# CEDAR Model Typescript Library
+# CEDAR Model TypeScript Library
 
-A library to work with CEDAR templates and instances - implemented in TypeScript
+[![Test](https://github.com/metadatacenter/cedar-model-typescript-library/actions/workflows/test.yml/badge.svg?branch=develop)](https://github.com/metadatacenter/cedar-model-typescript-library/actions/workflows/test.yml)
 
-## Build
+The CEDAR Model TypeScript Library is a TypeScript implementation of the
+[CEDAR](https://metadatacenter.org/) artifact model. It provides typed models,
+builders, readers, writers, and validators for CEDAR templates, elements, fields,
+and metadata instances.
+
+The library reads and writes the JSON, JSON-LD, and YAML representations used by
+CEDAR. Applications can use the same model to construct artifacts, parse existing
+artifacts, validate metadata instances, and translate between serializations.
+
+For an introduction to the API and examples covering fields, elements, templates,
+instances, readers, and writers, see the
+[CEDAR Model TypeScript Library documentation](https://metadatacenter.readthedocs.io/en/latest/developer-guide/cedar-model-typescript-library/).
+
+This README covers installing, building, and testing the library.
+
+## Installing the Library
+
+Releases are published to npmjs.org as
+[`cedar-model-typescript-library`](https://www.npmjs.com/package/cedar-model-typescript-library):
 
 ```shell
-npm install
+npm install cedar-model-typescript-library
+```
+
+The package includes CommonJS and ES module bundles together with TypeScript
+declarations. Import its public API from the package entry point:
+
+```typescript
+import {
+  CedarReaders,
+  CedarWriters,
+  JsonTemplateReaderResult,
+  Template,
+} from 'cedar-model-typescript-library';
+
+export function jsonTemplateToYaml(templateJson: string): string {
+  const result: JsonTemplateReaderResult = CedarReaders
+    .json()
+    .getStrict()
+    .getTemplateReader()
+    .readFromString(templateJson);
+
+  const errorCount = result.parsingResult.getBlueprintComparisonErrorCount();
+  if (errorCount > 0) {
+    throw new Error(`Template contains ${errorCount} parsing errors`);
+  }
+
+  const template: Template = result.template;
+
+  return CedarWriters
+    .yaml()
+    .getStrict()
+    .getTemplateWriter()
+    .getAsYamlString(template);
+}
+```
+
+Reader results also contain a parsing report. Applications that accept external
+artifacts should inspect its errors and warnings before using the parsed artifact.
+
+The [companion demo repository](https://github.com/metadatacenter/cedar-model-typescript-library-demo)
+contains additional runnable examples.
+
+## Building
+
+Use Node 24.19.0, which `.nvmrc` and CI both specify:
+
+```shell
+nvm use
+npm ci
 npm run build
 ```
 
-## Run the tests
+The build writes the publishable package to `dist/`. It contains the CommonJS and
+ES module bundles, source maps, TypeScript declarations, package manifest,
+license, and this README.
+
+For local development, rebuild when source files change:
 
 ```shell
-npm test
+npm run build:watch
 ```
 
-## YAML scalar style
-
-Canonical YAML leaves values plain only for `type`, `modelVersion`, `status`, `version`, `datatype`,
-`action`, `granularity`, `termType`, and `inputTimeFormat`, and only when the value belongs to that
-field's CEDAR-owned vocabulary. IRIs, timestamps, external vocabularies, and user-authored strings
-remain double-quoted. The Java artifact library applies and tests the same policy.
-
-## To regenerate reference file outputs
-
-```shell
-# Using CEDAR Artifact Library
-npx ts-node ./itest/scripts/regenerate-json-files-with-java-lib.ts
-npx ts-node ./itest/scripts/regenerate-yaml-files-with-java-lib.ts
-
-# Using CEDAR Model TypeScript Library
-npx ts-node ./itest/scripts/regenerate-json-files-with-ts-lib.ts
-npx ts-node ./itest/scripts/regenerate-yaml-files-with-ts-lib.ts
-
-# All files
-npx ts-node ./itest/scripts/regenerate-all-files.ts
-```
-
-## Compare generated files
-
-```shell
-# Regenerates expanded and compact TypeScript instance YAML and fails if any
-# of the 21 shared Java/TypeScript outputs differs.
-npm run parity:yaml:instances
-
-npx ts-node ./itest/scripts/compare-verbatim-ts-java-yaml-files.ts
-npx ts-node ./itest/scripts/compare-verbatim-ref-java-yaml-files.ts
-npx ts-node ./itest/scripts/compare-verbatim-ref-ts-yaml-files.ts
-
-npx ts-node ./itest/scripts/compare-content-ref-ts-json-files.ts
-npx ts-node ./itest/scripts/compare-content-ref-java-json-files.ts
-```
-
-## Development
-
-During development, you might want to use this library in a client project.
-To do so, execute this:
+To make the built package available to a local consumer through npm linking:
 
 ```shell
 npm run build
 npm run link
 ```
 
-To check the globally installed packages, and check if this library is linked properly, execute:
+Then run `npm link cedar-model-typescript-library` in the consuming project.
+
+## Testing
+
+Run the same checks exercised by continuous integration:
 
 ```shell
-npm ls -g --depth=0
+npm run lint
+npm run typecheck
+npm run test:coverage
+npm run parity:yaml
+npm run parity:json
+npm run test:package
 ```
 
-You should see something similar:
+The unit suite covers the model and serialization behavior. The parity gates
+compare the TypeScript library with the Java CEDAR Artifact Library over the
+vendored JSON and YAML corpora.
 
-```shell
-/opt/homebrew/lib
-├── @angular/cli@17.3.0
-├── cedar-model-typescript-library@0.8.0 -> ./../../../Users/egyedia/CEDAR/cedar-model-typescript-library/dist
-├── ember-cli@5.7.0
-├── gulp@4.0.2
-├── npm@10.5.0
-├── ts-node@10.9.2
-└── typescript@5.4.2
-```
+`npm run test:package` builds the package that would be published, packs and
+installs it into an isolated consumer, and exercises its CommonJS bundle, ES
+module bundle, and TypeScript declarations.
 
-## Publishing a release
+## Releasing
 
-```shell
-npm run publish:package
-```
+Release preparation and publication are documented in
+[RELEASING.md](https://github.com/metadatacenter/cedar-model-typescript-library/blob/main/RELEASING.md).
+The release command publishes `dist/`, not the repository root.
 
-This builds, runs the packed-consumer smoke test, and publishes **the `dist` directory** —
-not the repository root. The distinction matters, and it is the reason this script exists.
+## License
 
-Two manifests describe this package. `package.json` is the development manifest; `build`
-copies `package-dist.json` over it as `dist/package.json`, and that is the one consumers
-receive. Only the `dist` copy declares `module`, so a release published from the root
-reaches bundlers without its ESM entry point and cannot be tree-shaken. Release 1.0.1 went
-out that way. It works, but it is not the shape 0.1.0 through 0.8.0 had.
-
-Before publishing, bump the version in `package.json` — `npm run build` propagates it to
-`package-dist.json` and refuses the build if the two disagree on the licence.
-
-## See it in action
-
-Check out the README at the companion [demo repo](https://github.com/metadatacenter/cedar-model-typescript-library-demo)
+The CEDAR Model TypeScript Library is released under the
+[BSD 2-Clause License](https://github.com/metadatacenter/cedar-model-typescript-library/blob/main/license.txt).

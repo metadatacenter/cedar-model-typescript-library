@@ -1,7 +1,7 @@
 {
   "name": "cedar-model-typescript-library",
-  "version": "1.0.3",
-  "description": "CEDAR Model Typescript Library - a library to work with fields, elements, templates and instances implemented in TypeScript",
+  "version": "1.0.4-dev.20260827.4884628",
+  "description": "TypeScript models, builders, readers, writers, and validators for CEDAR metadata artifacts",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -23,7 +23,7 @@
     "typecheck": "tsc --noEmit --project tsconfig.json",
     "sync:package-version": "node sync-package-version.js",
     "version": "npm run sync:package-version",
-    "build": "rm -rf dist && npm run sync:package-version && webpack && cp package-dist.json dist/package.json && cp README-dist.md dist/README.md && cp license.txt dist/license.txt",
+    "build": "rm -rf dist && npm run sync:package-version && webpack && cp package-dist.json dist/package.json && cp README.md dist/README.md && cp license.txt dist/license.txt",
     "test:package": "npm run build && node smoke-test-package.js",
     "build:watch": "webpack --watch",
     "prettier": "prettier --write .",

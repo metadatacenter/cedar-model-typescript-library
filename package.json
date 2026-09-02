@@ -31,6 +31,10 @@
     "unlink": "npm uninstall -g cedar-model-typescript-library",
     "publish:package": "npm run test:package && npm publish ./dist --access public"
   },
+  "allowScripts": {
+    "fsevents@2.3.3": true,
+    "unrs-resolver@1.12.2": true
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/metadatacenter/cedar-model-typescript-library.git"

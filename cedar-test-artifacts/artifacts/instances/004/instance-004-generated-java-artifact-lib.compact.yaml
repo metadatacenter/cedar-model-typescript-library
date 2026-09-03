@@ -1,5 +1,6 @@
 type: instance
 name: "Multiple Required Field Template metadata"
+id: "https://repo.metadatacenter.org/template-instances/c4ee3780-5ab7-4e1b-ac42-4e5569494096"
 isBasedOn: "https://repo.metadatacenter.org/templates/5f6c22fa-d424-435d-9fb9-c9a84e23d712"
 children:
   Number 1:

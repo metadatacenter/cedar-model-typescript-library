@@ -1,33 +1,39 @@
 type: template
 name: "#014 Template with various numbers"
+id: "https://repo.metadatacenter.org/templates/e08e0c7a-5a0d-46d7-8430-6ced51296e95"
 children:
   - key: "Decimal"
     type: numeric-field
     name: "Decimal"
     description: "Help Text"
+    id: "tmp-1709772870674-279341"
     datatype: xsd:decimal
     default: 0.125
   - key: "Long"
     type: numeric-field
     name: "Long"
     description: "Help Text"
+    id: "tmp-1709772896270-304937"
     datatype: xsd:long
     default: 9007199254740991
   - key: "Integer"
     type: numeric-field
     name: "Integer"
     description: "Help Text"
+    id: "tmp-1709772919935-328601"
     datatype: xsd:int
     default: -2147483648
   - key: "Double"
     type: numeric-field
     name: "Double"
     description: "Help Text"
+    id: "tmp-1709772946038-354705"
     datatype: xsd:double
     default: 42.5
   - key: "Float"
     type: numeric-field
     name: "Float"
     description: "Help Text"
+    id: "tmp-1709772964268-372935"
     datatype: xsd:float
     default: 3.25

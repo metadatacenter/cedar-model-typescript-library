@@ -2,4 +2,5 @@ type: text-field
 name: "Subject Identifier Scheme"
 description: "The name of the scheme or authority used for the Subject Identifier."
 identifier: "subject_identifier_scheme"
+id: "https://repo.metadatacenter.org/template-fields/de2525eb-3b58-4aaf-9f99-5bd140145303"
 prefLabel: "Subject Identifier Scheme"

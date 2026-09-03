@@ -141,14 +141,13 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
   /**
    * The artifact's own identifier.
    *
-   * Compact schema YAML is an identity-free structural description. Repository identifiers belong
-   * to stored schema artifacts, including embedded fields and elements, and therefore appear only in
-   * the full form. The position parameter remains for source compatibility with existing specialized
-   * writers; compactness alone determines whether an identifier is emitted.
+   * Identity belongs to the artifact in both forms. Compact omits version, status and provenance,
+   * but keeps the identifiers needed to say which artifacts it represents. The position parameter
+   * remains for source compatibility with the specialized writers.
    */
-  protected macroId(artifact: AbstractArtifact, isCompact: boolean = false, _isDocumentRoot: boolean = true): JsonNode {
+  protected macroId(artifact: AbstractArtifact, _isCompact: boolean = false, _isDocumentRoot: boolean = true): JsonNode {
     const typeAndId: JsonNode = JsonNode.getEmpty();
-    if (artifact.at_id !== CedarArtifactId.NULL && !isCompact) {
+    if (artifact.at_id !== CedarArtifactId.NULL) {
       typeAndId[YamlKeys.id] = this.atomicWriter.write(artifact.at_id);
     }
     return typeAndId;

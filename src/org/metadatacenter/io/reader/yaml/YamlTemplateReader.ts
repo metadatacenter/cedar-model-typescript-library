@@ -47,7 +47,6 @@ export class YamlTemplateReader extends YamlContainerArtifactReader {
     } catch {
       templateObject = {};
     }
-    this.refuseIdentifierAtDocumentRoot(templateObject);
     return this.readFromObject(templateObject);
   }
 

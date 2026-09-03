@@ -1,10 +1,12 @@
 type: template
 name: "#11 Template with multi field with pref and alt labels"
+id: "https://repo.metadatacenter.org/templates/71ab8aa7-84fb-4f42-a863-25ae82146fca"
 children:
   - key: "TextField1"
     type: text-field
     name: "TextField1"
     description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/372bc0d4-3ca4-46b6-b09b-04d4df12a0e1"
     prefLabel: "TextField 1 preferred label"
     altLabels:
       - "TextField1 Alt1"

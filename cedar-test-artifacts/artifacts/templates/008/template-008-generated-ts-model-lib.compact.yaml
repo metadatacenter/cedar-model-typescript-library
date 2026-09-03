@@ -1,10 +1,12 @@
 type: template
 name: "Template with Text Field 1"
+id: "https://repo.metadatacenter.org/templates/725246e2-346e-4d34-be49-43c110a30a7b"
 children:
   - key: "Text Field 1"
     type: text-field
     name: "Text Field 1"
     description: "Help text for this field"
+    id: "https://repo.metadatacenter.org/template-fields/e8a18dda-c0ba-443a-9fb9-18fa3f08c7bc"
     prefLabel: "Preferred label value"
     altLabels:
       - "Alternate label 1"

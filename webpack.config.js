@@ -1,5 +1,14 @@
 const path = require('path');
 
+// webpack's default size advice is aimed at what a browser downloads before
+// first paint, and 244 KiB is not a useful ceiling for a model library a
+// consumer bundles into its own application. The limits are named here so a real
+// regression still warns: the largest of the three outputs is 387 KiB today.
+const performance = {
+  maxAssetSize: 512000,
+  maxEntrypointSize: 512000,
+};
+
 module.exports = [
   // CommonJS Output
   {
@@ -22,6 +31,7 @@ module.exports = [
       ],
     },
     mode: 'production',
+    performance,
     devtool: 'source-map', // Generate source maps
   },
 
@@ -55,6 +65,7 @@ module.exports = [
       ],
     },
     mode: 'production',
+    performance,
     devtool: 'source-map',
   },
 
@@ -81,6 +92,7 @@ module.exports = [
       ],
     },
     mode: 'production',
+    performance,
     devtool: 'source-map',
   },
 ];

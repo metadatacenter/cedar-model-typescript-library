@@ -69,7 +69,6 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
     } catch {
       instanceObject = {};
     }
-    this.refuseIdentifierAtDocumentRoot(instanceObject);
     return this.readFromObject(instanceObject);
   }
 

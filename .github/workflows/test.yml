@@ -15,6 +15,9 @@ concurrency:
   group: test-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  NPM_CONFIG_STRICT_ALLOW_SCRIPTS: "true"
+
 jobs:
   test:
     # Nothing here renders or screenshots, so the cheapest runner is the right one.

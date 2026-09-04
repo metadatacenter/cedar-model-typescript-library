@@ -1,6 +1,5 @@
 // Compares the compact YAML the two libraries generate for the same artifact, byte for byte. The
-// full-form comparison is its sister script; compact was never compared, which is how the missing
-// identifier in this library's compact output went unnoticed for as long as it did.
+// full-form comparison is its sister script, so drift in either representation fails independently.
 import { elementTestNumbers, fieldTestNumbers, instanceTestNumbers, templateTestNumbers } from '../resources/generatedTestCases';
 import { CedarArtifactType } from '../../src';
 import { VerbatimComparator } from './VerbatimComparator';

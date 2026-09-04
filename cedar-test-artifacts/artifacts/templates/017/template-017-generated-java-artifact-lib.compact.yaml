@@ -1,8 +1,10 @@
 type: template
 name: "#017 Template with phone"
+id: "https://repo.metadatacenter.org/templates/76896fff-f2a9-4c68-ae98-0e506e398cc7"
 children:
   - key: "Phone number"
     type: phone-number-field
     name: "Phone number"
     description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/18ebc951-238b-4ee0-ac75-a4bbf53efc18"
     prefLabel: "Phone number preferred label"

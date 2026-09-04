@@ -1,8 +1,10 @@
 type: template
 name: "#022 Template with AttributeValue"
+id: "https://repo.metadatacenter.org/templates/7253af07-3704-466c-8ba5-249659faf7ca"
 children:
   - key: "ATTR-Value"
     type: attribute-value-field
     name: "ATTR-Value"
     description: "Some help text here"
+    id: "https://repo.metadatacenter.org/template-fields/bb91de17-9fa7-4cb2-885d-13617e7b3f08"
     prefLabel: "Attribute Value"

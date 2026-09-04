@@ -1,6 +1,7 @@
 type: controlled-term-field
 name: "Genre"
 description: "Musical genre, bound to one MeSH class and shown under the form's own wording"
+id: "https://repo.metadatacenter.org/template-fields/9f1c2b7a-0d5e-4b2f-8f3a-2c6d41e7b8a0"
 datatype: iri
 values:
   - type: class

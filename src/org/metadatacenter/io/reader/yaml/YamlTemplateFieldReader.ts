@@ -96,7 +96,6 @@ export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
     } catch {
       fieldObject = {};
     }
-    this.refuseIdentifierAtDocumentRoot(fieldObject);
     return this.readFromObject(fieldObject, ChildDeploymentInfo.empty(), new JsonPath());
   }
 

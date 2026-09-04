@@ -111,10 +111,4 @@ export class CedarModel {
     static continuePreviousLine = 'continuePreviousLine';
     static valueRecommendationEnabled = 'valueRecommendationEnabled';
   };
-
-  static nullEnabled = 'nullEnabled';
-  static trueLabel = 'true';
-  static falseLabel = 'false';
-  static nullLabel = 'null';
-  static labels = 'labels';
 }

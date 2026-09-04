@@ -80,34 +80,36 @@ children:
   });
 });
 
-// The compact form describes an artifact being authored, so it does not name the artifact it
-// describes: a repository assigns that identifier on save, as it assigns the provenance. A document
-// that names one is refused rather than quietly read, since reading it would leave an author believing
-// the document still refers to that stored artifact while a conversion gave its children freshly
-// derived property IRIs. A reference to another artifact — an instance's isBasedOn — is untouched. A
-// legacy compact child identifier is accepted on input, but canonical compact output omits it.
-describe('a compact document cannot name the artifact it describes', () => {
+describe('compact documents retain artifact identity', () => {
   const named = (yaml: string) => yaml.replace('name: "Study', 'id: "https://repo.metadatacenter.org/x/1"\nname: "Study');
 
-  test('a template, an element and a field are all refused', () => {
-    expect(() => YamlTemplateReader.getStrictForCompact().readFromString(named(compactTemplate))).toThrow(/cannot carry an id/);
-    expect(() => YamlTemplateFieldReader.getStrictForCompact().readFromString(named(compactField))).toThrow(/cannot carry an id/);
-    expect(() => YamlTemplateElementReader.getStrictForCompact().readFromString(named(`type: "element"\nname: "Study element"\n`))).toThrow(
-      /cannot carry an id/,
+  test('a template, an element and a field keep their identifiers', () => {
+    expect(YamlTemplateReader.getStrictForCompact().readFromString(named(compactTemplate)).template.at_id.getValue()).toBe(
+      'https://repo.metadatacenter.org/x/1',
     );
+    expect(YamlTemplateFieldReader.getStrictForCompact().readFromString(named(compactField)).field.at_id.getValue()).toBe(
+      'https://repo.metadatacenter.org/x/1',
+    );
+    expect(
+      YamlTemplateElementReader.getStrictForCompact()
+        .readFromString(named(`type: "element"\nname: "Study element"\n`))
+        .element.at_id.getValue(),
+    ).toBe('https://repo.metadatacenter.org/x/1');
   });
 
-  test('an instance is refused by the compact reader and read by the ordinary one', () => {
+  test('an instance keeps its identifier', () => {
     const instance = `type: "instance"
 id: "https://repo.metadatacenter.org/template-instances/i1"
 name: "Study metadata"
 isBasedOn: "https://repo.metadatacenter.org/templates/t1"
 `;
-    expect(() => YamlTemplateInstanceReader.getStrictForCompact().readFromString(instance)).toThrow(/cannot carry an id/);
+    expect(YamlTemplateInstanceReader.getStrictForCompact().readFromString(instance).instance.at_id.getValue()).toBe(
+      'https://repo.metadatacenter.org/template-instances/i1',
+    );
     expect(YamlTemplateInstanceReader.getStrict().readFromString(instance).instance.schema_name).toBe('Study metadata');
   });
 
-  test('a legacy child identifier is accepted but omitted from canonical compact output', () => {
+  test('a child identifier is accepted and reproduced in canonical compact output', () => {
     const childWithId = `type: "template"
 name: "Study"
 children:
@@ -117,10 +119,8 @@ children:
     id: "https://repo.metadatacenter.org/template-fields/f1"
 `;
     const template = YamlTemplateReader.getStrictForCompact().readFromString(childWithId).template;
-    // Reading remains tolerant of compact YAML emitted before schema identity was removed at every
-    // depth. Rewriting it produces the current identity-free compact form.
     expect(template.getChildrenInfo().getChildIriMap()['Study Name']).toBeUndefined();
-    expect(CedarWriters.yaml().getStrict().getTemplateWriter().getAsYamlString(template, true)).not.toContain(
+    expect(CedarWriters.yaml().getStrict().getTemplateWriter().getAsYamlString(template, true)).toContain(
       'id: "https://repo.metadatacenter.org/template-fields/f1"',
     );
   });

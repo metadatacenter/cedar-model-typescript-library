@@ -1,10 +1,12 @@
 type: template
 name: "#023 Template with controlled field"
+id: "https://repo.metadatacenter.org/templates/a35e97be-a5e7-4a28-a3c4-3ba62bf980e5"
 children:
   - key: "Controlled 1"
     type: controlled-term-field
     name: "Controlled 1"
     description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/ca4e4afa-ae85-4ac2-aa9b-5dd003f4ac8c"
     altLabels:
       - "ALT label 1"
       - "ALT label 2"

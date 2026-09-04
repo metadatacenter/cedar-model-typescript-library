@@ -47,16 +47,11 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
 
   private getDataTree(instance: TemplateInstance, isCompact: boolean): JsonNode {
     const ret: JsonNode = JsonNode.getEmpty();
-    this.serializeDataLevelInto(instance.dataContainer, ret, isCompact, true);
+    this.serializeDataLevelInto(instance.dataContainer, ret, isCompact);
     return ret;
   }
 
-  private serializeDataLevelInto(
-    dataContainer: InstanceDataContainer,
-    into: JsonNode,
-    isCompact: boolean,
-    isDocumentRoot: boolean = false,
-  ): void {
+  private serializeDataLevelInto(dataContainer: InstanceDataContainer, into: JsonNode, isCompact: boolean): void {
     const target = JsonNode.getEmpty();
     const unpackedAttributeValueGroups = this.getUnpackedAttributeValueGroups(dataContainer);
     const unpackedAttributeNames = new Set(Array.from(unpackedAttributeValueGroups.values()).flat());
@@ -101,9 +96,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
     // attribute-value group. Its generated JSON-LD id alone is reconstructable
     // from the template and would be ambiguous with a field in YAML.
     if (JsonNode.hasEntries(target)) {
-      // The instance's own identifier stays out of the compact form, with the rest of what a
-      // repository assigns; a nested element occurrence keeps its own, which is data.
-      if (this.hasId(dataContainer.id) && !(isCompact && isDocumentRoot)) {
+      if (this.hasId(dataContainer.id)) {
         into[YamlKeys.id] = dataContainer.id;
       }
       into[YamlKeys.children] = target;

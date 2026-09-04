@@ -1,10 +1,12 @@
 type: template
 name: "Template with simple link"
+id: "https://repo.metadatacenter.org/templates/c395555a-eb46-4e66-8bd0-5eba2e98371a"
 children:
   - key: "Linkfield"
     type: link-field
     name: "Linkfield"
     description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/c10d0f70-0e5d-405c-9f84-fafa7693cc63"
     configuration:
       hidden: true
       continuePreviousLine: true

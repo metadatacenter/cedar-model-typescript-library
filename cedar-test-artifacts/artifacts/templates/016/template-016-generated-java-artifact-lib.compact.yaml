@@ -1,9 +1,11 @@
 type: template
 name: "#016 Template with Paragraph"
+id: "https://repo.metadatacenter.org/templates/63a90e2a-eb03-40b8-a588-676909f45823"
 children:
   - key: "Paragraph"
     type: text-area-field
     name: "Paragraph"
+    id: "https://repo.metadatacenter.org/template-fields/b0960b65-d625-4154-92c0-826def9d2dbd"
     configuration:
       required: true
       multiple: true

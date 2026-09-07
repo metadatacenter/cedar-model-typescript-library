@@ -166,7 +166,7 @@ describe('YAML instance edge cases', () => {
     expect(children._emptyNested).toBeUndefined();
     expect(children._elements).toEqual([{ type: 'element-instance' }, { children: { _inside: { value: 'second' } } }]);
     expect(compact.id).toBe('https://example.org/instances/edge-cases');
-    expect(((compact.children as JsonNode)._nested as JsonNode).id).toBe('https://example.org/e1');
+    expect(((compact.children as JsonNode)._nested as JsonNode).id).toBeUndefined();
     expect(expanded._attributes).toEqual({ first: { value: 'one' } });
     expect(expanded._nullAttributes).toBeUndefined();
     expect(expanded._unsupportedAttributes).toBeUndefined();
@@ -229,13 +229,15 @@ children:
     expect(twice).toBe(once);
   });
 
-  test('compact YAML keeps the instance identifier and its children through a round trip', () => {
+  test('compact YAML keeps the root instance identifier but omits nested element identity', () => {
     const once = writer.getAsYamlString(reader.readFromString(edgeCaseYaml).instance, true);
     const twice = writer.getAsYamlString(reader.readFromString(once).instance, true);
 
     expect(twice).toBe(once);
     expect(once).toContain('id: "https://example.org/instances/edge-cases"');
-    expect(once).toContain('id: "https://example.org/e1"');
+    expect(once).not.toContain('id: "https://example.org/e1"');
+    expect(once).toContain('id: "https://example.org/link"');
+    expect(once).toContain('id: "https://example.org/term"');
   });
 
   test('writes CEE editable attribute-value fields under their field names', () => {

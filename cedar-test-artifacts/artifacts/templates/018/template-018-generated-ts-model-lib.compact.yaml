@@ -6,7 +6,6 @@ children:
     type: checkbox-field
     name: "My checkbox 1"
     description: "Help Text"
-    id: "https://repo.metadatacenter.org/template-fields/bc68d373-562f-4725-9e67-433999363deb"
     prefLabel: "Required checkbox"
     values:
       - label: "Option 1"
@@ -21,7 +20,6 @@ children:
     type: checkbox-field
     name: "My checkbox 2"
     description: "Help Text"
-    id: "https://repo.metadatacenter.org/template-fields/bd25e554-c588-48ce-824f-8383cd3eafcc"
     prefLabel: "Non-required checkbox"
     values:
       - label: "Radio 1"

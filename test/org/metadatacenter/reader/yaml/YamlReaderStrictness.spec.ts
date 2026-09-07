@@ -109,7 +109,7 @@ isBasedOn: "https://repo.metadatacenter.org/templates/t1"
     expect(YamlTemplateInstanceReader.getStrict().readFromString(instance).instance.schema_name).toBe('Study metadata');
   });
 
-  test('a child identifier is accepted and reproduced in canonical compact output', () => {
+  test('a child identifier is accepted but omitted from canonical compact output', () => {
     const childWithId = `type: "template"
 name: "Study"
 children:
@@ -120,7 +120,7 @@ children:
 `;
     const template = YamlTemplateReader.getStrictForCompact().readFromString(childWithId).template;
     expect(template.getChildrenInfo().getChildIriMap()['Study Name']).toBeUndefined();
-    expect(CedarWriters.yaml().getStrict().getTemplateWriter().getAsYamlString(template, true)).toContain(
+    expect(CedarWriters.yaml().getStrict().getTemplateWriter().getAsYamlString(template, true)).not.toContain(
       'id: "https://repo.metadatacenter.org/template-fields/f1"',
     );
   });

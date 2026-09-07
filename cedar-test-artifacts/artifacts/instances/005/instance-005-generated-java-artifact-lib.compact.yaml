@@ -12,16 +12,13 @@ children:
     - value: "650-686-8815"
     - value: "650-686-8816"
   Element as Single:
-    id: "https://repo.metadatacenter.org/template-element-instances/0e408f4e-fc4a-4418-a9a8-c041901031a4"
     children:
       Text Field inside Element:
         value: "Single text value"
   Element as Multi:
-    - id: "https://repo.metadatacenter.org/template-element-instances/88dca08a-ff55-415b-b1f8-e78572a88d03"
-      children:
+    - children:
         Text Field inside Element:
           value: "Multi text value 1"
-    - id: "https://repo.metadatacenter.org/template-element-instances/23587e15-7671-4e76-a852-6623d0279322"
-      children:
+    - children:
         Text Field inside Element:
           value: "Multi text value 2"

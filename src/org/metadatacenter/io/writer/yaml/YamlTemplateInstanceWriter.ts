@@ -47,11 +47,16 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
 
   private getDataTree(instance: TemplateInstance, isCompact: boolean): JsonNode {
     const ret: JsonNode = JsonNode.getEmpty();
-    this.serializeDataLevelInto(instance.dataContainer, ret, isCompact);
+    this.serializeDataLevelInto(instance.dataContainer, ret, isCompact, true);
     return ret;
   }
 
-  private serializeDataLevelInto(dataContainer: InstanceDataContainer, into: JsonNode, isCompact: boolean): void {
+  private serializeDataLevelInto(
+    dataContainer: InstanceDataContainer,
+    into: JsonNode,
+    isCompact: boolean,
+    isDocumentRoot: boolean = false,
+  ): void {
     const target = JsonNode.getEmpty();
     const unpackedAttributeValueGroups = this.getUnpackedAttributeValueGroups(dataContainer);
     const unpackedAttributeNames = new Set(Array.from(unpackedAttributeValueGroups.values()).flat());
@@ -75,7 +80,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
             // empty repeated field can. The discriminator is the same one the
             // Java YAML reader uses to distinguish this stub from a field.
             const stub: JsonNode = { [YamlKeys.type]: ELEMENT_INSTANCE_TYPE };
-            if (this.hasId(arrayElement.id)) {
+            if (!isCompact && this.hasId(arrayElement.id)) {
               stub[YamlKeys.id] = arrayElement.id;
             }
             dataArray.push(stub);
@@ -96,7 +101,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
     // attribute-value group. Its generated JSON-LD id alone is reconstructable
     // from the template and would be ambiguous with a field in YAML.
     if (JsonNode.hasEntries(target)) {
-      if (this.hasId(dataContainer.id)) {
+      if (this.hasId(dataContainer.id) && (!isCompact || isDocumentRoot)) {
         into[YamlKeys.id] = dataContainer.id;
       }
       into[YamlKeys.children] = target;

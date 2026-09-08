@@ -141,13 +141,12 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
   /**
    * The artifact's own identifier.
    *
-   * Identity belongs to the artifact in both forms. Compact omits version, status and provenance,
-   * but keeps the identifiers needed to say which artifacts it represents. The position parameter
-   * remains for source compatibility with the specialized writers.
+   * Compact YAML identifies only the artifact represented by the document root. Repository-assigned
+   * identities below that root belong to the full form.
    */
-  protected macroId(artifact: AbstractArtifact, _isCompact: boolean = false, _isDocumentRoot: boolean = true): JsonNode {
+  protected macroId(artifact: AbstractArtifact, isCompact: boolean = false, isDocumentRoot: boolean = true): JsonNode {
     const typeAndId: JsonNode = JsonNode.getEmpty();
-    if (artifact.at_id !== CedarArtifactId.NULL) {
+    if (artifact.at_id !== CedarArtifactId.NULL && (!isCompact || isDocumentRoot)) {
       typeAndId[YamlKeys.id] = this.atomicWriter.write(artifact.at_id);
     }
     return typeAndId;

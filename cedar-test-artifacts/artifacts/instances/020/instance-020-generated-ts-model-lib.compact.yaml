@@ -6,7 +6,6 @@ children:
   Sample Standalone Text:
     - value: "My sample default value"
   Sample Element:
-    id: "https://repo.metadatacenter.org/template-element-instances/4f63f0c1-3641-4290-9c4d-33d34d8a372a"
     children:
       Sample Text:
         - id: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C140659"

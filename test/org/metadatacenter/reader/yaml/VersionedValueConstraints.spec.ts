@@ -204,12 +204,14 @@ describe('a pinned version on the other entry kinds', () => {
     expect(yaml).not.toContain('declaredVersion');
   });
 
-  test('a class pins with a date, and a value set with the source\'s own version string', () => {
+  test("a class pins with a date, and a value set with the source's own version string", () => {
     const yaml = yamlOf(
       field((b) =>
-        b
-          .addClass(term().withVersion(new ControlledTermVersion('3c4d5e6f7a8b', '2026-04-20')).build())
-          .addValueSet(valueSet().withVersion(new ControlledTermVersion('9e0f1a2b3c4d', null, '2.3')).build()),
+        b.addClass(term().withVersion(new ControlledTermVersion('3c4d5e6f7a8b', '2026-04-20')).build()).addValueSet(
+          valueSet()
+            .withVersion(new ControlledTermVersion('9e0f1a2b3c4d', null, '2.3'))
+            .build(),
+        ),
       ),
     );
 
@@ -247,5 +249,27 @@ describe('what the entry carries once, and what it no longer carries', () => {
     const [readClass] = readBack(sameLabel).valueConstraints.classes;
     expect(readClass.prefLabel).toBe('cell');
     expect(readClass.label).toBe('cell');
+  });
+});
+
+describe('ontology service addresses', () => {
+  it('preserves an explicit service URI separately from the canonical IRI', () => {
+    const original = CedarBuilders.controlledTermFieldBuilder()
+      .withSchemaName('Terms')
+      .addOntology(
+        new ControlledTermOntologyBuilder()
+          .withAcronym('CL')
+          .withName('Cell')
+          .withUri(new Iri('https://other.example/ontologies/CL'))
+          .withIri(new Iri('http://purl.obolibrary.org/obo/cl.owl'))
+          .withSourceSystem('agroportal')
+          .build(),
+      )
+      .build();
+    const yaml = CedarWriters.yaml().getStrict().getFieldWriterForField(original).getAsYamlString(original);
+    expect(yaml).toContain('sourceUri: "https://other.example/ontologies/CL"');
+    const restored = YamlTemplateFieldReader.getStrict().readFromString(yaml).field as ControlledTermFieldImpl;
+    expect(restored.valueConstraints.ontologies[0].uri.getValue()).toBe('https://other.example/ontologies/CL');
+    expect(restored.valueConstraints.ontologies[0].iri?.getValue()).toBe('http://purl.obolibrary.org/obo/cl.owl');
   });
 });

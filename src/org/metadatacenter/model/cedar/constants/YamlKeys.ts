@@ -88,6 +88,8 @@ export class YamlKeys {
     static sourceAcronym: string = 'sourceAcronym';
     static sourceName: string = 'sourceName';
     static sourceIri: string = 'sourceIri';
+    // Optional service address, distinct from the canonical source identity.
+    static sourceUri: string = 'sourceUri';
     static termIri: string = 'termIri';
     static termType: string = 'termType';
     static termLabel: string = 'termLabel';

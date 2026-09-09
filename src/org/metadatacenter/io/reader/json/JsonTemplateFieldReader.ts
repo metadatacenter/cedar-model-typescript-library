@@ -227,7 +227,7 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
       return true;
     }
     const valueSets: Array<JsonNode> = ReaderUtil.getNodeList(vcNode, CedarModel.valueSets);
-    return valueSets.length > 0;
+    return valueSets.length > 0 || ReaderUtil.getNodeList(vcNode, CedarModel.actions).length > 0;
   }
 
   private static getCedarFieldType(fieldSourceObject: JsonNode, uiInputType: UiInputType): CedarFieldType {

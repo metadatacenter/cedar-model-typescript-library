@@ -234,7 +234,13 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     let fieldType: CedarFieldType = CedarFieldType.forUiInputType(uiInputType);
     // The map used in the method will guarantee that TEXT is always returned, but we double-check anyway
     if (fieldType === CedarFieldType.TEXT || fieldType === CedarFieldType.CONTROLLED_TERM) {
-      if (this.fieldHasValueConstraint(fieldSourceObject)) {
+      const properties = ReaderUtil.getNode(fieldSourceObject, JsonSchema.properties);
+      // An unconstrained IRI-valued textfield is still a controlled-term field.
+      // Its instance schema distinguishes it from literal text before a vocabulary is chosen.
+      const iriValued =
+        Object.prototype.hasOwnProperty.call(properties, JsonSchema.atId) &&
+        !Object.prototype.hasOwnProperty.call(properties, JsonSchema.atValue);
+      if (iriValued || this.fieldHasValueConstraint(fieldSourceObject)) {
         fieldType = CedarFieldType.CONTROLLED_TERM;
       } else {
         fieldType = CedarFieldType.TEXT;

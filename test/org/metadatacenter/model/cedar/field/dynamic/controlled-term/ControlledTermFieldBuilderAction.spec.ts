@@ -1,6 +1,7 @@
 import {
   BioportalTermType,
   CedarBuilders,
+  CedarReaders,
   CedarJsonWriters,
   CedarWriters,
   ControlledTermActionBuilder,
@@ -116,5 +117,15 @@ describe('ControlledTermFieldBuilder actions', () => {
 
     expect(constraints['ontologies']).toHaveLength(2);
     expect(constraints['actions']).toHaveLength(1);
+  });
+  test('retains actions when no vocabulary constraints remain', () => {
+    const original = CedarBuilders.controlledTermFieldBuilder()
+      .withSchemaName('Terms')
+      .addAction(deleteAction())
+      .addAction(moveAction())
+      .build();
+    const json = CedarWriters.json().getStrict().getFieldWriterForField(original).getAsJsonString(original);
+    const restored = CedarReaders.json().getStrict().getTemplateFieldReader().readFromString(json).field as ControlledTermField;
+    expect(writeField(restored)['_valueConstraints']['actions']).toEqual(writeField(original)['_valueConstraints']['actions']);
   });
 });

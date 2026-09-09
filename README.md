@@ -125,3 +125,8 @@ The release command publishes `dist/`, not the repository root.
 
 The CEDAR Model TypeScript Library is released under the
 [BSD 2-Clause License](https://github.com/metadatacenter/cedar-model-typescript-library/blob/main/license.txt).
+
+Controlled-term ontology constraints preserve a nondefault service address in YAML
+as `sourceUri`, separately from the canonical `sourceIri`. When `sourceUri` is
+absent, the reader retains compatibility with existing YAML by deriving the usual
+BioPortal address from `sourceAcronym`.

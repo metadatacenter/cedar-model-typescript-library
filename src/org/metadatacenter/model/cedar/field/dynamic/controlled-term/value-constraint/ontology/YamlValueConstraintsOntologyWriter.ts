@@ -18,8 +18,10 @@ export class YamlValueConstraintsOntologyWriter extends AbstractYamlControlledTe
     ret[YamlKeys.Controlled.sourceAcronym] = ontology.acronym;
     ret[YamlKeys.Controlled.sourceName] = ontology.name;
     this.writeSourceIri(ret, ontology);
-    // The ontology's BioPortal address is not written: it is derivable from the acronym, and the
-    // reader reconstructs it.
+    // Omit only the address that an older reader can reconstruct exactly.
+    if (ontology.uri.getValue() !== `https://data.bioontology.org/ontologies/${ontology.acronym}`) {
+      ret[YamlKeys.Controlled.sourceUri] = this.atomicWriter.write(ontology.uri);
+    }
     if (ontology.numTerms !== null) {
       ret[YamlKeys.Controlled.termCount] = ontology.numTerms;
     }

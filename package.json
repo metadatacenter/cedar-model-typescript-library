@@ -30,7 +30,9 @@
     "prettier": "prettier --write .",
     "link": "cd dist && npm link",
     "unlink": "npm uninstall -g cedar-model-typescript-library",
-    "publish:package": "npm run test:package && npm publish ./dist --access public"
+    "publish:package": "npm run test:package && npm publish ./dist --access public",
+    "test:concordance": "jest --runInBand FieldConcordanceMatrix",
+    "sync:concordance": "node scripts/sync-field-concordance.mjs"
   },
   "allowScripts": {
     "fsevents@2.3.3": true,

@@ -1,0 +1,210 @@
+type: template
+name: "#038 Template with a declared default on every type that takes one"
+id: "https://repo.metadatacenter.org/templates/2f8e6b64-0d2e-4a4e-9f37-7f5b4a4c1f10"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+createdOn: "2026-09-09T09:00:00-07:00"
+createdBy: "https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95"
+modifiedOn: "2026-09-09T09:00:00-07:00"
+modifiedBy: "https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95"
+children:
+  - key: "Text"
+    type: text-field
+    name: "Text"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    default: "Alpha"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/3f1c0a10-0001-4000-8000-000000000001"
+  - key: "Paragraph"
+    type: text-area-field
+    name: "Paragraph"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    default: "A paragraph of prose."
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/3f1c0a10-0001-4000-8000-000000000002"
+  - key: "Email"
+    type: email-field
+    name: "Email"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    default: "someone@example.org"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/3f1c0a10-0001-4000-8000-000000000003"
+  - key: "Phone"
+    type: phone-number-field
+    name: "Phone"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    default: "+1 650 555 0100"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/3f1c0a10-0001-4000-8000-000000000004"
+  - key: "Radio"
+    type: radio-field
+    name: "Radio"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    default: "Alpha"
+    values:
+      - label: "Alpha"
+      - label: "Beta"
+        selected: true
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/3f1c0a10-0001-4000-8000-000000000005"
+  - key: "Checkbox"
+    type: checkbox-field
+    name: "Checkbox"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    default: "Alpha"
+    values:
+      - label: "Alpha"
+        selected: true
+      - label: "Beta"
+        selected: true
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/3f1c0a10-0001-4000-8000-000000000006"
+  - key: "Single select list"
+    type: single-select-list-field
+    name: "Single select list"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    default: "Beta"
+    values:
+      - label: "Alpha"
+      - label: "Beta"
+        selected: true
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/3f1c0a10-0001-4000-8000-000000000007"
+  - key: "Multi select list"
+    type: multi-select-list-field
+    name: "Multi select list"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    default: "Alpha"
+    values:
+      - label: "Alpha"
+        selected: true
+      - label: "Beta"
+        selected: true
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/3f1c0a10-0001-4000-8000-000000000008"
+  - key: "Link"
+    type: link-field
+    name: "Link"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    default: "https://example.org/a-page"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/3f1c0a10-0001-4000-8000-000000000009"
+  - key: "ORCID"
+    type: ext-orcid-field
+    name: "ORCID"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    default: "https://orcid.org/0000-0001-8743-5071"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/3f1c0a10-0001-4000-8000-00000000000a"
+  - key: "ROR"
+    type: ext-ror-field
+    name: "ROR"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    default: "https://ror.org/00f54p054"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/3f1c0a10-0001-4000-8000-00000000000b"
+  - key: "PFAS"
+    type: ext-pfas-field
+    name: "PFAS"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    default: "https://comptox.epa.gov/dashboard/chemical/details/DTXSID3031864"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/3f1c0a10-0001-4000-8000-00000000000c"
+  - key: "RRID"
+    type: ext-rrid-field
+    name: "RRID"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    default: "https://scicrunch.org/resolver/RRID:AB_2138153"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/3f1c0a10-0001-4000-8000-00000000000d"
+  - key: "PubMed"
+    type: ext-pubmed-field
+    name: "PubMed"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    default: "https://pubmed.ncbi.nlm.nih.gov/26978244"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/3f1c0a10-0001-4000-8000-00000000000e"
+  - key: "NIH grant identifier"
+    type: ext-nih-grant-id-field
+    name: "NIH grant identifier"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    default: "https://reporter.nih.gov/project-details/10024362"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/3f1c0a10-0001-4000-8000-00000000000f"
+  - key: "DOI"
+    type: ext-doi-field
+    name: "DOI"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    default: "https://doi.org/10.1093/database/bav102"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/3f1c0a10-0001-4000-8000-000000000010"
+  - key: "Number"
+    type: numeric-field
+    name: "Number"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    datatype: xsd:decimal
+    default: 42.5
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/3f1c0a10-0001-4000-8000-000000000011"
+  - key: "Date"
+    type: temporal-field
+    name: "Date"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    datatype: xsd:date
+    granularity: day
+    default: "2026-08-20"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/3f1c0a10-0001-4000-8000-000000000012"
+  - key: "Controlled term"
+    type: controlled-term-field
+    name: "Controlled term"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    datatype: iri
+    default:
+      value: "http://purl.obolibrary.org/obo/DOID_1909"
+      label: "melanoma"
+    values:
+      - type: ontology
+        sourceAcronym: "DOID"
+        sourceName: "Human Disease Ontology"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/3f1c0a10-0001-4000-8000-000000000013"

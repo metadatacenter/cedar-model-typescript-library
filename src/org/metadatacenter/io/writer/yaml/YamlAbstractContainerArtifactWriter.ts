@@ -1,3 +1,4 @@
+import { ChildDeploymentInfoAlwaysMultiple } from '../../../model/cedar/deployment/ChildDeploymentInfoAlwaysMultiple';
 import { AbstractContainerArtifact } from '../../../model/cedar/AbstractContainerArtifact';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { TemplateChild } from '../../../model/cedar/types/basic-types/TemplateChild';
@@ -92,7 +93,12 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
         maxItems = minItems;
       }
       if (child?.isMultiInstanceByDefinition() || child?.isSingleInstanceByDefinition()) {
-        // Do not add multi info
+        // Multiplicity is implicit, but explicitly declared limits are not.
+        if (childMeta instanceof ChildDeploymentInfoAlwaysMultiple) {
+          if (childMeta.declaredMinItems !== null && childMeta.declaredMinItems !== childMeta.defaultMinItems)
+            childConfiguration[YamlKeys.minItems] = minItems;
+          if (childMeta.declaredMaxItems !== null) childConfiguration[YamlKeys.maxItems] = maxItems;
+        }
       } else {
         childConfiguration[YamlKeys.multiple] = true;
         childConfiguration[YamlKeys.minItems] = minItems;

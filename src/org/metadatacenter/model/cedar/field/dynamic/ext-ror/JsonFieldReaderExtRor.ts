@@ -5,6 +5,9 @@ import { JsonTemplateFieldTypeSpecificReader } from '../../../../../io/reader/js
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { ExtRorField } from './ExtRorField';
 import { ExtRorFieldImpl } from './ExtRorFieldImpl';
+import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
+import { CedarModel } from '../../../constants/CedarModel';
+import { DefaultValueSerialization } from '../../DefaultValueSerialization';
 
 export class JsonFieldReaderExtRor extends JsonTemplateFieldTypeSpecificReader {
   override read(
@@ -15,6 +18,11 @@ export class JsonFieldReaderExtRor extends JsonTemplateFieldTypeSpecificReader {
   ): ExtRorField {
     const field = ExtRorFieldImpl.buildEmpty();
     this.readRequiredAndHidden(fieldSourceObject, childInfo);
+
+    const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
+    if (valueConstraints != null) {
+      field.valueConstraints.defaultValue = DefaultValueSerialization.iriFromNode(valueConstraints, CedarModel.defaultValue);
+    }
     return field;
   }
 }

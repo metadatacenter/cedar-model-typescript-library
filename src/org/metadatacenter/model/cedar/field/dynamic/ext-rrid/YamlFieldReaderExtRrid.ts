@@ -5,14 +5,18 @@ import { YamlTemplateFieldTypeSpecificReader } from '../../../../../io/reader/ya
 import { YamlArtifactParsingResult } from '../../../util/compare/YamlArtifactParsingResult';
 import { ExtRridField } from './ExtRridField';
 import { ExtRridFieldImpl } from './ExtRridFieldImpl';
+import { YamlKeys } from '../../../constants/YamlKeys';
+import { DefaultValueSerialization } from '../../DefaultValueSerialization';
 
 export class YamlFieldReaderExtRrid extends YamlTemplateFieldTypeSpecificReader {
   override read(
-    _fieldSourceObject: JsonNode,
+    fieldSourceObject: JsonNode,
     _childInfo: ChildDeploymentInfo,
     _parsingResult: YamlArtifactParsingResult,
     _path: JsonPath,
   ): ExtRridField {
-    return ExtRridFieldImpl.buildEmpty();
+    const field = ExtRridFieldImpl.buildEmpty();
+    field.valueConstraints.defaultValue = DefaultValueSerialization.iriFromNode(fieldSourceObject, YamlKeys.default);
+    return field;
   }
 }

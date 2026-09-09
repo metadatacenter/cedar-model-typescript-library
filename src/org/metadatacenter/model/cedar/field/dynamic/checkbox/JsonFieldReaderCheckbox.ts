@@ -8,6 +8,7 @@ import { CheckboxField } from './CheckboxField';
 import { CheckboxOption } from './CheckboxOption';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { CheckboxFieldImpl } from './CheckboxFieldImpl';
+import { DefaultValueSerialization } from '../../DefaultValueSerialization';
 
 export class JsonFieldReaderCheckbox extends JsonTemplateFieldTypeSpecificReader {
   override read(
@@ -20,6 +21,7 @@ export class JsonFieldReaderCheckbox extends JsonTemplateFieldTypeSpecificReader
     this.readRequiredAndHidden(fieldSourceObject, childInfo);
     const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
     if (valueConstraints != null) {
+      field.valueConstraints.defaultValue = DefaultValueSerialization.literalFromNode(valueConstraints, CedarModel.defaultValue);
       const literals: Array<JsonNode> = ReaderUtil.getNodeList(valueConstraints, CedarModel.literals);
       if (literals !== null) {
         literals.forEach((literal) => {

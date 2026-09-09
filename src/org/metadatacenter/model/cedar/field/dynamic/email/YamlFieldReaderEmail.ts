@@ -5,14 +5,18 @@ import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { YamlTemplateFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YamlTemplateFieldTypeSpecificReader';
 import { EmailFieldImpl } from './EmailFieldImpl';
 import { YamlArtifactParsingResult } from '../../../util/compare/YamlArtifactParsingResult';
+import { YamlKeys } from '../../../constants/YamlKeys';
+import { DefaultValueSerialization } from '../../DefaultValueSerialization';
 
 export class YamlFieldReaderEmail extends YamlTemplateFieldTypeSpecificReader {
   override read(
-    _fieldSourceObject: JsonNode,
+    fieldSourceObject: JsonNode,
     _childInfo: ChildDeploymentInfo,
     _parsingResult: YamlArtifactParsingResult,
     _path: JsonPath,
   ): EmailField {
-    return EmailFieldImpl.buildEmpty();
+    const field = EmailFieldImpl.buildEmpty();
+    field.valueConstraints.defaultValue = DefaultValueSerialization.literalFromNode(fieldSourceObject, YamlKeys.default);
+    return field;
   }
 }

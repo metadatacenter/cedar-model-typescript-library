@@ -5,14 +5,18 @@ import { YamlTemplateFieldTypeSpecificReader } from '../../../../../io/reader/ya
 import { YamlArtifactParsingResult } from '../../../util/compare/YamlArtifactParsingResult';
 import { ExtOrcidField } from './ExtOrcidField';
 import { ExtOrcidFieldImpl } from './ExtOrcidFieldImpl';
+import { YamlKeys } from '../../../constants/YamlKeys';
+import { DefaultValueSerialization } from '../../DefaultValueSerialization';
 
 export class YamlFieldReaderExtOrcid extends YamlTemplateFieldTypeSpecificReader {
   override read(
-    _fieldSourceObject: JsonNode,
+    fieldSourceObject: JsonNode,
     _childInfo: ChildDeploymentInfo,
     _parsingResult: YamlArtifactParsingResult,
     _path: JsonPath,
   ): ExtOrcidField {
-    return ExtOrcidFieldImpl.buildEmpty();
+    const field = ExtOrcidFieldImpl.buildEmpty();
+    field.valueConstraints.defaultValue = DefaultValueSerialization.iriFromNode(fieldSourceObject, YamlKeys.default);
+    return field;
   }
 }

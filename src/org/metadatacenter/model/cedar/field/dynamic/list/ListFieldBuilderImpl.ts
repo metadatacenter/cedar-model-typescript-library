@@ -7,10 +7,16 @@ import { SingleChoiceListFieldImpl } from '../list-single-choice/SingleChoiceLis
 
 export abstract class ListFieldBuilderImpl extends TemplateFieldBuilder implements ListFieldBuilder {
   protected multipleChoice: boolean = false;
+  private defaultValue: string | null = null;
   private literals: Array<ListOption> = [];
 
   protected constructor() {
     super();
+  }
+
+  public withDefaultValue(defaultValue: string | null): this {
+    this.defaultValue = defaultValue;
+    return this;
   }
 
   public addListOption(label: string, selectedByDefault: boolean = false): this {
@@ -44,6 +50,7 @@ export abstract class ListFieldBuilderImpl extends TemplateFieldBuilder implemen
       }
     }
 
+    listField.valueConstraints.defaultValue = this.defaultValue;
     listField.valueConstraints.literals = this.literals;
 
     return listField;

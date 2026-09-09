@@ -5,6 +5,9 @@ import { PhoneNumberField } from './PhoneNumberField';
 import { JsonTemplateFieldTypeSpecificReader } from '../../../../../io/reader/json/JsonTemplateFieldTypeSpecificReader';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { PhoneNumberFieldImpl } from './PhoneNumberFieldImpl';
+import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
+import { CedarModel } from '../../../constants/CedarModel';
+import { DefaultValueSerialization } from '../../DefaultValueSerialization';
 
 export class JsonFieldReaderPhoneNumber extends JsonTemplateFieldTypeSpecificReader {
   override read(
@@ -15,6 +18,11 @@ export class JsonFieldReaderPhoneNumber extends JsonTemplateFieldTypeSpecificRea
   ): PhoneNumberField {
     const field = PhoneNumberFieldImpl.buildEmpty();
     this.readRequiredAndHidden(fieldSourceObject, childInfo);
+
+    const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
+    if (valueConstraints != null) {
+      field.valueConstraints.defaultValue = DefaultValueSerialization.literalFromNode(valueConstraints, CedarModel.defaultValue);
+    }
     return field;
   }
 }

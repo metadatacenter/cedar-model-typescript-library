@@ -5,14 +5,18 @@ import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { YamlTemplateFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YamlTemplateFieldTypeSpecificReader';
 import { PhoneNumberFieldImpl } from './PhoneNumberFieldImpl';
 import { YamlArtifactParsingResult } from '../../../util/compare/YamlArtifactParsingResult';
+import { YamlKeys } from '../../../constants/YamlKeys';
+import { DefaultValueSerialization } from '../../DefaultValueSerialization';
 
 export class YamlFieldReaderPhoneNumber extends YamlTemplateFieldTypeSpecificReader {
   override read(
-    _fieldSourceObject: JsonNode,
+    fieldSourceObject: JsonNode,
     _childInfo: ChildDeploymentInfo,
     _parsingResult: YamlArtifactParsingResult,
     _path: JsonPath,
   ): PhoneNumberField {
-    return PhoneNumberFieldImpl.buildEmpty();
+    const field = PhoneNumberFieldImpl.buildEmpty();
+    field.valueConstraints.defaultValue = DefaultValueSerialization.literalFromNode(fieldSourceObject, YamlKeys.default);
+    return field;
   }
 }

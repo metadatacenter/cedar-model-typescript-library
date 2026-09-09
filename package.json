@@ -15,6 +15,7 @@
     "generate:json:ts": "CEDAR_HOME=. ts-node ./itest/scripts/regenerate-json-files-with-ts-lib.ts",
     "verify:java-lock": "ts-node ./itest/scripts/verify-java-artifact-library-lock.ts",
     "verify:java-lock:source": "npm run verify:java-lock -- --check-siblings",
+    "verify:java-defaults": "ts-node ./itest/scripts/verify-java-default-value-parity.ts",
     "parity:json": "node itest/scripts/run-parity.js json",
     "parity:yaml:instances": "node itest/scripts/run-parity.js yaml-instances",
     "parity:yaml:compact": "node itest/scripts/run-parity.js yaml-compact",

@@ -7,6 +7,7 @@ import { YamlTemplateFieldTypeSpecificReader } from '../../../../../io/reader/ya
 import { YamlKeys } from '../../../constants/YamlKeys';
 import { TextFieldImpl } from './TextFieldImpl';
 import { YamlArtifactParsingResult } from '../../../util/compare/YamlArtifactParsingResult';
+import { DefaultValueSerialization } from '../../DefaultValueSerialization';
 
 export class YamlFieldReaderTextField extends YamlTemplateFieldTypeSpecificReader {
   override read(
@@ -17,7 +18,7 @@ export class YamlFieldReaderTextField extends YamlTemplateFieldTypeSpecificReade
   ): TextField {
     const field = TextFieldImpl.buildEmpty();
 
-    field.valueConstraints.defaultValue = ReaderUtil.getString(fieldSourceObject, YamlKeys.default);
+    field.valueConstraints.defaultValue = DefaultValueSerialization.literalFromNode(fieldSourceObject, YamlKeys.default);
     field.valueConstraints.minLength = ReaderUtil.getNumber(fieldSourceObject, YamlKeys.minLength);
     field.valueConstraints.maxLength = ReaderUtil.getNumber(fieldSourceObject, YamlKeys.maxLength);
     field.valueConstraints.regex = ReaderUtil.getString(fieldSourceObject, YamlKeys.regex);

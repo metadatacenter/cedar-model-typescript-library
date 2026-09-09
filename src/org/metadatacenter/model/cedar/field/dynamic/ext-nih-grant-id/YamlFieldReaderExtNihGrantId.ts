@@ -5,14 +5,18 @@ import { YamlTemplateFieldTypeSpecificReader } from '../../../../../io/reader/ya
 import { YamlArtifactParsingResult } from '../../../util/compare/YamlArtifactParsingResult';
 import { ExtNihGrantIdField } from './ExtNihGrantIdField';
 import { ExtNihGrantIdFieldImpl } from './ExtNihGrantIdFieldImpl';
+import { YamlKeys } from '../../../constants/YamlKeys';
+import { DefaultValueSerialization } from '../../DefaultValueSerialization';
 
 export class YamlFieldReaderExtNihGrantId extends YamlTemplateFieldTypeSpecificReader {
   override read(
-    _fieldSourceObject: JsonNode,
+    fieldSourceObject: JsonNode,
     _childInfo: ChildDeploymentInfo,
     _parsingResult: YamlArtifactParsingResult,
     _path: JsonPath,
   ): ExtNihGrantIdField {
-    return ExtNihGrantIdFieldImpl.buildEmpty();
+    const field = ExtNihGrantIdFieldImpl.buildEmpty();
+    field.valueConstraints.defaultValue = DefaultValueSerialization.iriFromNode(fieldSourceObject, YamlKeys.default);
+    return field;
   }
 }

@@ -4,10 +4,19 @@ import { JsonSchema } from '../../../constants/JsonSchema';
 import { JsonTemplateFieldWriterInternal } from '../../../../../io/writer/json/JsonTemplateFieldWriterInternal';
 import { JsonWriterBehavior } from '../../../../../behavior/JsonWriterBehavior';
 import { CedarJsonWriters } from '../../../../../io/writer/json/CedarJsonWriters';
+import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
+import { CedarModel } from '../../../constants/CedarModel';
+import { DefaultValueSerialization } from '../../DefaultValueSerialization';
+import { ExtNihGrantIdField } from './ExtNihGrantIdField';
 
 export class JsonFieldWriterExtNihGrantId extends JsonTemplateFieldWriterInternal {
   constructor(behavior: JsonWriterBehavior, writers: CedarJsonWriters) {
     super(behavior, writers);
+  }
+
+  override expandValueConstraintsNode(vcNode: JsonNode, field: ExtNihGrantIdField, childInfo: ChildDeploymentInfo): void {
+    DefaultValueSerialization.writeIri(vcNode, CedarModel.defaultValue, field.valueConstraints.defaultValue);
+    super.expandValueConstraintsNode(vcNode, field, childInfo);
   }
 
   override expandPropertiesNode(propertiesObject: JsonNode): void {

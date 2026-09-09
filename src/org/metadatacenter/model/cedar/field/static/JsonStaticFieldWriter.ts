@@ -1,3 +1,5 @@
+import { AbstractChildDeploymentInfo } from '../../deployment/AbstractChildDeploymentInfo';
+import { ChildDeploymentInfo } from '../../deployment/ChildDeploymentInfo';
 import { JsonTemplateFieldWriterInternal } from '../../../../io/writer/json/JsonTemplateFieldWriterInternal';
 import { JsonWriterBehavior } from '../../../../behavior/JsonWriterBehavior';
 import { StaticImageField } from './image/StaticImageField';
@@ -35,9 +37,10 @@ export class JsonStaticFieldWriter extends JsonTemplateFieldWriterInternal {
     } as JsonNode;
   }
 
-  override getAsJsonNode(field: StaticImageField): JsonNode {
+  override getAsJsonNode(field: StaticImageField, childInfo: AbstractChildDeploymentInfo = ChildDeploymentInfo.empty()): JsonNode {
     // Build ui wrapper
     const uiObject: JsonNode = this.buildUIObject(field);
+    if (childInfo.hidden) (uiObject[CedarModel.ui] as JsonNode)[CedarModel.Ui.hidden] = true;
     return {
       [JsonSchema.atId]: this.atomicWriter.write(field.at_id),
       [JsonSchema.atType]: this.atomicWriter.write(field.cedarArtifactType),

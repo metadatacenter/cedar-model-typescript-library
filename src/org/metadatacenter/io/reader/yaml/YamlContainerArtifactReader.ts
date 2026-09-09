@@ -76,14 +76,14 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
           const finalChildInfoBuilder = fieldReadingResult.field
             .createDeploymentBuilder(childDeploymentInfo.name)
             .withLabel(childDeploymentInfo.label)
-            .withDescription(childDeploymentInfo.description);
+            .withDescription(childDeploymentInfo.description)
+            .withHidden(childDeploymentInfo.hidden);
 
           if (childDeploymentInfo.atType === CedarArtifactType.TEMPLATE_FIELD) {
             const finalChildInfoBuilder2: AbstractDynamicChildDeploymentInfoBuilder =
               finalChildInfoBuilder as AbstractDynamicChildDeploymentInfoBuilder;
             finalChildInfoBuilder2
               .withIri(childDeploymentInfo.iri)
-              .withHidden(childDeploymentInfo.hidden)
               .withContinuePreviousLine(childDeploymentInfo.continuePreviousLine)
               .withRecommendedValue(childDeploymentInfo.recommendedValue)
               .withRequiredValue(childDeploymentInfo.requiredValue)

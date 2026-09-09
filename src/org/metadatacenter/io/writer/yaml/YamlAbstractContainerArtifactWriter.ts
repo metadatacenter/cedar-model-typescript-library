@@ -50,12 +50,10 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
 
   private getDeploymentInfo(child: TemplateChild | null, childMeta: AbstractChildDeploymentInfo, isCompact: boolean): JsonNode {
     const childConfiguration: JsonNode = JsonNode.getEmpty();
+    if (childMeta.hidden) childConfiguration[YamlKeys.hidden] = true;
     if (childMeta instanceof AbstractDynamicChildDeploymentInfo) {
       if (childMeta.requiredValue) {
         childConfiguration[YamlKeys.required] = true;
-      }
-      if (childMeta.hidden) {
-        childConfiguration[YamlKeys.hidden] = true;
       }
       if (childMeta.recommendedValue) {
         childConfiguration[YamlKeys.recommended] = true;

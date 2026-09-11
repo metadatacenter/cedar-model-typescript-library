@@ -1,3 +1,6 @@
+import { Language } from '../../types/wrapped-types/Language';
+import { AbstractChildDeploymentInfo } from '../../deployment/AbstractChildDeploymentInfo';
+import { ChildDeploymentInfo } from '../../deployment/ChildDeploymentInfo';
 import { JsonTemplateFieldWriterInternal } from '../../../../io/writer/json/JsonTemplateFieldWriterInternal';
 import { JsonWriterBehavior } from '../../../../behavior/JsonWriterBehavior';
 import { StaticImageField } from './image/StaticImageField';
@@ -35,9 +38,10 @@ export class JsonStaticFieldWriter extends JsonTemplateFieldWriterInternal {
     } as JsonNode;
   }
 
-  override getAsJsonNode(field: StaticImageField): JsonNode {
+  override getAsJsonNode(field: StaticImageField, childInfo: AbstractChildDeploymentInfo = ChildDeploymentInfo.empty()): JsonNode {
     // Build ui wrapper
     const uiObject: JsonNode = this.buildUIObject(field);
+    if (childInfo.hidden) (uiObject[CedarModel.ui] as JsonNode)[CedarModel.Ui.hidden] = true;
     return {
       [JsonSchema.atId]: this.atomicWriter.write(field.at_id),
       [JsonSchema.atType]: this.atomicWriter.write(field.cedarArtifactType),
@@ -49,6 +53,10 @@ export class JsonStaticFieldWriter extends JsonTemplateFieldWriterInternal {
       ...this.macroSchemaNameAndDescription(field),
       ...this.macroProvenance(field, this.atomicWriter),
       ...this.macroSkos(field),
+      ...this.macroSchemaIdentifier(field),
+      ...this.macroAnnotations(field),
+      ...this.macroDerivedFrom(field),
+      ...this.macroPreviousVersion(field),
       [JsonSchema.schemaVersion]: this.atomicWriter.write(field.schema_schemaVersion),
       [TemplateProperty.additionalProperties]: this.atomicWriter.write(AdditionalProperties.FALSE),
       ...this.macroStatusAndVersion(field, this.atomicWriter),
@@ -56,7 +64,9 @@ export class JsonStaticFieldWriter extends JsonTemplateFieldWriterInternal {
     };
   }
 
-  protected override macroContext(_field: StaticImageField) {
-    return JsonTemplateFieldContentStatic.CONTEXT_VERBATIM;
+  protected override macroContext(field: StaticImageField) {
+    const context = { ...JsonTemplateFieldContentStatic.CONTEXT_VERBATIM };
+    if (field.language !== Language.NULL) context[JsonSchema.atLanguage] = this.atomicWriter.write(field.language);
+    return context;
   }
 }

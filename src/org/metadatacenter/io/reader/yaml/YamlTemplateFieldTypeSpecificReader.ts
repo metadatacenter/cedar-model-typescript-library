@@ -8,6 +8,7 @@ import { ListField } from '../../../model/cedar/field/dynamic/list/ListField';
 import { ReaderUtil } from '../ReaderUtil';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 import { ListOption } from '../../../model/cedar/field/dynamic/list/ListOption';
+import { DefaultValueSerialization } from '../../../model/cedar/field/DefaultValueSerialization';
 
 export abstract class YamlTemplateFieldTypeSpecificReader {
   public read(
@@ -25,7 +26,7 @@ export abstract class YamlTemplateFieldTypeSpecificReader {
    * writing what had just been read drop it.
    */
   protected static readAndStoreListValueConstraints(fieldSourceObject: JsonNode, field: ListField) {
-    field.valueConstraints.defaultValue = ReaderUtil.getString(fieldSourceObject, YamlKeys.default);
+    field.valueConstraints.defaultValue = DefaultValueSerialization.literalFromNode(fieldSourceObject, YamlKeys.default);
     const literals: Array<JsonNode> = ReaderUtil.getNodeList(fieldSourceObject, YamlKeys.values);
     if (literals !== null) {
       literals.forEach((literal) => {

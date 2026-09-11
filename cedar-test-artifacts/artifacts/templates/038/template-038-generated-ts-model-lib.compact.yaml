@@ -1,0 +1,108 @@
+type: template
+name: "#038 Template with a declared default on every type that takes one"
+id: "https://repo.metadatacenter.org/templates/2f8e6b64-0d2e-4a4e-9f37-7f5b4a4c1f10"
+children:
+  - key: "Text"
+    type: text-field
+    name: "Text"
+    default: "Alpha"
+  - key: "Paragraph"
+    type: text-area-field
+    name: "Paragraph"
+    default: "A paragraph of prose."
+  - key: "Email"
+    type: email-field
+    name: "Email"
+    default: "someone@example.org"
+  - key: "Phone"
+    type: phone-number-field
+    name: "Phone"
+    default: "+1 650 555 0100"
+  - key: "Radio"
+    type: radio-field
+    name: "Radio"
+    default: "Alpha"
+    values:
+      - label: "Alpha"
+      - label: "Beta"
+        selected: true
+  - key: "Checkbox"
+    type: checkbox-field
+    name: "Checkbox"
+    default: "Alpha"
+    values:
+      - label: "Alpha"
+        selected: true
+      - label: "Beta"
+        selected: true
+  - key: "Single select list"
+    type: single-select-list-field
+    name: "Single select list"
+    default: "Beta"
+    values:
+      - label: "Alpha"
+      - label: "Beta"
+        selected: true
+  - key: "Multi select list"
+    type: multi-select-list-field
+    name: "Multi select list"
+    default: "Alpha"
+    values:
+      - label: "Alpha"
+        selected: true
+      - label: "Beta"
+        selected: true
+  - key: "Link"
+    type: link-field
+    name: "Link"
+    default: "https://example.org/a-page"
+  - key: "ORCID"
+    type: ext-orcid-field
+    name: "ORCID"
+    default: "https://orcid.org/0000-0001-8743-5071"
+  - key: "ROR"
+    type: ext-ror-field
+    name: "ROR"
+    default: "https://ror.org/00f54p054"
+  - key: "PFAS"
+    type: ext-pfas-field
+    name: "PFAS"
+    default: "https://comptox.epa.gov/dashboard/chemical/details/DTXSID3031864"
+  - key: "RRID"
+    type: ext-rrid-field
+    name: "RRID"
+    default: "https://scicrunch.org/resolver/RRID:AB_2138153"
+  - key: "PubMed"
+    type: ext-pubmed-field
+    name: "PubMed"
+    default: "https://pubmed.ncbi.nlm.nih.gov/26978244"
+  - key: "NIH grant identifier"
+    type: ext-nih-grant-id-field
+    name: "NIH grant identifier"
+    default: "https://reporter.nih.gov/project-details/10024362"
+  - key: "DOI"
+    type: ext-doi-field
+    name: "DOI"
+    default: "https://doi.org/10.1093/database/bav102"
+  - key: "Number"
+    type: numeric-field
+    name: "Number"
+    datatype: xsd:decimal
+    default: 42.5
+  - key: "Date"
+    type: temporal-field
+    name: "Date"
+    datatype: xsd:date
+    granularity: day
+    default: "2026-08-20"
+  - key: "Controlled term"
+    type: controlled-term-field
+    name: "Controlled term"
+    datatype: iri
+    default:
+      value: "http://purl.obolibrary.org/obo/DOID_1909"
+      label: "melanoma"
+    values:
+      - type: ontology
+        sourceAcronym: "DOID"
+        sourceName: "Human Disease Ontology"

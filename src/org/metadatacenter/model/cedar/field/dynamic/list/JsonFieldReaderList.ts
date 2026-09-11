@@ -9,6 +9,7 @@ import { ListOption } from './ListOption';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { MultipleChoiceListFieldImpl } from '../list-multiple-choice/MultipleChoiceListFieldImpl';
 import { SingleChoiceListFieldImpl } from '../list-single-choice/SingleChoiceListFieldImpl';
+import { DefaultValueSerialization } from '../../DefaultValueSerialization';
 
 export class JsonFieldReaderList extends JsonTemplateFieldTypeSpecificReader {
   override read(
@@ -32,7 +33,7 @@ export class JsonFieldReaderList extends JsonTemplateFieldTypeSpecificReader {
       if (multipleChoice) {
         field = MultipleChoiceListFieldImpl.buildEmpty();
       }
-      field.valueConstraints.defaultValue = ReaderUtil.getString(valueConstraints, CedarModel.defaultValue);
+      field.valueConstraints.defaultValue = DefaultValueSerialization.literalFromNode(valueConstraints, CedarModel.defaultValue);
       const literals: Array<JsonNode> = ReaderUtil.getNodeList(valueConstraints, CedarModel.literals);
       if (literals !== null) {
         literals.forEach((literal) => {

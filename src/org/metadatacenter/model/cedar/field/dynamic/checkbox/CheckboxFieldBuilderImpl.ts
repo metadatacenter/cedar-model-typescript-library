@@ -5,6 +5,8 @@ import { CheckboxFieldBuilder } from './CheckboxFieldBuilder';
 import { CheckboxFieldImpl } from './CheckboxFieldImpl';
 
 export class CheckboxFieldBuilderImpl extends TemplateFieldBuilder implements CheckboxFieldBuilder {
+  private defaultValue: string | null = null;
+
   private literals: Array<CheckboxOption> = [];
 
   private constructor() {
@@ -20,9 +22,16 @@ export class CheckboxFieldBuilderImpl extends TemplateFieldBuilder implements Ch
     return this;
   }
 
+  public withDefaultValue(defaultValue: string | null): CheckboxFieldBuilder {
+    this.defaultValue = defaultValue;
+    return this;
+  }
+
   public build(): CheckboxField {
     const checkboxField = CheckboxFieldImpl.buildEmpty();
     super.buildInternal(checkboxField);
+
+    checkboxField.valueConstraints.defaultValue = this.defaultValue;
 
     checkboxField.valueConstraints.literals = this.literals;
 

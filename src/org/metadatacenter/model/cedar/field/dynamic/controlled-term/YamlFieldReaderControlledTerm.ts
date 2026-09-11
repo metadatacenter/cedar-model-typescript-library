@@ -34,7 +34,7 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
         const ontologyBuilder = new ControlledTermOntologyBuilder()
           .withAcronym(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceAcronym))
           .withName(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceName))
-          .withUri(this.deriveOntologyUri(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceAcronym)))
+          .withUri(this.ontologyUri(valueNode))
           .withNumTerms(ReaderUtil.getNumberOrNull(valueNode, YamlKeys.Controlled.termCount));
         this.readSourceAndVersion(valueNode, ontologyBuilder);
         field.valueConstraints.ontologies.push(ontologyBuilder.build());
@@ -94,16 +94,12 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
     return field;
   }
 
-  /**
-   * Reconstruct an ontology's BioPortal address from its acronym.
-   *
-   * The entry carries no such key: the address is derivable, and what identifies the ontology across
-   * systems is its `sourceIri`. The model and the JSON Schema it renders to still require the address,
-   * and BioPortal — the only system served today, and what an absent `sourceSystem` means — addresses
-   * every ontology the same way. Another system would need its own rule.
-   */
-  private deriveOntologyUri(acronym: string): Iri {
-    return new Iri(`https://data.bioontology.org/ontologies/${acronym}`);
+  /** Older YAML omitted a derivable BioPortal address; explicit addresses take precedence. */
+  private ontologyUri(node: JsonNode): Iri {
+    const explicit = ReaderUtil.getURI(node, YamlKeys.Controlled.sourceUri);
+    return explicit.isEmpty()
+      ? new Iri(`https://data.bioontology.org/ontologies/${ReaderUtil.getStringOrEmpty(node, YamlKeys.Controlled.sourceAcronym)}`)
+      : explicit;
   }
 
   /** The keys every constraint kind shares: which vocabulary, on which system, at which snapshot. */

@@ -18,6 +18,14 @@ export class ChildDeploymentInfoAlwaysMultiple extends AbstractDynamicChildDeplo
     return true;
   }
 
+  get declaredMinItems(): NullableNumber {
+    return this._declaredMinItems;
+  }
+
+  get declaredMaxItems(): NullableNumber {
+    return this._declaredMaxItems;
+  }
+
   set declaredMinItems(value: NullableNumber) {
     this._declaredMinItems = value;
   }
@@ -48,6 +56,10 @@ export class ChildDeploymentInfoAlwaysMultiple extends AbstractDynamicChildDeplo
     if (this._declaredMinItems !== null) {
       return this._declaredMinItems;
     }
+    return this.defaultMinItems;
+  }
+
+  get defaultMinItems(): number {
     if (this.uiInputType === UiInputType.ATTRIBUTE_VALUE) {
       return 0;
     }

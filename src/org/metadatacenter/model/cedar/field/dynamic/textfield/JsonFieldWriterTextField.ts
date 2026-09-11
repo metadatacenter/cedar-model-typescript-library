@@ -5,6 +5,7 @@ import { JsonTemplateFieldWriterInternal } from '../../../../../io/writer/json/J
 import { JsonWriterBehavior } from '../../../../../behavior/JsonWriterBehavior';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { CedarJsonWriters } from '../../../../../io/writer/json/CedarJsonWriters';
+import { DefaultValueSerialization } from '../../DefaultValueSerialization';
 
 export class JsonFieldWriterTextField extends JsonTemplateFieldWriterInternal {
   constructor(behavior: JsonWriterBehavior, writers: CedarJsonWriters) {
@@ -12,9 +13,7 @@ export class JsonFieldWriterTextField extends JsonTemplateFieldWriterInternal {
   }
 
   override expandValueConstraintsNode(vcNode: JsonNode, field: TextField, childInfo: ChildDeploymentInfo): void {
-    if (field.valueConstraints.defaultValue !== null && field.valueConstraints.defaultValue !== '') {
-      vcNode[CedarModel.defaultValue] = field.valueConstraints.defaultValue;
-    }
+    DefaultValueSerialization.writeLiteral(vcNode, CedarModel.defaultValue, field.valueConstraints.defaultValue);
     if (field.valueConstraints.minLength !== null) {
       vcNode[CedarModel.minLength] = field.valueConstraints.minLength;
     }

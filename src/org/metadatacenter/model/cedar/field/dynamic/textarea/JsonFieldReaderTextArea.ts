@@ -7,6 +7,7 @@ import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { TextAreaImpl } from './TextAreaImpl';
 import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { CedarModel } from '../../../constants/CedarModel';
+import { DefaultValueSerialization } from '../../DefaultValueSerialization';
 
 export class JsonFieldReaderTextArea extends JsonTemplateFieldTypeSpecificReader {
   override read(
@@ -20,7 +21,7 @@ export class JsonFieldReaderTextArea extends JsonTemplateFieldTypeSpecificReader
 
     const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
     if (valueConstraints != null) {
-      field.valueConstraints.defaultValue = ReaderUtil.getString(valueConstraints, CedarModel.defaultValue);
+      field.valueConstraints.defaultValue = DefaultValueSerialization.literalFromNode(valueConstraints, CedarModel.defaultValue);
     }
 
     return field;

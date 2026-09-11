@@ -5,6 +5,7 @@ import { JsonWriterBehavior } from '../../../../../behavior/JsonWriterBehavior';
 import { ListField } from './ListField';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { CedarJsonWriters } from '../../../../../io/writer/json/CedarJsonWriters';
+import { DefaultValueSerialization } from '../../DefaultValueSerialization';
 
 export class JsonFieldWriterList extends JsonTemplateFieldWriterInternal {
   constructor(behavior: JsonWriterBehavior, writers: CedarJsonWriters) {
@@ -12,9 +13,7 @@ export class JsonFieldWriterList extends JsonTemplateFieldWriterInternal {
   }
 
   override expandValueConstraintsNode(vcNode: JsonNode, field: ListField, childInfo: ChildDeploymentInfo): void {
-    if (field.valueConstraints.defaultValue !== null && field.valueConstraints.defaultValue !== '') {
-      vcNode[CedarModel.defaultValue] = field.valueConstraints.defaultValue;
-    }
+    DefaultValueSerialization.writeLiteral(vcNode, CedarModel.defaultValue, field.valueConstraints.defaultValue);
     this.expandLiterals(field, vcNode);
     super.expandValueConstraintsNode(vcNode, field, childInfo);
     vcNode[CedarModel.multipleChoice] = field.multipleChoice;

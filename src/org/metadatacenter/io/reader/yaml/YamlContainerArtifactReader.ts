@@ -12,6 +12,7 @@ import { isSizedStaticField } from '../../../model/cedar/field/static/SizedStati
 import { YamlArtifactType } from '../../../model/cedar/types/wrapped-types/YamlArtifactType';
 import { CedarFieldType } from '../../../model/cedar/types/cedar-types/CedarFieldType';
 import { AbstractContainerArtifact } from '../../../model/cedar/AbstractContainerArtifact';
+import { ChildDeploymentInfoAlwaysMultipleBuilder } from '../../../model/cedar/deployment/ChildDeploymentInfoAlwaysMultipleBuilder';
 import { ChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/ChildDeploymentInfoBuilder';
 import { AbstractDynamicChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/AbstractDynamicChildDeploymentInfoBuilder';
 import { YamlArtifactParsingResult } from '../../../model/cedar/util/compare/YamlArtifactParsingResult';
@@ -75,14 +76,14 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
           const finalChildInfoBuilder = fieldReadingResult.field
             .createDeploymentBuilder(childDeploymentInfo.name)
             .withLabel(childDeploymentInfo.label)
-            .withDescription(childDeploymentInfo.description);
+            .withDescription(childDeploymentInfo.description)
+            .withHidden(childDeploymentInfo.hidden);
 
           if (childDeploymentInfo.atType === CedarArtifactType.TEMPLATE_FIELD) {
             const finalChildInfoBuilder2: AbstractDynamicChildDeploymentInfoBuilder =
               finalChildInfoBuilder as AbstractDynamicChildDeploymentInfoBuilder;
             finalChildInfoBuilder2
               .withIri(childDeploymentInfo.iri)
-              .withHidden(childDeploymentInfo.hidden)
               .withContinuePreviousLine(childDeploymentInfo.continuePreviousLine)
               .withRecommendedValue(childDeploymentInfo.recommendedValue)
               .withRequiredValue(childDeploymentInfo.requiredValue)
@@ -93,6 +94,11 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
                 .withMinItems(childDeploymentInfo.minItems)
                 .withMaxItems(childDeploymentInfo.maxItems);
             }
+          }
+          if (finalChildInfoBuilder instanceof ChildDeploymentInfoAlwaysMultipleBuilder) {
+            finalChildInfoBuilder
+              .withMinItems(ReaderUtil.getNumber(configuration, YamlKeys.minItems))
+              .withMaxItems(ReaderUtil.getNumber(configuration, YamlKeys.maxItems));
           }
           const finalChildInfo = finalChildInfoBuilder.build();
           container.addChild(fieldReadingResult.field, finalChildInfo);

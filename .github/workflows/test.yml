@@ -73,3 +73,106 @@ jobs:
       # project, and exercise CommonJS, ESM, and the shipped declarations.
       - name: Build and smoke-test the distributable
         run: npm run test:package
+
+      # The bytes the publish job ships are the bytes this job just gated, so the
+      # staged tarball travels as an artifact rather than being rebuilt downstream.
+      - name: Save the gated distributable
+        uses: actions/upload-artifact@v7
+        with:
+          name: model-library-dist
+          path: dist
+          if-no-files-found: error
+          retention-days: 2
+
+  # Every merge to develop reaches the Nexus dev channel. Before this existed the
+  # channel moved only when somebody published by hand or a release train ran, so it
+  # tracked develop in bursts and then stood still: on 2026-09-09 eleven versions went
+  # out in two and a half hours, and the four commits after them reached no consumer
+  # at all. A dev build that asks for the latest dev of this library has to get the
+  # latest dev of this library.
+  publish-dev:
+    name: Publish the dev package
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    # One publish at a time, and never cancelled: an npm version is immutable, so a
+    # half-finished publish is not something a later run can tidy up.
+    concurrency:
+      group: publish-dev-${{ github.ref }}
+      cancel-in-progress: false
+
+    steps:
+      - name: Check out the library
+        uses: actions/checkout@v7
+
+      - name: Use Node.js 24
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24.19.0
+
+      - name: Restore the gated distributable
+        uses: actions/download-artifact@v8
+        with:
+          name: model-library-dist
+          path: dist
+
+      # The commit is what makes the version unique, so it is derived here rather
+      # than read from package.json, whose version is written once per release and
+      # then stands still across every commit until the next one.
+      - name: Derive the dev version
+        id: version
+        run: |
+          base=$(node -p "require('./package.json').version.split('-')[0]")
+          date=$(TZ=UTC git show -s --format=%cd --date=format:%Y%m%d HEAD)
+          sha=$(git rev-parse --short=7 HEAD)
+          echo "version=${base}-dev.${date}.${sha}" >> "$GITHUB_OUTPUT"
+
+      # The same two secrets every Java repository already uses to reach Nexus, so
+      # this needs no new credential. npm 11 ignores a per-registry `_auth`, which
+      # reaches the publish as ENEEDAUTH rather than as a rejected credential; the
+      # username and a base64 password are the pair it does read. An absent secret is
+      # reported here, where it names itself, rather than as that same ENEEDAUTH.
+      - name: Point the scope at Nexus
+        run: |
+          for name in NEXUS_USERNAME NEXUS_PASSWORD; do
+            if [ -z "${!name}" ]; then
+              echo "${name} is empty: the Nexus secret is not available to this repository." >&2
+              exit 1
+            fi
+          done
+          {
+            echo "@org.metadatacenter:registry=https://nexus.bmir.stanford.edu/repository/npm-cedar/"
+            echo "//nexus.bmir.stanford.edu/repository/npm-cedar/:username=${NEXUS_USERNAME}"
+            echo "//nexus.bmir.stanford.edu/repository/npm-cedar/:_password=$(printf '%s' "${NEXUS_PASSWORD}" | base64 | tr -d '\n')"
+            echo "//nexus.bmir.stanford.edu/repository/npm-cedar/:always-auth=true"
+          } >> .npmrc
+        env:
+          NEXUS_USERNAME: ${{ secrets.BMIR_NEXUS_USERNAME }}
+          NEXUS_PASSWORD: ${{ secrets.BMIR_NEXUS_PASSWORD }}
+
+      # Re-running a workflow on the same commit must not fail, and must not try to
+      # overwrite an immutable version with different bytes.
+      - name: Publish unless this commit is already published
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          name=$(node -p "require('./dist/package.json').name")
+          if npm view "${name}@${VERSION}" version >/dev/null 2>&1; then
+            echo "${name}@${VERSION} is already published; nothing to do."
+            exit 0
+          fi
+          node -e '
+            const fs = require("node:fs");
+            const path = "dist/package.json";
+            const manifest = JSON.parse(fs.readFileSync(path, "utf8"));
+            if (!manifest.name.startsWith("@org.metadatacenter/")) {
+              throw new Error(`refusing to publish ${manifest.name} to the dev channel`);
+            }
+            manifest.version = process.env.VERSION;
+            fs.writeFileSync(path, JSON.stringify(manifest, null, 2) + "\n");
+          '
+          npm publish ./dist --tag dev
+          npm view "${name}@${VERSION}" version
+

@@ -5,6 +5,7 @@ import { YamlTemplateFieldWriterInternal } from '../../../../../io/writer/yaml/Y
 import { YamlKeys } from '../../../constants/YamlKeys';
 import { YamlWriterBehavior } from '../../../../../behavior/YamlWriterBehavior';
 import { CedarYamlWriters } from '../../../../../io/writer/yaml/CedarYamlWriters';
+import { DefaultValueSerialization } from '../../DefaultValueSerialization';
 
 export class YamlFieldWriterTextField extends YamlTemplateFieldWriterInternal {
   constructor(behavior: YamlWriterBehavior, writers: CedarYamlWriters) {
@@ -12,9 +13,7 @@ export class YamlFieldWriterTextField extends YamlTemplateFieldWriterInternal {
   }
 
   override expandValueConstraintsNodeForYAML(vcNode: JsonNode, field: TextField, _childInfo: ChildDeploymentInfo): void {
-    if (field.valueConstraints.defaultValue != null && field.valueConstraints.defaultValue !== '') {
-      vcNode[YamlKeys.default] = field.valueConstraints.defaultValue;
-    }
+    DefaultValueSerialization.writeLiteral(vcNode, YamlKeys.default, field.valueConstraints.defaultValue);
     if (field.valueConstraints.minLength != null) {
       vcNode[YamlKeys.minLength] = field.valueConstraints.minLength;
     }

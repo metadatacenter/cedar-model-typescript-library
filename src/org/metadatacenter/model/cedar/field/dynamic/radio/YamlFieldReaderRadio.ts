@@ -8,6 +8,7 @@ import { YamlTemplateFieldTypeSpecificReader } from '../../../../../io/reader/ya
 import { YamlKeys } from '../../../constants/YamlKeys';
 import { RadioFieldImpl } from './RadioFieldImpl';
 import { YamlArtifactParsingResult } from '../../../util/compare/YamlArtifactParsingResult';
+import { DefaultValueSerialization } from '../../DefaultValueSerialization';
 
 export class YamlFieldReaderRadio extends YamlTemplateFieldTypeSpecificReader {
   override read(
@@ -17,6 +18,8 @@ export class YamlFieldReaderRadio extends YamlTemplateFieldTypeSpecificReader {
     _path: JsonPath,
   ): RadioField {
     const field = RadioFieldImpl.buildEmpty();
+
+    field.valueConstraints.defaultValue = DefaultValueSerialization.literalFromNode(fieldSourceObject, YamlKeys.default);
 
     const literals: Array<JsonNode> = ReaderUtil.getNodeList(fieldSourceObject, YamlKeys.values);
     if (literals !== null) {

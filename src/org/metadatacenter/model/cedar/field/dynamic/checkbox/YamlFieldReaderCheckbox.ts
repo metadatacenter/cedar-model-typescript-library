@@ -8,6 +8,7 @@ import { YamlTemplateFieldTypeSpecificReader } from '../../../../../io/reader/ya
 import { YamlKeys } from '../../../constants/YamlKeys';
 import { CheckboxFieldImpl } from './CheckboxFieldImpl';
 import { YamlArtifactParsingResult } from '../../../util/compare/YamlArtifactParsingResult';
+import { DefaultValueSerialization } from '../../DefaultValueSerialization';
 
 export class YamlFieldReaderCheckbox extends YamlTemplateFieldTypeSpecificReader {
   override read(
@@ -17,6 +18,8 @@ export class YamlFieldReaderCheckbox extends YamlTemplateFieldTypeSpecificReader
     _path: JsonPath,
   ): CheckboxField {
     const field = CheckboxFieldImpl.buildEmpty();
+    field.valueConstraints.defaultValue = DefaultValueSerialization.literalFromNode(fieldSourceObject, YamlKeys.default);
+
     const literals: Array<JsonNode> = ReaderUtil.getNodeList(fieldSourceObject, YamlKeys.values);
     if (literals !== null) {
       literals.forEach((literal) => {

@@ -13,8 +13,9 @@ import { VerbatimComparator } from './VerbatimComparator';
 import { CompareFileSource } from '../../src/org/metadatacenter/model/cedar/types/helper-types/CompareFileSource';
 import { CompareFileFormat } from '../../src/org/metadatacenter/model/cedar/types/helper-types/CompareFileFormat';
 
-// Nothing diverges. Every artifact in the corpus comes out of the two libraries byte for byte the
-// same, in both forms, so any difference this run reports is a regression in one of them.
+// Template 029 contains a non-reconstructible ontology service URI (bioportal.bioontology.org).
+// TypeScript preserves it as sourceUri; the locked Java writer omits it. All other artifacts
+// remain byte-identical. The committed TS fixtures pin the exact additional property.
 const KNOWN_DIVERGENCES: Array<{
   testNumbers: number[];
   artifactType: CedarArtifactType;
@@ -23,7 +24,7 @@ const KNOWN_DIVERGENCES: Array<{
 }> = [
   { testNumbers: fieldTestNumbers, artifactType: CedarArtifactType.TEMPLATE_FIELD, full: [], compact: [] },
   { testNumbers: elementTestNumbers, artifactType: CedarArtifactType.TEMPLATE_ELEMENT, full: [], compact: [] },
-  { testNumbers: templateTestNumbers, artifactType: CedarArtifactType.TEMPLATE, full: [], compact: [] },
+  { testNumbers: templateTestNumbers, artifactType: CedarArtifactType.TEMPLATE, full: [29], compact: [29] },
   { testNumbers: instanceTestNumbers, artifactType: CedarArtifactType.TEMPLATE_INSTANCE, full: [], compact: [] },
 ];
 

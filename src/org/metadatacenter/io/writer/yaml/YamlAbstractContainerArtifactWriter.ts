@@ -1,3 +1,4 @@
+import { ChildDeploymentInfoAlwaysMultiple } from '../../../model/cedar/deployment/ChildDeploymentInfoAlwaysMultiple';
 import { AbstractContainerArtifact } from '../../../model/cedar/AbstractContainerArtifact';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { TemplateChild } from '../../../model/cedar/types/basic-types/TemplateChild';
@@ -49,14 +50,26 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
 
   private getDeploymentInfo(child: TemplateChild | null, childMeta: AbstractChildDeploymentInfo, isCompact: boolean): JsonNode {
     const childConfiguration: JsonNode = JsonNode.getEmpty();
+    if (childMeta.hidden) childConfiguration[YamlKeys.hidden] = true;
     if (childMeta instanceof AbstractDynamicChildDeploymentInfo) {
-      if (childMeta.requiredValue) {
+      /*
+       * Only where the field type has somewhere to keep it. An attribute-value
+       * field records no requirement, and this block was the only place one could
+       * exist: the JSON form has no constraints node for that type, so the same
+       * template said the field was required in YAML and said nothing in JSON —
+       * and JSON is the form that is stored and rendered from.
+       *
+       * `AbstractDynamicChildDeploymentInfoBuilder` declines such a requirement,
+       * so a model assembled through a builder cannot reach here carrying one.
+       * This guards the models that are not: `ChildDeploymentInfo` holds these as
+       * public fields and the YAML reader sets them directly while assembling a
+       * child, as may a caller.
+       */
+      const recordsRequirement = !(child instanceof TemplateField) || child.cedarFieldType.recordsRequirement;
+      if (childMeta.requiredValue && recordsRequirement) {
         childConfiguration[YamlKeys.required] = true;
       }
-      if (childMeta.hidden) {
-        childConfiguration[YamlKeys.hidden] = true;
-      }
-      if (childMeta.recommendedValue) {
+      if (childMeta.recommendedValue && recordsRequirement) {
         childConfiguration[YamlKeys.recommended] = true;
       }
       if (childMeta.iri !== null) {
@@ -92,7 +105,12 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
         maxItems = minItems;
       }
       if (child?.isMultiInstanceByDefinition() || child?.isSingleInstanceByDefinition()) {
-        // Do not add multi info
+        // Multiplicity is implicit, but explicitly declared limits are not.
+        if (childMeta instanceof ChildDeploymentInfoAlwaysMultiple) {
+          if (childMeta.declaredMinItems !== null && childMeta.declaredMinItems !== childMeta.defaultMinItems)
+            childConfiguration[YamlKeys.minItems] = minItems;
+          if (childMeta.declaredMaxItems !== null) childConfiguration[YamlKeys.maxItems] = maxItems;
+        }
       } else {
         childConfiguration[YamlKeys.multiple] = true;
         childConfiguration[YamlKeys.minItems] = minItems;

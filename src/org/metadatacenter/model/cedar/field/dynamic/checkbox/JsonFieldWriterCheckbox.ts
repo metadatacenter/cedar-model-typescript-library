@@ -5,6 +5,7 @@ import { JsonWriterBehavior } from '../../../../../behavior/JsonWriterBehavior';
 import { CheckboxField } from './CheckboxField';
 import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { CedarJsonWriters } from '../../../../../io/writer/json/CedarJsonWriters';
+import { DefaultValueSerialization } from '../../DefaultValueSerialization';
 
 export class JsonFieldWriterCheckbox extends JsonTemplateFieldWriterInternal {
   constructor(behavior: JsonWriterBehavior, writers: CedarJsonWriters) {
@@ -12,6 +13,7 @@ export class JsonFieldWriterCheckbox extends JsonTemplateFieldWriterInternal {
   }
 
   override expandValueConstraintsNode(vcNode: JsonNode, field: CheckboxField, childInfo: ChildDeploymentInfo): void {
+    DefaultValueSerialization.writeLiteral(vcNode, CedarModel.defaultValue, field.valueConstraints.defaultValue);
     this.expandLiterals(field, vcNode);
     super.expandValueConstraintsNode(vcNode, field, childInfo);
     vcNode[CedarModel.multipleChoice] = true;

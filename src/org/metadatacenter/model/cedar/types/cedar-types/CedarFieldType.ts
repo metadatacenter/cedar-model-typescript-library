@@ -61,6 +61,25 @@ export class CedarFieldType {
     return this.staticField;
   }
 
+  /**
+   * Whether the type records a requirement.
+   *
+   * CEDAR keeps a requirement in the field's own `_valueConstraints`, and two
+   * kinds of field have none. A static field shows something rather than
+   * collecting it. An attribute-value field describes fields whose names a
+   * form-filler supplies, so the template has no property to constrain and
+   * carries `additionalProperties` in place of one.
+   *
+   * Asked by the YAML writer and reader, because YAML keeps a requirement on the
+   * child rather than in the field, so it has a slot for one where JSON has none.
+   * Recording it there would say a field was required in one serialization and
+   * not in the other, and the JSON is what the artifact server stores — so a form
+   * built from the stored template would not enforce what the YAML claimed.
+   */
+  get recordsRequirement(): boolean {
+    return !this.staticField && this.value !== CedarFieldTypeValues.ATTRIBUTE_VALUE;
+  }
+
   public static values(): CedarFieldType[] {
     return [
       CedarFieldType.TEXT,

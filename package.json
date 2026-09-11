@@ -1,6 +1,6 @@
 {
   "name": "cedar-model-typescript-library",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "TypeScript models, builders, readers, writers, and validators for CEDAR metadata artifacts",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -15,6 +15,7 @@
     "generate:json:ts": "CEDAR_HOME=. ts-node ./itest/scripts/regenerate-json-files-with-ts-lib.ts",
     "verify:java-lock": "ts-node ./itest/scripts/verify-java-artifact-library-lock.ts",
     "verify:java-lock:source": "npm run verify:java-lock -- --check-siblings",
+    "verify:java-defaults": "ts-node ./itest/scripts/verify-java-default-value-parity.ts",
     "parity:json": "node itest/scripts/run-parity.js json",
     "parity:yaml:instances": "node itest/scripts/run-parity.js yaml-instances",
     "parity:yaml:compact": "node itest/scripts/run-parity.js yaml-compact",
@@ -29,7 +30,9 @@
     "prettier": "prettier --write .",
     "link": "cd dist && npm link",
     "unlink": "npm uninstall -g cedar-model-typescript-library",
-    "publish:package": "npm run test:package && npm publish ./dist --access public"
+    "publish:package": "npm run test:package && npm publish ./dist --access public",
+    "test:concordance": "jest --runInBand FieldConcordanceMatrix",
+    "sync:concordance": "node scripts/sync-field-concordance.mjs"
   },
   "allowScripts": {
     "fsevents@2.3.3": true,

@@ -5,6 +5,8 @@ import { RadioFieldBuilder } from './RadioFieldBuilder';
 import { RadioFieldImpl } from './RadioFieldImpl';
 
 export class RadioFieldBuilderImpl extends TemplateFieldBuilder implements RadioFieldBuilder {
+  private defaultValue: string | null = null;
+
   private literals: Array<RadioOption> = [];
 
   private constructor() {
@@ -20,9 +22,16 @@ export class RadioFieldBuilderImpl extends TemplateFieldBuilder implements Radio
     return this;
   }
 
+  public withDefaultValue(defaultValue: string | null): RadioFieldBuilder {
+    this.defaultValue = defaultValue;
+    return this;
+  }
+
   public build(): RadioField {
     const radioField = RadioFieldImpl.buildEmpty();
     super.buildInternal(radioField);
+
+    radioField.valueConstraints.defaultValue = this.defaultValue;
 
     // Find the last option that was marked as selectedByDefault
     let lastSelectedIndex = -1;

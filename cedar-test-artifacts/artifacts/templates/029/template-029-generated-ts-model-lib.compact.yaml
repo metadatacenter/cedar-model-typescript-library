@@ -868,6 +868,7 @@ children:
           - type: ontology
             sourceAcronym: "MESH"
             sourceName: "MESH"
+            sourceUri: "https://bioportal.bioontology.org/ontologies/MESH"
       - key: "Subject Identifier Scheme"
         type: text-field
         name: "Subject Identifier Scheme"

@@ -9,7 +9,6 @@ export class AbstractDynamicChildDeploymentInfoBuilder extends AbstractChildDepl
   protected iri: NullableString = null;
   protected requiredValue: boolean = false;
   protected recommendedValue: boolean = false;
-  protected continuePreviousLine: boolean = false;
   protected valueRecommendationEnabled: boolean = false;
 
   constructor(child: TemplateChild, name: string) {
@@ -47,11 +46,6 @@ export class AbstractDynamicChildDeploymentInfoBuilder extends AbstractChildDepl
     return this;
   }
 
-  public withContinuePreviousLine(continuePreviousLine: boolean): this {
-    this.continuePreviousLine = continuePreviousLine;
-    return this;
-  }
-
   public withValueRecommendationEnabled(enabled: boolean): this {
     this.valueRecommendationEnabled = enabled;
     return this;
@@ -68,7 +62,6 @@ export class AbstractDynamicChildDeploymentInfoBuilder extends AbstractChildDepl
     info.iri = this.iri;
     info.requiredValue = this.requiredValue;
     info.recommendedValue = this.recommendedValue;
-    info.continuePreviousLine = this.continuePreviousLine;
     info.valueRecommendationEnabled = this.valueRecommendationEnabled;
   }
 }

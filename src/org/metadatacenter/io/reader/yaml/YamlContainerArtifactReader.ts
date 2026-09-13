@@ -4,6 +4,7 @@ import { YamlTemplateFieldReader } from './YamlTemplateFieldReader';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
 import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploymentInfo';
+import { ChildDeploymentInfoElement } from '../../../model/cedar/deployment/ChildDeploymentInfoElement';
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
 import { ReaderUtil } from '../ReaderUtil';
 import { YamlTemplateElementReader } from './YamlTemplateElementReader';
@@ -14,7 +15,7 @@ import { CedarFieldType } from '../../../model/cedar/types/cedar-types/CedarFiel
 import { AbstractContainerArtifact } from '../../../model/cedar/AbstractContainerArtifact';
 import { ChildDeploymentInfoAlwaysMultipleBuilder } from '../../../model/cedar/deployment/ChildDeploymentInfoAlwaysMultipleBuilder';
 import { ChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/ChildDeploymentInfoBuilder';
-import { AbstractDynamicChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/AbstractDynamicChildDeploymentInfoBuilder';
+import { AbstractFieldChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/AbstractFieldChildDeploymentInfoBuilder';
 import { YamlArtifactParsingResult } from '../../../model/cedar/util/compare/YamlArtifactParsingResult';
 
 export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactReader {
@@ -54,8 +55,14 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
         childDeploymentInfo.requiredValue = ReaderUtil.getBoolean(configuration, YamlKeys.required);
         childDeploymentInfo.recommendedValue = ReaderUtil.getBoolean(configuration, YamlKeys.recommended);
         childDeploymentInfo.hidden = ReaderUtil.getBoolean(configuration, YamlKeys.hidden);
-        childDeploymentInfo.continuePreviousLine = ReaderUtil.getBoolean(configuration, YamlKeys.continuePreviousLine);
         childDeploymentInfo.valueRecommendationEnabled = ReaderUtil.getBoolean(configuration, YamlKeys.valueRecommendation);
+        /*
+         * A line placement is a dynamic field's, so the field branch reads it and no other branch
+         * does. A document stating it for an element states something the CEDAR model has nowhere
+         * to keep — an element's `_ui` admits its order, property labels and property descriptions
+         * and refuses anything else — and the Java library has always read past it. Reading it into
+         * the model here is what let the YAML writer put it back while the JSON writer dropped it.
+         */
 
         childDeploymentInfo.iri = ReaderUtil.getString(configuration, YamlKeys.propertyIri);
 
@@ -80,11 +87,11 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
             .withHidden(childDeploymentInfo.hidden);
 
           if (childDeploymentInfo.atType === CedarArtifactType.TEMPLATE_FIELD) {
-            const finalChildInfoBuilder2: AbstractDynamicChildDeploymentInfoBuilder =
-              finalChildInfoBuilder as AbstractDynamicChildDeploymentInfoBuilder;
+            const finalChildInfoBuilder2: AbstractFieldChildDeploymentInfoBuilder =
+              finalChildInfoBuilder as AbstractFieldChildDeploymentInfoBuilder;
             finalChildInfoBuilder2
               .withIri(childDeploymentInfo.iri)
-              .withContinuePreviousLine(childDeploymentInfo.continuePreviousLine)
+              .withContinuePreviousLine(ReaderUtil.getBoolean(configuration, YamlKeys.continuePreviousLine))
               .withRecommendedValue(childDeploymentInfo.recommendedValue)
               .withRequiredValue(childDeploymentInfo.requiredValue)
               .withValueRecommendationEnabled(childDeploymentInfo.valueRecommendationEnabled);
@@ -108,7 +115,19 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
             childDeploymentInfo,
             path.add(YamlKeys.children, name),
           );
-          container.addChild(elementReadingResult.element, childDeploymentInfo);
+          const elementChildInfo: ChildDeploymentInfoElement = elementReadingResult.element
+            .createDeploymentBuilder(name)
+            .withLabel(childDeploymentInfo.label)
+            .withDescription(childDeploymentInfo.description)
+            .withHidden(childDeploymentInfo.hidden)
+            .withIri(childDeploymentInfo.iri)
+            .withRequiredValue(childDeploymentInfo.requiredValue)
+            .withRecommendedValue(childDeploymentInfo.recommendedValue)
+            .withMultiInstance(childDeploymentInfo.multiInstance)
+            .withMinItems(childDeploymentInfo.minItems)
+            .withMaxItems(childDeploymentInfo.maxItems)
+            .build();
+          container.addChild(elementReadingResult.element, elementChildInfo);
         } else {
           // A child whose type this library does not know used to be skipped, leaving a container
           // that read successfully with a child missing. The Java library refuses it.

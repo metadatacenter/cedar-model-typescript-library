@@ -3,7 +3,7 @@ import { SchemaVersion } from '../types/wrapped-types/SchemaVersion';
 import { PavVersion } from '../types/wrapped-types/PavVersion';
 import { AbstractContainerArtifact } from '../AbstractContainerArtifact';
 import { CedarArtifactType } from '../types/cedar-types/CedarArtifactType';
-import { ChildDeploymentInfoBuilder } from '../deployment/ChildDeploymentInfoBuilder';
+import { ChildDeploymentInfoElementBuilder } from '../deployment/ChildDeploymentInfoElementBuilder';
 
 export class TemplateElement extends AbstractContainerArtifact {
   public skos_altLabel: Array<string> | null = null;
@@ -34,7 +34,7 @@ export class TemplateElement extends AbstractContainerArtifact {
     return false;
   }
 
-  override createDeploymentBuilder(childName: string): ChildDeploymentInfoBuilder {
-    return new ChildDeploymentInfoBuilder(this, childName);
+  override createDeploymentBuilder(childName: string): ChildDeploymentInfoElementBuilder {
+    return new ChildDeploymentInfoElementBuilder(this, childName);
   }
 }

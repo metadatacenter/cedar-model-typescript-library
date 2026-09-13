@@ -16,6 +16,13 @@ export class YamlTemplateElementWriter extends YamlAbstractContainerArtifactWrit
   }
 
   public getYamlAsJsonNode(element: TemplateElement, isCompact: boolean = false, isDocumentRoot: boolean = true): JsonNode {
+    const uiObject: JsonNode = JsonNode.getEmpty();
+    if (element.header !== null) {
+      uiObject[YamlKeys.header] = element.header;
+    }
+    if (element.footer !== null) {
+      uiObject[YamlKeys.footer] = element.footer;
+    }
     // build the final object
     const template: JsonNode = {
       ...this.macroType(element),
@@ -24,6 +31,7 @@ export class YamlTemplateElementWriter extends YamlAbstractContainerArtifactWrit
       ...this.macroId(element, isCompact, isDocumentRoot),
       ...this.macroStatusAndVersion(element, isCompact),
       ...this.macroInstanceType(element),
+      ...uiObject,
       ...this.macroPreviousVersion(element, isCompact),
       ...this.macroDerivedFrom(element, isCompact),
       ...this.macroProvenance(element, isCompact),

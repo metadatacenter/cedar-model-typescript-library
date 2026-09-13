@@ -8,6 +8,14 @@ import { ChildDeploymentInfoElementBuilder } from '../deployment/ChildDeployment
 export class TemplateElement extends AbstractContainerArtifact {
   public skos_altLabel: Array<string> | null = null;
   public skos_prefLabel: string | null = null;
+  /**
+   * The instructions an element shows above and below its fields.
+   * `templateElementUIFieldContent` declares both, and the metadata editor renders them when the
+   * element is expanded, so an element that arrives with either keeps it through both
+   * serializations.
+   */
+  public header: string | null = null;
+  public footer: string | null = null;
   private constructor() {
     super();
     this.cedarArtifactType = CedarArtifactType.TEMPLATE_ELEMENT;

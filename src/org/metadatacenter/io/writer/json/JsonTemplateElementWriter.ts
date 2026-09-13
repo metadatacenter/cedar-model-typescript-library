@@ -81,6 +81,12 @@ export class JsonTemplateElementWriter extends JsonAbstractContainerArtifactWrit
       [CedarModel.propertyLabels]: element.getChildrenInfo().getPropertyLabelMap(element),
       [CedarModel.propertyDescriptions]: element.getChildrenInfo().getPropertyDescriptionMap(element),
     };
+    if (element.header !== null) {
+      elementUi[CedarModel.header] = element.header;
+    }
+    if (element.footer !== null) {
+      elementUi[CedarModel.footer] = element.footer;
+    }
 
     // build the final object
     return {

@@ -42,12 +42,15 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
       if (childInfo.hidden) {
         uiNode[CedarModel.Ui.hidden] = childInfo.hidden;
       }
-      // Only a dynamic field keeps a line placement, and only its own `_ui` has room for one.
-      if (childInfo instanceof AbstractFieldChildDeploymentInfo && childInfo.continuePreviousLine) {
-        uiNode[CedarModel.Ui.continuePreviousLine] = childInfo.continuePreviousLine;
-      }
-      if (childInfo.valueRecommendationEnabled && _field.supportsValueRecommendation()) {
-        uiNode[CedarModel.Ui.valueRecommendationEnabled] = childInfo.valueRecommendationEnabled;
+      // A line placement and a value recommendation are a dynamic field's, and only its own `_ui`
+      // has room for either.
+      if (childInfo instanceof AbstractFieldChildDeploymentInfo) {
+        if (childInfo.continuePreviousLine) {
+          uiNode[CedarModel.Ui.continuePreviousLine] = childInfo.continuePreviousLine;
+        }
+        if (childInfo.valueRecommendationEnabled && _field.supportsValueRecommendation()) {
+          uiNode[CedarModel.Ui.valueRecommendationEnabled] = childInfo.valueRecommendationEnabled;
+        }
       }
     }
   }

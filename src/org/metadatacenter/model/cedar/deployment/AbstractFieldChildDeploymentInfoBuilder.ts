@@ -5,12 +5,13 @@ import { AbstractFieldChildDeploymentInfo } from './AbstractFieldChildDeployment
 
 /**
  * The builder of a dynamic field's deployment, and the only builder offering
- * `withContinuePreviousLine` — an element child is built by
- * `ChildDeploymentInfoElementBuilder`, which descends from the dynamic builder
- * and so has no such method to call.
+ * `withContinuePreviousLine` and `withValueRecommendationEnabled` — an element child is
+ * built by `ChildDeploymentInfoElementBuilder`, which descends from the dynamic builder
+ * and so has neither method to call.
  */
 export class AbstractFieldChildDeploymentInfoBuilder extends AbstractDynamicChildDeploymentInfoBuilder {
   protected continuePreviousLine: boolean = false;
+  protected valueRecommendationEnabled: boolean = false;
 
   constructor(child: TemplateChild, name: string) {
     super(child, name);
@@ -21,10 +22,16 @@ export class AbstractFieldChildDeploymentInfoBuilder extends AbstractDynamicChil
     return this;
   }
 
+  public withValueRecommendationEnabled(enabled: boolean): this {
+    this.valueRecommendationEnabled = enabled;
+    return this;
+  }
+
   protected override setCommonData(info: AbstractDynamicChildDeploymentInfo) {
     super.setCommonData(info);
     if (info instanceof AbstractFieldChildDeploymentInfo) {
       info.continuePreviousLine = this.continuePreviousLine;
+      info.valueRecommendationEnabled = this.valueRecommendationEnabled;
     }
   }
 }

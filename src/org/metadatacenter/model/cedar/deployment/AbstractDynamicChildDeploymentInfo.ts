@@ -7,7 +7,6 @@ export abstract class AbstractDynamicChildDeploymentInfo extends AbstractChildDe
 
   protected _requiredValue: boolean = false;
   private _recommendedValue: boolean = false;
-  private _valueRecommendationEnabled: boolean = false;
 
   protected constructor(name: string) {
     super(name);
@@ -35,14 +34,6 @@ export abstract class AbstractDynamicChildDeploymentInfo extends AbstractChildDe
 
   set recommendedValue(value: boolean) {
     this._recommendedValue = value;
-  }
-
-  get valueRecommendationEnabled(): boolean {
-    return this._valueRecommendationEnabled;
-  }
-
-  set valueRecommendationEnabled(value: boolean) {
-    this._valueRecommendationEnabled = value;
   }
 
   abstract isMultiInAnyWay(): boolean;

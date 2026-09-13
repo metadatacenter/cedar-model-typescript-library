@@ -85,12 +85,13 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
     if (childMeta.description !== null && childMeta.description !== child?.schema_description) {
       childConfiguration[YamlKeys.overrideDescription] = childMeta.description;
     }
-    // A line placement belongs to a dynamic field. An element child cannot hold one, so there is
-    // nothing here to write for it, and the JSON form it would have to survive has no room for it.
-    if (childMeta instanceof AbstractFieldChildDeploymentInfo && childMeta.continuePreviousLine) {
-      childConfiguration[YamlKeys.continuePreviousLine] = true;
-    }
-    if (childMeta instanceof AbstractDynamicChildDeploymentInfo) {
+    // A line placement and a value recommendation belong to a dynamic field. An element child holds
+    // neither, so there is nothing here to write for one, and the JSON form they would have to
+    // survive has no room for either.
+    if (childMeta instanceof AbstractFieldChildDeploymentInfo) {
+      if (childMeta.continuePreviousLine) {
+        childConfiguration[YamlKeys.continuePreviousLine] = true;
+      }
       if (childMeta.valueRecommendationEnabled && child instanceof TemplateField && child.supportsValueRecommendation()) {
         childConfiguration[YamlKeys.valueRecommendation] = true;
       }

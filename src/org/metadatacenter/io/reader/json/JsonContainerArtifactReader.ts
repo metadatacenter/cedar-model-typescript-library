@@ -156,13 +156,14 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
         finalChildInfoBuilder
           .withIri(dynaChildInfo.iri)
           .withHidden(dynaChildInfo.hidden)
-          .withValueRecommendationEnabled(dynaChildInfo.valueRecommendationEnabled)
           .withLabel(childInfo.label)
           .withDescription(childInfo.description)
           .withRecommendedValue(dynaChildInfo.recommendedValue)
           .withRequiredValue(dynaChildInfo.requiredValue);
         if (childInfo instanceof AbstractFieldChildDeploymentInfo) {
-          finalChildInfoBuilder.withContinuePreviousLine(childInfo.continuePreviousLine);
+          finalChildInfoBuilder
+            .withContinuePreviousLine(childInfo.continuePreviousLine)
+            .withValueRecommendationEnabled(childInfo.valueRecommendationEnabled);
         }
         if (finalChildInfoBuilder instanceof ChildDeploymentInfoBuilder && childInfo instanceof ChildDeploymentInfo) {
           finalChildInfoBuilder

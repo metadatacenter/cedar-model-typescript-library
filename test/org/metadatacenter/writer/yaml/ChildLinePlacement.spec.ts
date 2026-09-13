@@ -7,18 +7,20 @@ import {
 } from '../../../../../src';
 
 /**
- * Where `continuePreviousLine` may be stated, and where it may not.
+ * Where `continuePreviousLine` and `valueRecommendationEnabled` may be stated, and where they may
+ * not.
  *
- * The CEDAR model gives the setting to a dynamic field: `literalFieldUIContent` and
- * `iriFieldUIContent` declare it, an element's `_ui` and a static field's do not, and every one of
- * those closes with `additionalProperties: false`. So a template whose element carries the setting
- * is a template the validation library rejects.
+ * The CEDAR model gives both to a dynamic field: `literalFieldUIContent` and `iriFieldUIContent`
+ * declare them, an element's `_ui` and a static field's do not, and every one of those closes with
+ * `additionalProperties: false`. So a template whose element carries either is a template the
+ * validation library rejects.
  *
- * This library used to keep it on the deployment info an element child shares with a field child.
- * A YAML document stating it for an element therefore came back with it set, the YAML writer wrote
- * it out again, and the JSON writer — having nowhere to put it — dropped it without a word, so the
- * same template said one thing in YAML and another in JSON, and disagreed with the Java library in
- * both.
+ * This library used to keep both on the deployment info an element child shares with a field child.
+ * A YAML document stating a line placement for an element therefore came back with it set, the YAML
+ * writer wrote it out again, and the JSON writer — having nowhere to put it — dropped it without a
+ * word, so the same template said one thing in YAML and another in JSON, and disagreed with the Java
+ * library in both. A value recommendation reached an element the same way, and no writer would ever
+ * emit one for an element.
  */
 const element = () =>
   CedarBuilders.templateElementBuilder()
@@ -66,22 +68,26 @@ ${childConfiguration}  - key: "f"
 
 const readTemplate = (yaml: string) => CedarReaders.yaml().getStrict().getTemplateReader().readFromString(yaml).template;
 
-describe('the line placement of an element child', () => {
-  test('is not a setting its deployment info has', () => {
+const elementStates = '      continuePreviousLine: true\n      valueRecommendation: true\n';
+
+describe('the settings an element child cannot carry', () => {
+  test('are not settings its deployment info has', () => {
     const info = element().createDeploymentBuilder('el').build();
     expect(info).toBeInstanceOf(ChildDeploymentInfoElement);
     expect(info).not.toBeInstanceOf(AbstractFieldChildDeploymentInfo);
     expect('continuePreviousLine' in info).toBe(false);
+    expect('valueRecommendationEnabled' in info).toBe(false);
   });
 
-  test('is read past when a document states it, as the Java library reads past it', () => {
-    const template = readTemplate(templateYaml('      continuePreviousLine: true\n'));
+  test('are read past when a document states them, as the Java library reads past them', () => {
+    const template = readTemplate(templateYaml(elementStates));
     expect(template.getChildrenInfo().get('el')).toBeInstanceOf(ChildDeploymentInfoElement);
     expect('continuePreviousLine' in template.getChildrenInfo().get('el')!).toBe(false);
+    expect('valueRecommendationEnabled' in template.getChildrenInfo().get('el')!).toBe(false);
   });
 
-  test('is written by neither serialization, while a field child keeps its own', () => {
-    const template = readTemplate(templateYaml('      continuePreviousLine: true\n'));
+  test('are written by neither serialization, while a field child keeps its own', () => {
+    const template = readTemplate(templateYaml(elementStates));
     const yaml = CedarWriters.yaml().getStrict().getTemplateWriter().getAsYamlString(template, false);
     const json = CedarWriters.json().getStrict().getTemplateWriter().getAsJsonNode(template);
 

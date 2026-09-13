@@ -9,7 +9,6 @@ export class AbstractDynamicChildDeploymentInfoBuilder extends AbstractChildDepl
   protected iri: NullableString = null;
   protected requiredValue: boolean = false;
   protected recommendedValue: boolean = false;
-  protected valueRecommendationEnabled: boolean = false;
 
   constructor(child: TemplateChild, name: string) {
     super(child, name);
@@ -46,11 +45,6 @@ export class AbstractDynamicChildDeploymentInfoBuilder extends AbstractChildDepl
     return this;
   }
 
-  public withValueRecommendationEnabled(enabled: boolean): this {
-    this.valueRecommendationEnabled = enabled;
-    return this;
-  }
-
   public build(): AbstractDynamicChildDeploymentInfo {
     const info: ChildDeploymentInfo = new ChildDeploymentInfo(this.name);
     this.setCommonData(info);
@@ -62,6 +56,5 @@ export class AbstractDynamicChildDeploymentInfoBuilder extends AbstractChildDepl
     info.iri = this.iri;
     info.requiredValue = this.requiredValue;
     info.recommendedValue = this.recommendedValue;
-    info.valueRecommendationEnabled = this.valueRecommendationEnabled;
   }
 }

@@ -10,14 +10,6 @@ export abstract class AbstractChildDeploymentInfo {
   protected _label: NullableString = null;
   protected _description: NullableString = null;
 
-  /**
-   * `_ui.hidden`, which any child can carry — element and static alike, not
-   * only the dynamic fields that used to declare it. It lived on the dynamic
-   * subclass, so a hidden element or a hidden static field parsed as visible
-   * and any consumer rendering from the parsed model showed it.
-   */
-  protected _hidden: boolean = false;
-
   protected constructor(name: string) {
     this._name = name;
   }
@@ -69,12 +61,15 @@ export abstract class AbstractChildDeploymentInfo {
     this._description = value;
   }
 
+  /**
+   * `_ui.hidden`, which a field carries and an element cannot: `literalFieldUIContent`,
+   * `iriFieldUIContent` and `staticFieldUIContent` each declare it, while an element's `_ui` admits
+   * its order, property labels and property descriptions and closes with
+   * `additionalProperties: false`. Answered here for every child so a consumer can ask, and
+   * settable only on the two deployment infos the model lets carry one.
+   */
   get hidden(): boolean {
-    return this._hidden;
-  }
-
-  set hidden(value: boolean) {
-    this._hidden = value;
+    return false;
   }
 
   abstract isMultiInAnyWay(): boolean;

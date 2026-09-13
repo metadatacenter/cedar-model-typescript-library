@@ -3,12 +3,9 @@ import { TemplateChild } from '../types/basic-types/TemplateChild';
 import { AbstractDynamicChildDeploymentInfo } from './AbstractDynamicChildDeploymentInfo';
 import { ChildDeploymentInfo } from './ChildDeploymentInfo';
 import { AbstractChildDeploymentInfoBuilder } from './AbstractChildDeploymentInfoBuilder';
-import { TemplateField } from '../field/TemplateField';
 
 export class AbstractDynamicChildDeploymentInfoBuilder extends AbstractChildDeploymentInfoBuilder {
   protected iri: NullableString = null;
-  protected requiredValue: boolean = false;
-  protected recommendedValue: boolean = false;
 
   constructor(child: TemplateChild, name: string) {
     super(child, name);
@@ -16,32 +13,6 @@ export class AbstractDynamicChildDeploymentInfoBuilder extends AbstractChildDepl
 
   public withIri(iri: NullableString): this {
     this.iri = iri;
-    return this;
-  }
-
-  /**
-   * Whether the child's field type keeps a requirement at all.
-   *
-   * An attribute-value field does not, so the two setters below decline it rather
-   * than storing something no writer emits — the Java library's
-   * `AttributeValueField.Builder` has answered the same way for as long as it has
-   * had those methods, by making them no-ops.
-   */
-  private get recordsRequirement(): boolean {
-    return !(this.child instanceof TemplateField) || this.child.cedarFieldType.recordsRequirement;
-  }
-
-  public withRequiredValue(requiredValue: boolean): this {
-    if (this.recordsRequirement) {
-      this.requiredValue = requiredValue;
-    }
-    return this;
-  }
-
-  public withRecommendedValue(recommendedValue: boolean): this {
-    if (this.recordsRequirement) {
-      this.recommendedValue = recommendedValue;
-    }
     return this;
   }
 
@@ -54,7 +25,5 @@ export class AbstractDynamicChildDeploymentInfoBuilder extends AbstractChildDepl
   protected setCommonData(info: AbstractDynamicChildDeploymentInfo) {
     super.setCommonData(info);
     info.iri = this.iri;
-    info.requiredValue = this.requiredValue;
-    info.recommendedValue = this.recommendedValue;
   }
 }

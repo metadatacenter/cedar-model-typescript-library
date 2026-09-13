@@ -5,9 +5,6 @@ import { AbstractChildDeploymentInfo } from './AbstractChildDeploymentInfo';
 export abstract class AbstractDynamicChildDeploymentInfo extends AbstractChildDeploymentInfo {
   protected _iri: NullableString = null;
 
-  protected _requiredValue: boolean = false;
-  private _recommendedValue: boolean = false;
-
   protected constructor(name: string) {
     super(name);
   }
@@ -20,20 +17,20 @@ export abstract class AbstractDynamicChildDeploymentInfo extends AbstractChildDe
     this._iri = value;
   }
 
+  /**
+   * Whether the parent asks for a value, and how firmly.
+   *
+   * A field records that in its own `_valueConstraints`. An element has no `_valueConstraints` at
+   * all, and the parent's `required` array lists every child that is not static or attribute-value
+   * whatever the author asked for, so an element child has nowhere to keep a requirement — these
+   * answer for it, and only a field's deployment info can set one.
+   */
   get requiredValue(): boolean {
-    return this._requiredValue;
-  }
-
-  set requiredValue(value: boolean) {
-    this._requiredValue = value;
+    return false;
   }
 
   get recommendedValue(): boolean {
-    return this._recommendedValue;
-  }
-
-  set recommendedValue(value: boolean) {
-    this._recommendedValue = value;
+    return false;
   }
 
   abstract isMultiInAnyWay(): boolean;

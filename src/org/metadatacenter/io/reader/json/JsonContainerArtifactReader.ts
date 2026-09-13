@@ -138,11 +138,11 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
       }
       if (childInfo.atType === CedarArtifactType.STATIC_TEMPLATE_FIELD) {
         const cedarFieldReaderResult = this.fieldReader.readFromObjectInternal(childDefinition, childInfo, childPath);
-        const finalChildInfoBuilder: ChildDeploymentInfoStaticBuilder = cedarFieldReaderResult.field
+        const finalChildInfoBuilder = cedarFieldReaderResult.field
           .createDeploymentBuilder(childInfo.name)
           .withLabel(childInfo.label)
-          .withDescription(childInfo.description)
-          .withHidden(childInfo.hidden);
+          .withDescription(childInfo.description) as ChildDeploymentInfoStaticBuilder;
+        finalChildInfoBuilder.withHidden(childInfo.hidden);
         const finalChildInfo = finalChildInfoBuilder.build();
         container.addChild(cedarFieldReaderResult.field, finalChildInfo);
         parsingResult.merge(cedarFieldReaderResult.parsingResult);
@@ -153,15 +153,12 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
         ) as AbstractFieldChildDeploymentInfoBuilder;
         const dynaChildInfo: AbstractDynamicChildDeploymentInfo = childInfo as AbstractDynamicChildDeploymentInfo;
         // console.log('CHILD INFO1:', childInfo);
-        finalChildInfoBuilder
-          .withIri(dynaChildInfo.iri)
-          .withHidden(dynaChildInfo.hidden)
-          .withLabel(childInfo.label)
-          .withDescription(childInfo.description)
-          .withRecommendedValue(dynaChildInfo.recommendedValue)
-          .withRequiredValue(dynaChildInfo.requiredValue);
+        finalChildInfoBuilder.withIri(dynaChildInfo.iri).withLabel(childInfo.label).withDescription(childInfo.description);
         if (childInfo instanceof AbstractFieldChildDeploymentInfo) {
           finalChildInfoBuilder
+            .withHidden(childInfo.hidden)
+            .withRequiredValue(childInfo.requiredValue)
+            .withRecommendedValue(childInfo.recommendedValue)
             .withContinuePreviousLine(childInfo.continuePreviousLine)
             .withValueRecommendationEnabled(childInfo.valueRecommendationEnabled);
         }
@@ -191,13 +188,9 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
         const finalChildInfoBuilder: ChildDeploymentInfoElementBuilder = cedarElementReaderResult.element
           .createDeploymentBuilder(childInfo.name)
           .withLabel(childInfo.label)
-          .withDescription(childInfo.description)
-          .withHidden(childInfo.hidden);
+          .withDescription(childInfo.description);
         if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
-          finalChildInfoBuilder
-            .withIri(childInfo.iri)
-            .withRequiredValue(childInfo.requiredValue)
-            .withRecommendedValue(childInfo.recommendedValue);
+          finalChildInfoBuilder.withIri(childInfo.iri);
         }
         if (childInfo instanceof ChildDeploymentInfo) {
           finalChildInfoBuilder

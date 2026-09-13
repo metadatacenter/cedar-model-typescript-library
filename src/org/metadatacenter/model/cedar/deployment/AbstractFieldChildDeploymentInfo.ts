@@ -16,11 +16,38 @@ import { AbstractDynamicChildDeploymentInfo } from './AbstractDynamicChildDeploy
  * emit one for.
  */
 export abstract class AbstractFieldChildDeploymentInfo extends AbstractDynamicChildDeploymentInfo {
+  protected _hidden: boolean = false;
+  protected _requiredValue: boolean = false;
+  protected _recommendedValue: boolean = false;
   protected _continuePreviousLine: boolean = false;
   protected _valueRecommendationEnabled: boolean = false;
 
   protected constructor(name: string) {
     super(name);
+  }
+
+  override get hidden(): boolean {
+    return this._hidden;
+  }
+
+  set hidden(value: boolean) {
+    this._hidden = value;
+  }
+
+  override get requiredValue(): boolean {
+    return this._requiredValue;
+  }
+
+  set requiredValue(value: boolean) {
+    this._requiredValue = value;
+  }
+
+  override get recommendedValue(): boolean {
+    return this._recommendedValue;
+  }
+
+  set recommendedValue(value: boolean) {
+    this._recommendedValue = value;
   }
 
   get continuePreviousLine(): boolean {

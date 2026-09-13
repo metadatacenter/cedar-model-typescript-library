@@ -14,6 +14,7 @@ import { YamlArtifactType } from '../../../model/cedar/types/wrapped-types/YamlA
 import { CedarFieldType } from '../../../model/cedar/types/cedar-types/CedarFieldType';
 import { AbstractContainerArtifact } from '../../../model/cedar/AbstractContainerArtifact';
 import { ChildDeploymentInfoAlwaysMultipleBuilder } from '../../../model/cedar/deployment/ChildDeploymentInfoAlwaysMultipleBuilder';
+import { ChildDeploymentInfoStaticBuilder } from '../../../model/cedar/deployment/ChildDeploymentInfoStaticBuilder';
 import { ChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/ChildDeploymentInfoBuilder';
 import { AbstractFieldChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/AbstractFieldChildDeploymentInfoBuilder';
 import { YamlArtifactParsingResult } from '../../../model/cedar/util/compare/YamlArtifactParsingResult';
@@ -83,13 +84,16 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
           const finalChildInfoBuilder = fieldReadingResult.field
             .createDeploymentBuilder(childDeploymentInfo.name)
             .withLabel(childDeploymentInfo.label)
-            .withDescription(childDeploymentInfo.description)
-            .withHidden(childDeploymentInfo.hidden);
+            .withDescription(childDeploymentInfo.description);
+          if (finalChildInfoBuilder instanceof ChildDeploymentInfoStaticBuilder) {
+            finalChildInfoBuilder.withHidden(childDeploymentInfo.hidden);
+          }
 
           if (childDeploymentInfo.atType === CedarArtifactType.TEMPLATE_FIELD) {
             const finalChildInfoBuilder2: AbstractFieldChildDeploymentInfoBuilder =
               finalChildInfoBuilder as AbstractFieldChildDeploymentInfoBuilder;
             finalChildInfoBuilder2
+              .withHidden(childDeploymentInfo.hidden)
               .withIri(childDeploymentInfo.iri)
               .withContinuePreviousLine(ReaderUtil.getBoolean(configuration, YamlKeys.continuePreviousLine))
               .withRecommendedValue(childDeploymentInfo.recommendedValue)
@@ -119,10 +123,7 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
             .createDeploymentBuilder(name)
             .withLabel(childDeploymentInfo.label)
             .withDescription(childDeploymentInfo.description)
-            .withHidden(childDeploymentInfo.hidden)
             .withIri(childDeploymentInfo.iri)
-            .withRequiredValue(childDeploymentInfo.requiredValue)
-            .withRecommendedValue(childDeploymentInfo.recommendedValue)
             .withMultiInstance(childDeploymentInfo.multiInstance)
             .withMinItems(childDeploymentInfo.minItems)
             .withMaxItems(childDeploymentInfo.maxItems)

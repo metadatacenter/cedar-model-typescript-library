@@ -68,7 +68,8 @@ ${childConfiguration}  - key: "f"
 
 const readTemplate = (yaml: string) => CedarReaders.yaml().getStrict().getTemplateReader().readFromString(yaml).template;
 
-const elementStates = '      continuePreviousLine: true\n      valueRecommendation: true\n';
+const elementStates =
+  '      continuePreviousLine: true\n      valueRecommendation: true\n      hidden: true\n      required: true\n      recommended: true\n';
 
 describe('the settings an element child cannot carry', () => {
   test('are not settings its deployment info has', () => {
@@ -77,13 +78,23 @@ describe('the settings an element child cannot carry', () => {
     expect(info).not.toBeInstanceOf(AbstractFieldChildDeploymentInfo);
     expect('continuePreviousLine' in info).toBe(false);
     expect('valueRecommendationEnabled' in info).toBe(false);
+    // `hidden`, `requiredValue` and `recommendedValue` are answered for every child and settable
+    // only where the model keeps one, so an element reports the absence rather than hiding it.
+    expect(info.hidden).toBe(false);
+    expect(info.requiredValue).toBe(false);
+    expect(info.recommendedValue).toBe(false);
   });
 
   test('are read past when a document states them, as the Java library reads past them', () => {
     const template = readTemplate(templateYaml(elementStates));
-    expect(template.getChildrenInfo().get('el')).toBeInstanceOf(ChildDeploymentInfoElement);
-    expect('continuePreviousLine' in template.getChildrenInfo().get('el')!).toBe(false);
-    expect('valueRecommendationEnabled' in template.getChildrenInfo().get('el')!).toBe(false);
+    const info = template.getChildrenInfo().get('el');
+    expect(info).toBeInstanceOf(ChildDeploymentInfoElement);
+    if (!(info instanceof ChildDeploymentInfoElement)) throw new Error('the element child lost its deployment info');
+    expect('continuePreviousLine' in info).toBe(false);
+    expect('valueRecommendationEnabled' in info).toBe(false);
+    expect(info.hidden).toBe(false);
+    expect(info.requiredValue).toBe(false);
+    expect(info.recommendedValue).toBe(false);
   });
 
   test('are written by neither serialization, while a field child keeps its own', () => {
@@ -91,7 +102,12 @@ describe('the settings an element child cannot carry', () => {
     const yaml = CedarWriters.yaml().getStrict().getTemplateWriter().getAsYamlString(template, false);
     const json = CedarWriters.json().getStrict().getTemplateWriter().getAsJsonNode(template);
 
-    expect(yaml).toBe(CedarWriters.yaml().getStrict().getTemplateWriter().getAsYamlString(readTemplate(templateYaml('')), false));
+    expect(yaml).toBe(
+      CedarWriters.yaml()
+        .getStrict()
+        .getTemplateWriter()
+        .getAsYamlString(readTemplate(templateYaml('')), false),
+    );
     expect((json['properties'] as Record<string, Record<string, object>>)['el']['_ui']).toStrictEqual({
       order: ['inner'],
       propertyLabels: {},

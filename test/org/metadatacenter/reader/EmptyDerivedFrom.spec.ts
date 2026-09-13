@@ -39,8 +39,7 @@ const INSTANCE = (derivedFrom: unknown) => ({
 });
 
 const readTemplate = (source: object) => CedarReaders.json().getStrict().getTemplateReader().readFromString(JSON.stringify(source));
-const readInstance = (source: object) =>
-  CedarReaders.json().getStrict().getTemplateInstanceReader().readFromString(JSON.stringify(source));
+const readInstance = (source: object) => CedarReaders.json().getStrict().getTemplateInstanceReader().readFromString(JSON.stringify(source));
 
 describe('pav:derivedFrom as an empty string', () => {
   const DERIVED = 'https://repo.metadatacenter.org/templates/t0';

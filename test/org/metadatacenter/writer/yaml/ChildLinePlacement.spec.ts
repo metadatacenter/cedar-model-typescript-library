@@ -108,9 +108,11 @@ describe('the settings an element child cannot carry', () => {
         .getTemplateWriter()
         .getAsYamlString(readTemplate(templateYaml('')), false),
     );
+    // The element labels its child with the child's own name, which the YAML leaves out and the
+    // reader puts back. The child has no description, so there is nothing to put back there.
     expect((json['properties'] as Record<string, Record<string, object>>)['el']['_ui']).toStrictEqual({
       order: ['inner'],
-      propertyLabels: {},
+      propertyLabels: { inner: 'inner' },
       propertyDescriptions: {},
     });
     expect(yaml.match(/continuePreviousLine/g)).toHaveLength(1);

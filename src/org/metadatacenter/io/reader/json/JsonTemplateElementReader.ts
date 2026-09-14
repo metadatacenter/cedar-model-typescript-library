@@ -69,6 +69,11 @@ export class JsonTemplateElementReader extends JsonContainerArtifactReader {
   protected readNonReportableAttributes(element: TemplateElement, elementSourceObject: JsonNode) {
     element.skos_prefLabel = ReaderUtil.getString(elementSourceObject, CedarModel.skosPrefLabel);
     element.skos_altLabel = ReaderUtil.getFilteredStringList(elementSourceObject, CedarModel.skosAltLabel);
+    const elementUi: JsonNode = ReaderUtil.getNode(elementSourceObject, CedarModel.ui);
+    if (elementUi !== null) {
+      element.header = ReaderUtil.getString(elementUi, CedarModel.header);
+      element.footer = ReaderUtil.getString(elementUi, CedarModel.footer);
+    }
     super.readNonReportableAttributes(element, elementSourceObject);
   }
 

@@ -1,17 +1,20 @@
 import { CedarReaders, JsonNode, Template } from '../../../../../../src';
 
 /**
- * `_ui.hidden` is readable for every kind of child, not only dynamic fields.
+ * `_ui.hidden` is readable for every kind of field, dynamic and static alike.
  *
- * It used to be read by the per-type field readers, which cover the dynamic
- * fields and nothing else. A hidden element or a hidden static field therefore
- * parsed as visible, and any consumer rendering from the parsed model showed
- * something the template says to hide. The declaration also lived on
- * `AbstractDynamicChildDeploymentInfo`, so a static child had nowhere to put it.
+ * It used to be read by the per-type field readers, which cover the dynamic fields and nothing
+ * else, so a hidden static field parsed as visible and any consumer rendering from the parsed
+ * model showed something the template says to hide.
  *
- * None of the 94 templates in the shared corpora hides an element or a static
- * field — all 72 hidden children there are dynamic fields — which is why this
- * went unnoticed. The template model permits it regardless.
+ * An element is the exception, and the model draws that line: `literalFieldUIContent`,
+ * `iriFieldUIContent` and `staticFieldUIContent` each declare `hidden`, while
+ * `templateElementUIFieldContent` admits an order, property labels, property descriptions, a
+ * header and a footer, and closes with `additionalProperties: false`. A template whose element
+ * says `hidden` is one `cedar-model-validation-library` rejects, so nothing here reads one.
+ *
+ * None of the 94 templates in the shared corpora hides an element or a static field — all 72
+ * hidden children there are dynamic fields — which is why the static half went unnoticed.
  */
 const field = (name: string, hidden: boolean): JsonNode => ({
   '@type': 'https://schema.metadatacenter.org/core/TemplateField',
@@ -76,10 +79,10 @@ describe('reading _ui.hidden', () => {
     expect(template.getChildInfo('Hidden')!.hidden).toBe(true);
   });
 
-  test('a hidden element is reported hidden', () => {
+  test('an element is reported visible, whatever a document claims', () => {
     const template = read(templateWith({ Visible: element('Visible', false), Hidden: element('Hidden', true) }));
     expect(template.getChildInfo('Visible')!.hidden).toBe(false);
-    expect(template.getChildInfo('Hidden')!.hidden).toBe(true);
+    expect(template.getChildInfo('Hidden')!.hidden).toBe(false);
   });
 
   test('a hidden static field is reported hidden', () => {

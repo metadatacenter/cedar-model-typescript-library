@@ -1,8 +1,8 @@
 import { NullableNumber } from '../types/basic-types/NullableNumber';
 import { UiInputType } from '../types/wrapped-types/UiInputType';
-import { AbstractDynamicChildDeploymentInfo } from './AbstractDynamicChildDeploymentInfo';
+import { AbstractFieldChildDeploymentInfo } from './AbstractFieldChildDeploymentInfo';
 
-export class ChildDeploymentInfoAlwaysMultiple extends AbstractDynamicChildDeploymentInfo {
+export class ChildDeploymentInfoAlwaysMultiple extends AbstractFieldChildDeploymentInfo {
   private _declaredMinItems: NullableNumber = null;
   private _declaredMaxItems: NullableNumber = null;
 

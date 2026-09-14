@@ -20,9 +20,11 @@ import { JsonTemplateElementReader } from './JsonTemplateElementReader';
 import { JsonContainerArtifactContent } from '../../../model/cedar/util/serialization/JsonContainerArtifactContent';
 import { AbstractDynamicChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractDynamicChildDeploymentInfo';
 import { ChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/ChildDeploymentInfoBuilder';
+import { ChildDeploymentInfoElementBuilder } from '../../../model/cedar/deployment/ChildDeploymentInfoElementBuilder';
 import { ChildDeploymentInfoAlwaysMultipleBuilder } from '../../../model/cedar/deployment/ChildDeploymentInfoAlwaysMultipleBuilder';
 import { ChildDeploymentInfoStaticBuilder } from '../../../model/cedar/deployment/ChildDeploymentInfoStaticBuilder';
-import { AbstractDynamicChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/AbstractDynamicChildDeploymentInfoBuilder';
+import { AbstractFieldChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractFieldChildDeploymentInfo';
+import { AbstractFieldChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/AbstractFieldChildDeploymentInfoBuilder';
 import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
 import { Language } from '../../../model/cedar/types/wrapped-types/Language';
 import { JsonTemplateFieldReaderInternal } from './JsonTemplateFieldReaderInternal';
@@ -136,30 +138,30 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
       }
       if (childInfo.atType === CedarArtifactType.STATIC_TEMPLATE_FIELD) {
         const cedarFieldReaderResult = this.fieldReader.readFromObjectInternal(childDefinition, childInfo, childPath);
-        const finalChildInfoBuilder: ChildDeploymentInfoStaticBuilder = cedarFieldReaderResult.field
+        const finalChildInfoBuilder = cedarFieldReaderResult.field
           .createDeploymentBuilder(childInfo.name)
           .withLabel(childInfo.label)
-          .withDescription(childInfo.description)
-          .withHidden(childInfo.hidden);
+          .withDescription(childInfo.description) as ChildDeploymentInfoStaticBuilder;
+        finalChildInfoBuilder.withHidden(childInfo.hidden);
         const finalChildInfo = finalChildInfoBuilder.build();
         container.addChild(cedarFieldReaderResult.field, finalChildInfo);
         parsingResult.merge(cedarFieldReaderResult.parsingResult);
       } else if (childInfo.atType === CedarArtifactType.TEMPLATE_FIELD) {
         const cedarFieldReaderResult = this.fieldReader.readFromObjectInternal(childDefinition, childInfo, childPath);
-        const finalChildInfoBuilder: AbstractDynamicChildDeploymentInfoBuilder = cedarFieldReaderResult.field.createDeploymentBuilder(
+        const finalChildInfoBuilder: AbstractFieldChildDeploymentInfoBuilder = cedarFieldReaderResult.field.createDeploymentBuilder(
           childInfo.name,
-        ) as AbstractDynamicChildDeploymentInfoBuilder;
+        ) as AbstractFieldChildDeploymentInfoBuilder;
         const dynaChildInfo: AbstractDynamicChildDeploymentInfo = childInfo as AbstractDynamicChildDeploymentInfo;
         // console.log('CHILD INFO1:', childInfo);
-        finalChildInfoBuilder
-          .withIri(dynaChildInfo.iri)
-          .withHidden(dynaChildInfo.hidden)
-          .withContinuePreviousLine(dynaChildInfo.continuePreviousLine)
-          .withValueRecommendationEnabled(dynaChildInfo.valueRecommendationEnabled)
-          .withLabel(childInfo.label)
-          .withDescription(childInfo.description)
-          .withRecommendedValue(dynaChildInfo.recommendedValue)
-          .withRequiredValue(dynaChildInfo.requiredValue);
+        finalChildInfoBuilder.withIri(dynaChildInfo.iri).withLabel(childInfo.label).withDescription(childInfo.description);
+        if (childInfo instanceof AbstractFieldChildDeploymentInfo) {
+          finalChildInfoBuilder
+            .withHidden(childInfo.hidden)
+            .withRequiredValue(childInfo.requiredValue)
+            .withRecommendedValue(childInfo.recommendedValue)
+            .withContinuePreviousLine(childInfo.continuePreviousLine)
+            .withValueRecommendationEnabled(childInfo.valueRecommendationEnabled);
+        }
         if (finalChildInfoBuilder instanceof ChildDeploymentInfoBuilder && childInfo instanceof ChildDeploymentInfo) {
           finalChildInfoBuilder
             .withMultiInstance(childInfo.multiInstance)
@@ -177,7 +179,26 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
         parsingResult.merge(cedarFieldReaderResult.parsingResult);
       } else if (childInfo.atType === CedarArtifactType.TEMPLATE_ELEMENT) {
         const cedarElementReaderResult = this.getElementReader().readFromObject(childDefinition, childPath);
-        container.addChild(cedarElementReaderResult.element, childInfo);
+        /*
+         * The candidate the parent's own keys produced is a field's deployment info, since that is
+         * what most children are. An element's is a different type — one with no line placement on
+         * it — so what the parent said about this child is carried across into one here, the way a
+         * field child is rebuilt through its own deployment builder below.
+         */
+        const finalChildInfoBuilder: ChildDeploymentInfoElementBuilder = cedarElementReaderResult.element
+          .createDeploymentBuilder(childInfo.name)
+          .withLabel(childInfo.label)
+          .withDescription(childInfo.description);
+        if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
+          finalChildInfoBuilder.withIri(childInfo.iri);
+        }
+        if (childInfo instanceof ChildDeploymentInfo) {
+          finalChildInfoBuilder
+            .withMultiInstance(childInfo.multiInstance)
+            .withMinItems(childInfo.minItems)
+            .withMaxItems(childInfo.maxItems);
+        }
+        container.addChild(cedarElementReaderResult.element, finalChildInfoBuilder.build());
         parsingResult.merge(cedarElementReaderResult.parsingResult);
       }
     }

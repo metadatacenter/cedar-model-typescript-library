@@ -24,8 +24,7 @@ const instance = (id: string | null) => {
   return builder.build();
 };
 
-const written = (id: string | null): JsonNode =>
-  CedarWriters.json().getStrict().getTemplateInstanceWriter().getAsJsonNode(instance(id));
+const written = (id: string | null): JsonNode => CedarWriters.json().getStrict().getTemplateInstanceWriter().getAsJsonNode(instance(id));
 
 describe('the identifier a written instance carries at its root', () => {
   const IRI = 'https://repo.metadatacenter.org/template-instances/edit-abc-123';

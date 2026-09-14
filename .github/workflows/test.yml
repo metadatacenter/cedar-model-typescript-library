@@ -118,11 +118,46 @@ jobs:
           name: model-library-dist
           path: dist
 
+      # Which of two names `dist/package.json` carries decides whether anything is
+      # published here. The build copies it from `package-dist.json`, which names
+      # the scoped package for a dev snapshot and the unscoped public package for a
+      # release, so a release-prep commit leaves the public name on develop until
+      # the commit that advances to the next development version replaces it.
+      # Nothing is published from that commit, because the release it prepares
+      # publishes itself to npmjs.
+      #
+      # Refusing it was the first behaviour here, and release 1.0.8 showed the cost:
+      # a red run over a correct release, which teaches an operator to merge a red
+      # run. Any other name still fails the job: a package nobody named must not
+      # reach the dev channel.
+      - name: Decide whether this commit publishes
+        id: channel
+        run: |
+          public=$(node -p "require('./package.json').name")
+          dev="@org.metadatacenter/${public}"
+          name=$(node -p "require('./dist/package.json').name")
+          case "${name}" in
+            "${dev}")
+              echo "publish=true" >> "$GITHUB_OUTPUT"
+              ;;
+            "${public}")
+              summary="Release-prep commit: dist/package.json names ${name}, the public package the release publishes to npmjs. There is no dev package to publish."
+              echo "${summary}"
+              echo "${summary}" >> "$GITHUB_STEP_SUMMARY"
+              echo "publish=false" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "dist/package.json names ${name}, which is neither the dev package ${dev} nor the release package ${public}." >&2
+              exit 1
+              ;;
+          esac
+
       # The commit is what makes the version unique, so it is derived here rather
       # than read from package.json, whose version is written once per release and
       # then stands still across every commit until the next one.
       - name: Derive the dev version
         id: version
+        if: steps.channel.outputs.publish == 'true'
         run: |
           base=$(node -p "require('./package.json').version.split('-')[0]")
           date=$(TZ=UTC git show -s --format=%cd --date=format:%Y%m%d HEAD)
@@ -135,6 +170,7 @@ jobs:
       # username and a base64 password are the pair it does read. An absent secret is
       # reported here, where it names itself, rather than as that same ENEEDAUTH.
       - name: Point the scope at Nexus
+        if: steps.channel.outputs.publish == 'true'
         run: |
           for name in NEXUS_USERNAME NEXUS_PASSWORD; do
             if [ -z "${!name}" ]; then
@@ -155,6 +191,7 @@ jobs:
       # Re-running a workflow on the same commit must not fail, and must not try to
       # overwrite an immutable version with different bytes.
       - name: Publish unless this commit is already published
+        if: steps.channel.outputs.publish == 'true'
         env:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
@@ -167,9 +204,6 @@ jobs:
             const fs = require("node:fs");
             const path = "dist/package.json";
             const manifest = JSON.parse(fs.readFileSync(path, "utf8"));
-            if (!manifest.name.startsWith("@org.metadatacenter/")) {
-              throw new Error(`refusing to publish ${manifest.name} to the dev channel`);
-            }
             manifest.version = process.env.VERSION;
             fs.writeFileSync(path, JSON.stringify(manifest, null, 2) + "\n");
           '

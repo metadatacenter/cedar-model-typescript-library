@@ -143,6 +143,10 @@ import { AbstractChildDeploymentInfo } from './org/metadatacenter/model/cedar/de
 import { AbstractChildDeploymentInfoBuilder } from './org/metadatacenter/model/cedar/deployment/AbstractChildDeploymentInfoBuilder';
 import { AbstractDynamicChildDeploymentInfoBuilder } from './org/metadatacenter/model/cedar/deployment/AbstractDynamicChildDeploymentInfoBuilder';
 import { AbstractDynamicChildDeploymentInfo } from './org/metadatacenter/model/cedar/deployment/AbstractDynamicChildDeploymentInfo';
+import { AbstractFieldChildDeploymentInfo } from './org/metadatacenter/model/cedar/deployment/AbstractFieldChildDeploymentInfo';
+import { AbstractFieldChildDeploymentInfoBuilder } from './org/metadatacenter/model/cedar/deployment/AbstractFieldChildDeploymentInfoBuilder';
+import { ChildDeploymentInfoElement } from './org/metadatacenter/model/cedar/deployment/ChildDeploymentInfoElement';
+import { ChildDeploymentInfoElementBuilder } from './org/metadatacenter/model/cedar/deployment/ChildDeploymentInfoElementBuilder';
 import { JsonArtifactParsingResult } from './org/metadatacenter/model/cedar/util/compare/JsonArtifactParsingResult';
 import { YamlArtifactParsingResult } from './org/metadatacenter/model/cedar/util/compare/YamlArtifactParsingResult';
 import { ComparisonResult } from './org/metadatacenter/model/cedar/util/compare/ComparisonResult';
@@ -261,6 +265,10 @@ export { ControlledTermVersion };
 
 export { AbstractChildDeploymentInfo, AbstractChildDeploymentInfoBuilder };
 export { AbstractDynamicChildDeploymentInfo, AbstractDynamicChildDeploymentInfoBuilder };
+// A dynamic field's deployment and an element's, which differ by the line placement the model
+// gives a field and denies an element.
+export { AbstractFieldChildDeploymentInfo, AbstractFieldChildDeploymentInfoBuilder };
+export { ChildDeploymentInfoElement, ChildDeploymentInfoElementBuilder };
 export { ChildDeploymentInfo, ChildDeploymentInfoBuilder };
 export { ChildDeploymentInfoAlwaysSingle, ChildDeploymentInfoAlwaysSingleBuilder };
 export { ChildDeploymentInfoAlwaysMultiple, ChildDeploymentInfoAlwaysMultipleBuilder };

@@ -7,7 +7,7 @@
   },
   "sharedCorpus": {
     "repository": "https://github.com/metadatacenter/cedar-test-artifacts.git",
-    "gitCommit": "912ba203578cbdf1273a45470437333efe81a62c"
+    "gitCommit": "5f3d155ff6e24ddfe4ad5dce527336ff92b76d4a"
   },
   "collections": {
     "javaReferenceTemplates": {

@@ -68,5 +68,7 @@ export class YamlTemplateElementReader extends YamlContainerArtifactReader {
     element.instanceTypeSpecification = ReaderUtil.getString(elementSourceObject, YamlKeys.instanceType);
     element.skos_prefLabel = ReaderUtil.getString(elementSourceObject, YamlKeys.prefLabel);
     element.skos_altLabel = ReaderUtil.getFilteredStringList(elementSourceObject, YamlKeys.altLabels);
+    element.header = ReaderUtil.getString(elementSourceObject, YamlKeys.header);
+    element.footer = ReaderUtil.getString(elementSourceObject, YamlKeys.footer);
   }
 }

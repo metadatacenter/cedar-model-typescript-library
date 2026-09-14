@@ -16,6 +16,7 @@ import { RadioField } from '../../../model/cedar/field/dynamic/radio/RadioField'
 import { ChoiceOptionEntity } from '../../../model/cedar/field/ChoiceOptionEntity';
 import { CedarJsonWriters } from './CedarJsonWriters';
 import { AbstractDynamicChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractDynamicChildDeploymentInfo';
+import { AbstractFieldChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractFieldChildDeploymentInfo';
 import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
 import { Language } from '../../../model/cedar/types/wrapped-types/Language';
 import { ReaderUtil } from '../../reader/ReaderUtil';
@@ -41,11 +42,15 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
       if (childInfo.hidden) {
         uiNode[CedarModel.Ui.hidden] = childInfo.hidden;
       }
-      if (childInfo.continuePreviousLine) {
-        uiNode[CedarModel.Ui.continuePreviousLine] = childInfo.continuePreviousLine;
-      }
-      if (childInfo.valueRecommendationEnabled && _field.supportsValueRecommendation()) {
-        uiNode[CedarModel.Ui.valueRecommendationEnabled] = childInfo.valueRecommendationEnabled;
+      // A line placement and a value recommendation are a dynamic field's, and only its own `_ui`
+      // has room for either.
+      if (childInfo instanceof AbstractFieldChildDeploymentInfo) {
+        if (childInfo.continuePreviousLine) {
+          uiNode[CedarModel.Ui.continuePreviousLine] = childInfo.continuePreviousLine;
+        }
+        if (childInfo.valueRecommendationEnabled && _field.supportsValueRecommendation()) {
+          uiNode[CedarModel.Ui.valueRecommendationEnabled] = childInfo.valueRecommendationEnabled;
+        }
       }
     }
   }

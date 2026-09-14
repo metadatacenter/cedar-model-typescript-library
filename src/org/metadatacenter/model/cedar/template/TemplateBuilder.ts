@@ -1,14 +1,14 @@
 import { TemplateChild } from '../types/basic-types/TemplateChild';
 import { Template } from './Template';
 import { AbstractArtifactBuilder } from '../AbstractArtifacBuilder';
-import { ChildDeploymentInfo } from '../deployment/ChildDeploymentInfo';
+import { AbstractChildDeploymentInfo } from '../deployment/AbstractChildDeploymentInfo';
 
 export class TemplateBuilder extends AbstractArtifactBuilder {
   private header: string | null = null;
   private footer: string | null = null;
   private instanceTypeSpecification: string | null = null;
 
-  private children: Array<[TemplateChild, ChildDeploymentInfo]> = [];
+  private children: Array<[TemplateChild, AbstractChildDeploymentInfo]> = [];
 
   public withHeader(header: string): TemplateBuilder {
     this.header = header;
@@ -25,7 +25,7 @@ export class TemplateBuilder extends AbstractArtifactBuilder {
     return this;
   }
 
-  public addChild(child: TemplateChild, deploymentInfo: ChildDeploymentInfo): TemplateBuilder {
+  public addChild(child: TemplateChild, deploymentInfo: AbstractChildDeploymentInfo): TemplateBuilder {
     this.children.push([child, deploymentInfo]);
     return this;
   }
@@ -38,7 +38,7 @@ export class TemplateBuilder extends AbstractArtifactBuilder {
     template.footer = this.footer;
     template.instanceTypeSpecification = this.instanceTypeSpecification;
 
-    this.children.forEach(([child, deploymentInfo]: [TemplateChild, ChildDeploymentInfo]) => {
+    this.children.forEach(([child, deploymentInfo]: [TemplateChild, AbstractChildDeploymentInfo]) => {
       template.addChild(child, deploymentInfo);
     });
 

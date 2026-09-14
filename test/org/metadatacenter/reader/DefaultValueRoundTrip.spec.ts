@@ -28,9 +28,7 @@ describe('numeric and temporal declared defaults', () => {
     expect(ReaderUtil.getNumericDefault({ defaultValue: null }, 'defaultValue')).toBeNull();
     expect(ReaderUtil.getNumericDefault({ defaultValue: undefined }, 'defaultValue')).toBeNull();
     expect(ReaderUtil.getNumericDefault({ defaultValue: '   ' }, 'defaultValue')).toBeNull();
-    expect(() => ReaderUtil.getNumericDefault({ defaultValue: Number.POSITIVE_INFINITY }, 'defaultValue')).toThrow(
-      /finite/,
-    );
+    expect(() => ReaderUtil.getNumericDefault({ defaultValue: Number.POSITIVE_INFINITY }, 'defaultValue')).toThrow(/finite/);
     expect(() => ReaderUtil.getNumericDefault({ defaultValue: '1e309' }, 'defaultValue')).toThrow(/finite/);
     expect(() => ReaderUtil.getNumericDefault({ defaultValue: false }, 'defaultValue')).toThrow(/number or numeric string/);
   });

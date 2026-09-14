@@ -1,6 +1,6 @@
 import { TemplateChild } from '../../model/cedar/types/basic-types/TemplateChild';
 import { ChildDeploymentInfoAlwaysMultiple } from '../../model/cedar/deployment/ChildDeploymentInfoAlwaysMultiple';
-import { ChildDeploymentInfo } from '../../model/cedar/deployment/ChildDeploymentInfo';
+import { AbstractDynamicChildDeploymentInfo } from '../../model/cedar/deployment/AbstractDynamicChildDeploymentInfo';
 import { AbstractChildDeploymentInfo } from '../../model/cedar/deployment/AbstractChildDeploymentInfo';
 
 export abstract class WriterUtil {
@@ -24,14 +24,13 @@ export abstract class WriterUtil {
       // always single instance: Radio
       isMultiInstance = false;
     } else {
-      // regular deployment info
-      if (childMetaAbstract instanceof ChildDeploymentInfo) {
-        const childMeta = childMetaAbstract as ChildDeploymentInfo;
-        isMultiInstance = childMeta.multiInstance;
-        if (isMultiInstance) {
-          minItems = childMeta.minItems;
-          maxItems = childMeta.maxItems;
-        }
+      // A field or an element whose cardinality the template states. Both answer through the
+      // deployment info they share above, so asking it rather than one concrete class keeps the
+      // answer the same for either.
+      isMultiInstance = childMetaAbstract.isMultiInAnyWay();
+      if (isMultiInstance && childMetaAbstract instanceof AbstractDynamicChildDeploymentInfo) {
+        minItems = childMetaAbstract.minItems;
+        maxItems = childMetaAbstract.maxItems;
       }
     }
     return { isMultiInstance, minItems, maxItems };

@@ -6,6 +6,7 @@ import { TemplateField } from '../../../model/cedar/field/TemplateField';
 import { YamlAbstractArtifactWriter } from './YamlAbstractArtifactWriter';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 import { AbstractDynamicChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractDynamicChildDeploymentInfo';
+import { AbstractFieldChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractFieldChildDeploymentInfo';
 import { WriterUtil } from '../WriterUtil';
 import { isSizedStaticField } from '../../../model/cedar/field/static/SizedStaticField';
 import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
@@ -84,7 +85,10 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
     if (childMeta.description !== null && childMeta.description !== child?.schema_description) {
       childConfiguration[YamlKeys.overrideDescription] = childMeta.description;
     }
-    if (childMeta instanceof AbstractDynamicChildDeploymentInfo) {
+    // A line placement and a value recommendation belong to a dynamic field. An element child holds
+    // neither, so there is nothing here to write for one, and the JSON form they would have to
+    // survive has no room for either.
+    if (childMeta instanceof AbstractFieldChildDeploymentInfo) {
       if (childMeta.continuePreviousLine) {
         childConfiguration[YamlKeys.continuePreviousLine] = true;
       }

@@ -132,10 +132,10 @@ describe('writers keep pending attribute rows out of artifacts', () => {
     const written = CedarWriters.json().getStrict().getTemplateInstanceWriter().getAsJsonNode(instanceWith(container));
 
     expect(written._attributes).toEqual(['colour']);
-    expect(written.colour).toEqual({'@value': 'blue'});
+    expect(written.colour).toEqual({ '@value': 'blue' });
 
     const yaml = CedarWriters.yaml().getStrict().getTemplateInstanceWriter().getYamlAsJsonNode(instanceWith(container));
-    expect(yaml._attributes).toEqual({colour: {value: 'blue'}});
+    expect(yaml._attributes).toEqual({ colour: { value: 'blue' } });
   });
 });
 

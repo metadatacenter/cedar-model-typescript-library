@@ -1,9 +1,9 @@
 import { NullableNumber } from '../types/basic-types/NullableNumber';
 import { TemplateChild } from '../types/basic-types/TemplateChild';
 import { ChildDeploymentInfoAlwaysMultiple } from './ChildDeploymentInfoAlwaysMultiple';
-import { AbstractDynamicChildDeploymentInfoBuilder } from './AbstractDynamicChildDeploymentInfoBuilder';
+import { AbstractFieldChildDeploymentInfoBuilder } from './AbstractFieldChildDeploymentInfoBuilder';
 
-export class ChildDeploymentInfoAlwaysMultipleBuilder extends AbstractDynamicChildDeploymentInfoBuilder {
+export class ChildDeploymentInfoAlwaysMultipleBuilder extends AbstractFieldChildDeploymentInfoBuilder {
   private declaredMinItems: NullableNumber = null;
   private declaredMaxItems: NullableNumber = null;
 

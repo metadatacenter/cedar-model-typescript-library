@@ -18,6 +18,7 @@ import { ChildDeploymentInfoStaticBuilder } from '../../../model/cedar/deploymen
 import { ChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/ChildDeploymentInfoBuilder';
 import { AbstractFieldChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/AbstractFieldChildDeploymentInfoBuilder';
 import { YamlArtifactParsingResult } from '../../../model/cedar/util/compare/YamlArtifactParsingResult';
+import { NullableString } from '../../../model/cedar/types/basic-types/NullableString';
 
 export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactReader {
   protected fieldReader: YamlTemplateFieldReader;
@@ -81,6 +82,13 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
             fieldReadingResult.field.height = ReaderUtil.getNumber(configuration, YamlKeys.height);
           }
 
+          // The container's entry for this child, restored where the document leaves it out.
+          childDeploymentInfo.label = YamlContainerArtifactReader.entryFor(childDeploymentInfo.label, fieldReadingResult.field.schema_name);
+          childDeploymentInfo.description = YamlContainerArtifactReader.entryFor(
+            childDeploymentInfo.description,
+            fieldReadingResult.field.schema_description,
+          );
+
           const finalChildInfoBuilder = fieldReadingResult.field
             .createDeploymentBuilder(childDeploymentInfo.name)
             .withLabel(childDeploymentInfo.label)
@@ -121,8 +129,10 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
           );
           const elementChildInfo: ChildDeploymentInfoElement = elementReadingResult.element
             .createDeploymentBuilder(name)
-            .withLabel(childDeploymentInfo.label)
-            .withDescription(childDeploymentInfo.description)
+            .withLabel(YamlContainerArtifactReader.entryFor(childDeploymentInfo.label, elementReadingResult.element.schema_name))
+            .withDescription(
+              YamlContainerArtifactReader.entryFor(childDeploymentInfo.description, elementReadingResult.element.schema_description),
+            )
             .withIri(childDeploymentInfo.iri)
             .withMultiInstance(childDeploymentInfo.multiInstance)
             .withMinItems(childDeploymentInfo.minItems)
@@ -140,5 +150,21 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
         throw new Error(`A child without a ${YamlKeys.key} at ${path.add(YamlKeys.children).toString()}`);
       }
     });
+  }
+
+  /**
+   * What the container says about a child, given what the document states and what the child says
+   * about itself.
+   *
+   * A container carries a label and a description for each of its children, and YAML writes one
+   * only where it differs from the child's own, since an `overrideLabel` repeating the child's name
+   * would state that name twice. Reading the absence as though the container had said nothing loses
+   * the entry rather than the repetition, and a template written as YAML and read back came out as
+   * JSON with a thinner `_ui` than the JSON it was made from. So the child's own value stands in
+   * wherever the document overrides nothing, which is what the Java library's YAML reader does, and
+   * what makes the two return the same model from the same document.
+   */
+  private static entryFor(override: NullableString, own: NullableString): NullableString {
+    return override !== null ? override : own;
   }
 }

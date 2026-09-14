@@ -11,7 +11,29 @@ export abstract class AbstractContainerArtifact extends AbstractSchemaArtifact {
   // Children
   private childrenInfo: ContainerArtifactChildrenInfo = new ContainerArtifactChildrenInfo();
   private childMap: Map<string, TemplateChild> = new Map<string, TemplateChild>();
-  public instanceTypeSpecification: string | null = null;
+  private instanceTypes: string[] = [];
+
+  get instanceTypeSpecifications(): string[] {
+    return [...this.instanceTypes];
+  }
+  set instanceTypeSpecifications(types: string[]) {
+    if (
+      !Array.isArray(types) ||
+      types.some((type) => typeof type !== 'string' || !/^[a-z][a-z0-9+.-]*:\S+$/i.test(type)) ||
+      new Set(types).size !== types.length
+    ) {
+      throw new Error('Instance types must be unique absolute IRIs');
+    }
+    this.instanceTypes = [...types];
+  }
+
+  /** Compatibility accessor for callers authoring one type. */
+  get instanceTypeSpecification(): string | null {
+    return this.instanceTypeSpecifications[0] ?? null;
+  }
+  set instanceTypeSpecification(value: string | null) {
+    this.instanceTypeSpecifications = value === null ? [] : [value];
+  }
 
   addChild(templateChild: TemplateChild, deploymentInfo: AbstractChildDeploymentInfo): void {
     this.childrenInfo.add(deploymentInfo);

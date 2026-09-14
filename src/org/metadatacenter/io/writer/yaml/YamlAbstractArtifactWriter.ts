@@ -76,8 +76,11 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
    */
   protected macroInstanceType(container: AbstractContainerArtifact): JsonNode {
     const ret: JsonNode = JsonNode.getEmpty();
-    if (container.instanceTypeSpecification !== null) {
-      ret[YamlKeys.instanceType] = container.instanceTypeSpecification;
+    if (container.instanceTypeSpecifications.length > 0) {
+      ret[YamlKeys.instanceType] =
+        container.instanceTypeSpecifications.length === 1
+          ? container.instanceTypeSpecifications[0]
+          : [...container.instanceTypeSpecifications];
     }
     return ret;
   }

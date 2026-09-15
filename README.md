@@ -65,6 +65,26 @@ artifacts should inspect its errors and warnings before using the parsed artifac
 The [companion demo repository](https://github.com/metadatacenter/cedar-model-typescript-library-demo)
 contains additional runnable examples.
 
+## Paragraph length constraints
+
+Use the paragraph builder to set the same minimum and maximum lengths supported
+by Java's `TextAreaField`:
+
+```typescript
+import { CedarBuilders, TextArea } from 'cedar-model-typescript-library';
+
+const paragraph: TextArea = CedarBuilders.textAreaBuilder()
+  .withSchemaName('Summary')
+  .withMinLength(20)
+  .withMaxLength(500)
+  .build();
+```
+
+Both limits are optional; pass `null` to clear one. Zero is retained as an explicit
+limit. JSON, full YAML and compact YAML preserve the limits, including on nested
+and repeated fields. These describe character lengths, independently of the
+number of field occurrences. Paragraph builders do not expose a regex constraint.
+
 ## Building
 
 Use Node 24.19.0, which `.nvmrc` and CI both specify:

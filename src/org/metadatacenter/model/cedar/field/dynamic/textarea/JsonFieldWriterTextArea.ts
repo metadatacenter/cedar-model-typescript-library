@@ -14,6 +14,12 @@ export class JsonFieldWriterTextArea extends JsonTemplateFieldWriterInternal {
 
   protected expandValueConstraintsNode(vcNode: JsonNode, field: TextArea, childInfo: AbstractChildDeploymentInfo): void {
     DefaultValueSerialization.writeLiteral(vcNode, CedarModel.defaultValue, field.valueConstraints.defaultValue);
+    if (field.valueConstraints.minLength !== null) {
+      vcNode[CedarModel.minLength] = field.valueConstraints.minLength;
+    }
+    if (field.valueConstraints.maxLength !== null) {
+      vcNode[CedarModel.maxLength] = field.valueConstraints.maxLength;
+    }
     super.expandValueConstraintsNode(vcNode, field, childInfo);
   }
 }

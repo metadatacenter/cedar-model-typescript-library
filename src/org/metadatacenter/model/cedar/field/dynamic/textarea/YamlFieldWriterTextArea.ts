@@ -14,5 +14,11 @@ export class YamlFieldWriterTextArea extends YamlTemplateFieldWriterInternal {
 
   override expandValueConstraintsNodeForYAML(vcNode: JsonNode, field: TextArea, _childInfo: ChildDeploymentInfo): void {
     DefaultValueSerialization.writeLiteral(vcNode, YamlKeys.default, field.valueConstraints.defaultValue);
+    if (field.valueConstraints.minLength !== null) {
+      vcNode[YamlKeys.minLength] = field.valueConstraints.minLength;
+    }
+    if (field.valueConstraints.maxLength !== null) {
+      vcNode[YamlKeys.maxLength] = field.valueConstraints.maxLength;
+    }
   }
 }

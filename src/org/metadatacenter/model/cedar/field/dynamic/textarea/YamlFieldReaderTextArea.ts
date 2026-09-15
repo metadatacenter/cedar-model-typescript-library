@@ -1,3 +1,4 @@
+import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 import { JsonNode } from '../../../types/basic-types/JsonNode';
 import { JsonPath } from '../../../util/path/JsonPath';
 import { TextArea } from './TextArea';
@@ -17,6 +18,8 @@ export class YamlFieldReaderTextArea extends YamlTemplateFieldTypeSpecificReader
   ): TextArea {
     const field = TextAreaImpl.buildEmpty();
     field.valueConstraints.defaultValue = DefaultValueSerialization.literalFromNode(fieldSourceObject, YamlKeys.default);
+    field.valueConstraints.minLength = ReaderUtil.getNumber(fieldSourceObject, YamlKeys.minLength);
+    field.valueConstraints.maxLength = ReaderUtil.getNumber(fieldSourceObject, YamlKeys.maxLength);
     return field;
   }
 }

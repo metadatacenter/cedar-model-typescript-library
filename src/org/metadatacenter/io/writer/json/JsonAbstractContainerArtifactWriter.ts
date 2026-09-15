@@ -70,16 +70,16 @@ export abstract class JsonAbstractContainerArtifactWriter extends JsonAbstractAr
 
   protected expandInstanceTypeSpecification(container: AbstractContainerArtifact, extendedProperties: JsonNode) {
     // Inject instance type specification, if present
-    if (container.instanceTypeSpecification !== null) {
+    if (container.instanceTypeSpecifications.length > 0) {
       const atTypeNode = ReaderUtil.getNode(extendedProperties, JsonSchema.atType);
       const oneOfNode = ReaderUtil.getNodeList(atTypeNode, JsonSchema.oneOf);
       oneOfNode.forEach((item: JsonNode) => {
         const itemType = ReaderUtil.getString(item, JsonSchema.type);
         if (itemType == 'string') {
-          item[JsonSchema.enum] = [container.instanceTypeSpecification];
+          item[JsonSchema.enum] = [...container.instanceTypeSpecifications];
         } else if (itemType == 'array') {
           const items: JsonNode = ReaderUtil.getNode(item, JsonSchema.items);
-          items[JsonSchema.enum] = [container.instanceTypeSpecification];
+          items[JsonSchema.enum] = [...container.instanceTypeSpecifications];
         }
       });
     }

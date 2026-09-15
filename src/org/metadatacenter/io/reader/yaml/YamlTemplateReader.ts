@@ -77,6 +77,9 @@ export class YamlTemplateReader extends YamlContainerArtifactReader {
    * type was lost on every read.
    */
   private readInstanceTypeSpecification(template: Template, templateSourceObject: JsonNode, _parsingResult: YamlArtifactParsingResult) {
-    template.instanceTypeSpecification = ReaderUtil.getString(templateSourceObject, YamlKeys.instanceType);
+    const types = templateSourceObject[YamlKeys.instanceType];
+    if (types != null && typeof types !== 'string' && (!Array.isArray(types) || types.length === 0))
+      throw new Error('Instance types must be an IRI or a nonempty array of IRIs');
+    template.instanceTypeSpecifications = Array.isArray(types) ? (types as string[]) : typeof types === 'string' ? [types] : [];
   }
 }

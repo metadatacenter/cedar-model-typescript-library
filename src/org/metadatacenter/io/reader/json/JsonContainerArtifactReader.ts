@@ -453,8 +453,10 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
         if (oneOf !== null) {
           oneOf.forEach((item) => {
             const oneOfEnum = ReaderUtil.getStringList(item, JsonSchema.enum);
-            if (oneOfEnum != null && oneOfEnum.length > 0) {
-              artifact.instanceTypeSpecification = oneOfEnum[0];
+            if (Object.hasOwn(item, JsonSchema.enum)) {
+              if (!Array.isArray(item[JsonSchema.enum]) || oneOfEnum.length === 0)
+                throw new Error('Instance types must be a nonempty array of IRIs');
+              artifact.instanceTypeSpecifications = oneOfEnum;
             }
           });
         }

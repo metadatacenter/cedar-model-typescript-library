@@ -65,7 +65,10 @@ export class YamlTemplateElementReader extends YamlContainerArtifactReader {
 
   protected readNonReportableAttributes(element: TemplateElement, elementSourceObject: JsonNode) {
     super.readNonReportableAttributes(element, elementSourceObject);
-    element.instanceTypeSpecification = ReaderUtil.getString(elementSourceObject, YamlKeys.instanceType);
+    const types = elementSourceObject[YamlKeys.instanceType];
+    if (types != null && typeof types !== 'string' && (!Array.isArray(types) || types.length === 0))
+      throw new Error('Instance types must be an IRI or a nonempty array of IRIs');
+    element.instanceTypeSpecifications = Array.isArray(types) ? (types as string[]) : typeof types === 'string' ? [types] : [];
     element.skos_prefLabel = ReaderUtil.getString(elementSourceObject, YamlKeys.prefLabel);
     element.skos_altLabel = ReaderUtil.getFilteredStringList(elementSourceObject, YamlKeys.altLabels);
     element.header = ReaderUtil.getString(elementSourceObject, YamlKeys.header);

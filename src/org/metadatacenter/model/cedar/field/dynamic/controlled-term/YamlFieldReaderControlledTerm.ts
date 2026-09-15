@@ -94,12 +94,9 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
     return field;
   }
 
-  /** Older YAML omitted a derivable BioPortal address; explicit addresses take precedence. */
+  /** Match Java: derive the service address from the acronym, including for legacy YAML. */
   private ontologyUri(node: JsonNode): Iri {
-    const explicit = ReaderUtil.getURI(node, YamlKeys.Controlled.sourceUri);
-    return explicit.isEmpty()
-      ? new Iri(`https://data.bioontology.org/ontologies/${ReaderUtil.getStringOrEmpty(node, YamlKeys.Controlled.sourceAcronym)}`)
-      : explicit;
+    return new Iri(`https://data.bioontology.org/ontologies/${ReaderUtil.getStringOrEmpty(node, YamlKeys.Controlled.sourceAcronym)}`);
   }
 
   /** The keys every constraint kind shares: which vocabulary, on which system, at which snapshot. */

@@ -22,6 +22,8 @@ export class JsonFieldReaderTextArea extends JsonTemplateFieldTypeSpecificReader
     const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
     if (valueConstraints != null) {
       field.valueConstraints.defaultValue = DefaultValueSerialization.literalFromNode(valueConstraints, CedarModel.defaultValue);
+      field.valueConstraints.minLength = ReaderUtil.getNumber(valueConstraints, CedarModel.minLength);
+      field.valueConstraints.maxLength = ReaderUtil.getNumber(valueConstraints, CedarModel.maxLength);
     }
 
     return field;

@@ -3,48 +3,29 @@
 // it stands; the Java side is read from the fixtures committed alongside it, which is what lets this
 // run on a plain clone with no Java toolchain present.
 //
-// The artifacts below are known to differ, and the run passes only if exactly they do. An artifact
-// that starts differing fails the build. One that stops differing fails it too, so that closing a
-// divergence is recorded here rather than leaving an allowance nobody revisits. The reasons live in
-// cedar-development/ops/BACKEND-RUNBOOK.md, under "YAML is a native artifact format".
+// All corpus artifacts must match in both forms. No divergence allowances remain.
 import { elementTestNumbers, fieldTestNumbers, instanceTestNumbers, templateTestNumbers } from '../resources/generatedTestCases';
 import { CedarArtifactType } from '../../src';
 import { VerbatimComparator } from './VerbatimComparator';
 import { CompareFileSource } from '../../src/org/metadatacenter/model/cedar/types/helper-types/CompareFileSource';
 import { CompareFileFormat } from '../../src/org/metadatacenter/model/cedar/types/helper-types/CompareFileFormat';
 
-// Template 029 contains a non-reconstructible ontology service URI (bioportal.bioontology.org).
-// TypeScript preserves it as sourceUri; the locked Java writer omits it. All other artifacts
-// remain byte-identical. The committed TS fixtures pin the exact additional property.
-const KNOWN_DIVERGENCES: Array<{
-  testNumbers: number[];
-  artifactType: CedarArtifactType;
-  full: number[];
-  compact: number[];
-}> = [
-  { testNumbers: fieldTestNumbers, artifactType: CedarArtifactType.TEMPLATE_FIELD, full: [], compact: [] },
-  { testNumbers: elementTestNumbers, artifactType: CedarArtifactType.TEMPLATE_ELEMENT, full: [], compact: [] },
-  { testNumbers: templateTestNumbers, artifactType: CedarArtifactType.TEMPLATE, full: [29], compact: [29] },
-  { testNumbers: instanceTestNumbers, artifactType: CedarArtifactType.TEMPLATE_INSTANCE, full: [], compact: [] },
+const kinds: Array<[number[], CedarArtifactType]> = [
+  [fieldTestNumbers, CedarArtifactType.TEMPLATE_FIELD],
+  [elementTestNumbers, CedarArtifactType.TEMPLATE_ELEMENT],
+  [templateTestNumbers, CedarArtifactType.TEMPLATE],
+  [instanceTestNumbers, CedarArtifactType.TEMPLATE_INSTANCE],
 ];
 
 const comparator = new VerbatimComparator();
-for (const { testNumbers, artifactType, full, compact } of KNOWN_DIVERGENCES) {
-  comparator.compare(testNumbers, artifactType, CompareFileSource.TS_LIB, CompareFileSource.JAVA_LIB, CompareFileFormat.YAML, false, full);
-  comparator.compare(
-    testNumbers,
-    artifactType,
-    CompareFileSource.TS_LIB,
-    CompareFileSource.JAVA_LIB,
-    CompareFileFormat.YAML,
-    true,
-    compact,
-  );
+for (const [testNumbers, artifactType] of kinds) {
+  for (const compact of [false, true]) {
+    comparator.compare(testNumbers, artifactType, CompareFileSource.TS_LIB, CompareFileSource.JAVA_LIB, CompareFileFormat.YAML, compact);
+  }
 }
 
 if (process.exitCode) {
   console.log(
-    '\nThe two libraries no longer diverge exactly where they are recorded to. Regenerate both sides if a\n' +
-      'writer changed, or update this script and the backend runbook if a divergence opened or closed.',
+    '\nJava and TypeScript YAML differ. Inspect the writer output and regenerate the affected fixtures after resolving the difference.',
   );
 }

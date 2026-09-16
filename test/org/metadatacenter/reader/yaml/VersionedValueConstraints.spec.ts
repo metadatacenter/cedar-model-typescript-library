@@ -1,3 +1,4 @@
+import { parse, stringify } from 'yaml';
 import {
   BioportalTermType,
   CedarBuilders,
@@ -252,24 +253,41 @@ describe('what the entry carries once, and what it no longer carries', () => {
   });
 });
 
-describe('ontology service addresses', () => {
-  it('preserves an explicit service URI separately from the canonical IRI', () => {
+describe('ontology service addresses match Java', () => {
+  test.each<[string, string, string | null]>([
+    ['MESH', 'https://bioportal.bioontology.org/ontologies/MESH', null],
+    ['CL', 'https://other.example/ontologies/CL', 'agroportal'],
+  ])('reconstructs %s from its acronym rather than preserving %s', (acronym, uri, sourceSystem) => {
     const original = CedarBuilders.controlledTermFieldBuilder()
       .withSchemaName('Terms')
       .addOntology(
         new ControlledTermOntologyBuilder()
-          .withAcronym('CL')
-          .withName('Cell')
-          .withUri(new Iri('https://other.example/ontologies/CL'))
-          .withIri(new Iri('http://purl.obolibrary.org/obo/cl.owl'))
-          .withSourceSystem('agroportal')
+          .withAcronym(acronym)
+          .withName('Ontology')
+          .withUri(new Iri(uri))
+          .withIri(new Iri('http://example.org/ontology'))
+          .withSourceSystem(sourceSystem)
           .build(),
       )
       .build();
-    const yaml = CedarWriters.yaml().getStrict().getFieldWriterForField(original).getAsYamlString(original);
-    expect(yaml).toContain('sourceUri: "https://other.example/ontologies/CL"');
-    const restored = YamlTemplateFieldReader.getStrict().readFromString(yaml).field as ControlledTermFieldImpl;
-    expect(restored.valueConstraints.ontologies[0].uri.getValue()).toBe('https://other.example/ontologies/CL');
-    expect(restored.valueConstraints.ontologies[0].iri?.getValue()).toBe('http://purl.obolibrary.org/obo/cl.owl');
+    // JSON still carries the supplied service URI, as Java's JSON writer does.
+    expect(jsonOf(original)._valueConstraints.ontologies[0].uri).toBe(uri);
+    for (const compact of [false, true]) {
+      const yaml = CedarWriters.yaml().getStrict().getFieldWriterForField(original).getAsYamlString(original, compact);
+      expect(yaml).not.toContain('sourceUri:');
+      expect(yaml).not.toContain(uri);
+      // Java also ignores an explicit legacy sourceUri when reading an ontology entry.
+      const legacyDocument = parse(yaml);
+      legacyDocument.values[0].sourceUri = uri;
+      const legacyYaml = stringify(legacyDocument);
+      for (const source of [yaml, legacyYaml]) {
+        const reader = compact ? YamlTemplateFieldReader.getStrictForCompact() : YamlTemplateFieldReader.getStrict();
+        const restored = reader.readFromString(source).field as ControlledTermFieldImpl;
+        const ontology = restored.valueConstraints.ontologies[0];
+        expect(ontology.uri.getValue()).toBe(`https://data.bioontology.org/ontologies/${acronym}`);
+        expect(ontology.iri?.getValue()).toBe('http://example.org/ontology');
+        expect(ontology.sourceSystem).toBe(sourceSystem);
+      }
+    }
   });
 });

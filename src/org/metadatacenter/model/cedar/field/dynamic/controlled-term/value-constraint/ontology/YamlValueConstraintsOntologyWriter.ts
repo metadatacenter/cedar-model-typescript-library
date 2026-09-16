@@ -18,10 +18,7 @@ export class YamlValueConstraintsOntologyWriter extends AbstractYamlControlledTe
     ret[YamlKeys.Controlled.sourceAcronym] = ontology.acronym;
     ret[YamlKeys.Controlled.sourceName] = ontology.name;
     this.writeSourceIri(ret, ontology);
-    // Omit only the address that an older reader can reconstruct exactly.
-    if (ontology.uri.getValue() !== `https://data.bioontology.org/ontologies/${ontology.acronym}`) {
-      ret[YamlKeys.Controlled.sourceUri] = this.atomicWriter.write(ontology.uri);
-    }
+    // Match Java: the service URI is omitted and reconstructed from the acronym on read.
     if (ontology.numTerms !== null) {
       ret[YamlKeys.Controlled.termCount] = ontology.numTerms;
     }

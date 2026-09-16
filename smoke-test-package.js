@@ -91,16 +91,22 @@ assert.ok(Object.keys(cedarEsm).length >= 100, 'ES module bundle exports are une
 assert.equal(typeof cedarEsm.CedarWriters.yaml, 'function');
 const field = cedarEsm.CedarBuilders.textFieldBuilder().withTitle('smoke test').build();
 assert.equal(field.title, 'smoke test');
+const paragraph = cedarEsm.CedarBuilders.textAreaBuilder().withMinLength(20).withMaxLength(500).build();
+assert.equal(paragraph.valueConstraints.minLength, 20);
+assert.equal(paragraph.valueConstraints.maxLength, 500);
 `;
   write('consumer.mjs', esModuleConsumer);
   run(process.execPath, ['consumer.mjs'], temporaryRoot);
 
   const typeScriptConsumer = `
-import { CedarBuilders, CedarReaders, CedarWriters, Template } from '${packageName}';
+import { CedarBuilders, CedarReaders, CedarWriters, Template, TextArea } from '${packageName}';
 const template: Template = CedarBuilders.templateBuilder().withTitle('typed consumer').build();
 const readers = CedarReaders.json().getStrict();
 const writers = CedarWriters.yaml().getStrict();
-void [template, readers, writers];
+const paragraph: TextArea = CedarBuilders.textAreaBuilder().withMinLength(20).withMaxLength(500).build();
+const minimum: number | null = paragraph.valueConstraints.minLength;
+const maximum: number | null = paragraph.valueConstraints.maxLength;
+void [template, readers, writers, minimum, maximum];
 `;
   write('consumer.ts', typeScriptConsumer);
   write(

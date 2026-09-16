@@ -1,6 +1,6 @@
 {
   "name": "cedar-model-typescript-library",
-  "version": "1.0.12-dev.20260914.1de95d5",
+  "version": "1.0.12",
   "description": "TypeScript models, builders, readers, writers, and validators for CEDAR metadata artifacts",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

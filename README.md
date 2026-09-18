@@ -134,9 +134,9 @@ module bundle, and TypeScript declarations.
 
 ## Releasing
 
-Release preparation and publication are documented in
-[RELEASING.md](https://github.com/metadatacenter/cedar-model-typescript-library/blob/main/RELEASING.md).
-The release command publishes `dist/`, not the repository root.
+Release preparation and publication are documented in the CEDAR npmjs release
+runbook, which covers this library and the embeddable editor together. The
+release command publishes `dist/`, not the repository root.
 
 ## License
 

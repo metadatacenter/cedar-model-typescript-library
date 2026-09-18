@@ -62,9 +62,6 @@ export function jsonTemplateToYaml(templateJson: string): string {
 Reader results also contain a parsing report. Applications that accept external
 artifacts should inspect its errors and warnings before using the parsed artifact.
 
-The [companion demo repository](https://github.com/metadatacenter/cedar-model-typescript-library-demo)
-contains additional runnable examples.
-
 ## Paragraph length constraints
 
 Use the paragraph builder to set the same minimum and maximum lengths supported

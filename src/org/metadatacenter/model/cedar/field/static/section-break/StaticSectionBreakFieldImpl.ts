@@ -5,6 +5,13 @@ import { StaticSectionBreakField } from './StaticSectionBreakField';
 import { ChildDeploymentInfoStaticBuilder } from '../../../deployment/ChildDeploymentInfoStaticBuilder';
 
 export class StaticSectionBreakFieldImpl extends TemplateField implements StaticSectionBreakField {
+  /**
+   * The text the break carries. Its `_ui._content` is what the meta-schema asks of every
+   * static field, and the model had nowhere to keep it, so a break read from either
+   * serialization came back blank and was written out blank.
+   */
+  public content: string | null = null;
+
   private constructor() {
     super();
     this.cedarFieldType = CedarFieldType.STATIC_SECTION_BREAK;

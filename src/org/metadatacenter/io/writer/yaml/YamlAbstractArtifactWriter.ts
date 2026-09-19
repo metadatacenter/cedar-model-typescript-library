@@ -114,6 +114,9 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
     if (field.requiredValue) {
       ret[YamlKeys.required] = true;
     }
+    if (field.continuePreviousLine) {
+      ret[YamlKeys.continuePreviousLine] = true;
+    }
     return ret;
   }
 

@@ -75,6 +75,9 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
     if (uiNode[CedarModel.Ui.hidden] === undefined && field.hidden) {
       uiNode[CedarModel.Ui.hidden] = true;
     }
+    if (uiNode[CedarModel.Ui.continuePreviousLine] === undefined && field.continuePreviousLine) {
+      uiNode[CedarModel.Ui.continuePreviousLine] = true;
+    }
   }
 
   protected buildUIObject(field: TemplateField, childInfo: AbstractChildDeploymentInfo): JsonNode {

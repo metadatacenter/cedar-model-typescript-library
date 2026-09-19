@@ -1,5 +1,6 @@
 import {
   CedarBuilders,
+  CedarReaders,
   CedarJsonWriters,
   CedarWriters,
   CedarYamlWriters,
@@ -156,5 +157,55 @@ describe('a standalone field that is hidden or demands a value', () => {
     expect(json['_valueConstraints'].requiredValue).toBe(false);
     expect(backToYaml).not.toContain('hidden');
     expect(backToYaml).not.toContain('required');
+  });
+
+  test('keeps a line placement of its own', () => {
+    const { json, backToYaml } = roundTrip(base + 'continuePreviousLine: true\n');
+    expect(json['_ui'].continuePreviousLine).toBe(true);
+    expect(backToYaml).toContain('continuePreviousLine: true');
+  });
+});
+
+/**
+ * A break carries the text it shows.
+ *
+ * Every static field's `_ui._content` is what the meta-schema asks of it, and the rich text, image
+ * and YouTube fields each kept theirs. A page break and a section break had nowhere on the model
+ * to put one, so both serializations read past it and wrote `_content: null` — the text an author
+ * typed into a break did not survive being read at all.
+ */
+describe('a page break and a section break', () => {
+  const breaks = [
+    ['static-page-break', '_page_break_1'],
+    ['static-section-break', '_section_break_1'],
+  ] as const;
+
+  test.each(breaks)('keeps its content through YAML: %s', (type, name) => {
+    const yaml =
+      `type: ${type}\n` +
+      `name: "${name}"\n` +
+      'id: "https://repo.metadatacenter.org/template-fields/00000000-0000-0000-0000-000000000000"\n' +
+      'modelVersion: 1.6.0\n' +
+      'content: "\u767b\u9332\u30c7\u30fc\u30bf / Registered Data"\n';
+    const read = YamlTemplateFieldReader.getStrict().readFromString(yaml).field;
+    const json = JSON.parse(CedarWriters.json().getStrict().getFieldWriterForField(read).getAsJsonString(read));
+    expect(json['_ui']._content).toBe('\u767b\u9332\u30c7\u30fc\u30bf / Registered Data');
+
+    const backToYaml = CedarWriters.yaml().getStrict().getFieldWriterForField(read).getAsYamlString(read);
+    expect(backToYaml).toContain('\u767b\u9332\u30c7\u30fc\u30bf / Registered Data');
+  });
+
+  test.each(breaks)('keeps its content through JSON: %s', (type, name) => {
+    const yaml =
+      `type: ${type}\n` +
+      `name: "${name}"\n` +
+      'id: "https://repo.metadatacenter.org/template-fields/00000000-0000-0000-0000-000000000000"\n' +
+      'modelVersion: 1.6.0\n' +
+      'content: "Registered Data"\n';
+    const fromYaml = YamlTemplateFieldReader.getStrict().readFromString(yaml).field;
+    const asJson = CedarWriters.json().getStrict().getFieldWriterForField(fromYaml).getAsJsonString(fromYaml);
+    const fromJson = CedarReaders.json().getStrict().getTemplateFieldReader().readFromString(asJson).field;
+    const again = JSON.parse(CedarWriters.json().getStrict().getFieldWriterForField(fromJson).getAsJsonString(fromJson));
+    expect(again['_ui']._content).toBe('Registered Data');
   });
 });

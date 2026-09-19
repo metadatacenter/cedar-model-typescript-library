@@ -5,14 +5,18 @@ import { ChildDeploymentInfo } from '../../../deployment/ChildDeploymentInfo';
 import { YamlTemplateFieldTypeSpecificReader } from '../../../../../io/reader/yaml/YamlTemplateFieldTypeSpecificReader';
 import { StaticPageBreakFieldImpl } from './StaticPageBreakFieldImpl';
 import { YamlArtifactParsingResult } from '../../../util/compare/YamlArtifactParsingResult';
+import { YamlKeys } from '../../../constants/YamlKeys';
+import { ReaderUtil } from '../../../../../io/reader/ReaderUtil';
 
 export class YamlFieldReaderPageBreak extends YamlTemplateFieldTypeSpecificReader {
   override read(
-    _fieldSourceObject: JsonNode,
+    fieldSourceObject: JsonNode,
     _childInfo: ChildDeploymentInfo,
     _parsingResult: YamlArtifactParsingResult,
     _path: JsonPath,
   ): StaticPageBreakField {
-    return StaticPageBreakFieldImpl.buildEmpty();
+    const field = StaticPageBreakFieldImpl.buildEmpty();
+    field.content = ReaderUtil.getString(fieldSourceObject, YamlKeys.content);
+    return field;
   }
 }

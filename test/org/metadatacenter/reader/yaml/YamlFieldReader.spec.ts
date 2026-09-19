@@ -66,3 +66,45 @@ describe('YAMLFieldReader', () => {
     expect(comparisonResult.areEqual()).toBe(true);
   });
 });
+
+/**
+ * A standalone field's value recommendation survives its own YAML round trip.
+ *
+ * The setting lives on the field itself for a field written on its own, and in the container's
+ * deployment info for a child. The YAML writer states it at the document's top level for the
+ * former, but only the container reader read the key, and only out of a child's configuration
+ * block — so the library wrote a setting it could not read back, and a standalone field converted
+ * through YAML came out with value recommendation off. The Java library reads both placements, and
+ * the two libraries disagreed on production fields because of it.
+ */
+describe('a standalone field with value recommendation', () => {
+  const roundTripToJson = (builder: any, enabled: boolean) => {
+    const field = builder
+      .withAtId('https://repo.metadatacenter.org/template-fields/00000000-0000-0000-0000-000000000000')
+      .withSchemaName('Organism')
+      .withSchemaDescription('d')
+      .build();
+    field.valueRecommendationEnabled = enabled;
+    const yaml = CedarWriters.yaml().getStrict().getFieldWriterForField(field).getAsYamlString(field);
+    const read = YamlTemplateFieldReader.getStrict().readFromString(yaml).field;
+    return { yaml, json: JSON.parse(CedarWriters.json().getStrict().getFieldWriterForField(read).getAsJsonString(read)) };
+  };
+
+  test('comes back on a controlled term field', () => {
+    const { yaml, json } = roundTripToJson(CedarBuilders.controlledTermFieldBuilder(), true);
+    expect(yaml).toContain('valueRecommendation: true');
+    expect(json['_ui'].valueRecommendationEnabled).toBe(true);
+  });
+
+  test('comes back on a text field', () => {
+    const { yaml, json } = roundTripToJson(CedarBuilders.textFieldBuilder(), true);
+    expect(yaml).toContain('valueRecommendation: true');
+    expect(json['_ui'].valueRecommendationEnabled).toBe(true);
+  });
+
+  test('stays off, and unstated, where the field does not set it', () => {
+    const { yaml, json } = roundTripToJson(CedarBuilders.textFieldBuilder(), false);
+    expect(yaml).not.toContain('valueRecommendation');
+    expect('valueRecommendationEnabled' in json['_ui']).toBe(false);
+  });
+});

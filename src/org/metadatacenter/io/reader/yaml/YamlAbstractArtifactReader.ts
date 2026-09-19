@@ -50,7 +50,12 @@ export abstract class YamlAbstractArtifactReader {
     YamlAbstractArtifactReader.refuseEmptyIdentifier(sourceObject);
     container.at_id = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, YamlKeys.id));
     container.schema_name = ReaderUtil.getString(sourceObject, YamlKeys.name);
-    container.schema_description = ReaderUtil.getString(sourceObject, YamlKeys.description);
+    // An absent description is the empty string, not null. The YAML serialization omits a
+    // description that is empty, so reading it back as null made `schema:description` null in the
+    // JSON — which the meta-schema rejects, since it requires a string — and emptied the
+    // container's `_ui.propertyDescriptions` entry for every undescribed child, which derives from
+    // this field. The Java library's YAML reader defaults the same field to the empty string.
+    container.schema_description = ReaderUtil.getStringOrEmpty(sourceObject, YamlKeys.description);
     // The YAML carries only a name; the JSON serialization's `title` and
     // `description` are derived from it as "<name> <type> schema" — the
     // JSON-schema title the meta-schema requires to be a non-empty string.

@@ -18,6 +18,8 @@ import { CedarJsonWriters } from './CedarJsonWriters';
 import { AbstractDynamicChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractDynamicChildDeploymentInfo';
 import { AbstractFieldChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractFieldChildDeploymentInfo';
 import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
+import { ControlledTermFieldImpl } from '../../../model/cedar/field/dynamic/controlled-term/ControlledTermFieldImpl';
+import { TextFieldImpl } from '../../../model/cedar/field/dynamic/textfield/TextFieldImpl';
 import { Language } from '../../../model/cedar/types/wrapped-types/Language';
 import { ReaderUtil } from '../../reader/ReaderUtil';
 
@@ -37,7 +39,7 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
     requiredObject[JsonSchema.required] = [JsonSchema.atValue];
   }
 
-  protected expandUINode(uiNode: JsonNode, _field: TemplateField, childInfo: AbstractChildDeploymentInfo): void {
+  protected expandUINode(uiNode: JsonNode, field: TemplateField, childInfo: AbstractChildDeploymentInfo): void {
     if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
       if (childInfo.hidden) {
         uiNode[CedarModel.Ui.hidden] = childInfo.hidden;
@@ -48,10 +50,24 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
         if (childInfo.continuePreviousLine) {
           uiNode[CedarModel.Ui.continuePreviousLine] = childInfo.continuePreviousLine;
         }
-        if (childInfo.valueRecommendationEnabled && _field.supportsValueRecommendation()) {
+        if (childInfo.valueRecommendationEnabled && field.supportsValueRecommendation()) {
           uiNode[CedarModel.Ui.valueRecommendationEnabled] = childInfo.valueRecommendationEnabled;
         }
       }
+    }
+    // A field written on its own has no container to state the setting, and a standalone write
+    // passes an empty deployment info, so it comes from the field. The JSON writer read only the
+    // deployment info and so dropped it, while the YAML writer has always read the field directly —
+    // which is how the two serializations came to disagree. A child is unaffected: reading a
+    // container leaves the child's own flag off and states the setting in the deployment info the
+    // branch above reads, and this never overrides what that branch decided. The guard is the YAML
+    // writer's, so the two stay symmetric.
+    if (
+      uiNode[CedarModel.Ui.valueRecommendationEnabled] === undefined &&
+      (field instanceof ControlledTermFieldImpl || field instanceof TextFieldImpl) &&
+      field.valueRecommendationEnabled
+    ) {
+      uiNode[CedarModel.Ui.valueRecommendationEnabled] = true;
     }
   }
 

@@ -37,6 +37,8 @@ import { YamlFieldReaderExtPubmed } from '../../../model/cedar/field/dynamic/ext
 import { YamlFieldReaderExtRrid } from '../../../model/cedar/field/dynamic/ext-rrid/YamlFieldReaderExtRrid';
 import { YamlFieldReaderExtNihGrantId } from '../../../model/cedar/field/dynamic/ext-nih-grant-id/YamlFieldReaderExtNihGrantId';
 import { YamlFieldReaderExtDoi } from '../../../model/cedar/field/dynamic/ext-doi/YamlFieldReaderExtDoi';
+import { ControlledTermFieldImpl } from '../../../model/cedar/field/dynamic/controlled-term/ControlledTermFieldImpl';
+import { TextFieldImpl } from '../../../model/cedar/field/dynamic/textfield/TextFieldImpl';
 
 export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.TEMPLATE_FIELD;
@@ -112,6 +114,15 @@ export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
     // Read field-specific nodes
     field.skos_prefLabel = ReaderUtil.getString(fieldSourceObject, YamlKeys.prefLabel);
     field.skos_altLabel = ReaderUtil.getFilteredStringList(fieldSourceObject, YamlKeys.altLabels);
+    // A standalone field keeps value recommendation on itself, and the YAML writer states it at the
+    // document's top level. Only the container reader read the key, and only out of a child's
+    // configuration block, so a field written on its own came back with the setting off: the one
+    // thing this library wrote and could not read. A child is unaffected, since its setting travels
+    // in the deployment info the container reader fills. The guard is the writer's, so the two stay
+    // symmetric; the Java library reads the field's own node and a child's configuration alike.
+    if (field instanceof ControlledTermFieldImpl || field instanceof TextFieldImpl) {
+      field.valueRecommendationEnabled = ReaderUtil.getBoolean(fieldSourceObject, YamlKeys.valueRecommendation);
+    }
   }
 
   private static readFieldSpecificAttributes(

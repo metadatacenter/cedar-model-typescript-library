@@ -547,7 +547,6 @@ children:
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/d5f514e9-3b38-40fe-a0cc-46f42e428a52"
       multiple: true
-      minItems: 1
   - key: "Data File Identity"
     type: element
     name: "Data File Identity"
@@ -1691,7 +1690,6 @@ children:
         configuration:
           propertyIri: "http://purl.org/radx-terms/metadata-terms/otherLanguage"
           multiple: true
-          minItems: 1
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/380eaafe-985f-4a10-b511-affbb2872fe1"
   - key: "Data File Subjects"
@@ -1767,7 +1765,6 @@ children:
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/c585cdb8-fc4b-4335-85bd-853a79ef00a5"
       multiple: true
-      minItems: 1
   - key: "Data File Description"
     type: element
     name: "Data File Description"
@@ -2327,7 +2324,6 @@ children:
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/dea181da-8dad-4fb8-bab0-61a1b654d77c"
       multiple: true
-      minItems: 1
   - key: "Data File Dictionary"
     type: element
     name: "Data File Dictionary"
@@ -2568,7 +2564,6 @@ children:
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/5c3e3712-cfcc-492c-bedd-74af18d49dd8"
       multiple: true
-      minItems: 1
   - key: "Data File Related Resource"
     type: element
     name: "Data File Related Resource"
@@ -2663,7 +2658,6 @@ children:
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/8676bf9d-fb43-42f9-8c54-550724d76f2d"
       multiple: true
-      minItems: 1
   - key: "Data File Contributor"
     type: element
     name: "Data File Contributor"
@@ -2875,7 +2869,6 @@ children:
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/efba37ff-3f70-4678-af83-70ccac233af7"
       multiple: true
-      minItems: 1
   - key: "Data File Rights"
     type: element
     name: "Data File Rights"
@@ -2939,7 +2932,6 @@ children:
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/508703a8-ac0a-4852-be3f-338369d0681b"
       multiple: true
-      minItems: 1
   - key: "Data File Date"
     type: element
     name: "Data File Date"
@@ -2992,7 +2984,6 @@ children:
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/ea5f7980-6bcf-4088-aea0-fdaa0fef0fbc"
       multiple: true
-      minItems: 1
   - key: "Data File Parent Study"
     type: element
     name: "Data File Parent Study"
@@ -3109,7 +3100,6 @@ children:
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/4b4196c0-8aad-40dc-861c-8b9f38b47669"
       multiple: true
-      minItems: 1
   - key: "Data File Funding Source"
     type: element
     name: "Data File Funding Source"
@@ -3221,7 +3211,6 @@ children:
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/db88405a-6a08-4c52-aa92-7297fe2c1e37"
       multiple: true
-      minItems: 1
   - key: "Data File Distribution"
     type: element
     name: "Data File Distribution"
@@ -3460,7 +3449,6 @@ children:
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/352309db-088e-439d-b86d-aa408d7da2bd"
       multiple: true
-      minItems: 1
   - key: "Data Characteristics Summary"
     type: element
     name: "Data Characteristics Summary"
@@ -3601,7 +3589,6 @@ children:
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/06bda00e-d0b7-4f10-852b-64dbf83d10ae"
       multiple: true
-      minItems: 1
   - key: "Data Stream"
     type: element
     name: "Data Stream"
@@ -3687,7 +3674,6 @@ children:
         configuration:
           propertyIri: "http://purl.org/radx-terms/metadata-terms/dataStreamVariableName"
           multiple: true
-          minItems: 1
       - key: "Data Stream Data Source Identifier"
         type: text-field
         name: "Data Stream Data Source Identifier"
@@ -3703,7 +3689,6 @@ children:
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/222c36cd-874c-4dd9-9008-5c66a633f747"
       multiple: true
-      minItems: 1
   - key: "Data File Creation Process"
     type: element
     name: "Data File Creation Process"
@@ -3770,7 +3755,6 @@ children:
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/1bf88975-65f3-49ce-894c-b4135fafa6ca"
       multiple: true
-      minItems: 1
   - key: "Data File Temporal Coverage"
     type: element
     name: "Data File Temporal Coverage"
@@ -3841,7 +3825,6 @@ children:
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/2b455707-123b-4524-8cc6-93d214d499f2"
       multiple: true
-      minItems: 1
   - key: "Data File Spatial Coverage"
     type: element
     name: "Data File Spatial Coverage"
@@ -3920,7 +3903,6 @@ children:
         configuration:
           propertyIri: "http://purl.org/radx-terms/metadata-terms/boxCoverageDescriptor"
           multiple: true
-          minItems: 1
       - key: "Bounding Shape"
         type: element
         name: "Bounding Shape"
@@ -3977,7 +3959,6 @@ children:
         configuration:
           propertyIri: "http://purl.org/radx-terms/metadata-terms/dataFileShapeCoverageDescriptor"
           multiple: true
-          minItems: 1
       - key: "Data File Geopolitical Coverage"
         type: element
         name: "Data File Geopolitical Coverage"
@@ -4002,15 +3983,12 @@ children:
             configuration:
               propertyIri: "http://purl.org/radx-terms/metadata-terms/geographicalPlaceName"
               multiple: true
-              minItems: 1
         configuration:
           propertyIri: "http://purl.org/radx-terms/metadata-terms/geographicalPlaceNameDescriptor"
           multiple: true
-          minItems: 1
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/87a8564b-228c-473f-8963-47895a23eb56"
       multiple: true
-      minItems: 1
   - key: "Data File Elevation Coverage"
     type: element
     name: "Data File Elevation Coverage"
@@ -4081,7 +4059,6 @@ children:
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/4dfa2247-cb9d-49e1-ab4c-83d559a14ea5"
       multiple: true
-      minItems: 1
   - key: "Auxiliary Metadata"
     type: element
     name: "Auxiliary Metadata"
@@ -4122,6 +4099,5 @@ children:
         configuration:
           propertyIri: "http://purl.org/radx-terms/metadata-terms/auxiliaryMetadataCommentary"
           multiple: true
-          minItems: 1
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/60350e91-8896-4d8c-b11e-26b35370455b"

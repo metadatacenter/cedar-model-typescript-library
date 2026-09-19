@@ -153,7 +153,7 @@ describe('ListMultipleChoiceFieldBuilder', () => {
     expect(backparsed['properties']).not.toBeNull();
     expect(backparsed['properties']['list_field']).not.toBeNull();
     expect(backparsed['properties']['list_field']['type']).toBe('array');
-    expect(backparsed['properties']['list_field']['minItems']).toBe(0);
+    expect(backparsed['properties']['list_field']['minItems']).toBe(1);
     expect(backparsed['properties']['list_field']['maxItems']).toBeUndefined();
     expect(backparsed['properties']['list_field']['items']).not.toBeNull();
   });

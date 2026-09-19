@@ -103,7 +103,7 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
 
     if (isMultiInstance) {
       if (minItems === null) {
-        minItems = 0;
+        minItems = AbstractChildDeploymentInfo.defaultMinItems;
       }
       if (maxItems !== null && maxItems < minItems) {
         maxItems = minItems;
@@ -117,7 +117,11 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
         }
       } else {
         childConfiguration[YamlKeys.multiple] = true;
-        childConfiguration[YamlKeys.minItems] = minItems;
+        // A bound equal to the one a child that states none is read with carries nothing, and
+        // writing it would make a document that omitted it round trip into one that does not.
+        if (minItems !== AbstractChildDeploymentInfo.defaultMinItems) {
+          childConfiguration[YamlKeys.minItems] = minItems;
+        }
         if (maxItems !== null) {
           childConfiguration[YamlKeys.maxItems] = maxItems;
         }

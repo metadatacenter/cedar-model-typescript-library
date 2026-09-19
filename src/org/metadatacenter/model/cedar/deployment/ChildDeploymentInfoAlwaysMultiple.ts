@@ -1,5 +1,6 @@
 import { NullableNumber } from '../types/basic-types/NullableNumber';
 import { UiInputType } from '../types/wrapped-types/UiInputType';
+import { AbstractChildDeploymentInfo } from './AbstractChildDeploymentInfo';
 import { AbstractFieldChildDeploymentInfo } from './AbstractFieldChildDeploymentInfo';
 
 export class ChildDeploymentInfoAlwaysMultiple extends AbstractFieldChildDeploymentInfo {
@@ -38,15 +39,14 @@ export class ChildDeploymentInfoAlwaysMultiple extends AbstractFieldChildDeploym
    * What the template declared, when it declared anything; otherwise the
    * default for the kind of field.
    *
-   * Checkbox and multiple-choice list default to one when the field is
-   * required and zero otherwise; an attribute-value field defaults to zero,
-   * since requiring one would mean requiring an attribute nobody has named
-   * yet. These fields are multiple by nature, so most templates leave the
-   * bounds out and the default is all there is — but a template may state them,
-   * and then the statement stands. `template-029` declares `minItems: 1` on a
-   * list that is not required; the Java artifact library keeps the 1 and this
-   * one used to replace it with the default 0, which was the only place the two
-   * libraries disagreed across the whole numbered corpus.
+   * Checkbox and multiple-choice list take one instance. Tying the bound to the
+   * requirement said a field nobody has to answer may appear zero times, which is
+   * a different contract and not what the system stores: every such field in
+   * production carries one. An attribute-value field defaults to zero, since
+   * requiring one would mean requiring an attribute nobody has named yet. These
+   * fields are multiple by nature, so most templates leave the bounds out and the
+   * default is all there is — but a template may state them, and then the
+   * statement stands.
    *
    * The JSON writer reads these same accessors — see `WriterUtil.getMultiMinMax`
    * — so a reader of the parsed model and a writer of the JSON cannot drift
@@ -63,7 +63,7 @@ export class ChildDeploymentInfoAlwaysMultiple extends AbstractFieldChildDeploym
     if (this.uiInputType === UiInputType.ATTRIBUTE_VALUE) {
       return 0;
     }
-    return this.requiredValue ? 1 : 0;
+    return AbstractChildDeploymentInfo.defaultMinItems;
   }
 
   override get maxItems(): NullableNumber {

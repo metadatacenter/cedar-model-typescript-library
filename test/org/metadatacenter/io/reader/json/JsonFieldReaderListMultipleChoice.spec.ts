@@ -108,7 +108,7 @@ describe('JsonFieldReaderList multipleChoice', () => {
     const property = written['properties']['Choices'];
 
     expect(property['type']).toBe('array');
-    expect(property['minItems']).toBe(0);
+    expect(property['minItems']).toBe(1);
     expect(property['items']['type']).toBe('object');
     expect(property['items']['_valueConstraints']['multipleChoice']).toBe(true);
   });

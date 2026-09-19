@@ -3,6 +3,17 @@ import { UiInputType } from '../types/wrapped-types/UiInputType';
 import { NullableString } from '../types/basic-types/NullableString';
 
 export abstract class AbstractChildDeploymentInfo {
+  /**
+   * What a multi-instance child takes when it states no lower bound of its own: one instance.
+   *
+   * A rule of the model rather than of a serialization, so a reader that fills it in and a writer
+   * that leaves it out agree on it. Zero would say the array may be empty, which is a different
+   * contract and one the meta-schema takes literally, and it is not what the system stores: every
+   * such child in production carries one. An attribute-value child is the exception, and answers
+   * for itself.
+   */
+  static readonly defaultMinItems = 1;
+
   protected readonly _name: string;
   protected _atType: CedarArtifactType = CedarArtifactType.NULL;
   protected _uiInputType: UiInputType = UiInputType.NULL;

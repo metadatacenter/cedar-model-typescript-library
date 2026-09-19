@@ -61,8 +61,8 @@ const boundsOf = (source: JsonNode) => {
 };
 
 describe('bounds on an always-multiple child', () => {
-  test('defaults follow requiredValue when the template states nothing', () => {
-    expect(boundsOf(templateWith(checkbox(false)))).toEqual({ minItems: 0, maxItems: null });
+  test('the default is one instance, whether or not the field is required', () => {
+    expect(boundsOf(templateWith(checkbox(false)))).toEqual({ minItems: 1, maxItems: null });
     expect(boundsOf(templateWith(checkbox(true)))).toEqual({ minItems: 1, maxItems: null });
   });
 
@@ -71,8 +71,7 @@ describe('bounds on an always-multiple child', () => {
   });
 
   test('a declared bound wins over the default', () => {
-    // template-029 is this case: minItems 1 on a field that is not required.
-    expect(boundsOf(templateWith(checkbox(false), { minItems: 1 }))).toEqual({ minItems: 1, maxItems: null });
+    expect(boundsOf(templateWith(checkbox(false), { minItems: 0 }))).toEqual({ minItems: 0, maxItems: null });
     expect(boundsOf(templateWith(checkbox(true), { minItems: 0 }))).toEqual({ minItems: 0, maxItems: null });
     expect(boundsOf(templateWith(checkbox(false), { minItems: 2, maxItems: 4 }))).toEqual({ minItems: 2, maxItems: 4 });
   });

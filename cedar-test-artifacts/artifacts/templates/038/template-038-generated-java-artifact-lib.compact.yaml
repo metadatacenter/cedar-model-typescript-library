@@ -35,6 +35,8 @@ children:
         selected: true
       - label: "Beta"
         selected: true
+    configuration:
+      minItems: 0
   - key: "Single select list"
     type: single-select-list-field
     name: "Single select list"

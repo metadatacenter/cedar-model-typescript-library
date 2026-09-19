@@ -955,7 +955,6 @@ children:
         configuration:
           propertyIri: "http://purl.org/radx-terms/metadata-terms/otherLanguage"
           multiple: true
-          minItems: 1
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/380eaafe-985f-4a10-b511-affbb2872fe1"
   - key: "Data File Subjects"
@@ -2705,7 +2704,6 @@ children:
         configuration:
           propertyIri: "http://purl.org/radx-terms/metadata-terms/dataStreamVariableName"
           multiple: true
-          minItems: 1
       - key: "Data Stream Data Source Identifier"
         type: text-field
         name: "Data Stream Data Source Identifier"
@@ -3020,7 +3018,6 @@ children:
             configuration:
               propertyIri: "http://purl.org/radx-terms/metadata-terms/geographicalPlaceName"
               multiple: true
-              minItems: 1
         configuration:
           propertyIri: "http://purl.org/radx-terms/metadata-terms/geographicalPlaceNameDescriptor"
           multiple: true
@@ -3140,6 +3137,5 @@ children:
         configuration:
           propertyIri: "http://purl.org/radx-terms/metadata-terms/auxiliaryMetadataCommentary"
           multiple: true
-          minItems: 1
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/60350e91-8896-4d8c-b11e-26b35370455b"

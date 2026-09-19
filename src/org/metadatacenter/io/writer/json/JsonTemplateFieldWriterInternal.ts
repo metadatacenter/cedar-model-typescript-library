@@ -125,7 +125,7 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
     field.valueConstraints.literals.forEach((option: ChoiceOptionEntity) => {
       const literal = JsonNode.getEmpty();
       literal[CedarModel.label] = option.label;
-      if (option.selectedByDefault) {
+      if (option.statesSelectedByDefault || option.selectedByDefault) {
         literal[CedarModel.selectedByDefault] = option.selectedByDefault;
       }
       literals.push(literal);

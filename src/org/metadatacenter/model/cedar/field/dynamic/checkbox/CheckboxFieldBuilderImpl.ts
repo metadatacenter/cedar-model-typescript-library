@@ -17,8 +17,10 @@ export class CheckboxFieldBuilderImpl extends TemplateFieldBuilder implements Ch
     return new CheckboxFieldBuilderImpl();
   }
 
-  public addCheckboxOption(label: string, selectedByDefault: boolean = false): CheckboxFieldBuilder {
-    this.literals.push(new CheckboxOption(label, selectedByDefault));
+  public addCheckboxOption(label: string, selectedByDefault?: boolean): CheckboxFieldBuilder {
+    // The caller stating nothing is not the caller stating `false`: only a stated selection is
+    // written back, so that an option written both ways stays two entries where a source had two.
+    this.literals.push(new CheckboxOption(label, selectedByDefault ?? false, selectedByDefault !== undefined));
     return this;
   }
 

@@ -32,8 +32,9 @@ export abstract class YamlTemplateFieldTypeSpecificReader {
       literals.forEach((literal) => {
         const label = ReaderUtil.getString(literal, YamlKeys.label);
         const selectedByDefault = ReaderUtil.getBoolean(literal, YamlKeys.selected);
+        const statesSelectedByDefault = Object.hasOwn(literal, YamlKeys.selected);
         if (label != null) {
-          const option = new ListOption(label, selectedByDefault);
+          const option = new ListOption(label, selectedByDefault, statesSelectedByDefault);
           field.valueConstraints.literals.push(option);
         }
       });

@@ -39,8 +39,9 @@ export class JsonFieldReaderList extends JsonTemplateFieldTypeSpecificReader {
         literals.forEach((literal) => {
           const label = ReaderUtil.getString(literal, CedarModel.label);
           const selectedByDefault = ReaderUtil.getBoolean(literal, CedarModel.selectedByDefault);
+          const statesSelectedByDefault = Object.hasOwn(literal, CedarModel.selectedByDefault);
           if (label != null) {
-            const option = new ListOption(label, selectedByDefault);
+            const option = new ListOption(label, selectedByDefault, statesSelectedByDefault);
             field.valueConstraints.literals.push(option);
           }
         });

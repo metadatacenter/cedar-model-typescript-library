@@ -19,8 +19,10 @@ export abstract class ListFieldBuilderImpl extends TemplateFieldBuilder implemen
     return this;
   }
 
-  public addListOption(label: string, selectedByDefault: boolean = false): this {
-    this.literals.push(new ListOption(label, selectedByDefault));
+  public addListOption(label: string, selectedByDefault?: boolean): this {
+    // The caller stating nothing is not the caller stating `false`: only a stated selection is
+    // written back, so that an option written both ways stays two entries where a source had two.
+    this.literals.push(new ListOption(label, selectedByDefault ?? false, selectedByDefault !== undefined));
     return this;
   }
 
@@ -46,6 +48,9 @@ export abstract class ListFieldBuilderImpl extends TemplateFieldBuilder implemen
       if (lastSelectedIndex !== -1) {
         this.literals.forEach((option, index) => {
           option.selectedByDefault = index === lastSelectedIndex;
+          // As in the radio builder: an unselected option here is the builder's inference, not the
+          // caller's statement, so it stays unstated and unwritten.
+          option.statesSelectedByDefault = option.selectedByDefault;
         });
       }
     }

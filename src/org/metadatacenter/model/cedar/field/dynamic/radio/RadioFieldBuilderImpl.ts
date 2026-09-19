@@ -17,8 +17,10 @@ export class RadioFieldBuilderImpl extends TemplateFieldBuilder implements Radio
     return new RadioFieldBuilderImpl();
   }
 
-  public addRadioOption(label: string, selectedByDefault: boolean = false): RadioFieldBuilder {
-    this.literals.push(new RadioOption(label, selectedByDefault));
+  public addRadioOption(label: string, selectedByDefault?: boolean): RadioFieldBuilder {
+    // The caller stating nothing is not the caller stating `false`: only a stated selection is
+    // written back, so that an option written both ways stays two entries where a source had two.
+    this.literals.push(new RadioOption(label, selectedByDefault ?? false, selectedByDefault !== undefined));
     return this;
   }
 
@@ -45,6 +47,9 @@ export class RadioFieldBuilderImpl extends TemplateFieldBuilder implements Radio
     if (lastSelectedIndex !== -1) {
       this.literals.forEach((option, index) => {
         option.selectedByDefault = index === lastSelectedIndex;
+        // The unselected ones are the builder's inference rather than the caller's statement, so
+        // they stay unstated and unwritten, as they were before a stated selection was kept.
+        option.statesSelectedByDefault = option.selectedByDefault;
       });
     }
 

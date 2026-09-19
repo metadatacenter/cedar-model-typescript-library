@@ -209,3 +209,50 @@ describe('a page break and a section break', () => {
     expect(again['_ui']._content).toBe('Registered Data');
   });
 });
+
+/**
+ * A literal option that states it is not the selected one keeps saying so.
+ *
+ * Saying nothing and saying `false` mean the same thing to a reader of the artifact, but the
+ * CEDAR meta-schema declares the literals array `uniqueItems`, so a list holding an option both
+ * ways is two entries. Writing the stated `false` back as nothing made them one repeated value,
+ * which failed that rule and took the whole field down with it — two production templates were
+ * valid as stored and invalid once rendered because of it.
+ */
+describe('a literal option that states it is not selected', () => {
+  const field = (literals: string) =>
+    'type: multi-select-list-field\n' +
+    'name: "Theme"\n' +
+    'description: "d"\n' +
+    'id: "https://repo.metadatacenter.org/template-fields/00000000-0000-0000-0000-000000000000"\n' +
+    'modelVersion: 1.6.0\n' +
+
+    `values:\n${literals}`;
+
+  const render = (yaml: string) => {
+    const read = YamlTemplateFieldReader.getStrict().readFromString(yaml).field;
+    return {
+      json: JSON.parse(CedarWriters.json().getStrict().getFieldWriterForField(read).getAsJsonString(read)),
+      yaml: CedarWriters.yaml().getStrict().getFieldWriterForField(read).getAsYamlString(read),
+    };
+  };
+
+  test('stays distinct from the same option stated no other way', () => {
+    const { json } = render(field('  - label: "Meteorology"\n    selected: false\n  - label: "Meteorology"\n'));
+    const literals = json['_valueConstraints'].literals;
+    expect(literals).toHaveLength(2);
+    expect(literals[0]).toStrictEqual({ label: 'Meteorology', selectedByDefault: false });
+    expect(literals[1]).toStrictEqual({ label: 'Meteorology' });
+  });
+
+  test('says so again in YAML', () => {
+    const { yaml } = render(field('  - label: "Meteorology"\n    selected: false\n'));
+    expect(yaml).toContain('selected: false');
+  });
+
+  test('an option that states nothing still states nothing', () => {
+    const { json, yaml } = render(field('  - label: "Meteorology"\n'));
+    expect(json['_valueConstraints'].literals[0]).toStrictEqual({ label: 'Meteorology' });
+    expect(yaml).not.toContain('selected:');
+  });
+});

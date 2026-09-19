@@ -28,8 +28,9 @@ export class JsonFieldReaderRadio extends JsonTemplateFieldTypeSpecificReader {
         literals.forEach((literal) => {
           const label = ReaderUtil.getString(literal, CedarModel.label);
           const selectedByDefault = ReaderUtil.getBoolean(literal, CedarModel.selectedByDefault);
+          const statesSelectedByDefault = Object.hasOwn(literal, CedarModel.selectedByDefault);
           if (label != null) {
-            const option = new RadioOption(label, selectedByDefault);
+            const option = new RadioOption(label, selectedByDefault, statesSelectedByDefault);
             field.valueConstraints.literals.push(option);
           }
         });

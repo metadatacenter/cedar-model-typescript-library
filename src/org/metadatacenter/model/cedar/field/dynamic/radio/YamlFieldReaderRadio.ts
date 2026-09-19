@@ -26,8 +26,9 @@ export class YamlFieldReaderRadio extends YamlTemplateFieldTypeSpecificReader {
       literals.forEach((literal) => {
         const label = ReaderUtil.getString(literal, YamlKeys.label);
         const selectedByDefault = ReaderUtil.getBoolean(literal, YamlKeys.selected);
+        const statesSelectedByDefault = Object.hasOwn(literal, YamlKeys.selected);
         if (label != null) {
-          const option = new RadioOption(label, selectedByDefault);
+          const option = new RadioOption(label, selectedByDefault, statesSelectedByDefault);
           field.valueConstraints.literals.push(option);
         }
       });

@@ -135,7 +135,7 @@ export const JSON_TEMPLATE_ROUND_TRIP_DIVERGENCES: Readonly<Record<string, Round
   '29': {
     errors: 0,
     warnings: 0,
-    roundTripErrors: 1978,
+    roundTripErrors: 996,
     roundTripWarnings: 0,
     reason: 'large legacy template is intentionally canonicalized throughout',
   },

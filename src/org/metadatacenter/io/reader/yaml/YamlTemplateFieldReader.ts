@@ -123,6 +123,19 @@ export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
     if (field instanceof ControlledTermFieldImpl || field instanceof TextFieldImpl) {
       field.valueRecommendationEnabled = ReaderUtil.getBoolean(fieldSourceObject, YamlKeys.valueRecommendation);
     }
+    // Whether a field written on its own is hidden, and whether it demands a value. The renderer
+    // states the first at the document's top level and the second under `configuration`, and a
+    // hand-written document may put either in either place, so both are accepted from both — as
+    // the Java library's reader accepts them. Reading neither left a standalone field shown and
+    // optional whatever it was stored as.
+    const configuration: JsonNode = ReaderUtil.getNode(fieldSourceObject, YamlKeys.configuration);
+    field.hidden = YamlTemplateFieldReader.readFlag(configuration, fieldSourceObject, YamlKeys.hidden);
+    field.requiredValue = YamlTemplateFieldReader.readFlag(configuration, fieldSourceObject, YamlKeys.required);
+  }
+
+  /** A flag the document may state in its `configuration` block or at the field's own level. */
+  private static readFlag(configuration: JsonNode, fieldSourceObject: JsonNode, key: string): boolean {
+    return ReaderUtil.getBoolean(configuration, key) || ReaderUtil.getBoolean(fieldSourceObject, key);
   }
 
   private static readFieldSpecificAttributes(

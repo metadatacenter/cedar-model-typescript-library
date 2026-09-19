@@ -69,6 +69,12 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
     ) {
       uiNode[CedarModel.Ui.valueRecommendationEnabled] = true;
     }
+    // As above, for the field's own `hidden`. A container states it for a child in the deployment
+    // info the branch above reads, and never sets the field's own flag, so this cannot change what
+    // that branch decided.
+    if (uiNode[CedarModel.Ui.hidden] === undefined && field.hidden) {
+      uiNode[CedarModel.Ui.hidden] = true;
+    }
   }
 
   protected buildUIObject(field: TemplateField, childInfo: AbstractChildDeploymentInfo): JsonNode {
@@ -87,6 +93,13 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
   protected expandValueConstraintsNode(vcNode: JsonNode, field: TemplateField, childInfo: AbstractChildDeploymentInfo): void {
     if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
       vcNode[CedarModel.requiredValue] = childInfo.requiredValue;
+    }
+    // A field written on its own carries the requirement itself: there is no container to state
+    // it, and the deployment info a standalone write passes says nothing, so the branch above
+    // reported every such field as optional however it was stored. A child is unaffected, since
+    // reading a container leaves the field's own flag off.
+    if (!vcNode[CedarModel.requiredValue] && field.requiredValue) {
+      vcNode[CedarModel.requiredValue] = true;
     }
     if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
       if (childInfo.recommendedValue) {

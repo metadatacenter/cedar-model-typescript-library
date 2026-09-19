@@ -108,3 +108,53 @@ describe('a standalone field with value recommendation', () => {
     expect('valueRecommendationEnabled' in json['_ui']).toBe(false);
   });
 });
+
+/**
+ * What a standalone field says about itself survives its own YAML round trip.
+ *
+ * Whether a field is hidden, and whether it demands a value, are the container's to state for a
+ * child and the field's own when it is written alone. The model kept them only on the child
+ * deployment info, so a field written on its own had nowhere to hold either: the JSON came back
+ * with the field shown and optional however it was stored, and production fields disagreed with
+ * the Java library because of it. The renderer states `hidden` at the document's top level and
+ * `required` under `configuration`, and both placements are accepted from either.
+ */
+describe('a standalone field that is hidden or demands a value', () => {
+  const roundTrip = (yaml: string) => {
+    const read = YamlTemplateFieldReader.getStrict().readFromString(yaml);
+    const json = JSON.parse(CedarWriters.json().getStrict().getFieldWriterForField(read.field).getAsJsonString(read.field));
+    const backToYaml = CedarWriters.yaml().getStrict().getFieldWriterForField(read.field).getAsYamlString(read.field);
+    return { json, backToYaml };
+  };
+  const base =
+    'type: text-field\n' +
+    'name: "Subject"\n' +
+    'description: "d"\n' +
+    'id: "https://repo.metadatacenter.org/template-fields/00000000-0000-0000-0000-000000000000"\n' +
+    'modelVersion: 1.6.0\n';
+
+  test('comes back hidden, and says so again', () => {
+    const { json, backToYaml } = roundTrip(base + 'hidden: true\n');
+    expect(json['_ui'].hidden).toBe(true);
+    expect(backToYaml).toContain('hidden: true');
+  });
+
+  test('comes back demanding a value, and says so again', () => {
+    const { json, backToYaml } = roundTrip(base + 'configuration:\n  required: true\n');
+    expect(json['_valueConstraints'].requiredValue).toBe(true);
+    expect(backToYaml).toContain('required: true');
+  });
+
+  test('accepts either placement, as the Java reader does', () => {
+    expect(roundTrip(base + 'required: true\n').json['_valueConstraints'].requiredValue).toBe(true);
+    expect(roundTrip(base + 'configuration:\n  hidden: true\n').json['_ui'].hidden).toBe(true);
+  });
+
+  test('stays shown and optional where the document says neither', () => {
+    const { json, backToYaml } = roundTrip(base);
+    expect('hidden' in json['_ui']).toBe(false);
+    expect(json['_valueConstraints'].requiredValue).toBe(false);
+    expect(backToYaml).not.toContain('hidden');
+    expect(backToYaml).not.toContain('required');
+  });
+});

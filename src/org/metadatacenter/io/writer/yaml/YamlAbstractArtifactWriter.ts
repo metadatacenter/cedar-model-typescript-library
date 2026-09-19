@@ -98,6 +98,25 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
     return skosObject;
   }
 
+  /**
+   * What a field written on its own says about itself: whether it is hidden, and whether it
+   * demands a value.
+   *
+   * Only for a field that is the document, which is why the caller passes its own root-ness. A
+   * child says both through its container, which writes them into the child's `configuration`
+   * block, and writing them here as well would state each of them twice.
+   */
+  protected macroStandaloneFieldFlags(field: TemplateField): JsonNode {
+    const ret: JsonNode = JsonNode.getEmpty();
+    if (field.hidden) {
+      ret[YamlKeys.hidden] = true;
+    }
+    if (field.requiredValue) {
+      ret[YamlKeys.required] = true;
+    }
+    return ret;
+  }
+
   protected macroValueRecommendation(field: TemplateField): JsonNode {
     const ret: JsonNode = JsonNode.getEmpty();
     if (field instanceof ControlledTermFieldImpl || field instanceof TextFieldImpl) {

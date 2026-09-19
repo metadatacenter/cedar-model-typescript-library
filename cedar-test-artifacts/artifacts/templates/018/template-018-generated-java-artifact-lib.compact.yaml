@@ -25,5 +25,3 @@ children:
       - label: "Radio 1"
       - label: "Radio 2"
       - label: "Radio 3"
-    configuration:
-      minItems: 0

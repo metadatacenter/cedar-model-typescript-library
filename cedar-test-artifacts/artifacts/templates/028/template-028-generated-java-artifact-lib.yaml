@@ -181,3 +181,4 @@ children:
       required: true
       propertyIri: "http://www.w3.org/ns/dcat#dataset"
       multiple: true
+      minItems: 1

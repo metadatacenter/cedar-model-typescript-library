@@ -83,3 +83,4 @@ children:
     configuration:
       required: true
       multiple: true
+      minItems: 1

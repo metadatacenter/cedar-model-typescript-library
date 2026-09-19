@@ -849,6 +849,7 @@ children:
           - label: "zu"
         configuration:
           multiple: true
+          minItems: 1
   - key: "Data File Subjects"
     type: element
     name: "Data File Subjects"
@@ -1969,6 +1970,7 @@ children:
         prefLabel: "Data Stream Variable Name"
         configuration:
           multiple: true
+          minItems: 1
       - key: "Data Stream Data Source Identifier"
         type: text-field
         name: "Data Stream Data Source Identifier"
@@ -2141,6 +2143,7 @@ children:
             prefLabel: "Geopolitical region "
             configuration:
               multiple: true
+              minItems: 1
         configuration:
           multiple: true
           minItems: 1
@@ -2206,3 +2209,4 @@ children:
         prefLabel: "Additional Commentary"
         configuration:
           multiple: true
+          minItems: 1

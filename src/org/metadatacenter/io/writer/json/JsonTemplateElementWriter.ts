@@ -40,7 +40,7 @@ export class JsonTemplateElementWriter extends JsonAbstractContainerArtifactWrit
       ...childIriMap,
     };
 
-    const childNamesForRequired: string[] = Object.keys(childIriMap);
+    const childNamesForRequired: string[] = element.getChildrenInfo().getChildNamesWithIri();
 
     // Omit required if empty
     if (childNamesForRequired.length > 0) {

@@ -40,7 +40,7 @@ export class JsonTemplateWriter extends JsonAbstractContainerArtifactWriter {
       ...childIriMap,
     };
 
-    const requiredChildren: string[] = Object.keys(childIriMap);
+    const requiredChildren: string[] = template.getChildrenInfo().getChildNamesWithIri();
 
     properties[JsonSchema.atContext][JsonSchema.required] = [...properties[JsonSchema.atContext][JsonSchema.required], ...requiredChildren];
 

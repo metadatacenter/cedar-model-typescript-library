@@ -1,4 +1,5 @@
 import { JsonWriterBehavior } from '../../../behavior/JsonWriterBehavior';
+import { SchemaVersion } from '../../../model/cedar/types/wrapped-types/SchemaVersion';
 import { ReaderUtil } from '../../reader/ReaderUtil';
 import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
@@ -106,7 +107,10 @@ export class JsonTemplateElementWriter extends JsonAbstractContainerArtifactWrit
       ...this.macroStatusAndVersion(element, this.atomicWriter),
       ...this.macroDerivedFrom(element),
       ...this.macroPreviousVersion(element),
-      [JsonSchema.schemaVersion]: this.atomicWriter.write(element.schema_schemaVersion),
+      // The model version names the model the rendering conforms to, so it is the writer's to state
+      // and not the document's to carry forward. Preserving a stored one republished an assertion
+      // about a model this library no longer emits; the YAML writer has always stamped it.
+      [JsonSchema.schemaVersion]: this.atomicWriter.write(SchemaVersion.CURRENT),
       [TemplateProperty.additionalProperties]: this.atomicWriter.write(element.getAdditionalProperties()),
       ...this.macroSchemaIdentifier(element),
       [CedarModel.schema]: this.atomicWriter.write(ArtifactSchema.CURRENT),

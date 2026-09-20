@@ -13,7 +13,18 @@ export class ChoiceOptionEntity {
    */
   public statesSelectedByDefault: boolean;
 
+  /**
+   * A choice must name itself.
+   *
+   * The label is the value an instance stores when this option is picked, so a blank one offers a
+   * choice whose answer cannot be told from no answer at all. What such an option reaches for —
+   * that the field may be left alone — is already `requiredValue: false`, and the meta-schema
+   * requires a label of at least one character.
+   */
   protected constructor(label: string, selectedByDefault: boolean, statesSelectedByDefault: boolean = true) {
+    if (label === null || label === undefined || label === '') {
+      throw new Error('A permitted value requires a label. A choice that names nothing cannot be chosen.');
+    }
     this.label = label;
     this.selectedByDefault = selectedByDefault;
     this.statesSelectedByDefault = statesSelectedByDefault;

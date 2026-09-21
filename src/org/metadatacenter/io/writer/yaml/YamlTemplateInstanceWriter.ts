@@ -116,6 +116,25 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
   ) {
     Object.keys(dataContainer.values).forEach((key) => {
       const dataAtom: InstanceDataAtomType = dataContainer.values[key];
+      if (
+        (dataAtom instanceof InstanceDataAttributeValueField || unpackedGroups.has(key)) &&
+        [
+          YamlKeys.type,
+          YamlKeys.name,
+          YamlKeys.description,
+          YamlKeys.id,
+          YamlKeys.isBasedOn,
+          YamlKeys.derivedFrom,
+          YamlKeys.children,
+          YamlKeys.annotations,
+          YamlKeys.createdOn,
+          YamlKeys.createdBy,
+          YamlKeys.modifiedOn,
+          YamlKeys.modifiedBy,
+        ].includes(key)
+      ) {
+        throw new Error(`Attribute-value field key "${key}" is reserved for CEDAR YAML metadata.`);
+      }
       if (dataAtom instanceof InstanceDataAttributeValueField) {
         const wrapper: JsonNode = JsonNode.getEmpty();
         let addedav = false;

@@ -22,6 +22,9 @@ export interface AttributeValueNameConflict {
  */
 export class AttributeValueNamePolicy {
   private static readonly RESERVED_NAMES: ReadonlySet<string> = new Set([
+    '__proto__',
+    'constructor',
+    'prototype',
     JsonSchema.atContext,
     JsonSchema.atId,
     JsonSchema.atType,

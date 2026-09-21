@@ -43,7 +43,7 @@ describe('attribute-value name policy', () => {
   });
 
   it('finds reserved JSON-LD and CEDAR instance names', () => {
-    for (const name of ['@context', '@anything', 'schema:name', 'pav:createdOn', '_annotations']) {
+    for (const name of ['@context', '@anything', 'schema:name', 'pav:createdOn', '_annotations', '__proto__', 'constructor', 'prototype']) {
       expect(AttributeValueNamePolicy.isReserved(name)).toBe(true);
     }
   });
@@ -188,5 +188,35 @@ describe('template-aware validation resolves JSON ambiguity', () => {
       .readFromObject(jsonInstance({ _attributes: ['_title'], _title: { '@value': 'ambiguous' } }) as never).instance;
 
     expect(InstanceValidator.validate(parsed, template).adheresToBlueprint()).toBe(false);
+  });
+});
+
+describe('YAML attribute-group envelope safety', () => {
+  it('rejects a conflicting group in the unpacked shape edited by CEE', () => {
+    const container = new InstanceDataContainer();
+    container.setValue('children', [new InstanceDataAttributeValueFieldName('colour')]);
+    container.setValue('colour', new InstanceDataStringAtom('blue'));
+    expect(() => CedarWriters.yaml().getStrict().getTemplateInstanceWriter().getYamlAsJsonNode(instanceWith(container))).toThrow(
+      /reserved for CEDAR YAML metadata/,
+    );
+  });
+
+  it.each(['type', 'name', 'children', 'id', 'annotations'])('refuses group key %s rather than losing data', (key) => {
+    const container = new InstanceDataContainer();
+    const group = new InstanceDataAttributeValueField(key);
+    group.addValue('colour', new InstanceDataStringAtom('blue'));
+    container.setValue(key, group);
+    expect(() => CedarWriters.yaml().getStrict().getTemplateInstanceWriter().getYamlAsJsonNode(instanceWith(container))).toThrow(
+      /reserved for CEDAR YAML metadata/,
+    );
+  });
+  it.each(['type', 'properties', 'name', 'true', 'null', 'yes'])('preserves ordinary child key %s in both formats', (key) => {
+    const container = new InstanceDataContainer();
+    container.setValue(key, new InstanceDataStringAtom('value'));
+    const instance = instanceWith(container);
+    const json = CedarWriters.json().getStrict().getTemplateInstanceWriter().getAsJsonNode(instance);
+    const yaml = CedarWriters.yaml().getStrict().getTemplateInstanceWriter().getYamlAsJsonNode(instance);
+    expect(json[key]).toEqual({ '@value': 'value' });
+    expect((yaml.children as Record<string, unknown>)[key]).toEqual({ value: 'value' });
   });
 });

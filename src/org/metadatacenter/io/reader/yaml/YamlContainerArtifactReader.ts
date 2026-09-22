@@ -16,6 +16,7 @@ import { AbstractContainerArtifact } from '../../../model/cedar/AbstractContaine
 import { ChildDeploymentInfoAlwaysMultipleBuilder } from '../../../model/cedar/deployment/ChildDeploymentInfoAlwaysMultipleBuilder';
 import { ChildDeploymentInfoStaticBuilder } from '../../../model/cedar/deployment/ChildDeploymentInfoStaticBuilder';
 import { ChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/ChildDeploymentInfoBuilder';
+import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
 import { AbstractFieldChildDeploymentInfoBuilder } from '../../../model/cedar/deployment/AbstractFieldChildDeploymentInfoBuilder';
 import { YamlArtifactParsingResult } from '../../../model/cedar/util/compare/YamlArtifactParsingResult';
 import { NullableString } from '../../../model/cedar/types/basic-types/NullableString';
@@ -51,7 +52,13 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
         childDeploymentInfo.description = ReaderUtil.getString(configuration, YamlKeys.overrideDescription);
         childDeploymentInfo.multiInstance = ReaderUtil.getBoolean(configuration, YamlKeys.multiple);
         if (childDeploymentInfo.multiInstance) {
-          childDeploymentInfo.minItems = ReaderUtil.getNumber(configuration, YamlKeys.minItems);
+          // `multiple: true` carrying no bound is how the writer spells the default: it leaves out
+          // a lower bound equal to the one the model supplies for such a child. Restoring it here
+          // is what inverts that, so a template read from YAML says what the same template read
+          // from JSON says - the JSON form always carries the number. An omitted bound in JSON is
+          // a different statement, that there is no floor, and stays one.
+          childDeploymentInfo.minItems =
+            ReaderUtil.getNumber(configuration, YamlKeys.minItems) ?? AbstractChildDeploymentInfo.defaultMinItems;
           childDeploymentInfo.maxItems = ReaderUtil.getNumber(configuration, YamlKeys.maxItems);
         }
         childDeploymentInfo.requiredValue = ReaderUtil.getBoolean(configuration, YamlKeys.required);

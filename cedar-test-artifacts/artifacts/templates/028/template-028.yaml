@@ -49,6 +49,7 @@ children:
         configuration:
           required: true
           propertyIri: "https://schema.metadatacenter.org/properties/95fb84a4-78bc-4922-9fa5-485ec44638af"
+          minItems: 1
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/a61ce8cd-37e7-4a0f-9035-5cd0e5f6756c"
   - key: "catalogTitleRT"

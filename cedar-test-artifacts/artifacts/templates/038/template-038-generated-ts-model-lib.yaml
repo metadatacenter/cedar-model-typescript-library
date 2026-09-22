@@ -72,7 +72,6 @@ children:
         selected: true
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/3f1c0a10-0001-4000-8000-000000000006"
-      minItems: 0
   - key: "Single select list"
     type: single-select-list-field
     name: "Single select list"
@@ -100,7 +99,6 @@ children:
         selected: true
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/3f1c0a10-0001-4000-8000-000000000008"
-      minItems: 0
   - key: "Link"
     type: link-field
     name: "Link"

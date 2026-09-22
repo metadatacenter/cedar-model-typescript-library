@@ -1,6 +1,4 @@
 import { NullableNumber } from '../types/basic-types/NullableNumber';
-import { UiInputType } from '../types/wrapped-types/UiInputType';
-import { AbstractChildDeploymentInfo } from './AbstractChildDeploymentInfo';
 import { AbstractFieldChildDeploymentInfo } from './AbstractFieldChildDeploymentInfo';
 
 export class ChildDeploymentInfoAlwaysMultiple extends AbstractFieldChildDeploymentInfo {
@@ -39,14 +37,16 @@ export class ChildDeploymentInfoAlwaysMultiple extends AbstractFieldChildDeploym
    * What the template declared, when it declared anything; otherwise the
    * default for the kind of field.
    *
-   * Checkbox and multiple-choice list take one instance. Tying the bound to the
-   * requirement said a field nobody has to answer may appear zero times, which is
-   * a different contract and not what the system stores: every such field in
-   * production carries one. An attribute-value field defaults to zero, since
-   * requiring one would mean requiring an attribute nobody has named yet. These
-   * fields are multiple by nature, so most templates leave the bounds out and the
-   * default is all there is — but a template may state them, and then the
-   * statement stands.
+   * Checkbox and multiple-choice list start with none. These fields are multiple because of what
+   * they are rather than because anyone declared several, so nobody declared how many they begin
+   * with either, and choosing nothing from one is a state a reader can mean. An occupant there
+   * would stand for a selection nobody made, and reaches a host as a null entry in the value
+   * array. An attribute-value field starts with none for its own reason: requiring one would mean
+   * requiring an attribute nobody has named yet.
+   *
+   * A child someone marked multiple is the other case, and takes
+   * `AbstractChildDeploymentInfo.defaultMinItems`. Most templates leave the bounds out and the
+   * default is all there is — but a template may state them, and then the statement stands.
    *
    * The JSON writer reads these same accessors — see `WriterUtil.getMultiMinMax`
    * — so a reader of the parsed model and a writer of the JSON cannot drift
@@ -60,10 +60,7 @@ export class ChildDeploymentInfoAlwaysMultiple extends AbstractFieldChildDeploym
   }
 
   get defaultMinItems(): number {
-    if (this.uiInputType === UiInputType.ATTRIBUTE_VALUE) {
-      return 0;
-    }
-    return AbstractChildDeploymentInfo.defaultMinItems;
+    return 0;
   }
 
   override get maxItems(): NullableNumber {

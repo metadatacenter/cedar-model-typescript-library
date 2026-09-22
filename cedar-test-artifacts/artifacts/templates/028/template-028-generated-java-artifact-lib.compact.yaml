@@ -19,6 +19,7 @@ children:
           - label: "I have read & understood"
         configuration:
           required: true
+          minItems: 1
   - key: "catalogTitleRT"
     type: static-rich-text
     name: "catalogTitleRT"

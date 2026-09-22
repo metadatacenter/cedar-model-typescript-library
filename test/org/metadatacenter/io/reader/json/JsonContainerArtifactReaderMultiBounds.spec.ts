@@ -5,9 +5,11 @@ import { CedarReaders, JsonNode, Template } from '../../../../../../src';
  *
  * Checkbox, multiple-choice list and attribute-value fields take several
  * answers whatever the template says, so most templates leave the bounds out
- * and the model supplies them: one when the field is required, zero otherwise,
- * and always zero for attribute-value, since requiring one would mean requiring
- * an attribute nobody has named yet.
+ * and the model supplies them: none, whether or not the field is required.
+ * Nobody declared that such a field is multiple, so nobody declared how many
+ * occurrences it begins with either, and choosing nothing from one is a state a
+ * reader can mean. An attribute-value field starts at none for its own reason,
+ * that requiring one would mean requiring an attribute nobody has named yet.
  *
  * A template may still state them, and then the statement stands. It used to
  * be discarded — `ChildDeploymentInfoAlwaysMultipleBuilder` had nowhere to put
@@ -61,9 +63,12 @@ const boundsOf = (source: JsonNode) => {
 };
 
 describe('bounds on an always-multiple child', () => {
-  test('the default is one instance, whether or not the field is required', () => {
-    expect(boundsOf(templateWith(checkbox(false)))).toEqual({ minItems: 1, maxItems: null });
-    expect(boundsOf(templateWith(checkbox(true)))).toEqual({ minItems: 1, maxItems: null });
+  test('the default is no instance, whether or not the field is required', () => {
+    // Multiple because of what it is, so nobody declared how many it starts with, and choosing
+    // nothing from it is a state a reader can mean. Requiring a value says every occurrence must
+    // be answered, not that one must exist.
+    expect(boundsOf(templateWith(checkbox(false)))).toEqual({ minItems: 0, maxItems: null });
+    expect(boundsOf(templateWith(checkbox(true)))).toEqual({ minItems: 0, maxItems: null });
   });
 
   test('an attribute-value field defaults to zero even when required', () => {

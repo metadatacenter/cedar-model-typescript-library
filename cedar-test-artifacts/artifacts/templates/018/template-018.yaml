@@ -30,6 +30,7 @@ children:
     configuration:
       required: true
       propertyIri: "https://schema.metadatacenter.org/properties/2930dd2f-ba5e-4b8f-ba92-09fb8f7ab0c2"
+      minItems: 1
   - key: "My checkbox 2"
     type: checkbox-field
     name: "My checkbox 2"
@@ -47,4 +48,3 @@ children:
     modifiedBy: "https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95"
     configuration:
       propertyIri: "https://schema.metadatacenter.org/properties/ec9ef44d-7d97-4531-ae39-7e880880cfe7"
-      minItems: 0

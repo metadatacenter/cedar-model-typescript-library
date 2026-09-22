@@ -97,6 +97,8 @@ describe('JsonFieldReaderList multipleChoice', () => {
     const property = written['properties']['Choices'];
 
     expect(property['type']).toBe('array');
+    // Repeatable because the template wrapped it in an array, not because its constraints say
+    // multiple choice, and that array declares its own lower bound. A statement stands.
     expect(property['minItems']).toBe(1);
     expect(property['items']['_valueConstraints']['multipleChoice']).toBe(false);
   });
@@ -108,7 +110,7 @@ describe('JsonFieldReaderList multipleChoice', () => {
     const property = written['properties']['Choices'];
 
     expect(property['type']).toBe('array');
-    expect(property['minItems']).toBe(1);
+    expect(property['minItems']).toBe(0);
     expect(property['items']['type']).toBe('object');
     expect(property['items']['_valueConstraints']['multipleChoice']).toBe(true);
   });

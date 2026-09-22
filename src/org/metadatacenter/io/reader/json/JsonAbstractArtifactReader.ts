@@ -46,7 +46,7 @@ export abstract class JsonAbstractArtifactReader {
     JsonAbstractArtifactReader.refuseEmptyIdentifier(sourceObject);
     container.at_id = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, JsonSchema.atId));
     container.schema_name = ReaderUtil.getString(sourceObject, JsonSchema.schemaName);
-    container.schema_description = ReaderUtil.getString(sourceObject, JsonSchema.schemaDescription);
+    container.schema_description = ReaderUtil.getStringOrEmpty(sourceObject, JsonSchema.schemaDescription);
     container.pav_createdBy = CedarUser.forValue(ReaderUtil.getString(sourceObject, JsonSchema.pavCreatedBy));
     container.pav_createdOn = IsoDate.forValue(ReaderUtil.getString(sourceObject, JsonSchema.pavCreatedOn));
     container.oslc_modifiedBy = CedarUser.forValue(ReaderUtil.getString(sourceObject, JsonSchema.oslcModifiedBy));

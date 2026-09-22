@@ -21,7 +21,7 @@ export abstract class AbstractArtifactBuilder {
   protected bibo_status: BiboStatus = BiboStatus.DRAFT;
   // schema name and description
   protected schema_name: string | null = null;
-  protected schema_description: string | null = null;
+  protected schema_description: string = '';
   protected schema_identifier: string | null = null;
   //
   protected pav_derivedFrom: CedarArtifactId = CedarArtifactId.NULL;
@@ -110,7 +110,8 @@ export abstract class AbstractArtifactBuilder {
   }
 
   withSchemaDescription(schema_description: string | null): this {
-    this.schema_description = schema_description;
+    // Null and absent both mean no description, and the model spells that as an empty string.
+    this.schema_description = schema_description ?? '';
     return this;
   }
 

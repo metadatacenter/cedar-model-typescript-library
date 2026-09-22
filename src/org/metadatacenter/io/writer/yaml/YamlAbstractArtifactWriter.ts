@@ -47,7 +47,7 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
       }
     }
     node[YamlKeys.name] = artifact.schema_name;
-    if (artifact.schema_description !== null && artifact.schema_description !== '') {
+    if (artifact.schema_description !== '') {
       node[YamlKeys.description] = artifact.schema_description;
     }
     return node;

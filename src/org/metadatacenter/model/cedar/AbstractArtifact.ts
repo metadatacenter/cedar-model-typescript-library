@@ -16,7 +16,15 @@ export abstract class AbstractArtifact {
 
   // schema name and description
   public schema_name: NullableString = null;
-  public schema_description: NullableString = null;
+  /**
+   * The artifact's description, empty when it has none.
+   *
+   * Never null: `schema:description` is a string wherever the model is serialized, so an artifact
+   * with no description carries an empty one. A null reached a document as `"schema:description":
+   * null`, which nothing downstream accepts, and made the same artifact read from JSON and from
+   * YAML differ - the YAML reader has always supplied an empty string here.
+   */
+  public schema_description: string = '';
   //
   public cedarArtifactType: CedarArtifactType = CedarArtifactType.NULL;
 

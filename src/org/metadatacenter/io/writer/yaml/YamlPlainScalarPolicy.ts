@@ -10,6 +10,8 @@ import { YamlArtifactTypeValues } from '../../../model/cedar/types/wrapped-types
 // Spellings resolved as numbers, booleans, or null by a YAML 1.1 or 1.2 reader. The Java library's
 // YamlScalarQuotingChecker applies the same cross-version boundary.
 const someReaderWouldClaim = [
+  // YAML 1.1 readers also resolve date-like mapping keys as timestamps.
+  /^\d{4}-\d{1,2}-\d{1,2}(?:$|[Tt ])/,
   /^(y|Y|n|N|yes|Yes|YES|no|No|NO|on|On|ON|off|Off|OFF|true|True|TRUE|false|False|FALSE)$/,
   /^(null|Null|NULL|~|<<|=)$/,
   /^[-+]?[0-9][0-9_]*$/,

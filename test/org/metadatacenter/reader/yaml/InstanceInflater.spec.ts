@@ -1,4 +1,4 @@
-import { CedarBuilders, CedarReaders, CedarWriters, InstanceInflater, NumberType } from '../../../../../src';
+import { CedarBuilders, CedarReaders, CedarWriters, InstanceInflater, NumberType, TemporalType } from '../../../../../src';
 
 /**
  * A YAML instance, inflated with its template, writes back as a valid JSON
@@ -99,9 +99,9 @@ describe('InstanceInflater', () => {
 });
 
 /**
- * An attribute-value field is the one child whose empty slot is not an empty node.
+ * An attribute-value field always uses an array-shaped empty slot.
  *
- * Every other omitted child is re-added as `{}` and read back as an unfilled field.
+ * Unlike a single field, its empty representation is a list, not an object.
  * This one is written as a list of the attribute names it holds, so naming none is
  * `[]`, and `{}` is a shape no reader of a CEDAR instance produces for it.
  */
@@ -150,7 +150,7 @@ children:
     expect(yaml).not.toContain('[]');
   });
 
-  test('and not as the empty node every other omitted child gets', () => {
+  test('and not as the empty node an omitted single child gets', () => {
     const out = inflatedFrom(sparse);
     expect(out._label).toEqual({ '@value': 'hello' });
     expect(out._attributes).not.toEqual({});
@@ -179,5 +179,83 @@ children:
 
     expect(out._attributes).toEqual(['colour']);
     expect(out.colour).toEqual({ '@value': 'red' });
+  });
+});
+
+// Missing values must use deployment cardinality at every depth, including
+// authority fields that older saved instances omitted altogether.
+describe('InstanceInflater missing repeated children', () => {
+  test.each([
+    ['text', () => CedarBuilders.textFieldBuilder()],
+    ['NIH grant', () => CedarBuilders.extNihGrantIdFieldBuilder()],
+    ['DOI', () => CedarBuilders.extDoiFieldBuilder()],
+  ])('%s preserves array shape through nested elements and repeated inflation', (_name, make) => {
+    const child = make().withSchemaName('value').withSchemaDescription('value').build();
+    const multiple = child.createDeploymentBuilder('_many').withMultiInstance(true).withMinItems(0).build();
+    const nested = CedarBuilders.templateElementBuilder()
+      .withSchemaName('nested')
+      .withSchemaDescription('nested')
+      .addChild(child, multiple)
+      .addChild(child, child.createDeploymentBuilder('_single').build())
+      .build();
+    const parent = CedarBuilders.templateElementBuilder()
+      .withSchemaName('parent')
+      .withSchemaDescription('parent')
+      .addChild(nested, nested.createDeploymentBuilder('_nested').withMultiInstance(true).build())
+      .build();
+    const schema = CedarBuilders.templateBuilder()
+      .withSchemaName('test')
+      .withSchemaDescription('test')
+      .addChild(child, multiple)
+      .addChild(nested, nested.createDeploymentBuilder('_absentElements').withMultiInstance(true).build())
+      .addChild(parent, parent.createDeploymentBuilder('_parent').build())
+      .build();
+    const instance = CedarReaders.yaml().getStrict().getTemplateInstanceReader().readFromString(`type: instance
+name: Sparse
+isBasedOn: https://repo.metadatacenter.org/templates/t1
+children:
+  _parent:
+    children:
+      _nested:
+        - children: {}
+        - children: {}
+`).instance;
+    const writer = CedarWriters.json().getStrict().getTemplateInstanceWriter();
+    InstanceInflater.inflate(instance, schema);
+    const first = JSON.parse(writer.getAsJsonString(instance));
+    expect(first._many).toEqual([]);
+    expect(first._absentElements).toEqual([]);
+    expect(first._parent._nested).toHaveLength(2);
+    for (const occurrence of first._parent._nested) {
+      expect(occurrence._many).toEqual([]);
+      expect(occurrence._single).toEqual(_name === 'text' ? { '@value': null } : {});
+    }
+    InstanceInflater.inflate(instance, schema);
+    expect(JSON.parse(writer.getAsJsonString(instance))).toEqual(first);
+  });
+});
+
+describe('InstanceInflater empty single-field shapes', () => {
+  test('restores literal types and recursively creates missing single elements like Java', () => {
+    const number = CedarBuilders.numericFieldBuilder().withSchemaName('number').withNumberType(NumberType.INT).build();
+    const date = CedarBuilders.temporalFieldBuilder().withSchemaName('date').withTemporalType(TemporalType.DATE).build();
+    const element = CedarBuilders.templateElementBuilder()
+      .withSchemaName('element')
+      .addChild(number, number.createDeploymentBuilder('_number').build())
+      .addChild(date, date.createDeploymentBuilder('_date').build())
+      .build();
+    const schema = CedarBuilders.templateBuilder()
+      .withSchemaName('test')
+      .addChild(element, element.createDeploymentBuilder('_element').build())
+      .build();
+    const instance = CedarReaders.yaml().getStrict().getTemplateInstanceReader().readFromString(`type: instance
+name: Sparse
+isBasedOn: https://repo.metadatacenter.org/templates/t1
+children: {}
+`).instance;
+    InstanceInflater.inflate(instance, schema);
+    const json = JSON.parse(CedarWriters.json().getStrict().getTemplateInstanceWriter().getAsJsonString(instance));
+    expect(json._element._number).toEqual({ '@value': null, '@type': 'xsd:int' });
+    expect(json._element._date).toEqual({ '@value': null, '@type': 'xsd:date' });
   });
 });

@@ -28,8 +28,8 @@ export class JsonStaticFieldWriter extends JsonTemplateFieldWriterInternal {
     };
     this.expandUiNode(uiNode, field);
     // Every static field's `_ui` carries `_content`, which the CEDAR meta-schema requires of it
-    // (`staticFieldUIContent`). A page break and a section break have none to carry, and the key was
-    // left out for them, which the canonical validator rejects.
+    // (`staticFieldUIContent`). A static field that carries no text still has to state the key,
+    // and leaving it out is what the canonical validator rejects.
     if (!(CedarModel.content in uiNode)) {
       uiNode[CedarModel.content] = null;
     }

@@ -62,9 +62,6 @@ export function jsonTemplateToYaml(templateJson: string): string {
 Reader results also contain a parsing report. Applications that accept external
 artifacts should inspect its errors and warnings before using the parsed artifact.
 
-The [companion demo repository](https://github.com/metadatacenter/cedar-model-typescript-library-demo)
-contains additional runnable examples.
-
 ## Paragraph length constraints
 
 Use the paragraph builder to set the same minimum and maximum lengths supported
@@ -137,9 +134,10 @@ module bundle, and TypeScript declarations.
 
 ## Releasing
 
-Release preparation and publication are documented in
-[RELEASING.md](https://github.com/metadatacenter/cedar-model-typescript-library/blob/main/RELEASING.md).
-The release command publishes `dist/`, not the repository root.
+Release preparation and publication are documented in the
+[CEDAR npmjs Release Runbook](https://github.com/metadatacenter/cedar-development/blob/develop/ops/NPMJS-RELEASE-RUNBOOK.md),
+which covers this library and the embeddable editor together. The release
+command publishes `dist/`, not the repository root.
 
 ## License
 

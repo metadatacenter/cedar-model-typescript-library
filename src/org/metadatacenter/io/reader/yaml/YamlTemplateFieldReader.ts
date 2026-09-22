@@ -37,6 +37,8 @@ import { YamlFieldReaderExtPubmed } from '../../../model/cedar/field/dynamic/ext
 import { YamlFieldReaderExtRrid } from '../../../model/cedar/field/dynamic/ext-rrid/YamlFieldReaderExtRrid';
 import { YamlFieldReaderExtNihGrantId } from '../../../model/cedar/field/dynamic/ext-nih-grant-id/YamlFieldReaderExtNihGrantId';
 import { YamlFieldReaderExtDoi } from '../../../model/cedar/field/dynamic/ext-doi/YamlFieldReaderExtDoi';
+import { ControlledTermFieldImpl } from '../../../model/cedar/field/dynamic/controlled-term/ControlledTermFieldImpl';
+import { TextFieldImpl } from '../../../model/cedar/field/dynamic/textfield/TextFieldImpl';
 
 export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.TEMPLATE_FIELD;
@@ -112,6 +114,29 @@ export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
     // Read field-specific nodes
     field.skos_prefLabel = ReaderUtil.getString(fieldSourceObject, YamlKeys.prefLabel);
     field.skos_altLabel = ReaderUtil.getFilteredStringList(fieldSourceObject, YamlKeys.altLabels);
+    // A standalone field keeps value recommendation on itself, and the YAML writer states it at the
+    // document's top level. Only the container reader read the key, and only out of a child's
+    // configuration block, so a field written on its own came back with the setting off: the one
+    // thing this library wrote and could not read. A child is unaffected, since its setting travels
+    // in the deployment info the container reader fills. The guard is the writer's, so the two stay
+    // symmetric; the Java library reads the field's own node and a child's configuration alike.
+    if (field instanceof ControlledTermFieldImpl || field instanceof TextFieldImpl) {
+      field.valueRecommendationEnabled = ReaderUtil.getBoolean(fieldSourceObject, YamlKeys.valueRecommendation);
+    }
+    // Whether a field written on its own is hidden, and whether it demands a value. The renderer
+    // states the first at the document's top level and the second under `configuration`, and a
+    // hand-written document may put either in either place, so both are accepted from both — as
+    // the Java library's reader accepts them. Reading neither left a standalone field shown and
+    // optional whatever it was stored as.
+    const configuration: JsonNode = ReaderUtil.getNode(fieldSourceObject, YamlKeys.configuration);
+    field.hidden = YamlTemplateFieldReader.readFlag(configuration, fieldSourceObject, YamlKeys.hidden);
+    field.requiredValue = YamlTemplateFieldReader.readFlag(configuration, fieldSourceObject, YamlKeys.required);
+    field.continuePreviousLine = YamlTemplateFieldReader.readFlag(configuration, fieldSourceObject, YamlKeys.continuePreviousLine);
+  }
+
+  /** A flag the document may state in its `configuration` block or at the field's own level. */
+  private static readFlag(configuration: JsonNode, fieldSourceObject: JsonNode, key: string): boolean {
+    return ReaderUtil.getBoolean(configuration, key) || ReaderUtil.getBoolean(fieldSourceObject, key);
   }
 
   private static readFieldSpecificAttributes(

@@ -1,5 +1,6 @@
 import {
   CedarBuilders,
+  CedarReaders,
   CedarJsonWriters,
   CedarWriters,
   CedarYamlWriters,
@@ -64,5 +65,194 @@ describe('YAMLFieldReader', () => {
     const comparisonResult: ComparisonResult = YamlObjectComparator.compare(fieldSourceYAMLObject, reYAMLObject);
 
     expect(comparisonResult.areEqual()).toBe(true);
+  });
+});
+
+/**
+ * A standalone field's value recommendation survives its own YAML round trip.
+ *
+ * The setting lives on the field itself for a field written on its own, and in the container's
+ * deployment info for a child. The YAML writer states it at the document's top level for the
+ * former, but only the container reader read the key, and only out of a child's configuration
+ * block — so the library wrote a setting it could not read back, and a standalone field converted
+ * through YAML came out with value recommendation off. The Java library reads both placements, and
+ * the two libraries disagreed on production fields because of it.
+ */
+describe('a standalone field with value recommendation', () => {
+  const roundTripToJson = (builder: any, enabled: boolean) => {
+    const field = builder
+      .withAtId('https://repo.metadatacenter.org/template-fields/00000000-0000-0000-0000-000000000000')
+      .withSchemaName('Organism')
+      .withSchemaDescription('d')
+      .build();
+    field.valueRecommendationEnabled = enabled;
+    const yaml = CedarWriters.yaml().getStrict().getFieldWriterForField(field).getAsYamlString(field);
+    const read = YamlTemplateFieldReader.getStrict().readFromString(yaml).field;
+    return { yaml, json: JSON.parse(CedarWriters.json().getStrict().getFieldWriterForField(read).getAsJsonString(read)) };
+  };
+
+  test('comes back on a controlled term field', () => {
+    const { yaml, json } = roundTripToJson(CedarBuilders.controlledTermFieldBuilder(), true);
+    expect(yaml).toContain('valueRecommendation: true');
+    expect(json['_ui'].valueRecommendationEnabled).toBe(true);
+  });
+
+  test('comes back on a text field', () => {
+    const { yaml, json } = roundTripToJson(CedarBuilders.textFieldBuilder(), true);
+    expect(yaml).toContain('valueRecommendation: true');
+    expect(json['_ui'].valueRecommendationEnabled).toBe(true);
+  });
+
+  test('stays off, and unstated, where the field does not set it', () => {
+    const { yaml, json } = roundTripToJson(CedarBuilders.textFieldBuilder(), false);
+    expect(yaml).not.toContain('valueRecommendation');
+    expect('valueRecommendationEnabled' in json['_ui']).toBe(false);
+  });
+});
+
+/**
+ * What a standalone field says about itself survives its own YAML round trip.
+ *
+ * Whether a field is hidden, and whether it demands a value, are the container's to state for a
+ * child and the field's own when it is written alone. The model kept them only on the child
+ * deployment info, so a field written on its own had nowhere to hold either: the JSON came back
+ * with the field shown and optional however it was stored, and production fields disagreed with
+ * the Java library because of it. The renderer states `hidden` at the document's top level and
+ * `required` under `configuration`, and both placements are accepted from either.
+ */
+describe('a standalone field that is hidden or demands a value', () => {
+  const roundTrip = (yaml: string) => {
+    const read = YamlTemplateFieldReader.getStrict().readFromString(yaml);
+    const json = JSON.parse(CedarWriters.json().getStrict().getFieldWriterForField(read.field).getAsJsonString(read.field));
+    const backToYaml = CedarWriters.yaml().getStrict().getFieldWriterForField(read.field).getAsYamlString(read.field);
+    return { json, backToYaml };
+  };
+  const base =
+    'type: text-field\n' +
+    'name: "Subject"\n' +
+    'description: "d"\n' +
+    'id: "https://repo.metadatacenter.org/template-fields/00000000-0000-0000-0000-000000000000"\n' +
+    'modelVersion: 1.6.0\n';
+
+  test('comes back hidden, and says so again', () => {
+    const { json, backToYaml } = roundTrip(base + 'hidden: true\n');
+    expect(json['_ui'].hidden).toBe(true);
+    expect(backToYaml).toContain('hidden: true');
+  });
+
+  test('comes back demanding a value, and says so again', () => {
+    const { json, backToYaml } = roundTrip(base + 'configuration:\n  required: true\n');
+    expect(json['_valueConstraints'].requiredValue).toBe(true);
+    expect(backToYaml).toContain('required: true');
+  });
+
+  test('accepts either placement, as the Java reader does', () => {
+    expect(roundTrip(base + 'required: true\n').json['_valueConstraints'].requiredValue).toBe(true);
+    expect(roundTrip(base + 'configuration:\n  hidden: true\n').json['_ui'].hidden).toBe(true);
+  });
+
+  test('stays shown and optional where the document says neither', () => {
+    const { json, backToYaml } = roundTrip(base);
+    expect('hidden' in json['_ui']).toBe(false);
+    expect(json['_valueConstraints'].requiredValue).toBe(false);
+    expect(backToYaml).not.toContain('hidden');
+    expect(backToYaml).not.toContain('required');
+  });
+
+  test('keeps a line placement of its own', () => {
+    const { json, backToYaml } = roundTrip(base + 'continuePreviousLine: true\n');
+    expect(json['_ui'].continuePreviousLine).toBe(true);
+    expect(backToYaml).toContain('continuePreviousLine: true');
+  });
+});
+
+/**
+ * A break carries the text it shows.
+ *
+ * Every static field's `_ui._content` is what the meta-schema asks of it, and the rich text, image
+ * and YouTube fields each kept theirs. A page break and a section break had nowhere on the model
+ * to put one, so both serializations read past it and wrote `_content: null` — the text an author
+ * typed into a break did not survive being read at all.
+ */
+describe('a page break and a section break', () => {
+  const breaks = [
+    ['static-page-break', '_page_break_1'],
+    ['static-section-break', '_section_break_1'],
+  ] as const;
+
+  test.each(breaks)('keeps its content through YAML: %s', (type, name) => {
+    const yaml =
+      `type: ${type}\n` +
+      `name: "${name}"\n` +
+      'id: "https://repo.metadatacenter.org/template-fields/00000000-0000-0000-0000-000000000000"\n' +
+      'modelVersion: 1.6.0\n' +
+      'content: "\u767b\u9332\u30c7\u30fc\u30bf / Registered Data"\n';
+    const read = YamlTemplateFieldReader.getStrict().readFromString(yaml).field;
+    const json = JSON.parse(CedarWriters.json().getStrict().getFieldWriterForField(read).getAsJsonString(read));
+    expect(json['_ui']._content).toBe('\u767b\u9332\u30c7\u30fc\u30bf / Registered Data');
+
+    const backToYaml = CedarWriters.yaml().getStrict().getFieldWriterForField(read).getAsYamlString(read);
+    expect(backToYaml).toContain('\u767b\u9332\u30c7\u30fc\u30bf / Registered Data');
+  });
+
+  test.each(breaks)('keeps its content through JSON: %s', (type, name) => {
+    const yaml =
+      `type: ${type}\n` +
+      `name: "${name}"\n` +
+      'id: "https://repo.metadatacenter.org/template-fields/00000000-0000-0000-0000-000000000000"\n' +
+      'modelVersion: 1.6.0\n' +
+      'content: "Registered Data"\n';
+    const fromYaml = YamlTemplateFieldReader.getStrict().readFromString(yaml).field;
+    const asJson = CedarWriters.json().getStrict().getFieldWriterForField(fromYaml).getAsJsonString(fromYaml);
+    const fromJson = CedarReaders.json().getStrict().getTemplateFieldReader().readFromString(asJson).field;
+    const again = JSON.parse(CedarWriters.json().getStrict().getFieldWriterForField(fromJson).getAsJsonString(fromJson));
+    expect(again['_ui']._content).toBe('Registered Data');
+  });
+});
+
+/**
+ * A literal option that states it is not the selected one keeps saying so.
+ *
+ * Saying nothing and saying `false` mean the same thing to a reader of the artifact, but the
+ * CEDAR meta-schema declares the literals array `uniqueItems`, so a list holding an option both
+ * ways is two entries. Writing the stated `false` back as nothing made them one repeated value,
+ * which failed that rule and took the whole field down with it — two production templates were
+ * valid as stored and invalid once rendered because of it.
+ */
+describe('a literal option that states it is not selected', () => {
+  const field = (literals: string) =>
+    'type: multi-select-list-field\n' +
+    'name: "Theme"\n' +
+    'description: "d"\n' +
+    'id: "https://repo.metadatacenter.org/template-fields/00000000-0000-0000-0000-000000000000"\n' +
+    'modelVersion: 1.6.0\n' +
+
+    `values:\n${literals}`;
+
+  const render = (yaml: string) => {
+    const read = YamlTemplateFieldReader.getStrict().readFromString(yaml).field;
+    return {
+      json: JSON.parse(CedarWriters.json().getStrict().getFieldWriterForField(read).getAsJsonString(read)),
+      yaml: CedarWriters.yaml().getStrict().getFieldWriterForField(read).getAsYamlString(read),
+    };
+  };
+
+  test('stays distinct from the same option stated no other way', () => {
+    const { json } = render(field('  - label: "Meteorology"\n    selected: false\n  - label: "Meteorology"\n'));
+    const literals = json['_valueConstraints'].literals;
+    expect(literals).toHaveLength(2);
+    expect(literals[0]).toStrictEqual({ label: 'Meteorology', selectedByDefault: false });
+    expect(literals[1]).toStrictEqual({ label: 'Meteorology' });
+  });
+
+  test('says so again in YAML', () => {
+    const { yaml } = render(field('  - label: "Meteorology"\n    selected: false\n'));
+    expect(yaml).toContain('selected: false');
+  });
+
+  test('an option that states nothing still states nothing', () => {
+    const { json, yaml } = render(field('  - label: "Meteorology"\n'));
+    expect(json['_valueConstraints'].literals[0]).toStrictEqual({ label: 'Meteorology' });
+    expect(yaml).not.toContain('selected:');
   });
 });

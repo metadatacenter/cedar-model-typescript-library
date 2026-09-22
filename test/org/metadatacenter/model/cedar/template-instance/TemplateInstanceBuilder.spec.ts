@@ -187,7 +187,8 @@ describe('TemplateInstanceBuilder', () => {
       .build();
 
     expect(templateInstance.schema_name).toBeNull();
-    expect(templateInstance.schema_description).toBeNull();
+    // Null asked for no description, which the model holds as an empty string.
+    expect(templateInstance.schema_description).toBe('');
     expect(templateInstance.dataContainer.id).toBeNull();
   });
 });

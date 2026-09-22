@@ -1,12 +1,16 @@
+import { TemplateField } from '../field/TemplateField';
+import { CedarFieldType } from '../types/cedar-types/CedarFieldType';
+import { ValueConstraintsNumericField } from '../field/dynamic/numeric/ValueConstraintsNumericField';
+import { ValueConstraintsTemporalField } from '../field/dynamic/temporal/ValueConstraintsTemporalField';
+import { InstanceDataStringAtom } from './InstanceDataStringAtom';
+import { InstanceDataTypedAtom } from './InstanceDataTypedAtom';
 import { TemplateInstance } from './TemplateInstance';
 import { InstanceDataContainer } from './InstanceDataContainer';
 import { InstanceDataAtomType } from './InstanceDataAtomType';
 import { InstanceDataEmptyNode } from './InstanceDataEmptyNode';
 import { AbstractContainerArtifact } from '../AbstractContainerArtifact';
 import { CedarArtifactType } from '../types/cedar-types/CedarArtifactType';
-import { CedarFieldType } from '../types/cedar-types/CedarFieldType';
 import { TemplateElement } from '../element/TemplateElement';
-import { TemplateField } from '../field/TemplateField';
 import { Template } from '../template/Template';
 
 /**
@@ -37,6 +41,27 @@ export class InstanceInflater {
     return instance;
   }
 
+  private static emptyField(field: TemplateField): InstanceDataAtomType {
+    if (field.valueConstraints instanceof ValueConstraintsNumericField) {
+      return new InstanceDataTypedAtom(null, field.valueConstraints.numberType.getValue() ?? 'xsd:decimal');
+    }
+    if (field.valueConstraints instanceof ValueConstraintsTemporalField) {
+      return new InstanceDataTypedAtom(null, field.valueConstraints.temporalType.getValue() ?? 'xsd:dateTime');
+    }
+    const iriTypes = [
+      CedarFieldType.CONTROLLED_TERM,
+      CedarFieldType.LINK,
+      CedarFieldType.EXT_ROR,
+      CedarFieldType.EXT_ORCID,
+      CedarFieldType.EXT_PFAS,
+      CedarFieldType.EXT_PUBMED,
+      CedarFieldType.EXT_RRID,
+      CedarFieldType.EXT_NIH_GRANT_ID,
+      CedarFieldType.EXT_DOI,
+    ];
+    return iriTypes.includes(field.cedarFieldType) ? new InstanceDataEmptyNode() : new InstanceDataStringAtom(null);
+  }
+
   private static inflateContainer(container: InstanceDataContainer, template: AbstractContainerArtifact): void {
     const info = template.getChildrenInfo();
 
@@ -58,15 +83,18 @@ export class InstanceInflater {
         if (template.getChildInfo(name)?.atType === CedarArtifactType.STATIC_TEMPLATE_FIELD) {
           return;
         }
-        // An attribute-value field naming no attribute is an empty list, not an
-        // empty node. The two are not interchangeable: an empty node writes as
-        // `{}`, which is not a shape CEDAR gives this field and which reads back
-        // as itself, so the wrong shape survives once written. `packAttributeValues`
-        // settles the same question the same way at read time — an empty array is
-        // the empty list it looks like — and the two have to agree, or inflating
-        // an instance produces something reading it never would.
-        value =
-          child instanceof TemplateField && child.cedarFieldType === CedarFieldType.ATTRIBUTE_VALUE ? [] : new InstanceDataEmptyNode();
+        // Missing repeated children (including choice/attribute-value fields and
+        // elements) must retain their schema's array shape. Single children
+        // need the appropriate literal, IRI, or recursive element shape.
+        if (template.getChildInfo(name)?.isMultiInAnyWay()) {
+          value = [];
+        } else if (child instanceof TemplateElement) {
+          value = new InstanceDataContainer();
+        } else if (child instanceof TemplateField) {
+          value = InstanceInflater.emptyField(child);
+        } else {
+          value = new InstanceDataEmptyNode();
+        }
       }
       if (child instanceof TemplateElement) {
         if (value instanceof InstanceDataContainer) {

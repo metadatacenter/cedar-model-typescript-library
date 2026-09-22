@@ -138,6 +138,20 @@ export class ContainerArtifactChildrenInfo {
    * into `properties.@context.properties`. Derived from `getChildIriMap` so the
    * two cannot disagree.
    */
+  /**
+   * The children carrying a property IRI, in the order the container declares them.
+   *
+   * `_ui.order` is what an author decides, so it is the order a rendering states. Taking these
+   * names from `Object.keys` of the IRI map instead put every child whose name looks like an
+   * array index first, in numeric order, because that is how JavaScript enumerates an object's
+   * keys — so a template with children named `14` and `18` came back with them hoisted ahead of
+   * the rest, and no longer matched what `cedar-artifact-library` writes from the same document.
+   */
+  public getChildNamesWithIri(): Array<string> {
+    const mapped = this.getChildIriMap();
+    return this.getChildrenNames().filter((name) => Object.prototype.hasOwnProperty.call(mapped, name));
+  }
+
   public getIRIMap(): { [key: string]: { [key in typeof JsonSchema.enum]: Array<NullableString> } } {
     const iriMap: { [key: string]: { [key in typeof JsonSchema.enum]: Array<string | null> } } = {};
     const plain = this.getChildIriMap();

@@ -44,7 +44,7 @@ export abstract class JsonAbstractContainerArtifactWriter extends JsonAbstractAr
             // If multi-instance, wrap the definition
             if (isMultiInstance) {
               if (minItems === null) {
-                minItems = 0;
+                minItems = AbstractChildDeploymentInfo.defaultMinItems;
               }
               if (maxItems !== null && maxItems < minItems) {
                 maxItems = minItems;

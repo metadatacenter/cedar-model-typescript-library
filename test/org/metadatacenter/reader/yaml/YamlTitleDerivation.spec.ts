@@ -54,3 +54,49 @@ describe('YAML reader derives title and description from the name', () => {
     expect(node['schema:name']).toBe('Study');
   });
 });
+
+/**
+ * An artifact whose description is empty survives the same round trip.
+ *
+ * The YAML serialization omits a description that is empty, so reading one back gives no
+ * `description` key at all. Reading that as null put null into `schema:description`, which the
+ * meta-schema rejects because it requires a string, and emptied the container's
+ * `_ui.propertyDescriptions` entry for the child, which is derived from the same field. Every
+ * artifact in the shared corpus carries a description, so nothing here caught it; production
+ * artifacts frequently do not. The Java library's YAML reader defaults the field to the empty
+ * string, and these pin that.
+ */
+describe('YAML reader reads an absent description as the empty string', () => {
+  test('a field', () => {
+    const field = CedarBuilders.textFieldBuilder()
+      .withAtId('https://repo.metadatacenter.org/template-fields/00000000-0000-0000-0000-000000000000')
+      .withSchemaName('Disease')
+      .withSchemaDescription('')
+      .build();
+    const yaml = CedarWriters.yaml().getStrict().getFieldWriterForField(field).getAsYamlString(field);
+    expect(yaml).not.toContain('description:');
+    const read = YamlTemplateFieldReader.getStrict().readFromString(yaml).field;
+    const node = jsonNode(CedarWriters.json().getStrict().getFieldWriterForField(read), read);
+    expect(node['schema:description']).toBe('');
+  });
+
+  test('a template, and the entry it keeps for an undescribed child', () => {
+    const child = CedarBuilders.textFieldBuilder()
+      .withAtId('https://repo.metadatacenter.org/template-fields/00000000-0000-0000-0000-000000000001')
+      .withSchemaName('inner')
+      .withSchemaDescription('')
+      .build();
+    const template = CedarBuilders.templateBuilder()
+      .withAtId('https://repo.metadatacenter.org/templates/00000000-0000-0000-0000-000000000000')
+      .withSchemaName('Study')
+      .withSchemaDescription('')
+      .build();
+    template.addChild(child, child.createDeploymentBuilder('inner').build());
+    const yaml = CedarWriters.yaml().getStrict().getTemplateWriter().getAsYamlString(template);
+    const read = YamlTemplateReader.getStrict().readFromString(yaml).template;
+    const node = jsonNode(CedarWriters.json().getStrict().getTemplateWriter(), read);
+    expect(node['schema:description']).toBe('');
+    expect(node.properties.inner['schema:description']).toBe('');
+    expect(node._ui.propertyDescriptions).toStrictEqual({ inner: '' });
+  });
+});

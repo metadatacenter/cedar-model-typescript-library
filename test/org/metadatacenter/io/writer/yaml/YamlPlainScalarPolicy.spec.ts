@@ -94,3 +94,8 @@ describe('the CEDAR-owned YAML plain-scalar policy', () => {
     );
   });
 });
+
+it.each(['true', 'null', 'yes', '2026-09-21', 'a: b', '#value'])('quotes ambiguous key %s', (key) => {
+  const text = SimpleYamlSerializer.serialize({ [key]: 'value' } as JsonNode);
+  expect(text.startsWith(`"${key}":`)).toBe(true);
+});

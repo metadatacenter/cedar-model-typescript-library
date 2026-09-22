@@ -66,4 +66,3 @@ children:
       required: true
       propertyIri: "https://schema.metadatacenter.org/properties/8d0b0f66-e14d-4257-8042-d0d65f44c4b1"
       multiple: true
-      minItems: 1

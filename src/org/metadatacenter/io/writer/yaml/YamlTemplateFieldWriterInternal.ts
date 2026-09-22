@@ -58,6 +58,7 @@ export abstract class YamlTemplateFieldWriterInternal extends YamlAbstractArtifa
       ...uiObject,
       ...vcObject,
       ...this.macroValueRecommendation(field),
+      ...(isDocumentRoot ? this.macroStandaloneFieldFlags(field) : {}),
       ...this.macroPreviousVersion(field, isCompact),
       ...this.macroDerivedFrom(field, isCompact),
       ...this.macroProvenance(field, isCompact),
@@ -82,7 +83,7 @@ export abstract class YamlTemplateFieldWriterInternal extends YamlAbstractArtifa
     field.valueConstraints.literals.forEach((option: ChoiceOptionEntity) => {
       const literal = JsonNode.getEmpty();
       literal[CedarModel.label] = option.label;
-      if (option.selectedByDefault) {
+      if (option.statesSelectedByDefault || option.selectedByDefault) {
         literal[YamlKeys.selected] = option.selectedByDefault;
       }
       literals.push(literal);

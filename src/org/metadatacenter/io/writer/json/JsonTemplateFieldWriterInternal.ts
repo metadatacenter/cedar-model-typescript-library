@@ -1,4 +1,5 @@
 import { JsonWriterBehavior } from '../../../behavior/JsonWriterBehavior';
+import { SchemaVersion } from '../../../model/cedar/types/wrapped-types/SchemaVersion';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { TemplateField } from '../../../model/cedar/field/TemplateField';
 import { CedarModel } from '../../../model/cedar/constants/CedarModel';
@@ -18,6 +19,8 @@ import { CedarJsonWriters } from './CedarJsonWriters';
 import { AbstractDynamicChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractDynamicChildDeploymentInfo';
 import { AbstractFieldChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractFieldChildDeploymentInfo';
 import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
+import { ControlledTermFieldImpl } from '../../../model/cedar/field/dynamic/controlled-term/ControlledTermFieldImpl';
+import { TextFieldImpl } from '../../../model/cedar/field/dynamic/textfield/TextFieldImpl';
 import { Language } from '../../../model/cedar/types/wrapped-types/Language';
 import { ReaderUtil } from '../../reader/ReaderUtil';
 
@@ -37,7 +40,7 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
     requiredObject[JsonSchema.required] = [JsonSchema.atValue];
   }
 
-  protected expandUINode(uiNode: JsonNode, _field: TemplateField, childInfo: AbstractChildDeploymentInfo): void {
+  protected expandUINode(uiNode: JsonNode, field: TemplateField, childInfo: AbstractChildDeploymentInfo): void {
     if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
       if (childInfo.hidden) {
         uiNode[CedarModel.Ui.hidden] = childInfo.hidden;
@@ -48,10 +51,33 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
         if (childInfo.continuePreviousLine) {
           uiNode[CedarModel.Ui.continuePreviousLine] = childInfo.continuePreviousLine;
         }
-        if (childInfo.valueRecommendationEnabled && _field.supportsValueRecommendation()) {
+        if (childInfo.valueRecommendationEnabled && field.supportsValueRecommendation()) {
           uiNode[CedarModel.Ui.valueRecommendationEnabled] = childInfo.valueRecommendationEnabled;
         }
       }
+    }
+    // A field written on its own has no container to state the setting, and a standalone write
+    // passes an empty deployment info, so it comes from the field. The JSON writer read only the
+    // deployment info and so dropped it, while the YAML writer has always read the field directly —
+    // which is how the two serializations came to disagree. A child is unaffected: reading a
+    // container leaves the child's own flag off and states the setting in the deployment info the
+    // branch above reads, and this never overrides what that branch decided. The guard is the YAML
+    // writer's, so the two stay symmetric.
+    if (
+      uiNode[CedarModel.Ui.valueRecommendationEnabled] === undefined &&
+      (field instanceof ControlledTermFieldImpl || field instanceof TextFieldImpl) &&
+      field.valueRecommendationEnabled
+    ) {
+      uiNode[CedarModel.Ui.valueRecommendationEnabled] = true;
+    }
+    // As above, for the field's own `hidden`. A container states it for a child in the deployment
+    // info the branch above reads, and never sets the field's own flag, so this cannot change what
+    // that branch decided.
+    if (uiNode[CedarModel.Ui.hidden] === undefined && field.hidden) {
+      uiNode[CedarModel.Ui.hidden] = true;
+    }
+    if (uiNode[CedarModel.Ui.continuePreviousLine] === undefined && field.continuePreviousLine) {
+      uiNode[CedarModel.Ui.continuePreviousLine] = true;
     }
   }
 
@@ -71,6 +97,13 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
   protected expandValueConstraintsNode(vcNode: JsonNode, field: TemplateField, childInfo: AbstractChildDeploymentInfo): void {
     if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
       vcNode[CedarModel.requiredValue] = childInfo.requiredValue;
+    }
+    // A field written on its own carries the requirement itself: there is no container to state
+    // it, and the deployment info a standalone write passes says nothing, so the branch above
+    // reported every such field as optional however it was stored. A child is unaffected, since
+    // reading a container leaves the field's own flag off.
+    if (!vcNode[CedarModel.requiredValue] && field.requiredValue) {
+      vcNode[CedarModel.requiredValue] = true;
     }
     if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
       if (childInfo.recommendedValue) {
@@ -93,7 +126,7 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
     field.valueConstraints.literals.forEach((option: ChoiceOptionEntity) => {
       const literal = JsonNode.getEmpty();
       literal[CedarModel.label] = option.label;
-      if (option.selectedByDefault) {
+      if (option.statesSelectedByDefault || option.selectedByDefault) {
         literal[CedarModel.selectedByDefault] = option.selectedByDefault;
       }
       literals.push(literal);
@@ -149,7 +182,10 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
       ...this.macroStatusAndVersion(field, this.atomicWriter),
       ...this.macroDerivedFrom(field),
       ...this.macroPreviousVersion(field),
-      [JsonSchema.schemaVersion]: this.atomicWriter.write(field.schema_schemaVersion),
+      // The model version names the model the rendering conforms to, so it is the writer's to state
+      // and not the document's to carry forward. Preserving a stored one republished an assertion
+      // about a model this library no longer emits; the YAML writer has always stamped it.
+      [JsonSchema.schemaVersion]: this.atomicWriter.write(SchemaVersion.CURRENT),
       [TemplateProperty.additionalProperties]: this.atomicWriter.write(AdditionalProperties.FALSE),
       ...this.macroSchemaIdentifier(field),
       [CedarModel.schema]: this.atomicWriter.write(ArtifactSchema.CURRENT),

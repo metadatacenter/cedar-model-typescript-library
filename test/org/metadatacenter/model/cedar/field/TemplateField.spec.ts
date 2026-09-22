@@ -23,7 +23,9 @@ describe('TemplateField', () => {
     expect(backparsed['required']).not.toBeNull();
 
     expect(backparsed['schema:name']).toBeNull();
-    expect(backparsed['schema:description']).toBeNull();
+    // A description is a string wherever it is written, so an artifact with none carries an
+    // empty one rather than a null nothing downstream accepts.
+    expect(backparsed['schema:description']).toBe('');
 
     expect(backparsed['pav:createdOn']).toBeNull();
     expect(backparsed['pav:createdBy']).toBeNull();

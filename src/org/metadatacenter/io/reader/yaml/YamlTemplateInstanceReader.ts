@@ -78,7 +78,7 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
     const source = instanceSourceObject ?? {};
 
     instance.schema_name = ReaderUtil.getString(source, YamlKeys.name);
-    instance.schema_description = ReaderUtil.getString(source, YamlKeys.description);
+    instance.schema_description = ReaderUtil.getStringOrEmpty(source, YamlKeys.description);
     YamlTemplateInstanceReader.refuseEmptyIdentifier(source);
     instance.at_id = CedarArtifactId.forValue(ReaderUtil.getString(source, YamlKeys.id));
     instance.schema_isBasedOn = CedarArtifactId.forValue(ReaderUtil.getString(source, YamlKeys.isBasedOn));

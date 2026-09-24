@@ -7,8 +7,12 @@
   "scripts": {
     "pretest": "node pretest.js",
     "test": "jest",
+    "pretest:ci": "node --test scripts/test-gate.test.mjs",
+    "test:ci": "node scripts/test-gate.mjs",
     "pretest:coverage": "node pretest.js",
-    "test:coverage": "jest --coverage --runInBand",
+    "test:coverage": "npm run test:coverage:prepared",
+    "test:coverage:prepared": "jest --coverage",
+    "test:fixtures": "node pretest.js",
     "generate:yaml:ts": "CEDAR_HOME=. ts-node ./itest/scripts/regenerate-yaml-files-with-ts-lib.ts",
     "generate:yaml:compact:ts": "CEDAR_HOME=. ts-node ./itest/scripts/regenerate-compact-yaml-files-with-ts-lib.ts",
     "generate:yaml:instances:ts": "CEDAR_HOME=. ts-node ./itest/scripts/regenerate-yaml-instances-with-ts-lib.ts",

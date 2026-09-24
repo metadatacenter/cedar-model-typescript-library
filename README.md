@@ -124,6 +124,15 @@ npm run parity:json
 npm run test:package
 ```
 
+`npm run test:ci` runs all six checks above concurrently within
+`CEDAR_TEST_WORKERS` (1–16; by default half the available CPUs, capped at 8).
+Use `CEDAR_TEST_WORKERS=1 npm run test:ci` for serial diagnosis. Coverage gets
+most of the budget; parity runs use private temporary output trees, and only
+packaging writes `dist/`. Fixture generation completes before any checks start, since parity and Jest
+read the same generated case module.
+Every stage reports its elapsed time, and any failed check fails the gate.
+Run concurrent gates in separate checkouts, not against the same output tree.
+
 The unit suite covers the model and serialization behavior. The parity gates
 compare the TypeScript library with the Java CEDAR Artifact Library over the
 vendored JSON and YAML corpora.

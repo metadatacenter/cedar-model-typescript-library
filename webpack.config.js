@@ -96,3 +96,11 @@ module.exports = [
     devtool: 'source-map',
   },
 ];
+
+// Each format has one minifier worker. Keep the three compilers inside the
+// gate's allocation, including the one-worker diagnostic path.
+const workers = Number(process.env.CEDAR_TEST_WORKERS ?? 3);
+if (!Number.isInteger(workers) || workers < 1 || workers > 16) {
+  throw new Error('CEDAR_TEST_WORKERS must be an integer between 1 and 16');
+}
+module.exports.parallelism = Math.min(3, workers);

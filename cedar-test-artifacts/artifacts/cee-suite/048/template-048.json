@@ -791,7 +791,7 @@
                         "schema:description": "",
                         "schema:name": "Alternate Identifier",
                         "schema:schemaVersion": "1.6.0",
-                        "title": "Alternate Identifier field schema",
+                        "title": "Alternate Identifier element schema",
                         "type": "object"
                     },
                     "minItems": 0,
@@ -806,7 +806,7 @@
             "schema:description": "",
             "schema:name": "AlternateIdentifierElement",
             "schema:schemaVersion": "1.6.0",
-            "title": "Alternateidentifierelement element schema",
+            "title": "AlternateIdentifierElement element schema",
             "type": "object"
         },
         "ContributorElement": {
@@ -1414,7 +1414,7 @@
                                     "schema:description": "",
                                     "schema:name": "Affiliation",
                                     "schema:schemaVersion": "1.6.0",
-                                    "title": "Affiliation field schema",
+                                    "title": "Affiliation element schema",
                                     "type": "object"
                                 },
                                 "minItems": 0,
@@ -2175,7 +2175,7 @@
                                     "schema:description": "",
                                     "schema:name": "nameIdentifier",
                                     "schema:schemaVersion": "1.6.0",
-                                    "title": "nameIdentifier field schema",
+                                    "title": "nameIdentifier element schema",
                                     "type": "object"
                                 },
                                 "minItems": 0,
@@ -2302,7 +2302,7 @@
                         "schema:description": "",
                         "schema:name": "Contributor",
                         "schema:schemaVersion": "1.6.0",
-                        "title": "Contributor field schema",
+                        "title": "Contributor element schema",
                         "type": "object"
                     },
                     "minItems": 0,
@@ -2317,7 +2317,7 @@
             "schema:description": "",
             "schema:name": "ContributorElement",
             "schema:schemaVersion": "1.6.0",
-            "title": "Contributorelement element schema",
+            "title": "ContributorElement element schema",
             "type": "object"
         },
         "CreatorElement": {
@@ -2916,7 +2916,7 @@
                                     "schema:description": "",
                                     "schema:name": "Affiliation",
                                     "schema:schemaVersion": "1.6.0",
-                                    "title": "Affiliation field schema",
+                                    "title": "Affiliation element schema",
                                     "type": "object"
                                 },
                                 "minItems": 0,
@@ -3577,7 +3577,7 @@
                                     "schema:description": "",
                                     "schema:name": "nameIdentifier",
                                     "schema:schemaVersion": "1.6.0",
-                                    "title": "nameIdentifier field schema",
+                                    "title": "nameIdentifier element schema",
                                     "type": "object"
                                 },
                                 "minItems": 0,
@@ -3703,7 +3703,7 @@
                         "schema:description": "",
                         "schema:name": "creator",
                         "schema:schemaVersion": "1.6.0",
-                        "title": "creator field schema",
+                        "title": "creator element schema",
                         "type": "object"
                     },
                     "minItems": 1,
@@ -3718,7 +3718,7 @@
             "schema:description": "",
             "schema:name": "CreatorElement",
             "schema:schemaVersion": "1.6.0",
-            "title": "Creatorelement element schema",
+            "title": "CreatorElement element schema",
             "type": "object"
         },
         "DateElement": {
@@ -4202,7 +4202,7 @@
                         "schema:description": "",
                         "schema:name": "Date",
                         "schema:schemaVersion": "1.6.0",
-                        "title": "Date field schema",
+                        "title": "Date element schema",
                         "type": "object"
                     },
                     "minItems": 0,
@@ -4217,7 +4217,7 @@
             "schema:description": "",
             "schema:name": "DateElement",
             "schema:schemaVersion": "1.6.0",
-            "title": "Dateelement element schema",
+            "title": "DateElement element schema",
             "type": "object"
         },
         "DescriptionElement": {
@@ -4699,7 +4699,7 @@
                         "schema:description": "",
                         "schema:name": "Description",
                         "schema:schemaVersion": "1.6.0",
-                        "title": "Description field schema",
+                        "title": "Description element schema",
                         "type": "object"
                     },
                     "minItems": 0,
@@ -4714,7 +4714,7 @@
             "schema:description": "",
             "schema:name": "DescriptionElement",
             "schema:schemaVersion": "1.6.0",
-            "title": "Descriptionelement element schema",
+            "title": "DescriptionElement element schema",
             "type": "object"
         },
         "FormatElement": {
@@ -4905,7 +4905,7 @@
             "schema:description": "",
             "schema:name": "FormatElement",
             "schema:schemaVersion": "1.6.0",
-            "title": "Formatelement element schema",
+            "title": "FormatElement element schema",
             "type": "object"
         },
         "FundingReferenceElement": {
@@ -5371,7 +5371,7 @@
                                         "schema:name": "awardURI",
                                         "schema:schemaVersion": "1.6.0",
                                         "skos:prefLabel": "Award URI",
-                                        "title": "Untitled field schema",
+                                        "title": "awardURI field schema",
                                         "type": "object"
                                     }
                                 },
@@ -5384,7 +5384,7 @@
                                 "schema:description": "",
                                 "schema:name": "Award Number",
                                 "schema:schemaVersion": "1.6.0",
-                                "title": "Award number element schema",
+                                "title": "Award Number element schema",
                                 "type": "object"
                             },
                             "Funder Identifier": {
@@ -5572,7 +5572,7 @@
                                         "schema:name": "SchemeURI",
                                         "schema:schemaVersion": "1.6.0",
                                         "skos:prefLabel": "Funder Identifier Scheme URI",
-                                        "title": "Untitled field schema",
+                                        "title": "SchemeURI field schema",
                                         "type": "object"
                                     },
                                     "funderIdentifier": {
@@ -5797,7 +5797,7 @@
                                 "schema:description": "",
                                 "schema:name": "Funder Identifier",
                                 "schema:schemaVersion": "1.6.0",
-                                "title": "Funder identifier element schema",
+                                "title": "Funder Identifier element schema",
                                 "type": "object"
                             },
                             "awardTitle": {
@@ -5994,7 +5994,7 @@
                         "schema:description": "",
                         "schema:name": "Funding Reference",
                         "schema:schemaVersion": "1.6.0",
-                        "title": "Funding Reference field schema",
+                        "title": "Funding Reference element schema",
                         "type": "object"
                     },
                     "minItems": 0,
@@ -6009,7 +6009,7 @@
             "schema:description": "",
             "schema:name": "FundingReferenceElement",
             "schema:schemaVersion": "1.6.0",
-            "title": "Fundingreferenceelement element schema",
+            "title": "FundingReferenceElement element schema",
             "type": "object"
         },
         "GeoLocationElement": {
@@ -6399,7 +6399,7 @@
                                         "schema:name": "eastBoundLongitude",
                                         "schema:schemaVersion": "1.6.0",
                                         "skos:prefLabel": "East Bound Longitude",
-                                        "title": "Untitled field schema",
+                                        "title": "eastBoundLongitude field schema",
                                         "type": "object"
                                     },
                                     "northBoundLatitude": {
@@ -6481,7 +6481,7 @@
                                         "schema:name": "northBoundLatitude",
                                         "schema:schemaVersion": "1.6.0",
                                         "skos:prefLabel": "South Bound Latitude",
-                                        "title": "Untitled field schema",
+                                        "title": "northBoundLatitude field schema",
                                         "type": "object"
                                     },
                                     "southBoundLatitude": {
@@ -6563,7 +6563,7 @@
                                         "schema:name": "southBoundLatitude",
                                         "schema:schemaVersion": "1.6.0",
                                         "skos:prefLabel": "South Bound Latitude",
-                                        "title": "Untitled field schema",
+                                        "title": "southBoundLatitude field schema",
                                         "type": "object"
                                     },
                                     "westBoundLongitude": {
@@ -6645,7 +6645,7 @@
                                         "schema:name": "westBoundLongitude",
                                         "schema:schemaVersion": "1.6.0",
                                         "skos:prefLabel": "West Bound Longitude",
-                                        "title": "Untitled field schema",
+                                        "title": "westBoundLongitude field schema",
                                         "type": "object"
                                     }
                                 },
@@ -6660,7 +6660,7 @@
                                 "schema:description": "",
                                 "schema:name": "Geo Location Box",
                                 "schema:schemaVersion": "1.6.0",
-                                "title": "Geo location box element schema",
+                                "title": "Geo Location Box element schema",
                                 "type": "object"
                             },
                             "Geo Location Point": {
@@ -6835,7 +6835,7 @@
                                         "schema:name": "pointLatitude",
                                         "schema:schemaVersion": "1.6.0",
                                         "skos:prefLabel": "Point Latitude",
-                                        "title": "Untitled field schema",
+                                        "title": "pointLatitude field schema",
                                         "type": "object"
                                     },
                                     "pointLongitude": {
@@ -6917,7 +6917,7 @@
                                         "schema:name": "pointLongitude",
                                         "schema:schemaVersion": "1.6.0",
                                         "skos:prefLabel": "Point Longitude",
-                                        "title": "Untitled field schema",
+                                        "title": "pointLongitude field schema",
                                         "type": "object"
                                     }
                                 },
@@ -6930,7 +6930,7 @@
                                 "schema:description": "",
                                 "schema:name": "Geo Location Point",
                                 "schema:schemaVersion": "1.6.0",
-                                "title": "Geo location point element schema",
+                                "title": "Geo Location Point element schema",
                                 "type": "object"
                             },
                             "geoLocationPlace": {
@@ -7290,7 +7290,7 @@
                                                     "schema:name": "pointLatitude",
                                                     "schema:schemaVersion": "1.6.0",
                                                     "skos:prefLabel": "Point Latitude",
-                                                    "title": "Untitled field schema",
+                                                    "title": "pointLatitude field schema",
                                                     "type": "object"
                                                 },
                                                 "pointLongitude": {
@@ -7372,7 +7372,7 @@
                                                     "schema:name": "pointLongitude",
                                                     "schema:schemaVersion": "1.6.0",
                                                     "skos:prefLabel": "Point Longitude",
-                                                    "title": "Untitled field schema",
+                                                    "title": "pointLongitude field schema",
                                                     "type": "object"
                                                 }
                                             },
@@ -7386,7 +7386,7 @@
                                             "schema:name": "inPolygenPoint",
                                             "schema:schemaVersion": "1.6.0",
                                             "skos:prefLabel": "In Polygon Point",
-                                            "title": "Inpolygenpoint element schema",
+                                            "title": "inPolygenPoint element schema",
                                             "type": "object"
                                         },
                                         "polygonPoint": {
@@ -7562,7 +7562,7 @@
                                                         "schema:name": "pointLatitude",
                                                         "schema:schemaVersion": "1.6.0",
                                                         "skos:prefLabel": "Point Latitude",
-                                                        "title": "Untitled field schema",
+                                                        "title": "pointLatitude field schema",
                                                         "type": "object"
                                                     },
                                                     "pointLongitude": {
@@ -7644,7 +7644,7 @@
                                                         "schema:name": "pointLongitude",
                                                         "schema:schemaVersion": "1.6.0",
                                                         "skos:prefLabel": "Point Longitude",
-                                                        "title": "Untitled field schema",
+                                                        "title": "pointLongitude field schema",
                                                         "type": "object"
                                                     }
                                                 },
@@ -7658,7 +7658,7 @@
                                                 "schema:name": "polygonPoint",
                                                 "schema:schemaVersion": "1.6.0",
                                                 "skos:prefLabel": "Polygon Point",
-                                                "title": "polygonPoint field schema",
+                                                "title": "polygonPoint element schema",
                                                 "type": "object"
                                             },
                                             "minItems": 0,
@@ -7674,7 +7674,7 @@
                                     "schema:description": "",
                                     "schema:name": "geoLocationPolygon",
                                     "schema:schemaVersion": "1.6.0",
-                                    "title": "geoLocationPolygon field schema",
+                                    "title": "geoLocationPolygon element schema",
                                     "type": "object"
                                 },
                                 "minItems": 0,
@@ -7692,7 +7692,7 @@
                         "schema:description": "",
                         "schema:name": "GeoLocation",
                         "schema:schemaVersion": "1.6.0",
-                        "title": "GeoLocation field schema",
+                        "title": "GeoLocation element schema",
                         "type": "object"
                     },
                     "minItems": 0,
@@ -7707,7 +7707,7 @@
             "schema:description": "",
             "schema:name": "GeoLocationElement",
             "schema:schemaVersion": "1.6.0",
-            "title": "Geolocationelement element schema",
+            "title": "GeoLocationElement element schema",
             "type": "object"
         },
         "Language": {
@@ -7994,7 +7994,7 @@
             "schema:description": "",
             "schema:name": "PublicationYearElement",
             "schema:schemaVersion": "1.6.0",
-            "title": "Publicationyearelement element schema",
+            "title": "PublicationYearElement element schema",
             "type": "object"
         },
         "PublisherElement": {
@@ -8181,7 +8181,7 @@
             "schema:description": "",
             "schema:name": "PublisherElement",
             "schema:schemaVersion": "1.6.0",
-            "title": "Publisherelement element schema",
+            "title": "PublisherElement element schema",
             "type": "object"
         },
         "RelatedIdentifierElement": {
@@ -9078,7 +9078,7 @@
                         "schema:description": "",
                         "schema:name": "Related Identifier",
                         "schema:schemaVersion": "1.6.0",
-                        "title": "Related Identifier field schema",
+                        "title": "Related Identifier element schema",
                         "type": "object"
                     },
                     "minItems": 0,
@@ -9093,7 +9093,7 @@
             "schema:description": "",
             "schema:name": "RelatedIdentifierElement",
             "schema:schemaVersion": "1.6.0",
-            "title": "Relatedidentifierelement element schema",
+            "title": "RelatedIdentifierElement element schema",
             "type": "object"
         },
         "RelatedItemElement": {
@@ -10011,7 +10011,7 @@
                                     "schema:description": "",
                                     "schema:name": "Contributor",
                                     "schema:schemaVersion": "1.6.0",
-                                    "title": "Contributor field schema",
+                                    "title": "Contributor element schema",
                                     "type": "object"
                                 },
                                 "minItems": 0,
@@ -10521,7 +10521,7 @@
                                     "schema:description": "",
                                     "schema:name": "Creator",
                                     "schema:schemaVersion": "1.6.0",
-                                    "title": "Creator field schema",
+                                    "title": "Creator element schema",
                                     "type": "object"
                                 },
                                 "minItems": 0,
@@ -11302,7 +11302,7 @@
                                 "schema:description": "",
                                 "schema:name": "Related Item Identifier Element",
                                 "schema:schemaVersion": "1.6.0",
-                                "title": "Related item identifier element element schema",
+                                "title": "Related Item Identifier Element element schema",
                                 "type": "object"
                             },
                             "Title": {
@@ -11599,7 +11599,7 @@
                                     "schema:description": "",
                                     "schema:name": "Title",
                                     "schema:schemaVersion": "1.6.0",
-                                    "title": "Title field schema",
+                                    "title": "Title element schema",
                                     "type": "object"
                                 },
                                 "minItems": 0,
@@ -12493,7 +12493,7 @@
                         "schema:description": "",
                         "schema:name": "Related Item",
                         "schema:schemaVersion": "1.6.0",
-                        "title": "Related Item field schema",
+                        "title": "Related Item element schema",
                         "type": "object"
                     },
                     "minItems": 0,
@@ -12508,7 +12508,7 @@
             "schema:description": "",
             "schema:name": "RelatedItemElement",
             "schema:schemaVersion": "1.6.0",
-            "title": "Relateditemelement element schema",
+            "title": "RelatedItemElement element schema",
             "type": "object"
         },
         "ResourceTypeElement": {
@@ -12804,7 +12804,7 @@
             "schema:description": "",
             "schema:name": "ResourceTypeElement",
             "schema:schemaVersion": "1.6.0",
-            "title": "Resourcetypeelement element schema",
+            "title": "ResourceTypeElement element schema",
             "type": "object"
         },
         "RightsElement": {
@@ -13368,7 +13368,7 @@
                                 "schema:name": "rightsURI",
                                 "schema:schemaVersion": "1.6.0",
                                 "skos:prefLabel": "Rights URI",
-                                "title": "Untitled field schema",
+                                "title": "rightsURI field schema",
                                 "type": "object"
                             },
                             "schemeURI": {
@@ -13454,7 +13454,7 @@
                                 "schema:name": "schemeURI",
                                 "schema:schemaVersion": "1.6.0",
                                 "skos:prefLabel": "Rights Identifier Scheme URI",
-                                "title": "Untitled field schema",
+                                "title": "schemeURI field schema",
                                 "type": "object"
                             }
                         },
@@ -13470,7 +13470,7 @@
                         "schema:description": "",
                         "schema:name": "Rights",
                         "schema:schemaVersion": "1.6.0",
-                        "title": "Rights field schema",
+                        "title": "Rights element schema",
                         "type": "object"
                     },
                     "minItems": 0,
@@ -13485,7 +13485,7 @@
             "schema:description": "",
             "schema:name": "RightsElement",
             "schema:schemaVersion": "1.6.0",
-            "title": "Rightselement element schema",
+            "title": "RightsElement element schema",
             "type": "object"
         },
         "SizeElement": {
@@ -13676,7 +13676,7 @@
             "schema:description": "",
             "schema:name": "SizeElement",
             "schema:schemaVersion": "1.6.0",
-            "title": "Sizeelement element schema",
+            "title": "SizeElement element schema",
             "type": "object"
         },
         "SubjectElement": {
@@ -14326,7 +14326,7 @@
                                 "schema:name": "valueURI",
                                 "schema:schemaVersion": "1.6.0",
                                 "skos:prefLabel": "Value URI",
-                                "title": "Untitled field schema",
+                                "title": "valueURI field schema",
                                 "type": "object"
                             }
                         },
@@ -14342,7 +14342,7 @@
                         "schema:description": "",
                         "schema:name": "Subject",
                         "schema:schemaVersion": "1.6.0",
-                        "title": "Subject field schema",
+                        "title": "Subject element schema",
                         "type": "object"
                     },
                     "minItems": 0,
@@ -14357,7 +14357,7 @@
             "schema:description": "",
             "schema:name": "SubjectElement",
             "schema:schemaVersion": "1.6.0",
-            "title": "Subjectelement element schema",
+            "title": "SubjectElement element schema",
             "type": "object"
         },
         "TitleElement": {
@@ -14839,7 +14839,7 @@
                         "schema:description": "",
                         "schema:name": "Title",
                         "schema:schemaVersion": "1.6.0",
-                        "title": "Title field schema",
+                        "title": "Title element schema",
                         "type": "object"
                     },
                     "minItems": 1,
@@ -14854,7 +14854,7 @@
             "schema:description": "",
             "schema:name": "TitleElement",
             "schema:schemaVersion": "1.6.0",
-            "title": "Titleelement element schema",
+            "title": "TitleElement element schema",
             "type": "object"
         },
         "Version": {
@@ -15117,6 +15117,6 @@
     "schema:description": "",
     "schema:name": "DataCite DOI Request Templete",
     "schema:schemaVersion": "1.6.0",
-    "title": "Datacite doi request templete template schema",
+    "title": "DataCite DOI Request Templete template schema",
     "type": "object"
 }

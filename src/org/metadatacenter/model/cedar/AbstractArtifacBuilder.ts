@@ -1,3 +1,5 @@
+import { internalNameFor, SchemaArtifactKind } from './AbstractSchemaArtifact';
+import { CedarArtifactType } from './types/cedar-types/CedarArtifactType';
 import { IsoDate } from './types/wrapped-types/IsoDate';
 import { CedarUser } from './types/cedar-types/CedarUser';
 import { PavVersion } from './types/wrapped-types/PavVersion';
@@ -144,5 +146,23 @@ export abstract class AbstractArtifactBuilder {
     artifact.schema_identifier = this.schema_identifier;
 
     artifact.pav_derivedFrom = this.pav_derivedFrom;
+
+    // A title is composed from the name, so an artifact built without one still carries the title
+    // a reader derives. Without this, writing a built artifact emitted a null title - which the
+    // meta-schema refuses, since it asks for a non-empty string - and writing, reading and writing
+    // again gave two different documents. A title someone set explicitly is left as they set it.
+    if (artifact.title === null && artifact.schema_name !== null) {
+      const kind = AbstractArtifactBuilder.kindOf(artifact.cedarArtifactType);
+      if (kind !== null) {
+        artifact.title = internalNameFor(artifact.schema_name, kind);
+      }
+    }
+  }
+
+  private static kindOf(type: CedarArtifactType): SchemaArtifactKind | null {
+    if (type === CedarArtifactType.TEMPLATE) return 'template';
+    if (type === CedarArtifactType.TEMPLATE_ELEMENT) return 'element';
+    if (type === CedarArtifactType.TEMPLATE_FIELD || type === CedarArtifactType.STATIC_TEMPLATE_FIELD) return 'field';
+    return null;
   }
 }

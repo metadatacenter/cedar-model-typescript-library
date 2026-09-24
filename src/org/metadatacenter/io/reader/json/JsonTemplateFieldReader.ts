@@ -1,3 +1,4 @@
+import { SchemaArtifactKind } from '../../../model/cedar/AbstractSchemaArtifact';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { JsonArtifactParsingResult } from '../../../model/cedar/util/compare/JsonArtifactParsingResult';
 import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
@@ -48,6 +49,10 @@ import { JsonFieldReaderExtNihGrantId } from '../../../model/cedar/field/dynamic
 import { JsonFieldReaderExtDoi } from '../../../model/cedar/field/dynamic/ext-doi/JsonFieldReaderExtDoi';
 
 export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
+  protected artifactTypeWord(): SchemaArtifactKind {
+    return 'field';
+  }
+
   protected constructor(behavior: JsonReaderBehavior) {
     super(behavior);
   }

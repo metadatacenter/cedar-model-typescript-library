@@ -1,3 +1,4 @@
+import { TemplateProperty } from '../../../../src/org/metadatacenter/model/cedar/constants/TemplateProperty';
 import {
   AbstractArtifact,
   CedarArtifactType,
@@ -60,7 +61,10 @@ describe('RoundTrip', () => {
 
     const compareResult = RoundTrip.compare(fieldSourceJSONString, templateReSerialized);
     // TestUtil.p(compareResult.getBlueprintComparisonErrors());
-    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(1);
+    // Two, and the second is the point of the first: the modified-by IRI this test rewrites by
+    // hand, and the title, which is composed from the name rather than read. This field was built
+    // with a title of its own, so the trip replaces it with the one its name composes.
+    expect(compareResult.getBlueprintComparisonErrorCount()).toBe(2);
 
     const uiPagesMissing = new ComparisonError(
       'oco03',
@@ -70,6 +74,15 @@ describe('RoundTrip', () => {
       'ABC',
     );
     expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(uiPagesMissing);
+
+    const titleComposed = new ComparisonError(
+      'oco03',
+      ComparisonErrorType.VALUE_MISMATCH,
+      new JsonPath(TemplateProperty.title),
+      'Email field title',
+      'Email Schema Name field schema',
+    );
+    expect(compareResult.getBlueprintComparisonErrors()).toContainEqual(titleComposed);
 
     expect(compareResult.getBlueprintComparisonWarningCount()).toBe(0);
   });

@@ -7,6 +7,22 @@ import { AbstractArtifact } from './AbstractArtifact';
 import { AbstractChildDeploymentInfoBuilder } from './deployment/AbstractChildDeploymentInfoBuilder';
 import { Language } from './types/wrapped-types/Language';
 
+/** The kinds of schema artifact, as a composed title names them. */
+export type SchemaArtifactKind = 'template' | 'element' | 'field';
+
+/**
+ * The title an artifact of this kind and name has.
+ *
+ * Composed rather than stored: it restates the artifact's own name and says what kind of thing the
+ * name belongs to, so it carries nothing an author decided. A document supplying some other title
+ * describes the same schema by another name, and reading that name back let two artifacts with the
+ * same name and kind disagree about what their JSON Schema is called. Both readers compose it here,
+ * so neither can derive a different one, and the string matches what the Java library builds.
+ */
+export function internalNameFor(name: string, kind: SchemaArtifactKind): string {
+  return `${name} ${kind} schema`;
+}
+
 export abstract class AbstractSchemaArtifact extends AbstractArtifact {
   public title: NullableString = null;
   public description: NullableString = null;

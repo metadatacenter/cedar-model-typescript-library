@@ -193,14 +193,21 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
     AttributeValueNamePolicy.assertValid(instance.dataContainer);
     const extendedContext: JsonNode = this.buildContext(instance);
 
-    // build the final object
+    // Java writes an explicitly present description with the name, but appends the required
+    // empty fallback after isBasedOn when the source omitted it. Reassigning an existing key
+    // below preserves its position, just as Jackson's ObjectNode.put does.
+    const nameAndDescription = this.macroSchemaNameAndDescription(instance);
+    if (instance.descriptionWasAbsent && instance.schema_description === '') {
+      delete nameAndDescription[JsonSchema.schemaDescription];
+    }
     return {
       [JsonSchema.atId]: this.atomicWriter.write(instance.at_id),
-      ...this.macroSchemaNameAndDescription(instance),
+      ...nameAndDescription,
       ...this.getDataTree(instance),
       ...this.macroAnnotations(instance),
       [JsonSchema.atContext]: extendedContext,
       ...this.macroIsBasedOn(instance),
+      [JsonSchema.schemaDescription]: instance.schema_description,
       ...this.macroProvenance(instance, this.atomicWriter),
       ...this.macroDerivedFrom(instance),
     };

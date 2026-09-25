@@ -71,6 +71,8 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     const instance = TemplateInstance.buildEmptyWithNullValues();
 
     this.readNonReportableAttributes(instance, instanceSourceObject);
+    instance.descriptionWasAbsent = ReaderUtil.getString(instanceSourceObject, JsonSchema.schemaDescription) === null;
+    instance.schema_description = instance.schema_description ?? '';
 
     // The caller's path was accepted and then discarded in favour of a fresh
     // one, so anything reported here was rooted at the document rather than

@@ -88,3 +88,9 @@ export function mayWriteYamlValuePlain(field: string, value: string): boolean {
     closedVocabularies.get(field)?.has(value) ?? ((field === 'version' || field === 'modelVersion') && versionPattern.test(value));
   return inVocabulary && !plainScalarNeedsQuoting(value);
 }
+
+/** Same ASCII allowlist as Java's YamlScalarQuotingChecker; no emitter heuristics. */
+export function yamlKeyNeedsQuoting(text: string): boolean {
+  // The end assertion is strict: JavaScript's $ also matches before a final newline.
+  return !/^[A-Za-z_](?:[A-Za-z0-9_ -]*[A-Za-z0-9_-])?$(?![\s\S])/.test(text) || /^(y|yes|n|no|true|false|on|off|null)$/i.test(text);
+}

@@ -1,6 +1,6 @@
 import YAML, { isPair, isScalar, Scalar, ToStringOptions, visit } from 'yaml';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
-import { mayWriteYamlValuePlain, plainScalarNeedsQuoting } from './YamlPlainScalarPolicy';
+import { mayWriteYamlValuePlain, yamlKeyNeedsQuoting } from './YamlPlainScalarPolicy';
 
 const options = {
   blockQuote: 'literal',
@@ -90,8 +90,8 @@ export class SimpleYamlSerializer {
     });
     visit(document, {
       Scalar(key, node, path) {
-        if (key === 'key' && typeof node.value === 'string' && plainScalarNeedsQuoting(node.value)) {
-          node.type = Scalar.QUOTE_DOUBLE;
+        if (key === 'key' && typeof node.value === 'string') {
+          node.type = yamlKeyNeedsQuoting(node.value) ? Scalar.QUOTE_DOUBLE : Scalar.PLAIN;
         } else if (key === 'value' && typeof node.value === 'string') {
           const pair = path.at(-1);
           if (

@@ -98,26 +98,25 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
     return skosObject;
   }
 
-  /**
-   * What a field written on its own says about itself: whether it is hidden, and whether it
-   * demands a value.
-   *
-   * Only for a field that is the document, which is why the caller passes its own root-ness. A
-   * child says both through its container, which writes them into the child's `configuration`
-   * block, and writing them here as well would state each of them twice.
-   */
+  /** Standalone UI flags follow provenance; requirements live in a final configuration block. */
   protected macroStandaloneFieldFlags(field: TemplateField): JsonNode {
     const ret: JsonNode = JsonNode.getEmpty();
     if (field.hidden) {
       ret[YamlKeys.hidden] = true;
     }
-    if (field.requiredValue) {
-      ret[YamlKeys.required] = true;
-    }
     if (field.continuePreviousLine) {
       ret[YamlKeys.continuePreviousLine] = true;
     }
     return ret;
+  }
+
+  protected macroStandaloneFieldConfiguration(field: TemplateField): JsonNode {
+    const configuration = JsonNode.getEmpty();
+    if (field.cedarFieldType.recordsRequirement) {
+      if (field.requiredValue) configuration[YamlKeys.required] = true;
+      if (field.recommendedValue) configuration[YamlKeys.recommended] = true;
+    }
+    return JsonNode.hasEntries(configuration) ? { [YamlKeys.configuration]: configuration } : {};
   }
 
   protected macroValueRecommendation(field: TemplateField): JsonNode {

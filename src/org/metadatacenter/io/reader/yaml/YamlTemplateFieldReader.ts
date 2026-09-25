@@ -133,6 +133,7 @@ export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
     const configuration: JsonNode = ReaderUtil.getNode(fieldSourceObject, YamlKeys.configuration);
     field.hidden = YamlTemplateFieldReader.readFlag(configuration, fieldSourceObject, YamlKeys.hidden);
     field.requiredValue = YamlTemplateFieldReader.readFlag(configuration, fieldSourceObject, YamlKeys.required);
+    field.recommendedValue = YamlTemplateFieldReader.readFlag(configuration, fieldSourceObject, YamlKeys.recommended);
     field.continuePreviousLine = YamlTemplateFieldReader.readFlag(configuration, fieldSourceObject, YamlKeys.continuePreviousLine);
   }
 

@@ -122,3 +122,25 @@ test.each(['template', 'element'])('%s JSON text retains numeric child names in 
   expect(childKeys.length).toBe(12);
   for (let i = 0; i < childKeys.length; i += 3) expect(childKeys.slice(i, i + 3)).toEqual(['First', '11', 'Last']);
 });
+
+test.each(['text-field', 'numeric-field'])('standalone %s retains required, recommended and UI flags from JSON', (type) => {
+  const field = readers.getTemplateFieldReader().readFromString(base.replace('text-field', type)).field;
+  const source = jsonOf(field);
+  source._valueConstraints.requiredValue = true;
+  source._valueConstraints.recommendedValue = true;
+  source._ui.hidden = true;
+  source._ui.continuePreviousLine = true;
+  const reread = CedarReaders.json().getStrict().getTemplateFieldReader().readFromObject(source).field;
+  const yaml = CedarWriters.yaml().getStrict().getFieldWriterForField(reread).getAsYamlString(reread);
+  const body = parse(yaml);
+  expect(body.configuration).toEqual({ required: true, recommended: true });
+  expect(body).not.toHaveProperty('required');
+  expect(body.hidden).toBe(true);
+  expect(body.continuePreviousLine).toBe(true);
+  expect(Object.keys(body).at(-1)).toBe('configuration');
+  const roundtrip = jsonOf(readers.getTemplateFieldReader().readFromString(yaml).field);
+  expect(roundtrip._valueConstraints.requiredValue).toBe(true);
+  expect(roundtrip._valueConstraints.recommendedValue).toBe(true);
+  expect(roundtrip._ui.hidden).toBe(true);
+  expect(roundtrip._ui.continuePreviousLine).toBe(true);
+});

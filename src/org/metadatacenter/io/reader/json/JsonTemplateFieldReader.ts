@@ -132,6 +132,15 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     ) {
       field.valueRecommendationEnabled = childInfo.valueRecommendationEnabled;
     }
+    if (childInfo instanceof ChildDeploymentInfo && childInfo.isStandalone()) {
+      const ui = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
+      field.hidden = ReaderUtil.getBoolean(ui, CedarModel.Ui.hidden);
+      field.continuePreviousLine = childInfo.continuePreviousLine;
+      if (field.cedarFieldType.recordsRequirement) {
+        field.requiredValue = childInfo.requiredValue;
+        field.recommendedValue = childInfo.recommendedValue;
+      }
+    }
     this.readNonReportableAttributes(field, fieldSourceObject);
     applySchemaReaderDefaults(field, fieldSourceObject, path, 'json');
     this.readReportableAttributes(field, fieldSourceObject, parsingResult, path);

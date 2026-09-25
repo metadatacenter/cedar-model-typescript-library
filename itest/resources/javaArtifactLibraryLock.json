@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "javaArtifactLibrary": {
     "repository": "https://github.com/metadatacenter/cedar-artifact-library.git",
-    "gitCommit": "80a11b89d2d09d8fd6ed445b7ef4bb8bce867b70",
+    "gitCommit": "c9bee3c3d03a84aafbfc84cb5ebacfbd7c4916a2",
     "mavenCoordinate": "org.metadatacenter:cedar-artifact-library:2.9.19-SNAPSHOT"
   },
   "sharedCorpus": {

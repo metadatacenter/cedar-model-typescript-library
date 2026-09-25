@@ -117,6 +117,7 @@ import { InstanceDataAttributeValueFieldName } from './org/metadatacenter/model/
 import { AttributeValueNamePolicy } from './org/metadatacenter/model/cedar/template-instance/AttributeValueNamePolicy';
 import { InstanceDataEmptyNode } from './org/metadatacenter/model/cedar/template-instance/InstanceDataEmptyNode';
 import { InstanceDataEmptyAtom } from './org/metadatacenter/model/cedar/template-instance/InstanceDataEmptyAtom';
+import { InstanceDataLabelAtom } from './org/metadatacenter/model/cedar/template-instance/InstanceDataLabelAtom';
 import { InstanceDataStringAtom } from './org/metadatacenter/model/cedar/template-instance/InstanceDataStringAtom';
 import { InstanceDataTypedAtom } from './org/metadatacenter/model/cedar/template-instance/InstanceDataTypedAtom';
 import { InstanceDataLinkAtom } from './org/metadatacenter/model/cedar/template-instance/InstanceDataLinkAtom';
@@ -249,6 +250,7 @@ export {
   InstanceDataEmptyNode,
   InstanceDataEmptyAtom,
   InstanceDataStringAtom,
+  InstanceDataLabelAtom,
   InstanceDataTypedAtom,
   InstanceDataLinkAtom,
   InstanceDataControlledAtom,

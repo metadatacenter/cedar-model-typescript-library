@@ -1,3 +1,4 @@
+import { InstanceDataLabelAtom } from '../../../model/cedar/template-instance/InstanceDataLabelAtom';
 import YAML from 'yaml';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { CedarArtifactId } from '../../../model/cedar/types/cedar-types/CedarArtifactId';
@@ -204,7 +205,8 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
     if (Object.hasOwn(node, YamlKeys.value)) {
       const value = ReaderUtil.getString(node, YamlKeys.value);
       const datatype = ReaderUtil.getString(node, YamlKeys.datatype);
-      return datatype === null ? new InstanceDataStringAtom(value) : new InstanceDataTypedAtom(value, datatype);
+      const label = ReaderUtil.getString(node, YamlKeys.label);
+      return datatype === null ? new InstanceDataStringAtom(value, label) : new InstanceDataTypedAtom(value, datatype, label);
     }
     if (Object.hasOwn(node, YamlKeys.id)) {
       YamlTemplateInstanceReader.refuseEmptyIdentifier(node);
@@ -214,6 +216,10 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
       return label === null
         ? InstanceDataLinkAtom.fromParsedNode(id, datatype)
         : InstanceDataControlledAtom.fromParsedNode(id, label, datatype);
+    }
+    const label = ReaderUtil.getString(node, YamlKeys.label);
+    if (label !== null) {
+      return new InstanceDataLabelAtom(label, ReaderUtil.getString(node, YamlKeys.datatype));
     }
     return new InstanceDataEmptyNode();
   }

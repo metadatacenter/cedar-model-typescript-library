@@ -1,3 +1,4 @@
+import { InstanceDataLabelAtom } from './InstanceDataLabelAtom';
 import { InstanceDataStringAtom } from './InstanceDataStringAtom';
 import { InstanceDataLinkAtom } from './InstanceDataLinkAtom';
 import { InstanceDataContainer } from './InstanceDataContainer';
@@ -24,6 +25,7 @@ import { InstanceDataAttributeValueFieldName } from './InstanceDataAttributeValu
  * handle.
  */
 export type InstanceDataAtomType =
+  | InstanceDataLabelAtom
   | InstanceDataStringAtom
   | InstanceDataLinkAtom
   | InstanceDataContainer

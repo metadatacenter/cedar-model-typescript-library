@@ -7,6 +7,7 @@ import {
   InstanceDataControlledAtom,
   InstanceDataEmptyNode,
   InstanceDataLinkAtom,
+  InstanceDataLabelAtom,
   InstanceDataStringAtom,
   InstanceDataTypedAtom,
   JsonNode,
@@ -152,7 +153,8 @@ describe('YAML instance edge cases', () => {
     expect(values._nested).toBeInstanceOf(InstanceDataContainer);
     expect(values._link).toBeInstanceOf(InstanceDataLinkAtom);
     expect(values._term).toBeInstanceOf(InstanceDataControlledAtom);
-    expect(values._unknown).toBeInstanceOf(InstanceDataEmptyNode);
+    expect(values._unknown).toBeInstanceOf(InstanceDataLabelAtom);
+    expect((values._unknown as InstanceDataLabelAtom).label).toBe('label without an id');
   });
 
   test('accepts both nested and direct attribute-value spellings while ignoring primitives and lists', () => {

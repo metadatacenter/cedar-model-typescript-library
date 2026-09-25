@@ -1,7 +1,10 @@
 export class InstanceDataStringAtom {
   private _value: string | null;
 
-  constructor(value: string | null) {
+  constructor(
+    value: string | null,
+    public readonly label: string | null = null,
+  ) {
     this._value = value;
   }
 

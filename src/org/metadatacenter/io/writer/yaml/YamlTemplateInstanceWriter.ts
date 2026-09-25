@@ -1,3 +1,4 @@
+import { InstanceDataLabelAtom } from '../../../model/cedar/template-instance/InstanceDataLabelAtom';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { SimpleYamlSerializer } from './SimpleYamlSerializer';
 import { YamlWriterBehavior } from '../../../behavior/YamlWriterBehavior';
@@ -207,7 +208,16 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
       return this.serializeAtomString(atom);
     }
     if (atom instanceof InstanceDataTypedAtom) {
-      return atom.value === null ? null : { [YamlKeys.datatype]: atom.type, [YamlKeys.value]: atom.value };
+      return atom.value === null && atom.label === null
+        ? null
+        : {
+            [YamlKeys.datatype]: atom.type,
+            [YamlKeys.value]: atom.value,
+            ...(atom.label === null ? {} : { [YamlKeys.label]: atom.label }),
+          };
+    }
+    if (atom instanceof InstanceDataLabelAtom) {
+      return { ...(atom.type === null ? {} : { [YamlKeys.datatype]: atom.type }), [YamlKeys.label]: atom.label };
     }
     if (atom instanceof InstanceDataControlledAtom) {
       const controlled: JsonNode = JsonNode.getEmpty();
@@ -235,7 +245,9 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
   }
 
   private serializeAtomString(atom: InstanceDataStringAtom): JsonNode | null {
-    return atom.value === null ? null : { [YamlKeys.value]: atom.value };
+    return atom.value === null && atom.label === null
+      ? null
+      : { [YamlKeys.value]: atom.value, ...(atom.label === null ? {} : { [YamlKeys.label]: atom.label }) };
   }
 
   private serializeAtomLink(atom: InstanceDataLinkAtom): JsonNode | null {

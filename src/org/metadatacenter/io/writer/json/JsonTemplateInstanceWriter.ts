@@ -1,3 +1,4 @@
+import { InstanceDataLabelAtom } from '../../../model/cedar/template-instance/InstanceDataLabelAtom';
 import { JsonWriterBehavior } from '../../../behavior/JsonWriterBehavior';
 import { ReaderUtil } from '../../reader/ReaderUtil';
 import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
@@ -132,10 +133,17 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
    */
   public static writeValueNode(atom: InstanceDataAtomType): JsonNode | null {
     if (atom instanceof InstanceDataStringAtom) {
-      return { [JsonSchema.atValue]: atom.value };
+      return { [JsonSchema.atValue]: atom.value, ...(atom.label === null ? {} : { [JsonSchema.rdfsLabel]: atom.label }) };
     }
     if (atom instanceof InstanceDataTypedAtom) {
-      return { [JsonSchema.atValue]: atom.value, [JsonSchema.atType]: atom.type };
+      return {
+        [JsonSchema.atValue]: atom.value,
+        ...(atom.label === null ? {} : { [JsonSchema.rdfsLabel]: atom.label }),
+        [JsonSchema.atType]: atom.type,
+      };
+    }
+    if (atom instanceof InstanceDataLabelAtom) {
+      return { [JsonSchema.rdfsLabel]: atom.label, ...(atom.type === null ? {} : { [JsonSchema.atType]: atom.type }) };
     }
     if (atom instanceof InstanceDataControlledAtom) {
       return {
@@ -168,7 +176,7 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
   }
 
   private serializeAtomString(atom: InstanceDataStringAtom) {
-    return { [JsonSchema.atValue]: atom.value };
+    return { [JsonSchema.atValue]: atom.value, ...(atom.label === null ? {} : { [JsonSchema.rdfsLabel]: atom.label }) };
   }
 
   private serializeAttributeValueFields(dataContainer: InstanceDataContainer, into: JsonNode) {

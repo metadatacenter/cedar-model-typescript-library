@@ -11,7 +11,11 @@ export class InstanceDataTypedAtom {
   private readonly _value: string | null;
   private readonly _type: string;
 
-  constructor(value: string | null, type: string) {
+  constructor(
+    value: string | null,
+    type: string,
+    public readonly label: string | null = null,
+  ) {
     if (type === null || type === undefined || type === '') {
       throw new Error('InstanceDataTypedAtom requires a type. A literal with no declared type is an InstanceDataStringAtom.');
     }

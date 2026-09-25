@@ -1,10 +1,8 @@
 /**
  * A value node the reader could not make a value out of.
  *
- * A CEDAR value is a literal (`@value`) or an IRI (`@id`, optionally with an
- * `rdfs:label`). A node carrying neither has no value in it, whatever else it
- * holds — `{"rdfs:label": "Some Term"}` is a label with nothing to label, so
- * there is no term.
+ * Literal, IRI and label-only fields have dedicated atom types. This fallback
+ * retains other unrecognized content for callers to inspect.
  *
  * `discarded` is what the node held. The reader used to return a bare empty atom
  * and the content was simply gone: a host application handing CEDAR a

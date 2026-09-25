@@ -1,3 +1,4 @@
+import { InstanceDataLabelAtom } from '../../../model/cedar/template-instance/InstanceDataLabelAtom';
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { JsonArtifactParsingResult } from '../../../model/cedar/util/compare/JsonArtifactParsingResult';
@@ -406,9 +407,9 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
       const value = ReaderUtil.getString(content, JsonSchema.atValue);
       const type = ReaderUtil.getString(content, JsonSchema.atType);
       if (type === null) {
-        return new InstanceDataStringAtom(value);
+        return new InstanceDataStringAtom(value, ReaderUtil.getString(content, JsonSchema.rdfsLabel));
       } else {
-        return new InstanceDataTypedAtom(value, type);
+        return new InstanceDataTypedAtom(value, type, ReaderUtil.getString(content, JsonSchema.rdfsLabel));
       }
     }
     if (Object.hasOwn(content, JsonSchema.atId)) {
@@ -424,11 +425,10 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
         return InstanceDataControlledAtom.fromParsedNode(id, label, ReaderUtil.getString(content, JsonSchema.atType));
       }
     }
-    // Neither a literal nor an IRI, so there is no value here — but the node was
-    // not empty either, or `isValueNode` would not have sent it this way. The
-    // usual case is `{"rdfs:label": "..."}`: a label with nothing to label.
-    // Carrying what was dropped lets a consumer report it instead of showing an
-    // empty field for no stated reason.
+    const label = ReaderUtil.getString(content, JsonSchema.rdfsLabel);
+    if (label !== null) {
+      return new InstanceDataLabelAtom(label, ReaderUtil.getString(content, JsonSchema.atType));
+    }
     return new InstanceDataEmptyAtom(content);
   }
 

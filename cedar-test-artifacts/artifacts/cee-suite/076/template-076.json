@@ -17,7 +17,7 @@
     },
     "type": "object",
     "@type": "https://schema.metadatacenter.org/core/Template",
-    "title": "Testing record template schema",
+    "title": "Testing Record template schema",
     "$schema": "http://json-schema.org/draft-04/schema#",
     "@context": {
       "pav": "http://purl.org/pav/",
@@ -591,7 +591,7 @@
         },
         "type": "object",
         "@type": "https://schema.metadatacenter.org/core/TemplateField",
-        "title": "Cell type field schema",
+        "title": "Cell Type field schema",
         "$schema": "http://json-schema.org/draft-04/schema#",
         "@context": {
           "pav": "http://purl.org/pav/",
@@ -689,7 +689,7 @@
         },
         "type": "object",
         "@type": "https://schema.metadatacenter.org/core/TemplateField",
-        "title": "Injury type field schema",
+        "title": "Injury Type field schema",
         "$schema": "http://json-schema.org/draft-04/schema#",
         "@context": {
           "pav": "http://purl.org/pav/",
@@ -844,7 +844,7 @@
         },
         "type": "object",
         "@type": "https://schema.metadatacenter.org/core/TemplateElement",
-        "title": "Biocaddie dataset (ish) element schema",
+        "title": "BioCADDIE Dataset Ish element schema",
         "$schema": "http://json-schema.org/draft-04/schema#",
         "@context": {
           "pav": "http://purl.org/pav/",
@@ -933,7 +933,7 @@
             },
             "type": "object",
             "@type": "https://schema.metadatacenter.org/core/TemplateField",
-            "title": "Data type field schema",
+            "title": "Data Type field schema",
             "$schema": "http://json-schema.org/draft-04/schema#",
             "@context": {
               "pav": "http://purl.org/pav/",
@@ -1052,7 +1052,7 @@
             },
             "type": "object",
             "@type": "https://schema.metadatacenter.org/core/TemplateField",
-            "title": "Dataset title field schema",
+            "title": "Dataset Title field schema",
             "$schema": "http://json-schema.org/draft-04/schema#",
             "@context": {
               "pav": "http://purl.org/pav/",

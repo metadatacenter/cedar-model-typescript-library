@@ -1,5 +1,5 @@
 import { JsonReaderBehavior } from '../../../behavior/JsonReaderBehavior';
-import { AbstractSchemaArtifact } from '../../../model/cedar/AbstractSchemaArtifact';
+import { AbstractSchemaArtifact, internalNameFor, SchemaArtifactKind } from '../../../model/cedar/AbstractSchemaArtifact';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { CedarArtifactId } from '../../../model/cedar/types/cedar-types/CedarArtifactId';
 import { ReaderUtil } from '../ReaderUtil';
@@ -18,9 +18,16 @@ export abstract class JsonAbstractSchemaArtifactReader extends JsonAbstractArtif
 
   public abstract readFromString(artifactSourceString: string): JsonArtifactReaderResult;
 
+  /** The word a composed title puts between the artifact's name and "schema". */
+  protected abstract artifactTypeWord(): SchemaArtifactKind;
+
   protected readNonReportableAttributes(container: AbstractSchemaArtifact, sourceObject: JsonNode): void {
     super.readNonReportableAttributes(container, sourceObject);
-    container.title = ReaderUtil.getString(sourceObject, TemplateProperty.title);
+    // `title` is composed from the name, not read: it names the JSON Schema constraining instances
+    // of the artifact and says nothing an author decided. Reading whatever a document supplied let
+    // the same artifact be read one way from JSON and another from YAML, where it has always been
+    // composed. `description` is the author's and is read.
+    container.title = container.schema_name === null ? null : internalNameFor(container.schema_name, this.artifactTypeWord());
     container.description = ReaderUtil.getString(sourceObject, TemplateProperty.description);
     container.schema_schemaVersion = SchemaVersion.forValue(ReaderUtil.getString(sourceObject, JsonSchema.schemaVersion));
     container.pav_version = PavVersion.forValue(ReaderUtil.getString(sourceObject, JsonSchema.pavVersion));

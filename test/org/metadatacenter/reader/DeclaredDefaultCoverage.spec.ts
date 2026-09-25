@@ -80,7 +80,6 @@ const TYPES: ReadonlyArray<TypeUnderTest> = [
 const named = (builder: any): any =>
   builder
     .withAtId('https://repo.metadatacenter.org/template-fields/00000000-0000-0000-0000-000000000000')
-    .withTitle('Declared default')
     .withDescription('Exercises declared defaults')
     .withSchemaName('Declared default')
     .withSchemaDescription('Exercises declared defaults');

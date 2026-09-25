@@ -1,3 +1,4 @@
+import { applySchemaReaderDefaults } from '../SchemaReaderDefaults';
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
@@ -57,6 +58,7 @@ export class YamlTemplateElementReader extends YamlContainerArtifactReader {
     const element = TemplateElement.buildEmptyWithNullValues();
 
     this.readNonReportableAttributes(element, elementSourceObject);
+    applySchemaReaderDefaults(element, elementSourceObject, topPath, 'yaml');
     this.readAnnotations(element, elementSourceObject, parsingResult, topPath);
     super.readAndValidateChildrenInfo(element, elementSourceObject, parsingResult, topPath);
 

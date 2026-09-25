@@ -92,7 +92,7 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
     instance.pav_lastUpdatedOn = IsoDate.forValue(ReaderUtil.getString(source, YamlKeys.modifiedOn));
     this.readAnnotations(instance, source, parsingResult, new JsonPath());
 
-    instance.dataContainer = this.parseContainer(source);
+    instance.dataContainer = this.parseContainer(source, true);
     for (const conflict of AttributeValueNamePolicy.findConflicts(instance.dataContainer)) {
       parsingResult.addBlueprintComparisonError(
         new ComparisonError(
@@ -109,8 +109,8 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
 
   /**
    * Keys that name the instance rather than its data, so are not attribute-value
-   * fields. The nested element case never carries the envelope keys, only `id`
-   * and `children`, so the one set is safe at every level.
+   * fields. Nested elements reserve only their discriminator, identity and
+   * children block, matching Java; `name` can be an attribute-group name there.
    */
   private static readonly RESERVED_KEYS: ReadonlySet<string> = new Set([
     YamlKeys.type,
@@ -130,7 +130,9 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
     YamlKeys.modifiedBy,
   ]);
 
-  private parseContainer(node: JsonNode): InstanceDataContainer {
+  private static readonly ELEMENT_RESERVED_KEYS: ReadonlySet<string> = new Set([YamlKeys.type, YamlKeys.id, YamlKeys.children]);
+
+  private parseContainer(node: JsonNode, isDocumentRoot: boolean = false): InstanceDataContainer {
     const container = new InstanceDataContainer();
 
     const children = ReaderUtil.getNode(node, YamlKeys.children);
@@ -152,7 +154,8 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
     // Attribute-value fields sit beside `children`, their attributes named
     // directly: `<field>: { <attr>: { value: … } }`.
     Object.keys(node).forEach((key) => {
-      if (YamlTemplateInstanceReader.RESERVED_KEYS.has(key)) {
+      const reserved = isDocumentRoot ? YamlTemplateInstanceReader.RESERVED_KEYS : YamlTemplateInstanceReader.ELEMENT_RESERVED_KEYS;
+      if (reserved.has(key)) {
         return;
       }
       const avNode = (node as JsonNode)[key];

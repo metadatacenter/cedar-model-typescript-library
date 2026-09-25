@@ -53,13 +53,13 @@ export class JsonStaticFieldWriter extends JsonTemplateFieldWriterInternal {
       ...this.macroSchemaNameAndDescription(field),
       ...this.macroProvenance(field, this.atomicWriter),
       ...this.macroSkos(field),
+      ...this.macroStatusAndVersion(field, this.atomicWriter),
       ...this.macroSchemaIdentifier(field),
       ...this.macroAnnotations(field),
-      ...this.macroDerivedFrom(field),
       ...this.macroPreviousVersion(field),
+      ...this.macroDerivedFrom(field),
       [JsonSchema.schemaVersion]: this.atomicWriter.write(field.schema_schemaVersion),
       [TemplateProperty.additionalProperties]: this.atomicWriter.write(AdditionalProperties.FALSE),
-      ...this.macroStatusAndVersion(field, this.atomicWriter),
       [CedarModel.schema]: this.atomicWriter.write(ArtifactSchema.CURRENT),
     };
   }

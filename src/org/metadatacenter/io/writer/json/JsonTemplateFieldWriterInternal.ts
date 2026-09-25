@@ -56,28 +56,20 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
         }
       }
     }
-    // A field written on its own has no container to state the setting, and a standalone write
-    // passes an empty deployment info, so it comes from the field. The JSON writer read only the
-    // deployment info and so dropped it, while the YAML writer has always read the field directly —
-    // which is how the two serializations came to disagree. A child is unaffected: reading a
-    // container leaves the child's own flag off and states the setting in the deployment info the
-    // branch above reads, and this never overrides what that branch decided. The guard is the YAML
-    // writer's, so the two stay symmetric.
+    // Standalone fields retain their own flags; children use deployment info. Emit the
+    // fallback flags in Java's order: hidden, continuePreviousLine, valueRecommendation.
+    if (uiNode[CedarModel.Ui.hidden] === undefined && field.hidden) {
+      uiNode[CedarModel.Ui.hidden] = true;
+    }
+    if (uiNode[CedarModel.Ui.continuePreviousLine] === undefined && field.continuePreviousLine) {
+      uiNode[CedarModel.Ui.continuePreviousLine] = true;
+    }
     if (
       uiNode[CedarModel.Ui.valueRecommendationEnabled] === undefined &&
       (field instanceof ControlledTermFieldImpl || field instanceof TextFieldImpl) &&
       field.valueRecommendationEnabled
     ) {
       uiNode[CedarModel.Ui.valueRecommendationEnabled] = true;
-    }
-    // As above, for the field's own `hidden`. A container states it for a child in the deployment
-    // info the branch above reads, and never sets the field's own flag, so this cannot change what
-    // that branch decided.
-    if (uiNode[CedarModel.Ui.hidden] === undefined && field.hidden) {
-      uiNode[CedarModel.Ui.hidden] = true;
-    }
-    if (uiNode[CedarModel.Ui.continuePreviousLine] === undefined && field.continuePreviousLine) {
-      uiNode[CedarModel.Ui.continuePreviousLine] = true;
     }
   }
 
@@ -109,6 +101,9 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
       if (childInfo.recommendedValue) {
         vcNode[CedarModel.ValueConstraints.recommendedValue] = childInfo.recommendedValue;
       }
+    }
+    if (!vcNode[CedarModel.ValueConstraints.recommendedValue] && field.recommendedValue) {
+      vcNode[CedarModel.ValueConstraints.recommendedValue] = true;
     }
   }
 
@@ -180,8 +175,8 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
       ...this.macroProvenance(field, this.atomicWriter),
       ...this.macroSkos(field),
       ...this.macroStatusAndVersion(field, this.atomicWriter),
-      ...this.macroDerivedFrom(field),
       ...this.macroPreviousVersion(field),
+      ...this.macroDerivedFrom(field),
       // The model version names the model the rendering conforms to, so it is the writer's to state
       // and not the document's to carry forward. Preserving a stored one republished an assertion
       // about a model this library no longer emits; the YAML writer has always stamped it.

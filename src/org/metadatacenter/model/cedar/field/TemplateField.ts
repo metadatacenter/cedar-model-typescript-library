@@ -17,6 +17,7 @@ export abstract class TemplateField extends AbstractSchemaArtifact {
    */
   public hidden: boolean = false;
   public requiredValue: boolean = false;
+  public recommendedValue: boolean = false;
   public continuePreviousLine: boolean = false;
 
   public valueConstraints: ValueConstraints = new ValueConstraints();

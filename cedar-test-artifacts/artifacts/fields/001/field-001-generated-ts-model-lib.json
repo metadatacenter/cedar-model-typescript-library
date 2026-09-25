@@ -40,9 +40,9 @@
     "inputType": "textfield"
   },
   "_valueConstraints": {
-    "defaultValue": "default value",
     "minLength": 10,
     "maxLength": 100,
+    "defaultValue": "default value",
     "requiredValue": false,
     "regex": "regex"
   },

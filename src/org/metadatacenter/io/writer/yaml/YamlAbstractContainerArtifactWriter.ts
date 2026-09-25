@@ -51,7 +51,6 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
 
   private getDeploymentInfo(child: TemplateChild | null, childMeta: AbstractChildDeploymentInfo, isCompact: boolean): JsonNode {
     const childConfiguration: JsonNode = JsonNode.getEmpty();
-    if (childMeta.hidden) childConfiguration[YamlKeys.hidden] = true;
     if (childMeta instanceof AbstractDynamicChildDeploymentInfo) {
       /*
        * Only where the field type has somewhere to keep it. An attribute-value
@@ -70,6 +69,7 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
       if (childMeta.requiredValue && recordsRequirement) {
         childConfiguration[YamlKeys.required] = true;
       }
+      if (childMeta.hidden) childConfiguration[YamlKeys.hidden] = true;
       if (childMeta.recommendedValue && recordsRequirement) {
         childConfiguration[YamlKeys.recommended] = true;
       }
@@ -79,6 +79,7 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
         }
       }
     }
+    if (!(childMeta instanceof AbstractDynamicChildDeploymentInfo) && childMeta.hidden) childConfiguration[YamlKeys.hidden] = true;
     if (childMeta.label !== null && childMeta.label !== child?.schema_name) {
       childConfiguration[YamlKeys.overrideLabel] = childMeta.label;
     }

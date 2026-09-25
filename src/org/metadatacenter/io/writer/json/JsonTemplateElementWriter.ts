@@ -1,3 +1,4 @@
+import { stringifySchema } from './stringifySchema';
 import { JsonWriterBehavior } from '../../../behavior/JsonWriterBehavior';
 import { SchemaVersion } from '../../../model/cedar/types/wrapped-types/SchemaVersion';
 import { ReaderUtil } from '../../reader/ReaderUtil';
@@ -71,7 +72,7 @@ export class JsonTemplateElementWriter extends JsonAbstractContainerArtifactWrit
   }
 
   public getAsJsonString(element: TemplateElement, indent: number = 2): string {
-    return JSON.stringify(this.getAsJsonNode(element), null, indent);
+    return stringifySchema(this.getAsJsonNode(element), indent);
   }
 
   public getAsJsonNode(element: TemplateElement): JsonNode {
@@ -105,8 +106,8 @@ export class JsonTemplateElementWriter extends JsonAbstractContainerArtifactWrit
       ...this.macroProvenance(element, this.atomicWriter),
       ...this.macroSkos(element),
       ...this.macroStatusAndVersion(element, this.atomicWriter),
-      ...this.macroDerivedFrom(element),
       ...this.macroPreviousVersion(element),
+      ...this.macroDerivedFrom(element),
       // The model version names the model the rendering conforms to, so it is the writer's to state
       // and not the document's to carry forward. Preserving a stored one republished an assertion
       // about a model this library no longer emits; the YAML writer has always stamped it.

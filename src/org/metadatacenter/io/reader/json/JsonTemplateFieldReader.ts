@@ -1,3 +1,5 @@
+import { applySchemaReaderDefaults } from '../SchemaReaderDefaults';
+import { SchemaArtifactKind } from '../../../model/cedar/AbstractSchemaArtifact';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { JsonArtifactParsingResult } from '../../../model/cedar/util/compare/JsonArtifactParsingResult';
 import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
@@ -46,8 +48,14 @@ import { JsonFieldReaderExtPubmed } from '../../../model/cedar/field/dynamic/ext
 import { JsonFieldReaderExtRrid } from '../../../model/cedar/field/dynamic/ext-rrid/JsonFieldReaderExtRrid';
 import { JsonFieldReaderExtNihGrantId } from '../../../model/cedar/field/dynamic/ext-nih-grant-id/JsonFieldReaderExtNihGrantId';
 import { JsonFieldReaderExtDoi } from '../../../model/cedar/field/dynamic/ext-doi/JsonFieldReaderExtDoi';
+import { TextFieldImpl } from '../../../model/cedar/field/dynamic/textfield/TextFieldImpl';
+import { ControlledTermFieldImpl } from '../../../model/cedar/field/dynamic/controlled-term/ControlledTermFieldImpl';
 
 export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
+  protected artifactTypeWord(): SchemaArtifactKind {
+    return 'field';
+  }
+
   protected constructor(behavior: JsonReaderBehavior) {
     super(behavior);
   }
@@ -115,7 +123,26 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
   ): JsonTemplateFieldReaderResult {
     const parsingResult: JsonArtifactParsingResult = new JsonArtifactParsingResult();
     const field: TemplateField = JsonTemplateFieldReader.readFieldSpecificAttributes(fieldSourceObject, childInfo, parsingResult, path);
+    // Standalone reads have no container to retain the deployment info. Keep the setting on the
+    // field, where both standalone writers read it; children retain their container's setting.
+    if (
+      childInfo instanceof ChildDeploymentInfo &&
+      childInfo.isStandalone() &&
+      (field instanceof TextFieldImpl || field instanceof ControlledTermFieldImpl)
+    ) {
+      field.valueRecommendationEnabled = childInfo.valueRecommendationEnabled;
+    }
+    if (childInfo instanceof ChildDeploymentInfo && childInfo.isStandalone()) {
+      const ui = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
+      field.hidden = ReaderUtil.getBoolean(ui, CedarModel.Ui.hidden);
+      field.continuePreviousLine = childInfo.continuePreviousLine;
+      if (field.cedarFieldType.recordsRequirement) {
+        field.requiredValue = childInfo.requiredValue;
+        field.recommendedValue = childInfo.recommendedValue;
+      }
+    }
     this.readNonReportableAttributes(field, fieldSourceObject);
+    applySchemaReaderDefaults(field, fieldSourceObject, path, 'json');
     this.readReportableAttributes(field, fieldSourceObject, parsingResult, path);
     this.readAnnotations(field, fieldSourceObject);
     return new JsonTemplateFieldReaderResult(field, parsingResult, fieldSourceObject);

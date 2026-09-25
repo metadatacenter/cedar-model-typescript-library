@@ -37,7 +37,8 @@ function plainCannotCarry(text: string): boolean {
       codePoint === 0x205f ||
       codePoint === 0x3000 ||
       codePoint === 0xfeff;
-    if (control || exoticSpace) {
+    const nonPrintable = (codePoint >= 0xd800 && codePoint <= 0xdfff) || codePoint === 0xfffe || codePoint === 0xffff;
+    if (control || exoticSpace || nonPrintable) {
       return true;
     }
   }

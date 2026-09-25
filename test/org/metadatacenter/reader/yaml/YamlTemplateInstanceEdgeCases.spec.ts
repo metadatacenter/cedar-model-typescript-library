@@ -105,6 +105,33 @@ describe('YAML instance edge cases', () => {
   const reader = CedarReaders.yaml().getStrict().getTemplateInstanceReader();
   const writer = CedarWriters.yaml().getStrict().getTemplateInstanceWriter();
 
+  test.each([false, true])('preserves attribute-only nested elements (compact=%s)', (compact) => {
+    const instance = reader.readFromString('type: instance\nname: Test\nisBasedOn: urn:template').instance;
+    const element = new InstanceDataContainer();
+    element.id = 'urn:element';
+    const group = new InstanceDataAttributeValueField('name');
+    group.addValue('answer', new InstanceDataStringAtom('kept'));
+    element.setValue('name', group);
+    instance.dataContainer.setValue('Element', element);
+    const yaml = writer.getYamlAsJsonNode(instance, compact);
+    const result = reader.readFromObject(yaml).instance.dataContainer.values.Element;
+    expect(result).toBeInstanceOf(InstanceDataContainer);
+    const container = result as InstanceDataContainer;
+    const actualGroup = container.values.name as InstanceDataAttributeValueField;
+    expect((actualGroup.values.answer as InstanceDataStringAtom).value).toBe('kept');
+    if (!compact) expect(container.id).toBe('urn:element');
+  });
+
+  test.each(['type', 'id', 'children'])('rejects nested metadata collision %s', (key) => {
+    const instance = reader.readFromString('type: instance\nname: Test').instance;
+    const element = new InstanceDataContainer();
+    const group = new InstanceDataAttributeValueField(key);
+    group.addValue('answer', new InstanceDataStringAtom('kept'));
+    element.setValue(key, group);
+    instance.dataContainer.setValue('Element', element);
+    expect(() => writer.getYamlAsJsonNode(instance)).toThrow(/reserved for CEDAR YAML metadata/);
+  });
+
   test('malformed and null documents produce an empty usable instance', () => {
     expect(Object.keys(reader.readFromString(':\n  - [').instance.dataContainer.values)).toEqual([]);
     expect(Object.keys(reader.readFromObject(null as unknown as JsonNode).instance.dataContainer.values)).toEqual([]);

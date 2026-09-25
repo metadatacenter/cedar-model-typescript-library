@@ -43,7 +43,7 @@
   },
   "type": "object",
   "@type": "https://schema.metadatacenter.org/core/Template",
-  "title": "Human cognitive neuroscience data (v1) template schema",
+  "title": "Human Cognitive Neuroscience Data (v1) template schema",
   "$schema": "http://json-schema.org/draft-04/schema#",
   "@context": {
     "pav": "http://purl.org/pav/",
@@ -6415,7 +6415,7 @@
               },
               "type": "object",
               "@type": "https://schema.metadatacenter.org/core/TemplateField",
-              "title": "Untitled field schema",
+              "title": "Identifier field schema",
               "$schema": "http://json-schema.org/draft-04/schema#",
               "@context": {
                 "pav": "http://purl.org/pav/",

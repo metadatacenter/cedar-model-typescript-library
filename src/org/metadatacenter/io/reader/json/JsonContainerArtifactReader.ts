@@ -1,3 +1,4 @@
+import { SchemaArtifactKind } from '../../../model/cedar/AbstractSchemaArtifact';
 import { JsonReaderBehavior } from '../../../behavior/JsonReaderBehavior';
 import { JsonAbstractSchemaArtifactReader } from './JsonAbstractSchemaArtifactReader';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
@@ -30,6 +31,10 @@ import { Language } from '../../../model/cedar/types/wrapped-types/Language';
 import { JsonTemplateFieldReaderInternal } from './JsonTemplateFieldReaderInternal';
 
 export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArtifactReader {
+  protected artifactTypeWord(): SchemaArtifactKind {
+    return this.knownArtifactType === CedarArtifactType.TEMPLATE ? 'template' : 'element';
+  }
+
   protected fieldReader: JsonTemplateFieldReaderInternal;
 
   protected constructor(behavior: JsonReaderBehavior) {

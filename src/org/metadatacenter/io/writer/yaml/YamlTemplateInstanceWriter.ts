@@ -106,32 +106,46 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
       }
       into[YamlKeys.children] = target;
     }
-    this.serializeAttributeValueFields(dataContainer, into, unpackedAttributeValueGroups);
+    this.serializeAttributeValueFields(dataContainer, into, unpackedAttributeValueGroups, isDocumentRoot);
+    // Java identifies an element containing only attribute groups explicitly;
+    // otherwise the YAML reader mistakes the group map for an empty field.
+    if (!isDocumentRoot && JsonNode.hasEntries(into)) {
+      if (!Object.hasOwn(into, YamlKeys.children)) {
+        into[YamlKeys.type] = ELEMENT_INSTANCE_TYPE;
+      }
+      if (!isCompact && this.hasId(dataContainer.id)) {
+        into[YamlKeys.id] = dataContainer.id;
+      }
+    }
   }
 
   private serializeAttributeValueFields(
     dataContainer: InstanceDataContainer,
     into: JsonNode,
     unpackedGroups: ReadonlyMap<string, string[]>,
+    isDocumentRoot: boolean,
   ) {
     Object.keys(dataContainer.values).forEach((key) => {
       const dataAtom: InstanceDataAtomType = dataContainer.values[key];
       if (
         (dataAtom instanceof InstanceDataAttributeValueField || unpackedGroups.has(key)) &&
-        [
-          YamlKeys.type,
-          YamlKeys.name,
-          YamlKeys.description,
-          YamlKeys.id,
-          YamlKeys.isBasedOn,
-          YamlKeys.derivedFrom,
-          YamlKeys.children,
-          YamlKeys.annotations,
-          YamlKeys.createdOn,
-          YamlKeys.createdBy,
-          YamlKeys.modifiedOn,
-          YamlKeys.modifiedBy,
-        ].includes(key)
+        (isDocumentRoot
+          ? [
+              YamlKeys.type,
+              YamlKeys.name,
+              YamlKeys.description,
+              YamlKeys.id,
+              YamlKeys.isBasedOn,
+              YamlKeys.derivedFrom,
+              YamlKeys.children,
+              YamlKeys.annotations,
+              YamlKeys.createdOn,
+              YamlKeys.createdBy,
+              YamlKeys.modifiedOn,
+              YamlKeys.modifiedBy,
+            ]
+          : [YamlKeys.type, YamlKeys.id, YamlKeys.children]
+        ).includes(key)
       ) {
         throw new Error(`Attribute-value field key "${key}" is reserved for CEDAR YAML metadata.`);
       }

@@ -1,0 +1,310 @@
+[
+  {
+    "value": "left\u0000right",
+    "javaYaml": "description: \"left\\0right\"\n"
+  },
+  {
+    "value": "left\u0001right",
+    "javaYaml": "description: \"left\\x01right\"\n"
+  },
+  {
+    "value": "left\u0002right",
+    "javaYaml": "description: \"left\\x02right\"\n"
+  },
+  {
+    "value": "left\u0003right",
+    "javaYaml": "description: \"left\\x03right\"\n"
+  },
+  {
+    "value": "left\u0004right",
+    "javaYaml": "description: \"left\\x04right\"\n"
+  },
+  {
+    "value": "left\u0005right",
+    "javaYaml": "description: \"left\\x05right\"\n"
+  },
+  {
+    "value": "left\u0006right",
+    "javaYaml": "description: \"left\\x06right\"\n"
+  },
+  {
+    "value": "left\u0007right",
+    "javaYaml": "description: \"left\\aright\"\n"
+  },
+  {
+    "value": "left\bright",
+    "javaYaml": "description: \"left\\bright\"\n"
+  },
+  {
+    "value": "left\tright",
+    "javaYaml": "description: \"left\\tright\"\n"
+  },
+  {
+    "value": "left\nright",
+    "javaYaml": "description: \"left\\nright\"\n"
+  },
+  {
+    "value": "left\u000bright",
+    "javaYaml": "description: \"left\\vright\"\n"
+  },
+  {
+    "value": "left\fright",
+    "javaYaml": "description: \"left\\fright\"\n"
+  },
+  {
+    "value": "left\rright",
+    "javaYaml": "description: \"left\\rright\"\n"
+  },
+  {
+    "value": "left\u000eright",
+    "javaYaml": "description: \"left\\x0eright\"\n"
+  },
+  {
+    "value": "left\u000fright",
+    "javaYaml": "description: \"left\\x0fright\"\n"
+  },
+  {
+    "value": "left\u0010right",
+    "javaYaml": "description: \"left\\x10right\"\n"
+  },
+  {
+    "value": "left\u0011right",
+    "javaYaml": "description: \"left\\x11right\"\n"
+  },
+  {
+    "value": "left\u0012right",
+    "javaYaml": "description: \"left\\x12right\"\n"
+  },
+  {
+    "value": "left\u0013right",
+    "javaYaml": "description: \"left\\x13right\"\n"
+  },
+  {
+    "value": "left\u0014right",
+    "javaYaml": "description: \"left\\x14right\"\n"
+  },
+  {
+    "value": "left\u0015right",
+    "javaYaml": "description: \"left\\x15right\"\n"
+  },
+  {
+    "value": "left\u0016right",
+    "javaYaml": "description: \"left\\x16right\"\n"
+  },
+  {
+    "value": "left\u0017right",
+    "javaYaml": "description: \"left\\x17right\"\n"
+  },
+  {
+    "value": "left\u0018right",
+    "javaYaml": "description: \"left\\x18right\"\n"
+  },
+  {
+    "value": "left\u0019right",
+    "javaYaml": "description: \"left\\x19right\"\n"
+  },
+  {
+    "value": "left\u001aright",
+    "javaYaml": "description: \"left\\x1aright\"\n"
+  },
+  {
+    "value": "left\u001bright",
+    "javaYaml": "description: \"left\\eright\"\n"
+  },
+  {
+    "value": "left\u001cright",
+    "javaYaml": "description: \"left\\x1cright\"\n"
+  },
+  {
+    "value": "left\u001dright",
+    "javaYaml": "description: \"left\\x1dright\"\n"
+  },
+  {
+    "value": "left\u001eright",
+    "javaYaml": "description: \"left\\x1eright\"\n"
+  },
+  {
+    "value": "left\u001fright",
+    "javaYaml": "description: \"left\\x1fright\"\n"
+  },
+  {
+    "value": "left\u007fright",
+    "javaYaml": "description: \"left\\x7fright\"\n"
+  },
+  {
+    "value": "left\u0080right",
+    "javaYaml": "description: \"left\\x80right\"\n"
+  },
+  {
+    "value": "left\u0081right",
+    "javaYaml": "description: \"left\\x81right\"\n"
+  },
+  {
+    "value": "left\u0082right",
+    "javaYaml": "description: \"left\\x82right\"\n"
+  },
+  {
+    "value": "left\u0083right",
+    "javaYaml": "description: \"left\\x83right\"\n"
+  },
+  {
+    "value": "left\u0084right",
+    "javaYaml": "description: \"left\\x84right\"\n"
+  },
+  {
+    "value": "left\u0085right",
+    "javaYaml": "description: \"left\\Nright\"\n"
+  },
+  {
+    "value": "left\u0086right",
+    "javaYaml": "description: \"left\\x86right\"\n"
+  },
+  {
+    "value": "left\u0087right",
+    "javaYaml": "description: \"left\\x87right\"\n"
+  },
+  {
+    "value": "left\u0088right",
+    "javaYaml": "description: \"left\\x88right\"\n"
+  },
+  {
+    "value": "left\u0089right",
+    "javaYaml": "description: \"left\\x89right\"\n"
+  },
+  {
+    "value": "left\u008aright",
+    "javaYaml": "description: \"left\\x8aright\"\n"
+  },
+  {
+    "value": "left\u008bright",
+    "javaYaml": "description: \"left\\x8bright\"\n"
+  },
+  {
+    "value": "left\u008cright",
+    "javaYaml": "description: \"left\\x8cright\"\n"
+  },
+  {
+    "value": "left\u008dright",
+    "javaYaml": "description: \"left\\x8dright\"\n"
+  },
+  {
+    "value": "left\u008eright",
+    "javaYaml": "description: \"left\\x8eright\"\n"
+  },
+  {
+    "value": "left\u008fright",
+    "javaYaml": "description: \"left\\x8fright\"\n"
+  },
+  {
+    "value": "left\u0090right",
+    "javaYaml": "description: \"left\\x90right\"\n"
+  },
+  {
+    "value": "left\u0091right",
+    "javaYaml": "description: \"left\\x91right\"\n"
+  },
+  {
+    "value": "left\u0092right",
+    "javaYaml": "description: \"left\\x92right\"\n"
+  },
+  {
+    "value": "left\u0093right",
+    "javaYaml": "description: \"left\\x93right\"\n"
+  },
+  {
+    "value": "left\u0094right",
+    "javaYaml": "description: \"left\\x94right\"\n"
+  },
+  {
+    "value": "left\u0095right",
+    "javaYaml": "description: \"left\\x95right\"\n"
+  },
+  {
+    "value": "left\u0096right",
+    "javaYaml": "description: \"left\\x96right\"\n"
+  },
+  {
+    "value": "left\u0097right",
+    "javaYaml": "description: \"left\\x97right\"\n"
+  },
+  {
+    "value": "left\u0098right",
+    "javaYaml": "description: \"left\\x98right\"\n"
+  },
+  {
+    "value": "left\u0099right",
+    "javaYaml": "description: \"left\\x99right\"\n"
+  },
+  {
+    "value": "left\u009aright",
+    "javaYaml": "description: \"left\\x9aright\"\n"
+  },
+  {
+    "value": "left\u009bright",
+    "javaYaml": "description: \"left\\x9bright\"\n"
+  },
+  {
+    "value": "left\u009cright",
+    "javaYaml": "description: \"left\\x9cright\"\n"
+  },
+  {
+    "value": "left\u009dright",
+    "javaYaml": "description: \"left\\x9dright\"\n"
+  },
+  {
+    "value": "left\u009eright",
+    "javaYaml": "description: \"left\\x9eright\"\n"
+  },
+  {
+    "value": "left\u009fright",
+    "javaYaml": "description: \"left\\x9fright\"\n"
+  },
+  {
+    "value": "left\u00a0right",
+    "javaYaml": "description: \"left\\_right\"\n"
+  },
+  {
+    "value": "left\u2028right",
+    "javaYaml": "description: \"left\\Lright\"\n"
+  },
+  {
+    "value": "left\u2029right",
+    "javaYaml": "description: \"left\\Pright\"\n"
+  },
+  {
+    "value": "left\ufeffright",
+    "javaYaml": "description: \"left\ufeffright\"\n"
+  },
+  {
+    "value": "left\uffferight",
+    "javaYaml": "description: \"left\\uffferight\"\n"
+  },
+  {
+    "value": "left\uffffright",
+    "javaYaml": "description: \"left\\uffffright\"\n"
+  },
+  {
+    "value": "left\ud83d\ude00right",
+    "javaYaml": "description: \"left\ud83d\ude00right\"\n"
+  },
+  {
+    "value": "literal \\x83 \\N \\u0085",
+    "javaYaml": "description: \"literal \\\\x83 \\\\N \\\\u0085\"\n"
+  },
+  {
+    "value": "quote \" then backslash \\ and \u0083",
+    "javaYaml": "description: \"quote \\\" then backslash \\\\ and \\x83\"\n"
+  },
+  {
+    "value": "line\nnext\r\ntab\tend",
+    "javaYaml": "description: \"line\\nnext\\r\\ntab\\tend\"\n"
+  },
+  {
+    "value": "\u0000\u0001\u0002\u0003\u0004\u0005\u0006\u0007\b\t\n\u000b\f\r\u000e\u000f\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001a\u001b\u001c\u001d\u001e\u001f",
+    "javaYaml": "description: \"\\0\\x01\\x02\\x03\\x04\\x05\\x06\\a\\b\\t\\n\\v\\f\\r\\x0e\\x0f\\x10\\x11\\x12\\x13\\x14\\x15\\x16\\x17\\x18\\x19\\x1a\\e\\x1c\\x1d\\x1e\\x1f\"\n"
+  },
+  {
+    "value": "\u007f\u0080\u0081\u0082\u0083\u0084\u0085\u0086\u0087\u0088\u0089\u008a\u008b\u008c\u008d\u008e\u008f\u0090\u0091\u0092\u0093\u0094\u0095\u0096\u0097\u0098\u0099\u009a\u009b\u009c\u009d\u009e\u009f\u00a0",
+    "javaYaml": "description: \"\\x7f\\x80\\x81\\x82\\x83\\x84\\N\\x86\\x87\\x88\\x89\\x8a\\x8b\\x8c\\x8d\\x8e\\x8f\\x90\\x91\\x92\\x93\\x94\\x95\\x96\\x97\\x98\\x99\\x9a\\x9b\\x9c\\x9d\\x9e\\x9f\\_\"\n"
+  }
+]

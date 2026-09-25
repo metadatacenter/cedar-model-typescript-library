@@ -1,3 +1,4 @@
+import { applySchemaReaderDefaults } from '../SchemaReaderDefaults';
 import { CedarModel } from '../../../model/cedar/constants/CedarModel';
 import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
@@ -58,6 +59,7 @@ export class JsonTemplateElementReader extends JsonContainerArtifactReader {
     const element = TemplateElement.buildEmptyWithNullValues();
 
     this.readNonReportableAttributes(element, elementSourceObject);
+    applySchemaReaderDefaults(element, elementSourceObject, topPath, 'json');
     this.readReportableAttributes(element, elementSourceObject, parsingResult, topPath);
     this.readAnnotations(element, elementSourceObject);
     this.readInstanceTypeSpecification(element, elementSourceObject, parsingResult);

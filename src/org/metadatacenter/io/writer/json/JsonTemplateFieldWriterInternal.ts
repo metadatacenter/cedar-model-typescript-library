@@ -180,8 +180,8 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
       ...this.macroProvenance(field, this.atomicWriter),
       ...this.macroSkos(field),
       ...this.macroStatusAndVersion(field, this.atomicWriter),
-      ...this.macroDerivedFrom(field),
       ...this.macroPreviousVersion(field),
+      ...this.macroDerivedFrom(field),
       // The model version names the model the rendering conforms to, so it is the writer's to state
       // and not the document's to carry forward. Preserving a stored one republished an assertion
       // about a model this library no longer emits; the YAML writer has always stamped it.

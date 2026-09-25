@@ -16,14 +16,14 @@ export class JsonValueConstraintsActionWriter extends AbstractJsonControlledTerm
 
   override getAsJsonNode(action: ControlledTermAction): JsonNode {
     const ret = JsonNode.getEmpty();
+    ret[CedarModel.ValueConstraints.termUri] = this.atomicWriter.write(action.termUri);
+    ret[CedarModel.ValueConstraints.source] = action.source;
+    ret[CedarModel.ValueConstraints.type] = this.atomicWriter.write(action.type);
+    ret[CedarModel.ValueConstraints.action] = action.action;
+    ret[CedarModel.ValueConstraints.sourceUri] = this.atomicWriter.write(action.sourceUri);
     if (action.to !== null) {
       ret[CedarModel.ValueConstraints.to] = action.to;
     }
-    ret[CedarModel.ValueConstraints.action] = action.action;
-    ret[CedarModel.ValueConstraints.termUri] = this.atomicWriter.write(action.termUri);
-    ret[CedarModel.ValueConstraints.sourceUri] = this.atomicWriter.write(action.sourceUri);
-    ret[CedarModel.ValueConstraints.source] = action.source;
-    ret[CedarModel.ValueConstraints.type] = this.atomicWriter.write(action.type);
     return ret;
   }
 }

@@ -1,3 +1,4 @@
+import { applySchemaReaderDefaults } from '../SchemaReaderDefaults';
 import { SchemaArtifactKind } from '../../../model/cedar/AbstractSchemaArtifact';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { JsonArtifactParsingResult } from '../../../model/cedar/util/compare/JsonArtifactParsingResult';
@@ -132,6 +133,7 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
       field.valueRecommendationEnabled = childInfo.valueRecommendationEnabled;
     }
     this.readNonReportableAttributes(field, fieldSourceObject);
+    applySchemaReaderDefaults(field, fieldSourceObject, path, 'json');
     this.readReportableAttributes(field, fieldSourceObject, parsingResult, path);
     this.readAnnotations(field, fieldSourceObject);
     return new JsonTemplateFieldReaderResult(field, parsingResult, fieldSourceObject);

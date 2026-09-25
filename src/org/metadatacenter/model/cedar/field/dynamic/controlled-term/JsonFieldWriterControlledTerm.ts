@@ -60,8 +60,8 @@ export class JsonFieldWriterControlledTerm extends JsonTemplateFieldWriterIntern
 
     if (field.valueConstraints.defaultValue != null) {
       const defaultValue = JsonNode.getEmpty();
-      defaultValue[JsonSchema.rdfsLabel] = field.valueConstraints.defaultValue.rdfsLabel;
       defaultValue[JsonSchema.termUri] = this.atomicWriter.write(field.valueConstraints.defaultValue.termUri);
+      defaultValue[JsonSchema.rdfsLabel] = field.valueConstraints.defaultValue.rdfsLabel;
       vcNode[CedarModel.defaultValue] = defaultValue;
     }
 

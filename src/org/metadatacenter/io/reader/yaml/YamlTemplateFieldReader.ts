@@ -1,3 +1,4 @@
+import { applySchemaReaderDefaults } from '../SchemaReaderDefaults';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
 import { TemplateField } from '../../../model/cedar/field/TemplateField';
@@ -105,6 +106,7 @@ export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
     const parsingResult: YamlArtifactParsingResult = new YamlArtifactParsingResult();
     const field: TemplateField = YamlTemplateFieldReader.readFieldSpecificAttributes(fieldSourceObject, childInfo, parsingResult, path);
     this.readNonReportableAttributes(field, fieldSourceObject);
+    applySchemaReaderDefaults(field, fieldSourceObject, path, 'yaml');
     this.readAnnotations(field, fieldSourceObject, parsingResult, path);
     return new YamlTemplateFieldReaderResult(field, parsingResult, fieldSourceObject);
   }

@@ -28,19 +28,6 @@ const jsonReaders = CedarReaders.json().getStrict();
 const jsonWriters = CedarWriters.json().getStrict();
 const yamlWriters = CedarWriters.yaml().getStrict();
 
-/** Compact YAML omits lifecycle metadata. Java supplies root defaults; TS preserves absence.
- * Pin the exact two-key difference instead of ignoring lifecycle values throughout the tree. */
-function expectCompactRoot(actual: JsonNode, java: JsonNode): void {
-  expect(java['pav:version']).toBe('0.0.1');
-  expect(java['bibo:status']).toBe('bibo:draft');
-  expect(actual).not.toHaveProperty('pav:version');
-  expect(actual).not.toHaveProperty('bibo:status');
-  const expected = { ...java };
-  delete expected['pav:version'];
-  delete expected['bibo:status'];
-  expect(actual).toEqual(expected);
-}
-
 it('pins Java fixture provenance and covers every TypeScript field type', () => {
   expect(createHash('sha256').update(bytes).digest('hex')).toBe(lock.sha256);
   expect(lock.javaCommit).toMatch(/^[a-f0-9]{40}$/);
@@ -65,23 +52,21 @@ for (const row of cases) {
       const yamlReaders = compact ? CedarReaders.yaml().getStrictForCompact() : CedarReaders.yaml().getStrict();
       const fieldYaml = compact ? row.compactYaml : row.yaml;
       const templateYaml = compact ? row.templateCompactYaml : row.templateYaml;
-      it(`${compact ? 'compact' : 'full'} field YAML agrees and reader JSON follows the pinned lifecycle policy`, () => {
+      it(`${compact ? 'compact' : 'full'} field YAML agrees and reader JSON follows the Java lifecycle policy`, () => {
         const original = jsonReaders.getTemplateFieldReader().readFromObject(definition(row.json)).field;
         const written = yamlWriters.getFieldWriterForField(original).getAsYamlString(original, compact);
         expect(YAML.parse(written)).toEqual(YAML.parse(fieldYaml));
         const read = yamlReaders.getTemplateFieldReader().readFromString(fieldYaml).field;
         const actual = jsonWriters.getFieldWriterForField(read).getAsJsonNode(read);
-        if (compact) expectCompactRoot(actual, definition(row.jsonFromCompactYaml));
-        else expect(actual).toEqual(definition(row.jsonFromYaml));
+        expect(actual).toEqual(definition(compact ? row.jsonFromCompactYaml : row.jsonFromYaml));
       });
-      it(`${compact ? 'compact' : 'full'} template YAML agrees and reader JSON preserves deployment under the pinned lifecycle policy`, () => {
+      it(`${compact ? 'compact' : 'full'} template YAML agrees and reader JSON preserves deployment under the Java lifecycle policy`, () => {
         const original = jsonReaders.getTemplateReader().readFromObject(row.templateJson).template;
         const written = yamlWriters.getTemplateWriter().getAsYamlString(original, compact);
         expect(YAML.parse(written)).toEqual(YAML.parse(templateYaml));
         const read = yamlReaders.getTemplateReader().readFromString(templateYaml).template;
         const actual = jsonWriters.getTemplateWriter().getAsJsonNode(read);
-        if (compact) expectCompactRoot(actual, row.templateJsonFromCompactYaml);
-        else expect(actual).toEqual(row.templateJsonFromYaml);
+        expect(actual).toEqual(compact ? row.templateJsonFromCompactYaml : row.templateJsonFromYaml);
       });
     }
   });

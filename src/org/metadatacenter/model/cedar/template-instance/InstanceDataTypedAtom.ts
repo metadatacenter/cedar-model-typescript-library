@@ -8,6 +8,8 @@
  * ever have built.
  */
 export class InstanceDataTypedAtom {
+  /** Optional SKOS notation, including an explicitly empty string. */
+  public notation: string | null = null;
   private readonly _value: string | null;
   private readonly _type: string;
 

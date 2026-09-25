@@ -1,4 +1,6 @@
 export class InstanceDataStringAtom {
+  /** Optional SKOS notation, including an explicitly empty string. */
+  public notation: string | null = null;
   private _value: string | null;
 
   constructor(

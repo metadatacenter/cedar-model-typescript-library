@@ -1,3 +1,4 @@
+import { InstanceDataNotationAtom } from '../../../model/cedar/template-instance/InstanceDataNotationAtom';
 import { InstanceDataLabelAtom } from '../../../model/cedar/template-instance/InstanceDataLabelAtom';
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
@@ -403,6 +404,14 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
   }
 
   private static parseDataAtom(content: JsonNode): InstanceDataAtomType {
+    const atom = this.parseDataAtomWithoutNotation(content);
+    if ('notation' in atom && !(atom instanceof InstanceDataNotationAtom)) {
+      atom.notation = ReaderUtil.getString(content, JsonSchema.skosNotation);
+    }
+    return atom;
+  }
+
+  private static parseDataAtomWithoutNotation(content: JsonNode): InstanceDataAtomType {
     if (Object.hasOwn(content, JsonSchema.atValue)) {
       const value = ReaderUtil.getString(content, JsonSchema.atValue);
       const type = ReaderUtil.getString(content, JsonSchema.atType);
@@ -428,6 +437,10 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     const label = ReaderUtil.getString(content, JsonSchema.rdfsLabel);
     if (label !== null) {
       return new InstanceDataLabelAtom(label, ReaderUtil.getString(content, JsonSchema.atType));
+    }
+    const notation = ReaderUtil.getString(content, JsonSchema.skosNotation);
+    if (notation !== null) {
+      return new InstanceDataNotationAtom(notation, ReaderUtil.getString(content, JsonSchema.atType));
     }
     return new InstanceDataEmptyAtom(content);
   }

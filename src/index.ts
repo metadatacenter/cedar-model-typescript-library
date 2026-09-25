@@ -1,3 +1,4 @@
+import { InstanceDataNotationAtom } from './org/metadatacenter/model/cedar/template-instance/InstanceDataNotationAtom';
 import { CedarWriters } from './org/metadatacenter/io/writer/CedarWriters';
 import { CedarBuilders } from './org/metadatacenter/io/builder/CedarBuilders';
 
@@ -251,6 +252,7 @@ export {
   InstanceDataEmptyAtom,
   InstanceDataStringAtom,
   InstanceDataLabelAtom,
+  InstanceDataNotationAtom,
   InstanceDataTypedAtom,
   InstanceDataLinkAtom,
   InstanceDataControlledAtom,

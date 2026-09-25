@@ -1,3 +1,4 @@
+import { InstanceDataNotationAtom } from '../../../model/cedar/template-instance/InstanceDataNotationAtom';
 import { InstanceDataLabelAtom } from '../../../model/cedar/template-instance/InstanceDataLabelAtom';
 import YAML from 'yaml';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
@@ -192,6 +193,14 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
   }
 
   private parseNode(node: JsonNode | string | null): InstanceDataAtomType {
+    const atom = this.parseNodeWithoutNotation(node);
+    if (node !== null && typeof node === 'object' && 'notation' in atom && !(atom instanceof InstanceDataNotationAtom)) {
+      atom.notation = ReaderUtil.getString(node, YamlKeys.notation);
+    }
+    return atom;
+  }
+
+  private parseNodeWithoutNotation(node: JsonNode | string | null): InstanceDataAtomType {
     if (node === null || node === undefined) {
       return new InstanceDataEmptyNode();
     }
@@ -220,6 +229,10 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
     const label = ReaderUtil.getString(node, YamlKeys.label);
     if (label !== null) {
       return new InstanceDataLabelAtom(label, ReaderUtil.getString(node, YamlKeys.datatype));
+    }
+    const notation = ReaderUtil.getString(node, YamlKeys.notation);
+    if (notation !== null) {
+      return new InstanceDataNotationAtom(notation, ReaderUtil.getString(node, YamlKeys.datatype));
     }
     return new InstanceDataEmptyNode();
   }

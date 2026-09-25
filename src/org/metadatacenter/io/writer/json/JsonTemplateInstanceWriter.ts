@@ -1,3 +1,4 @@
+import { InstanceDataNotationAtom } from '../../../model/cedar/template-instance/InstanceDataNotationAtom';
 import { InstanceDataLabelAtom } from '../../../model/cedar/template-instance/InstanceDataLabelAtom';
 import { JsonWriterBehavior } from '../../../behavior/JsonWriterBehavior';
 import { ReaderUtil } from '../../reader/ReaderUtil';
@@ -132,6 +133,17 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
    * is a container and needs a writer with the rest of the instance in hand.
    */
   public static writeValueNode(atom: InstanceDataAtomType): JsonNode | null {
+    const node = this.writeValueNodeWithoutNotation(atom);
+    if (node !== null && 'notation' in atom && atom.notation !== null) {
+      node[JsonSchema.skosNotation] = atom.notation;
+    }
+    return node;
+  }
+
+  private static writeValueNodeWithoutNotation(atom: InstanceDataAtomType): JsonNode | null {
+    if (atom instanceof InstanceDataNotationAtom) {
+      return atom.type === null ? JsonNode.getEmpty() : { [JsonSchema.atType]: atom.type };
+    }
     if (atom instanceof InstanceDataStringAtom) {
       return { [JsonSchema.atValue]: atom.value, ...(atom.label === null ? {} : { [JsonSchema.rdfsLabel]: atom.label }) };
     }

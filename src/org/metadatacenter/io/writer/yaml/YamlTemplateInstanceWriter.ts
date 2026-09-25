@@ -1,3 +1,4 @@
+import { InstanceDataNotationAtom } from '../../../model/cedar/template-instance/InstanceDataNotationAtom';
 import { InstanceDataLabelAtom } from '../../../model/cedar/template-instance/InstanceDataLabelAtom';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { SimpleYamlSerializer } from './SimpleYamlSerializer';
@@ -204,11 +205,24 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
   }
 
   private serializeCommonType(atom: InstanceDataAtomType, isCompact: boolean): JsonNode | null {
+    const node = this.serializeCommonTypeWithoutNotation(atom, isCompact);
+    if ('notation' in atom && atom.notation !== null) {
+      const result = node ?? JsonNode.getEmpty();
+      result[YamlKeys.notation] = atom.notation;
+      return result;
+    }
+    return node;
+  }
+
+  private serializeCommonTypeWithoutNotation(atom: InstanceDataAtomType, isCompact: boolean): JsonNode | null {
+    if (atom instanceof InstanceDataNotationAtom) {
+      return atom.type === null ? JsonNode.getEmpty() : { [YamlKeys.datatype]: atom.type };
+    }
     if (atom instanceof InstanceDataStringAtom) {
       return this.serializeAtomString(atom);
     }
     if (atom instanceof InstanceDataTypedAtom) {
-      return atom.value === null && atom.label === null
+      return atom.value === null && atom.label === null && atom.notation === null
         ? null
         : {
             [YamlKeys.datatype]: atom.type,
@@ -221,7 +235,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
     }
     if (atom instanceof InstanceDataControlledAtom) {
       const controlled: JsonNode = JsonNode.getEmpty();
-      if (atom.type !== null && (this.hasId(atom.id) || atom.label !== null)) {
+      if (atom.type !== null && (this.hasId(atom.id) || atom.label !== null || atom.notation !== null)) {
         controlled[YamlKeys.datatype] = atom.type;
       }
       if (this.hasId(atom.id)) {
@@ -245,13 +259,17 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
   }
 
   private serializeAtomString(atom: InstanceDataStringAtom): JsonNode | null {
-    return atom.value === null && atom.label === null
+    return atom.value === null && atom.label === null && atom.notation === null
       ? null
       : { [YamlKeys.value]: atom.value, ...(atom.label === null ? {} : { [YamlKeys.label]: atom.label }) };
   }
 
   private serializeAtomLink(atom: InstanceDataLinkAtom): JsonNode | null {
-    return this.hasId(atom.id) ? { ...(atom.type === null ? {} : { [YamlKeys.datatype]: atom.type }), [YamlKeys.id]: atom.id } : null;
+    return this.hasId(atom.id)
+      ? { ...(atom.type === null ? {} : { [YamlKeys.datatype]: atom.type }), [YamlKeys.id]: atom.id }
+      : atom.notation !== null && atom.type !== null
+        ? { [YamlKeys.datatype]: atom.type }
+        : null;
   }
 
   private hasId(id: string | null): id is string {

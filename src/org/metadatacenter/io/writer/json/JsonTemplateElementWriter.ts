@@ -105,8 +105,8 @@ export class JsonTemplateElementWriter extends JsonAbstractContainerArtifactWrit
       ...this.macroProvenance(element, this.atomicWriter),
       ...this.macroSkos(element),
       ...this.macroStatusAndVersion(element, this.atomicWriter),
-      ...this.macroDerivedFrom(element),
       ...this.macroPreviousVersion(element),
+      ...this.macroDerivedFrom(element),
       // The model version names the model the rendering conforms to, so it is the writer's to state
       // and not the document's to carry forward. Preserving a stored one republished an assertion
       // about a model this library no longer emits; the YAML writer has always stamped it.

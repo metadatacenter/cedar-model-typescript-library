@@ -28,6 +28,20 @@ test('template provenance follows Java ordering regardless of input order', () =
   }
 });
 
+test('element provenance follows Java ordering regardless of input order', () => {
+  const source = writers.getTemplateElementWriter().getAsJsonNode(CedarBuilders.templateElementBuilder().withSchemaName('Probe').build());
+  source['pav:derivedFrom'] = 'https://example.org/source';
+  source['pav:previousVersion'] = 'https://example.org/previous';
+  const template = CedarReaders.json().getStrict().getTemplateElementReader().readFromObject(source).element;
+  const yaml = CedarWriters.yaml().getStrict().getTemplateElementWriter().getAsYamlString(template);
+  for (const model of [template, readers.getTemplateElementReader().readFromString(yaml).element]) {
+    const output = writers.getTemplateElementWriter().getAsJsonNode(model);
+    expect(output['pav:previousVersion']).toBe(source['pav:previousVersion']);
+    expect(output['pav:derivedFrom']).toBe(source['pav:derivedFrom']);
+    expect(Object.keys(output).indexOf('pav:previousVersion')).toBeLessThan(Object.keys(output).indexOf('pav:derivedFrom'));
+  }
+});
+
 test.each(['text-field', 'static-rich-text'])('root %s defaults match Java for both formats; explicit metadata survives', (type) => {
   for (const metadata of ['', 'version: 2.3.4\nstatus: published\n']) {
     const field = readers.getTemplateFieldReader().readFromString(base.replace('text-field', type) + metadata).field;

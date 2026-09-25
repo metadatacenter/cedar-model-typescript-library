@@ -174,8 +174,23 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
         if (Array.isArray(content)) {
           const arrayContainer: InstanceDataAtomList = [];
           ret.setValue(key, arrayContainer);
+          const elementArray = content.some(
+            (entry) => entry !== null && typeof entry === 'object' && Object.hasOwn(entry, JsonSchema.atContext),
+          );
           content.forEach((arrayElement: JsonNode, index: number) => {
-            arrayContainer[index] = this.parseNode(arrayElement, path.add(key, index), parsingResult);
+            if (elementArray) {
+              if (
+                arrayElement === null ||
+                typeof arrayElement !== 'object' ||
+                Array.isArray(arrayElement) ||
+                Object.hasOwn(arrayElement, JsonSchema.atValue)
+              ) {
+                throw new Error(`Cannot mix fields and element instances in array "${key}" at index ${index}`);
+              }
+              arrayContainer[index] = this.parseContainer(arrayElement, path.add(key, index), parsingResult);
+            } else {
+              arrayContainer[index] = this.parseNode(arrayElement, path.add(key, index), parsingResult);
+            }
           });
         } else {
           ret.setValue(key, this.parseNode(content, path.add(key), parsingResult));
@@ -284,6 +299,7 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
    */
   private static readonly VALUE_ATOM_KEYS: ReadonlySet<string> = new Set([
     JsonSchema.atValue,
+    JsonSchema.atLanguage,
     JsonSchema.atId,
     JsonSchema.rdfsLabel,
     JsonSchema.atType,
@@ -405,6 +421,7 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
 
   private static parseDataAtom(content: JsonNode): InstanceDataAtomType {
     const atom = this.parseDataAtomWithoutNotation(content);
+    if ('language' in atom) atom.language = ReaderUtil.getString(content, JsonSchema.atLanguage);
     if ('notation' in atom && !(atom instanceof InstanceDataNotationAtom)) {
       atom.notation = ReaderUtil.getString(content, JsonSchema.skosNotation);
     }

@@ -1,3 +1,4 @@
+import { stringifyInstance } from './stringifyInstance';
 import { InstanceDataNotationAtom } from '../../../model/cedar/template-instance/InstanceDataNotationAtom';
 import { InstanceDataLabelAtom } from '../../../model/cedar/template-instance/InstanceDataLabelAtom';
 import { JsonWriterBehavior } from '../../../behavior/JsonWriterBehavior';
@@ -134,6 +135,9 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
    */
   public static writeValueNode(atom: InstanceDataAtomType): JsonNode | null {
     const node = this.writeValueNodeWithoutNotation(atom);
+    if (node !== null && 'language' in atom && atom.language !== null) {
+      node[JsonSchema.atLanguage] = atom.language;
+    }
     if (node !== null && 'notation' in atom && atom.notation !== null) {
       node[JsonSchema.skosNotation] = atom.notation;
     }
@@ -206,7 +210,7 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
   }
 
   public getAsJsonString(instance: TemplateInstance, indent: number = 2): string {
-    return JSON.stringify(this.getAsJsonNode(instance), null, indent);
+    return stringifyInstance(this.getAsJsonNode(instance), instance.dataContainer, indent);
   }
 
   public getAsJsonNode(instance: TemplateInstance): JsonNode {

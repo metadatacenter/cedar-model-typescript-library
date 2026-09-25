@@ -108,10 +108,10 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
       }
       into[YamlKeys.children] = target;
     }
-    this.serializeAttributeValueFields(dataContainer, into, unpackedAttributeValueGroups, isDocumentRoot);
-    // Java identifies an element containing only attribute groups explicitly;
-    // otherwise the YAML reader mistakes the group map for an empty field.
-    if (!isDocumentRoot && JsonNode.hasEntries(into)) {
+    const attributes = JsonNode.getEmpty();
+    this.serializeAttributeValueFields(dataContainer, attributes, unpackedAttributeValueGroups, isDocumentRoot);
+    // Emit element metadata before attribute groups, including elements with no ordinary children.
+    if (!isDocumentRoot && (JsonNode.hasEntries(into) || JsonNode.hasEntries(attributes))) {
       if (!Object.hasOwn(into, YamlKeys.children)) {
         into[YamlKeys.type] = ELEMENT_INSTANCE_TYPE;
       }
@@ -119,6 +119,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
         into[YamlKeys.id] = dataContainer.id;
       }
     }
+    Object.assign(into, attributes);
   }
 
   private serializeAttributeValueFields(
@@ -205,11 +206,14 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
   }
 
   private serializeCommonType(atom: InstanceDataAtomType, isCompact: boolean): JsonNode | null {
-    const node = this.serializeCommonTypeWithoutNotation(atom, isCompact);
+    let node = this.serializeCommonTypeWithoutNotation(atom, isCompact);
     if ('notation' in atom && atom.notation !== null) {
       const result = node ?? JsonNode.getEmpty();
       result[YamlKeys.notation] = atom.notation;
-      return result;
+      node = result;
+    }
+    if (node !== null && 'language' in atom && atom.language !== null) {
+      node[YamlKeys.language] = atom.language;
     }
     return node;
   }

@@ -7,6 +7,15 @@
     "Attribute Value Field Root 2",
     "Attribute Value Field Root 3"
   ],
+  "Attribute Value Field Root 1": {
+    "@value": "value 1"
+  },
+  "Attribute Value Field Root 2": {
+    "@value": "value 2"
+  },
+  "Attribute Value Field Root 3": {
+    "@value": null
+  },
   "Attribute Value Element Multiple": [
     {
       "@id": "https://repo.metadatacenter.org/template-element-instances/f0276a67-e20b-4819-9c85-1b045e12fcaa",
@@ -49,15 +58,6 @@
       "Attribute Value Field Single 1": "https://schema.metadatacenter.org/properties/4d7622f3-3ab4-498c-b327-d3364eddb07c",
       "Attribute Value Field Single 2": "https://schema.metadatacenter.org/properties/bb26c067-dbda-43f1-ab40-ee1fe3b2ed13"
     }
-  },
-  "Attribute Value Field Root 1": {
-    "@value": "value 1"
-  },
-  "Attribute Value Field Root 2": {
-    "@value": "value 2"
-  },
-  "Attribute Value Field Root 3": {
-    "@value": null
   },
   "@context": {
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",

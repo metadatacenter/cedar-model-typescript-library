@@ -113,6 +113,10 @@ export abstract class YamlAbstractArtifactReader {
     const annotations = new Annotations();
     const annotationsNode: JsonNode = ReaderUtil.getNode(artifactSourceObject, YamlKeys.annotations);
     Object.keys(annotationsNode).forEach((name: string) => {
+      const raw = annotationsNode[name];
+      if (raw === null || typeof raw !== 'object' || Array.isArray(raw)) {
+        throw new Error(`Expected map value for annotation at /annotations/${name}`);
+      }
       const annotationNode = ReaderUtil.getNode(annotationsNode, name);
       const id: string | null = ReaderUtil.getString(annotationNode, YamlKeys.id);
       const value: string | null = ReaderUtil.getString(annotationNode, YamlKeys.value);
@@ -121,6 +125,8 @@ export abstract class YamlAbstractArtifactReader {
           annotations.add(new AnnotationAtId(name, id));
         } else if (value !== null) {
           annotations.add(new AnnotationAtValue(name, value));
+        } else {
+          throw new Error(`Annotation must have either a value or id at /annotations/${name}`);
         }
       }
     });

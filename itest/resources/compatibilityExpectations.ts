@@ -24,15 +24,10 @@ export const CEE_TEMPLATE_DIAGNOSTICS: Readonly<Record<string, DiagnosticExpecta
   '009': { errors: 0, warnings: 1, reason: 'known production blueprint variation' },
   '011': { errors: 0, warnings: 1, reason: 'known production blueprint variation' },
   '012': { errors: 0, warnings: 1, reason: 'known production blueprint variation' },
-  '013': { errors: 0, warnings: 2, reason: 'known production blueprint variations' },
   '016': { errors: 0, warnings: 2, reason: 'known production blueprint variations' },
-  '020': { errors: 0, warnings: 1, reason: 'known production blueprint variation' },
   '041': { errors: 0, warnings: 1, reason: 'known production blueprint variation' },
-  '043': { errors: 0, warnings: 71, reason: 'legacy context and UI metadata variations' },
-  '045': { errors: 0, warnings: 15, reason: 'legacy context and UI metadata variations' },
-  '046': { errors: 0, warnings: 1, reason: 'known production blueprint variation' },
-  '047': { errors: 0, warnings: 1, reason: 'known production blueprint variation' },
-  '060': { errors: 0, warnings: 1, reason: 'known production blueprint variation' },
+  '043': { errors: 0, warnings: 69, reason: 'legacy context and UI metadata variations' },
+  '045': { errors: 0, warnings: 13, reason: 'legacy context and UI metadata variations' },
   '063': { errors: 0, warnings: 1, reason: 'known production blueprint variation' },
   '071': { errors: 0, warnings: 6, reason: 'legacy context and UI metadata variations' },
   '072': { errors: 0, warnings: 5, reason: 'legacy context and UI metadata variations' },
@@ -88,17 +83,11 @@ export const CEE_INSTANCE_DIAGNOSTICS: Readonly<Record<string, DiagnosticExpecta
 export const EXTERNAL_TEMPLATE_DIAGNOSTICS: Readonly<Record<string, DiagnosticExpectation>> = {
   'ADVANCETemplate.json': { errors: 0, warnings: 3, reason: 'known production blueprint variations' },
   'NullPropertyLabelsTemplate.json': { errors: 1, warnings: 12, reason: 'null property-label metadata' },
-  'RADx2.0CLIGeneratedTemplate.json': { errors: 10, warnings: 5, reason: 'legacy CLI-generated schema shape' },
-  'RADxCLIGeneratedTemplate.json': { errors: 10, warnings: 4, reason: 'legacy CLI-generated schema shape' },
+  'RADx2.0CLIGeneratedTemplate.json': { errors: 10, warnings: 3, reason: 'legacy CLI-generated schema shape' },
+  'RADxCLIGeneratedTemplate.json': { errors: 10, warnings: 2, reason: 'legacy CLI-generated schema shape' },
   'SampleFieldWithActions.json': { errors: 11, warnings: 12, reason: 'actions-era field schema shape' },
-  'SimpleTemplateWithAttributeValues.json': {
-    errors: 0,
-    warnings: 1,
-    reason: 'legacy attribute-value context variation',
-  },
   'SimpleTemplateWithType.json': { errors: 0, warnings: 1, reason: 'known production blueprint variation' },
   'TemplateWithOverrideLabels.json': { errors: 0, warnings: 7, reason: 'legacy label metadata variations' },
-  'template-022.json': { errors: 0, warnings: 1, reason: 'known production blueprint variation' },
   'template-029.json': { errors: 28, warnings: 6, reason: 'legacy deeply nested schema shape' },
   'template-037.json': { errors: 0, warnings: 7, reason: 'legacy static-field metadata variations' },
 };
@@ -172,15 +161,7 @@ export const JSON_FIELD_ROUND_TRIP_DIVERGENCES: Readonly<Record<string, RoundTri
   },
 };
 
-export const JSON_ELEMENT_ROUND_TRIP_DIVERGENCES: Readonly<Record<string, RoundTripExpectation>> = {
-  '1': {
-    errors: 1,
-    warnings: 0,
-    roundTripErrors: 0,
-    roundTripWarnings: 0,
-    reason: 'legacy attribute-value context enum is incomplete, but writing is source-identical',
-  },
-};
+export const JSON_ELEMENT_ROUND_TRIP_DIVERGENCES: Readonly<Record<string, RoundTripExpectation>> = {};
 
 export const YAML_TEMPLATE_PARSE_DIVERGENCES: Readonly<Record<string, DiagnosticExpectation>> = {
   '3': {
@@ -190,10 +171,4 @@ export const YAML_TEMPLATE_PARSE_DIVERGENCES: Readonly<Record<string, Diagnostic
   },
 };
 
-export const YAML_ELEMENT_PARSE_DIVERGENCES: Readonly<Record<string, DiagnosticExpectation>> = {
-  '1': {
-    errors: 1,
-    warnings: 0,
-    reason: 'legacy attribute-value context enum is incomplete, while its committed YAML remains canonical',
-  },
-};
+export const YAML_ELEMENT_PARSE_DIVERGENCES: Readonly<Record<string, DiagnosticExpectation>> = {};

@@ -446,6 +446,9 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
         const iriEnum: JsonNode = ReaderUtil.getNode(elementIRIMap, childInfo.name);
         const iriList: Array<string> = ReaderUtil.getStringList(iriEnum, JsonSchema.enum);
         if (iriList === null || iriList.length != 1) {
+          // The group's attributes supply their own IRIs in the instance. A missing group
+          // mapping is valid; retain any explicitly supplied mapping, as Java does.
+          if (childInfo.uiInputType === UiInputType.ATTRIBUTE_VALUE && !Object.hasOwn(elementIRIMap, childInfo.name)) continue;
           this.reportBlueprintDifference(
             parsingResult,
             new ComparisonError(

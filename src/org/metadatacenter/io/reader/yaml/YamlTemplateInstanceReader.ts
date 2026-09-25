@@ -217,6 +217,10 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
     if (Object.hasOwn(node, YamlKeys.id) && Object.hasOwn(node, YamlKeys.value)) {
       throw new Error('A field cannot contain both id and value.');
     }
+    // One slot, as in Java's reader: the YAML form writes a lone datatype as a string.
+    if (Array.isArray(node[YamlKeys.datatype])) {
+      throw new Error('A field value can have at most one datatype.');
+    }
     if (Object.hasOwn(node, YamlKeys.value)) {
       const value = ReaderUtil.getString(node, YamlKeys.value);
       const datatype = ReaderUtil.getString(node, YamlKeys.datatype);

@@ -434,7 +434,7 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
   private static parseDataAtomWithoutNotation(content: JsonNode): InstanceDataAtomType {
     if (Object.hasOwn(content, JsonSchema.atValue)) {
       const value = ReaderUtil.getString(content, JsonSchema.atValue);
-      const type = ReaderUtil.getString(content, JsonSchema.atType);
+      const type = ReaderUtil.getSingleType(content, JsonSchema.atType);
       if (type === null) {
         return new InstanceDataStringAtom(value, ReaderUtil.getString(content, JsonSchema.rdfsLabel));
       } else {
@@ -449,18 +449,18 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
       // preserved as it came and reported by `reportNullIri`, rather than
       // refused here. See the note on that method.
       if (label === null) {
-        return InstanceDataLinkAtom.fromParsedNode(id, ReaderUtil.getString(content, JsonSchema.atType));
+        return InstanceDataLinkAtom.fromParsedNode(id, ReaderUtil.getSingleType(content, JsonSchema.atType));
       } else {
-        return InstanceDataControlledAtom.fromParsedNode(id, label, ReaderUtil.getString(content, JsonSchema.atType));
+        return InstanceDataControlledAtom.fromParsedNode(id, label, ReaderUtil.getSingleType(content, JsonSchema.atType));
       }
     }
     const label = ReaderUtil.getString(content, JsonSchema.rdfsLabel);
     if (label !== null) {
-      return new InstanceDataLabelAtom(label, ReaderUtil.getString(content, JsonSchema.atType));
+      return new InstanceDataLabelAtom(label, ReaderUtil.getSingleType(content, JsonSchema.atType));
     }
     const notation = ReaderUtil.getString(content, JsonSchema.skosNotation);
     if (notation !== null) {
-      return new InstanceDataNotationAtom(notation, ReaderUtil.getString(content, JsonSchema.atType));
+      return new InstanceDataNotationAtom(notation, ReaderUtil.getSingleType(content, JsonSchema.atType));
     }
     return new InstanceDataEmptyAtom(content);
   }

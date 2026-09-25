@@ -40,6 +40,26 @@ describe('Strict instance values and canonical long keys', () => {
     const instance = json({ '@id': id }).instance;
     expect((CedarWriters.json().getStrict().getTemplateInstanceWriter().getAsJsonNode(instance) as any).field['@id']).toBe(id);
   });
+  const first = 'http://purl.bioontology.org/ontology/LNC/LA17713-1';
+  const second = 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C3671';
+  test.each([
+    ['a literal', { '@value': 'Mark D Wilkinson' }],
+    ['a controlled term', { '@id': 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C100069', 'rdfs:label': 'Cardiac Valve Injury' }],
+  ])('rejects two types on %s in both readers', (_kind, field) => {
+    expect(() => json({ ...field, '@type': [first, second] })).toThrow('at most one @type');
+    const yamlField = Object.entries({ ...field })
+      .map(([key, value]) => `    ${key === '@value' ? 'value' : key === '@id' ? 'id' : 'label'}: ${JSON.stringify(value)}\n`)
+      .join('');
+    expect(() => yaml(`    datatype:\n      - "${first}"\n      - "${second}"\n${yamlField}`)).toThrow('at most one datatype');
+  });
+  test.each([
+    ['a string', 'http://www.w3.org/2001/XMLSchema#string'],
+    ['a one-element list', ['http://www.w3.org/2001/XMLSchema#string']],
+  ])('reads one type written as %s and writes it back as a string', (_form, type) => {
+    const instance = json({ '@value': 'text', '@type': type }).instance;
+    const written = CedarWriters.json().getStrict().getTemplateInstanceWriter().getAsJsonNode(instance) as any;
+    expect(written.field['@type']).toBe('http://www.w3.org/2001/XMLSchema#string');
+  });
   test.each(['a', 'é', '😀'])('matches the Java long-key boundary for %s', (character) => {
     for (const count of [63, 64, 127, 128, 129]) {
       const key = character.repeat(count);

@@ -34,6 +34,27 @@ export abstract class ReaderUtil {
     }
   }
 
+  /**
+   * A field value's `@type`, which is at most one IRI.
+   *
+   * A lone IRI may arrive as a string or as a one-element list, and an empty list means none, as in
+   * Java's reader. A longer list is refused: the model has one slot for it, and keeping the first
+   * entry would discard the rest.
+   */
+  public static getSingleType(node: JsonNode, key: string): string | null {
+    if (!Object.hasOwn(node, key)) {
+      return null;
+    }
+    const type: unknown = node[key];
+    if (!Array.isArray(type)) {
+      return type as string | null;
+    }
+    if (type.length > 1) {
+      throw new Error(`A field value can have at most one ${key}.`);
+    }
+    return type.length === 1 ? (type[0] as string) : null;
+  }
+
   public static getStringOrEmpty(node: JsonNode, key: string): string {
     if (Object.hasOwn(node, key)) {
       return node[key] as string;

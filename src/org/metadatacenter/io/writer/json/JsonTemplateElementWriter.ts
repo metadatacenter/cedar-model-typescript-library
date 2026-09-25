@@ -1,3 +1,4 @@
+import { stringifySchema } from './stringifySchema';
 import { JsonWriterBehavior } from '../../../behavior/JsonWriterBehavior';
 import { SchemaVersion } from '../../../model/cedar/types/wrapped-types/SchemaVersion';
 import { ReaderUtil } from '../../reader/ReaderUtil';
@@ -71,7 +72,7 @@ export class JsonTemplateElementWriter extends JsonAbstractContainerArtifactWrit
   }
 
   public getAsJsonString(element: TemplateElement, indent: number = 2): string {
-    return JSON.stringify(this.getAsJsonNode(element), null, indent);
+    return stringifySchema(this.getAsJsonNode(element), indent);
   }
 
   public getAsJsonNode(element: TemplateElement): JsonNode {

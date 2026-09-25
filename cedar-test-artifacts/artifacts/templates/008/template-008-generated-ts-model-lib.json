@@ -328,9 +328,9 @@
         "valueRecommendationEnabled": true
       },
       "_valueConstraints": {
-        "defaultValue": "Default Value",
         "minLength": 10,
         "maxLength": 100,
+        "defaultValue": "Default Value",
         "requiredValue": false,
         "regex": "^[A-Z][^A-Z]*$"
       },

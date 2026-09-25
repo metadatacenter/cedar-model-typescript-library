@@ -6582,8 +6582,8 @@
                 }
               ],
               "defaultValue": {
-                "rdfs:label": "Dataset",
-                "termUri": "http://vocab.fairdatacollective.org/gdmt/Dataset"
+                "termUri": "http://vocab.fairdatacollective.org/gdmt/Dataset",
+                "rdfs:label": "Dataset"
               },
               "requiredValue": false
             },
@@ -7080,8 +7080,8 @@
                 }
               ],
               "defaultValue": {
-                "rdfs:label": "Person",
-                "termUri": "http://vocab.fairdatacollective.org/gdmt/Person"
+                "termUri": "http://vocab.fairdatacollective.org/gdmt/Person",
+                "rdfs:label": "Person"
               },
               "requiredValue": false
             },
@@ -9028,8 +9028,8 @@
                 }
               ],
               "defaultValue": {
-                "rdfs:label": "Person",
-                "termUri": "http://vocab.fairdatacollective.org/gdmt/Person"
+                "termUri": "http://vocab.fairdatacollective.org/gdmt/Person",
+                "rdfs:label": "Person"
               },
               "requiredValue": false
             },
@@ -13830,8 +13830,8 @@
                     }
                   ],
                   "defaultValue": {
-                    "rdfs:label": "Published",
-                    "termUri": "http://vocab.fairdatacollective.org/gdmt/Published"
+                    "termUri": "http://vocab.fairdatacollective.org/gdmt/Published",
+                    "rdfs:label": "Published"
                   },
                   "requiredValue": false
                 },

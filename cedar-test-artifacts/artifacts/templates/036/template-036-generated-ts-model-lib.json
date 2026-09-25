@@ -347,44 +347,44 @@
         "branches": [],
         "actions": [
           {
-            "to": 0,
-            "action": "move",
             "termUri": "http://purl.bioontology.org/ontology/ICD10CM/C94.02",
-            "sourceUri": "http://purl.bioontology.org/ontology/NLMVS/2.16.840.1.113883.3.526.3.1010",
             "source": "NLMVS",
-            "type": "Value"
+            "type": "Value",
+            "action": "move",
+            "sourceUri": "http://purl.bioontology.org/ontology/NLMVS/2.16.840.1.113883.3.526.3.1010",
+            "to": 0
           },
           {
-            "to": 0,
-            "action": "move",
             "termUri": "http://purl.bioontology.org/ontology/ICD9CM/208.02",
-            "sourceUri": "http://purl.bioontology.org/ontology/NLMVS/2.16.840.1.113883.3.526.3.1010",
             "source": "NLMVS",
-            "type": "Value"
+            "type": "Value",
+            "action": "move",
+            "sourceUri": "http://purl.bioontology.org/ontology/NLMVS/2.16.840.1.113883.3.526.3.1010",
+            "to": 0
           },
           {
-            "to": 0,
-            "action": "move",
             "termUri": "https://cadsr.nci.nih.gov/metadata/CADSR-VS/78d215b4d52d89ab6f485206f41d5bc1aac23770",
-            "sourceUri": "template",
             "source": "CADSR-VS",
-            "type": "OntologyClass"
+            "type": "OntologyClass",
+            "action": "move",
+            "sourceUri": "template",
+            "to": 0
           },
           {
-            "to": 1,
-            "action": "move",
             "termUri": "http://purl.bioontology.org/ontology/ICD10CM/C94.02",
-            "sourceUri": "http://purl.bioontology.org/ontology/NLMVS/2.16.840.1.113883.3.526.3.1010",
             "source": "NLMVS",
-            "type": "Value"
+            "type": "Value",
+            "action": "move",
+            "sourceUri": "http://purl.bioontology.org/ontology/NLMVS/2.16.840.1.113883.3.526.3.1010",
+            "to": 1
           },
           {
-            "to": 1,
-            "action": "move",
             "termUri": "http://purl.bioontology.org/ontology/ICD9CM/208.02",
-            "sourceUri": "http://purl.bioontology.org/ontology/NLMVS/2.16.840.1.113883.3.526.3.1010",
             "source": "NLMVS",
-            "type": "Value"
+            "type": "Value",
+            "action": "move",
+            "sourceUri": "http://purl.bioontology.org/ontology/NLMVS/2.16.840.1.113883.3.526.3.1010",
+            "to": 1
           }
         ],
         "requiredValue": false

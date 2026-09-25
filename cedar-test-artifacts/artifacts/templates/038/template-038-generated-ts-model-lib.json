@@ -2037,8 +2037,8 @@
         "classes": [],
         "branches": [],
         "defaultValue": {
-          "rdfs:label": "melanoma",
-          "termUri": "http://purl.obolibrary.org/obo/DOID_1909"
+          "termUri": "http://purl.obolibrary.org/obo/DOID_1909",
+          "rdfs:label": "melanoma"
         },
         "requiredValue": false
       },

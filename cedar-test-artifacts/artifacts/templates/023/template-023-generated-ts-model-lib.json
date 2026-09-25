@@ -361,8 +361,8 @@
           }
         ],
         "defaultValue": {
-          "rdfs:label": "2,3,6-trichlorotoluene",
-          "termUri": "http://purl.bioontology.org/ontology/MESH/C039047"
+          "termUri": "http://purl.bioontology.org/ontology/MESH/C039047",
+          "rdfs:label": "2,3,6-trichlorotoluene"
         },
         "requiredValue": false
       },

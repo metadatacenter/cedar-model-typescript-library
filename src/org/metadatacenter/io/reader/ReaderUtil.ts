@@ -3,6 +3,13 @@ import { Iri } from '../../model/cedar/types/wrapped-types/Iri';
 import { NullableNumber } from '../../model/cedar/types/basic-types/NullableNumber';
 
 export abstract class ReaderUtil {
+  /** Java URI rejects raw ASCII spaces and controls; never trim or auto-encode stored identifiers. */
+  public static assertIdentifierCharacters(raw: string | null, key: string): void {
+    if (raw !== null && Array.from(raw).some((character) => character.charCodeAt(0) <= 0x20 || character.charCodeAt(0) === 0x7f)) {
+      throw new Error(`Invalid URI at "${key}": unescaped space or control character.`);
+    }
+  }
+
   public static getString(node: JsonNode, key: string): string | null {
     if (Object.hasOwn(node, key)) {
       return node[key] as string;

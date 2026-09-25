@@ -30,6 +30,7 @@ export abstract class JsonAbstractArtifactReader {
     if (raw !== null && raw.trim() === '') {
       throw new Error(`An empty string is not a URI at "${key}"; write null or leave the key out where there is no value.`);
     }
+    ReaderUtil.assertIdentifierCharacters(raw, key);
   }
 
   protected behavior: JsonReaderBehavior;

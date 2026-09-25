@@ -110,7 +110,7 @@ test.each([null, 0])('controlled-term default and action follow Java JSON orderi
 });
 
 test.each(['template', 'element'])('%s JSON text retains numeric child names in model order', (kind) => {
-  const yaml = `type: ${kind}\nname: "Order probe"\nmodelVersion: 1.6.0\nchildren:\n  - key: "First"\n    type: text-field\n    modelVersion: 1.6.0\n    name: "First"\n    propertyIri: "https://example.org/first"\n  - key: "11"\n    type: text-field\n    modelVersion: 1.6.0\n    name: "Numeric name"\n    propertyIri: "https://example.org/number"\n  - key: "Last"\n    type: text-field\n    modelVersion: 1.6.0\n    name: "Last"\n    propertyIri: "https://example.org/last"\n`;
+  const yaml = `type: ${kind}\nname: "Order probe"\nmodelVersion: 1.6.0\nchildren:\n  - key: "First"\n    type: text-field\n    modelVersion: 1.6.0\n    name: "First"\n    configuration:\n      propertyIri: "https://example.org/first"\n  - key: "11"\n    type: text-field\n    modelVersion: 1.6.0\n    name: "Numeric name"\n    configuration:\n      propertyIri: "https://example.org/number"\n  - key: "Last"\n    type: text-field\n    modelVersion: 1.6.0\n    name: "Last"\n    configuration:\n      propertyIri: "https://example.org/last"\n`;
   const model = kind === 'template' ? readers.getTemplateReader().readFromString(yaml).template : readers.getTemplateElementReader().readFromString(yaml).element;
   const writer: any = kind === 'template' ? writers.getTemplateWriter() : writers.getTemplateElementWriter();
   const text = writer.getAsJsonString(model);
@@ -119,6 +119,6 @@ test.each(['template', 'element'])('%s JSON text retains numeric child names in 
   expect(() => structuredClone(node)).not.toThrow();
   // Every map containing the three child keys must retain their declared order in the text.
   const childKeys = [...text.matchAll(/^\s*"(First|11|Last)":/gm)].map((match) => match[1]);
-  expect(childKeys.length).toBeGreaterThanOrEqual(6);
+  expect(childKeys.length).toBe(12);
   for (let i = 0; i < childKeys.length; i += 3) expect(childKeys.slice(i, i + 3)).toEqual(['First', '11', 'Last']);
 });

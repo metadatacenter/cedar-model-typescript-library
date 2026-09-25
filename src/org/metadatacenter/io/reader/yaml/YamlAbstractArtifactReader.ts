@@ -1,3 +1,4 @@
+import { SchemaExtensions } from '../../../model/cedar/SchemaExtensions';
 import { AbstractArtifact } from '../../../model/cedar/AbstractArtifact';
 import { internalNameFor, SchemaArtifactKind, AbstractSchemaArtifact } from '../../../model/cedar/AbstractSchemaArtifact';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
@@ -46,6 +47,7 @@ export abstract class YamlAbstractArtifactReader {
   }
 
   protected readNonReportableAttributes(container: AbstractSchemaArtifact, sourceObject: JsonNode): void {
+    container.extensions = SchemaExtensions.fromYaml(sourceObject);
     // Read in non-reportable properties
     YamlAbstractArtifactReader.refuseEmptyIdentifier(sourceObject);
     container.at_id = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, YamlKeys.id));

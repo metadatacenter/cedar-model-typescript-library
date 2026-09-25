@@ -349,3 +349,5 @@ export { YamlObjectComparator };
 export { Annotations } from './org/metadatacenter/model/cedar/annotation/Annotations';
 export { AnnotationAtId } from './org/metadatacenter/model/cedar/annotation/AnnotationAtId';
 export { AnnotationAtValue } from './org/metadatacenter/model/cedar/annotation/AnnotationAtValue';
+
+export { SchemaExtensions } from './org/metadatacenter/model/cedar/SchemaExtensions';

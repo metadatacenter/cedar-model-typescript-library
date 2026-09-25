@@ -1,3 +1,4 @@
+import { SchemaExtensions } from './SchemaExtensions';
 import { internalNameFor, SchemaArtifactKind } from './AbstractSchemaArtifact';
 import { CedarArtifactType } from './types/cedar-types/CedarArtifactType';
 import { IsoDate } from './types/wrapped-types/IsoDate';
@@ -19,6 +20,13 @@ export abstract class AbstractArtifactBuilder {
   protected pav_lastUpdatedOn: IsoDate = IsoDate.NULL;
   protected oslc_modifiedBy: CedarUser = CedarUser.NULL;
   // status and version
+  protected extensions: SchemaExtensions = new SchemaExtensions();
+
+  public withExtensions(extensions: SchemaExtensions): this {
+    this.extensions = extensions;
+    return this;
+  }
+
   protected pav_version: PavVersion = PavVersion.DEFAULT;
   protected bibo_status: BiboStatus = BiboStatus.DRAFT;
   // schema name and description
@@ -138,6 +146,7 @@ export abstract class AbstractArtifactBuilder {
     artifact.pav_lastUpdatedOn = this.pav_lastUpdatedOn;
     artifact.oslc_modifiedBy = this.oslc_modifiedBy;
 
+    artifact.extensions = this.extensions;
     artifact.pav_version = this.pav_version;
     artifact.bibo_status = this.bibo_status;
 

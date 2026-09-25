@@ -1,3 +1,4 @@
+import { SchemaExtensions } from '../../../model/cedar/SchemaExtensions';
 import { JsonReaderBehavior } from '../../../behavior/JsonReaderBehavior';
 import { AbstractSchemaArtifact, internalNameFor, SchemaArtifactKind } from '../../../model/cedar/AbstractSchemaArtifact';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
@@ -22,6 +23,7 @@ export abstract class JsonAbstractSchemaArtifactReader extends JsonAbstractArtif
   protected abstract artifactTypeWord(): SchemaArtifactKind;
 
   protected readNonReportableAttributes(container: AbstractSchemaArtifact, sourceObject: JsonNode): void {
+    container.extensions = SchemaExtensions.fromJson(sourceObject);
     super.readNonReportableAttributes(container, sourceObject);
     // `title` is composed from the name, not read: it names the JSON Schema constraining instances
     // of the artifact and says nothing an author decided. Reading whatever a document supplied let

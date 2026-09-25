@@ -173,6 +173,7 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     }
     JsonObjectComparator.compareBothWays(parsingResult, blueprintAtContext, topContextNode, path.add(JsonSchema.atContext), this.behavior, [
       JsonSchema.atLanguage,
+      ...Object.keys(field.extensions.prefixes),
     ]);
 
     // Read and validate, but do not store top level type

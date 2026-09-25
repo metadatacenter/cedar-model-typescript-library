@@ -103,6 +103,7 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
 
     JsonObjectComparator.compareBothWays(parsingResult, blueprintAtContext, topContextNode, path.add(JsonSchema.atContext), this.behavior, [
       JsonSchema.atLanguage,
+      ...Object.keys(container.extensions.prefixes),
     ]);
 
     // Read and validate, but do not store top level type

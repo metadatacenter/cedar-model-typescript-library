@@ -42,7 +42,7 @@ export class YamlTemplateWriter extends YamlAbstractContainerArtifactWriter {
       element[YamlKeys.children] = children;
     }
 
-    return element;
+    return template.extensions.applyYaml(element);
   }
 
   public getAsYamlString(template: Template, isCompact: boolean = false): string {

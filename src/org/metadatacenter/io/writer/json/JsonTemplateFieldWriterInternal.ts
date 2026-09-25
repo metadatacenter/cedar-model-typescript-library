@@ -159,7 +159,7 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
     this.expandTypeNode(typeNode, field);
 
     // build the final object
-    return {
+    return field.extensions.applyJson({
       [JsonSchema.atId]: this.atomicWriter.write(field.at_id),
       [JsonSchema.atType]: this.atomicWriter.write(field.cedarArtifactType),
       [JsonSchema.atContext]: this.macroContext(field),
@@ -184,7 +184,7 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
       [TemplateProperty.additionalProperties]: this.atomicWriter.write(AdditionalProperties.FALSE),
       ...this.macroSchemaIdentifier(field),
       [CedarModel.schema]: this.atomicWriter.write(ArtifactSchema.CURRENT),
-    };
+    });
   }
 
   protected macroContext(field: TemplateField) {

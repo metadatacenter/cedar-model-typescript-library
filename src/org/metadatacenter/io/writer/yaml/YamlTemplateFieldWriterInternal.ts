@@ -48,7 +48,7 @@ export abstract class YamlTemplateFieldWriterInternal extends YamlAbstractArtifa
     const vcObject: JsonNode = this.buildValueConstraintsObject(field, childInfo);
 
     // build the final object
-    return {
+    return field.extensions.applyYaml({
       ...this.macroType(field),
       ...this.macroNameAndDescription(field),
       ...this.macroSchemaIdentifier(field),
@@ -64,7 +64,7 @@ export abstract class YamlTemplateFieldWriterInternal extends YamlAbstractArtifa
       ...(isDocumentRoot ? this.macroStandaloneFieldFlags(field) : {}),
       ...this.macroValueRecommendation(field),
       ...(isDocumentRoot ? this.macroStandaloneFieldConfiguration(field) : {}),
-    };
+    });
   }
 
   protected expandUINodeForYAML(_field: TemplateField): JsonNode {

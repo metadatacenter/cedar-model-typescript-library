@@ -15,11 +15,12 @@ import { assertIri, PARSED_NODE } from './InstanceDataLinkAtom';
  */
 export class InstanceDataControlledAtom {
   private readonly _id: string | null;
+  private readonly _type: string | null;
   private readonly _label: string | null;
 
-  constructor(id: string, label: string);
-  constructor(id: string | null, label: string | null, parsed: typeof PARSED_NODE);
-  constructor(id: string | null, label: string | null, parsed?: typeof PARSED_NODE) {
+  constructor(id: string, label: string, type?: string | null);
+  constructor(id: string | null, label: string | null, parsed: typeof PARSED_NODE, type?: string | null);
+  constructor(id: string | null, label: string | null, parsed?: typeof PARSED_NODE | string | null, type: string | null = null) {
     if (parsed !== PARSED_NODE) {
       assertIri(id, 'InstanceDataControlledAtom');
       if (label === null || label === undefined || label === '') {
@@ -27,6 +28,7 @@ export class InstanceDataControlledAtom {
       }
     }
     this._id = id;
+    this._type = parsed === PARSED_NODE ? type : (parsed ?? null);
     this._label = label;
   }
 
@@ -36,8 +38,13 @@ export class InstanceDataControlledAtom {
    * Only the readers use this — see `InstanceDataLinkAtom.fromParsedNode` for
    * why a malformed document is preserved rather than repaired.
    */
-  static fromParsedNode(id: string | null, label: string | null): InstanceDataControlledAtom {
-    return new InstanceDataControlledAtom(id, label, PARSED_NODE);
+  static fromParsedNode(id: string | null, label: string | null, type: string | null = null): InstanceDataControlledAtom {
+    return new InstanceDataControlledAtom(id, label, PARSED_NODE, type);
+  }
+
+  /** Explicit linked-value datatype; absent types are not synthesized. */
+  get type(): string | null {
+    return this._type;
   }
 
   get id(): string | null {

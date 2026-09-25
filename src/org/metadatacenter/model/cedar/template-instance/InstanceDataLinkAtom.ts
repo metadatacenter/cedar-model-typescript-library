@@ -20,7 +20,7 @@ export function assertIri(id: string | null, className: string): void {
 }
 
 /**
- * A value that is an IRI and nothing else.
+ * An IRI-valued link with an optional explicit datatype.
  *
  * The IRI is required, and the constructor now says so. `{"@id": null}` is not
  * an unfilled link — an unfilled IRI-valued field is `{}`, which is
@@ -32,14 +32,16 @@ export function assertIri(id: string | null, className: string): void {
  */
 export class InstanceDataLinkAtom {
   private readonly _id: string | null;
+  private readonly _type: string | null;
 
-  constructor(id: string);
-  constructor(id: string | null, parsed: typeof PARSED_NODE);
-  constructor(id: string | null, parsed?: typeof PARSED_NODE) {
+  constructor(id: string, type?: string | null);
+  constructor(id: string | null, parsed: typeof PARSED_NODE, type?: string | null);
+  constructor(id: string | null, parsed?: typeof PARSED_NODE | string | null, type: string | null = null) {
     if (parsed !== PARSED_NODE) {
       assertIri(id, 'InstanceDataLinkAtom');
     }
     this._id = id;
+    this._type = parsed === PARSED_NODE ? type : (parsed ?? null);
   }
 
   /**
@@ -52,8 +54,13 @@ export class InstanceDataLinkAtom {
    * for code that is composing an instance, where there is still something to
    * fix.
    */
-  static fromParsedNode(id: string | null): InstanceDataLinkAtom {
-    return new InstanceDataLinkAtom(id, PARSED_NODE);
+  static fromParsedNode(id: string | null, type: string | null = null): InstanceDataLinkAtom {
+    return new InstanceDataLinkAtom(id, PARSED_NODE, type);
+  }
+
+  /** Explicit linked-value datatype; absent types are not synthesized. */
+  get type(): string | null {
+    return this._type;
   }
 
   get id(): string | null {

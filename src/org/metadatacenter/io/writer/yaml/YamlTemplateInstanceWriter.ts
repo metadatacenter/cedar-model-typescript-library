@@ -211,6 +211,9 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
     }
     if (atom instanceof InstanceDataControlledAtom) {
       const controlled: JsonNode = JsonNode.getEmpty();
+      if (atom.type !== null && (this.hasId(atom.id) || atom.label !== null)) {
+        controlled[YamlKeys.datatype] = atom.type;
+      }
       if (this.hasId(atom.id)) {
         controlled[YamlKeys.id] = atom.id;
       }
@@ -236,7 +239,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
   }
 
   private serializeAtomLink(atom: InstanceDataLinkAtom): JsonNode | null {
-    return this.hasId(atom.id) ? { [YamlKeys.id]: atom.id } : null;
+    return this.hasId(atom.id) ? { ...(atom.type === null ? {} : { [YamlKeys.datatype]: atom.type }), [YamlKeys.id]: atom.id } : null;
   }
 
   private hasId(id: string | null): id is string {

@@ -138,10 +138,14 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
       return { [JsonSchema.atValue]: atom.value, [JsonSchema.atType]: atom.type };
     }
     if (atom instanceof InstanceDataControlledAtom) {
-      return { [JsonSchema.atId]: atom.id, [JsonSchema.rdfsLabel]: atom.label };
+      return {
+        [JsonSchema.atId]: atom.id,
+        [JsonSchema.rdfsLabel]: atom.label,
+        ...(atom.type === null ? {} : { [JsonSchema.atType]: atom.type }),
+      };
     }
     if (atom instanceof InstanceDataLinkAtom) {
-      return { [JsonSchema.atId]: atom.id };
+      return { [JsonSchema.atId]: atom.id, ...(atom.type === null ? {} : { [JsonSchema.atType]: atom.type }) };
     }
     if (atom instanceof InstanceDataEmptyAtom || atom instanceof InstanceDataEmptyNode) {
       // An empty controlled-term field is `{}` in the instance, and it is a

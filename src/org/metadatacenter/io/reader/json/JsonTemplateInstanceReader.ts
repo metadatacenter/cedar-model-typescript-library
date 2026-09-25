@@ -417,9 +417,9 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
       // preserved as it came and reported by `reportNullIri`, rather than
       // refused here. See the note on that method.
       if (label === null) {
-        return InstanceDataLinkAtom.fromParsedNode(id);
+        return InstanceDataLinkAtom.fromParsedNode(id, ReaderUtil.getString(content, JsonSchema.atType));
       } else {
-        return InstanceDataControlledAtom.fromParsedNode(id, label);
+        return InstanceDataControlledAtom.fromParsedNode(id, label, ReaderUtil.getString(content, JsonSchema.atType));
       }
     }
     // Neither a literal nor an IRI, so there is no value here — but the node was

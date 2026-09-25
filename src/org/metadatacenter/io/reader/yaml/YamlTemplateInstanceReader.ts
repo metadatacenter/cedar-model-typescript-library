@@ -209,7 +209,10 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
       YamlTemplateInstanceReader.refuseEmptyIdentifier(node);
       const id = ReaderUtil.getString(node, YamlKeys.id);
       const label = ReaderUtil.getString(node, YamlKeys.label);
-      return label === null ? InstanceDataLinkAtom.fromParsedNode(id) : InstanceDataControlledAtom.fromParsedNode(id, label);
+      const datatype = ReaderUtil.getString(node, YamlKeys.datatype);
+      return label === null
+        ? InstanceDataLinkAtom.fromParsedNode(id, datatype)
+        : InstanceDataControlledAtom.fromParsedNode(id, label, datatype);
     }
     return new InstanceDataEmptyNode();
   }

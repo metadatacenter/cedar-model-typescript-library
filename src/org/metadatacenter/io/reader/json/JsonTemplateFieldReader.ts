@@ -254,7 +254,9 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
       return true;
     }
     const valueSets: Array<JsonNode> = ReaderUtil.getNodeList(vcNode, CedarModel.valueSets);
-    return valueSets.length > 0 || ReaderUtil.getNodeList(vcNode, CedarModel.actions).length > 0;
+    // Match Java's hasExplicitConstraints: actions modify a vocabulary selection;
+    // stale actions alone must not turn literal text into a controlled-term field.
+    return valueSets.length > 0;
   }
 
   private static getCedarFieldType(fieldSourceObject: JsonNode, uiInputType: UiInputType): CedarFieldType {

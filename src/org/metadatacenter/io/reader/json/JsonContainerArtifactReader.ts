@@ -1,3 +1,4 @@
+import { reservedInstanceProperties } from '../ReservedInstanceProperties';
 import { SchemaArtifactKind } from '../../../model/cedar/AbstractSchemaArtifact';
 import { JsonReaderBehavior } from '../../../behavior/JsonReaderBehavior';
 import { JsonAbstractSchemaArtifactReader } from './JsonAbstractSchemaArtifactReader';
@@ -29,6 +30,13 @@ import { AbstractFieldChildDeploymentInfoBuilder } from '../../../model/cedar/de
 import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
 import { Language } from '../../../model/cedar/types/wrapped-types/Language';
 import { JsonTemplateFieldReaderInternal } from './JsonTemplateFieldReaderInternal';
+
+const childSchemaTypes = new Set([
+  CedarArtifactType.TEMPLATE.getValue(),
+  CedarArtifactType.TEMPLATE_ELEMENT.getValue(),
+  CedarArtifactType.TEMPLATE_FIELD.getValue(),
+  CedarArtifactType.STATIC_TEMPLATE_FIELD.getValue(),
+]);
 
 export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArtifactReader {
   protected artifactTypeWord(): SchemaArtifactKind {
@@ -269,6 +277,15 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
     // Generate the candidate children names list based on the unknown keys of "properties"
     const candidateChildrenInfo: ContainerArtifactChildrenInfo = new ContainerArtifactChildrenInfo();
     Object.keys(containerProperties).forEach((key) => {
+      if (reservedInstanceProperties.has(key)) {
+        const property = ReaderUtil.getNode(containerProperties, key);
+        const declaration =
+          ReaderUtil.getString(property, JsonSchema.type) === 'array' ? ReaderUtil.getNode(property, JsonSchema.items) : property;
+        const types = declaration?.[JsonSchema.atType];
+        if ((Array.isArray(types) ? types : [types]).some((type) => childSchemaTypes.has(type))) {
+          throw new Error(`Child schema uses a reserved instance property name at ${path.add(JsonSchema.properties, key).toString()}`);
+        }
+      }
       if (!partialKeyMap.has(key)) {
         const propertiesChildNode: JsonNode = ReaderUtil.getNode(containerProperties, key);
 

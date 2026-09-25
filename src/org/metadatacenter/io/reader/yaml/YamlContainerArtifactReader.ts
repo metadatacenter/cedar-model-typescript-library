@@ -1,3 +1,4 @@
+import { reservedInstanceProperties } from '../ReservedInstanceProperties';
 import { YamlReaderBehavior } from '../../../behavior/YamlReaderBehavior';
 import { YamlAbstractArtifactReader } from './YamlAbstractArtifactReader';
 import { YamlTemplateFieldReader } from './YamlTemplateFieldReader';
@@ -45,6 +46,12 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
       const name = ReaderUtil.getString(childNode, YamlKeys.key);
       const yamlArtifactType = YamlArtifactType.forValue(type);
       if (name !== null) {
+        if (typeof name !== 'string') {
+          throw new Error(`Child key must be a string at ${path.add(YamlKeys.children, YamlKeys.key).toString()}`);
+        }
+        if (reservedInstanceProperties.has(name)) {
+          throw new Error(`Child schema uses a reserved instance property name at ${path.add(YamlKeys.children, name).toString()}`);
+        }
         const childDeploymentInfo = new ChildDeploymentInfo(name);
         childDeploymentInfo.atType = CedarArtifactType.forYamlArtifactType(yamlArtifactType);
         const configuration: JsonNode = ReaderUtil.getNode(childNode, YamlKeys.configuration);

@@ -3,10 +3,26 @@ import { Iri } from '../../model/cedar/types/wrapped-types/Iri';
 import { NullableNumber } from '../../model/cedar/types/basic-types/NullableNumber';
 
 export abstract class ReaderUtil {
-  /** Java URI rejects raw ASCII spaces and controls; never trim or auto-encode stored identifiers. */
+  /** Match Java URI's whitespace, fragment and scheme checks; never rewrite identifiers. */
   public static assertIdentifierCharacters(raw: string | null, key: string): void {
-    if (raw !== null && Array.from(raw).some((character) => character.charCodeAt(0) <= 0x20 || character.charCodeAt(0) === 0x7f)) {
+    if (raw === null) return;
+    if (
+      Array.from(raw).some(
+        (character) =>
+          character.charCodeAt(0) <= 0x20 ||
+          (character.charCodeAt(0) >= 0x7f && character.charCodeAt(0) <= 0x9f) ||
+          /\p{Z}/u.test(character),
+      )
+    ) {
       throw new Error(`Invalid URI at "${key}": unescaped space or control character.`);
+    }
+    if (raw.indexOf('#') !== raw.lastIndexOf('#')) {
+      throw new Error(`Invalid URI at "${key}": more than one fragment delimiter.`);
+    }
+    // A colon before any slash, query or fragment denotes a scheme in java.net.URI.
+    const prefix = raw.split(/[/?#]/, 1)[0];
+    if (prefix.includes(':') && !/^[A-Za-z][A-Za-z0-9+.-]*:/.test(raw)) {
+      throw new Error(`Invalid URI at "${key}": malformed scheme.`);
     }
   }
 

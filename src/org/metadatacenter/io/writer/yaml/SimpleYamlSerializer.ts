@@ -63,6 +63,10 @@ function plainDecimal(value: number): string {
 
 export class SimpleYamlSerializer {
   static serialize(obj: JsonNode): string {
+    // SnakeYAML switches to explicit keys at 128 UTF-16 code units. yaml's default
+    // threshold is 1024 rendered characters. Mark those scalar keys as explicit,
+    // but retain their normal plain/quoted spelling through the custom scalar tag.
+    const explicitKeys = new WeakMap<object, string>();
     const document = new YAML.Document(obj, {
       customTags: (tags) =>
         tags.map((tag) =>
@@ -70,6 +74,8 @@ export class SimpleYamlSerializer {
             ? {
                 ...tag,
                 stringify(item, context, onComment, onChompKeep) {
+                  const explicit = explicitKeys.get(item);
+                  if (explicit !== undefined) return explicit;
                   const rendered = tag.stringify!(item, context, onComment, onChompKeep);
                   return rendered.startsWith('"') ? quoteLikeJava(String(item.value)) : rendered;
                 },
@@ -91,7 +97,12 @@ export class SimpleYamlSerializer {
     visit(document, {
       Scalar(key, node, path) {
         if (key === 'key' && typeof node.value === 'string') {
-          node.type = yamlKeyNeedsQuoting(node.value) ? Scalar.QUOTE_DOUBLE : Scalar.PLAIN;
+          const quoted = yamlKeyNeedsQuoting(node.value);
+          node.type = quoted ? Scalar.QUOTE_DOUBLE : Scalar.PLAIN;
+          if (node.value.length >= 128) {
+            explicitKeys.set(node, quoted ? quoteLikeJava(node.value) : node.value);
+            node.type = Scalar.BLOCK_LITERAL;
+          }
         } else if (key === 'value' && typeof node.value === 'string') {
           const pair = path.at(-1);
           if (

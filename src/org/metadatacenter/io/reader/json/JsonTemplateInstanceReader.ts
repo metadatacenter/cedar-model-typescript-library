@@ -420,6 +420,9 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
   }
 
   private static parseDataAtom(content: JsonNode): InstanceDataAtomType {
+    if (Object.hasOwn(content, JsonSchema.atId) && Object.hasOwn(content, JsonSchema.atValue)) {
+      throw new Error('A field cannot contain both @id and @value.');
+    }
     const atom = this.parseDataAtomWithoutNotation(content);
     if ('language' in atom) atom.language = ReaderUtil.getString(content, JsonSchema.atLanguage);
     if ('notation' in atom && !(atom instanceof InstanceDataNotationAtom)) {

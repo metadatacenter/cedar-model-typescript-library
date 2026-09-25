@@ -214,6 +214,9 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
     if (Object.hasOwn(node, YamlKeys.children) || ReaderUtil.getString(node, YamlKeys.type) === ELEMENT_INSTANCE_TYPE) {
       return this.parseContainer(node);
     }
+    if (Object.hasOwn(node, YamlKeys.id) && Object.hasOwn(node, YamlKeys.value)) {
+      throw new Error('A field cannot contain both id and value.');
+    }
     if (Object.hasOwn(node, YamlKeys.value)) {
       const value = ReaderUtil.getString(node, YamlKeys.value);
       const datatype = ReaderUtil.getString(node, YamlKeys.datatype);

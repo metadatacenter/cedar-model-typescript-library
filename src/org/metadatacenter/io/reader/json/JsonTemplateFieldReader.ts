@@ -47,6 +47,8 @@ import { JsonFieldReaderExtPubmed } from '../../../model/cedar/field/dynamic/ext
 import { JsonFieldReaderExtRrid } from '../../../model/cedar/field/dynamic/ext-rrid/JsonFieldReaderExtRrid';
 import { JsonFieldReaderExtNihGrantId } from '../../../model/cedar/field/dynamic/ext-nih-grant-id/JsonFieldReaderExtNihGrantId';
 import { JsonFieldReaderExtDoi } from '../../../model/cedar/field/dynamic/ext-doi/JsonFieldReaderExtDoi';
+import { TextFieldImpl } from '../../../model/cedar/field/dynamic/textfield/TextFieldImpl';
+import { ControlledTermFieldImpl } from '../../../model/cedar/field/dynamic/controlled-term/ControlledTermFieldImpl';
 
 export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
   protected artifactTypeWord(): SchemaArtifactKind {
@@ -120,6 +122,15 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
   ): JsonTemplateFieldReaderResult {
     const parsingResult: JsonArtifactParsingResult = new JsonArtifactParsingResult();
     const field: TemplateField = JsonTemplateFieldReader.readFieldSpecificAttributes(fieldSourceObject, childInfo, parsingResult, path);
+    // Standalone reads have no container to retain the deployment info. Keep the setting on the
+    // field, where both standalone writers read it; children retain their container's setting.
+    if (
+      childInfo instanceof ChildDeploymentInfo &&
+      childInfo.isStandalone() &&
+      (field instanceof TextFieldImpl || field instanceof ControlledTermFieldImpl)
+    ) {
+      field.valueRecommendationEnabled = childInfo.valueRecommendationEnabled;
+    }
     this.readNonReportableAttributes(field, fieldSourceObject);
     this.readReportableAttributes(field, fieldSourceObject, parsingResult, path);
     this.readAnnotations(field, fieldSourceObject);

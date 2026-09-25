@@ -79,6 +79,34 @@ describe('YAMLFieldReader', () => {
  * the two libraries disagreed on production fields because of it.
  */
 describe('a standalone field with value recommendation', () => {
+  test.each([
+    ['text', () => CedarBuilders.textFieldBuilder()],
+    ['controlled term', () => CedarBuilders.controlledTermFieldBuilder()],
+  ] as const)('preserves the setting when starting from stored %s JSON', (_name, builder) => {
+    const field = builder()
+      .withSchemaName('Organism')
+      .withSchemaDescription('d')
+      .withLastUpdatedOn('2018-10-11T20:17:16-07:00')
+      .build();
+    const writers = CedarWriters.json().getStrict();
+    const source = JSON.parse(writers.getFieldWriterForField(field).getAsJsonString(field));
+    for (const enabled of [true, false, undefined]) {
+      if (enabled === undefined) delete source._ui.valueRecommendationEnabled;
+      else source._ui.valueRecommendationEnabled = enabled;
+      const result = JsonTemplateFieldReader.getStrict().readFromString(JSON.stringify(source));
+      expect(result.parsingResult.wasSuccessful()).toBe(true);
+      const yaml = CedarWriters.yaml().getStrict().getFieldWriterForField(result.field).getAsYamlString(result.field);
+      const directJson = JSON.parse(writers.getFieldWriterForField(result.field).getAsJsonString(result.field));
+      const reread = YamlTemplateFieldReader.getStrict().readFromString(yaml).field;
+      const roundTripJson = JSON.parse(writers.getFieldWriterForField(reread).getAsJsonString(reread));
+      expect(yaml.includes('valueRecommendation: true')).toBe(enabled === true);
+      // Java renders the standalone recommendation after provenance, not among value constraints.
+      if (enabled) expect(yaml.endsWith('modifiedOn: "2018-10-11T20:17:16-07:00"\nvalueRecommendation: true\n')).toBe(true);
+      expect(directJson._ui.valueRecommendationEnabled).toBe(enabled === true ? true : undefined);
+      expect(roundTripJson._ui.valueRecommendationEnabled).toBe(enabled === true ? true : undefined);
+    }
+  });
+
   const roundTripToJson = (builder: any, enabled: boolean) => {
     const field = builder
       .withAtId('https://repo.metadatacenter.org/template-fields/00000000-0000-0000-0000-000000000000')

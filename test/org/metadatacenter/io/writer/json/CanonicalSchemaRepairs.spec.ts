@@ -1,4 +1,4 @@
-import { CedarBuilders, CedarWriters, CedarJsonReaders } from '../../../../../../src';
+import { CedarBuilders, CedarWriters, CedarJsonReaders, CedarReaders } from '../../../../../../src';
 
 describe('canonical schema repairs', () => {
   const writers = CedarWriters.json().getStrict();
@@ -17,6 +17,25 @@ describe('canonical schema repairs', () => {
     const nested = (writers.getTemplateWriter().getAsJsonNode(template) as any).properties.attributes;
     expect(nested).toEqual(json);
     expect(nested.items.items).toBeUndefined();
+  });
+
+  test('numeric field and template APIs retain Java decimal digits through YAML back to JSON', () => {
+    const field = CedarBuilders.numericFieldBuilder().withSchemaName('Bounds').withMinValue(-1.2345e21).build();
+    const fieldWriter = writers.getFieldWriterForType(field.cedarFieldType);
+    const template = CedarBuilders.templateBuilder().addChild(field, field.createDeploymentBuilder('bound').build()).build();
+    const expected = '"minValue":-1234499999999999900000';
+    expect(fieldWriter.getAsJsonString(field, 0)).toContain(expected);
+    expect(writers.getTemplateWriter().getAsJsonString(template, 0)).toContain(expected);
+    for (const compact of [false, true]) {
+      const readers = compact ? CedarReaders.yaml().getStrictForCompact() : CedarReaders.yaml().getStrict();
+      const yamlWriters = CedarWriters.yaml().getStrict();
+      const fieldYaml = yamlWriters.getFieldWriterForField(field).getAsYamlString(field, compact);
+      const readField = readers.getTemplateFieldReader().readFromString(fieldYaml).field;
+      expect(fieldWriter.getAsJsonString(readField, 0)).toContain(expected);
+      const templateYaml = yamlWriters.getTemplateWriter().getAsYamlString(template, compact);
+      const readTemplate = readers.getTemplateReader().readFromString(templateYaml).template;
+      expect(writers.getTemplateWriter().getAsJsonString(readTemplate, 0)).toContain(expected);
+    }
   });
 
   test('templates declare optional platform annotations without introducing a child', () => {

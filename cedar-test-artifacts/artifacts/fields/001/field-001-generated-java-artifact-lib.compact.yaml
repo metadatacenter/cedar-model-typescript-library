@@ -12,7 +12,7 @@ minLength: 10
 maxLength: 100
 regex: "regex"
 annotations:
-  https://datacite.com/doi:
+  "https://datacite.com/doi":
     id: "https://doi.org/10.82658/8vc1-abcd"
   foo:
     value: "bar"

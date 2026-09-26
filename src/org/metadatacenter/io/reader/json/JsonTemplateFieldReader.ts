@@ -111,6 +111,12 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
   }
 
   public readFromObject(fieldSourceObject: JsonNode): JsonTemplateFieldReaderResult {
+    // The canonical standalone attribute-value representation has the same array envelope as
+    // a deployed group. Continue to accept the historical unwrapped field definition too.
+    const items = ReaderUtil.getNode(fieldSourceObject, JsonSchema.items);
+    if (fieldSourceObject.type === 'array' && ReaderUtil.getNode(items, CedarModel.ui)[CedarModel.inputType] === 'attribute-value') {
+      fieldSourceObject = items;
+    }
     const childInfo: AbstractChildDeploymentInfo = ChildDeploymentInfo.standalone();
     const path: JsonPath = new JsonPath();
     return this.readFromObjectInternal(fieldSourceObject, childInfo, path);
@@ -173,6 +179,7 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     }
     JsonObjectComparator.compareBothWays(parsingResult, blueprintAtContext, topContextNode, path.add(JsonSchema.atContext), this.behavior, [
       JsonSchema.atLanguage,
+      ...Object.keys(field.extensions.prefixes),
     ]);
 
     // Read and validate, but do not store top level type
@@ -254,7 +261,9 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
       return true;
     }
     const valueSets: Array<JsonNode> = ReaderUtil.getNodeList(vcNode, CedarModel.valueSets);
-    return valueSets.length > 0 || ReaderUtil.getNodeList(vcNode, CedarModel.actions).length > 0;
+    // Match Java's hasExplicitConstraints: actions modify a vocabulary selection;
+    // stale actions alone must not turn literal text into a controlled-term field.
+    return valueSets.length > 0;
   }
 
   private static getCedarFieldType(fieldSourceObject: JsonNode, uiInputType: UiInputType): CedarFieldType {

@@ -1,3 +1,6 @@
+import { ReservedNames } from '../../../model/cedar/ReservedNames';
+import { InstanceDataNotationAtom } from '../../../model/cedar/template-instance/InstanceDataNotationAtom';
+import { InstanceDataLabelAtom } from '../../../model/cedar/template-instance/InstanceDataLabelAtom';
 import YAML from 'yaml';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { CedarArtifactId } from '../../../model/cedar/types/cedar-types/CedarArtifactId';
@@ -78,7 +81,8 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
     const source = instanceSourceObject ?? {};
 
     instance.schema_name = ReaderUtil.getString(source, YamlKeys.name);
-    instance.schema_description = ReaderUtil.getStringOrEmpty(source, YamlKeys.description);
+    instance.schema_description = ReaderUtil.getString(source, YamlKeys.description) ?? '';
+    instance.descriptionWasAbsent = ReaderUtil.getString(source, YamlKeys.description) === null;
     YamlTemplateInstanceReader.refuseEmptyIdentifier(source);
     instance.at_id = CedarArtifactId.forValue(ReaderUtil.getString(source, YamlKeys.id));
     instance.schema_isBasedOn = CedarArtifactId.forValue(ReaderUtil.getString(source, YamlKeys.isBasedOn));
@@ -98,7 +102,7 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
         new ComparisonError(
           'YamlTemplateInstanceReader',
           YamlComparisonErrorType.VALUE_MISMATCH,
-          new JsonPath(...conflict.path, conflict.groupName, conflict.name),
+          new JsonPath(...AttributeValueNamePolicy.locationOf(conflict)),
           'a unique, non-reserved attribute-value name',
           conflict.name,
         ),
@@ -108,29 +112,16 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
   }
 
   /**
-   * Keys that name the instance rather than its data, so are not attribute-value
-   * fields. Nested elements reserve only their discriminator, identity and
-   * children block, matching Java; `name` can be an attribute-group name there.
+   * Keys that name the instance rather than its data, so are not attribute-value fields. Nested
+   * elements reserve only their discriminator, identity and children block, matching Java; `name`
+   * can be an attribute-group name there. An annotation block is the artifact's, not a field named
+   * `annotations`: left unreserved, the attribute-value fallback below claimed it, and an annotation
+   * carrying an IRI rather than a literal came out of that as a null-valued attribute the writer
+   * then dropped.
    */
-  private static readonly RESERVED_KEYS: ReadonlySet<string> = new Set([
-    YamlKeys.type,
-    YamlKeys.name,
-    YamlKeys.description,
-    YamlKeys.id,
-    YamlKeys.isBasedOn,
-    YamlKeys.derivedFrom,
-    YamlKeys.children,
-    // An annotation block is the artifact's, not a field named `annotations`: left unreserved, the
-    // attribute-value fallback below claimed it, and an annotation carrying an IRI rather than a
-    // literal came out of that as a null-valued attribute the writer then dropped.
-    YamlKeys.annotations,
-    YamlKeys.createdOn,
-    YamlKeys.createdBy,
-    YamlKeys.modifiedOn,
-    YamlKeys.modifiedBy,
-  ]);
+  private static readonly RESERVED_KEYS: ReadonlySet<string> = ReservedNames.TEMPLATE_INSTANCE_YAML_KEYS;
 
-  private static readonly ELEMENT_RESERVED_KEYS: ReadonlySet<string> = new Set([YamlKeys.type, YamlKeys.id, YamlKeys.children]);
+  private static readonly ELEMENT_RESERVED_KEYS: ReadonlySet<string> = ReservedNames.NESTED_ELEMENT_INSTANCE_YAML_KEYS;
 
   private parseContainer(node: JsonNode, isDocumentRoot: boolean = false): InstanceDataContainer {
     const container = new InstanceDataContainer();
@@ -190,6 +181,17 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
   }
 
   private parseNode(node: JsonNode | string | null): InstanceDataAtomType {
+    const atom = this.parseNodeWithoutNotation(node);
+    if (node !== null && typeof node === 'object' && 'language' in atom) {
+      atom.language = ReaderUtil.getString(node, YamlKeys.language);
+    }
+    if (node !== null && typeof node === 'object' && 'notation' in atom && !(atom instanceof InstanceDataNotationAtom)) {
+      atom.notation = ReaderUtil.getString(node, YamlKeys.notation);
+    }
+    return atom;
+  }
+
+  private parseNodeWithoutNotation(node: JsonNode | string | null): InstanceDataAtomType {
     if (node === null || node === undefined) {
       return new InstanceDataEmptyNode();
     }
@@ -200,16 +202,35 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
     if (Object.hasOwn(node, YamlKeys.children) || ReaderUtil.getString(node, YamlKeys.type) === ELEMENT_INSTANCE_TYPE) {
       return this.parseContainer(node);
     }
+    if (Object.hasOwn(node, YamlKeys.id) && Object.hasOwn(node, YamlKeys.value)) {
+      throw new Error('A field cannot contain both id and value.');
+    }
+    // One slot, as in Java's reader: the YAML form writes a lone datatype as a string.
+    if (Array.isArray(node[YamlKeys.datatype])) {
+      throw new Error('A field value can have at most one datatype.');
+    }
     if (Object.hasOwn(node, YamlKeys.value)) {
       const value = ReaderUtil.getString(node, YamlKeys.value);
       const datatype = ReaderUtil.getString(node, YamlKeys.datatype);
-      return datatype === null ? new InstanceDataStringAtom(value) : new InstanceDataTypedAtom(value, datatype);
+      const label = ReaderUtil.getString(node, YamlKeys.label);
+      return datatype === null ? new InstanceDataStringAtom(value, label) : new InstanceDataTypedAtom(value, datatype, label);
     }
     if (Object.hasOwn(node, YamlKeys.id)) {
-      YamlTemplateInstanceReader.refuseEmptyIdentifier(node);
+      ReaderUtil.assertFieldIri(ReaderUtil.getString(node, YamlKeys.id), YamlKeys.id);
       const id = ReaderUtil.getString(node, YamlKeys.id);
       const label = ReaderUtil.getString(node, YamlKeys.label);
-      return label === null ? InstanceDataLinkAtom.fromParsedNode(id) : InstanceDataControlledAtom.fromParsedNode(id, label);
+      const datatype = ReaderUtil.getString(node, YamlKeys.datatype);
+      return label === null
+        ? InstanceDataLinkAtom.fromParsedNode(id, datatype)
+        : InstanceDataControlledAtom.fromParsedNode(id, label, datatype);
+    }
+    const label = ReaderUtil.getString(node, YamlKeys.label);
+    if (label !== null) {
+      return new InstanceDataLabelAtom(label, ReaderUtil.getString(node, YamlKeys.datatype));
+    }
+    const notation = ReaderUtil.getString(node, YamlKeys.notation);
+    if (notation !== null) {
+      return new InstanceDataNotationAtom(notation, ReaderUtil.getString(node, YamlKeys.datatype));
     }
     return new InstanceDataEmptyNode();
   }

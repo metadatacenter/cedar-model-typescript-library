@@ -23,7 +23,6 @@ const directory = path.join(__dirname, 'resources/concordance');
 const bytes = fs.readFileSync(path.join(directory, 'java-field-matrix.json'));
 const cases = JSON.parse(bytes.toString()) as Case[];
 const lock = JSON.parse(fs.readFileSync(path.join(directory, 'java-field-matrix-lock.json'), 'utf8'));
-const definition = (json: JsonNode): JsonNode => (json['items'] as JsonNode) ?? json;
 const jsonReaders = CedarReaders.json().getStrict();
 const jsonWriters = CedarWriters.json().getStrict();
 const yamlWriters = CedarWriters.yaml().getStrict();
@@ -34,15 +33,15 @@ it('pins Java fixture provenance and covers every TypeScript field type', () => 
   expect(cases).toHaveLength(lock.caseCount);
   expect(new Set(cases.map((c) => c.id)).size).toBe(cases.length);
   const baseline = cases.filter((c) => c.feature === 'baseline');
-  const covered = baseline.map((c) => jsonReaders.getTemplateFieldReader().readFromObject(definition(c.json)).field.cedarFieldType);
+  const covered = baseline.map((c) => jsonReaders.getTemplateFieldReader().readFromObject(c.json).field.cedarFieldType);
   expect(new Set(covered)).toEqual(new Set(CedarFieldType.values()));
 });
 
 for (const row of cases) {
   describe(row.id, () => {
     it('Java JSON → TS model → JSON preserves the entire field definition', () => {
-      const field = jsonReaders.getTemplateFieldReader().readFromObject(definition(row.json)).field;
-      expect(jsonWriters.getFieldWriterForField(field).getAsJsonNode(field)).toEqual(definition(row.json));
+      const field = jsonReaders.getTemplateFieldReader().readFromObject(row.json).field;
+      expect(jsonWriters.getFieldWriterForField(field).getAsJsonNode(field)).toEqual(row.json);
     });
     it('Java template JSON → TS model → JSON preserves the field and deployment', () => {
       const template = jsonReaders.getTemplateReader().readFromObject(row.templateJson).template;
@@ -53,12 +52,12 @@ for (const row of cases) {
       const fieldYaml = compact ? row.compactYaml : row.yaml;
       const templateYaml = compact ? row.templateCompactYaml : row.templateYaml;
       it(`${compact ? 'compact' : 'full'} field YAML agrees and reader JSON follows the Java lifecycle policy`, () => {
-        const original = jsonReaders.getTemplateFieldReader().readFromObject(definition(row.json)).field;
+        const original = jsonReaders.getTemplateFieldReader().readFromObject(row.json).field;
         const written = yamlWriters.getFieldWriterForField(original).getAsYamlString(original, compact);
         expect(YAML.parse(written)).toEqual(YAML.parse(fieldYaml));
         const read = yamlReaders.getTemplateFieldReader().readFromString(fieldYaml).field;
         const actual = jsonWriters.getFieldWriterForField(read).getAsJsonNode(read);
-        expect(actual).toEqual(definition(compact ? row.jsonFromCompactYaml : row.jsonFromYaml));
+        expect(actual).toEqual(compact ? row.jsonFromCompactYaml : row.jsonFromYaml);
       });
       it(`${compact ? 'compact' : 'full'} template YAML agrees and reader JSON preserves deployment under the Java lifecycle policy`, () => {
         const original = jsonReaders.getTemplateReader().readFromObject(row.templateJson).template;

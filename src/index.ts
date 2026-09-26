@@ -1,3 +1,4 @@
+import { InstanceDataNotationAtom } from './org/metadatacenter/model/cedar/template-instance/InstanceDataNotationAtom';
 import { CedarWriters } from './org/metadatacenter/io/writer/CedarWriters';
 import { CedarBuilders } from './org/metadatacenter/io/builder/CedarBuilders';
 
@@ -115,8 +116,10 @@ import { InstanceDataContainer } from './org/metadatacenter/model/cedar/template
 import { InstanceDataAttributeValueField } from './org/metadatacenter/model/cedar/template-instance/InstanceDataAttributeValueField';
 import { InstanceDataAttributeValueFieldName } from './org/metadatacenter/model/cedar/template-instance/InstanceDataAttributeValueFieldName';
 import { AttributeValueNamePolicy } from './org/metadatacenter/model/cedar/template-instance/AttributeValueNamePolicy';
+import { ReservedNames } from './org/metadatacenter/model/cedar/ReservedNames';
 import { InstanceDataEmptyNode } from './org/metadatacenter/model/cedar/template-instance/InstanceDataEmptyNode';
 import { InstanceDataEmptyAtom } from './org/metadatacenter/model/cedar/template-instance/InstanceDataEmptyAtom';
+import { InstanceDataLabelAtom } from './org/metadatacenter/model/cedar/template-instance/InstanceDataLabelAtom';
 import { InstanceDataStringAtom } from './org/metadatacenter/model/cedar/template-instance/InstanceDataStringAtom';
 import { InstanceDataTypedAtom } from './org/metadatacenter/model/cedar/template-instance/InstanceDataTypedAtom';
 import { InstanceDataLinkAtom } from './org/metadatacenter/model/cedar/template-instance/InstanceDataLinkAtom';
@@ -246,9 +249,12 @@ export {
   InstanceDataAttributeValueField,
   InstanceDataAttributeValueFieldName,
   AttributeValueNamePolicy,
+  ReservedNames,
   InstanceDataEmptyNode,
   InstanceDataEmptyAtom,
   InstanceDataStringAtom,
+  InstanceDataLabelAtom,
+  InstanceDataNotationAtom,
   InstanceDataTypedAtom,
   InstanceDataLinkAtom,
   InstanceDataControlledAtom,
@@ -349,3 +355,6 @@ export { YamlObjectComparator };
 export { Annotations } from './org/metadatacenter/model/cedar/annotation/Annotations';
 export { AnnotationAtId } from './org/metadatacenter/model/cedar/annotation/AnnotationAtId';
 export { AnnotationAtValue } from './org/metadatacenter/model/cedar/annotation/AnnotationAtValue';
+
+export { SchemaExtensions } from './org/metadatacenter/model/cedar/SchemaExtensions';
+export type { AttributeValueFieldParent } from './org/metadatacenter/model/cedar/ReservedNames';

@@ -87,7 +87,7 @@ export class JsonTemplateWriter extends JsonAbstractContainerArtifactWriter {
     }
 
     // build the final object
-    return {
+    return template.extensions.applyJson({
       [JsonSchema.atId]: this.atomicWriter.write(template.at_id),
       [JsonSchema.atType]: this.atomicWriter.write(CedarArtifactType.TEMPLATE),
       [JsonSchema.atContext]: this.macroContext(template),
@@ -110,6 +110,6 @@ export class JsonTemplateWriter extends JsonAbstractContainerArtifactWriter {
       [JsonSchema.schemaVersion]: this.atomicWriter.write(SchemaVersion.CURRENT),
       ...this.macroSchemaIdentifier(template),
       [CedarModel.schema]: this.atomicWriter.write(ArtifactSchema.CURRENT),
-    };
+    });
   }
 }

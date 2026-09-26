@@ -82,6 +82,30 @@ limit. JSON, full YAML and compact YAML preserve the limits, including on nested
 and repeated fields. These describe character lengths, independently of the
 number of field occurrences. Paragraph builders do not expose a regex constraint.
 
+## Canonical schema output
+
+Standalone attribute-value fields use Java's array envelope (`type: array`, `minItems: 0`,
+`items: <field definition>`), just like deployed groups. The JSON reader also accepts the
+historical unwrapped definition.
+
+Generated templates permit optional instance `_annotations` and its optional `@nest` context
+mapping. Annotation entries follow the existing CEDAR meta-schema: an IRI object or a literal
+value object, with no extra properties. These declarations are platform metadata, not child fields.
+Older templates without the declarations remain readable; writing them adds the declarations.
+
+Finite numeric YAML and schema JSON values use Java 17's decimal digits, expanded without exponent notation.
+This includes midpoint and subnormal cases where JavaScript's shortest spelling differs. Shared
+Java-verified fixtures check the output and preservation of the original binary number.
+
+## Unicode field identifiers
+
+JSON `@id` and YAML `id` field values accept RFC 3987 Unicode IRI characters without normalizing
+the stored string. This includes U+00A0 in an ontology term. Ordinary ASCII spaces, controls,
+malformed percent escapes, lone surrogates and noncharacters are rejected. Private-use characters
+are permitted only in the query component. Raw Unicode and percent-encoded identifiers remain
+distinct, as RDF identity requires. Artifact and element-occurrence identifiers retain their
+existing URI rules.
+
 ## Building
 
 Use Node 24.19.0, which `.nvmrc` and CI both specify:

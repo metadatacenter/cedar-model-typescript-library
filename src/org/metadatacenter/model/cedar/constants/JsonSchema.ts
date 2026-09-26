@@ -1,4 +1,5 @@
 export class JsonSchema {
+  static skosNotation: string = 'skos:notation';
   static properties: string = 'properties';
   static required: string = 'required';
 

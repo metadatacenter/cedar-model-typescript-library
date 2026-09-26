@@ -1,0 +1,1 @@
+Regression fixture for an explicitly declared vocabulary property IRI on an attribute-value group. The mapping is optional in instance contexts and is never invented when absent. Both JSON writers must preserve it through direct JSON and YAML round trips. Derived from template 022.

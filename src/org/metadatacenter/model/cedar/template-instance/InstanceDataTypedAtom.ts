@@ -8,10 +8,18 @@
  * ever have built.
  */
 export class InstanceDataTypedAtom {
+  /** Optional JSON-LD language tag, preserved across JSON and YAML. */
+  public language: string | null = null;
+  /** Optional SKOS notation, including an explicitly empty string. */
+  public notation: string | null = null;
   private readonly _value: string | null;
   private readonly _type: string;
 
-  constructor(value: string | null, type: string) {
+  constructor(
+    value: string | null,
+    type: string,
+    public readonly label: string | null = null,
+  ) {
     if (type === null || type === undefined || type === '') {
       throw new Error('InstanceDataTypedAtom requires a type. A literal with no declared type is an InstanceDataStringAtom.');
     }

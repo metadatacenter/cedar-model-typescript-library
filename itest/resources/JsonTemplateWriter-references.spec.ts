@@ -42,7 +42,11 @@ describe('JsonTemplateWriter-references', () => {
         // console.log(compareResult.getBlueprintComparisonErrorCount());
 
         const expected = JSON_TEMPLATE_ROUND_TRIP_DIVERGENCES[String(templateTestNumber)];
-        expect(compareResult.getBlueprintComparisonErrorCount()).toBe(expected?.roundTripErrors ?? 0);
+        // Canonical writers add the two optional annotation declarations to historical sources.
+        const source = JSON.parse(artifactSource);
+        const addedAnnotations =
+          Number(!source.properties?._annotations) + Number(!source.properties?.['@context']?.properties?._annotations);
+        expect(compareResult.getBlueprintComparisonErrorCount()).toBe((expected?.roundTripErrors ?? 0) + addedAnnotations);
         expect(compareResult.getBlueprintComparisonWarningCount()).toBe(expected?.roundTripWarnings ?? 0);
       } catch (error) {
         TestUtil.p(compareResult);

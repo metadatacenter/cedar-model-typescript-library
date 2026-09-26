@@ -1,3 +1,6 @@
+import { ReservedNames } from '../../../model/cedar/ReservedNames';
+import { InstanceDataNotationAtom } from '../../../model/cedar/template-instance/InstanceDataNotationAtom';
+import { InstanceDataLabelAtom } from '../../../model/cedar/template-instance/InstanceDataLabelAtom';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { SimpleYamlSerializer } from './SimpleYamlSerializer';
 import { YamlWriterBehavior } from '../../../behavior/YamlWriterBehavior';
@@ -106,10 +109,10 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
       }
       into[YamlKeys.children] = target;
     }
-    this.serializeAttributeValueFields(dataContainer, into, unpackedAttributeValueGroups, isDocumentRoot);
-    // Java identifies an element containing only attribute groups explicitly;
-    // otherwise the YAML reader mistakes the group map for an empty field.
-    if (!isDocumentRoot && JsonNode.hasEntries(into)) {
+    const attributes = JsonNode.getEmpty();
+    this.serializeAttributeValueFields(dataContainer, attributes, unpackedAttributeValueGroups, isDocumentRoot);
+    // Emit element metadata before attribute groups, including elements with no ordinary children.
+    if (!isDocumentRoot && (JsonNode.hasEntries(into) || JsonNode.hasEntries(attributes))) {
       if (!Object.hasOwn(into, YamlKeys.children)) {
         into[YamlKeys.type] = ELEMENT_INSTANCE_TYPE;
       }
@@ -117,6 +120,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
         into[YamlKeys.id] = dataContainer.id;
       }
     }
+    Object.assign(into, attributes);
   }
 
   private serializeAttributeValueFields(
@@ -129,23 +133,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
       const dataAtom: InstanceDataAtomType = dataContainer.values[key];
       if (
         (dataAtom instanceof InstanceDataAttributeValueField || unpackedGroups.has(key)) &&
-        (isDocumentRoot
-          ? [
-              YamlKeys.type,
-              YamlKeys.name,
-              YamlKeys.description,
-              YamlKeys.id,
-              YamlKeys.isBasedOn,
-              YamlKeys.derivedFrom,
-              YamlKeys.children,
-              YamlKeys.annotations,
-              YamlKeys.createdOn,
-              YamlKeys.createdBy,
-              YamlKeys.modifiedOn,
-              YamlKeys.modifiedBy,
-            ]
-          : [YamlKeys.type, YamlKeys.id, YamlKeys.children]
-        ).includes(key)
+        ReservedNames.yamlKeys(isDocumentRoot ? 'template' : 'element').has(key)
       ) {
         throw new Error(`Attribute-value field key "${key}" is reserved for CEDAR YAML metadata.`);
       }
@@ -203,14 +191,42 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
   }
 
   private serializeCommonType(atom: InstanceDataAtomType, isCompact: boolean): JsonNode | null {
+    let node = this.serializeCommonTypeWithoutNotation(atom, isCompact);
+    if ('notation' in atom && atom.notation !== null) {
+      const result = node ?? JsonNode.getEmpty();
+      result[YamlKeys.notation] = atom.notation;
+      node = result;
+    }
+    if (node !== null && 'language' in atom && atom.language !== null) {
+      node[YamlKeys.language] = atom.language;
+    }
+    return node;
+  }
+
+  private serializeCommonTypeWithoutNotation(atom: InstanceDataAtomType, isCompact: boolean): JsonNode | null {
+    if (atom instanceof InstanceDataNotationAtom) {
+      return atom.type === null ? JsonNode.getEmpty() : { [YamlKeys.datatype]: atom.type };
+    }
     if (atom instanceof InstanceDataStringAtom) {
       return this.serializeAtomString(atom);
     }
     if (atom instanceof InstanceDataTypedAtom) {
-      return atom.value === null ? null : { [YamlKeys.datatype]: atom.type, [YamlKeys.value]: atom.value };
+      return atom.value === null && atom.label === null && atom.notation === null
+        ? null
+        : {
+            [YamlKeys.datatype]: atom.type,
+            [YamlKeys.value]: atom.value,
+            ...(atom.label === null ? {} : { [YamlKeys.label]: atom.label }),
+          };
+    }
+    if (atom instanceof InstanceDataLabelAtom) {
+      return { ...(atom.type === null ? {} : { [YamlKeys.datatype]: atom.type }), [YamlKeys.label]: atom.label };
     }
     if (atom instanceof InstanceDataControlledAtom) {
       const controlled: JsonNode = JsonNode.getEmpty();
+      if (atom.type !== null && (this.hasId(atom.id) || atom.label !== null || atom.notation !== null)) {
+        controlled[YamlKeys.datatype] = atom.type;
+      }
       if (this.hasId(atom.id)) {
         controlled[YamlKeys.id] = atom.id;
       }
@@ -232,11 +248,17 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
   }
 
   private serializeAtomString(atom: InstanceDataStringAtom): JsonNode | null {
-    return atom.value === null ? null : { [YamlKeys.value]: atom.value };
+    return atom.value === null && atom.label === null && atom.notation === null
+      ? null
+      : { [YamlKeys.value]: atom.value, ...(atom.label === null ? {} : { [YamlKeys.label]: atom.label }) };
   }
 
   private serializeAtomLink(atom: InstanceDataLinkAtom): JsonNode | null {
-    return this.hasId(atom.id) ? { [YamlKeys.id]: atom.id } : null;
+    return this.hasId(atom.id)
+      ? { ...(atom.type === null ? {} : { [YamlKeys.datatype]: atom.type }), [YamlKeys.id]: atom.id }
+      : atom.notation !== null && atom.type !== null
+        ? { [YamlKeys.datatype]: atom.type }
+        : null;
   }
 
   private hasId(id: string | null): id is string {

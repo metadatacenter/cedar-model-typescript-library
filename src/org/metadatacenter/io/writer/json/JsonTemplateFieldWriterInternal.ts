@@ -1,3 +1,4 @@
+import { stringifySchema } from './stringifySchema';
 import { JsonWriterBehavior } from '../../../behavior/JsonWriterBehavior';
 import { SchemaVersion } from '../../../model/cedar/types/wrapped-types/SchemaVersion';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
@@ -132,12 +133,12 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
   }
 
   public getAsJsonString(field: TemplateField, indent: number = 2): string {
-    return JSON.stringify(this.getAsJsonNode(field, ChildDeploymentInfo.empty()), null, indent);
+    return stringifySchema(this.getAsJsonNode(field, ChildDeploymentInfo.standalone()), indent);
   }
 
   public getAsJsonNode(field: TemplateField): JsonNode;
   public getAsJsonNode(field: TemplateField, childInfo: AbstractChildDeploymentInfo): JsonNode;
-  public getAsJsonNode(field: TemplateField, childInfo: AbstractChildDeploymentInfo = ChildDeploymentInfo.empty()): JsonNode {
+  public getAsJsonNode(field: TemplateField, childInfo: AbstractChildDeploymentInfo = ChildDeploymentInfo.standalone()): JsonNode {
     // Build properties wrapper, based on type
     const propertiesObject: JsonNode = JsonNode.getEmpty();
     this.expandPropertiesNode(propertiesObject);
@@ -159,7 +160,7 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
     this.expandTypeNode(typeNode, field);
 
     // build the final object
-    return {
+    return field.extensions.applyJson({
       [JsonSchema.atId]: this.atomicWriter.write(field.at_id),
       [JsonSchema.atType]: this.atomicWriter.write(field.cedarArtifactType),
       [JsonSchema.atContext]: this.macroContext(field),
@@ -184,7 +185,7 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
       [TemplateProperty.additionalProperties]: this.atomicWriter.write(AdditionalProperties.FALSE),
       ...this.macroSchemaIdentifier(field),
       [CedarModel.schema]: this.atomicWriter.write(ArtifactSchema.CURRENT),
-    };
+    });
   }
 
   protected macroContext(field: TemplateField) {

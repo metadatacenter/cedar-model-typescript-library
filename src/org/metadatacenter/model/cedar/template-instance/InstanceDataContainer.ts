@@ -1,3 +1,4 @@
+import { ReservedNames } from '../ReservedNames';
 import { InstanceDataAtomType } from './InstanceDataAtomType';
 
 /**
@@ -19,11 +20,12 @@ export class InstanceDataContainer {
   private _iris: { [key: string]: string };
 
   constructor() {
-    this._values = {};
-    this._iris = {};
+    this._values = Object.create(null);
+    this._iris = Object.create(null);
   }
 
   setValue(key: string, instanceDataAtom: InstanceDataAtomType) {
+    ReservedNames.requireChildName(key);
     this._values[key] = instanceDataAtom;
   }
 
@@ -51,7 +53,8 @@ export class InstanceDataContainer {
   }
 
   set values(values: { [key: string]: InstanceDataAtomType }) {
-    this._values = values;
+    for (const key of Object.keys(values)) ReservedNames.requireChildName(key);
+    this._values = Object.assign(Object.create(null), values);
   }
 
   setIri(key: string, iri: string) {

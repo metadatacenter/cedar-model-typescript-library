@@ -1,0 +1,10 @@
+type: template
+name: "Attribute-value vocabulary property IRI"
+description: "Optional vocabulary mapping on an attribute-value group must survive both model libraries."
+id: "https://repo.metadatacenter.org/templates/79e99ce3-78dd-4b66-b825-e10a5df0dcaa"
+children:
+  - key: "ATTR-Value"
+    type: attribute-value-field
+    name: "ATTR-Value"
+    description: "Some help text here"
+    prefLabel: "Attribute Value"

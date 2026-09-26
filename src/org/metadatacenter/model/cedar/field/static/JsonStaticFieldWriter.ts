@@ -42,7 +42,7 @@ export class JsonStaticFieldWriter extends JsonTemplateFieldWriterInternal {
     // Build ui wrapper
     const uiObject: JsonNode = this.buildUIObject(field);
     if (childInfo.hidden) (uiObject[CedarModel.ui] as JsonNode)[CedarModel.Ui.hidden] = true;
-    return {
+    return field.extensions.applyJson({
       [JsonSchema.atId]: this.atomicWriter.write(field.at_id),
       [JsonSchema.atType]: this.atomicWriter.write(field.cedarArtifactType),
       [JsonSchema.atContext]: this.macroContext(field),
@@ -61,7 +61,7 @@ export class JsonStaticFieldWriter extends JsonTemplateFieldWriterInternal {
       [JsonSchema.schemaVersion]: this.atomicWriter.write(field.schema_schemaVersion),
       [TemplateProperty.additionalProperties]: this.atomicWriter.write(AdditionalProperties.FALSE),
       [CedarModel.schema]: this.atomicWriter.write(ArtifactSchema.CURRENT),
-    };
+    });
   }
 
   protected override macroContext(field: StaticImageField) {

@@ -1,3 +1,4 @@
+import { SchemaExtensions } from './SchemaExtensions';
 import { PavVersion } from './types/wrapped-types/PavVersion';
 import { BiboStatus } from './types/wrapped-types/BiboStatus';
 import { CedarArtifactId } from './types/cedar-types/CedarArtifactId';
@@ -24,6 +25,7 @@ export function internalNameFor(name: string, kind: SchemaArtifactKind): string 
 }
 
 export abstract class AbstractSchemaArtifact extends AbstractArtifact {
+  public extensions: SchemaExtensions = new SchemaExtensions();
   public title: NullableString = null;
   public description: NullableString = null;
   public schema_schemaVersion: SchemaVersion = SchemaVersion.NULL;

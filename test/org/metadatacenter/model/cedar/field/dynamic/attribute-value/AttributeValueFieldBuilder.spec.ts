@@ -36,7 +36,10 @@ describe('AttributeValueFieldBuilder', () => {
     const jsonWriter = writers.getFieldWriterForField(field);
 
     const stringified = jsonWriter.getAsJsonString(field);
-    const backparsed = JSON.parse(stringified);
+    const wrapped = JSON.parse(stringified);
+    expect(wrapped.type).toBe('array');
+    expect(wrapped.minItems).toBe(0);
+    const backparsed = wrapped.items;
 
     expect(backparsed['@id']).toBe('https://repo.metadatacenter.org/template-fields/f38b5ef4-a078-4d82-90c0-a9a721ad5ecf');
     expect(backparsed['@type']).toBe('https://schema.metadatacenter.org/core/TemplateField');

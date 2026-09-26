@@ -30,6 +30,7 @@ export abstract class JsonAbstractArtifactReader {
     if (raw !== null && raw.trim() === '') {
       throw new Error(`An empty string is not a URI at "${key}"; write null or leave the key out where there is no value.`);
     }
+    ReaderUtil.assertIdentifierCharacters(raw, key);
   }
 
   protected behavior: JsonReaderBehavior;
@@ -58,6 +59,10 @@ export abstract class JsonAbstractArtifactReader {
     const annotationsNode: JsonNode | null = ReaderUtil.getNodeOrNull(artifactSourceObject, CedarModel.annotations);
     if (annotationsNode !== null) {
       Object.keys(annotationsNode).forEach((key) => {
+        const raw = annotationsNode[key];
+        if (raw === null || typeof raw !== 'object' || Array.isArray(raw)) {
+          throw new Error(`Value of annotation must be an object at /_annotations/${key}`);
+        }
         const annotationNode: JsonNode = ReaderUtil.getNode(annotationsNode, key);
         const atId: string | null = ReaderUtil.getString(annotationNode, JsonSchema.atId);
         if (atId !== null) {
@@ -66,6 +71,8 @@ export abstract class JsonAbstractArtifactReader {
           const atValue: string | null = ReaderUtil.getString(annotationNode, JsonSchema.atValue);
           if (atValue !== null) {
             annotations.add(new AnnotationAtValue(key, atValue));
+          } else {
+            throw new Error(`Value of annotation must contain an @id or @value at /_annotations/${key}`);
           }
         }
       });

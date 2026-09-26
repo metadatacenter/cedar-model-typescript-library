@@ -7,6 +7,7 @@ import {
   InstanceDataControlledAtom,
   InstanceDataEmptyNode,
   InstanceDataLinkAtom,
+  InstanceDataLabelAtom,
   InstanceDataStringAtom,
   InstanceDataTypedAtom,
   JsonNode,
@@ -109,15 +110,15 @@ describe('YAML instance edge cases', () => {
     const instance = reader.readFromString('type: instance\nname: Test\nisBasedOn: urn:template').instance;
     const element = new InstanceDataContainer();
     element.id = 'urn:element';
-    const group = new InstanceDataAttributeValueField('name');
+    const group = new InstanceDataAttributeValueField('annotations');
     group.addValue('answer', new InstanceDataStringAtom('kept'));
-    element.setValue('name', group);
+    element.setValue('annotations', group);
     instance.dataContainer.setValue('Element', element);
     const yaml = writer.getYamlAsJsonNode(instance, compact);
     const result = reader.readFromObject(yaml).instance.dataContainer.values.Element;
     expect(result).toBeInstanceOf(InstanceDataContainer);
     const container = result as InstanceDataContainer;
-    const actualGroup = container.values.name as InstanceDataAttributeValueField;
+    const actualGroup = container.values.annotations as InstanceDataAttributeValueField;
     expect((actualGroup.values.answer as InstanceDataStringAtom).value).toBe('kept');
     if (!compact) expect(container.id).toBe('urn:element');
   });
@@ -129,7 +130,7 @@ describe('YAML instance edge cases', () => {
     group.addValue('answer', new InstanceDataStringAtom('kept'));
     element.setValue(key, group);
     instance.dataContainer.setValue('Element', element);
-    expect(() => writer.getYamlAsJsonNode(instance)).toThrow(/reserved for CEDAR YAML metadata/);
+    expect(() => writer.getYamlAsJsonNode(instance)).toThrow(/reserved for CEDAR instance metadata/);
   });
 
   test('malformed and null documents produce an empty usable instance', () => {
@@ -152,7 +153,8 @@ describe('YAML instance edge cases', () => {
     expect(values._nested).toBeInstanceOf(InstanceDataContainer);
     expect(values._link).toBeInstanceOf(InstanceDataLinkAtom);
     expect(values._term).toBeInstanceOf(InstanceDataControlledAtom);
-    expect(values._unknown).toBeInstanceOf(InstanceDataEmptyNode);
+    expect(values._unknown).toBeInstanceOf(InstanceDataLabelAtom);
+    expect((values._unknown as InstanceDataLabelAtom).label).toBe('label without an id');
   });
 
   test('accepts both nested and direct attribute-value spellings while ignoring primitives and lists', () => {

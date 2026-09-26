@@ -6,6 +6,8 @@ import { TemplateElement } from './element/TemplateElement';
 import { TemplateField } from './field/TemplateField';
 import { CedarArtifactType } from './types/cedar-types/CedarArtifactType';
 import { AbstractChildDeploymentInfo } from './deployment/AbstractChildDeploymentInfo';
+import { CedarFieldType } from './types/cedar-types/CedarFieldType';
+import { ReservedNames } from './ReservedNames';
 
 export abstract class AbstractContainerArtifact extends AbstractSchemaArtifact {
   // Children
@@ -36,8 +38,20 @@ export abstract class AbstractContainerArtifact extends AbstractSchemaArtifact {
   }
 
   addChild(templateChild: TemplateChild, deploymentInfo: AbstractChildDeploymentInfo): void {
+    AbstractContainerArtifact.refuseReservedChildName(this, templateChild, deploymentInfo.name);
     this.childrenInfo.add(deploymentInfo);
     this.childMap.set(deploymentInfo.name, templateChild);
+  }
+
+  /** A child may not take a name {@link ReservedNames} reserves, nor an attribute-value field its parent's YAML keys. */
+  private static refuseReservedChildName(parent: AbstractContainerArtifact, child: TemplateChild, name: string): void {
+    const attributeValue =
+      child.cedarArtifactType === CedarArtifactType.TEMPLATE_FIELD &&
+      (child as TemplateField).cedarFieldType === CedarFieldType.ATTRIBUTE_VALUE;
+    const kind = parent.cedarArtifactType === CedarArtifactType.TEMPLATE ? 'template' : 'element';
+    if (attributeValue ? ReservedNames.isReservedAttributeValueFieldName(name, kind) : ReservedNames.isReservedName(name)) {
+      throw new Error(`Child name "${name}" is reserved for CEDAR instance metadata.`);
+    }
   }
 
   getChildrenInfo(): ContainerArtifactChildrenInfo {

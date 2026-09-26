@@ -1,3 +1,4 @@
+import { SchemaExtensions } from '../../../model/cedar/SchemaExtensions';
 import { AbstractArtifact } from '../../../model/cedar/AbstractArtifact';
 import { internalNameFor, SchemaArtifactKind, AbstractSchemaArtifact } from '../../../model/cedar/AbstractSchemaArtifact';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
@@ -46,6 +47,7 @@ export abstract class YamlAbstractArtifactReader {
   }
 
   protected readNonReportableAttributes(container: AbstractSchemaArtifact, sourceObject: JsonNode): void {
+    container.extensions = SchemaExtensions.fromYaml(sourceObject);
     // Read in non-reportable properties
     YamlAbstractArtifactReader.refuseEmptyIdentifier(sourceObject);
     container.at_id = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, YamlKeys.id));
@@ -100,6 +102,7 @@ export abstract class YamlAbstractArtifactReader {
     if (raw !== null && raw.trim() === '') {
       throw new Error(`An empty string is not a URI at "${key}"; write null or leave the key out where there is no value.`);
     }
+    ReaderUtil.assertIdentifierCharacters(raw, key);
   }
 
   protected readAnnotations(
@@ -111,6 +114,10 @@ export abstract class YamlAbstractArtifactReader {
     const annotations = new Annotations();
     const annotationsNode: JsonNode = ReaderUtil.getNode(artifactSourceObject, YamlKeys.annotations);
     Object.keys(annotationsNode).forEach((name: string) => {
+      const raw = annotationsNode[name];
+      if (raw === null || typeof raw !== 'object' || Array.isArray(raw)) {
+        throw new Error(`Expected map value for annotation at /annotations/${name}`);
+      }
       const annotationNode = ReaderUtil.getNode(annotationsNode, name);
       const id: string | null = ReaderUtil.getString(annotationNode, YamlKeys.id);
       const value: string | null = ReaderUtil.getString(annotationNode, YamlKeys.value);
@@ -119,6 +126,8 @@ export abstract class YamlAbstractArtifactReader {
           annotations.add(new AnnotationAtId(name, id));
         } else if (value !== null) {
           annotations.add(new AnnotationAtValue(name, value));
+        } else {
+          throw new Error(`Annotation must have either a value or id at /annotations/${name}`);
         }
       }
     });

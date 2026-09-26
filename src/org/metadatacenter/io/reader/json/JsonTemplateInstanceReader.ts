@@ -1,3 +1,6 @@
+import { AttributeValueFieldParent } from '../../../model/cedar/ReservedNames';
+import { InstanceDataNotationAtom } from '../../../model/cedar/template-instance/InstanceDataNotationAtom';
+import { InstanceDataLabelAtom } from '../../../model/cedar/template-instance/InstanceDataLabelAtom';
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { JsonArtifactParsingResult } from '../../../model/cedar/util/compare/JsonArtifactParsingResult';
@@ -29,6 +32,9 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.TEMPLATE_INSTANCE;
   protected knownKeys: Record<string, boolean> = {
     [JsonSchema.atId]: true,
+    [JsonSchema.atType]: true,
+    [JsonSchema.pavDerivedFrom]: true,
+    [JsonSchema.schemaIdentifier]: true,
     [JsonSchema.oslcModifiedBy]: true,
     [JsonSchema.pavLastUpdatedOn]: true,
     [JsonSchema.pavCreatedBy]: true,
@@ -71,6 +77,8 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     const instance = TemplateInstance.buildEmptyWithNullValues();
 
     this.readNonReportableAttributes(instance, instanceSourceObject);
+    instance.descriptionWasAbsent = ReaderUtil.getString(instanceSourceObject, JsonSchema.schemaDescription) === null;
+    instance.schema_description = instance.schema_description ?? '';
 
     // The caller's path was accepted and then discarded in favour of a fresh
     // one, so anything reported here was rooted at the document rather than
@@ -155,14 +163,19 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
   }
 
   private readInstanceContainer(sourceObject: JsonNode, path: JsonPath, parsingResult: JsonArtifactParsingResult): InstanceDataContainer {
-    return this.parseContainer(sourceObject, path, parsingResult);
+    return this.parseContainer(sourceObject, path, parsingResult, 'template');
   }
 
   protected isKnownKey(key: string): boolean {
     return Object.hasOwn(this.knownKeys, key);
   }
 
-  private parseContainer(sourceObject: JsonNode, path: JsonPath, parsingResult: JsonArtifactParsingResult): InstanceDataContainer {
+  private parseContainer(
+    sourceObject: JsonNode,
+    path: JsonPath,
+    parsingResult: JsonArtifactParsingResult,
+    parent: AttributeValueFieldParent = 'element',
+  ): InstanceDataContainer {
     const ret: InstanceDataContainer = new InstanceDataContainer();
     Object.keys(sourceObject).forEach((key) => {
       if (!this.isKnownKey(key)) {
@@ -170,8 +183,23 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
         if (Array.isArray(content)) {
           const arrayContainer: InstanceDataAtomList = [];
           ret.setValue(key, arrayContainer);
+          const elementArray = content.some(
+            (entry) => entry !== null && typeof entry === 'object' && Object.hasOwn(entry, JsonSchema.atContext),
+          );
           content.forEach((arrayElement: JsonNode, index: number) => {
-            arrayContainer[index] = this.parseNode(arrayElement, path.add(key, index), parsingResult);
+            if (elementArray) {
+              if (
+                arrayElement === null ||
+                typeof arrayElement !== 'object' ||
+                Array.isArray(arrayElement) ||
+                Object.hasOwn(arrayElement, JsonSchema.atValue)
+              ) {
+                throw new Error(`Cannot mix fields and element instances in array "${key}" at index ${index}`);
+              }
+              arrayContainer[index] = this.parseContainer(arrayElement, path.add(key, index), parsingResult);
+            } else {
+              arrayContainer[index] = this.parseNode(arrayElement, path.add(key, index), parsingResult);
+            }
           });
         } else {
           ret.setValue(key, this.parseNode(content, path.add(key), parsingResult));
@@ -181,12 +209,12 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     // Nested containers run through this method in their own right. Report
     // only this level here so a nested conflict is not repeated once for every
     // ancestor on the way back out of the recursive parse.
-    for (const conflict of AttributeValueNamePolicy.findConflicts(ret).filter((candidate) => candidate.path.length === 0)) {
+    for (const conflict of AttributeValueNamePolicy.findConflicts(ret, parent).filter((candidate) => candidate.path.length === 0)) {
       parsingResult.addBlueprintComparisonError(
         new ComparisonError(
           'JsonTemplateInstanceReader',
           ComparisonErrorType.VALUE_MISMATCH,
-          path.add(...conflict.path, conflict.groupName, conflict.name),
+          path.add(...AttributeValueNamePolicy.locationOf(conflict)),
           'a unique, non-reserved attribute-value name',
           conflict.name,
         ),
@@ -280,6 +308,7 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
    */
   private static readonly VALUE_ATOM_KEYS: ReadonlySet<string> = new Set([
     JsonSchema.atValue,
+    JsonSchema.atLanguage,
     JsonSchema.atId,
     JsonSchema.rdfsLabel,
     JsonSchema.atType,
@@ -400,33 +429,48 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
   }
 
   private static parseDataAtom(content: JsonNode): InstanceDataAtomType {
+    if (Object.hasOwn(content, JsonSchema.atId) && Object.hasOwn(content, JsonSchema.atValue)) {
+      throw new Error('A field cannot contain both @id and @value.');
+    }
+    const atom = this.parseDataAtomWithoutNotation(content);
+    if ('language' in atom) atom.language = ReaderUtil.getString(content, JsonSchema.atLanguage);
+    if ('notation' in atom && !(atom instanceof InstanceDataNotationAtom)) {
+      atom.notation = ReaderUtil.getString(content, JsonSchema.skosNotation);
+    }
+    return atom;
+  }
+
+  private static parseDataAtomWithoutNotation(content: JsonNode): InstanceDataAtomType {
     if (Object.hasOwn(content, JsonSchema.atValue)) {
       const value = ReaderUtil.getString(content, JsonSchema.atValue);
-      const type = ReaderUtil.getString(content, JsonSchema.atType);
+      const type = ReaderUtil.getSingleType(content, JsonSchema.atType);
       if (type === null) {
-        return new InstanceDataStringAtom(value);
+        return new InstanceDataStringAtom(value, ReaderUtil.getString(content, JsonSchema.rdfsLabel));
       } else {
-        return new InstanceDataTypedAtom(value, type);
+        return new InstanceDataTypedAtom(value, type, ReaderUtil.getString(content, JsonSchema.rdfsLabel));
       }
     }
     if (Object.hasOwn(content, JsonSchema.atId)) {
-      JsonTemplateInstanceReader.refuseEmptyIdentifier(content);
+      ReaderUtil.assertFieldIri(ReaderUtil.getString(content, JsonSchema.atId), JsonSchema.atId);
       const id = ReaderUtil.getString(content, JsonSchema.atId);
       const label = ReaderUtil.getString(content, JsonSchema.rdfsLabel);
       // `fromParsedNode` on both: a document that arrives with a null `@id` is
       // preserved as it came and reported by `reportNullIri`, rather than
       // refused here. See the note on that method.
       if (label === null) {
-        return InstanceDataLinkAtom.fromParsedNode(id);
+        return InstanceDataLinkAtom.fromParsedNode(id, ReaderUtil.getSingleType(content, JsonSchema.atType));
       } else {
-        return InstanceDataControlledAtom.fromParsedNode(id, label);
+        return InstanceDataControlledAtom.fromParsedNode(id, label, ReaderUtil.getSingleType(content, JsonSchema.atType));
       }
     }
-    // Neither a literal nor an IRI, so there is no value here — but the node was
-    // not empty either, or `isValueNode` would not have sent it this way. The
-    // usual case is `{"rdfs:label": "..."}`: a label with nothing to label.
-    // Carrying what was dropped lets a consumer report it instead of showing an
-    // empty field for no stated reason.
+    const label = ReaderUtil.getString(content, JsonSchema.rdfsLabel);
+    if (label !== null) {
+      return new InstanceDataLabelAtom(label, ReaderUtil.getSingleType(content, JsonSchema.atType));
+    }
+    const notation = ReaderUtil.getString(content, JsonSchema.skosNotation);
+    if (notation !== null) {
+      return new InstanceDataNotationAtom(notation, ReaderUtil.getSingleType(content, JsonSchema.atType));
+    }
     return new InstanceDataEmptyAtom(content);
   }
 

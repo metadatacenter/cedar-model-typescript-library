@@ -1,3 +1,4 @@
+import { ReservedNames } from '../../../model/cedar/ReservedNames';
 import { SchemaArtifactKind } from '../../../model/cedar/AbstractSchemaArtifact';
 import { JsonReaderBehavior } from '../../../behavior/JsonReaderBehavior';
 import { JsonAbstractSchemaArtifactReader } from './JsonAbstractSchemaArtifactReader';
@@ -29,6 +30,13 @@ import { AbstractFieldChildDeploymentInfoBuilder } from '../../../model/cedar/de
 import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
 import { Language } from '../../../model/cedar/types/wrapped-types/Language';
 import { JsonTemplateFieldReaderInternal } from './JsonTemplateFieldReaderInternal';
+
+const childSchemaTypes = new Set([
+  CedarArtifactType.TEMPLATE.getValue(),
+  CedarArtifactType.TEMPLATE_ELEMENT.getValue(),
+  CedarArtifactType.TEMPLATE_FIELD.getValue(),
+  CedarArtifactType.STATIC_TEMPLATE_FIELD.getValue(),
+]);
 
 export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArtifactReader {
   protected artifactTypeWord(): SchemaArtifactKind {
@@ -95,6 +103,7 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
 
     JsonObjectComparator.compareBothWays(parsingResult, blueprintAtContext, topContextNode, path.add(JsonSchema.atContext), this.behavior, [
       JsonSchema.atLanguage,
+      ...Object.keys(container.extensions.prefixes),
     ]);
 
     // Read and validate, but do not store top level type
@@ -269,6 +278,15 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
     // Generate the candidate children names list based on the unknown keys of "properties"
     const candidateChildrenInfo: ContainerArtifactChildrenInfo = new ContainerArtifactChildrenInfo();
     Object.keys(containerProperties).forEach((key) => {
+      if (ReservedNames.isReservedName(key)) {
+        const property = ReaderUtil.getNode(containerProperties, key);
+        const declaration =
+          ReaderUtil.getString(property, JsonSchema.type) === 'array' ? ReaderUtil.getNode(property, JsonSchema.items) : property;
+        const types = declaration?.[JsonSchema.atType];
+        if ((Array.isArray(types) ? types : [types]).some((type) => childSchemaTypes.has(type))) {
+          throw new Error(`Child schema uses a reserved instance property name at ${path.add(JsonSchema.properties, key).toString()}`);
+        }
+      }
       if (!partialKeyMap.has(key)) {
         const propertiesChildNode: JsonNode = ReaderUtil.getNode(containerProperties, key);
 
@@ -428,6 +446,9 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
         const iriEnum: JsonNode = ReaderUtil.getNode(elementIRIMap, childInfo.name);
         const iriList: Array<string> = ReaderUtil.getStringList(iriEnum, JsonSchema.enum);
         if (iriList === null || iriList.length != 1) {
+          // The group's attributes supply their own IRIs in the instance. A missing group
+          // mapping is valid; retain any explicitly supplied mapping, as Java does.
+          if (childInfo.uiInputType === UiInputType.ATTRIBUTE_VALUE && !Object.hasOwn(elementIRIMap, childInfo.name)) continue;
           this.reportBlueprintDifference(
             parsingResult,
             new ComparisonError(

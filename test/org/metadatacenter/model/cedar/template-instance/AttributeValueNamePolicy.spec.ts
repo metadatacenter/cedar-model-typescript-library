@@ -73,7 +73,7 @@ describe('assertValid says which conflict it refused, and where', () => {
   it('names a reserved attribute', () => {
     const container = new InstanceDataContainer();
     const attributes = new InstanceDataAttributeValueField('_attributes');
-    attributes.addValue('@context', new InstanceDataStringAtom('reserved'));
+    attributes.values['@context'] = new InstanceDataStringAtom('reserved');
     container.setValue('_attributes', attributes);
 
     expect(() => AttributeValueNamePolicy.assertValid(container)).toThrow(
@@ -197,7 +197,7 @@ describe('YAML attribute-group envelope safety', () => {
     container.setValue('children', [new InstanceDataAttributeValueFieldName('colour')]);
     container.setValue('colour', new InstanceDataStringAtom('blue'));
     expect(() => CedarWriters.yaml().getStrict().getTemplateInstanceWriter().getYamlAsJsonNode(instanceWith(container))).toThrow(
-      /reserved for CEDAR YAML metadata/,
+      /reserved for CEDAR instance metadata/,
     );
   });
 
@@ -207,7 +207,7 @@ describe('YAML attribute-group envelope safety', () => {
     group.addValue('colour', new InstanceDataStringAtom('blue'));
     container.setValue(key, group);
     expect(() => CedarWriters.yaml().getStrict().getTemplateInstanceWriter().getYamlAsJsonNode(instanceWith(container))).toThrow(
-      /reserved for CEDAR YAML metadata/,
+      /reserved for CEDAR instance metadata/,
     );
   });
   it.each(['type', 'properties', 'name', 'true', 'null', 'yes'])('preserves ordinary child key %s in both formats', (key) => {

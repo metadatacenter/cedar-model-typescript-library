@@ -2,6 +2,36 @@ import { ReaderUtil } from '../../../../io/reader/ReaderUtil';
 import { JsonNode } from '../../types/basic-types/JsonNode';
 
 export class JsonTemplateContent {
+  public static readonly ANNOTATIONS: JsonNode = {
+    type: 'object',
+    patternProperties: {
+      '^.+$': {
+        oneOf: [
+          {
+            type: 'object',
+            properties: {
+              '@id': {
+                type: 'string',
+                format: 'uri',
+              },
+            },
+            additionalProperties: false,
+          },
+          {
+            type: 'object',
+            properties: {
+              '@value': {
+                type: ['string', 'number', 'boolean', 'null'],
+              },
+            },
+            additionalProperties: false,
+          },
+        ],
+      },
+    },
+    additionalProperties: false,
+  };
+
   // This will have the names of elements and fields as well
   public static REQUIRED_PARTIAL = [
     '@context',
@@ -21,6 +51,7 @@ export class JsonTemplateContent {
     '@context': {
       type: 'object',
       properties: {
+        _annotations: { type: 'string', enum: ['@nest'] },
         rdfs: {
           type: 'string',
           format: 'uri',
@@ -209,6 +240,7 @@ export class JsonTemplateContent {
       type: ['string', 'null'],
       format: 'uri',
     },
+    _annotations: JsonTemplateContent.ANNOTATIONS,
   };
 
   public static REQUIRED_PARTIAL_KEY_MAP: Map<string, boolean>;

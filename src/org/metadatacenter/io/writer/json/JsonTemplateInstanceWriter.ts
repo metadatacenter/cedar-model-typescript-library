@@ -1,3 +1,6 @@
+import { stringifyInstance } from './stringifyInstance';
+import { InstanceDataNotationAtom } from '../../../model/cedar/template-instance/InstanceDataNotationAtom';
+import { InstanceDataLabelAtom } from '../../../model/cedar/template-instance/InstanceDataLabelAtom';
 import { JsonWriterBehavior } from '../../../behavior/JsonWriterBehavior';
 import { ReaderUtil } from '../../reader/ReaderUtil';
 import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
@@ -131,17 +134,42 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
    * is a container and needs a writer with the rest of the instance in hand.
    */
   public static writeValueNode(atom: InstanceDataAtomType): JsonNode | null {
+    const node = this.writeValueNodeWithoutNotation(atom);
+    if (node !== null && 'language' in atom && atom.language !== null) {
+      node[JsonSchema.atLanguage] = atom.language;
+    }
+    if (node !== null && 'notation' in atom && atom.notation !== null) {
+      node[JsonSchema.skosNotation] = atom.notation;
+    }
+    return node;
+  }
+
+  private static writeValueNodeWithoutNotation(atom: InstanceDataAtomType): JsonNode | null {
+    if (atom instanceof InstanceDataNotationAtom) {
+      return atom.type === null ? JsonNode.getEmpty() : { [JsonSchema.atType]: atom.type };
+    }
     if (atom instanceof InstanceDataStringAtom) {
-      return { [JsonSchema.atValue]: atom.value };
+      return { [JsonSchema.atValue]: atom.value, ...(atom.label === null ? {} : { [JsonSchema.rdfsLabel]: atom.label }) };
     }
     if (atom instanceof InstanceDataTypedAtom) {
-      return { [JsonSchema.atValue]: atom.value, [JsonSchema.atType]: atom.type };
+      return {
+        [JsonSchema.atValue]: atom.value,
+        ...(atom.label === null ? {} : { [JsonSchema.rdfsLabel]: atom.label }),
+        [JsonSchema.atType]: atom.type,
+      };
+    }
+    if (atom instanceof InstanceDataLabelAtom) {
+      return { [JsonSchema.rdfsLabel]: atom.label, ...(atom.type === null ? {} : { [JsonSchema.atType]: atom.type }) };
     }
     if (atom instanceof InstanceDataControlledAtom) {
-      return { [JsonSchema.atId]: atom.id, [JsonSchema.rdfsLabel]: atom.label };
+      return {
+        [JsonSchema.atId]: atom.id,
+        [JsonSchema.rdfsLabel]: atom.label,
+        ...(atom.type === null ? {} : { [JsonSchema.atType]: atom.type }),
+      };
     }
     if (atom instanceof InstanceDataLinkAtom) {
-      return { [JsonSchema.atId]: atom.id };
+      return { [JsonSchema.atId]: atom.id, ...(atom.type === null ? {} : { [JsonSchema.atType]: atom.type }) };
     }
     if (atom instanceof InstanceDataEmptyAtom || atom instanceof InstanceDataEmptyNode) {
       // An empty controlled-term field is `{}` in the instance, and it is a
@@ -164,7 +192,7 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
   }
 
   private serializeAtomString(atom: InstanceDataStringAtom) {
-    return { [JsonSchema.atValue]: atom.value };
+    return { [JsonSchema.atValue]: atom.value, ...(atom.label === null ? {} : { [JsonSchema.rdfsLabel]: atom.label }) };
   }
 
   private serializeAttributeValueFields(dataContainer: InstanceDataContainer, into: JsonNode) {
@@ -182,21 +210,28 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
   }
 
   public getAsJsonString(instance: TemplateInstance, indent: number = 2): string {
-    return JSON.stringify(this.getAsJsonNode(instance), null, indent);
+    return stringifyInstance(this.getAsJsonNode(instance), instance.dataContainer, indent);
   }
 
   public getAsJsonNode(instance: TemplateInstance): JsonNode {
     AttributeValueNamePolicy.assertValid(instance.dataContainer);
     const extendedContext: JsonNode = this.buildContext(instance);
 
-    // build the final object
+    // Java writes an explicitly present description with the name, but appends the required
+    // empty fallback after isBasedOn when the source omitted it. Reassigning an existing key
+    // below preserves its position, just as Jackson's ObjectNode.put does.
+    const nameAndDescription = this.macroSchemaNameAndDescription(instance);
+    if (instance.descriptionWasAbsent && instance.schema_description === '') {
+      delete nameAndDescription[JsonSchema.schemaDescription];
+    }
     return {
       [JsonSchema.atId]: this.atomicWriter.write(instance.at_id),
-      ...this.macroSchemaNameAndDescription(instance),
+      ...nameAndDescription,
       ...this.getDataTree(instance),
       ...this.macroAnnotations(instance),
       [JsonSchema.atContext]: extendedContext,
       ...this.macroIsBasedOn(instance),
+      [JsonSchema.schemaDescription]: instance.schema_description,
       ...this.macroProvenance(instance, this.atomicWriter),
       ...this.macroDerivedFrom(instance),
     };

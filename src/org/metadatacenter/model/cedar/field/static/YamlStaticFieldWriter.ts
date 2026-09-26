@@ -42,7 +42,7 @@ export class YamlStaticFieldWriter extends YamlTemplateFieldWriterInternal {
   ): JsonNode {
     // Build ui wrapper
     //const uiObject: JsonNode = this.buildUIObject(field);
-    return {
+    return field.extensions.applyYaml({
       ...this.macroType(field),
       ...this.macroNameAndDescription(field),
       ...this.macroSchemaIdentifier(field),
@@ -56,6 +56,6 @@ export class YamlStaticFieldWriter extends YamlTemplateFieldWriterInternal {
       ...this.macroDerivedFrom(field, isCompact),
       ...this.macroPreviousVersion(field, isCompact),
       ...this.macroAnnotations(field),
-    };
+    });
   }
 }

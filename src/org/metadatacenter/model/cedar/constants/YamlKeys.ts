@@ -1,4 +1,5 @@
 export class YamlKeys {
+  static notation: string = 'notation';
   static id: string = 'id';
   static type: string = 'type';
   static name: string = 'name';

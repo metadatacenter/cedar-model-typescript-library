@@ -96,27 +96,22 @@ export class ContainerArtifactChildrenInfo {
   /**
    * Each child's property IRI, as a plain mapping of name to IRI.
    *
-   * The IRI a child is addressed by in an instance's `@context`. Declared by the
-   * template where there is one, minted from the child's name where there is
-   * not — which is the interesting part, and the reason a consumer cannot simply
-   * read `childInfo.iri` and be done.
-   *
-   * Static fields and attribute-value fields are absent: neither is a property
-   * of the instance. A static field renders and holds nothing; an attribute-value
-   * field's *attributes* become properties, under names the template does not
-   * know.
-   *
-   * This is the model-level answer. `getIRIMap` wraps the same thing in the shape
-   * JSON Schema wants it in, which is a serialisation concern — a consumer that
-   * only wants the IRIs had to reach through `[JsonSchema.enum][0]` to get at
-   * them, and reaching into a JSON shape is exactly what asking the model is
-   * supposed to replace.
+   * Only ordinary children contribute required instance context entries. Attribute-value
+   * groups may declare optional schema mappings, but their attributes supply the instance terms.
+   * Missing IRIs are assigned by the repository, never invented here.
    */
   public getChildIriMap(): Record<string, string> {
+    return this.collectChildIris(false);
+  }
+
+  private collectChildIris(includeAttributeValue: boolean): Record<string, string> {
     const iriMap: Record<string, string> = {};
     this.childNameList.forEach((childName) => {
       const childInfo = this.getChildInfo(childName);
-      if (childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD && childInfo.uiInputType !== UiInputType.ATTRIBUTE_VALUE) {
+      if (
+        childInfo.atType !== CedarArtifactType.STATIC_TEMPLATE_FIELD &&
+        (includeAttributeValue || childInfo.uiInputType !== UiInputType.ATTRIBUTE_VALUE)
+      ) {
         if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
           // A child with no IRI of its own gets no mapping. The IRI is identity, so the repository
           // assigns it when the artifact is uploaded, as it assigns an attribute's; deriving one from
@@ -132,14 +127,7 @@ export class ContainerArtifactChildrenInfo {
   }
 
   /**
-   * The same mapping in the shape a template's `@context` block takes.
-   *
-   * `{ name: { enum: [iri] } }`, which is what the JSON writer splats straight
-   * into `properties.@context.properties`. Derived from `getChildIriMap` so the
-   * two cannot disagree.
-   */
-  /**
-   * The children carrying a property IRI, in the order the container declares them.
+   * The ordinary children requiring a property IRI, in the order the container declares them.
    *
    * `_ui.order` is what an author decides, so it is the order a rendering states. Taking these
    * names from `Object.keys` of the IRI map instead put every child whose name looks like an
@@ -152,9 +140,16 @@ export class ContainerArtifactChildrenInfo {
     return this.getChildrenNames().filter((name) => Object.prototype.hasOwnProperty.call(mapped, name));
   }
 
+  /**
+   * The same mapping in the shape a template's `@context` block takes.
+   *
+   * `{ name: { enum: [iri] } }`, which is what the JSON writer splats straight
+   * into `properties.@context.properties`, including optional attribute-value group mappings.
+   */
   public getIRIMap(): { [key: string]: { [key in typeof JsonSchema.enum]: Array<NullableString> } } {
     const iriMap: { [key: string]: { [key in typeof JsonSchema.enum]: Array<string | null> } } = {};
-    const plain = this.getChildIriMap();
+    // Schema declarations preserve group IRIs without making them required instance terms.
+    const plain = this.collectChildIris(true);
     Object.keys(plain).forEach((name) => {
       iriMap[name] = { [JsonSchema.enum]: [plain[name]] };
     });

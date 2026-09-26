@@ -216,7 +216,7 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
       return datatype === null ? new InstanceDataStringAtom(value, label) : new InstanceDataTypedAtom(value, datatype, label);
     }
     if (Object.hasOwn(node, YamlKeys.id)) {
-      YamlTemplateInstanceReader.refuseEmptyIdentifier(node);
+      ReaderUtil.assertFieldIri(ReaderUtil.getString(node, YamlKeys.id), YamlKeys.id);
       const id = ReaderUtil.getString(node, YamlKeys.id);
       const label = ReaderUtil.getString(node, YamlKeys.label);
       const datatype = ReaderUtil.getString(node, YamlKeys.datatype);

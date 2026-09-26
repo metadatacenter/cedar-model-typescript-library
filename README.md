@@ -97,6 +97,15 @@ Finite numeric YAML and schema JSON values use Java 17's decimal digits, expande
 This includes midpoint and subnormal cases where JavaScript's shortest spelling differs. Shared
 Java-verified fixtures check the output and preservation of the original binary number.
 
+## Unicode field identifiers
+
+JSON `@id` and YAML `id` field values accept RFC 3987 Unicode IRI characters without normalizing
+the stored string. This includes U+00A0 in an ontology term. Ordinary ASCII spaces, controls,
+malformed percent escapes, lone surrogates and noncharacters are rejected. Private-use characters
+are permitted only in the query component. Raw Unicode and percent-encoded identifiers remain
+distinct, as RDF identity requires. Artifact and element-occurrence identifiers retain their
+existing URI rules.
+
 ## Building
 
 Use Node 24.19.0, which `.nvmrc` and CI both specify:

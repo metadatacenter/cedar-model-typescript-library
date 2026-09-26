@@ -20,17 +20,15 @@ describe('Strict instance values and canonical long keys', () => {
     expect(() => json({ '@id': 'https://example.org/term', '@value': value })).toThrow('both');
     expect(() => yaml(`    id: https://example.org/term\n    value: ${JSON.stringify(value)}\n`)).toThrow('both');
   });
+  test.each(['https://example.org/x\u0085', 'https://example.org/x#a#b', '://bit.ly/x', '1bad:value'])(
+    'rejects Java-invalid URI %j in both readers',
+    (id) => {
+      expect(() => json({ '@id': id })).toThrow('Invalid URI');
+      expect(() => yaml(`    id: ${JSON.stringify(id)}\n`)).toThrow('Invalid URI');
+    },
+  );
   test.each([
     'https://example.org/Niger\u00a0NER',
-    'https://example.org/x\u0085',
-    'https://example.org/x#a#b',
-    '://bit.ly/x',
-    '1bad:value',
-  ])('rejects Java-invalid URI %j in both readers', (id) => {
-    expect(() => json({ '@id': id })).toThrow('Invalid URI');
-    expect(() => yaml(`    id: ${JSON.stringify(id)}\n`)).toThrow('Invalid URI');
-  });
-  test.each([
     'https://example.org/café',
     'https://example.org/Niger%C2%A0NER',
     'https://example.org/x#a%23b',

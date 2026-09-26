@@ -14034,6 +14034,11 @@
               "enum": [
                 "http://purl.org/radx-terms/metadata-terms/dataCharacteristicsTableInTsv"
               ]
+            },
+            "Data Characteristics Table in Key-Value Pairs": {
+              "enum": [
+                "https://schema.metadatacenter.org/properties/7ca56d90-7c21-4a3e-8fa7-1a09060624ea"
+              ]
             }
           },
           "required": [
@@ -18267,6 +18272,11 @@
         "@context": {
           "type": "object",
           "properties": {
+            "Data File Descriptive Key-Value Pair": {
+              "enum": [
+                "https://schema.metadatacenter.org/properties/880d32df-5a49-4200-8f66-e2b53723a360"
+              ]
+            },
             "Additional Commentary": {
               "enum": [
                 "http://purl.org/radx-terms/metadata-terms/auxiliaryMetadataCommentary"

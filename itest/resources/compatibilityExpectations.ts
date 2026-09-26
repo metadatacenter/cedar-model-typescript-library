@@ -114,17 +114,10 @@ export const JSON_TEMPLATE_ROUND_TRIP_DIVERGENCES: Readonly<Record<string, Round
     roundTripWarnings: 0,
     reason: 'writer supplies missing _content on two static breaks',
   },
-  '22': {
-    errors: 0,
-    warnings: 0,
-    roundTripErrors: 1,
-    roundTripWarnings: 0,
-    reason: 'legacy attribute-value context mapping is absent',
-  },
   '29': {
     errors: 0,
     warnings: 0,
-    roundTripErrors: 996,
+    roundTripErrors: 994,
     roundTripWarnings: 0,
     reason: 'large legacy template is intentionally canonicalized throughout',
   },

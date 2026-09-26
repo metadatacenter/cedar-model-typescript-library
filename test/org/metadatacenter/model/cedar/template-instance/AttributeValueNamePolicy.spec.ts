@@ -73,7 +73,7 @@ describe('assertValid says which conflict it refused, and where', () => {
   it('names a reserved attribute', () => {
     const container = new InstanceDataContainer();
     const attributes = new InstanceDataAttributeValueField('_attributes');
-    attributes.addValue('@context', new InstanceDataStringAtom('reserved'));
+    attributes.values['@context'] = new InstanceDataStringAtom('reserved');
     container.setValue('_attributes', attributes);
 
     expect(() => AttributeValueNamePolicy.assertValid(container)).toThrow(

@@ -1,17 +1,19 @@
+import { ReservedNames } from '../ReservedNames';
 import { InstanceDataAtomType } from './InstanceDataAtomType';
 
 export class InstanceDataAttributeValueField {
   private readonly _name: string;
-  private _values: { [key: string]: InstanceDataAtomType } = {};
+  private _values: { [key: string]: InstanceDataAtomType } = Object.create(null);
   private _iris: { [key: string]: string };
 
   constructor(name: string) {
     this._name = name;
-    this._values = {};
-    this._iris = {};
+    this._values = Object.create(null);
+    this._iris = Object.create(null);
   }
 
   addValue(name: string, value: InstanceDataAtomType) {
+    ReservedNames.requireChildName(name);
     this._values[name] = value;
   }
 

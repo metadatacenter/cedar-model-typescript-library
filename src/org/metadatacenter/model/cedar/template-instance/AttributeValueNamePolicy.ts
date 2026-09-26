@@ -72,6 +72,7 @@ export class AttributeValueNamePolicy {
     conflicts: AttributeValueNameConflict[],
     parent: AttributeValueFieldParent,
   ): void {
+    for (const name of Object.keys(container.values)) ReservedNames.requireChildName(name);
     const groups = AttributeValueNamePolicy.attributeValueGroups(container);
     const groupNames = new Set(groups.map((group) => group.name));
     const unpackedNames = new Set(groups.filter((group) => group.unpacked).flatMap((group) => group.attributeNames));

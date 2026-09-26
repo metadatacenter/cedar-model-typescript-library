@@ -110,15 +110,15 @@ describe('YAML instance edge cases', () => {
     const instance = reader.readFromString('type: instance\nname: Test\nisBasedOn: urn:template').instance;
     const element = new InstanceDataContainer();
     element.id = 'urn:element';
-    const group = new InstanceDataAttributeValueField('name');
+    const group = new InstanceDataAttributeValueField('annotations');
     group.addValue('answer', new InstanceDataStringAtom('kept'));
-    element.setValue('name', group);
+    element.setValue('annotations', group);
     instance.dataContainer.setValue('Element', element);
     const yaml = writer.getYamlAsJsonNode(instance, compact);
     const result = reader.readFromObject(yaml).instance.dataContainer.values.Element;
     expect(result).toBeInstanceOf(InstanceDataContainer);
     const container = result as InstanceDataContainer;
-    const actualGroup = container.values.name as InstanceDataAttributeValueField;
+    const actualGroup = container.values.annotations as InstanceDataAttributeValueField;
     expect((actualGroup.values.answer as InstanceDataStringAtom).value).toBe('kept');
     if (!compact) expect(container.id).toBe('urn:element');
   });

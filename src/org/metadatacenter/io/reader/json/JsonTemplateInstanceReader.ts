@@ -32,6 +32,9 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.TEMPLATE_INSTANCE;
   protected knownKeys: Record<string, boolean> = {
     [JsonSchema.atId]: true,
+    [JsonSchema.atType]: true,
+    [JsonSchema.pavDerivedFrom]: true,
+    [JsonSchema.schemaIdentifier]: true,
     [JsonSchema.oslcModifiedBy]: true,
     [JsonSchema.pavLastUpdatedOn]: true,
     [JsonSchema.pavCreatedBy]: true,

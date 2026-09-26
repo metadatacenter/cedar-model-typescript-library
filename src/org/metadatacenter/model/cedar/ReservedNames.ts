@@ -13,8 +13,8 @@ export type AttributeValueFieldParent = 'template' | 'element';
  *
  * An attribute-value field's own key has one more constraint. The YAML form writes it beside its
  * parent's metadata rather than under `children`, so it may not be one of the metadata keys that
- * parent's YAML mapping carries. A template's instance carries all of them; an element used inside
- * its parent carries only `type`, `id` and `children`.
+ * parent's YAML mapping carries. Elements reserve both nested and standalone metadata keys so the same
+ * instance remains writable in either form.
  *
  * The Java artifact library's `ReservedNames` answers the same two questions with the same sets,
  * and the editors ask whichever library they are built on.
@@ -58,6 +58,24 @@ export abstract class ReservedNames {
   /** The metadata keys of an element instance's YAML mapping when it is written inside its parent. */
   public static readonly NESTED_ELEMENT_INSTANCE_YAML_KEYS: ReadonlySet<string> = new Set([YamlKeys.type, YamlKeys.id, YamlKeys.children]);
 
+  /** Keys of the standalone element-instance envelope (also includes every nested key). */
+  public static readonly STANDALONE_ELEMENT_INSTANCE_YAML_KEYS: ReadonlySet<string> = new Set([
+    YamlKeys.type,
+    YamlKeys.name,
+    YamlKeys.description,
+    YamlKeys.id,
+    YamlKeys.children,
+    YamlKeys.createdOn,
+    YamlKeys.createdBy,
+    YamlKeys.modifiedOn,
+    YamlKeys.modifiedBy,
+  ]);
+
+  /** Refuse unsafe child/attribute names before inserting into any model dictionary. */
+  public static requireChildName(name: string): void {
+    if (ReservedNames.isReservedName(name)) throw new Error(`Child name "${name}" is reserved for CEDAR instance metadata.`);
+  }
+
   private constructor() {}
 
   /** Whether no child, and no attribute a form-filler invents, may take this name. */
@@ -67,7 +85,10 @@ export abstract class ReservedNames {
 
   /** Whether an attribute-value field that is a child of `parent` may not take this name. */
   public static isReservedAttributeValueFieldName(name: string, parent: AttributeValueFieldParent): boolean {
-    return ReservedNames.isReservedName(name) || ReservedNames.yamlKeys(parent).has(name);
+    return (
+      ReservedNames.isReservedName(name) ||
+      (parent === 'template' ? ReservedNames.TEMPLATE_INSTANCE_YAML_KEYS : ReservedNames.STANDALONE_ELEMENT_INSTANCE_YAML_KEYS).has(name)
+    );
   }
 
   /** The metadata keys the YAML form writes beside an attribute-value field of `parent`. */

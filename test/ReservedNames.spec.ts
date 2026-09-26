@@ -29,11 +29,11 @@ describe('ReservedNames', () => {
     expect(ReservedNames.isReservedAttributeValueFieldName('Channel type', 'template')).toBe(false);
   });
 
-  test('reserves only type, id and children for an attribute-value field of an element', () => {
-    for (const name of ['type', 'id', 'children', 'schema:name']) {
+  test('reserves nested and standalone metadata for an element group', () => {
+    for (const name of ['type', 'id', 'children', 'name', 'description', 'createdOn', 'schema:name']) {
       expect(ReservedNames.isReservedAttributeValueFieldName(name, 'element')).toBe(true);
     }
-    for (const name of ['name', 'description', 'isBasedOn']) {
+    for (const name of ['annotations', 'derivedFrom', 'isBasedOn']) {
       expect(ReservedNames.isReservedAttributeValueFieldName(name, 'element')).toBe(false);
     }
   });
@@ -58,7 +58,7 @@ describe('reserved child names in the schema model', () => {
     expect(() => CedarBuilders.templateBuilder().addChild(field, field.createDeploymentBuilder('type').build()).build()).not.toThrow();
   });
 
-  test('an element reserves only the nested YAML keys', () => {
+  test('an element reserves both nested and standalone YAML keys', () => {
     expect(() =>
       CedarBuilders.templateElementBuilder()
         .addChild(...attributeValue('type'))
@@ -66,7 +66,7 @@ describe('reserved child names in the schema model', () => {
     ).toThrow('reserved for CEDAR instance metadata');
     expect(() =>
       CedarBuilders.templateElementBuilder()
-        .addChild(...attributeValue('name'))
+        .addChild(...attributeValue('annotations'))
         .build(),
     ).not.toThrow();
   });
@@ -96,11 +96,11 @@ describe('reserved attribute-value field names in instances', () => {
     expect(result.parsingResult.wasSuccessful()).toBe(false);
   });
 
-  test('the JSON reader accepts an attribute-value group named name inside an element', () => {
+  test('the JSON reader accepts an attribute-value group named annotations inside an element', () => {
     const result = read({
       'schema:name': 'Example',
       'schema:isBasedOn': 'https://example.org/t',
-      Element: { '@context': {}, '@id': 'https://example.org/e', name: ['given'], given: { '@value': 'x' } },
+      Element: { '@context': {}, '@id': 'https://example.org/e', annotations: ['given'], given: { '@value': 'x' } },
     });
     expect(result.parsingResult.wasSuccessful()).toBe(true);
   });

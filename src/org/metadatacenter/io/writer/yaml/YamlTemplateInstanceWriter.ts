@@ -1,3 +1,4 @@
+import { ReservedNames } from '../../../model/cedar/ReservedNames';
 import { InstanceDataNotationAtom } from '../../../model/cedar/template-instance/InstanceDataNotationAtom';
 import { InstanceDataLabelAtom } from '../../../model/cedar/template-instance/InstanceDataLabelAtom';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
@@ -132,23 +133,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
       const dataAtom: InstanceDataAtomType = dataContainer.values[key];
       if (
         (dataAtom instanceof InstanceDataAttributeValueField || unpackedGroups.has(key)) &&
-        (isDocumentRoot
-          ? [
-              YamlKeys.type,
-              YamlKeys.name,
-              YamlKeys.description,
-              YamlKeys.id,
-              YamlKeys.isBasedOn,
-              YamlKeys.derivedFrom,
-              YamlKeys.children,
-              YamlKeys.annotations,
-              YamlKeys.createdOn,
-              YamlKeys.createdBy,
-              YamlKeys.modifiedOn,
-              YamlKeys.modifiedBy,
-            ]
-          : [YamlKeys.type, YamlKeys.id, YamlKeys.children]
-        ).includes(key)
+        ReservedNames.yamlKeys(isDocumentRoot ? 'template' : 'element').has(key)
       ) {
         throw new Error(`Attribute-value field key "${key}" is reserved for CEDAR YAML metadata.`);
       }

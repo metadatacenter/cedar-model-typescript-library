@@ -197,7 +197,7 @@ describe('YAML attribute-group envelope safety', () => {
     container.setValue('children', [new InstanceDataAttributeValueFieldName('colour')]);
     container.setValue('colour', new InstanceDataStringAtom('blue'));
     expect(() => CedarWriters.yaml().getStrict().getTemplateInstanceWriter().getYamlAsJsonNode(instanceWith(container))).toThrow(
-      /reserved for CEDAR YAML metadata/,
+      /reserved for CEDAR instance metadata/,
     );
   });
 
@@ -207,7 +207,7 @@ describe('YAML attribute-group envelope safety', () => {
     group.addValue('colour', new InstanceDataStringAtom('blue'));
     container.setValue(key, group);
     expect(() => CedarWriters.yaml().getStrict().getTemplateInstanceWriter().getYamlAsJsonNode(instanceWith(container))).toThrow(
-      /reserved for CEDAR YAML metadata/,
+      /reserved for CEDAR instance metadata/,
     );
   });
   it.each(['type', 'properties', 'name', 'true', 'null', 'yes'])('preserves ordinary child key %s in both formats', (key) => {

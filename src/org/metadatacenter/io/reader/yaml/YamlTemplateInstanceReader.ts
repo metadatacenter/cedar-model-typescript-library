@@ -1,3 +1,4 @@
+import { ReservedNames } from '../../../model/cedar/ReservedNames';
 import { InstanceDataNotationAtom } from '../../../model/cedar/template-instance/InstanceDataNotationAtom';
 import { InstanceDataLabelAtom } from '../../../model/cedar/template-instance/InstanceDataLabelAtom';
 import YAML from 'yaml';
@@ -101,7 +102,7 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
         new ComparisonError(
           'YamlTemplateInstanceReader',
           YamlComparisonErrorType.VALUE_MISMATCH,
-          new JsonPath(...conflict.path, conflict.groupName, conflict.name),
+          new JsonPath(...AttributeValueNamePolicy.locationOf(conflict)),
           'a unique, non-reserved attribute-value name',
           conflict.name,
         ),
@@ -111,29 +112,16 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
   }
 
   /**
-   * Keys that name the instance rather than its data, so are not attribute-value
-   * fields. Nested elements reserve only their discriminator, identity and
-   * children block, matching Java; `name` can be an attribute-group name there.
+   * Keys that name the instance rather than its data, so are not attribute-value fields. Nested
+   * elements reserve only their discriminator, identity and children block, matching Java; `name`
+   * can be an attribute-group name there. An annotation block is the artifact's, not a field named
+   * `annotations`: left unreserved, the attribute-value fallback below claimed it, and an annotation
+   * carrying an IRI rather than a literal came out of that as a null-valued attribute the writer
+   * then dropped.
    */
-  private static readonly RESERVED_KEYS: ReadonlySet<string> = new Set([
-    YamlKeys.type,
-    YamlKeys.name,
-    YamlKeys.description,
-    YamlKeys.id,
-    YamlKeys.isBasedOn,
-    YamlKeys.derivedFrom,
-    YamlKeys.children,
-    // An annotation block is the artifact's, not a field named `annotations`: left unreserved, the
-    // attribute-value fallback below claimed it, and an annotation carrying an IRI rather than a
-    // literal came out of that as a null-valued attribute the writer then dropped.
-    YamlKeys.annotations,
-    YamlKeys.createdOn,
-    YamlKeys.createdBy,
-    YamlKeys.modifiedOn,
-    YamlKeys.modifiedBy,
-  ]);
+  private static readonly RESERVED_KEYS: ReadonlySet<string> = ReservedNames.TEMPLATE_INSTANCE_YAML_KEYS;
 
-  private static readonly ELEMENT_RESERVED_KEYS: ReadonlySet<string> = new Set([YamlKeys.type, YamlKeys.id, YamlKeys.children]);
+  private static readonly ELEMENT_RESERVED_KEYS: ReadonlySet<string> = ReservedNames.NESTED_ELEMENT_INSTANCE_YAML_KEYS;
 
   private parseContainer(node: JsonNode, isDocumentRoot: boolean = false): InstanceDataContainer {
     const container = new InstanceDataContainer();

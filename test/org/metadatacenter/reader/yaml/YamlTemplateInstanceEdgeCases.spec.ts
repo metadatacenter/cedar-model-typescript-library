@@ -130,7 +130,7 @@ describe('YAML instance edge cases', () => {
     group.addValue('answer', new InstanceDataStringAtom('kept'));
     element.setValue(key, group);
     instance.dataContainer.setValue('Element', element);
-    expect(() => writer.getYamlAsJsonNode(instance)).toThrow(/reserved for CEDAR YAML metadata/);
+    expect(() => writer.getYamlAsJsonNode(instance)).toThrow(/reserved for CEDAR instance metadata/);
   });
 
   test('malformed and null documents produce an empty usable instance', () => {

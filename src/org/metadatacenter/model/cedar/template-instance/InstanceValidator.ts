@@ -97,12 +97,13 @@ export class InstanceValidator {
   ): void {
     const info = template.getChildrenInfo();
 
-    for (const conflict of AttributeValueNamePolicy.findConflicts(container).filter((candidate) => candidate.path.length === 0)) {
+    const parent = template.cedarArtifactType === CedarArtifactType.TEMPLATE ? 'template' : 'element';
+    for (const conflict of AttributeValueNamePolicy.findConflicts(container, parent).filter((candidate) => candidate.path.length === 0)) {
       result.addBlueprintComparisonError(
         new ComparisonError(
           LOCATION,
           ComparisonErrorType.VALUE_MISMATCH,
-          path.add(conflict.groupName, conflict.name),
+          path.add(...AttributeValueNamePolicy.locationOf(conflict)),
           'a unique, non-reserved attribute-value name',
           conflict.name,
         ),

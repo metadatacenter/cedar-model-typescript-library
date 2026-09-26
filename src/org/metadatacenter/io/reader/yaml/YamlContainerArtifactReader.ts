@@ -1,4 +1,4 @@
-import { reservedInstanceProperties } from '../ReservedInstanceProperties';
+import { ReservedNames } from '../../../model/cedar/ReservedNames';
 import { YamlReaderBehavior } from '../../../behavior/YamlReaderBehavior';
 import { YamlAbstractArtifactReader } from './YamlAbstractArtifactReader';
 import { YamlTemplateFieldReader } from './YamlTemplateFieldReader';
@@ -49,7 +49,7 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
         if (typeof name !== 'string') {
           throw new Error(`Child key must be a string at ${path.add(YamlKeys.children, YamlKeys.key).toString()}`);
         }
-        if (reservedInstanceProperties.has(name)) {
+        if (ReservedNames.isReservedName(name)) {
           throw new Error(`Child schema uses a reserved instance property name at ${path.add(YamlKeys.children, name).toString()}`);
         }
         const childDeploymentInfo = new ChildDeploymentInfo(name);

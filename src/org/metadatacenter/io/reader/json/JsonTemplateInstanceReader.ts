@@ -1,3 +1,4 @@
+import { AttributeValueFieldParent } from '../../../model/cedar/ReservedNames';
 import { InstanceDataNotationAtom } from '../../../model/cedar/template-instance/InstanceDataNotationAtom';
 import { InstanceDataLabelAtom } from '../../../model/cedar/template-instance/InstanceDataLabelAtom';
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
@@ -159,14 +160,19 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
   }
 
   private readInstanceContainer(sourceObject: JsonNode, path: JsonPath, parsingResult: JsonArtifactParsingResult): InstanceDataContainer {
-    return this.parseContainer(sourceObject, path, parsingResult);
+    return this.parseContainer(sourceObject, path, parsingResult, 'template');
   }
 
   protected isKnownKey(key: string): boolean {
     return Object.hasOwn(this.knownKeys, key);
   }
 
-  private parseContainer(sourceObject: JsonNode, path: JsonPath, parsingResult: JsonArtifactParsingResult): InstanceDataContainer {
+  private parseContainer(
+    sourceObject: JsonNode,
+    path: JsonPath,
+    parsingResult: JsonArtifactParsingResult,
+    parent: AttributeValueFieldParent = 'element',
+  ): InstanceDataContainer {
     const ret: InstanceDataContainer = new InstanceDataContainer();
     Object.keys(sourceObject).forEach((key) => {
       if (!this.isKnownKey(key)) {
@@ -200,12 +206,12 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     // Nested containers run through this method in their own right. Report
     // only this level here so a nested conflict is not repeated once for every
     // ancestor on the way back out of the recursive parse.
-    for (const conflict of AttributeValueNamePolicy.findConflicts(ret).filter((candidate) => candidate.path.length === 0)) {
+    for (const conflict of AttributeValueNamePolicy.findConflicts(ret, parent).filter((candidate) => candidate.path.length === 0)) {
       parsingResult.addBlueprintComparisonError(
         new ComparisonError(
           'JsonTemplateInstanceReader',
           ComparisonErrorType.VALUE_MISMATCH,
-          path.add(...conflict.path, conflict.groupName, conflict.name),
+          path.add(...AttributeValueNamePolicy.locationOf(conflict)),
           'a unique, non-reserved attribute-value name',
           conflict.name,
         ),

@@ -1,4 +1,4 @@
-import { reservedInstanceProperties } from '../ReservedInstanceProperties';
+import { ReservedNames } from '../../../model/cedar/ReservedNames';
 import { SchemaArtifactKind } from '../../../model/cedar/AbstractSchemaArtifact';
 import { JsonReaderBehavior } from '../../../behavior/JsonReaderBehavior';
 import { JsonAbstractSchemaArtifactReader } from './JsonAbstractSchemaArtifactReader';
@@ -278,7 +278,7 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
     // Generate the candidate children names list based on the unknown keys of "properties"
     const candidateChildrenInfo: ContainerArtifactChildrenInfo = new ContainerArtifactChildrenInfo();
     Object.keys(containerProperties).forEach((key) => {
-      if (reservedInstanceProperties.has(key)) {
+      if (ReservedNames.isReservedName(key)) {
         const property = ReaderUtil.getNode(containerProperties, key);
         const declaration =
           ReaderUtil.getString(property, JsonSchema.type) === 'array' ? ReaderUtil.getNode(property, JsonSchema.items) : property;

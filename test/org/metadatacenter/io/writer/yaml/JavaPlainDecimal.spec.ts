@@ -1,3 +1,4 @@
+import { stringifySchema } from '../../../../../../src/org/metadatacenter/io/writer/json/stringifySchema';
 import fs from 'node:fs';
 import path from 'node:path';
 import YAML from 'yaml';
@@ -32,9 +33,18 @@ describe('Java 17 plain decimal spelling', () => {
         expect(javaPlainDecimal(value)).toBe(expected);
         const yaml = SimpleYamlSerializer.serialize({ bound: value });
         expect(yaml).toBe('bound: ' + expected + '\n');
+        expect(stringifySchema({ bound: value }, 0)).toBe('{"bound":' + expected + '}');
         expect(YAML.parse(yaml).bound).toBe(value === 0 ? 0 : value);
       }
     }
+  });
+  test('JSON number formatting preserves quoted keys, values, escapes and arrays', () => {
+    const source = { '1e23': '1e23', nested: ['"-1.2345e21"\\path', 1e23, -1.2345e21, null, true] };
+    const json = stringifySchema(source, 2);
+    expect(JSON.parse(json)).toEqual(source);
+    expect(json).toContain('99999999999999990000000');
+    expect(json).toContain('-1234499999999999900000');
+    expect(json).toContain('"1e23": "1e23"');
   });
   test('rejects nonfinite input to the finite decimal formatter', () => {
     for (const n of [NaN, Infinity, -Infinity]) expect(() => javaPlainDecimal(n)).toThrow(RangeError);

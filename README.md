@@ -93,7 +93,7 @@ mapping. Annotation entries follow the existing CEDAR meta-schema: an IRI object
 value object, with no extra properties. These declarations are platform metadata, not child fields.
 Older templates without the declarations remain readable; writing them adds the declarations.
 
-Finite numeric YAML values use Java 17's decimal digits, expanded without exponent notation.
+Finite numeric YAML and schema JSON values use Java 17's decimal digits, expanded without exponent notation.
 This includes midpoint and subnormal cases where JavaScript's shortest spelling differs. Shared
 Java-verified fixtures check the output and preservation of the original binary number.
 

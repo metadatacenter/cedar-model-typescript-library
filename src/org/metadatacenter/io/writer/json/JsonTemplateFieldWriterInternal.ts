@@ -1,3 +1,4 @@
+import { stringifySchema } from './stringifySchema';
 import { JsonWriterBehavior } from '../../../behavior/JsonWriterBehavior';
 import { SchemaVersion } from '../../../model/cedar/types/wrapped-types/SchemaVersion';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
@@ -132,7 +133,7 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
   }
 
   public getAsJsonString(field: TemplateField, indent: number = 2): string {
-    return JSON.stringify(this.getAsJsonNode(field, ChildDeploymentInfo.standalone()), null, indent);
+    return stringifySchema(this.getAsJsonNode(field, ChildDeploymentInfo.standalone()), indent);
   }
 
   public getAsJsonNode(field: TemplateField): JsonNode;

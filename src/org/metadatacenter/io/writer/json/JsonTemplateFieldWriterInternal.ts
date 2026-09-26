@@ -132,12 +132,12 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
   }
 
   public getAsJsonString(field: TemplateField, indent: number = 2): string {
-    return JSON.stringify(this.getAsJsonNode(field, ChildDeploymentInfo.empty()), null, indent);
+    return JSON.stringify(this.getAsJsonNode(field, ChildDeploymentInfo.standalone()), null, indent);
   }
 
   public getAsJsonNode(field: TemplateField): JsonNode;
   public getAsJsonNode(field: TemplateField, childInfo: AbstractChildDeploymentInfo): JsonNode;
-  public getAsJsonNode(field: TemplateField, childInfo: AbstractChildDeploymentInfo = ChildDeploymentInfo.empty()): JsonNode {
+  public getAsJsonNode(field: TemplateField, childInfo: AbstractChildDeploymentInfo = ChildDeploymentInfo.standalone()): JsonNode {
     // Build properties wrapper, based on type
     const propertiesObject: JsonNode = JsonNode.getEmpty();
     this.expandPropertiesNode(propertiesObject);

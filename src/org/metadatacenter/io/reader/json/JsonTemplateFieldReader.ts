@@ -111,6 +111,12 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
   }
 
   public readFromObject(fieldSourceObject: JsonNode): JsonTemplateFieldReaderResult {
+    // The canonical standalone attribute-value representation has the same array envelope as
+    // a deployed group. Continue to accept the historical unwrapped field definition too.
+    const items = ReaderUtil.getNode(fieldSourceObject, JsonSchema.items);
+    if (fieldSourceObject.type === 'array' && ReaderUtil.getNode(items, CedarModel.ui)[CedarModel.inputType] === 'attribute-value') {
+      fieldSourceObject = items;
+    }
     const childInfo: AbstractChildDeploymentInfo = ChildDeploymentInfo.standalone();
     const path: JsonPath = new JsonPath();
     return this.readFromObjectInternal(fieldSourceObject, childInfo, path);

@@ -144,12 +144,17 @@ export class JsonTemplateReader extends JsonContainerArtifactReader {
     //    "type": "string",
     //    "format": "uri"
     //  },
-    let blueprint: JsonNode = JsonTemplateContent.PROPERTIES_PARTIAL;
+    let blueprint: JsonNode = ReaderUtil.deepClone(JsonTemplateContent.PROPERTIES_PARTIAL);
     if (childrenInfo.hasAttributeValue()) {
       blueprint = ReaderUtil.deepClone(JsonTemplateContent.PROPERTIES_PARTIAL) as JsonNode;
       const atContext: JsonNode = blueprint[JsonSchema.atContext] as JsonNode;
       atContext[TemplateProperty.additionalProperties] =
         JsonTemplateFieldContentDynamic.ADDITIONAL_PROPERTIES_VERBATIM_ATTRIBUTE_VALUE_INSIDE;
+    }
+    if (!(CedarModel.annotations in templateProperties)) delete blueprint[CedarModel.annotations];
+    const sourceContextProperties = ReaderUtil.getNode(ReaderUtil.getNode(templateProperties, JsonSchema.atContext), JsonSchema.properties);
+    if (!(CedarModel.annotations in sourceContextProperties)) {
+      delete ReaderUtil.getNode(ReaderUtil.getNode(blueprint, JsonSchema.atContext), JsonSchema.properties)[CedarModel.annotations];
     }
     JsonObjectComparator.compareToLeft(parsingResult, blueprint, templateProperties, path.add(JsonSchema.properties), this.behavior);
   }

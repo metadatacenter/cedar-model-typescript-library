@@ -50,6 +50,12 @@
     "@context": {
       "type": "object",
       "properties": {
+        "_annotations": {
+          "type": "string",
+          "enum": [
+            "@nest"
+          ]
+        },
         "rdfs": {
           "type": "string",
           "format": "uri",
@@ -302,6 +308,40 @@
         "null"
       ],
       "format": "uri"
+    },
+    "_annotations": {
+      "type": "object",
+      "patternProperties": {
+        "^.+$": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "@id": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              },
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "@value": {
+                  "type": [
+                    "string",
+                    "number",
+                    "boolean",
+                    "null"
+                  ]
+                }
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
     },
     "Simple date": {
       "@id": "https://repo.metadatacenter.org/template-fields/d44a1d82-5457-4dce-95f9-0400c7b4cb80",

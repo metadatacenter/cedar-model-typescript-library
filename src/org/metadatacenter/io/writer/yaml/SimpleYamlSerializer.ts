@@ -1,3 +1,4 @@
+import { javaPlainDecimal } from './JavaPlainDecimal';
 import YAML, { isPair, isScalar, Scalar, ToStringOptions, visit } from 'yaml';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { mayWriteYamlValuePlain, yamlKeyNeedsQuoting } from './YamlPlainScalarPolicy';
@@ -45,22 +46,6 @@ function quoteLikeJava(value: string): string {
   return result + '"';
 }
 
-// Java writes finite decimal constraints without exponent notation. Expand the number's
-// shortest decimal spelling rather than using toFixed, which introduces rounding.
-function plainDecimal(value: number): string {
-  const spelling = String(value);
-  if (!/[eE]/.test(spelling)) return spelling;
-  const [mantissa, exponent] = spelling.toLowerCase().split('e');
-  const sign = mantissa.startsWith('-') ? '-' : '';
-  const unsigned = sign ? mantissa.slice(1) : mantissa;
-  const [integer, fraction = ''] = unsigned.split('.');
-  const digits = integer + fraction;
-  const point = integer.length + Number(exponent);
-  if (point <= 0) return sign + '0.' + '0'.repeat(-point) + digits;
-  if (point >= digits.length) return sign + digits + '0'.repeat(point - digits.length);
-  return sign + digits.slice(0, point) + '.' + digits.slice(point);
-}
-
 export class SimpleYamlSerializer {
   static serialize(obj: JsonNode): string {
     // SnakeYAML switches to explicit keys at 128 UTF-16 code units. yaml's default
@@ -87,7 +72,7 @@ export class SimpleYamlSerializer {
                   ...tag,
                   stringify(item, context, onComment, onChompKeep) {
                     return typeof item.value === 'number' && Number.isFinite(item.value)
-                      ? plainDecimal(item.value)
+                      ? javaPlainDecimal(item.value)
                       : tag.stringify!(item, context, onComment, onChompKeep);
                   },
                 }

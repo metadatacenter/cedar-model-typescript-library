@@ -11,7 +11,7 @@ module.exports = {
   testEnvironment: 'node',
   roots: ['<rootDir>/src', '<rootDir>/test', '<rootDir>/itest'],
   testMatch: ['**/test/**/?(*.)+(spec|test).ts', '**/itest/**/?(*.)+(spec|test).ts', '**/?(*.)+(spec|test).ts'],
-  globalSetup: './jest.setup.js',
+  globalSetup: '<rootDir>/test/setup.js',
   collectCoverageFrom: [
     '<rootDir>/src/**/*.ts',
     '!<rootDir>/src/**/*.spec.ts',

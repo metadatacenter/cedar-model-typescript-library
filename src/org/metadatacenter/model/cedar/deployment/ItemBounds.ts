@@ -1,8 +1,8 @@
 import { NullableNumber } from '../types/basic-types/NullableNumber';
 
 /**
- * The maximum meaning "no upper bound". CEDAR overloads zero for this rather than omitting the key,
- * and the Java library's model reads it the same way.
+ * The maximum the Template Editor stores for "no upper bound". JSON Schema reads it as "no items", so
+ * both writers leave it out, and both models accept it whatever the minimum.
  */
 export const UNBOUNDED_MAX_ITEMS = 0;
 

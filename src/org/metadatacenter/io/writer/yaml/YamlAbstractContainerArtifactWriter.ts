@@ -1,3 +1,4 @@
+import { UNBOUNDED_MAX_ITEMS } from '../../../model/cedar/deployment/ItemBounds';
 import { ChildDeploymentInfoAlwaysMultiple } from '../../../model/cedar/deployment/ChildDeploymentInfoAlwaysMultiple';
 import { AbstractContainerArtifact } from '../../../model/cedar/AbstractContainerArtifact';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
@@ -111,7 +112,7 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
         if (childMeta instanceof ChildDeploymentInfoAlwaysMultiple) {
           if (childMeta.declaredMinItems !== null && childMeta.declaredMinItems !== childMeta.defaultMinItems)
             childConfiguration[YamlKeys.minItems] = minItems;
-          if (childMeta.declaredMaxItems !== null) childConfiguration[YamlKeys.maxItems] = maxItems;
+          if (childMeta.declaredMaxItems !== null && maxItems !== UNBOUNDED_MAX_ITEMS) childConfiguration[YamlKeys.maxItems] = maxItems;
         }
       } else {
         childConfiguration[YamlKeys.multiple] = true;
@@ -120,7 +121,8 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
         if (minItems !== AbstractChildDeploymentInfo.defaultMinItems) {
           childConfiguration[YamlKeys.minItems] = minItems;
         }
-        if (maxItems !== null) {
+        // A maximum of 0, the Template Editor's "no upper bound", is left out, as in the JSON.
+        if (maxItems !== null && maxItems !== UNBOUNDED_MAX_ITEMS) {
           childConfiguration[YamlKeys.maxItems] = maxItems;
         }
       }

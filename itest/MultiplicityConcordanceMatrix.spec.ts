@@ -12,8 +12,9 @@ import { CedarReaders, CedarWriters, InstanceInflater, JsonNode } from '../src';
  * and they disagreed. This inflater gave a missing repeated child an empty list, so an instance it
  * inflated failed its own template wherever the template's lower bound was above zero. Both writers
  * raised a maximum below the minimum to the minimum, which rewrote what an author stated and turned
- * a maximum of 0, CEDAR's "no upper bound", into a limit. Java refuses such a child, and this library
- * now does too.
+ * a maximum of 0 into a limit. Java refuses such a child, and this library now does too. The Template
+ * Editor stores 0 to mean no upper bound, but JSON Schema reads it as no items, so both libraries read
+ * a stored 0 and leave it out when they write.
  *
  * A case is its kind's base template with the child wrapped in a list stating the case's bounds;
  * Java asserts that this is exactly what it writes, so the template read here is Java's own output.
@@ -25,6 +26,7 @@ type Case = {
   container: 'template' | 'element';
   refused: boolean;
   bounds: Bounds;
+  storedBounds?: Bounds;
   yaml?: string;
   inflatedOccurrences?: number | null;
 };
@@ -46,11 +48,11 @@ const parentProperties = (template: any, container: string): any =>
   container === 'template' ? template.properties : template.properties[GROUP].properties;
 
 /** The case's template: its base, with the child wrapped in a list stating its bounds. */
-function withBounds(row: Case): JsonNode {
+function withBounds(row: Case, bounds: Bounds = row.bounds): JsonNode {
   const template = structuredClone(fixture.bases[row.base]) as any;
   const properties = parentProperties(template, row.container);
-  if (row.bounds !== null) {
-    properties[CHILD] = { type: 'array', ...row.bounds, items: properties[CHILD] };
+  if (bounds !== null) {
+    properties[CHILD] = { type: 'array', ...bounds, items: properties[CHILD] };
   }
   return template;
 }
@@ -84,6 +86,12 @@ for (const row of fixture.cases) {
       const template = jsonReaders.getTemplateReader().readFromObject(withBounds(row)).template;
       expect(jsonWriters.getTemplateWriter().getAsJsonNode(template)).toEqual(withBounds(row));
     });
+    if (row.storedBounds) {
+      it('a stored maximum of 0 is written as none, as Java writes it', () => {
+        const template = jsonReaders.getTemplateReader().readFromObject(withBounds(row, row.storedBounds!)).template;
+        expect(jsonWriters.getTemplateWriter().getAsJsonNode(template)).toEqual(withBounds(row));
+      });
+    }
     it('the YAML is what Java writes, and reads back to the same bounds', () => {
       const template = jsonReaders.getTemplateReader().readFromObject(withBounds(row)).template;
       expect(YAML.parse(yamlWriters.getTemplateWriter().getAsYamlString(template))).toEqual(YAML.parse(row.yaml!));

@@ -9,6 +9,7 @@ const javaRoot = resolve(root, '../cedar-artifact-library');
 const matrices = [
   { fixture: 'src/test/resources/concordance/field-matrix.json', name: 'java-field-matrix', what: 'field' },
   { fixture: 'src/test/resources/concordance/instance-value-matrix.json', name: 'java-instance-value-matrix', what: 'instance value' },
+  { fixture: 'src/test/resources/concordance/multiplicity-matrix.json', name: 'java-multiplicity-matrix', what: 'multiplicity' },
 ];
 const dirty = execFileSync('git', ['status', '--porcelain', '--', 'src/main', 'src/test'], { cwd: javaRoot, encoding: 'utf8' });
 if (dirty.trim()) throw new Error('Commit the Java implementation, matrix generator and fixture before syncing its provenance.');
@@ -17,7 +18,8 @@ const destination = resolve(root, 'itest/resources/concordance');
 mkdirSync(destination, { recursive: true });
 for (const matrix of matrices) {
   const bytes = readFileSync(resolve(javaRoot, matrix.fixture));
-  const caseCount = JSON.parse(bytes.toString()).length;
+  const parsed = JSON.parse(bytes.toString());
+  const caseCount = Array.isArray(parsed) ? parsed.length : parsed.cases.length;
   writeFileSync(resolve(destination, `${matrix.name}.json`), bytes);
   writeFileSync(
     resolve(destination, `${matrix.name}-lock.json`),

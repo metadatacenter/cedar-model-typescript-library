@@ -40,14 +40,11 @@ export abstract class JsonAbstractContainerArtifactWriter extends JsonAbstractAr
               maxItems: constMaxItems,
             } = WriterUtil.getMultiMinMax(child, childMetaAbstract);
             let minItems = constMinItems;
-            let maxItems = constMaxItems;
+            const maxItems = constMaxItems;
             // If multi-instance, wrap the definition
             if (isMultiInstance) {
               if (minItems === null) {
                 minItems = AbstractChildDeploymentInfo.defaultMinItems;
-              }
-              if (maxItems !== null && maxItems < minItems) {
-                maxItems = minItems;
               }
               const minMax = JsonNode.getEmpty();
               minMax[CedarModel.minItems] = minItems;

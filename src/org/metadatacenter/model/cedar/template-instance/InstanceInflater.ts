@@ -12,6 +12,10 @@ import { AbstractContainerArtifact } from '../AbstractContainerArtifact';
 import { CedarArtifactType } from '../types/cedar-types/CedarArtifactType';
 import { TemplateElement } from '../element/TemplateElement';
 import { Template } from '../template/Template';
+import { AbstractChildDeploymentInfo } from '../deployment/AbstractChildDeploymentInfo';
+import { AbstractDynamicChildDeploymentInfo } from '../deployment/AbstractDynamicChildDeploymentInfo';
+import { InstanceDataAtomList } from './InstanceDataAtomList';
+import { TemplateChild } from '../types/basic-types/TemplateChild';
 
 /**
  * Reconstruct a complete instance from a sparse one and its template.
@@ -62,6 +66,26 @@ export class InstanceInflater {
     return iriTypes.includes(field.cedarFieldType) ? new InstanceDataEmptyNode() : new InstanceDataStringAtom(null);
   }
 
+  /**
+   * The occurrences a missing repeated child starts with: as many as its lower bound demands, which
+   * is the bound both writers state in the template. Every repeated child was given an empty list,
+   * so an instance inflated here failed its own template wherever that bound was above zero, and the
+   * Java inflater filled it. An attribute-value field starts with none whatever its bound, as there,
+   * since its attributes need names nobody has given.
+   */
+  private static startingOccurrences(child: TemplateChild | null, info: AbstractChildDeploymentInfo): InstanceDataAtomList {
+    if (child instanceof TemplateField && child.cedarFieldType === CedarFieldType.ATTRIBUTE_VALUE) {
+      return [];
+    }
+    const stated = info instanceof AbstractDynamicChildDeploymentInfo ? info.minItems : null;
+    const count = stated ?? AbstractChildDeploymentInfo.defaultMinItems;
+    return Array.from({ length: count }, (): InstanceDataAtomType => {
+      if (child instanceof TemplateElement) return new InstanceDataContainer();
+      if (child instanceof TemplateField) return InstanceInflater.emptyField(child);
+      return new InstanceDataEmptyNode();
+    });
+  }
+
   private static inflateContainer(container: InstanceDataContainer, template: AbstractContainerArtifact): void {
     const info = template.getChildrenInfo();
 
@@ -86,8 +110,9 @@ export class InstanceInflater {
         // Missing repeated children (including choice/attribute-value fields and
         // elements) must retain their schema's array shape. Single children
         // need the appropriate literal, IRI, or recursive element shape.
-        if (template.getChildInfo(name)?.isMultiInAnyWay()) {
-          value = [];
+        const childInfo = template.getChildInfo(name);
+        if (childInfo?.isMultiInAnyWay()) {
+          value = InstanceInflater.startingOccurrences(child, childInfo);
         } else if (child instanceof TemplateElement) {
           value = new InstanceDataContainer();
         } else if (child instanceof TemplateField) {

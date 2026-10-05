@@ -100,14 +100,11 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
 
     const { isMultiInstance, minItems: constMinItems, maxItems: constMaxItems } = WriterUtil.getMultiMinMax(child!, childMeta);
     let minItems = constMinItems;
-    let maxItems = constMaxItems;
+    const maxItems = constMaxItems;
 
     if (isMultiInstance) {
       if (minItems === null) {
         minItems = AbstractChildDeploymentInfo.defaultMinItems;
-      }
-      if (maxItems !== null && maxItems < minItems) {
-        maxItems = minItems;
       }
       if (child?.isMultiInstanceByDefinition() || child?.isSingleInstanceByDefinition()) {
         // Multiplicity is implicit, but explicitly declared limits are not.

@@ -224,7 +224,10 @@ children:
     InstanceInflater.inflate(instance, schema);
     const first = JSON.parse(writer.getAsJsonString(instance));
     expect(first._many).toEqual([]);
-    expect(first._absentElements).toEqual([]);
+    // Marked multiple with no stated minimum, so its template demands one occurrence, and an empty
+    // list would fail it, as the Java inflater's does not.
+    expect(first._absentElements).toHaveLength(1);
+    expect(first._absentElements[0]._many).toEqual([]);
     expect(first._parent._nested).toHaveLength(2);
     for (const occurrence of first._parent._nested) {
       expect(occurrence._many).toEqual([]);

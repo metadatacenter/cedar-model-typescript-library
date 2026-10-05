@@ -1,3 +1,4 @@
+import { assertItemBounds } from './ItemBounds';
 import { NullableNumber } from '../types/basic-types/NullableNumber';
 import { TemplateChild } from '../types/basic-types/TemplateChild';
 import { AbstractDynamicChildDeploymentInfoBuilder } from './AbstractDynamicChildDeploymentInfoBuilder';
@@ -29,6 +30,7 @@ export class ChildDeploymentInfoElementBuilder extends AbstractDynamicChildDeplo
   }
 
   public override build(): ChildDeploymentInfoElement {
+    assertItemBounds(this.name, this.minItems, this.maxItems);
     const info: ChildDeploymentInfoElement = new ChildDeploymentInfoElement(this.name);
     this.setCommonData(info);
     info.multiInstance = this.multiInstance;

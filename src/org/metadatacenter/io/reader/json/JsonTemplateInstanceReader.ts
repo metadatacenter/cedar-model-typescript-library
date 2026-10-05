@@ -303,8 +303,10 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
 
   /**
    * Everything a field's value may carry, and nothing an element would.
-   * `@type` and `skos:notation` appear on controlled terms; `@id` and
-   * `rdfs:label` are the IRI-valued pair; `@value` is the literal case.
+   * `@type`, `skos:notation` and `skos:prefLabel` appear on controlled terms;
+   * `@id` and `rdfs:label` are the IRI-valued pair; `@value` is the literal
+   * case. A term carrying a preferred label was read as an element, whose
+   * child names may not be `rdfs:label`, so the reader threw on it.
    */
   private static readonly VALUE_ATOM_KEYS: ReadonlySet<string> = new Set([
     JsonSchema.atValue,
@@ -313,6 +315,7 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     JsonSchema.rdfsLabel,
     JsonSchema.atType,
     CedarModel.skosNotation,
+    CedarModel.skosPrefLabel,
   ]);
 
   /**
@@ -434,6 +437,7 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     }
     const atom = this.parseDataAtomWithoutNotation(content);
     if ('language' in atom) atom.language = ReaderUtil.getString(content, JsonSchema.atLanguage);
+    if ('preferredLabel' in atom) atom.preferredLabel = ReaderUtil.getString(content, CedarModel.skosPrefLabel);
     if ('notation' in atom && !(atom instanceof InstanceDataNotationAtom)) {
       atom.notation = ReaderUtil.getString(content, JsonSchema.skosNotation);
     }

@@ -197,6 +197,11 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
       result[YamlKeys.notation] = atom.notation;
       node = result;
     }
+    if ('preferredLabel' in atom && atom.preferredLabel !== null) {
+      const result = node ?? JsonNode.getEmpty();
+      result[YamlKeys.prefLabel] = atom.preferredLabel;
+      node = result;
+    }
     if (node !== null && 'language' in atom && atom.language !== null) {
       node[YamlKeys.language] = atom.language;
     }
@@ -211,7 +216,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
       return this.serializeAtomString(atom);
     }
     if (atom instanceof InstanceDataTypedAtom) {
-      return atom.value === null && atom.label === null && atom.notation === null
+      return atom.value === null && atom.label === null && atom.notation === null && atom.preferredLabel === null
         ? null
         : {
             [YamlKeys.datatype]: atom.type,
@@ -248,7 +253,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
   }
 
   private serializeAtomString(atom: InstanceDataStringAtom): JsonNode | null {
-    return atom.value === null && atom.label === null && atom.notation === null
+    return atom.value === null && atom.label === null && atom.notation === null && atom.preferredLabel === null
       ? null
       : { [YamlKeys.value]: atom.value, ...(atom.label === null ? {} : { [YamlKeys.label]: atom.label }) };
   }

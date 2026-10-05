@@ -185,6 +185,9 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
     if (node !== null && typeof node === 'object' && 'language' in atom) {
       atom.language = ReaderUtil.getString(node, YamlKeys.language);
     }
+    if (node !== null && typeof node === 'object' && 'preferredLabel' in atom) {
+      atom.preferredLabel = ReaderUtil.getString(node, YamlKeys.prefLabel);
+    }
     if (node !== null && typeof node === 'object' && 'notation' in atom && !(atom instanceof InstanceDataNotationAtom)) {
       atom.notation = ReaderUtil.getString(node, YamlKeys.notation);
     }

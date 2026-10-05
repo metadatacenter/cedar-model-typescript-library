@@ -4,6 +4,7 @@ import { InstanceDataLabelAtom } from '../../../model/cedar/template-instance/In
 import { JsonWriterBehavior } from '../../../behavior/JsonWriterBehavior';
 import { ReaderUtil } from '../../reader/ReaderUtil';
 import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
+import { CedarModel } from '../../../model/cedar/constants/CedarModel';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { CedarJsonWriters } from './CedarJsonWriters';
 import { JsonAbstractArtifactWriter } from './JsonAbstractArtifactWriter';
@@ -140,6 +141,9 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
     }
     if (node !== null && 'notation' in atom && atom.notation !== null) {
       node[JsonSchema.skosNotation] = atom.notation;
+    }
+    if (node !== null && 'preferredLabel' in atom && atom.preferredLabel !== null) {
+      node[CedarModel.skosPrefLabel] = atom.preferredLabel;
     }
     return node;
   }

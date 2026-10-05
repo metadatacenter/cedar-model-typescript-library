@@ -33,6 +33,8 @@ export function assertIri(id: string | null, className: string): void {
 export class InstanceDataLinkAtom {
   /** Optional JSON-LD language tag, preserved across JSON and YAML. */
   public language: string | null = null;
+  /** Optional SKOS preferred label, the vocabulary's own name for the value. */
+  public preferredLabel: string | null = null;
   /** Optional SKOS notation, including an explicitly empty string. */
   public notation: string | null = null;
   private readonly _id: string | null;

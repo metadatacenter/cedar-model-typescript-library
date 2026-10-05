@@ -19,9 +19,67 @@ type Case = {
   templateJsonFromYaml: JsonNode;
   templateJsonFromCompactYaml: JsonNode;
 };
+/**
+ * The fixture records each field type's baseline whole, and every other case as what it changes: in
+ * its JSON, the keys it sets and removes; in its YAML, the lines it replaces; and a document read back
+ * from YAML against the case's own JSON. Java asserts that each case rebuilds exactly what it wrote,
+ * so rebuilding it here gives Java's output.
+ */
+type Change = { at: string[]; set?: JsonNode; remove?: true };
+type LineChanges = { keep: [number, number]; lines: string[] };
+type Row = Omit<Case, JsonDocument | YamlDocument | ReadBack> &
+  Record<JsonDocument | ReadBack, Change[]> &
+  Record<YamlDocument, LineChanges>;
+type JsonDocument = 'json' | 'templateJson';
+type YamlDocument = 'yaml' | 'compactYaml' | 'templateYaml' | 'templateCompactYaml';
+type ReadBack = 'jsonFromYaml' | 'jsonFromCompactYaml' | 'templateJsonFromYaml' | 'templateJsonFromCompactYaml';
+type Base = Pick<Case, JsonDocument | YamlDocument>;
+const READ_BACK: Record<ReadBack, JsonDocument> = {
+  jsonFromYaml: 'json',
+  jsonFromCompactYaml: 'json',
+  templateJsonFromYaml: 'templateJson',
+  templateJsonFromCompactYaml: 'templateJson',
+};
+
+function applyChanges(from: JsonNode, changes: Change[]): JsonNode {
+  let result = structuredClone(from);
+  for (const change of changes) {
+    if (change.at.length === 0) {
+      result = structuredClone(change.set as JsonNode);
+      continue;
+    }
+    let parent = result as Record<string, JsonNode>;
+    for (const key of change.at.slice(0, -1)) parent = parent[key] as Record<string, JsonNode>;
+    const key = change.at[change.at.length - 1];
+    if (change.remove) delete parent[key];
+    else parent[key] = structuredClone(change.set as JsonNode);
+  }
+  return result;
+}
+
+function applyLineChanges(from: string, changes: LineChanges): string {
+  const lines = from.split('\n');
+  const [prefix, suffix] = changes.keep;
+  return [...lines.slice(0, prefix), ...changes.lines, ...lines.slice(lines.length - suffix)].join('\n');
+}
+
+function expand(row: Row, base: Base): Case {
+  const c = { id: row.id, type: row.type, feature: row.feature } as Case;
+  c.json = applyChanges(base.json, row.json);
+  c.templateJson = applyChanges(base.templateJson, row.templateJson);
+  for (const document of ['yaml', 'compactYaml', 'templateYaml', 'templateCompactYaml'] as YamlDocument[]) {
+    c[document] = applyLineChanges(base[document], row[document]);
+  }
+  for (const [document, against] of Object.entries(READ_BACK) as [ReadBack, JsonDocument][]) {
+    c[document] = applyChanges(c[against], row[document]);
+  }
+  return c;
+}
+
 const directory = path.join(__dirname, 'resources/concordance');
 const bytes = fs.readFileSync(path.join(directory, 'java-field-matrix.json'));
-const cases = JSON.parse(bytes.toString()) as Case[];
+const fixture = JSON.parse(bytes.toString()) as { bases: Record<string, Base>; cases: Row[] };
+const cases: Case[] = fixture.cases.map((row) => expand(row, fixture.bases[row.type]));
 const lock = JSON.parse(fs.readFileSync(path.join(directory, 'java-field-matrix-lock.json'), 'utf8'));
 const jsonReaders = CedarReaders.json().getStrict();
 const jsonWriters = CedarWriters.json().getStrict();

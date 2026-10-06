@@ -1,3 +1,4 @@
+import { assertItemBounds } from './ItemBounds';
 import { NullableNumber } from '../types/basic-types/NullableNumber';
 import { TemplateChild } from '../types/basic-types/TemplateChild';
 import { ChildDeploymentInfoAlwaysMultiple } from './ChildDeploymentInfoAlwaysMultiple';
@@ -28,6 +29,7 @@ export class ChildDeploymentInfoAlwaysMultipleBuilder extends AbstractFieldChild
   }
 
   public build(): ChildDeploymentInfoAlwaysMultiple {
+    assertItemBounds(this.name, this.declaredMinItems, this.declaredMaxItems);
     const info: ChildDeploymentInfoAlwaysMultiple = new ChildDeploymentInfoAlwaysMultiple(this.name);
     this.setCommonData(info);
     info.declaredMinItems = this.declaredMinItems;

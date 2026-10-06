@@ -85,9 +85,9 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
     instance.descriptionWasAbsent = ReaderUtil.getString(source, YamlKeys.description) === null;
     YamlTemplateInstanceReader.refuseEmptyIdentifier(source);
     instance.at_id = CedarArtifactId.forValue(ReaderUtil.getString(source, YamlKeys.id));
-    instance.schema_isBasedOn = CedarArtifactId.forValue(ReaderUtil.getString(source, YamlKeys.isBasedOn));
+    instance.schema_isBasedOn = CedarArtifactId.forValue(ReaderUtil.getIri(source, YamlKeys.isBasedOn));
     // Accept the legacy empty spelling as absence; the writer omits the optional key.
-    instance.pav_derivedFrom = CedarArtifactId.forValue(ReaderUtil.getString(source, YamlKeys.derivedFrom));
+    instance.pav_derivedFrom = CedarArtifactId.forValue(ReaderUtil.getIri(source, YamlKeys.derivedFrom));
     // The writer emits an instance's provenance and its annotations; both were read by nobody, so
     // either one was lost by writing what had just been read.
     instance.pav_createdBy = CedarUser.forValue(ReaderUtil.getString(source, YamlKeys.createdBy));
@@ -97,7 +97,7 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
     this.readAnnotations(instance, source, parsingResult, new JsonPath());
 
     instance.dataContainer = this.parseContainer(source, true);
-    for (const conflict of AttributeValueNamePolicy.findConflicts(instance.dataContainer)) {
+    for (const conflict of AttributeValueNamePolicy.findConflicts(instance.dataContainer, 'template', true)) {
       parsingResult.addBlueprintComparisonError(
         new ComparisonError(
           'YamlTemplateInstanceReader',
@@ -184,6 +184,9 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
     const atom = this.parseNodeWithoutNotation(node);
     if (node !== null && typeof node === 'object' && 'language' in atom) {
       atom.language = ReaderUtil.getString(node, YamlKeys.language);
+    }
+    if (node !== null && typeof node === 'object' && 'preferredLabel' in atom) {
+      atom.preferredLabel = ReaderUtil.getString(node, YamlKeys.prefLabel);
     }
     if (node !== null && typeof node === 'object' && 'notation' in atom && !(atom instanceof InstanceDataNotationAtom)) {
       atom.notation = ReaderUtil.getString(node, YamlKeys.notation);

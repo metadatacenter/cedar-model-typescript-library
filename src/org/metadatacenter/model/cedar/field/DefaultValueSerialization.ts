@@ -45,7 +45,7 @@ export class DefaultValueSerialization {
    * vocabulary. A link's default names nothing but itself and carries no label.
    */
   public static iriFromNode(node: JsonNode, key: string): Iri | null {
-    const value = ReaderUtil.getString(node, key);
+    const value = ReaderUtil.getIri(node, key);
     return value === null || value === '' ? null : new Iri(value);
   }
 

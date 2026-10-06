@@ -12,6 +12,10 @@ import { AbstractContainerArtifact } from '../AbstractContainerArtifact';
 import { CedarArtifactType } from '../types/cedar-types/CedarArtifactType';
 import { TemplateElement } from '../element/TemplateElement';
 import { Template } from '../template/Template';
+import { AbstractChildDeploymentInfo } from '../deployment/AbstractChildDeploymentInfo';
+import { AbstractDynamicChildDeploymentInfo } from '../deployment/AbstractDynamicChildDeploymentInfo';
+import { InstanceDataAtomList } from './InstanceDataAtomList';
+import { TemplateChild } from '../types/basic-types/TemplateChild';
 
 /**
  * Reconstruct a complete instance from a sparse one and its template.
@@ -36,8 +40,20 @@ import { Template } from '../template/Template';
 export class InstanceInflater {
   private constructor() {}
 
-  public static inflate(instance: TemplateInstance, template: Template): TemplateInstance {
-    InstanceInflater.inflateContainer(instance.dataContainer, template);
+  /**
+   * Complete an instance against its template.
+   *
+   * A repeated child the instance omits starts with the occurrences its lower bound demands, as the
+   * Java inflater's does, so the instance satisfies its template. An editor that shows a user the
+   * instance as stored can ask for `'empty'` instead, and an omitted repeated child then leaves as
+   * the empty list the user saw rather than as occurrences the user never created.
+   */
+  public static inflate(
+    instance: TemplateInstance,
+    template: Template,
+    repeatedChildren: 'lowerBound' | 'empty' = 'lowerBound',
+  ): TemplateInstance {
+    InstanceInflater.inflateContainer(instance.dataContainer, template, repeatedChildren);
     return instance;
   }
 
@@ -62,7 +78,31 @@ export class InstanceInflater {
     return iriTypes.includes(field.cedarFieldType) ? new InstanceDataEmptyNode() : new InstanceDataStringAtom(null);
   }
 
-  private static inflateContainer(container: InstanceDataContainer, template: AbstractContainerArtifact): void {
+  /**
+   * The occurrences a missing repeated child starts with: as many as its lower bound demands, which
+   * is the bound both writers state in the template. Every repeated child was given an empty list,
+   * so an instance inflated here failed its own template wherever that bound was above zero, and the
+   * Java inflater filled it. An attribute-value field starts with none whatever its bound, as there,
+   * since its attributes need names nobody has given.
+   */
+  private static startingOccurrences(child: TemplateChild | null, info: AbstractChildDeploymentInfo): InstanceDataAtomList {
+    if (child instanceof TemplateField && child.cedarFieldType === CedarFieldType.ATTRIBUTE_VALUE) {
+      return [];
+    }
+    const stated = info instanceof AbstractDynamicChildDeploymentInfo ? info.minItems : null;
+    const count = stated ?? AbstractChildDeploymentInfo.defaultMinItems;
+    return Array.from({ length: count }, (): InstanceDataAtomType => {
+      if (child instanceof TemplateElement) return new InstanceDataContainer();
+      if (child instanceof TemplateField) return InstanceInflater.emptyField(child);
+      return new InstanceDataEmptyNode();
+    });
+  }
+
+  private static inflateContainer(
+    container: InstanceDataContainer,
+    template: AbstractContainerArtifact,
+    repeatedChildren: 'lowerBound' | 'empty',
+  ): void {
     const info = template.getChildrenInfo();
 
     const iriMap = info.getChildIriMap();
@@ -86,8 +126,9 @@ export class InstanceInflater {
         // Missing repeated children (including choice/attribute-value fields and
         // elements) must retain their schema's array shape. Single children
         // need the appropriate literal, IRI, or recursive element shape.
-        if (template.getChildInfo(name)?.isMultiInAnyWay()) {
-          value = [];
+        const childInfo = template.getChildInfo(name);
+        if (childInfo?.isMultiInAnyWay()) {
+          value = repeatedChildren === 'empty' ? [] : InstanceInflater.startingOccurrences(child, childInfo);
         } else if (child instanceof TemplateElement) {
           value = new InstanceDataContainer();
         } else if (child instanceof TemplateField) {
@@ -98,11 +139,11 @@ export class InstanceInflater {
       }
       if (child instanceof TemplateElement) {
         if (value instanceof InstanceDataContainer) {
-          InstanceInflater.inflateContainer(value, child);
+          InstanceInflater.inflateContainer(value, child, repeatedChildren);
         } else if (Array.isArray(value)) {
           value.forEach((element) => {
             if (element instanceof InstanceDataContainer) {
-              InstanceInflater.inflateContainer(element, child);
+              InstanceInflater.inflateContainer(element, child, repeatedChildren);
             }
           });
         }

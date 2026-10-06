@@ -209,7 +209,7 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     // Nested containers run through this method in their own right. Report
     // only this level here so a nested conflict is not repeated once for every
     // ancestor on the way back out of the recursive parse.
-    for (const conflict of AttributeValueNamePolicy.findConflicts(ret, parent).filter((candidate) => candidate.path.length === 0)) {
+    for (const conflict of AttributeValueNamePolicy.findConflicts(ret, parent, true).filter((candidate) => candidate.path.length === 0)) {
       parsingResult.addBlueprintComparisonError(
         new ComparisonError(
           'JsonTemplateInstanceReader',
@@ -281,6 +281,9 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     if (Object.hasOwn(sourceObject, JsonSchema.atId)) {
       const atId = ReaderUtil.getString(sourceObject, JsonSchema.atId);
       if (atId !== null) {
+        if (typeof atId !== 'string') {
+          throw new Error(`Invalid URI at "${JsonSchema.atId}": expected a string.`);
+        }
         if (atId.trim() === '') {
           if (!this.behavior.useWarningForKnownIssues()) {
             JsonTemplateInstanceReader.refuseEmptyIdentifier(sourceObject);
@@ -294,6 +297,8 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
               atId,
             ),
           );
+        } else {
+          ReaderUtil.assertIri(atId, JsonSchema.atId);
         }
         ret.id = atId;
       }
@@ -303,8 +308,10 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
 
   /**
    * Everything a field's value may carry, and nothing an element would.
-   * `@type` and `skos:notation` appear on controlled terms; `@id` and
-   * `rdfs:label` are the IRI-valued pair; `@value` is the literal case.
+   * `@type`, `skos:notation` and `skos:prefLabel` appear on controlled terms;
+   * `@id` and `rdfs:label` are the IRI-valued pair; `@value` is the literal
+   * case. A term carrying a preferred label was read as an element, whose
+   * child names may not be `rdfs:label`, so the reader threw on it.
    */
   private static readonly VALUE_ATOM_KEYS: ReadonlySet<string> = new Set([
     JsonSchema.atValue,
@@ -313,6 +320,7 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     JsonSchema.rdfsLabel,
     JsonSchema.atType,
     CedarModel.skosNotation,
+    CedarModel.skosPrefLabel,
   ]);
 
   /**
@@ -434,6 +442,7 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     }
     const atom = this.parseDataAtomWithoutNotation(content);
     if ('language' in atom) atom.language = ReaderUtil.getString(content, JsonSchema.atLanguage);
+    if ('preferredLabel' in atom) atom.preferredLabel = ReaderUtil.getString(content, CedarModel.skosPrefLabel);
     if ('notation' in atom && !(atom instanceof InstanceDataNotationAtom)) {
       atom.notation = ReaderUtil.getString(content, JsonSchema.skosNotation);
     }

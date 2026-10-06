@@ -224,7 +224,10 @@ children:
     InstanceInflater.inflate(instance, schema);
     const first = JSON.parse(writer.getAsJsonString(instance));
     expect(first._many).toEqual([]);
-    expect(first._absentElements).toEqual([]);
+    // Marked multiple with no stated minimum, so its template demands one occurrence, and an empty
+    // list would fail it, as the Java inflater's does not.
+    expect(first._absentElements).toHaveLength(1);
+    expect(first._absentElements[0]._many).toEqual([]);
     expect(first._parent._nested).toHaveLength(2);
     for (const occurrence of first._parent._nested) {
       expect(occurrence._many).toEqual([]);
@@ -232,6 +235,44 @@ children:
     }
     InstanceInflater.inflate(instance, schema);
     expect(JSON.parse(writer.getAsJsonString(instance))).toEqual(first);
+  });
+});
+
+// An editor shows a stored instance as it is, so an omitted repeated child leaves it as the empty list
+// the user saw. Every other gap is filled as before, at every depth.
+describe('InstanceInflater asked to start repeated children empty', () => {
+  test('gives an omitted repeated child no occurrences, however deep', () => {
+    const child = field('value');
+    const multiple = child.createDeploymentBuilder('_many').withMultiInstance(true).withMinItems(3).build();
+    const nested = CedarBuilders.templateElementBuilder()
+      .withSchemaName('nested')
+      .withSchemaDescription('nested')
+      .addChild(child, multiple)
+      .addChild(child, child.createDeploymentBuilder('_single').build())
+      .build();
+    const schema = CedarBuilders.templateBuilder()
+      .withSchemaName('test')
+      .withSchemaDescription('test')
+      .addChild(child, multiple)
+      .addChild(nested, nested.createDeploymentBuilder('_absentElements').withMultiInstance(true).withMinItems(2).build())
+      .addChild(nested, nested.createDeploymentBuilder('_absentSingle').build())
+      .build();
+    const sparse = () =>
+      CedarReaders.yaml().getStrict().getTemplateInstanceReader().readFromString(`type: instance
+name: Sparse
+isBasedOn: https://repo.metadatacenter.org/templates/t1
+children: {}
+`).instance;
+    const writer = CedarWriters.json().getStrict().getTemplateInstanceWriter();
+    const empty = JSON.parse(writer.getAsJsonString(InstanceInflater.inflate(sparse(), schema, 'empty')));
+    expect(empty._many).toEqual([]);
+    expect(empty._absentElements).toEqual([]);
+    expect(empty._absentSingle._many).toEqual([]);
+    expect(empty._absentSingle._single).toEqual({ '@value': null });
+    const lowerBound = JSON.parse(writer.getAsJsonString(InstanceInflater.inflate(sparse(), schema)));
+    expect(lowerBound._many).toHaveLength(3);
+    expect(lowerBound._absentElements).toHaveLength(2);
+    expect(lowerBound._absentSingle._many).toHaveLength(3);
   });
 });
 

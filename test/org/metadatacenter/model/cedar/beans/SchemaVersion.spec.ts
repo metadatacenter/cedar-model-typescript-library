@@ -13,10 +13,8 @@ describe('SchemaVersion', () => {
     expect(unknown.getValue()).toBe('1.1.1');
   });
 
-  test('creates invalid version', () => {
-    const unknown = SchemaVersion.forValue('1.1');
-    expect(unknown).not.toBeNull();
-    expect(unknown.getValue()).toBe('1.6.0');
+  test('refuses an invalid version, as the Java library does', () => {
+    expect(() => SchemaVersion.forValue('1.1')).toThrow(/Invalid version "1.1"/);
   });
 
   test('creates unknown version using null', () => {

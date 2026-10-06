@@ -37,7 +37,7 @@ export abstract class JsonAbstractSchemaArtifactReader extends JsonAbstractArtif
     // Older Designer/exporter generations wrote an empty string when no source artifact existed.
     // CedarArtifactId maps that legacy spelling to NULL, and the writer then omits the optional key.
     // Do not reject it at the read boundary: production artifacts must remain openable.
-    container.pav_derivedFrom = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, JsonSchema.pavDerivedFrom));
+    container.pav_derivedFrom = CedarArtifactId.forValue(ReaderUtil.getIri(sourceObject, JsonSchema.pavDerivedFrom));
     container.pav_previousVersion = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, JsonSchema.pavPreviousVersion));
     container.schema_identifier = ReaderUtil.getString(sourceObject, JsonSchema.schemaIdentifier);
   }

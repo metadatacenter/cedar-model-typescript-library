@@ -1,3 +1,4 @@
+import { UNBOUNDED_MAX_ITEMS } from '../../../model/cedar/deployment/ItemBounds';
 import { JsonAbstractArtifactWriter } from './JsonAbstractArtifactWriter';
 import { AbstractContainerArtifact } from '../../../model/cedar/AbstractContainerArtifact';
 import { JsonContainerArtifactContent } from '../../../model/cedar/util/serialization/JsonContainerArtifactContent';
@@ -40,18 +41,17 @@ export abstract class JsonAbstractContainerArtifactWriter extends JsonAbstractAr
               maxItems: constMaxItems,
             } = WriterUtil.getMultiMinMax(child, childMetaAbstract);
             let minItems = constMinItems;
-            let maxItems = constMaxItems;
+            const maxItems = constMaxItems;
             // If multi-instance, wrap the definition
             if (isMultiInstance) {
               if (minItems === null) {
                 minItems = AbstractChildDeploymentInfo.defaultMinItems;
               }
-              if (maxItems !== null && maxItems < minItems) {
-                maxItems = minItems;
-              }
               const minMax = JsonNode.getEmpty();
               minMax[CedarModel.minItems] = minItems;
-              if (maxItems !== null) {
+              // A maximum of 0 is the Template Editor's "no upper bound", which JSON Schema, and so
+              // the validator, reads as "no items". Leaving it out is JSON Schema's "no upper bound".
+              if (maxItems !== null && maxItems !== UNBOUNDED_MAX_ITEMS) {
                 minMax[CedarModel.maxItems] = maxItems;
               }
               childDefinition = {

@@ -60,6 +60,26 @@ export abstract class ReaderUtil {
     this.assertIdentifierCharacters(transport, key);
   }
 
+  /**
+   * An IRI anywhere but a field's value, as the Java readers judge one: RFC 3987 characters, and
+   * none of the space separators a java.net.URI cannot hold as spelled. A field's value keeps its
+   * spelling and so takes those, through `assertFieldIri` alone. Whether an empty string means
+   * absence differs by position, so each position decides that itself.
+   */
+  public static assertIri(raw: string | null, key: string): void {
+    if (raw === null || raw === '') return;
+    if (typeof raw !== 'string') throw new Error(`Invalid URI at "${key}": expected a string.`);
+    this.assertFieldIri(raw, key);
+    this.assertIdentifierCharacters(raw, key);
+  }
+
+  /** The string at `key`, held to `assertIri`. */
+  public static getIri(node: JsonNode, key: string): string | null {
+    const raw = this.getString(node, key);
+    this.assertIri(raw, key);
+    return raw;
+  }
+
   public static getString(node: JsonNode, key: string): string | null {
     if (Object.hasOwn(node, key)) {
       return node[key] as string;
@@ -278,7 +298,9 @@ export abstract class ReaderUtil {
   }
 
   static getURI(node: JsonNode, key: string): Iri {
-    return new Iri(this.getStringOrEmpty(node, key));
+    const raw = this.getStringOrEmpty(node, key);
+    this.assertIri(raw, key);
+    return new Iri(raw);
   }
 
   static deleteNodeKey(node: JsonNode, key: string) {

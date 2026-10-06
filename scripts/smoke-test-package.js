@@ -10,8 +10,8 @@ const { spawnSync } = require('node:child_process');
 // here: the dev channel publishes scoped to Nexus and a release publishes unscoped to npmjs, and this
 // check has to follow whichever the build is set to. It read the unscoped name whatever dist said, so
 // it passed on a release manifest and failed on a snapshot for the wrong reason.
-const packageName = require('./package-dist.json').name;
-const repositoryRoot = __dirname;
+const packageName = require('../package-dist.json').name;
+const repositoryRoot = path.resolve(__dirname, '..');
 const temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'cedar-package-smoke-'));
 const npmCommand = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 
@@ -42,7 +42,7 @@ try {
   const [packed] = JSON.parse(packOutput);
 
   assert.equal(packed.name, packageName);
-  assert.equal(packed.version, require('./package.json').version);
+  assert.equal(packed.version, require('../package.json').version);
   assert.ok(
     packed.files.some((file) => file.path === 'index.js'),
     'CommonJS bundle is missing from the tarball',

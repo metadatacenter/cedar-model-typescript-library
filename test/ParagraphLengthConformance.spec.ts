@@ -1,52 +1,39 @@
-import fs from 'node:fs';
-import path from 'node:path';
-import { parse, stringify } from 'yaml';
-import { CedarBuilders, CedarReaders, CedarWriters, TextArea, YamlTemplateFieldReader, YamlTemplateReader } from '../src';
+import { parse } from 'yaml';
+import { CedarBuilders, CedarReaders, CedarWriters, JsonNode, YamlTemplateReader } from '../src';
+import { fieldCases } from '../itest/FieldConcordanceFixture';
 
-// Produced by Java's real builders/readers/writers; regenerate with
-// itest/scripts/GenerateParagraphLengthFixtures.java, never with the TS implementation.
-const cases = JSON.parse(
-  fs.readFileSync(path.resolve(__dirname, '../itest/resources/concordance/java-paragraph-lengths.json'), 'utf8'),
-) as Array<{ minLength: number | null; maxLength: number | null; json: any; yaml: any; compactYaml: any }>;
+// The paragraph rows of the Java field matrix, which records what Java's builders, readers and
+// writers make of each pair of character limits. The matrix holds this library's readers and writers
+// to Java's JSON and YAML for each row. What it does not check is this library's builder.
+const limit = (value: unknown): number | null => (typeof value === 'number' ? value : null);
+const cases = fieldCases
+  .filter((row) => row.type === 'textarea' && row.feature.startsWith('length-'))
+  .map((row) => {
+    const valueConstraints = JsonNode.getEmpty();
+    Object.assign(valueConstraints, row.json._valueConstraints);
+    return { valueConstraints, minLength: limit(valueConstraints.minLength), maxLength: limit(valueConstraints.maxLength) };
+  });
 const jsonWriters = CedarWriters.json().getStrict();
 const yamlWriters = CedarWriters.yaml().getStrict();
 
+test('the Java field matrix holds a paragraph row for each pair of limits', () => {
+  expect(cases.map((entry) => [entry.minLength, entry.maxLength])).toEqual([
+    [null, null],
+    [0, 0],
+    [20, null],
+    [null, 500],
+    [20, 500],
+  ]);
+});
+
 for (const entry of cases) {
-  describe(`Java paragraph bounds ${entry.minLength}..${entry.maxLength}`, () => {
-    test('the builder writes the same value constraints as Java', () => {
-      const paragraph = CedarBuilders.textAreaBuilder()
-        .withMinLength(entry.minLength)
-        .withMaxLength(entry.maxLength)
-        .withDefaultValue(entry.json._valueConstraints.defaultValue ?? null)
-        .build();
-      expect(paragraph.valueConstraints.minLength).toBe(entry.minLength);
-      expect(paragraph.valueConstraints.maxLength).toBe(entry.maxLength);
-      expect(jsonWriters.getFieldWriterForField(paragraph).getAsJsonNode(paragraph)._valueConstraints).toEqual(
-        entry.json._valueConstraints,
-      );
-    });
-
-    test('JSON from Java survives a TypeScript round trip', () => {
-      const paragraph = CedarReaders.json().getStrict().getTemplateFieldReader().readFromObject(entry.json).field as TextArea;
-      expect(paragraph.valueConstraints.minLength).toBe(entry.minLength);
-      expect(paragraph.valueConstraints.maxLength).toBe(entry.maxLength);
-      expect(jsonWriters.getFieldWriterForField(paragraph).getAsJsonNode(paragraph)).toEqual(entry.json);
-      for (const compact of [false, true]) {
-        expect(parse(yamlWriters.getFieldWriterForField(paragraph).getAsYamlString(paragraph, compact))).toEqual(
-          compact ? entry.compactYaml : entry.yaml,
-        );
-      }
-    });
-
-    test.each([false, true])('Java YAML survives a round trip (compact=%s)', (compact) => {
-      const expected = compact ? entry.compactYaml : entry.yaml;
-      const reader = compact ? YamlTemplateFieldReader.getStrictForCompact() : YamlTemplateFieldReader.getStrict();
-      const paragraph = reader.readFromString(stringify(expected)).field as TextArea;
-      expect(paragraph.valueConstraints.minLength).toBe(entry.minLength);
-      expect(paragraph.valueConstraints.maxLength).toBe(entry.maxLength);
-      expect(parse(yamlWriters.getFieldWriterForField(paragraph).getAsYamlString(paragraph, compact))).toEqual(expected);
-      if (!compact) expect(jsonWriters.getFieldWriterForField(paragraph).getAsJsonNode(paragraph)).toEqual(entry.json);
-    });
+  test(`the builder writes the value constraints Java writes for limits ${entry.minLength}..${entry.maxLength}`, () => {
+    const paragraph = CedarBuilders.textAreaBuilder().withMinLength(entry.minLength).withMaxLength(entry.maxLength).build();
+    expect(paragraph.valueConstraints.minLength).toBe(entry.minLength);
+    expect(paragraph.valueConstraints.maxLength).toBe(entry.maxLength);
+    expect(jsonWriters.getFieldWriterForField(paragraph).getAsJsonNode(paragraph)._valueConstraints).toEqual(
+      entry.valueConstraints,
+    );
   });
 }
 

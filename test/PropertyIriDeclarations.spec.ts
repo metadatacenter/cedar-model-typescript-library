@@ -20,15 +20,18 @@ for (const kind of ['template', 'element'] as const) {
   });
 }
 
-test('ordinary fields still report missing property IRIs', () => {
+test('a field the context does not map reads as one with no property IRI, as Java reads it', () => {
   const field = CedarBuilders.textFieldBuilder().withSchemaName('value').build();
   const template = CedarBuilders.templateBuilder()
     .withSchemaName('Test')
     .addChild(field, field.createDeploymentBuilder('value').build())
     .build();
-  const source = CedarWriters.json().getStrict().getTemplateWriter().getAsJsonNode(template);
+  const writer = CedarWriters.json().getStrict().getTemplateWriter();
+  const source = writer.getAsJsonNode(template);
   const read = CedarReaders.json().getStrict().getTemplateReader().readFromObject(source);
-  expect(read.parsingResult.getBlueprintComparisonErrors().filter((e) => e.errorLocation === 'jtr06')).toHaveLength(1);
+  expect(read.parsingResult.getBlueprintComparisonErrors().filter((e) => e.errorLocation === 'jtr06')).toEqual([]);
+  expect((read.template.getChildInfo('value') as { iri?: string | null }).iri ?? null).toBeNull();
+  expect(writer.getAsJsonNode(read.template)).toEqual(source);
 });
 
 test('explicit attribute-group mappings are preserved, and malformed declarations still report errors', () => {

@@ -76,6 +76,7 @@ import { ControlledTermOntologyBuilder } from './org/metadatacenter/model/cedar/
 import { ControlledTermValueSetBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/value-set/ControlledTermValueSetBuilder';
 import { ControlledTermDefaultValueBuilder } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/ControlledTermDefaultValueBuilder';
 import { ControlledTermDefaultValue } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/ControlledTermDefaultValue';
+import { IriSyntax } from './org/metadatacenter/io/reader/IriSyntax';
 import { ControlledTermVersion } from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/ControlledTermVersion';
 import { BiboStatus } from './org/metadatacenter/model/cedar/types/wrapped-types/BiboStatus';
 
@@ -264,6 +265,7 @@ export { TemplateInstanceBuilder };
 
 export { ControlledTermDefaultValueBuilder };
 export { ControlledTermDefaultValue };
+export { IriSyntax };
 export { ControlledTermBranchBuilder };
 export { ControlledTermClassBuilder };
 export { ControlledTermOntologyBuilder };

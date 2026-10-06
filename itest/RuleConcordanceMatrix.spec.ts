@@ -121,21 +121,7 @@ function verdict(lane: Lane, document: JsonNode): Verdict {
  * Where this library still differs from Java's reader, by what the difference is about. The spec
  * fails on a difference no entry matches and on an entry that matches nothing.
  */
-const KNOWN: { name: string; matches: (position: Position, row: Case, lane: string, ours: Verdict) => boolean }[] = [
-  {
-    // Java's readers treat an empty IRI four ways by position, and the validator differs again. This
-    // library reads an empty `pav:derivedFrom` or `schema:isBasedOn` as absence, so stored production
-    // artifacts open. Settling it is part of the open decision on relative references.
-    name: 'empty IRIs',
-    matches: (position, row) => position.rule === 'iris' && row.input === '',
-  },
-  {
-    // Java reads 01.2.3 as 1.2.3 and this library keeps what was written. Which is right is the open
-    // decision on leading zeros.
-    name: 'leading zeros',
-    matches: (position, row) => position.rule === 'versions' && ['01.2.3', '1.02.3'].includes(row.input),
-  },
-];
+const KNOWN: { name: string; matches: (position: Position, row: Case, lane: string, ours: Verdict) => boolean }[] = [];
 
 it('pins Java fixture provenance', () => {
   expect(createHash('sha256').update(bytes).digest('hex')).toBe(lock.sha256);

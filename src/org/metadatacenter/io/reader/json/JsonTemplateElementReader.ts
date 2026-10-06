@@ -58,6 +58,10 @@ export class JsonTemplateElementReader extends JsonContainerArtifactReader {
     const parsingResult: JsonArtifactParsingResult = new JsonArtifactParsingResult();
     const element = TemplateElement.buildEmptyWithNullValues();
 
+    // A nested element's `@id` may be a temporary one the server replaces on a write.
+    if (topPath.getLastComponent() === null) {
+      ReaderUtil.getArtifactIdentifier(elementSourceObject, JsonSchema.atId, this.lenient);
+    }
     this.readNonReportableAttributes(element, elementSourceObject);
     applySchemaReaderDefaults(element, elementSourceObject, topPath, 'json');
     this.readReportableAttributes(element, elementSourceObject, parsingResult, topPath);

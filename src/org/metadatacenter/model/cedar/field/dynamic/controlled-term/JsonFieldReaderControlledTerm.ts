@@ -47,7 +47,7 @@ export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecific
         ReaderUtil.getStringOrEmpty(o, CedarModel.ValueConstraints.acronym),
         ReaderUtil.getStringOrEmpty(o, CedarModel.ValueConstraints.name),
         ReaderUtil.getNumberOrNull(o, CedarModel.ValueConstraints.numTerms),
-        ReaderUtil.getURI(o, CedarModel.ValueConstraints.uri),
+        ReaderUtil.getIdentifierURI(o, CedarModel.ValueConstraints.uri),
         ...JsonFieldReaderControlledTerm.readSourceAndVersion(o),
       );
       ret.push(ontology);
@@ -63,7 +63,7 @@ export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecific
         ReaderUtil.getStringOrEmpty(c, CedarModel.ValueConstraints.source),
         BioportalTermType.forJsonValue(ReaderUtil.getStringOrEmpty(c, CedarModel.ValueConstraints.type)),
         ReaderUtil.getStringOrEmpty(c, CedarModel.ValueConstraints.prefLabel),
-        ReaderUtil.getURI(c, CedarModel.ValueConstraints.uri),
+        ReaderUtil.getIdentifierURI(c, CedarModel.ValueConstraints.uri),
         ...JsonFieldReaderControlledTerm.readSourceAndVersion(c),
       );
       ret.push(clazz);
@@ -79,7 +79,7 @@ export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecific
         ReaderUtil.getStringOrEmpty(b, CedarModel.ValueConstraints.acronym),
         ReaderUtil.getStringOrEmpty(b, CedarModel.ValueConstraints.name),
         ReaderUtil.getNumberOrZero(b, CedarModel.ValueConstraints.maxDepth),
-        ReaderUtil.getURI(b, CedarModel.ValueConstraints.uri),
+        ReaderUtil.getIdentifierURI(b, CedarModel.ValueConstraints.uri),
         ...JsonFieldReaderControlledTerm.readSourceAndVersion(b),
       );
       ret.push(branch);
@@ -94,7 +94,7 @@ export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecific
         ReaderUtil.getStringOrEmpty(vs, CedarModel.ValueConstraints.vsCollection),
         ReaderUtil.getStringOrEmpty(vs, CedarModel.ValueConstraints.name),
         ReaderUtil.getNumberOrNull(vs, CedarModel.ValueConstraints.numTerms),
-        ReaderUtil.getURI(vs, CedarModel.ValueConstraints.uri),
+        ReaderUtil.getIdentifierURI(vs, CedarModel.ValueConstraints.uri),
         ...JsonFieldReaderControlledTerm.readSourceAndVersion(vs),
       );
       ret.push(valueSet);
@@ -108,7 +108,8 @@ export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecific
       const action = new ControlledTermAction(
         ReaderUtil.getNumber(vs, CedarModel.ValueConstraints.to),
         ReaderUtil.getStringOrEmpty(vs, CedarModel.ValueConstraints.action),
-        ReaderUtil.getURI(vs, CedarModel.ValueConstraints.termUri),
+        ReaderUtil.getIdentifierURI(vs, CedarModel.ValueConstraints.termUri),
+        // Not an identifier: the legacy editor writes "template" here for one of the template's own classes.
         ReaderUtil.getURI(vs, CedarModel.ValueConstraints.sourceUri),
         ReaderUtil.getStringOrEmpty(vs, CedarModel.ValueConstraints.source),
         BioportalTermType.forJsonValue(ReaderUtil.getStringOrEmpty(vs, CedarModel.ValueConstraints.type)),
@@ -140,10 +141,10 @@ export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecific
     if (node == null) {
       return null;
     }
-    const uri = ReaderUtil.getURI(node, JsonSchema.termUri);
     const rdfsLabel: string | null = ReaderUtil.getString(node, JsonSchema.rdfsLabel);
-    if (!uri.isEmpty() || rdfsLabel !== null) {
-      return new ControlledTermDefaultValue(uri, rdfsLabel ?? '');
+    if (Object.hasOwn(node, JsonSchema.termUri) || rdfsLabel !== null) {
+      // A stated default names a term, so its termUri is an identifier, as Java requires.
+      return new ControlledTermDefaultValue(ReaderUtil.getIdentifierURI(node, JsonSchema.termUri), rdfsLabel ?? '');
     } else {
       return null;
     }

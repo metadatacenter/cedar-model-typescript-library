@@ -105,6 +105,10 @@ export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
   public readFromObject(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, path: JsonPath): YamlTemplateFieldReaderResult {
     const parsingResult: YamlArtifactParsingResult = new YamlArtifactParsingResult();
     const field: TemplateField = YamlTemplateFieldReader.readFieldSpecificAttributes(fieldSourceObject, childInfo, parsingResult, path);
+    // A child's `id` may be a temporary one the server replaces on a write.
+    if (path.getLastComponent() === null) {
+      ReaderUtil.getIdentifier(fieldSourceObject, YamlKeys.id);
+    }
     this.readNonReportableAttributes(field, fieldSourceObject);
     applySchemaReaderDefaults(field, fieldSourceObject, path, 'yaml');
     this.readAnnotations(field, fieldSourceObject, parsingResult, path);

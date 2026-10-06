@@ -15,12 +15,17 @@ export abstract class JsonAbstractInstanceArtifactReader extends JsonAbstractArt
   public abstract readFromString(artifactSourceString: string): JsonArtifactReaderResult;
 
   protected readNonReportableAttributes(container: AbstractInstanceArtifact, sourceObject: JsonNode): void {
+    ReaderUtil.getArtifactIdentifier(sourceObject, JsonSchema.atId, this.lenient);
     super.readNonReportableAttributes(container, sourceObject);
-    container.schema_isBasedOn = CedarArtifactId.forValue(ReaderUtil.getIri(sourceObject, JsonSchema.schemaIsBasedOn));
+    container.schema_isBasedOn = CedarArtifactId.forValue(
+      ReaderUtil.getArtifactIdentifier(sourceObject, JsonSchema.schemaIsBasedOn, this.lenient),
+    );
     // The writer emits an instance's `pav:derivedFrom` and nothing read it, so a document that named
     // what it was copied from lost that on the way through. The YAML instance reader has always read
-    // it; this is the JSON side catching up. Legacy empty strings mean "no source" and are normalized
-    // to NULL here so production instances remain openable and the writer omits the bad spelling.
-    container.pav_derivedFrom = CedarArtifactId.forValue(ReaderUtil.getIri(sourceObject, JsonSchema.pavDerivedFrom));
+    // it; this is the JSON side catching up. A compatibility reader takes a legacy empty string as
+    // "no source", so the writer omits the bad spelling; a strict one refuses it, as Java does.
+    container.pav_derivedFrom = CedarArtifactId.forValue(
+      ReaderUtil.getArtifactIdentifier(sourceObject, JsonSchema.pavDerivedFrom, this.lenient),
+    );
   }
 }

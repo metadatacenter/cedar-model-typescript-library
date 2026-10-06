@@ -57,6 +57,10 @@ export class YamlTemplateElementReader extends YamlContainerArtifactReader {
     const parsingResult: YamlArtifactParsingResult = new YamlArtifactParsingResult();
     const element = TemplateElement.buildEmptyWithNullValues();
 
+    // A nested element's `id` may be a temporary one the server replaces on a write.
+    if (topPath.getLastComponent() === null) {
+      ReaderUtil.getIdentifier(elementSourceObject, YamlKeys.id);
+    }
     this.readNonReportableAttributes(element, elementSourceObject);
     applySchemaReaderDefaults(element, elementSourceObject, topPath, 'yaml');
     this.readAnnotations(element, elementSourceObject, parsingResult, topPath);

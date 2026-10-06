@@ -83,11 +83,12 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
     instance.schema_name = ReaderUtil.getString(source, YamlKeys.name);
     instance.schema_description = ReaderUtil.getString(source, YamlKeys.description) ?? '';
     instance.descriptionWasAbsent = ReaderUtil.getString(source, YamlKeys.description) === null;
-    YamlTemplateInstanceReader.refuseEmptyIdentifier(source);
-    instance.at_id = CedarArtifactId.forValue(ReaderUtil.getString(source, YamlKeys.id));
-    instance.schema_isBasedOn = CedarArtifactId.forValue(ReaderUtil.getIri(source, YamlKeys.isBasedOn));
-    // Accept the legacy empty spelling as absence; the writer omits the optional key.
-    instance.pav_derivedFrom = CedarArtifactId.forValue(ReaderUtil.getIri(source, YamlKeys.derivedFrom));
+    instance.at_id = CedarArtifactId.forValue(ReaderUtil.getIdentifier(source, YamlKeys.id));
+    // A compatibility reader takes the legacy empty spelling as absence, and the writer omits the
+    // optional key; a strict one refuses it, as Java does.
+    const lenient = this.behavior.useWarningForKnownIssues();
+    instance.schema_isBasedOn = CedarArtifactId.forValue(ReaderUtil.getArtifactIdentifier(source, YamlKeys.isBasedOn, lenient));
+    instance.pav_derivedFrom = CedarArtifactId.forValue(ReaderUtil.getArtifactIdentifier(source, YamlKeys.derivedFrom, lenient));
     // The writer emits an instance's provenance and its annotations; both were read by nobody, so
     // either one was lost by writing what had just been read.
     instance.pav_createdBy = CedarUser.forValue(ReaderUtil.getString(source, YamlKeys.createdBy));
@@ -161,8 +162,7 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
       container.setValue(key, avField);
     });
 
-    YamlTemplateInstanceReader.refuseEmptyIdentifier(node);
-    const id = ReaderUtil.getString(node, YamlKeys.id);
+    const id = ReaderUtil.getIdentifier(node, YamlKeys.id);
     if (id !== null) {
       container.id = id;
     }

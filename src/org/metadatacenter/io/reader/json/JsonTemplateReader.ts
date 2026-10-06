@@ -61,6 +61,7 @@ export class JsonTemplateReader extends JsonContainerArtifactReader {
     const parsingResult: JsonArtifactParsingResult = new JsonArtifactParsingResult();
     const template = Template.buildEmptyWithNullValues();
 
+    ReaderUtil.getArtifactIdentifier(templateSourceObject, JsonSchema.atId, this.lenient);
     this.readNonReportableAttributes(template, templateSourceObject);
     applySchemaReaderDefaults(template, templateSourceObject, topPath, 'json');
     this.readReportableAttributes(template, templateSourceObject, parsingResult, topPath);

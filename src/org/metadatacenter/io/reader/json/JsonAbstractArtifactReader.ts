@@ -39,6 +39,11 @@ export abstract class JsonAbstractArtifactReader {
   protected behavior: JsonReaderBehavior;
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.NULL;
 
+  /** Whether this reader opens the known legacy forms rather than refusing them. */
+  protected get lenient(): boolean {
+    return this.behavior.useWarningForKnownIssues();
+  }
+
   protected constructor(behavior: JsonReaderBehavior) {
     this.behavior = behavior;
   }

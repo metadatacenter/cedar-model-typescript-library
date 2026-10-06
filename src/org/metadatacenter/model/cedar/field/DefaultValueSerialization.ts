@@ -45,8 +45,11 @@ export class DefaultValueSerialization {
    * vocabulary. A link's default names nothing but itself and carries no label.
    */
   public static iriFromNode(node: JsonNode, key: string): Iri | null {
-    const value = ReaderUtil.getIri(node, key);
-    return value === null || value === '' ? null : new Iri(value);
+    // An empty default is no default, which is how production stores one for a link field; a
+    // stated one names something and so is an identifier.
+    if (ReaderUtil.getString(node, key) === '') return null;
+    const value = ReaderUtil.getIdentifier(node, key);
+    return value === null ? null : new Iri(value);
   }
 
   /** An IRI default, written as the string it is. */

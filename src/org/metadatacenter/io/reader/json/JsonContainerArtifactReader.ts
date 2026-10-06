@@ -460,7 +460,7 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
           );
         } else {
           if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
-            ReaderUtil.assertIri(iriList[0], JsonSchema.enum);
+            ReaderUtil.assertIdentifier(iriList[0], JsonSchema.enum);
             childInfo.iri = iriList[0];
           }
         }

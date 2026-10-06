@@ -27,10 +27,15 @@ for (const row of cases) {
       const template = jsonReaders.getTemplateReader().readFromObject(row.templateJson).template;
       expect(jsonWriters.getTemplateWriter().getAsJsonNode(template)).toEqual(row.templateJson);
     });
+    it('Java element JSON → TS model → JSON preserves the field and deployment', () => {
+      const element = jsonReaders.getTemplateElementReader().readFromObject(row.elementJson).element;
+      expect(jsonWriters.getTemplateElementWriter().getAsJsonNode(element)).toEqual(row.elementJson);
+    });
     for (const compact of [false, true]) {
       const yamlReaders = compact ? CedarReaders.yaml().getStrictForCompact() : CedarReaders.yaml().getStrict();
       const fieldYaml = compact ? row.compactYaml : row.yaml;
       const templateYaml = compact ? row.templateCompactYaml : row.templateYaml;
+      const elementYaml = compact ? row.elementCompactYaml : row.elementYaml;
       it(`${compact ? 'compact' : 'full'} field YAML agrees and reader JSON follows the Java lifecycle policy`, () => {
         const original = jsonReaders.getTemplateFieldReader().readFromObject(row.json).field;
         const written = yamlWriters.getFieldWriterForField(original).getAsYamlString(original, compact);
@@ -46,6 +51,14 @@ for (const row of cases) {
         const read = yamlReaders.getTemplateReader().readFromString(templateYaml).template;
         const actual = jsonWriters.getTemplateWriter().getAsJsonNode(read);
         expect(actual).toEqual(compact ? row.templateJsonFromCompactYaml : row.templateJsonFromYaml);
+      });
+      it(`${compact ? 'compact' : 'full'} element YAML agrees and reader JSON preserves deployment under the Java lifecycle policy`, () => {
+        const original = jsonReaders.getTemplateElementReader().readFromObject(row.elementJson).element;
+        const written = yamlWriters.getTemplateElementWriter().getAsYamlString(original, compact);
+        expect(YAML.parse(written)).toEqual(YAML.parse(elementYaml));
+        const read = yamlReaders.getTemplateElementReader().readFromString(elementYaml).element;
+        const actual = jsonWriters.getTemplateElementWriter().getAsJsonNode(read);
+        expect(actual).toEqual(compact ? row.elementJsonFromCompactYaml : row.elementJsonFromYaml);
       });
     }
   });

@@ -16,6 +16,11 @@ export type Case = {
   jsonFromCompactYaml: JsonNode;
   templateJsonFromYaml: JsonNode;
   templateJsonFromCompactYaml: JsonNode;
+  elementJson: JsonNode;
+  elementYaml: string;
+  elementCompactYaml: string;
+  elementJsonFromYaml: JsonNode;
+  elementJsonFromCompactYaml: JsonNode;
 };
 /**
  * The fixture records each field type's baseline whole, and every other case as what it changes: in
@@ -28,15 +33,23 @@ type LineChanges = { keep: [number, number]; lines: string[] };
 type Row = Omit<Case, JsonDocument | YamlDocument | ReadBack> &
   Record<JsonDocument | ReadBack, Change[]> &
   Record<YamlDocument, LineChanges>;
-type JsonDocument = 'json' | 'templateJson';
-type YamlDocument = 'yaml' | 'compactYaml' | 'templateYaml' | 'templateCompactYaml';
-type ReadBack = 'jsonFromYaml' | 'jsonFromCompactYaml' | 'templateJsonFromYaml' | 'templateJsonFromCompactYaml';
+type JsonDocument = 'json' | 'templateJson' | 'elementJson';
+type YamlDocument = 'yaml' | 'compactYaml' | 'templateYaml' | 'templateCompactYaml' | 'elementYaml' | 'elementCompactYaml';
+type ReadBack =
+  | 'jsonFromYaml'
+  | 'jsonFromCompactYaml'
+  | 'templateJsonFromYaml'
+  | 'templateJsonFromCompactYaml'
+  | 'elementJsonFromYaml'
+  | 'elementJsonFromCompactYaml';
 type Base = Pick<Case, JsonDocument | YamlDocument>;
 const READ_BACK: Record<ReadBack, JsonDocument> = {
   jsonFromYaml: 'json',
   jsonFromCompactYaml: 'json',
   templateJsonFromYaml: 'templateJson',
   templateJsonFromCompactYaml: 'templateJson',
+  elementJsonFromYaml: 'elementJson',
+  elementJsonFromCompactYaml: 'elementJson',
 };
 
 function applyChanges(from: JsonNode, changes: Change[]): JsonNode {
@@ -63,9 +76,11 @@ function applyLineChanges(from: string, changes: LineChanges): string {
 
 function expand(row: Row, base: Base): Case {
   const c = { id: row.id, type: row.type, feature: row.feature } as Case;
-  c.json = applyChanges(base.json, row.json);
-  c.templateJson = applyChanges(base.templateJson, row.templateJson);
-  for (const document of ['yaml', 'compactYaml', 'templateYaml', 'templateCompactYaml'] as YamlDocument[]) {
+  for (const document of ['json', 'templateJson', 'elementJson'] as JsonDocument[]) {
+    c[document] = applyChanges(base[document], row[document]);
+  }
+  const yamlDocuments: YamlDocument[] = ['yaml', 'compactYaml', 'templateYaml', 'templateCompactYaml', 'elementYaml', 'elementCompactYaml'];
+  for (const document of yamlDocuments) {
     c[document] = applyLineChanges(base[document], row[document]);
   }
   for (const [document, against] of Object.entries(READ_BACK) as [ReadBack, JsonDocument][]) {

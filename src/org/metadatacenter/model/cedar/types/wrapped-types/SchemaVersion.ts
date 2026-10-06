@@ -8,10 +8,6 @@ export class SchemaVersion extends SemVer {
   public static CURRENT = new SchemaVersion(SchemaVersionValues.CURRENT);
   public static NULL = new SchemaVersion(null);
 
-  protected getDefaultValue(): string {
-    return SchemaVersionValues.CURRENT;
-  }
-
   public static values(): SchemaVersion[] {
     return [SchemaVersion.CURRENT];
   }

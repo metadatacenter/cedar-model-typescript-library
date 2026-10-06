@@ -209,7 +209,7 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     // Nested containers run through this method in their own right. Report
     // only this level here so a nested conflict is not repeated once for every
     // ancestor on the way back out of the recursive parse.
-    for (const conflict of AttributeValueNamePolicy.findConflicts(ret, parent).filter((candidate) => candidate.path.length === 0)) {
+    for (const conflict of AttributeValueNamePolicy.findConflicts(ret, parent, true).filter((candidate) => candidate.path.length === 0)) {
       parsingResult.addBlueprintComparisonError(
         new ComparisonError(
           'JsonTemplateInstanceReader',
@@ -281,6 +281,9 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     if (Object.hasOwn(sourceObject, JsonSchema.atId)) {
       const atId = ReaderUtil.getString(sourceObject, JsonSchema.atId);
       if (atId !== null) {
+        if (typeof atId !== 'string') {
+          throw new Error(`Invalid URI at "${JsonSchema.atId}": expected a string.`);
+        }
         if (atId.trim() === '') {
           if (!this.behavior.useWarningForKnownIssues()) {
             JsonTemplateInstanceReader.refuseEmptyIdentifier(sourceObject);
@@ -294,6 +297,8 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
               atId,
             ),
           );
+        } else {
+          ReaderUtil.assertIri(atId, JsonSchema.atId);
         }
         ret.id = atId;
       }

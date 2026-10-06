@@ -43,8 +43,14 @@ export abstract class AbstractContainerArtifact extends AbstractSchemaArtifact {
     this.childMap.set(deploymentInfo.name, templateChild);
   }
 
-  /** A child may not take a name {@link ReservedNames} reserves, nor an attribute-value field its parent's YAML keys. */
+  /**
+   * A child may not take a name {@link ReservedNames} reserves, nor an attribute-value field its parent's
+   * YAML keys, nor an empty name, which no instance property can carry.
+   */
   private static refuseReservedChildName(parent: AbstractContainerArtifact, child: TemplateChild, name: string): void {
+    if (name === '') {
+      throw new Error('A child key must not be empty.');
+    }
     const attributeValue =
       child.cedarArtifactType === CedarArtifactType.TEMPLATE_FIELD &&
       (child as TemplateField).cedarFieldType === CedarFieldType.ATTRIBUTE_VALUE;

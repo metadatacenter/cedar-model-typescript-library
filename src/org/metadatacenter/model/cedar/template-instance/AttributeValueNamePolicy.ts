@@ -6,10 +6,10 @@ import { InstanceDataContainer } from './InstanceDataContainer';
 
 /**
  * What makes a name unusable: `reserved` and `reservedField` are {@link ReservedNames}' rules for an
- * attribute name and for the attribute-value field's own key; the other two are collisions within one
- * object.
+ * attribute name and for the attribute-value field's own key, `blank` is a name of nothing or of
+ * spaces alone in a document being read, and the other two are collisions within one object.
  */
-export type AttributeValueNameConflictKind = 'reserved' | 'reservedField' | 'sibling' | 'duplicate';
+export type AttributeValueNameConflictKind = 'reserved' | 'reservedField' | 'blank' | 'sibling' | 'duplicate';
 
 export interface AttributeValueNameConflict {
   readonly kind: AttributeValueNameConflictKind;
@@ -31,13 +31,18 @@ export class AttributeValueNamePolicy {
     return ReservedNames.isReservedName(name);
   }
 
-  /** `parent` says what `container` is: a template instance's root, or an element inside its parent. */
+  /**
+   * `parent` says what `container` is: a template instance's root, or an element inside its parent.
+   * A model may hold an attribute row nobody has named yet, which an editor adds and a writer leaves
+   * out. A document cannot, so a reader passes `reading` and a blank name is then a conflict.
+   */
   public static findConflicts(
     container: InstanceDataContainer,
     parent: AttributeValueFieldParent = 'template',
+    reading = false,
   ): AttributeValueNameConflict[] {
     const conflicts: AttributeValueNameConflict[] = [];
-    AttributeValueNamePolicy.scanContainer(container, [], conflicts, parent);
+    AttributeValueNamePolicy.scanContainer(container, [], conflicts, parent, reading);
     return conflicts;
   }
 
@@ -60,9 +65,11 @@ export class AttributeValueNamePolicy {
     const reason =
       conflict.kind === 'reserved'
         ? 'is reserved for instance metadata'
-        : conflict.kind === 'sibling'
-          ? 'collides with another child in the same object'
-          : `is also used by attribute-value field "${conflict.conflictingGroupName}"`;
+        : conflict.kind === 'blank'
+          ? 'must not be blank'
+          : conflict.kind === 'sibling'
+            ? 'collides with another child in the same object'
+            : `is also used by attribute-value field "${conflict.conflictingGroupName}"`;
     throw new Error(`Attribute-value name "${conflict.name}" at /${location} ${reason}`);
   }
 
@@ -71,6 +78,7 @@ export class AttributeValueNamePolicy {
     path: Array<string | number>,
     conflicts: AttributeValueNameConflict[],
     parent: AttributeValueFieldParent,
+    reading: boolean,
   ): void {
     for (const name of Object.keys(container.values)) ReservedNames.requireChildName(name);
     const groups = AttributeValueNamePolicy.attributeValueGroups(container);
@@ -85,7 +93,8 @@ export class AttributeValueNamePolicy {
       }
       const namesInGroup = new Set<string>();
       for (const name of group.attributeNames) {
-        if (name.length === 0) {
+        if (name.trim() === '') {
+          if (reading) conflicts.push({ kind: 'blank', name, groupName: group.name, path });
           continue;
         }
         if (AttributeValueNamePolicy.isReserved(name)) {
@@ -112,15 +121,20 @@ export class AttributeValueNamePolicy {
       if (groupNames.has(name) || unpackedNames.has(name)) {
         continue;
       }
-      AttributeValueNamePolicy.scanValue(value, [...path, name], conflicts);
+      AttributeValueNamePolicy.scanValue(value, [...path, name], conflicts, reading);
     }
   }
 
-  private static scanValue(value: InstanceDataAtomType, path: Array<string | number>, conflicts: AttributeValueNameConflict[]): void {
+  private static scanValue(
+    value: InstanceDataAtomType,
+    path: Array<string | number>,
+    conflicts: AttributeValueNameConflict[],
+    reading: boolean,
+  ): void {
     if (value instanceof InstanceDataContainer) {
-      AttributeValueNamePolicy.scanContainer(value, path, conflicts, 'element');
+      AttributeValueNamePolicy.scanContainer(value, path, conflicts, 'element', reading);
     } else if (Array.isArray(value)) {
-      value.forEach((item, index) => AttributeValueNamePolicy.scanValue(item, [...path, index], conflicts));
+      value.forEach((item, index) => AttributeValueNamePolicy.scanValue(item, [...path, index], conflicts, reading));
     }
   }
 

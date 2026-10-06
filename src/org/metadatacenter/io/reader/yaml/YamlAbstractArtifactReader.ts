@@ -83,7 +83,7 @@ export abstract class YamlAbstractArtifactReader {
     container.pav_version = PavVersion.forValue(ReaderUtil.getString(sourceObject, YamlKeys.version));
     container.bibo_status = BiboStatus.forYamlValue(ReaderUtil.getString(sourceObject, YamlKeys.status));
     // Accept the legacy empty spelling as absence; the writer omits the optional key.
-    container.pav_derivedFrom = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, YamlKeys.derivedFrom));
+    container.pav_derivedFrom = CedarArtifactId.forValue(ReaderUtil.getIri(sourceObject, YamlKeys.derivedFrom));
     container.pav_previousVersion = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, YamlKeys.previousVersion));
     container.schema_identifier = ReaderUtil.getString(sourceObject, YamlKeys.identifier);
     container.language = Language.forValue(ReaderUtil.getString(sourceObject, YamlKeys.language));
@@ -99,10 +99,13 @@ export abstract class YamlAbstractArtifactReader {
    */
   protected static refuseEmptyIdentifier(sourceObject: JsonNode, key: string = YamlKeys.id): void {
     const raw = ReaderUtil.getString(sourceObject, key);
+    if (raw !== null && typeof raw !== 'string') {
+      throw new Error(`Invalid URI at "${key}": expected a string.`);
+    }
     if (raw !== null && raw.trim() === '') {
       throw new Error(`An empty string is not a URI at "${key}"; write null or leave the key out where there is no value.`);
     }
-    ReaderUtil.assertIdentifierCharacters(raw, key);
+    ReaderUtil.assertIri(raw, key);
   }
 
   protected readAnnotations(

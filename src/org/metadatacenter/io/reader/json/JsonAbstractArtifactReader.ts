@@ -27,10 +27,13 @@ export abstract class JsonAbstractArtifactReader {
    */
   protected static refuseEmptyIdentifier(sourceObject: JsonNode, key: string = JsonSchema.atId): void {
     const raw = ReaderUtil.getString(sourceObject, key);
+    if (raw !== null && typeof raw !== 'string') {
+      throw new Error(`Invalid URI at "${key}": expected a string.`);
+    }
     if (raw !== null && raw.trim() === '') {
       throw new Error(`An empty string is not a URI at "${key}"; write null or leave the key out where there is no value.`);
     }
-    ReaderUtil.assertIdentifierCharacters(raw, key);
+    ReaderUtil.assertIri(raw, key);
   }
 
   protected behavior: JsonReaderBehavior;

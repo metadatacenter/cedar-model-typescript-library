@@ -34,11 +34,18 @@ export abstract class JsonAbstractSchemaArtifactReader extends JsonAbstractArtif
     container.schema_schemaVersion = SchemaVersion.forValue(ReaderUtil.getString(sourceObject, JsonSchema.schemaVersion));
     container.pav_version = PavVersion.forValue(ReaderUtil.getString(sourceObject, JsonSchema.pavVersion));
     container.bibo_status = BiboStatus.forJsonValue(ReaderUtil.getString(sourceObject, JsonSchema.biboStatus));
-    // Older Designer/exporter generations wrote an empty string when no source artifact existed.
-    // CedarArtifactId maps that legacy spelling to NULL, and the writer then omits the optional key.
-    // Do not reject it at the read boundary: production artifacts must remain openable.
-    container.pav_derivedFrom = CedarArtifactId.forValue(ReaderUtil.getIri(sourceObject, JsonSchema.pavDerivedFrom));
-    container.pav_previousVersion = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, JsonSchema.pavPreviousVersion));
+    // Older Designer/exporter generations wrote an empty string when no source artifact existed. A
+    // compatibility reader still opens that; a strict one refuses it, as Java does.
+    container.pav_derivedFrom = CedarArtifactId.forValue(
+      ReaderUtil.getArtifactIdentifier(sourceObject, JsonSchema.pavDerivedFrom, this.lenient),
+    );
+    // A generation of the CLI wrote its own version number here, where an artifact belongs. A
+    // compatibility reader still opens what it wrote; a strict one refuses it, as Java does.
+    container.pav_previousVersion = CedarArtifactId.forValue(
+      this.lenient
+        ? ReaderUtil.getString(sourceObject, JsonSchema.pavPreviousVersion)
+        : ReaderUtil.getIdentifier(sourceObject, JsonSchema.pavPreviousVersion),
+    );
     container.schema_identifier = ReaderUtil.getString(sourceObject, JsonSchema.schemaIdentifier);
   }
 }

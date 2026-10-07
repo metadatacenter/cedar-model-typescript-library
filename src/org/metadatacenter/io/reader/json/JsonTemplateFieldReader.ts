@@ -147,6 +147,10 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
         field.recommendedValue = childInfo.recommendedValue;
       }
     }
+    // A child's `@id` may be a temporary one the server replaces on a write.
+    if (childInfo instanceof ChildDeploymentInfo && childInfo.isStandalone()) {
+      ReaderUtil.getArtifactIdentifier(fieldSourceObject, JsonSchema.atId, this.lenient);
+    }
     this.readNonReportableAttributes(field, fieldSourceObject);
     applySchemaReaderDefaults(field, fieldSourceObject, path, 'json');
     this.readReportableAttributes(field, fieldSourceObject, parsingResult, path);

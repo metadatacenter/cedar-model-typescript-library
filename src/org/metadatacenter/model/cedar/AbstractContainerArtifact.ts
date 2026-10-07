@@ -45,11 +45,13 @@ export abstract class AbstractContainerArtifact extends AbstractSchemaArtifact {
 
   /**
    * A child may not take a name {@link ReservedNames} reserves, nor an attribute-value field its parent's
-   * YAML keys, nor an empty name, which no instance property can carry.
+   * YAML keys, nor a name with no visible character, which names an instance property no reader can
+   * tell apart. Blank is Java's `String.isBlank`: whitespace and the space separators other than the
+   * three no-break spaces.
    */
   private static refuseReservedChildName(parent: AbstractContainerArtifact, child: TemplateChild, name: string): void {
-    if (name === '') {
-      throw new Error('A child key must not be empty.');
+    if (Array.from(name).every(AbstractContainerArtifact.isJavaWhitespace)) {
+      throw new Error('A child key must not be blank.');
     }
     const attributeValue =
       child.cedarArtifactType === CedarArtifactType.TEMPLATE_FIELD &&
@@ -58,6 +60,13 @@ export abstract class AbstractContainerArtifact extends AbstractSchemaArtifact {
     if (attributeValue ? ReservedNames.isReservedAttributeValueFieldName(name, kind) : ReservedNames.isReservedName(name)) {
       throw new Error(`Child name "${name}" is reserved for CEDAR instance metadata.`);
     }
+  }
+
+  /** Java's `Character.isWhitespace`, by which `String.isBlank` decides. */
+  private static isJavaWhitespace(character: string): boolean {
+    const cp = character.codePointAt(0)!;
+    if ((cp >= 0x09 && cp <= 0x0d) || (cp >= 0x1c && cp <= 0x1f)) return true;
+    return /\p{Z}/u.test(character) && cp !== 0xa0 && cp !== 0x2007 && cp !== 0x202f;
   }
 
   getChildrenInfo(): ContainerArtifactChildrenInfo {

@@ -80,7 +80,7 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
          * the model here is what let the YAML writer put it back while the JSON writer dropped it.
          */
 
-        childDeploymentInfo.iri = ReaderUtil.getIri(configuration, YamlKeys.propertyIri);
+        childDeploymentInfo.iri = ReaderUtil.getIdentifier(configuration, YamlKeys.propertyIri);
 
         if (yamlArtifactType.isField()) {
           const cedarFieldType: CedarFieldType = CedarFieldType.forYamlArtifactType(yamlArtifactType);

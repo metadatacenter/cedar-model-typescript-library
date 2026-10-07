@@ -82,9 +82,12 @@ export abstract class YamlAbstractArtifactReader {
     container.schema_schemaVersion = SchemaVersion.forValue(modelVersion);
     container.pav_version = PavVersion.forValue(ReaderUtil.getString(sourceObject, YamlKeys.version));
     container.bibo_status = BiboStatus.forYamlValue(ReaderUtil.getString(sourceObject, YamlKeys.status));
-    // Accept the legacy empty spelling as absence; the writer omits the optional key.
-    container.pav_derivedFrom = CedarArtifactId.forValue(ReaderUtil.getIri(sourceObject, YamlKeys.derivedFrom));
-    container.pav_previousVersion = CedarArtifactId.forValue(ReaderUtil.getString(sourceObject, YamlKeys.previousVersion));
+    // A compatibility reader takes the legacy empty spelling as absence, and the writer omits the
+    // optional key; a strict one refuses it, as Java does.
+    container.pav_derivedFrom = CedarArtifactId.forValue(
+      ReaderUtil.getArtifactIdentifier(sourceObject, YamlKeys.derivedFrom, this.behavior.useWarningForKnownIssues()),
+    );
+    container.pav_previousVersion = CedarArtifactId.forValue(ReaderUtil.getIdentifier(sourceObject, YamlKeys.previousVersion));
     container.schema_identifier = ReaderUtil.getString(sourceObject, YamlKeys.identifier);
     container.language = Language.forValue(ReaderUtil.getString(sourceObject, YamlKeys.language));
   }

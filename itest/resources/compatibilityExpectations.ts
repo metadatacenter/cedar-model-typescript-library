@@ -94,7 +94,7 @@ export const EXTERNAL_TEMPLATE_DIAGNOSTICS: Readonly<Record<string, DiagnosticEx
 
 export const JSON_TEMPLATE_ROUND_TRIP_DIVERGENCES: Readonly<Record<string, RoundTripExpectation>> = {
   '3': {
-    errors: 7,
+    errors: 6,
     warnings: 0,
     roundTripErrors: 19,
     roundTripWarnings: 0,
@@ -158,7 +158,7 @@ export const JSON_ELEMENT_ROUND_TRIP_DIVERGENCES: Readonly<Record<string, RoundT
 
 export const YAML_TEMPLATE_PARSE_DIVERGENCES: Readonly<Record<string, DiagnosticExpectation>> = {
   '3': {
-    errors: 7,
+    errors: 6,
     warnings: 0,
     reason: 'legacy JSON blueprint differs, while its committed YAML remains canonical',
   },

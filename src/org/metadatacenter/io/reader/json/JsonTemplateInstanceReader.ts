@@ -297,8 +297,10 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
               atId,
             ),
           );
-        } else {
+        } else if (this.lenient) {
           ReaderUtil.assertIri(atId, JsonSchema.atId);
+        } else {
+          ReaderUtil.assertIdentifier(atId, JsonSchema.atId);
         }
         ret.id = atId;
       }

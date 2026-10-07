@@ -443,12 +443,13 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
     const elementIRIMap: JsonNode = ReaderUtil.getNode(elementPropertiesContext, JsonSchema.properties);
     for (const childInfo of candidateChildrenInfo.children) {
       if (this.includeInIRIMapping(childInfo)) {
+        // A child the context does not map has no property IRI. The Java library reads it so, and
+        // this library's writer leaves the mapping out for a child whose IRI is null, which its
+        // strict reader then refused. A mapping that is present must still name exactly one IRI.
+        if (elementIRIMap === null || !Object.hasOwn(elementIRIMap, childInfo.name)) continue;
         const iriEnum: JsonNode = ReaderUtil.getNode(elementIRIMap, childInfo.name);
         const iriList: Array<string> = ReaderUtil.getStringList(iriEnum, JsonSchema.enum);
         if (iriList === null || iriList.length != 1) {
-          // The group's attributes supply their own IRIs in the instance. A missing group
-          // mapping is valid; retain any explicitly supplied mapping, as Java does.
-          if (childInfo.uiInputType === UiInputType.ATTRIBUTE_VALUE && !Object.hasOwn(elementIRIMap, childInfo.name)) continue;
           this.reportBlueprintDifference(
             parsingResult,
             new ComparisonError(
@@ -459,7 +460,7 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
           );
         } else {
           if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
-            ReaderUtil.assertIri(iriList[0], JsonSchema.enum);
+            ReaderUtil.assertIdentifier(iriList[0], JsonSchema.enum);
             childInfo.iri = iriList[0];
           }
         }

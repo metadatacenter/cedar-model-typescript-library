@@ -44,7 +44,7 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
         // label otherwise.
         const displayLabel = ReaderUtil.getString(valueNode, YamlKeys.Controlled.termDisplayLabel);
         const classBuilder = new ControlledTermClassBuilder()
-          .withUri(ReaderUtil.getURI(valueNode, YamlKeys.Controlled.termIri))
+          .withUri(ReaderUtil.getIdentifierURI(valueNode, YamlKeys.Controlled.termIri))
           .withSource(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceAcronym))
           .withLabel(displayLabel ?? prefLabel)
           .withPrefLabel(prefLabel)
@@ -53,7 +53,7 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
         field.valueConstraints.classes.push(classBuilder.build());
       } else if (type === YamlValues.Controlled.branch) {
         const branchBuilder = new ControlledTermBranchBuilder()
-          .withUri(ReaderUtil.getURI(valueNode, YamlKeys.Controlled.termBaseIri))
+          .withUri(ReaderUtil.getIdentifierURI(valueNode, YamlKeys.Controlled.termBaseIri))
           .withSource(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceName))
           .withName(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.termBaseLabel))
           .withAcronym(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceAcronym))
@@ -62,7 +62,7 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
         field.valueConstraints.branches.push(branchBuilder.build());
       } else if (type === YamlValues.Controlled.valueSet) {
         const valueSetBuilder = new ControlledTermValueSetBuilder()
-          .withUri(ReaderUtil.getURI(valueNode, YamlKeys.Controlled.termBaseIri))
+          .withUri(ReaderUtil.getIdentifierURI(valueNode, YamlKeys.Controlled.termBaseIri))
           // Absent means the count is unknown, as it does for an ontology; zero would claim the set
           // is empty, which is a different thing and one the schema takes literally.
           .withNumTerms(ReaderUtil.getNumberOrNull(valueNode, YamlKeys.Controlled.termCount))
@@ -75,7 +75,7 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
 
     const defaultNode: JsonNode | null = ReaderUtil.getNodeOrNull(fieldSourceObject, YamlKeys.default);
     if (defaultNode !== null) {
-      const uri = ReaderUtil.getURI(defaultNode, YamlKeys.value);
+      const uri = ReaderUtil.getIdentifierURI(defaultNode, YamlKeys.value);
       const label = ReaderUtil.getStringOrEmpty(defaultNode, YamlKeys.label);
       field.valueConstraints.defaultValue = new ControlledTermDefaultValue(uri, label);
     }
@@ -86,7 +86,7 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
         .withAction(ReaderUtil.getStringOrEmpty(actionNode, YamlKeys.action))
         .withSource(ReaderUtil.getStringOrEmpty(actionNode, YamlKeys.Controlled.sourceAcronym))
         .withType(BioportalTermType.forYamlValue(ReaderUtil.getStringOrEmpty(actionNode, YamlKeys.type)))
-        .withTermUri(ReaderUtil.getURI(actionNode, YamlKeys.Controlled.termIri))
+        .withTermUri(ReaderUtil.getIdentifierURI(actionNode, YamlKeys.Controlled.termIri))
         .withTo(ReaderUtil.getNumber(actionNode, YamlKeys.Controlled.to))
         .withSourceUri(ReaderUtil.getURI(actionNode, YamlKeys.Controlled.sourceIri));
       field.valueConstraints.actions.push(actionBuilder.build());

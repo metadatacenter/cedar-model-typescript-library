@@ -15,10 +15,10 @@ describe('JsonTemplateReader' + testResource.toString(), () => {
     const parsingResult = jsonTemplateReaderResult.parsingResult;
 
     expect(parsingResult.wasSuccessful()).toBe(false);
-    // Seven, not nine: a child the template does not label is no longer an error. Its two orphan
-    // `propertyLabels`/`propertyDescriptions` keys are still dropped, as the entries they stood for
-    // name nothing this template holds.
-    expect(parsingResult.getBlueprintComparisonErrorCount()).toBe(7);
+    // Six, not nine: a child the template does not label is no longer an error, nor is one the
+    // context does not map. The two orphan `propertyLabels`/`propertyDescriptions` keys are still
+    // dropped, as the entries they stood for name nothing this template holds.
+    expect(parsingResult.getBlueprintComparisonErrorCount()).toBe(6);
 
     // TestUtil.p(parsingResult.getBlueprintComparisonErrors());
 
@@ -38,12 +38,8 @@ describe('JsonTemplateReader' + testResource.toString(), () => {
     );
     expect(parsingResult.getBlueprintComparisonErrors()).toContainEqual(requiredTextfieldRequired);
 
-    const iriMapping = new ComparisonError(
-      'jtr06',
-      ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
-      new JsonPath(JsonSchema.properties, JsonSchema.atContext, JsonSchema.properties, 'TextfieldChild', JsonSchema.enum, 0),
-    );
-    expect(parsingResult.getBlueprintComparisonErrors()).toContainEqual(iriMapping);
+    // TextfieldChild has no mapping in the context, which reads as a child with no property IRI.
+    expect(parsingResult.getBlueprintComparisonErrors().filter((e) => e.errorLocation === 'jtr06')).toEqual([]);
 
     const uiOrderExtra = new ComparisonError(
       'jtr07',

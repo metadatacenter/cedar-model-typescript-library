@@ -6,7 +6,7 @@ import { ReaderUtil } from './ReaderUtil';
  * An editor checks what an author types, and holds back from the reader a value the reader would
  * refuse, so the author can repair it. A check of its own drifts from the readers': one that accepts
  * a value they refuse lets the author save what nothing can then open. This is the readers' own
- * check, the one they apply to every IRI outside a field's value.
+ * check, the one they apply to every identifier outside a field's value, which must be absolute.
  */
 export class IriSyntax {
   private constructor() {}
@@ -15,7 +15,7 @@ export class IriSyntax {
   public static isValid(value: string): boolean {
     if (value === '') return false;
     try {
-      ReaderUtil.assertIri(value, 'value');
+      ReaderUtil.assertIdentifier(value, 'value');
       return true;
     } catch {
       return false;

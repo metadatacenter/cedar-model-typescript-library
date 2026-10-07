@@ -80,6 +80,43 @@ export abstract class ReaderUtil {
     return raw;
   }
 
+  /**
+   * An identifier, as the Java readers judge one: an IRI `assertIri` takes that is also absolute.
+   * Every IRI outside a field's value is one, except a nested child's temporary `@id`, which the
+   * server replaces on a write, and an action's `sourceUri`, where the legacy editor writes
+   * `template`. Null is absence; the empty string is a relative reference and is refused.
+   */
+  public static assertIdentifier(raw: string | null, key: string): void {
+    if (raw === null) return;
+    if (typeof raw !== 'string') throw new Error(`Invalid URI at "${key}": expected a string.`);
+    if (raw === '') {
+      throw new Error(`An empty string is not a URI at "${key}"; write null or leave the key out where there is no value.`);
+    }
+    this.assertIri(raw, key);
+    if (!/^[A-Za-z][A-Za-z0-9+.-]*:/.test(raw)) {
+      throw new Error(`Invalid URI at "${key}": an identifier must be an absolute IRI.`);
+    }
+  }
+
+  /** The string at `key`, held to `assertIdentifier`. */
+  public static getIdentifier(node: JsonNode, key: string): string | null {
+    const raw = this.getString(node, key);
+    this.assertIdentifier(raw, key);
+    return raw;
+  }
+
+  /**
+   * An artifact's identifier as a reader's behavior holds it. A strict reader holds the Java rule,
+   * `assertIdentifier`. A compatibility reader takes what it always has, `assertIri`: older documents
+   * carry relative references here, such as a draft's placeholder, and an empty string where there
+   * was none, which `CedarArtifactId` makes absence of so the writer omits the key. The server
+   * refuses either on a write.
+   */
+  public static getArtifactIdentifier(node: JsonNode, key: string, lenient: boolean): string | null {
+    if (lenient) return this.getIri(node, key);
+    return this.getIdentifier(node, key);
+  }
+
   public static getString(node: JsonNode, key: string): string | null {
     if (Object.hasOwn(node, key)) {
       return node[key] as string;
@@ -300,6 +337,13 @@ export abstract class ReaderUtil {
   static getURI(node: JsonNode, key: string): Iri {
     const raw = this.getStringOrEmpty(node, key);
     this.assertIri(raw, key);
+    return new Iri(raw);
+  }
+
+  /** A required identifier: absent, null and the empty string are refused alike, as Java refuses them. */
+  static getIdentifierURI(node: JsonNode, key: string): Iri {
+    const raw = this.getStringOrEmpty(node, key);
+    this.assertIdentifier(raw === null ? '' : raw, key);
     return new Iri(raw);
   }
 

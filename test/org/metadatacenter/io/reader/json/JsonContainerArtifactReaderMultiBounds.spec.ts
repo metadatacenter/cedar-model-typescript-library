@@ -9,7 +9,8 @@ import { CedarReaders, JsonNode, Template } from '../../../../../../src';
  * Nobody declared that such a field is multiple, so nobody declared how many
  * occurrences it begins with either, and choosing nothing from one is a state a
  * reader can mean. An attribute-value field starts at none for its own reason,
- * that requiring one would mean requiring an attribute nobody has named yet.
+ * that requiring one would mean requiring an attribute nobody has named yet,
+ * and for the same reason it refuses a declared minimum above none.
  *
  * A template may still state them, and then the statement stands. It used to
  * be discarded — `ChildDeploymentInfoAlwaysMultipleBuilder` had nowhere to put
@@ -73,6 +74,11 @@ describe('bounds on an always-multiple child', () => {
 
   test('an attribute-value field defaults to zero even when required', () => {
     expect(boundsOf(templateWith(attributeValue())).minItems).toBe(0);
+  });
+
+  test('an attribute-value field refuses a declared minimum above zero', () => {
+    expect(boundsOf(templateWith(attributeValue(), { minItems: 0, maxItems: 3 }))).toEqual({ minItems: 0, maxItems: 3 });
+    expect(() => boundsOf(templateWith(attributeValue(), { minItems: 1 }))).toThrow(/minItems must be zero/);
   });
 
   test('a declared bound wins over the default', () => {

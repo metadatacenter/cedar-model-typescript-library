@@ -3,6 +3,8 @@ import { NullableNumber } from '../types/basic-types/NullableNumber';
 import { TemplateChild } from '../types/basic-types/TemplateChild';
 import { ChildDeploymentInfoAlwaysMultiple } from './ChildDeploymentInfoAlwaysMultiple';
 import { AbstractFieldChildDeploymentInfoBuilder } from './AbstractFieldChildDeploymentInfoBuilder';
+import { TemplateField } from '../field/TemplateField';
+import { CedarFieldType } from '../types/cedar-types/CedarFieldType';
 
 export class ChildDeploymentInfoAlwaysMultipleBuilder extends AbstractFieldChildDeploymentInfoBuilder {
   private declaredMinItems: NullableNumber = null;
@@ -30,6 +32,12 @@ export class ChildDeploymentInfoAlwaysMultipleBuilder extends AbstractFieldChild
 
   public build(): ChildDeploymentInfoAlwaysMultiple {
     assertItemBounds(this.name, this.declaredMinItems, this.declaredMaxItems);
+    // Whoever fills in an instance names its attributes, so no template can require some. The Java
+    // library's attribute-value field refuses the same minimum.
+    const attributeValue = this.child instanceof TemplateField && this.child.cedarFieldType === CedarFieldType.ATTRIBUTE_VALUE;
+    if (attributeValue && this.declaredMinItems !== null && this.declaredMinItems > 0) {
+      throw new Error(`minItems must be zero in attribute-value field ${this.name}`);
+    }
     const info: ChildDeploymentInfoAlwaysMultiple = new ChildDeploymentInfoAlwaysMultiple(this.name);
     this.setCommonData(info);
     info.declaredMinItems = this.declaredMinItems;

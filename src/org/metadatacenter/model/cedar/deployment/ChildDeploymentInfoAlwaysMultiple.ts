@@ -42,7 +42,7 @@ export class ChildDeploymentInfoAlwaysMultiple extends AbstractFieldChildDeploym
    * with either, and choosing nothing from one is a state a reader can mean. An occupant there
    * would stand for a selection nobody made, and reaches a host as a null entry in the value
    * array. An attribute-value field starts with none for its own reason: requiring one would mean
-   * requiring an attribute nobody has named yet.
+   * requiring an attribute nobody has named yet, so its builder refuses a minimum above 0.
    *
    * A child someone marked multiple is the other case, and takes
    * `AbstractChildDeploymentInfo.defaultMinItems`. Most templates leave the bounds out and the

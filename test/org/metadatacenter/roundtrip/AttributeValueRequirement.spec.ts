@@ -87,8 +87,8 @@ describe('a requirement on an attribute-value field', () => {
      * it and where this one used to.
      */
     const yaml = asYaml(template).replace(
-      /^(\s+)- key: "Attribute"$/m,
-      '$1- key: "Attribute"\n$1  configuration:\n$1    required: true\n$1    recommended: true',
+      /^(\s+)- key: "Attribute"\n((?:\1  .*\n)*?)\1  configuration:$/m,
+      '$1- key: "Attribute"\n$2$1  configuration:\n$1    required: true\n$1    recommended: true',
     );
     expect(yaml).toContain('required: true');
 

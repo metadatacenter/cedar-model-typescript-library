@@ -2,12 +2,12 @@
   "schemaVersion": 1,
   "javaArtifactLibrary": {
     "repository": "https://github.com/metadatacenter/cedar-artifact-library.git",
-    "gitCommit": "3e060c5ad8751cc15fd07998860da1723fdd21f2",
-    "mavenCoordinate": "org.metadatacenter:cedar-artifact-library:2.9.22-SNAPSHOT"
+    "gitCommit": "30e9334d4b51bd0371e6d0c2a51d83ffba85506b",
+    "mavenCoordinate": "org.metadatacenter:cedar-artifact-library:2.9.24-SNAPSHOT"
   },
   "sharedCorpus": {
     "repository": "https://github.com/metadatacenter/cedar-test-artifacts.git",
-    "gitCommit": "ae8b13b8812e0bd9b59b8df4a07c13764e9ae35a"
+    "gitCommit": "d3f0a028e9caa4dc582760e593b130d8a379cfe0"
   },
   "collections": {
     "javaReferenceTemplates": {
@@ -24,7 +24,7 @@
     },
     "sharedJavaYamlFixtures": {
       "fileCount": 168,
-      "sha256": "f8b875c7b1ac9ed1cf65452edc959d7d7378621456bd1d54444638d8f2310342"
+      "sha256": "531fcd35b91bff1254c399b770aedc0eb5bdcb4b47319c92fa93021d59ce8fef"
     },
     "ceeSuite": {
       "fileCount": 143,

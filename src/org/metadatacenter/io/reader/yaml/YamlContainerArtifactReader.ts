@@ -59,11 +59,9 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
         childDeploymentInfo.description = ReaderUtil.getString(configuration, YamlKeys.overrideDescription);
         childDeploymentInfo.multiInstance = ReaderUtil.getBoolean(configuration, YamlKeys.multiple);
         if (childDeploymentInfo.multiInstance) {
-          // `multiple: true` carrying no bound is how the writer spells the default: it leaves out
-          // a lower bound equal to the one the model supplies for such a child. Restoring it here
-          // is what inverts that, so a template read from YAML says what the same template read
-          // from JSON says - the JSON form always carries the number. An omitted bound in JSON is
-          // a different statement, that there is no floor, and stays one.
+          // Both writers state the bound, so `multiple: true` carrying none is a document written
+          // by hand. It means no floor, as an omitted bound does in JSON Schema and in the JSON
+          // form, and the model's default says so.
           childDeploymentInfo.minItems =
             ReaderUtil.getNumber(configuration, YamlKeys.minItems) ?? AbstractChildDeploymentInfo.defaultMinItems;
           childDeploymentInfo.maxItems = ReaderUtil.getNumber(configuration, YamlKeys.maxItems);

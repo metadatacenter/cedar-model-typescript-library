@@ -8,3 +8,5 @@ children:
     name: "ATTR-Value"
     description: "Some help text here"
     prefLabel: "Attribute Value"
+    configuration:
+      minItems: 0

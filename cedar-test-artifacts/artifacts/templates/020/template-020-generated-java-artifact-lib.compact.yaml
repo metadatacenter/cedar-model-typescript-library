@@ -15,3 +15,5 @@ children:
       - label: "Option 3"
         selected: true
       - label: "Option 4"
+    configuration:
+      minItems: 0

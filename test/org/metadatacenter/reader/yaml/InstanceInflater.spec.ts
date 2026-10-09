@@ -207,7 +207,7 @@ describe('InstanceInflater missing repeated children', () => {
       .withSchemaName('test')
       .withSchemaDescription('test')
       .addChild(child, multiple)
-      .addChild(nested, nested.createDeploymentBuilder('_absentElements').withMultiInstance(true).build())
+      .addChild(nested, nested.createDeploymentBuilder('_absentElements').withMultiInstance(true).withMinItems(1).build())
       .addChild(parent, parent.createDeploymentBuilder('_parent').build())
       .build();
     const instance = CedarReaders.yaml().getStrict().getTemplateInstanceReader().readFromString(`type: instance
@@ -224,8 +224,8 @@ children:
     InstanceInflater.inflate(instance, schema);
     const first = JSON.parse(writer.getAsJsonString(instance));
     expect(first._many).toEqual([]);
-    // Marked multiple with no stated minimum, so its template demands one occurrence, and an empty
-    // list would fail it, as the Java inflater's does not.
+    // Its template states a minimum of one, so an empty list would fail it, as the Java inflater's
+    // does not.
     expect(first._absentElements).toHaveLength(1);
     expect(first._absentElements[0]._many).toEqual([]);
     expect(first._parent._nested).toHaveLength(2);

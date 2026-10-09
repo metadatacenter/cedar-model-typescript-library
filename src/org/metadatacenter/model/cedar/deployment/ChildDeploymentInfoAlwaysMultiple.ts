@@ -1,4 +1,5 @@
 import { NullableNumber } from '../types/basic-types/NullableNumber';
+import { AbstractChildDeploymentInfo } from './AbstractChildDeploymentInfo';
 import { AbstractFieldChildDeploymentInfo } from './AbstractFieldChildDeploymentInfo';
 
 export class ChildDeploymentInfoAlwaysMultiple extends AbstractFieldChildDeploymentInfo {
@@ -44,9 +45,9 @@ export class ChildDeploymentInfoAlwaysMultiple extends AbstractFieldChildDeploym
    * array. An attribute-value field starts with none for its own reason: requiring one would mean
    * requiring an attribute nobody has named yet, so its builder refuses a minimum above 0.
    *
-   * A child someone marked multiple is the other case, and takes
-   * `AbstractChildDeploymentInfo.defaultMinItems`. Most templates leave the bounds out and the
-   * default is all there is — but a template may state them, and then the statement stands.
+   * A child someone marked multiple starts with none as well when it states no bound, since
+   * `AbstractChildDeploymentInfo.defaultMinItems` is zero for every repeated child. A template may
+   * state a bound for either, and then the statement stands.
    *
    * The JSON writer reads these same accessors — see `WriterUtil.getMultiMinMax`
    * — so a reader of the parsed model and a writer of the JSON cannot drift
@@ -60,7 +61,7 @@ export class ChildDeploymentInfoAlwaysMultiple extends AbstractFieldChildDeploym
   }
 
   get defaultMinItems(): number {
-    return 0;
+    return AbstractChildDeploymentInfo.defaultMinItems;
   }
 
   override get maxItems(): NullableNumber {

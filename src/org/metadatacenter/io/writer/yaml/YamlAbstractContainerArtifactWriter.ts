@@ -108,19 +108,17 @@ export abstract class YamlAbstractContainerArtifactWriter extends YamlAbstractAr
         minItems = AbstractChildDeploymentInfo.defaultMinItems;
       }
       if (child?.isMultiInstanceByDefinition() || child?.isSingleInstanceByDefinition()) {
-        // Multiplicity is implicit, but explicitly declared limits are not.
+        // Multiplicity is implicit, but the bounds are not: the lower bound is always stated, as
+        // for any other repeated child.
         if (childMeta instanceof ChildDeploymentInfoAlwaysMultiple) {
-          if (childMeta.declaredMinItems !== null && childMeta.declaredMinItems !== childMeta.defaultMinItems)
-            childConfiguration[YamlKeys.minItems] = minItems;
+          childConfiguration[YamlKeys.minItems] = minItems;
           if (childMeta.declaredMaxItems !== null && maxItems !== UNBOUNDED_MAX_ITEMS) childConfiguration[YamlKeys.maxItems] = maxItems;
         }
       } else {
         childConfiguration[YamlKeys.multiple] = true;
-        // A bound equal to the one a child that states none is read with carries nothing, and
-        // writing it would make a document that omitted it round trip into one that does not.
-        if (minItems !== AbstractChildDeploymentInfo.defaultMinItems) {
-          childConfiguration[YamlKeys.minItems] = minItems;
-        }
+        // Every repeated child's lower bound is written, a bound of zero included, so the YAML says
+        // what the JSON says without leaning on a reader's default.
+        childConfiguration[YamlKeys.minItems] = minItems;
         // A maximum of 0, the Template Editor's "no upper bound", is left out, as in the JSON.
         if (maxItems !== null && maxItems !== UNBOUNDED_MAX_ITEMS) {
           childConfiguration[YamlKeys.maxItems] = maxItems;

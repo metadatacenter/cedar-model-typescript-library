@@ -6,3 +6,5 @@ children:
     type: attribute-value-field
     name: "Attribute-Value"
     description: "Help Text"
+    configuration:
+      minItems: 0

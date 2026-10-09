@@ -520,6 +520,7 @@ children:
             selected: false
     configuration:
       multiple: true
+      minItems: 1
   - key: "Data File Identity"
     type: element
     name: "Data File Identity"
@@ -1584,6 +1585,7 @@ children:
             selected: false
         configuration:
           multiple: true
+          minItems: 1
   - key: "Data File Subjects"
     type: element
     name: "Data File Subjects"
@@ -1626,6 +1628,7 @@ children:
         prefLabel: "Keyword"
     configuration:
       multiple: true
+      minItems: 1
   - key: "Data File Description"
     type: element
     name: "Data File Description"
@@ -2159,6 +2162,7 @@ children:
           hidden: true
     configuration:
       multiple: true
+      minItems: 1
   - key: "Data File Dictionary"
     type: element
     name: "Data File Dictionary"
@@ -2298,6 +2302,7 @@ children:
             termMaxDepth: 2147483647
     configuration:
       multiple: true
+      minItems: 1
   - key: "Data File Related Resource"
     type: element
     name: "Data File Related Resource"
@@ -2353,6 +2358,7 @@ children:
         prefLabel: "Relation of Resource to Data File"
     configuration:
       multiple: true
+      minItems: 1
   - key: "Data File Contributor"
     type: element
     name: "Data File Contributor"
@@ -2479,6 +2485,7 @@ children:
             termMaxDepth: 2147483647
     configuration:
       multiple: true
+      minItems: 1
   - key: "Data File Rights"
     type: element
     name: "Data File Rights"
@@ -2516,6 +2523,7 @@ children:
         prefLabel: "License Text"
     configuration:
       multiple: true
+      minItems: 1
   - key: "Data File Date"
     type: element
     name: "Data File Date"
@@ -2547,6 +2555,7 @@ children:
         granularity: day
     configuration:
       multiple: true
+      minItems: 1
   - key: "Data File Parent Study"
     type: element
     name: "Data File Parent Study"
@@ -2614,6 +2623,7 @@ children:
         granularity: day
     configuration:
       multiple: true
+      minItems: 1
   - key: "Data File Funding Source"
     type: element
     name: "Data File Funding Source"
@@ -2675,6 +2685,7 @@ children:
           hidden: true
     configuration:
       multiple: true
+      minItems: 1
   - key: "Data File Distribution"
     type: element
     name: "Data File Distribution"
@@ -2816,6 +2827,7 @@ children:
               hidden: true
     configuration:
       multiple: true
+      minItems: 1
   - key: "Data Characteristics Summary"
     type: element
     name: "Data Characteristics Summary"
@@ -2847,6 +2859,8 @@ children:
         description: "Enter the name of the characteristic being described in the first (key) field, and the value for that characteristic in the second (value) field. Note this is a repeating field and so can support multiple key-value pairs."
         identifier: "data_characteristics_table_in_key-value_pairs"
         prefLabel: "Data Characteristics Table in Key-Value Pairs"
+        configuration:
+          minItems: 0
   - key: "Data Source"
     type: element
     name: "Data Source"
@@ -2890,6 +2904,7 @@ children:
           hidden: true
     configuration:
       multiple: true
+      minItems: 1
   - key: "Data Stream"
     type: element
     name: "Data Stream"
@@ -2939,6 +2954,7 @@ children:
         prefLabel: "Data Stream Variable Name"
         configuration:
           multiple: true
+          minItems: 1
       - key: "Data Stream Data Source Identifier"
         type: text-field
         name: "Data Stream Data Source Identifier"
@@ -2947,6 +2963,7 @@ children:
         prefLabel: "Data Stream Data Source Identifier"
     configuration:
       multiple: true
+      minItems: 1
   - key: "Data File Creation Process"
     type: element
     name: "Data File Creation Process"
@@ -2980,6 +2997,7 @@ children:
         prefLabel: "Process Execution Identifier"
     configuration:
       multiple: true
+      minItems: 1
   - key: "Data File Temporal Coverage"
     type: element
     name: "Data File Temporal Coverage"
@@ -3017,6 +3035,7 @@ children:
         prefLabel: "Duration"
     configuration:
       multiple: true
+      minItems: 1
   - key: "Data File Spatial Coverage"
     type: element
     name: "Data File Spatial Coverage"
@@ -3058,6 +3077,7 @@ children:
             prefLabel: "Maximum Longitude"
         configuration:
           multiple: true
+          minItems: 1
       - key: "Bounding Shape"
         type: element
         name: "Bounding Shape"
@@ -3091,6 +3111,7 @@ children:
             unit: ""
         configuration:
           multiple: true
+          minItems: 1
       - key: "Data File Geopolitical Coverage"
         type: element
         name: "Data File Geopolitical Coverage"
@@ -3106,10 +3127,13 @@ children:
             prefLabel: "Geopolitical region "
             configuration:
               multiple: true
+              minItems: 1
         configuration:
           multiple: true
+          minItems: 1
     configuration:
       multiple: true
+      minItems: 1
   - key: "Data File Elevation Coverage"
     type: element
     name: "Data File Elevation Coverage"
@@ -3147,6 +3171,7 @@ children:
         prefLabel: "Vertical Extent Datum IRI"
     configuration:
       multiple: true
+      minItems: 1
   - key: "Auxiliary Metadata"
     type: element
     name: "Auxiliary Metadata"
@@ -3160,6 +3185,8 @@ children:
         description: "This field supports entry of both the metadata attribute name (in the first field), and the value for that attribute (in the second field). Note this is a repeating field and so can support multiple key-value pairs."
         identifier: "data_file_descriptive_key-value_pair"
         prefLabel: "Data File Descriptive Key-Value Pair"
+        configuration:
+          minItems: 0
       - key: "Additional Commentary"
         type: text-area-field
         name: "Additional Commentary"
@@ -3168,3 +3195,4 @@ children:
         prefLabel: "Additional Commentary"
         configuration:
           multiple: true
+          minItems: 1

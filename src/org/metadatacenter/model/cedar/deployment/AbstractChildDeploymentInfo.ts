@@ -4,15 +4,15 @@ import { NullableString } from '../types/basic-types/NullableString';
 
 export abstract class AbstractChildDeploymentInfo {
   /**
-   * What a multi-instance child takes when it states no lower bound of its own: one instance.
+   * The lower bound a repeated child takes when it states none of its own: zero, which is what an
+   * absent `minItems` means in JSON Schema.
    *
-   * A rule of the model rather than of a serialization, so a reader that fills it in and a writer
-   * that leaves it out agree on it. Zero would say the array may be empty, which is a different
-   * contract and one the meta-schema takes literally, and it is not what the system stores: every
-   * such child in production carries one. An attribute-value child is the exception, and answers
-   * for itself.
+   * A rule of the model rather than of a serialization, so the JSON and YAML forms mean the same
+   * thing by an absent bound. Both writers state the bound of every repeated child, so only a
+   * document written by hand relies on it. An authoring tool that wants a repeated child to start
+   * with an occurrence states that bound itself.
    */
-  static readonly defaultMinItems = 1;
+  static readonly defaultMinItems = 0;
 
   protected readonly _name: string;
   protected _atType: CedarArtifactType = CedarArtifactType.NULL;

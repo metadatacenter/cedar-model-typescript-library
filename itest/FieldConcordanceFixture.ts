@@ -97,7 +97,29 @@ export const fieldMatrixBytes = fs.readFileSync(path.join(directory, 'java-field
 /** The provenance the Java library recorded when the fixture was synced. */
 export const fieldMatrixLock = JSON.parse(fs.readFileSync(path.join(directory, 'java-field-matrix-lock.json'), 'utf8'));
 
-const fixture = JSON.parse(fieldMatrixBytes.toString()) as { bases: Record<string, Base>; cases: Row[] };
+/**
+ * A document no writer produces, stated in JSON and in full YAML: a version given as the string
+ * "latest", or as an object that names no snapshot. Each is recorded against a case, as a case is
+ * against its baseline. Where Java reads it, a reader must produce that case's documents; where Java
+ * refuses it, so must every reader, and the case is the one it was made from.
+ */
+export type Input = { id: string; type: string; feature: string; against: string; refused: boolean; json: JsonNode; yaml: string };
+type InputRow = Omit<Input, 'json' | 'yaml'> & { json: Change[]; yaml: LineChanges };
+
+const fixture = JSON.parse(fieldMatrixBytes.toString()) as { bases: Record<string, Base>; cases: Row[]; inputs: InputRow[] };
 
 /** Every case of the Java field matrix, rebuilt into the documents Java wrote. */
 export const fieldCases: Case[] = fixture.cases.map((row) => expand(row, fixture.bases[row.type]));
+
+/** The case with the given identifier. */
+export function fieldCase(id: string): Case {
+  const found = fieldCases.find((c) => c.id === id);
+  if (found === undefined) throw new Error(`The Java field matrix has no case ${id}`);
+  return found;
+}
+
+/** Every input of the Java field matrix, rebuilt from the case it is recorded against. */
+export const fieldInputs: Input[] = fixture.inputs.map((row) => {
+  const against = fieldCase(row.against);
+  return { ...row, json: applyChanges(against.json, row.json), yaml: applyLineChanges(against.yaml, row.yaml) };
+});

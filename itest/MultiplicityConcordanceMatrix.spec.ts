@@ -2,7 +2,7 @@ import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { createHash } from 'node:crypto';
 import * as YAML from 'yaml';
-import { CedarReaders, CedarWriters, InstanceInflater, JsonNode } from '../src';
+import { CedarReaders, CedarWriters, InstanceInflater, JsonNode, Template } from '../src';
 
 /**
  * Every kind of repeated child, with every combination of stated bounds, in a template and in an
@@ -18,6 +18,11 @@ import { CedarReaders, CedarWriters, InstanceInflater, JsonNode } from '../src';
  *
  * A case is its kind's base template with the child wrapped in a list stating the case's bounds;
  * Java asserts that this is exactly what it writes, so the template read here is Java's own output.
+ *
+ * Both writers state the minimum, so what Java writes for a child that states none is what it writes
+ * for one that states 0. A case whose minimum is absent therefore also records what its author
+ * stated: the bounds less the minimum, and the YAML less its `minItems` line. Each reader must take
+ * that as 0, as Java does, and each writer must write it back as Java writes the case.
  */
 type Bounds = { minItems?: number; maxItems?: number } | null;
 type Case = {
@@ -26,6 +31,8 @@ type Case = {
   container: 'template' | 'element';
   refused: boolean;
   bounds: Bounds;
+  stated?: Bounds;
+  statedYaml?: string;
   storedBounds?: Bounds;
   yaml?: string;
   inflatedOccurrences?: number | null;
@@ -67,11 +74,29 @@ function boundsOf(template: any, container: string): Bounds {
   return bounds;
 }
 
+/** The child's slot in the instance the inflater fills from the template. */
+function inflatedSlot(row: Case, template: Template): any {
+  const instance = jsonReaders.getTemplateInstanceReader().readFromObject(structuredClone(fixture.sparseInstance)).instance;
+  const inflated = jsonWriters.getTemplateInstanceWriter().getAsJsonNode(InstanceInflater.inflate(instance, template)) as any;
+  return row.container === 'template' ? inflated[CHILD] : inflated[GROUP][CHILD];
+}
+
 it('pins Java fixture provenance', () => {
   expect(createHash('sha256').update(bytes).digest('hex')).toBe(lock.sha256);
   expect(lock.javaCommit).toMatch(/^[a-f0-9]{40}$/);
   expect(fixture.cases).toHaveLength(lock.caseCount);
   expect(new Set(fixture.cases.map((c) => c.id)).size).toBe(fixture.cases.length);
+});
+
+it('gives every case whose minimum is absent a JSON and a YAML input that state none', () => {
+  const absent = fixture.cases.filter((c) => c.id.includes('min absent'));
+  expect(absent.length).toBeGreaterThan(0);
+  for (const row of absent) {
+    expect(row.stated).not.toHaveProperty('minItems');
+    expect(boundsOf(withBounds(row, row.stated!), row.container)).not.toHaveProperty('minItems');
+    expect(row.statedYaml).not.toMatch(/minItems/);
+  }
+  expect(fixture.cases.filter((c) => c.stated !== undefined)).toEqual(absent);
 });
 
 for (const row of fixture.cases) {
@@ -100,14 +125,28 @@ for (const row of fixture.cases) {
     });
     it('the inflater fills the child as Java does', () => {
       const template = jsonReaders.getTemplateReader().readFromObject(withBounds(row)).template;
-      const instance = jsonReaders.getTemplateInstanceReader().readFromObject(structuredClone(fixture.sparseInstance)).instance;
-      const inflated = jsonWriters.getTemplateInstanceWriter().getAsJsonNode(InstanceInflater.inflate(instance, template)) as any;
-      const slot = row.container === 'template' ? inflated[CHILD] : inflated[GROUP][CHILD];
+      const slot = inflatedSlot(row, template);
       if (row.inflatedOccurrences === null) {
         expect(Array.isArray(slot)).toBe(false);
       } else {
         expect(slot).toHaveLength(row.inflatedOccurrences!);
       }
     });
+    if (row.stated) {
+      it('JSON stating no minimum reads as 0, and both writers write what Java writes', () => {
+        const template = jsonReaders.getTemplateReader().readFromObject(withBounds(row, row.stated!)).template;
+        expect(jsonWriters.getTemplateWriter().getAsJsonNode(template)).toEqual(withBounds(row));
+        expect(YAML.parse(yamlWriters.getTemplateWriter().getAsYamlString(template))).toEqual(YAML.parse(row.yaml!));
+      });
+      it('YAML stating no minimum reads as 0, and both writers write what Java writes', () => {
+        const template = yamlReaders.getTemplateReader().readFromString(row.statedYaml!).template;
+        expect(boundsOf(jsonWriters.getTemplateWriter().getAsJsonNode(template), row.container)).toEqual(row.bounds);
+        expect(YAML.parse(yamlWriters.getTemplateWriter().getAsYamlString(template))).toEqual(YAML.parse(row.yaml!));
+      });
+      it('the inflater fills a child stating no minimum as Java does', () => {
+        const template = jsonReaders.getTemplateReader().readFromObject(withBounds(row, row.stated!)).template;
+        expect(inflatedSlot(row, template)).toHaveLength(row.inflatedOccurrences!);
+      });
+    }
   });
 }

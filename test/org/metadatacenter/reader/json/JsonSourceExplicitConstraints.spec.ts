@@ -68,6 +68,21 @@ describe('a controlled-term constraint read from JSON', () => {
     expect(ontology.version?.declaredVersion).toBeNull();
   });
 
+  // Four cases: a space, the five whitespace controls, two information separators, and two Unicode spaces.
+  test.each([' ', '\t\n\u000b\f\r', '\u001c\u001f', '\u2003\u3000'])('refuses a pinned version whose id is blank (%j)', (id) => {
+    // A blank id identifies no snapshot any more than an empty one does, and Java refuses both.
+    expect(() => readOntology(CONSTRAINED({ version: { id } }))).toThrow('A pinned version\'s id at "version.id" must not be blank.');
+  });
+
+  test('refuses an empty id with the message it always gave', () => {
+    expect(() => readOntology(CONSTRAINED({ version: { id: '' } }))).toThrow('A pinned version needs a non-empty string at "version.id".');
+  });
+
+  // Two cases: whitespace around the hash, and the three no-break spaces Java does not count as whitespace.
+  test.each([' a1b2c3d4e5f6 ', '\u00a0\u2007\u202f'])('reads an id that is not blank in Java (%j)', (id) => {
+    expect(readOntology(CONSTRAINED({ version: { id } })).version?.id).toBe(id);
+  });
+
   test('carries none of them when the document states none', () => {
     const ontology = readOntology(CONSTRAINED({}));
 

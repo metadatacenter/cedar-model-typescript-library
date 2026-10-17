@@ -248,6 +248,39 @@ describe("a pinned version's id", () => {
   test.each([' a1b2c3d4e5f6 ', '\u00a0\u2007\u202f'])('is read when it is not blank in Java (%j)', (id) => {
     expect(readOntologyFrom(pinnedTo(id)).version?.id).toBe(id);
   });
+
+  // A caller that builds a version with an empty or blank id is refused when the version is
+  // constructed, so no writer is handed a pin that neither library reads.
+  test('cannot be built empty', () => {
+    expect(() => field((b) => b.addOntology(ontology().withVersion(new ControlledTermVersion('')).build()))).toThrow(
+      'A pinned version requires an id.',
+    );
+  });
+
+  // Four cases: a space, the five whitespace controls, two information separators, and two Unicode spaces.
+  test.each([' ', '\t\n\u000b\f\r', '\u001c\u001f', '\u2003\u3000'])('cannot be built blank (%j)', (id) => {
+    expect(() => field((b) => b.addOntology(ontology().withVersion(new ControlledTermVersion(id)).build()))).toThrow(
+      "A pinned version's id must not be blank.",
+    );
+  });
+
+  // Three cases: whitespace around the hash, the three no-break spaces, and a zero-width space, a
+  // byte-order mark and a next-line control. Java counts none of the last six as whitespace.
+  test.each([' a1b2c3d4e5f6 ', '\u00a0\u2007\u202f', '\u200b\ufeff\u0085'])(
+    'is built, written and read back when it is not blank in Java (%j)',
+    (id) => {
+      const pinned = field((b) => b.addOntology(ontology().withVersion(new ControlledTermVersion(id)).build()));
+      expect(readBack(pinned).valueConstraints.ontologies[0].version?.id).toBe(id);
+    },
+  );
+
+  test('is not invented for "latest", which reads as no version, as an absent one does', () => {
+    const document = parse(yamlOf(field((b) => b.addOntology(ontology().build()))));
+    document.values[0].version = 'latest';
+    const read = readOntologyFrom(stringify(document));
+
+    expect(read.version).toBeNull();
+  });
 });
 
 describe('what the entry carries once, and what it no longer carries', () => {

@@ -6,6 +6,7 @@ import {
   ControlledTermDefaultValueBuilder,
   ControlledTermOntologyBuilder,
   ControlledTermValueSetBuilder,
+  ControlledTermVersion,
   Iri,
 } from '../../../../../../../../src';
 
@@ -101,5 +102,45 @@ describe('what a constraint may leave out', () => {
       .withSourceUri(SOURCE_IRI)
       .build();
     expect(action.to).toBeNull();
+  });
+});
+
+/**
+ * A pinned version must identify a snapshot.
+ *
+ * The id is the snapshot's content hash and the only part resolution reads, so an empty id and one
+ * made only of whitespace identify nothing. Java's `VersionSpec` refuses both. Blank is Java's
+ * `String.isBlank`, whose whitespace is not what JavaScript's `trim` removes. The readers refuse
+ * such an id before they construct a version, so these cases reach the constructor only from a
+ * caller that builds a version itself.
+ */
+describe('a pinned version refuses an id that identifies no snapshot', () => {
+  test('an empty id', () => {
+    expect(() => new ControlledTermVersion('')).toThrow('A pinned version requires an id.');
+  });
+
+  test('an id an untyped caller leaves out', () => {
+    expect(() => new ControlledTermVersion(undefined as unknown as string)).toThrow('A pinned version requires an id.');
+  });
+
+  // Five cases: a space, the five whitespace controls, two information separators, two Unicode spaces,
+  // and the ogham space mark, line separator, paragraph separator and medium mathematical space.
+  test.each([' ', '\t\n\u000b\f\r', '\u001c\u001f', '\u2003\u3000', '\u1680\u2028\u2029\u205f'])(
+    'an id made only of Java whitespace (%j)',
+    (id) => {
+      expect(() => new ControlledTermVersion(id)).toThrow("A pinned version's id must not be blank.");
+    },
+  );
+
+  // Three cases: whitespace around the hash, the three no-break spaces, and a zero-width space, a
+  // byte-order mark and a next-line control. Java counts none of the last six as whitespace.
+  test.each([' a1b2c3d4e5f6 ', '\u00a0\u2007\u202f', '\u200b\ufeff\u0085'])('accepts an id that is not blank in Java (%j)', (id) => {
+    const ontology = new ControlledTermOntologyBuilder()
+      .withAcronym('DOID')
+      .withName('Disease')
+      .withUri(SOURCE_IRI)
+      .withVersion(new ControlledTermVersion(id))
+      .build();
+    expect(ontology.version?.id).toBe(id);
   });
 });

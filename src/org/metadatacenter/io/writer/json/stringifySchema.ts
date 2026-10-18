@@ -17,7 +17,7 @@ function isObject(value: unknown): value is Record<string, unknown> {
 export function stringifySchema(schema: JsonNode, indent: number): string {
   function view(value: unknown): unknown {
     if (Array.isArray(value)) return value.map(view);
-    if (!isObject(value) || value instanceof ExactDecimal) return value;
+    if (!isObject(value) || ExactDecimal.isExact(value)) return value;
     const result: Record<string, unknown> = Object.fromEntries(Object.entries(value).map(([key, child]) => [key, view(child)]));
     const ui = result._ui;
     const order = isObject(ui) ? ui.order : undefined;

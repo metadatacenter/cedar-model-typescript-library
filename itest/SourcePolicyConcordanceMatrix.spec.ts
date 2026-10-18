@@ -44,3 +44,16 @@ test('preserves decimals even where Java 17 and ECMAScript double spelling diffe
     expect(NumericPolicy.compare(String(JsonSourcePolicy.parse(output).n), text)).toBe(0);
   }
 });
+
+test('snapshot cloning preserves exact atoms and rejects lossy or cyclic inputs', () => {
+  const original = JsonSourcePolicy.parse('{"n":9007199254740993,"nested":{"x":1}}');
+  const copy = JsonSourcePolicy.clone(original);
+  expect(JsonSourcePolicy.stringify(copy)).toBe(JsonSourcePolicy.stringify(original));
+  expect(copy).not.toBe(original);
+  expect(copy.nested).not.toBe(original.nested);
+  expect(() => JsonSourcePolicy.clone({ n: Infinity })).toThrow();
+  expect(() => JsonSourcePolicy.clone(new Date())).toThrow();
+  const cycle: Record<string, unknown> = {};
+  cycle.self = cycle;
+  expect(() => JsonSourcePolicy.clone(cycle)).toThrow();
+});

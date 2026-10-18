@@ -123,7 +123,7 @@ export abstract class ReaderUtil {
   public static getNumericDefault(node: JsonNode, key: string): NumericValue | null {
     const raw = node[key];
     if (raw === null || raw === undefined || raw === '') return null;
-    if (typeof raw === 'number' || typeof raw === 'string' || raw instanceof ExactDecimal) {
+    if (typeof raw === 'number' || typeof raw === 'string' || ExactDecimal.isExact(raw)) {
       try {
         return NumericPolicy.value(raw);
       } catch (cause) {
@@ -136,7 +136,7 @@ export abstract class ReaderUtil {
   public static getExactNumber(node: JsonNode, key: string): NumericValue | null {
     const raw = node[key];
     if (raw === null || raw === undefined) return null;
-    if (typeof raw === 'number' || raw instanceof ExactDecimal) return NumericPolicy.value(raw);
+    if (typeof raw === 'number' || ExactDecimal.isExact(raw)) return NumericPolicy.value(raw);
     throw new Error(`Numeric bound at "${key}" must be a JSON number.`);
   }
 

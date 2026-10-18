@@ -9,6 +9,18 @@ interface DecimalParts {
 
 /** An exact decimal when a JavaScript number cannot carry the source value. */
 export class ExactDecimal {
+  public readonly cedarExactDecimal = true;
+
+  /** CED and CEE may bundle independent copies of this package. */
+  public static isExact(value: unknown): value is ExactDecimal {
+    return (
+      value !== null &&
+      typeof value === 'object' &&
+      (value as ExactDecimal).cedarExactDecimal === true &&
+      typeof (value as ExactDecimal).toJSON === 'function'
+    );
+  }
+
   private constructor(private readonly text: string) {
     Object.freeze(this);
   }
@@ -99,7 +111,7 @@ export class NumericPolicy {
 
   /** Existing number callers remain supported; raw text retains all digits when a double cannot. */
   public static value(value: NumericInput): NumericValue {
-    if (value instanceof ExactDecimal) return value;
+    if (ExactDecimal.isExact(value)) return value;
     this.parts(value);
     if (typeof value === 'number') return value;
     const approximate = Number(value);

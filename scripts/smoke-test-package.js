@@ -81,6 +81,9 @@ try {
   assert.equal(policy.TextPolicy.isBlank('\u00a0'), false);
   assert.equal(policy.IdentifierPolicy.isValid('urn:x\ud800'), false);
   assert.ok(fs.statSync(path.join(installedPackage, 'policy.js')).size < 20000);
+  const fullModel = require(installedPackage);
+  const outside = fullModel.ExactDecimal.forValue('9007199254740993');
+  assert.equal(policy.JsonSourcePolicy.stringify(policy.JsonSourcePolicy.clone({ n: outside })), '{"n":9007199254740993}');
   const vm = require('node:vm');
   const sandbox = {};
   vm.runInNewContext(fs.readFileSync(path.join(installedPackage, 'policy.umd.js'), 'utf8'), sandbox);

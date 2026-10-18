@@ -80,12 +80,33 @@ export class JsonSourcePolicy {
     return result as JsonNode;
   }
 
+  /** Own a JSON tree while preserving exact numeric atoms across independent bundles. */
+  public static clone<T>(source: T): T {
+    const active = new Set<object>();
+    function copy(value: unknown): unknown {
+      if (ExactDecimal.isExact(value)) return ExactDecimal.forValue(String(value));
+      if (value === null || value === undefined || typeof value === 'string' || typeof value === 'boolean') return value;
+      if (typeof value === 'number' && Number.isFinite(value)) return value;
+      if (typeof value !== 'object' || active.has(value)) throw new TypeError('Expected acyclic JSON data');
+      active.add(value);
+      try {
+        if (Array.isArray(value)) return value.map(copy);
+        if (Object.getPrototypeOf(value) !== Object.prototype && Object.getPrototypeOf(value) !== null)
+          throw new TypeError('Expected a JSON object');
+        return Object.fromEntries(Object.entries(value).map(([key, child]) => [key, copy(child)]));
+      } finally {
+        active.delete(value);
+      }
+    }
+    return copy(source) as T;
+  }
+
   /** Exact numeric tokens on every supported browser, without depending on JSON.rawJSON. */
   public static stringify(value: unknown, indent = 0): string {
     const gap = ' '.repeat(Math.max(0, Math.min(10, indent)));
     const active = new Set<object>();
     function write(value: unknown, depth: number): string | undefined {
-      if (value instanceof ExactDecimal) return value.toString();
+      if (ExactDecimal.isExact(value)) return value.toString();
       if (typeof value === 'number') return javaPlainDecimal(value);
       if (typeof value === 'string' || typeof value === 'boolean' || value === null) return JSON.stringify(value);
       if (typeof value === 'undefined') return undefined;

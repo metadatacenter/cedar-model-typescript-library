@@ -58,7 +58,7 @@ export class SimpleYamlSerializer {
         {
           tag: 'tag:yaml.org,2002:float',
           default: true,
-          identify: (value: unknown) => value instanceof ExactDecimal,
+          identify: (value: unknown) => ExactDecimal.isExact(value),
           resolve: (value: string) => ExactDecimal.forValue(value),
           stringify: (item: Scalar) => String(item.value),
         },

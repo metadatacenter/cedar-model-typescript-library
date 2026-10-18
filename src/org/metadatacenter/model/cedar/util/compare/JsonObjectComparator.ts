@@ -11,10 +11,10 @@ import { ReaderWriterBehavior } from '../../../../behavior/ReaderWriterBehavior'
 import { ComparableObject } from './ComparableObject';
 
 function structured(value: unknown): boolean {
-  return value !== null && typeof value === 'object' && !(value instanceof ExactDecimal);
+  return value !== null && typeof value === 'object' && !ExactDecimal.isExact(value);
 }
 function equal(left: unknown, right: unknown): boolean {
-  if ((typeof left === 'number' || left instanceof ExactDecimal) && (typeof right === 'number' || right instanceof ExactDecimal))
+  if ((typeof left === 'number' || ExactDecimal.isExact(left)) && (typeof right === 'number' || ExactDecimal.isExact(right)))
     return NumericPolicy.compare(left, right) === 0;
   return left === right;
 }

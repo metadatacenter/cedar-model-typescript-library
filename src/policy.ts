@@ -8,3 +8,5 @@ export { TimestampPolicy } from './org/metadatacenter/policy/TimestampPolicy';
 export { NumericPolicy, ExactDecimal, NumericValue, NumericInput } from './org/metadatacenter/policy/NumericPolicy';
 
 export { JsonSourcePolicy } from './org/metadatacenter/policy/JsonSourcePolicy';
+
+export { RegexPolicy, RegexVerdict, RegexWorker, RegexPolicyOptions, REGEX_WORKER_SOURCE } from './org/metadatacenter/policy/RegexPolicy';

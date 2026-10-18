@@ -19,7 +19,11 @@ const checks = [
 ];
 // Parity imports generatedTestCases.ts too. Generate once before any checks
 // start, so no reader can observe the fixture module while it is being written.
-const stages = [{ name: 'fixtures', script: 'test:fixtures' }, ...checks.map((stage) => ({ ...stage, after: ['fixtures'] }))];
+const stages = [
+  { name: 'fixtures', script: 'test:fixtures' },
+  ...checks.map((stage) => ({ ...stage, after: ['fixtures'] })),
+  { name: 'browser', script: 'test:browser', after: ['package'] },
+];
 const pending = [...stages];
 const running = new Map();
 const passed = new Set();

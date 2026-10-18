@@ -195,3 +195,24 @@ Controlled-term ontology constraints preserve a nondefault service address in YA
 as `sourceUri`, separately from the canonical `sourceIri`. When `sourceUri` is
 absent, the reader retains compatibility with existing YAML by deriving the usual
 BioPortal address from `sourceAcronym`.
+
+Regular-expression evaluation is asynchronous. `RegexPolicy` in the full package
+and `/policy` evaluates `^(?:pattern)$` with no flags in a worker, including
+compilation. `await policy.evaluate(pattern, value)` returns `match`, `mismatch`,
+`invalid`, or an operational verdict; passing `null` checks compilation only and
+returns `valid` when it succeeds. Empty optional answers are the caller's concern.
+Never treat `timeout`, `unavailable`, `limit`, or `cancelled` as a match.
+
+The default execution deadline is 250 ms after a worker announces readiness;
+startup has a separate 5-second deadline. Timed-out workers are terminated before
+processing another request. Inputs are limited to 10,000 pattern code units and
+1,000,000 value code units, with at most 1,024 queued requests. An AbortSignal can
+cancel obsolete work. Call `dispose()` when the owner is destroyed. Idle workers
+are released after one second. A host whose CSP disallows blob workers may supply
+a `workerFactory` implementing the exported `RegexWorker` interface and serving
+`REGEX_WORKER_SOURCE` from a permitted origin; there is no main-thread fallback.
+The Java-pinned corpus and Chromium, Firefox, and WebKit tests verify semantics,
+responsiveness, timeout recovery, and failure when CSP blocks the worker.
+
+Artifact YAML always uses the core scalar rules, including documents explicitly
+marked YAML 1.1 or 1.2. Custom tags are rejected on mapping keys as well as values.

@@ -7,6 +7,7 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const javaRoot = resolve(root, '../cedar-artifact-library');
 // Each Java concordance matrix, and the name its fixture and lock take here.
 const matrices = [
+  { fixture: 'src/test/resources/concordance/regex-policy.json', name: 'regex-policy', what: 'regex policy', root: resolve(root, '../cedar-model-validation-library') },
   { fixture: 'src/test/resources/concordance/timestamp-policy.json', name: 'timestamp-policy', what: 'timestamp policy', root: resolve(root, '../cedar-model-validation-library') },
   { fixture: 'src/test/resources/concordance/numeric-policy.json', name: 'numeric-policy', what: 'numeric policy', root: resolve(root, '../cedar-model-validation-library') },
   { fixture: 'src/test/resources/concordance/source-policy.json', name: 'source-policy', what: 'source policy' },

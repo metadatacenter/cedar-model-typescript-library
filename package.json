@@ -36,7 +36,8 @@
     "unlink": "npm uninstall -g cedar-model-typescript-library",
     "publish:package": "npm run test:package && npm publish ./dist --access public",
     "test:concordance": "jest --runInBand ConcordanceMatrix",
-    "sync:concordance": "node scripts/sync-concordance.mjs"
+    "sync:concordance": "node scripts/sync-concordance.mjs",
+    "test:browser": "playwright test --config browser/playwright.config.ts"
   },
   "allowScripts": {
     "fsevents@2.3.3": true,
@@ -59,6 +60,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.63.0",
     "@types/jest": "^30.0.0",
     "@typescript-eslint/eslint-plugin": "^8.70.0",
     "@typescript-eslint/parser": "^8.70.0",

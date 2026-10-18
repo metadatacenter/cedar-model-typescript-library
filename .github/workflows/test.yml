@@ -76,6 +76,12 @@ jobs:
       - name: Build and smoke-test the distributable
         run: npm run test:package
 
+      - name: Install conformance browsers
+        run: npx playwright install --with-deps chromium firefox webkit
+
+      - name: Verify regex conformance and bounded browser execution
+        run: npm run test:browser
+
       # The bytes the publish job ships are the bytes this job just gated, so the
       # staged tarball travels as an artifact rather than being rebuilt downstream.
       - name: Save the gated distributable

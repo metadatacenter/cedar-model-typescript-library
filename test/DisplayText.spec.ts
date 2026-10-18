@@ -40,6 +40,9 @@ test('elides at grapheme boundaries and preserves the ordinary ASCII layout', ()
   expect(DisplayText.elide('short')).toBe('short');
   expect(DisplayText.elide('abcdefgh', 3, 0)).toBe('ab…');
   expect(DisplayText.elide('abcdefgh', 1, 8)).toBe('…');
+  expect(DisplayText.take('a👩‍💻z', 2)).toBe('a👩‍💻');
+  expect(DisplayText.take('a👩‍💻z', 2, true)).toBe('👩‍💻z');
+  expect(DisplayText.take('abc', 0, true)).toBe('');
 });
 
 test('search derives keys and keeps canonical equivalents distinct in the input', () => {

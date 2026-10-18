@@ -2,6 +2,14 @@
 export class DisplayText {
   private static readonly segmenter = new Intl.Segmenter('und', { granularity: 'grapheme' });
 
+  /** Prefix/suffix abbreviation for legacy consumers, without cutting a displayed character. */
+  public static take(value: string, length: number, fromEnd = false): string {
+    const count = Math.max(0, Math.trunc(length));
+    if (!count) return '';
+    const parts = Array.from(this.segmenter.segment(value), ({ segment }) => segment);
+    return (fromEnd ? parts.slice(-count) : parts.slice(0, count)).join('');
+  }
+
   /** Locale-independent matching; canonical equivalents match without changing stored spelling. */
   public static searchKey(value: string): string {
     return Array.from(this.segmenter.segment(value), ({ segment }) => segment.normalize('NFC').toLowerCase()).join('');

@@ -1,3 +1,4 @@
+import { ExactDecimal } from '../../../policy/NumericPolicy';
 import { javaPlainDecimal } from './JavaPlainDecimal';
 import YAML, { isPair, isScalar, Scalar, ToStringOptions, visit } from 'yaml';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
@@ -53,8 +54,15 @@ export class SimpleYamlSerializer {
     // but retain their normal plain/quoted spelling through the custom scalar tag.
     const explicitKeys = new WeakMap<object, string>();
     const document = new YAML.Document(obj, {
-      customTags: (tags) =>
-        tags.map((tag) =>
+      customTags: (tags) => [
+        {
+          tag: 'tag:yaml.org,2002:float',
+          default: true,
+          identify: (value: unknown) => ExactDecimal.isExact(value),
+          resolve: (value: string) => ExactDecimal.forValue(value),
+          stringify: (item: Scalar) => String(item.value),
+        },
+        ...tags.map((tag): (typeof tags)[number] =>
           typeof tag !== 'string' && tag.collection === undefined && tag.tag === 'tag:yaml.org,2002:str'
             ? {
                 ...tag,
@@ -78,6 +86,7 @@ export class SimpleYamlSerializer {
                 }
               : tag,
         ),
+      ],
     });
     visit(document, {
       Scalar(key, node, path) {

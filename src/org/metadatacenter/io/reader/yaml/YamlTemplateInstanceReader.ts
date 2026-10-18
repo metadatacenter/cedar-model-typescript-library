@@ -1,7 +1,7 @@
+import { YamlSourcePolicy } from './YamlSourcePolicy';
 import { ReservedNames } from '../../../model/cedar/ReservedNames';
 import { InstanceDataNotationAtom } from '../../../model/cedar/template-instance/InstanceDataNotationAtom';
 import { InstanceDataLabelAtom } from '../../../model/cedar/template-instance/InstanceDataLabelAtom';
-import YAML from 'yaml';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { CedarArtifactId } from '../../../model/cedar/types/cedar-types/CedarArtifactId';
 import { YamlReaderBehavior } from '../../../behavior/YamlReaderBehavior';
@@ -66,12 +66,7 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
   }
 
   public readFromString(instanceSourceString: string): YamlTemplateInstanceReaderResult {
-    let instanceObject;
-    try {
-      instanceObject = YAML.parse(instanceSourceString);
-    } catch {
-      instanceObject = {};
-    }
+    const instanceObject = YamlSourcePolicy.parse(instanceSourceString);
     return this.readFromObject(instanceObject);
   }
 

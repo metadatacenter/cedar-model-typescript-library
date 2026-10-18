@@ -1,8 +1,42 @@
 import { ComparisonError } from './ComparisonError';
+import { ComparisonErrorType } from './ComparisonErrorType';
+import { JsonPath } from '../path/JsonPath';
+import { ValidationContext, ValidationFinding, ValidationPolicy, ValidationSummary } from '../../../../policy/ValidationPolicy';
 
 export class JsonArtifactParsingResult {
   private blueprintComparisonErrors: Array<ComparisonError> = [];
   private blueprintComparisonWarnings: Array<ComparisonError> = [];
+  private validationFindings: ValidationFinding[] = [];
+
+  /** Structured validation facts, separate from the legacy parser-comparison diagnostics. */
+  public getValidationFindings(): ValidationFinding[] {
+    return [...this.validationFindings];
+  }
+
+  public addValidationFinding(
+    finding: ValidationFinding,
+    context: ValidationContext = 'instance',
+    legacyDiagnostic?: ComparisonError,
+  ): void {
+    if (this.validationFindings.some((f) => f.code === finding.code && f.path === finding.path)) return;
+    this.validationFindings.push(finding);
+    if (finding.verificationStatus === 'passed') return;
+    const diagnostic =
+      legacyDiagnostic ??
+      new ComparisonError('ValidationPolicy', ComparisonErrorType.VALUE_MISMATCH, JsonPath.fromPointer(finding.path), finding.message);
+    if (ValidationPolicy.blocksSave(finding, context)) this.addBlueprintComparisonError(diagnostic);
+    else this.addBlueprintComparisonWarning(diagnostic);
+  }
+
+  public getValidationReport(context: ValidationContext = 'instance'): ValidationSummary {
+    const findings = [...this.validationFindings];
+    for (const error of this.blueprintComparisonErrors) {
+      if (error.errorLocation === 'ValidationPolicy') continue;
+      const code = error.errorType === ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT ? 'missingProperty' : 'valueShape';
+      findings.push(ValidationPolicy.finding(code, error.errorPath.toPointer(), `Invalid structure: ${error.errorType}.`));
+    }
+    return ValidationPolicy.summarize(findings, context);
+  }
 
   public addBlueprintComparisonError(error: ComparisonError) {
     this.blueprintComparisonErrors.push(error);
@@ -60,5 +94,6 @@ export class JsonArtifactParsingResult {
   merge(otherResult: JsonArtifactParsingResult) {
     this.blueprintComparisonErrors.push(...otherResult.blueprintComparisonErrors);
     this.blueprintComparisonWarnings.push(...otherResult.blueprintComparisonWarnings);
+    this.validationFindings.push(...otherResult.validationFindings);
   }
 }

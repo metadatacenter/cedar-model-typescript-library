@@ -1,4 +1,5 @@
 import {
+  NumericPolicy,
   CedarBuilders,
   CedarWriters,
   JsonTemplateFieldReader,
@@ -26,9 +27,9 @@ describe('numeric and temporal declared defaults', () => {
     expect(ReaderUtil.getNumericDefault({}, 'defaultValue')).toBeNull();
     expect(ReaderUtil.getNumericDefault({ defaultValue: null }, 'defaultValue')).toBeNull();
     expect(ReaderUtil.getNumericDefault({ defaultValue: undefined }, 'defaultValue')).toBeNull();
-    expect(ReaderUtil.getNumericDefault({ defaultValue: '   ' }, 'defaultValue')).toBeNull();
+    expect(() => ReaderUtil.getNumericDefault({ defaultValue: '   ' }, 'defaultValue')).toThrow(/whitespace/);
     expect(() => ReaderUtil.getNumericDefault({ defaultValue: Number.POSITIVE_INFINITY }, 'defaultValue')).toThrow(/finite/);
-    expect(() => ReaderUtil.getNumericDefault({ defaultValue: '1e309' }, 'defaultValue')).toThrow(/finite/);
+    expect(NumericPolicy.compare(ReaderUtil.getNumericDefault({ defaultValue: '1e309' }, 'defaultValue')!, '1e309')).toBe(0);
     expect(() => ReaderUtil.getNumericDefault({ defaultValue: false }, 'defaultValue')).toThrow(/number or numeric string/);
   });
 
@@ -50,8 +51,8 @@ describe('numeric and temporal declared defaults', () => {
       .field as NumericField;
     const fromYaml = YamlTemplateFieldReader.getStrict().readFromString(yamlWriterFor(original).getAsYamlString(original))
       .field as NumericField;
-    expect(fromJson.valueConstraints.defaultValue).toBe(defaultValue);
-    expect(fromYaml.valueConstraints.defaultValue).toBe(defaultValue);
+    expect(NumericPolicy.compare(fromJson.valueConstraints.defaultValue!, defaultValue)).toBe(0);
+    expect(NumericPolicy.compare(fromYaml.valueConstraints.defaultValue!, defaultValue)).toBe(0);
   });
 
   test.each<[string, NumberType, number]>([
@@ -138,6 +139,7 @@ describe('numeric and temporal declared defaults', () => {
     const original = base(CedarBuilders.temporalFieldBuilder())
       .withTemporalType(TemporalType.DATETIME)
       .withTemporalGranularity(TemporalGranularity.SECOND)
+      .withTimezoneEnabled(true)
       .withDefaultValue(value)
       .build() as TemporalField;
 
@@ -170,6 +172,7 @@ describe('numeric and temporal declared defaults', () => {
     const original = base(CedarBuilders.temporalFieldBuilder())
       .withTemporalType(temporalType)
       .withTemporalGranularity(granularity)
+      .withTimezoneEnabled(/(Z|[+-]\d{2}:\d{2})$/.test(defaultValue))
       .withDefaultValue(defaultValue)
       .build() as TemporalField;
 

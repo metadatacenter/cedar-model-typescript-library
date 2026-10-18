@@ -93,9 +93,23 @@ mapping. Annotation entries follow the existing CEDAR meta-schema: an IRI object
 value object, with no extra properties. These declarations are platform metadata, not child fields.
 Older templates without the declarations remain readable; writing them adds the declarations.
 
-Finite numeric YAML and schema JSON values use Java 17's decimal digits, expanded without exponent notation.
-This includes midpoint and subnormal cases where JavaScript's shortest spelling differs. Shared
-Java-verified fixtures check the output and preservation of the original binary number.
+Existing JavaScript `number` inputs retain Java 17's decimal spelling compatibility. Raw JSON/YAML
+and numeric-string builder inputs preserve exact decimal values, including integers beyond 2^53.
+`NumericValue` is a `number` or immutable `ExactDecimal`; use `NumericPolicy.compare` for comparisons,
+`String(value)` for display, and `JsonSourcePolicy.stringify` for portable exact JSON serialization.
+Bounds stay JSON numbers and CEDAR numeric defaults stay strings. Supplying an already-rounded
+JavaScript number cannot recover the original digits; use a raw source or a string builder argument.
+
+Raw readers reject duplicate decoded keys, trailing JSON, multiple YAML documents, nonfinite numbers,
+custom YAML tags and recursive aliases. YAML uses core scalar resolution: `yes` is a string, `012`
+is decimal twelve, and timestamps stay strings until their model property reads them. Keys retain
+their exact spelling. Malformed sources raise an error; readers never replace them with empty artifacts.
+`JsonSourcePolicy` is also available from `/policy`; `YamlSourcePolicy` is in the full package.
+
+`TimestampPolicy` and `IsoDate` preserve the source calendar, explicit UTC offset and up to nine
+fractional-second digits. Missing offsets and impossible dates are rejected. Minute-only times,
+case-insensitive T/Z and legacy colonless offsets remain accepted and render canonically. Temporal
+field answers follow their own declared type and precision; they are not provenance timestamps.
 
 ## Unicode field identifiers
 
@@ -181,3 +195,60 @@ Controlled-term ontology constraints preserve a nondefault service address in YA
 as `sourceUri`, separately from the canonical `sourceIri`. When `sourceUri` is
 absent, the reader retains compatibility with existing YAML by deriving the usual
 BioPortal address from `sourceAcronym`.
+
+Regular-expression evaluation is asynchronous. `RegexPolicy` in the full package
+and `/policy` evaluates `^(?:pattern)$` with no flags in a worker, including
+compilation. `await policy.evaluate(pattern, value)` returns `match`, `mismatch`,
+`invalid`, or an operational verdict; passing `null` checks compilation only and
+returns `valid` when it succeeds. Empty optional answers are the caller's concern.
+Never treat `timeout`, `unavailable`, `limit`, or `cancelled` as a match.
+
+The default execution deadline is 250 ms after a worker announces readiness;
+startup has a separate 5-second deadline. Timed-out workers are terminated before
+processing another request. Inputs are limited to 10,000 pattern code units and
+1,000,000 value code units, with at most 1,024 queued requests. An AbortSignal can
+cancel obsolete work. Call `dispose()` when the owner is destroyed. Idle workers
+are released after one second. A host whose CSP disallows blob workers may supply
+a `workerFactory` implementing the exported `RegexWorker` interface and serving
+`REGEX_WORKER_SOURCE` from a permitted origin; there is no main-thread fallback.
+The Java-pinned corpus and Chromium, Firefox, and WebKit tests verify semantics,
+responsiveness, timeout recovery, and failure when CSP blocks the worker.
+
+Artifact YAML always uses the core scalar rules, including documents explicitly
+marked YAML 1.1 or 1.2. Custom tags are rejected on mapping keys as well as values.
+
+`RegexChecks` owns the current regex work for one document or control. Call
+`checks.run(() => validate())` for a synchronous report; validators inside that
+scope use `RegexChecks.inspect(pattern, value)` and may receive `pending`.
+The owner callback runs when the current batch settles. Re-running retains only
+current checks and cancels obsolete work; results are bounded to 1,024 entries and
+4,000,000 retained UTF-16 code units. `await RegexChecks.validate(() => validate())`
+is the asynchronous boundary for a headless consumer. Pending results must block
+valid/saveable status without being presented as a malformed answer. Dispose the
+checks when their document or control is removed.
+
+## Value validation and save policy
+
+`InstanceValidator.validateReport(instance, template)` returns categorized findings with RFC6901
+paths, `structurallyValid`, `canSave`, and `isValid`. The existing `validate` method retains its
+`JsonArtifactParsingResult` API, with structural errors and quality warnings. A well-formed answer
+outside a numeric bound or another declared constraint has `canSave: true` and `isValid: false`.
+Missing structural properties and malformed typed values block saving.
+
+`TemplateValueValidator.validate(templateOrElementOrField)` checks definition/default consistency
+without changing the model. `validateSource(rawDefinition)` supports retained imported definitions
+after structural parsing; it does not replace the structural reader. Inconsistent defaults block
+template saves. `FieldValuePolicy` supplies the shared local field rules; `ValidationPolicy` supplies
+the different template/instance save decisions and is also available from the lightweight `/policy`
+entry. Prefer these facts over a host-maintained list of warning codes.
+
+The offline library reports applicable terminology/authority checks as `notChecked`. Hosts resolve
+them through the existing services using exact identifiers and complete versioned constraints.
+`passed`, `failed`, `notChecked` and `unavailable` are separate outcomes. Uncertainty does not prove
+success or invalid membership; the common policy reports it without rejecting an instance.
+
+Java owns the normative value/default, configuration and semantic-verification concordance corpora. Use
+`npm run sync:concordance` against committed Java sources, then `npm run test:concordance`. For an
+explicitly uncommitted review, `node scripts/sync-concordance.mjs --matrix <name> --working-tree`
+records the base commit plus a hash of the actual Java source/test tree. Refresh it after further
+Java edits; do not describe that lock as evidence of a committed revision.

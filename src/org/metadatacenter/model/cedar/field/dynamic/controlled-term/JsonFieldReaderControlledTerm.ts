@@ -17,6 +17,7 @@ import { BioportalTermType } from '../../../types/bioportal-types/BioportalTermT
 import { ControlledTermFieldImpl } from './ControlledTermFieldImpl';
 import { ControlledTermVersion } from './value-constraint/ControlledTermVersion';
 import { Iri } from '../../../types/wrapped-types/Iri';
+import { JavaStrings } from '../../../util/JavaStrings';
 
 export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecificReader {
   override read(
@@ -125,16 +126,37 @@ export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecific
    */
   private static readSourceAndVersion(node: JsonNode): [Iri | null, string | null, ControlledTermVersion | null] {
     const iri = ReaderUtil.getURI(node, CedarModel.ValueConstraints.iri);
-    const versionNode: JsonNode | null = ReaderUtil.getNodeOrNull(node, CedarModel.ValueConstraints.version);
-    const version =
-      versionNode === null
-        ? null
-        : new ControlledTermVersion(
-            ReaderUtil.getStringOrEmpty(versionNode, CedarModel.ValueConstraints.versionId),
-            ReaderUtil.getString(versionNode, CedarModel.ValueConstraints.versionEffectiveDate),
-            ReaderUtil.getString(versionNode, CedarModel.ValueConstraints.versionDeclaredVersion),
-          );
+    const version = JsonFieldReaderControlledTerm.readVersion(ReaderUtil.getNodeOrNull(node, CedarModel.ValueConstraints.version));
     return [iri.isEmpty() ? null : iri, ReaderUtil.getString(node, CedarModel.ValueConstraints.sourceSystem), version];
+  }
+
+  /**
+   * The snapshot a constraint is pinned to, or null for the newest one. A version that is not an
+   * object means the newest, as an absent one does, and the Java library reads it the same way. The
+   * meta-schema admits it as a string, and the documented one is "latest". An object pins a
+   * snapshot, so it must name one, and a missing, empty or blank `id` is refused, as Java and the
+   * meta-schema refuse it. Blank is Java's `String.isBlank`.
+   */
+  private static readVersion(versionNode: JsonNode | null): ControlledTermVersion | null {
+    if (versionNode === null || typeof versionNode !== 'object' || Array.isArray(versionNode)) {
+      return null;
+    }
+    const id: unknown = ReaderUtil.getNodeOrNull(versionNode, CedarModel.ValueConstraints.versionId);
+    if (typeof id !== 'string' || id === '') {
+      throw new Error(
+        `A pinned version needs a non-empty string at "${CedarModel.ValueConstraints.version}.${CedarModel.ValueConstraints.versionId}".`,
+      );
+    }
+    if (JavaStrings.isBlank(id)) {
+      throw new Error(
+        `A pinned version's id at "${CedarModel.ValueConstraints.version}.${CedarModel.ValueConstraints.versionId}" must not be blank.`,
+      );
+    }
+    return new ControlledTermVersion(
+      id,
+      ReaderUtil.getString(versionNode, CedarModel.ValueConstraints.versionEffectiveDate),
+      ReaderUtil.getString(versionNode, CedarModel.ValueConstraints.versionDeclaredVersion),
+    );
   }
 
   private getDefaultValue(node: JsonNode | null): ControlledTermDefaultValue | null {

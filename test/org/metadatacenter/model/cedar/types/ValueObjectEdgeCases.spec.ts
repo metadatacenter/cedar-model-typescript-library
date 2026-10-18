@@ -48,10 +48,10 @@ describe('value object edge cases', () => {
     expect(CedarFieldType.forYamlArtifactType(YamlArtifactType.MULTI_SELECT_LIST)).toBe(CedarFieldType.MULTIPLE_SELECT_LIST);
   });
 
-  test('ISO dates preserve positive offsets, accept zone-less input, and represent null', () => {
+  test('ISO dates preserve positive offsets, require an explicit zone, and represent null', () => {
     expect(IsoDate.NULL.getValue()).toBeNull();
     expect(IsoDate.forValue('2024-03-12T10:03:57+02:30').getValue()).toBe('2024-03-12T10:03:57+02:30');
-    expect(IsoDate.forValue('2024-03-12T10:03:57').getValue()).toBe('2024-03-12T10:03:57Z');
+    expect(() => IsoDate.forValue('2024-03-12T10:03:57')).toThrow(/explicit offset/);
 
     const offset = jest.spyOn(Date.prototype, 'getTimezoneOffset').mockReturnValue(-90);
     expect(IsoDate.getCurrentGMTOffset()).toBe('+01:30');

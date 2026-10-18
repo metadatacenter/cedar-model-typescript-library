@@ -89,7 +89,9 @@ const withDeclaredDefault = (type: TypeUnderTest): TemplateField => {
   const builder = named(type.builder());
   switch (type.shape) {
     case 'literal':
-      return builder.withDefaultValue('Alpha').build();
+      return builder
+        .withDefaultValue(type.label === 'e-mail' ? 'author@example.org' : type.label === 'phone number' ? '+1 650 555 0100' : 'Alpha')
+        .build();
     case 'iri':
       return builder.withDefaultValue(new Iri('https://example.org/default-identifier')).build();
     case 'numeric':

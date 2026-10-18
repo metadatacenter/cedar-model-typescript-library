@@ -1,3 +1,4 @@
+import { TextPolicy } from '../../../policy/TextPolicy';
 import { SchemaExtensions } from '../../../model/cedar/SchemaExtensions';
 import { AbstractArtifact } from '../../../model/cedar/AbstractArtifact';
 import { internalNameFor, SchemaArtifactKind, AbstractSchemaArtifact } from '../../../model/cedar/AbstractSchemaArtifact';
@@ -105,7 +106,7 @@ export abstract class YamlAbstractArtifactReader {
     if (raw !== null && typeof raw !== 'string') {
       throw new Error(`Invalid URI at "${key}": expected a string.`);
     }
-    if (raw !== null && raw.trim() === '') {
+    if (raw !== null && TextPolicy.isBlank(raw)) {
       throw new Error(`An empty string is not a URI at "${key}"; write null or leave the key out where there is no value.`);
     }
     ReaderUtil.assertIri(raw, key);

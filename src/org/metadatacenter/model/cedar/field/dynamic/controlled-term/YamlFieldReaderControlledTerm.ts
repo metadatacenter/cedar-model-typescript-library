@@ -17,6 +17,7 @@ import { ControlledTermFieldImpl } from './ControlledTermFieldImpl';
 import { YamlArtifactParsingResult } from '../../../util/compare/YamlArtifactParsingResult';
 import { Iri } from '../../../types/wrapped-types/Iri';
 import { ControlledTermVersion } from './value-constraint/ControlledTermVersion';
+import { JavaStrings } from '../../../util/JavaStrings';
 
 export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecificReader {
   override read(
@@ -107,16 +108,32 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
     }
     builder.withSourceSystem(ReaderUtil.getString(valueNode, YamlKeys.Controlled.sourceSystem));
 
-    const versionNode: JsonNode | null = ReaderUtil.getNodeOrNull(valueNode, YamlKeys.version);
-    if (versionNode !== null) {
-      builder.withVersion(
-        new ControlledTermVersion(
-          ReaderUtil.getStringOrEmpty(versionNode, YamlKeys.Controlled.versionId),
-          ReaderUtil.getString(versionNode, YamlKeys.Controlled.versionEffectiveDate),
-          ReaderUtil.getString(versionNode, YamlKeys.Controlled.versionDeclaredVersion),
-        ),
-      );
+    builder.withVersion(this.readVersion(ReaderUtil.getNodeOrNull(valueNode, YamlKeys.version)));
+  }
+
+  /**
+   * The snapshot a constraint is pinned to, or null for the newest one. A version that is not a
+   * mapping means the newest, as an absent one does, and the Java library reads it the same way. The
+   * meta-schema admits it as a string, and the documented one is "latest". A mapping pins a
+   * snapshot, so it must name one, and a missing, empty or blank `id` is refused, as Java and the
+   * meta-schema refuse it. Blank is Java's `String.isBlank`.
+   */
+  private readVersion(versionNode: JsonNode | null): ControlledTermVersion | null {
+    if (versionNode === null || typeof versionNode !== 'object' || Array.isArray(versionNode)) {
+      return null;
     }
+    const id: unknown = ReaderUtil.getNodeOrNull(versionNode, YamlKeys.Controlled.versionId);
+    if (typeof id !== 'string' || id === '') {
+      throw new Error(`A pinned version needs a non-empty string at "${YamlKeys.version}.${YamlKeys.Controlled.versionId}".`);
+    }
+    if (JavaStrings.isBlank(id)) {
+      throw new Error(`A pinned version's id at "${YamlKeys.version}.${YamlKeys.Controlled.versionId}" must not be blank.`);
+    }
+    return new ControlledTermVersion(
+      id,
+      ReaderUtil.getString(versionNode, YamlKeys.Controlled.versionEffectiveDate),
+      ReaderUtil.getString(versionNode, YamlKeys.Controlled.versionDeclaredVersion),
+    );
   }
 }
 

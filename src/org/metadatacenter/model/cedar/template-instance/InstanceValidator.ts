@@ -5,73 +5,34 @@ import { InstanceDataEmptyAtom } from './InstanceDataEmptyAtom';
 import { InstanceDataEmptyNode } from './InstanceDataEmptyNode';
 import { InstanceDataStringAtom } from './InstanceDataStringAtom';
 import { InstanceDataTypedAtom } from './InstanceDataTypedAtom';
-import { InstanceDataLinkAtom } from './InstanceDataLinkAtom';
-import { InstanceDataControlledAtom } from './InstanceDataControlledAtom';
 import { AbstractContainerArtifact } from '../AbstractContainerArtifact';
 import { AbstractChildDeploymentInfo } from '../deployment/AbstractChildDeploymentInfo';
 import { AbstractDynamicChildDeploymentInfo } from '../deployment/AbstractDynamicChildDeploymentInfo';
 import { TemplateElement } from '../element/TemplateElement';
 import { Template } from '../template/Template';
-import { TemporalFieldImpl } from '../field/dynamic/temporal/TemporalFieldImpl';
-import { NumericFieldImpl } from '../field/dynamic/numeric/NumericFieldImpl';
 import { JsonArtifactParsingResult } from '../util/compare/JsonArtifactParsingResult';
 import { ComparisonError } from '../util/compare/ComparisonError';
 import { ComparisonErrorType } from '../util/compare/ComparisonErrorType';
 import { JsonPath } from '../util/path/JsonPath';
-import { JsonSchema } from '../constants/JsonSchema';
 import { UiInputType } from '../types/wrapped-types/UiInputType';
 import { InstanceDataAttributeValueField } from './InstanceDataAttributeValueField';
 import { InstanceDataAttributeValueFieldName } from './InstanceDataAttributeValueFieldName';
 import { AttributeValueNamePolicy } from './AttributeValueNamePolicy';
 import { CedarArtifactType } from '../types/cedar-types/CedarArtifactType';
+import { TemplateField } from '../field/TemplateField';
+import { JsonTemplateInstanceWriter } from '../../../io/writer/json/JsonTemplateInstanceWriter';
+import { FieldValuePolicy } from '../../../policy/FieldValuePolicy';
+import { ValidationPolicy, ValidationSummary } from '../../../policy/ValidationPolicy';
+import { validationFieldSchema } from '../util/validationFieldSchema';
 
 const LOCATION = 'InstanceValidator';
 
 /**
- * Check a parsed instance against the template that defines it.
- *
- * Reading an instance answers no question about whether it is *correct*. The
- * reader takes a JSON document at face value — it is handed no template, so a
- * field that has lost its `@type`, an element short of its `minItems`, or a
- * property the template requires and the document omits all parse cleanly. The
- * verdict on those needs the template, which is what this takes.
- *
- * It is deliberately the counterpart of `InstanceInflater`: the same walk over
- * the same pairing of container and template, but reporting what is wrong
- * instead of repairing it. Where the inflater re-adds a missing slot, this
- * records that it was missing.
- *
- * ## What is checked
- *
- *  - **presence** — every child the template lists in its JSON Schema
- *    `required` has a slot. Static fields and attribute-value fields are
- *    excluded, exactly as `getChildrenNamesForRequiredInProperties` excludes
- *    them from `required` itself.
- *  - **cardinality** — a multi child holds an array and a single child does
- *    not, and the array's length sits within `minItems`/`maxItems`.
- *  - **value type** — a temporal or numeric value carries the `@type` its
- *    field declares. These are the two field kinds whose instance
- *    representation is a typed atom, so they are the two where a missing or
- *    wrong `@type` is unambiguous rather than a matter of interpretation.
- *  - **elements** — recursively, on the same terms.
- *
- * ## What is deliberately not checked
- *
- * An empty slot is valid. A property must be *present*, but `null` is a legal
- * value for one — that is how CEDAR represents "not filled in", and the
- * template's own schema permits it. So emptiness is never an error here; only
- * absence is.
- *
- * Emptiness has a legal spelling, though, and `{"@id": null}` is not it. A
- * literal's `@value` may be null; an `@id` may not, and an unfilled link is
- * written `{}`. That asymmetry is checked — see `validateIri`.
- *
- * Nor does this police the atom kind of every field. Only temporal and numeric
- * fields have a declared datatype to check against. Inferring the rest from
- * `uiInputType` would mean asserting things the model does not actually
- * constrain, and a validator that reports errors which are not errors is worse
- * than one that stays quiet: consumers stop believing it. Widening the check is
- * a matter of adding cases here as the model gains constraints worth enforcing.
+ * Compare a parsed instance with its template without repairing it. Missing slots,
+ * wrong atom/container shapes and malformed typed values are structural errors.
+ * Well-formed answers outside field constraints and incomplete answers are quality
+ * findings. validateReport exposes saveability separately from full validity.
+ * Remote terminology and authority verification is explicitly not checked here.
  */
 export class InstanceValidator {
   private constructor() {}
@@ -89,6 +50,11 @@ export class InstanceValidator {
     return result;
   }
 
+  /** Saveability and quality are different answers; semantic checks remain explicitly not checked. */
+  public static validateReport(instance: TemplateInstance, template: Template): ValidationSummary {
+    return this.validate(instance, template).getValidationReport();
+  }
+
   private static validateContainer(
     container: InstanceDataContainer,
     template: AbstractContainerArtifact,
@@ -96,6 +62,18 @@ export class InstanceValidator {
     result: JsonArtifactParsingResult,
   ): void {
     const info = template.getChildrenInfo();
+    const attributeNames = new Set(
+      InstanceValidator.attributeValueGroups(container)
+        .filter(([group]) => info.get(group)?.uiInputType === UiInputType.ATTRIBUTE_VALUE)
+        .flatMap(([, names]) => names),
+    );
+    for (const name of Object.keys(container.values)) {
+      if (info.get(name) === null && !attributeNames.has(name)) {
+        result.addValidationFinding(
+          ValidationPolicy.finding('valueShape', path.add(name).toPointer(), 'The template does not declare this property.'),
+        );
+      }
+    }
 
     const parent = template.cedarArtifactType === CedarArtifactType.TEMPLATE ? 'template' : 'element';
     for (const conflict of AttributeValueNamePolicy.findConflicts(container, parent).filter((candidate) => candidate.path.length === 0)) {
@@ -224,14 +202,10 @@ export class InstanceValidator {
     }
     const { minItems, maxItems } = childInfo;
     if (minItems !== null && values.length < minItems) {
-      result.addBlueprintComparisonError(
-        new ComparisonError(LOCATION, ComparisonErrorType.MISSING_INDEX_IN_REAL_OBJECT, path, minItems, values.length),
-      );
+      result.addValidationFinding(ValidationPolicy.finding('minItems', path.toPointer(), `Fewer than ${minItems} entries.`));
     }
     if (maxItems !== null && values.length > maxItems) {
-      result.addBlueprintComparisonError(
-        new ComparisonError(LOCATION, ComparisonErrorType.UNEXPECTED_INDEX_IN_REAL_OBJECT, path, maxItems, values.length),
-      );
+      result.addValidationFinding(ValidationPolicy.finding('maxItems', path.toPointer(), `More than ${maxItems} entries.`));
     }
   }
 
@@ -257,93 +231,52 @@ export class InstanceValidator {
       return;
     }
 
-    InstanceValidator.validateIri(value, path, result);
-
-    const expectedType = InstanceValidator.declaredValueType(child);
-    if (expectedType !== null) {
-      InstanceValidator.validateTypedValue(value, expectedType, path, result);
-    }
-  }
-
-  /**
-   * `{"@id": null}` is not an empty value. It is a malformed one.
-   *
-   * `@value` and `@id` are not symmetrical here, and the difference is easy to
-   * miss. A literal's `@value` may be null — JSON-LD allows it and CEDAR
-   * declares the property `["string", "null"]`, which is how an unfilled
-   * literal is written. An `@id` may not: JSON-LD requires an IRI, and CEDAR
-   * declares it `{"type": "string", "format": "uri"}` with no null branch. An
-   * unfilled link or controlled-term field is written `{}` instead, which the
-   * reader returns as an empty node.
-   *
-   * So a link atom carrying a null id came from a document that should not
-   * exist, and nothing else notices: the reader accepts it and the writer emits
-   * it back unchanged. None of the 120 instances in the shared corpus contains
-   * one.
-   *
-   * This is a structural rule rather than a datatype one, so it applies to any
-   * field. The instance's own top-level `@id` is a different matter — an unsaved
-   * instance legitimately has none — and is not reached here, which walks only
-   * the children the template declares.
-   */
-  private static validateIri(value: InstanceDataAtomType, path: JsonPath, result: JsonArtifactParsingResult): void {
-    const hasNullIri = (value instanceof InstanceDataLinkAtom || value instanceof InstanceDataControlledAtom) && value.id === null;
-    if (hasNullIri) {
-      result.addBlueprintComparisonError(
-        new ComparisonError(LOCATION, ComparisonErrorType.MISSING_VALUE_IN_REAL_OBJECT, path.add(JsonSchema.atId), 'an IRI', null),
-      );
-    }
-  }
-
-  /**
-   * The `@type` a filled value of this field must carry, or null where the
-   * field kind declares none.
-   */
-  private static declaredValueType(child: unknown): string | null {
-    if (child instanceof TemporalFieldImpl) {
-      return child.valueConstraints.temporalType.getValue();
-    }
-    if (child instanceof NumericFieldImpl) {
-      return child.valueConstraints.numberType.getValue();
-    }
-    return null;
-  }
-
-  private static validateTypedValue(
-    value: InstanceDataAtomType,
-    expectedType: string,
-    path: JsonPath,
-    result: JsonArtifactParsingResult,
-  ): void {
-    if (InstanceValidator.isEmpty(value)) {
-      return;
-    }
-
-    if (value instanceof InstanceDataTypedAtom) {
-      if (value.value !== null && value.type !== expectedType) {
-        result.addBlueprintComparisonError(
-          new ComparisonError(
-            LOCATION,
-            ComparisonErrorType.VALUE_MISMATCH,
-            path.add(JsonSchema.atType),
-            expectedType,
-            value.type ?? undefined,
+    if (child instanceof TemplateField) {
+      const field = validationFieldSchema(child);
+      const at = path.toPointer();
+      for (const finding of FieldValuePolicy.validateConfiguration(field, at)) result.addValidationFinding(finding);
+      if (value instanceof InstanceDataEmptyAtom && value.hasDiscardedContent()) {
+        result.addValidationFinding(ValidationPolicy.finding('valueShape', at, 'The supplied node contains an unrecognized value shape.'));
+        return;
+      }
+      const node = JsonTemplateInstanceWriter.writeValueNode(value);
+      for (const finding of FieldValuePolicy.validateNode(field, node, at)) {
+        let diagnostic: ComparisonError | undefined;
+        if ((finding.code === 'valueType' || (finding.code === 'missingProperty' && finding.path.endsWith('/@type'))) && node) {
+          const expected = field._valueConstraints?.numberType ?? field._valueConstraints?.temporalType;
+          diagnostic = new ComparisonError(
+            'ValidationPolicy',
+            Object.hasOwn(node, '@type') ? ComparisonErrorType.VALUE_MISMATCH : ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT,
+            path.add('@type'),
+            expected,
+            typeof node['@type'] === 'string' ? node['@type'] : undefined,
+          );
+        } else if (finding.code === 'iriMalformed' && node && node['@id'] === null) {
+          diagnostic = new ComparisonError(
+            'ValidationPolicy',
+            ComparisonErrorType.MISSING_VALUE_IN_REAL_OBJECT,
+            path.add('@id'),
+            'an IRI',
+            null,
+          );
+        }
+        result.addValidationFinding(finding, 'instance', diagnostic);
+      }
+      if (
+        node &&
+        typeof node === 'object' &&
+        typeof node['@id'] === 'string' &&
+        (FieldValuePolicy.isControlled(field) || FieldValuePolicy.authorityTypes.has(field._ui?.inputType ?? ''))
+      ) {
+        result.addValidationFinding(
+          ValidationPolicy.finding(
+            'semanticNotChecked',
+            at + '/@id',
+            'Identifier membership or existence has not been verified.',
+            'notChecked',
           ),
         );
       }
-      return;
-    }
-
-    /**
-     * A filled value that parsed as a plain string atom never had an `@type` to
-     * read. This is the shape an editor produces when it writes the value back
-     * and drops the type alongside it: the document stays well formed, the
-     * value survives, and only the schema knows anything is wrong.
-     */
-    if (value instanceof InstanceDataStringAtom && value.value !== null) {
-      result.addBlueprintComparisonError(
-        new ComparisonError(LOCATION, ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, path.add(JsonSchema.atType), expectedType),
-      );
     }
   }
 

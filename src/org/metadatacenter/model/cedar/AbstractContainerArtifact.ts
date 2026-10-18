@@ -8,6 +8,7 @@ import { CedarArtifactType } from './types/cedar-types/CedarArtifactType';
 import { AbstractChildDeploymentInfo } from './deployment/AbstractChildDeploymentInfo';
 import { CedarFieldType } from './types/cedar-types/CedarFieldType';
 import { ReservedNames } from './ReservedNames';
+import { JavaStrings } from './util/JavaStrings';
 
 export abstract class AbstractContainerArtifact extends AbstractSchemaArtifact {
   // Children
@@ -50,7 +51,7 @@ export abstract class AbstractContainerArtifact extends AbstractSchemaArtifact {
    * three no-break spaces.
    */
   private static refuseReservedChildName(parent: AbstractContainerArtifact, child: TemplateChild, name: string): void {
-    if (Array.from(name).every(AbstractContainerArtifact.isJavaWhitespace)) {
+    if (JavaStrings.isBlank(name)) {
       throw new Error('A child key must not be blank.');
     }
     const attributeValue =
@@ -60,13 +61,6 @@ export abstract class AbstractContainerArtifact extends AbstractSchemaArtifact {
     if (attributeValue ? ReservedNames.isReservedAttributeValueFieldName(name, kind) : ReservedNames.isReservedName(name)) {
       throw new Error(`Child name "${name}" is reserved for CEDAR instance metadata.`);
     }
-  }
-
-  /** Java's `Character.isWhitespace`, by which `String.isBlank` decides. */
-  private static isJavaWhitespace(character: string): boolean {
-    const cp = character.codePointAt(0)!;
-    if ((cp >= 0x09 && cp <= 0x0d) || (cp >= 0x1c && cp <= 0x1f)) return true;
-    return /\p{Z}/u.test(character) && cp !== 0xa0 && cp !== 0x2007 && cp !== 0x202f;
   }
 
   getChildrenInfo(): ContainerArtifactChildrenInfo {

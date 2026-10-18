@@ -36,18 +36,11 @@ const CORPUS = path.resolve(__dirname, '../../../../../../cedar-test-artifacts/a
  */
 const UNPARSEABLE = ['086'];
 
-/**
- * Pairs that genuinely do not conform, with the count they should report.
- *
- * These are findings, not exemptions. `002`'s template declares `minItems: 10`
- * on `Multi Text Field` and its instance carries two values, so the instance
- * does not satisfy its own template. Listing it keeps the suite honest about
- * what the corpus contains; if the corpus is corrected, this entry fails and
- * should be deleted.
- */
-const KNOWN_NONCONFORMANT: Record<string, number> = {
-  '002': 1,
-};
+/** Structural failures are not the same as incomplete/low-quality answers. */
+// 029 contains {} for a literal occurrence whose schema explicitly requires @value.
+// An unanswered literal is {"@value":null}; this missing structural member must block saving.
+// 004 declares two decimal places for an xsd:long field with three occurrences.
+const KNOWN_NONCONFORMANT: Record<string, number> = { '004': 3, '029': 1 };
 
 const pairs = (): Array<[string, string, string]> => {
   if (!fs.existsSync(CORPUS)) {
@@ -112,4 +105,19 @@ describe('the validator over the shared corpus', () => {
     // A non-empty array here names the entries to delete from KNOWN_NONCONFORMANT.
     expect(stale).toStrictEqual([]);
   });
+});
+
+test('the corpus retains the known incomplete repeated answer as quality, not structural damage', () => {
+  const directory = path.join(CORPUS, '002');
+  const template = CedarReaders.json()
+    .getFebruary2024()
+    .getTemplateReader()
+    .readFromString(fs.readFileSync(path.join(directory, 'template-002.json'), 'utf8')).template;
+  const instance = CedarReaders.json()
+    .getFebruary2024()
+    .getTemplateInstanceReader()
+    .readFromString(fs.readFileSync(path.join(directory, 'instance-002.json'), 'utf8')).instance;
+  const report = InstanceValidator.validateReport(instance, template);
+  expect(report.canSave).toBe(true);
+  expect(report.findings).toContainEqual(expect.objectContaining({ code: 'minItems', category: 'completeness' }));
 });

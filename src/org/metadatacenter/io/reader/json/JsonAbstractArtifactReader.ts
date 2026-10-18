@@ -1,3 +1,4 @@
+import { TextPolicy } from '../../../policy/TextPolicy';
 import { JsonReaderBehavior } from '../../../behavior/JsonReaderBehavior';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { CedarArtifactId } from '../../../model/cedar/types/cedar-types/CedarArtifactId';
@@ -30,7 +31,7 @@ export abstract class JsonAbstractArtifactReader {
     if (raw !== null && typeof raw !== 'string') {
       throw new Error(`Invalid URI at "${key}": expected a string.`);
     }
-    if (raw !== null && raw.trim() === '') {
+    if (raw !== null && TextPolicy.isBlank(raw)) {
       throw new Error(`An empty string is not a URI at "${key}"; write null or leave the key out where there is no value.`);
     }
     ReaderUtil.assertIri(raw, key);

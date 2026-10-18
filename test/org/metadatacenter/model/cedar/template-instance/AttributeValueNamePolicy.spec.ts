@@ -35,6 +35,42 @@ const jsonInstance = (values: object) => ({
   ...values,
 });
 
+describe('Unicode attribute-name preservation', () => {
+  test.each(['\u00a0', '\u2007', '\u202f', '\ufeff', 'é', 'e\u0301', '😀'])('preserves %j through built and read JSON/YAML', (name) => {
+    const container = new InstanceDataContainer();
+    container.setValue('_attributes', [new InstanceDataAttributeValueFieldName(name)]);
+    container.setValue(name, new InstanceDataStringAtom('kept value'));
+    const writer = CedarWriters.json().getStrict().getTemplateInstanceWriter();
+    const reader = CedarReaders.json().getStrict().getTemplateInstanceReader();
+    for (const instance of [
+      instanceWith(container),
+      reader.readFromObject(
+        jsonInstance({
+          _attributes: [name],
+          [name]: { '@value': 'kept value' },
+        }) as never,
+      ).instance,
+    ]) {
+      const json = writer.getAsJsonNode(instance);
+      expect(json['_attributes']).toEqual([name]);
+      expect(json[name]).toEqual({ '@value': 'kept value' });
+      const yaml = CedarWriters.yaml().getStrict().getTemplateInstanceWriter().getAsYamlString(instance);
+      const roundtrip = CedarReaders.yaml().getStrict().getTemplateInstanceReader().readFromString(yaml).instance;
+      const back = writer.getAsJsonNode(roundtrip);
+      expect(back['_attributes']).toEqual([name]);
+      expect(back[name]).toEqual({ '@value': 'kept value' });
+    }
+  });
+
+  test.each(['\u001c', '\u001d', '\u001e', '\u001f', '\u2003'])('reports blank document names %j', (name) => {
+    const result = CedarReaders.json()
+      .getStrict()
+      .getTemplateInstanceReader()
+      .readFromObject(jsonInstance({ _attributes: [name], [name]: { '@value': 'kept value' } }) as never);
+    expect(result.parsingResult.wasSuccessful()).toBe(false);
+  });
+});
+
 describe('attribute-value name policy', () => {
   it('finds a collision with an ordinary sibling', () => {
     expect(AttributeValueNamePolicy.findConflicts(collidingContainer())).toEqual(

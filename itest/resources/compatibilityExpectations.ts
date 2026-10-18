@@ -35,7 +35,6 @@ export const CEE_TEMPLATE_DIAGNOSTICS: Readonly<Record<string, DiagnosticExpecta
   '075': { errors: 0, warnings: 1, reason: 'known production blueprint variation' },
   '076': { errors: 0, warnings: 7, reason: 'legacy context and UI metadata variations' },
   '085': { errors: 0, warnings: 4, reason: 'legacy context and UI metadata variations' },
-  '086': { errors: 14, warnings: 20, reason: 'the committed source is deliberately malformed JSON' },
   '087': { errors: 0, warnings: 7, reason: 'legacy context and UI metadata variations' },
 };
 

@@ -31,10 +31,10 @@ describe('Template', () => {
       .withStatus('bibo:published')
       .withPreferredLabel('Preferred label')
       .withAlternateLabels(['Alt label 1', 'Alt label 2', 'Alt label 3'])
-      .withDefaultValue('default')
+      .withDefaultValue('default text')
       .withMinLength(10)
       .withMaxLength(100)
-      .withRegex('regex')
+      .withRegex('.*')
       .build();
 
     const textFieldDeploymentBuilder = textField
@@ -104,10 +104,10 @@ describe('Template', () => {
     expect(backparsed['properties']['_text_field']['items']['_ui']['valueRecommendationEnabled']).toBe(true);
 
     expect(backparsed['properties']['_text_field']['items']['_valueConstraints']['requiredValue']).toBe(true);
-    expect(backparsed['properties']['_text_field']['items']['_valueConstraints']['defaultValue']).toBe('default');
+    expect(backparsed['properties']['_text_field']['items']['_valueConstraints']['defaultValue']).toBe('default text');
     expect(backparsed['properties']['_text_field']['items']['_valueConstraints']['minLength']).toBe(10);
     expect(backparsed['properties']['_text_field']['items']['_valueConstraints']['maxLength']).toBe(100);
-    expect(backparsed['properties']['_text_field']['items']['_valueConstraints']['regex']).toBe('regex');
+    expect(backparsed['properties']['_text_field']['items']['_valueConstraints']['regex']).toBe('.*');
 
     expect(backparsed['properties']['_text_field']['items']['@id']).toBe(
       'https://repo.metadatacenter.org/template-fields/f38b5ef4-a078-4d82-90c0-a9a721ad5ecf',

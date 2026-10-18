@@ -1,9 +1,16 @@
 import { createHash } from 'node:crypto';
 import * as YAML from 'yaml';
 import { CedarReaders, CedarWriters, CedarFieldType } from '../src';
-import { fieldCases as cases, fieldMatrixBytes as bytes, fieldMatrixLock as lock } from './FieldConcordanceFixture';
+import {
+  fieldCase,
+  fieldCases as cases,
+  fieldInputs as inputs,
+  fieldMatrixBytes as bytes,
+  fieldMatrixLock as lock,
+} from './FieldConcordanceFixture';
 
 const jsonReaders = CedarReaders.json().getStrict();
+const yamlReaders = CedarReaders.yaml().getStrict();
 const jsonWriters = CedarWriters.json().getStrict();
 const yamlWriters = CedarWriters.yaml().getStrict();
 
@@ -61,5 +68,36 @@ for (const row of cases) {
         expect(actual).toEqual(compact ? row.elementJsonFromCompactYaml : row.elementJsonFromYaml);
       });
     }
+  });
+}
+
+/*
+ * A version stated in a form no writer produces. Java reads the string "latest" as it reads an absent
+ * version, so both readers here must produce the documents of the case with none, and both writers
+ * must then write what Java writes for it. Java refuses a version object that names no snapshot, and
+ * so must both readers here.
+ */
+for (const input of inputs) {
+  describe(input.id, () => {
+    if (input.refused) {
+      it('the JSON reader refuses it, as Java refuses it', () => {
+        expect(() => jsonReaders.getTemplateFieldReader().readFromObject(input.json)).toThrow(/version/);
+      });
+      it('the YAML reader refuses it, as Java refuses it', () => {
+        expect(() => yamlReaders.getTemplateFieldReader().readFromString(input.yaml)).toThrow(/version/);
+      });
+      return;
+    }
+    const expected = fieldCase(input.against);
+    it('JSON reads as Java reads it, and both writers write what Java writes', () => {
+      const field = jsonReaders.getTemplateFieldReader().readFromObject(input.json).field;
+      expect(jsonWriters.getFieldWriterForField(field).getAsJsonNode(field)).toEqual(expected.json);
+      expect(YAML.parse(yamlWriters.getFieldWriterForField(field).getAsYamlString(field))).toEqual(YAML.parse(expected.yaml));
+    });
+    it('YAML reads as Java reads it, and both writers write what Java writes', () => {
+      const field = yamlReaders.getTemplateFieldReader().readFromString(input.yaml).field;
+      expect(jsonWriters.getFieldWriterForField(field).getAsJsonNode(field)).toEqual(expected.jsonFromYaml);
+      expect(YAML.parse(yamlWriters.getFieldWriterForField(field).getAsYamlString(field))).toEqual(YAML.parse(expected.yaml));
+    });
   });
 }

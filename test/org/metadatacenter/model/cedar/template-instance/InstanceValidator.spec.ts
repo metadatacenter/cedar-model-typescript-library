@@ -1,4 +1,4 @@
-import { CedarBuilders, CedarReaders, InstanceValidator, NumberType, TemporalType } from '../../../../../../src';
+import { CedarBuilders, CedarReaders, InstanceValidator, TemplateValueValidator, NumberType, TemporalType } from '../../../../../../src';
 
 /**
  * An instance judged against its template.
@@ -108,6 +108,30 @@ const errorsOf = (source: object) =>
     .getBlueprintComparisonErrors()
     .map((e) => `${e.errorType.getValue()} at ${JSON.stringify(e.errorPath)}`);
 
+test('an undeclared field cannot bypass the template structure', () => {
+  const report = check({ ...complete(), extra: { '@value': 'undeclared' } }).getValidationReport();
+  expect(report.canSave).toBe(false);
+  expect(report.findings).toContainEqual(expect.objectContaining({ path: '/extra', category: 'structural' }));
+});
+
+test('an invalid imported default cannot throw away an instance validation report', () => {
+  const field = CedarBuilders.numericFieldBuilder().withSchemaName('Count').withNumberType(NumberType.INT).withMaxValue(10).build();
+  field.valueConstraints.defaultValue = 99;
+  const definition = CedarBuilders.templateBuilder().withSchemaName('T').addChild(field, dep(field, '_count')).build();
+  const instance = CedarReaders.json()
+    .getFebruary2024()
+    .getTemplateInstanceReader()
+    .readFromObject({ ...complete(), _count: { '@value': '12', '@type': 'xsd:int' } } as any, undefined as never).instance;
+  expect(InstanceValidator.validateReport(instance, definition).findings).toContainEqual(
+    expect.objectContaining({ code: 'maxValue', path: '/_count/@value' }),
+  );
+  expect(field.valueConstraints.defaultValue).toBe(99);
+  expect(TemplateValueValidator.validate(definition).findings).toContainEqual(
+    expect.objectContaining({ code: 'maxValue', path: '/properties/_count/_valueConstraints/defaultValue' }),
+  );
+  expect(TemplateValueValidator.validate(definition).canSave).toBe(false);
+});
+
 describe('a correct instance', () => {
   it('reports no errors', () => {
     const result = check(complete());
@@ -127,8 +151,8 @@ describe('a correct instance', () => {
     const empty = {
       ...complete(),
       _note: { '@value': null },
-      _when: { '@value': null },
-      _count: { '@value': null },
+      _when: { '@value': null, '@type': 'xsd:date' },
+      _count: { '@value': null, '@type': 'xsd:int' },
       _tags: [{ '@value': null }, { '@value': null }],
       _addr: { _city: { '@value': null } },
     };
@@ -162,7 +186,7 @@ describe('a value that lost its @type', () => {
   });
 
   it('is not reported when the slot is simply empty', () => {
-    expect(errorsOf({ ...complete(), _when: { '@value': null } })).toStrictEqual([]);
+    expect(errorsOf({ ...complete(), _when: { '@value': null, '@type': 'xsd:date' } })).toStrictEqual([]);
   });
 });
 
@@ -200,12 +224,16 @@ describe('@value and @id are not symmetrical', () => {
     expect(errors[0]).toContain('@id');
   });
 
-  it('accepts {} as the way an unfilled link is written', () => {
-    expect(errorsOf({ ...complete(), _note: {} })).toStrictEqual([]);
+  it('requires the null @value property even when a literal is unfilled', () => {
+    const report = check({ ...complete(), _note: {} }).getValidationReport();
+    expect(report.canSave).toBe(false);
+    expect(report.findings).toContainEqual(expect.objectContaining({ code: 'missingProperty', path: '/_note/@value' }));
   });
 
-  it('accepts a real IRI', () => {
-    expect(errorsOf({ ...complete(), _note: { '@id': 'https://example.org/a' } })).toStrictEqual([]);
+  it('rejects an IRI atom in a literal field', () => {
+    const report = check({ ...complete(), _note: { '@id': 'https://example.org/a' } }).getValidationReport();
+    expect(report.canSave).toBe(false);
+    expect(report.findings).toContainEqual(expect.objectContaining({ code: 'missingProperty', path: '/_note/@value' }));
   });
 
   it('reports a null @id inside a list, at its index', () => {
@@ -250,20 +278,23 @@ describe('cardinality', () => {
    * against a schema demanding one — invalid the moment it was created.
    */
   it('reports a list shorter than minItems', () => {
-    const errors = errorsOf({ ...complete(), _tags: [{ '@value': 'a' }] });
-    expect(errors).toHaveLength(1);
-    expect(errors[0]).toContain('missingIndexInRealObject');
+    const report = check({ ...complete(), _tags: [{ '@value': 'a' }] }).getValidationReport();
+    expect(report.canSave).toBe(true);
+    expect(report.isValid).toBe(false);
+    expect(report.findings).toContainEqual(expect.objectContaining({ code: 'minItems', category: 'completeness' }));
   });
 
   it('reports an empty list where minItems demands entries', () => {
-    expect(errorsOf({ ...complete(), _tags: [] })).toHaveLength(1);
+    const report = check({ ...complete(), _tags: [] }).getValidationReport();
+    expect(report.canSave).toBe(true);
+    expect(report.findings.map((f) => f.code)).toContain('minItems');
   });
 
   it('reports a list longer than maxItems', () => {
     const tags = [{ '@value': 'a' }, { '@value': 'b' }, { '@value': 'c' }, { '@value': 'd' }, { '@value': 'e' }];
-    const errors = errorsOf({ ...complete(), _tags: tags });
-    expect(errors).toHaveLength(1);
-    expect(errors[0]).toContain('unexpectedIndexInRealObject');
+    const report = check({ ...complete(), _tags: tags }).getValidationReport();
+    expect(report.canSave).toBe(true);
+    expect(report.findings).toContainEqual(expect.objectContaining({ code: 'maxItems', category: 'constraint' }));
   });
 
   it('accepts a length between the bounds', () => {

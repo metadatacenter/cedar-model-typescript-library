@@ -53,13 +53,17 @@ for (const budget of [1, 2, 8])
       active += (event.event === 'start' ? 1 : -1) * Number(event.workers);
       assert.ok(active >= 0 && active <= budget);
       if (event.event === 'end') completed.push(event.script);
-      else if (event.script !== 'test:fixtures') assert.ok(completed.includes('test:fixtures'));
+      else if (event.script !== 'test:fixtures') {
+        assert.ok(completed.includes('test:fixtures'));
+        if (event.script === 'test:browser') assert.ok(completed.includes('test:package'));
+      }
     }
     assert.equal(active, 0);
     assert.deepEqual(completed.sort(), [
       'lint',
       'parity:json',
       'parity:yaml',
+      'test:browser',
       'test:coverage:prepared',
       'test:fixtures',
       'test:package',

@@ -1,65 +1,22 @@
+import { TimestampPolicy } from '../../../../policy/TimestampPolicy';
+
+/** A lossless provenance timestamp, independent of JavaScript Date's millisecond rounding. */
 export class IsoDate {
-  private readonly date: Date | null;
-  private readonly timezoneOffset: string | null;
+  private constructor(private readonly value: string | null) {}
+  public static NULL = new IsoDate(null);
 
-  private constructor(date: Date | null, timezoneOffset: string | null) {
-    this.date = date;
-    this.timezoneOffset = timezoneOffset;
-  }
-
-  public static NULL = new IsoDate(null, null);
-
-  // Returns the date as an ISO string with the original time zone offset without partial seconds.
   public getValue(): string | null {
-    if (this.date != null) {
-      if (this.timezoneOffset === 'Z') {
-        return this.date.toISOString().replace(/\.\d{3}Z$/, 'Z');
-      }
-
-      const offsetMatch = this.timezoneOffset!.match(/([+-])(\d{2}):(\d{2})/);
-      if (offsetMatch) {
-        const sign = offsetMatch[1] === '+' ? 1 : -1;
-        const offsetHours = parseInt(offsetMatch[2], 10) * sign;
-        const offsetMinutes = parseInt(offsetMatch[3], 10) * sign;
-
-        const utcMilliseconds = this.date.getTime();
-        const offsetMilliseconds = (offsetHours * 60 + offsetMinutes) * 60 * 1000;
-
-        const localDate = new Date(utcMilliseconds + offsetMilliseconds);
-
-        const year = localDate.getUTCFullYear();
-        const month = localDate.getUTCMonth() + 1;
-        const day = localDate.getUTCDate();
-        const hour = localDate.getUTCHours();
-        const minute = localDate.getUTCMinutes();
-        const second = localDate.getUTCSeconds();
-
-        const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}T${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:${second.toString().padStart(2, '0')}`;
-
-        return `${formattedDate}${this.timezoneOffset}`;
-      }
-      return null;
-    } else {
-      return null;
-    }
+    return this.value;
   }
 
-  public static forValue(isoDateString: string | null): IsoDate {
-    if (!isoDateString) {
-      return IsoDate.NULL;
-    }
-    // Regex to insert colon in timezone offset if missing
-    isoDateString = isoDateString.replace(/([+-]\d{2})(\d{2})$/, '$1:$2');
-
-    const timezoneOffset = isoDateString.match(/Z|([+-])([01]\d):?([0-5]\d)$/)?.[0] ?? 'Z';
-    const date = new Date(timezoneOffset === 'Z' && !isoDateString.endsWith('Z') ? `${isoDateString}Z` : isoDateString);
-    return new IsoDate(date, timezoneOffset);
+  public static forValue(value: string | null): IsoDate {
+    return value === null || value === '' ? IsoDate.NULL : new IsoDate(TimestampPolicy.canonical(value));
   }
 
   public static now(): IsoDate {
     const date = new Date();
-    const timezoneOffset = this.getCurrentGMTOffset();
-    return new IsoDate(date, timezoneOffset);
+    const local = new Date(date.getTime() - date.getTimezoneOffset() * 60_000).toISOString().slice(0, -1);
+    return IsoDate.forValue(local + this.getCurrentGMTOffset());
   }
 
   public static getCurrentGMTOffset(): string {

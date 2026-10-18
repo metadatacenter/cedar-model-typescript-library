@@ -1,4 +1,11 @@
-import { CedarWriters, JsonTemplateFieldReader } from '../../../../../src';
+import {
+  CedarBuilders,
+  CedarWriters,
+  ControlledTermOntologyBuilder,
+  ControlledTermVersion,
+  Iri,
+  JsonTemplateFieldReader,
+} from '../../../../../src';
 import { ControlledTermFieldImpl } from '../../../../../src/org/metadatacenter/model/cedar/field/dynamic/controlled-term/ControlledTermFieldImpl';
 import { TemplateField } from '../../../../../src/org/metadatacenter/model/cedar/field/TemplateField';
 
@@ -68,12 +75,31 @@ describe('a controlled-term constraint read from JSON', () => {
     expect(ontology.version?.declaredVersion).toBeNull();
   });
 
+  // Four cases: a space, the five whitespace controls, two information separators, and two Unicode spaces.
+  test.each([' ', '\t\n\u000b\f\r', '\u001c\u001f', '\u2003\u3000'])('refuses a pinned version whose id is blank (%j)', (id) => {
+    // A blank id identifies no snapshot any more than an empty one does, and Java refuses both.
+    expect(() => readOntology(CONSTRAINED({ version: { id } }))).toThrow('A pinned version\'s id at "version.id" must not be blank.');
+  });
+
+  test('refuses an empty id with the message it always gave', () => {
+    expect(() => readOntology(CONSTRAINED({ version: { id: '' } }))).toThrow('A pinned version needs a non-empty string at "version.id".');
+  });
+
+  // Two cases: whitespace around the hash, and the three no-break spaces Java does not count as whitespace.
+  test.each([' a1b2c3d4e5f6 ', '\u00a0\u2007\u202f'])('reads an id that is not blank in Java (%j)', (id) => {
+    expect(readOntology(CONSTRAINED({ version: { id } })).version?.id).toBe(id);
+  });
+
   test('carries none of them when the document states none', () => {
     const ontology = readOntology(CONSTRAINED({}));
 
     expect(ontology.iri).toBeNull();
     expect(ontology.sourceSystem).toBeNull();
     expect(ontology.version).toBeNull();
+  });
+
+  test('reads "latest" as no version, as it reads an absent one', () => {
+    expect(readOntology(CONSTRAINED({ version: 'latest' })).version).toBeNull();
   });
 
   test('and writes back what it read', () => {
@@ -95,4 +121,48 @@ describe('a controlled-term constraint read from JSON', () => {
       version: { id: 'a1b2c3d4e5f6', effectiveDate: '2026-06-15' },
     });
   });
+});
+
+describe('a pinned version a caller builds, written to JSON', () => {
+  // The constraint the documents above carry, built rather than read, and pinned to the given id.
+  const pinnedTo = (id: string) =>
+    CedarBuilders.controlledTermFieldBuilder()
+      .withAtId('https://repo.metadatacenter.org/template-fields/f1')
+      .withTitle('Cell Type field schema')
+      .withDescription('d')
+      .withSchemaName('Cell Type')
+      .withSchemaDescription('d')
+      .addOntology(
+        new ControlledTermOntologyBuilder()
+          .withAcronym('CL')
+          .withName('Cell Ontology')
+          .withUri(new Iri('https://data.bioontology.org/ontologies/CL'))
+          .withVersion(new ControlledTermVersion(id))
+          .build(),
+      )
+      .build();
+
+  // The reader refuses these ids in a document. A caller that builds a version with one is refused when
+  // the version is constructed, so no writer is handed a pin that neither library reads.
+  test('cannot carry an empty id', () => {
+    expect(() => pinnedTo('')).toThrow('A pinned version requires an id.');
+  });
+
+  // Four cases: a space, the five whitespace controls, two information separators, and two Unicode spaces.
+  test.each([' ', '\t\n\u000b\f\r', '\u001c\u001f', '\u2003\u3000'])('cannot carry a blank id (%j)', (id) => {
+    expect(() => pinnedTo(id)).toThrow("A pinned version's id must not be blank.");
+  });
+
+  // Three cases: whitespace around the hash, the three no-break spaces, and a zero-width space, a
+  // byte-order mark and a next-line control. Java counts none of the last six as whitespace.
+  test.each([' a1b2c3d4e5f6 ', '\u00a0\u2007\u202f', '\u200b\ufeff\u0085'])(
+    'writes an id that is not blank in Java, and reads it back (%j)',
+    (id) => {
+      const built = pinnedTo(id);
+      const written = JSON.parse(CedarWriters.json().getStrict().getFieldWriterForField(built).getAsJsonString(built));
+
+      expect(written['_valueConstraints']['ontologies'][0]['version']).toStrictEqual({ id });
+      expect(readOntology(written).version?.id).toBe(id);
+    },
+  );
 });

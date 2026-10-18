@@ -27,10 +27,10 @@ describe('TextFieldBuilder', () => {
       .withSchemaDescription('Schema description of the template')
       .withPreferredLabel('Preferred label')
       .withAlternateLabels(['Alt label 1', 'Alt label 2', 'Alt label 3'])
-      .withDefaultValue('default')
+      .withDefaultValue('default text')
       .withMinLength(10)
       .withMaxLength(100)
-      .withRegex('regex')
+      .withRegex('.*')
       .build();
 
     const writers: CedarJsonWriters = CedarWriters.json().getStrict();
@@ -71,8 +71,8 @@ describe('TextFieldBuilder', () => {
     expect(backparsed['skos:altLabel']).toStrictEqual(['Alt label 1', 'Alt label 2', 'Alt label 3']);
 
     expect(backparsed['_valueConstraints']['requiredValue']).toBe(false);
-    expect(backparsed['_valueConstraints']['regex']).toBe('regex');
-    expect(backparsed['_valueConstraints']['defaultValue']).toBe('default');
+    expect(backparsed['_valueConstraints']['regex']).toBe('.*');
+    expect(backparsed['_valueConstraints']['defaultValue']).toBe('default text');
     expect(backparsed['_valueConstraints']['minLength']).toBe(10);
     expect(backparsed['_valueConstraints']['maxLength']).toBe(100);
   });

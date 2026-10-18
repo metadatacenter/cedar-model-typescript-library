@@ -6,6 +6,7 @@ import { TemporalType } from '../../../types/wrapped-types/TemporalType';
 import { TemporalFieldBuilder } from './TemporalFieldBuilder';
 import { TemporalFieldImpl } from './TemporalFieldImpl';
 import { TemporalDefaultValueValidator } from './TemporalDefaultValueValidator';
+import { FieldValuePolicy } from '../../../../../policy/FieldValuePolicy';
 
 export class TemporalFieldBuilderImpl extends TemplateFieldBuilder implements TemporalFieldBuilder {
   private timezoneEnabled: boolean = false;
@@ -49,6 +50,10 @@ export class TemporalFieldBuilderImpl extends TemplateFieldBuilder implements Te
 
   public build(): TemporalField {
     TemporalDefaultValueValidator.assertValid(this.temporalType, this.temporalGranularity, this.defaultValue);
+    FieldValuePolicy.assertConsistent({
+      _ui: { inputType: 'temporal', timezoneEnabled: this.timezoneEnabled, temporalGranularity: this.temporalGranularity.getValue() },
+      _valueConstraints: { temporalType: this.temporalType.getValue(), defaultValue: this.defaultValue },
+    });
     const temporalField = TemporalFieldImpl.buildEmpty();
     super.buildInternal(temporalField);
 

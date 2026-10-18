@@ -1,3 +1,5 @@
+import { FieldValuePolicy } from '../../../../../policy/FieldValuePolicy';
+import { NumericInput, NumericValue, NumericPolicy } from '../../../../../policy/NumericPolicy';
 import { NumericField } from './NumericField';
 import { TemplateFieldBuilder } from '../../TemplateFieldBuilder';
 import { NumberType } from '../../../types/wrapped-types/NumberType';
@@ -7,11 +9,11 @@ import { NumericDefaultValueValidator } from './NumericDefaultValueValidator';
 
 export class NumericFieldBuilderImpl extends TemplateFieldBuilder implements NumericFieldBuilder {
   private numberType: NumberType = NumberType.DECIMAL;
-  private minValue: number | null = null;
-  private maxValue: number | null = null;
+  private minValue: NumericValue | null = null;
+  private maxValue: NumericValue | null = null;
   private decimalPlaces: number | null = null;
   private unitOfMeasure: string | null = null;
-  private defaultValue: number | null = null;
+  private defaultValue: NumericValue | null = null;
 
   private constructor() {
     super();
@@ -26,13 +28,13 @@ export class NumericFieldBuilderImpl extends TemplateFieldBuilder implements Num
     return this;
   }
 
-  public withMinValue(minValue: number | null): NumericFieldBuilder {
-    this.minValue = minValue;
+  public withMinValue(minValue: NumericInput | null): NumericFieldBuilder {
+    this.minValue = minValue === null ? null : NumericPolicy.value(minValue);
     return this;
   }
 
-  public withMaxValue(maxValue: number | null): NumericFieldBuilder {
-    this.maxValue = maxValue;
+  public withMaxValue(maxValue: NumericInput | null): NumericFieldBuilder {
+    this.maxValue = maxValue === null ? null : NumericPolicy.value(maxValue);
     return this;
   }
 
@@ -46,13 +48,23 @@ export class NumericFieldBuilderImpl extends TemplateFieldBuilder implements Num
     return this;
   }
 
-  public withDefaultValue(defaultValue: number | null): NumericFieldBuilder {
-    this.defaultValue = defaultValue;
+  public withDefaultValue(defaultValue: NumericInput | null): NumericFieldBuilder {
+    this.defaultValue = defaultValue === null ? null : NumericPolicy.value(defaultValue);
     return this;
   }
 
   public build(): NumericField {
     NumericDefaultValueValidator.assertValid(this.numberType, this.defaultValue, this.minValue, this.maxValue);
+    FieldValuePolicy.assertConsistent({
+      _ui: { inputType: 'numeric' },
+      _valueConstraints: {
+        numberType: this.numberType.getValue(),
+        defaultValue: this.defaultValue,
+        minValue: this.minValue,
+        maxValue: this.maxValue,
+        decimalPlace: this.decimalPlaces,
+      },
+    });
     const numericField = NumericFieldImpl.buildEmpty();
     super.buildInternal(numericField);
 

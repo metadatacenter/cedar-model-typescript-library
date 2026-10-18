@@ -1,3 +1,4 @@
+import { JsonSourcePolicy } from '../../../policy/JsonSourcePolicy';
 import { applySchemaReaderDefaults } from '../SchemaReaderDefaults';
 import { CedarModel } from '../../../model/cedar/constants/CedarModel';
 import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
@@ -45,12 +46,7 @@ export class JsonTemplateElementReader extends JsonContainerArtifactReader {
   }
 
   public readFromString(elementSourceString: string): JsonTemplateElementReaderResult {
-    let elementObject;
-    try {
-      elementObject = JSON.parse(elementSourceString);
-    } catch {
-      elementObject = {};
-    }
+    const elementObject = JsonSourcePolicy.parse(elementSourceString);
     return this.readFromObject(elementObject, new JsonPath());
   }
 

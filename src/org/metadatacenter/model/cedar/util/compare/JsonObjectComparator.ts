@@ -1,3 +1,4 @@
+import { ExactDecimal, NumericPolicy } from '../../../../policy/NumericPolicy';
 import { JsonArtifactParsingResult } from './JsonArtifactParsingResult';
 import { ComparisonError } from './ComparisonError';
 import { Primitive } from '../../types/basic-types/Primitive';
@@ -8,6 +9,15 @@ import { JsonSchema } from '../../constants/JsonSchema';
 import { CedarModel } from '../../constants/CedarModel';
 import { ReaderWriterBehavior } from '../../../../behavior/ReaderWriterBehavior';
 import { ComparableObject } from './ComparableObject';
+
+function structured(value: unknown): boolean {
+  return value !== null && typeof value === 'object' && !ExactDecimal.isExact(value);
+}
+function equal(left: unknown, right: unknown): boolean {
+  if ((typeof left === 'number' || ExactDecimal.isExact(left)) && (typeof right === 'number' || ExactDecimal.isExact(right)))
+    return NumericPolicy.compare(left, right) === 0;
+  return left === right;
+}
 
 export class JsonObjectComparator {
   static compareBothWays(
@@ -58,9 +68,9 @@ export class JsonObjectComparator {
               comparisonResult.addBlueprintComparisonError(
                 new ComparisonError('ocl02', ComparisonErrorType.MISSING_INDEX_IN_REAL_OBJECT, newPath, obj1[index]),
               );
-            } else if (typeof obj1[index] === 'object' && obj1[index] !== null && typeof obj2[index] === 'object' && obj2[index] !== null) {
+            } else if (structured(obj1[index]) && structured(obj2[index])) {
               recurse(newPath, obj1[index] as ComparableObject, obj2[index] as ComparableObject);
-            } else if (obj1[index] !== obj2[index]) {
+            } else if (!equal(obj1[index], obj2[index])) {
               comparisonResult.addBlueprintComparisonError(
                 new ComparisonError(
                   'ocl03',
@@ -108,9 +118,9 @@ export class JsonObjectComparator {
                 new ComparisonError('oco02', ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, newPath),
               );
             }
-          } else if (typeof obj1[key] === 'object' && obj1[key] !== null && typeof obj2[key] === 'object' && obj2[key] !== null) {
+          } else if (structured(obj1[key]) && structured(obj2[key])) {
             recurse(newPath, obj1[key] as ComparableObject, obj2[key] as ComparableObject);
-          } else if (obj1[key] !== obj2[key]) {
+          } else if (!equal(obj1[key], obj2[key])) {
             const error = new ComparisonError(
               'oco03',
               ComparisonErrorType.VALUE_MISMATCH,
@@ -223,9 +233,9 @@ export class JsonObjectComparator {
                 behavior,
                 new ComparisonError('oll01', ComparisonErrorType.MISSING_INDEX_IN_REAL_OBJECT, newPath, obj1[index]),
               );
-            } else if (typeof item === 'object' && item !== null && typeof obj2[index] === 'object' && obj2[index] !== null) {
+            } else if (structured(item) && structured(obj2[index])) {
               recurse(newPath, item as ComparableObject, obj2[index] as ComparableObject);
-            } else if (item !== obj2[index]) {
+            } else if (!equal(item, obj2[index])) {
               JsonObjectComparator.reportToLeft(
                 comparisonResult,
                 behavior,
@@ -244,9 +254,9 @@ export class JsonObjectComparator {
               behavior,
               new ComparisonError('olo01', ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, newPath),
             );
-          } else if (typeof obj1[key] === 'object' && obj1[key] !== null && typeof obj2[key] === 'object' && obj2[key] !== null) {
+          } else if (structured(obj1[key]) && structured(obj2[key])) {
             recurse(newPath, obj1[key] as ComparableObject, obj2[key] as ComparableObject);
-          } else if (obj1[key] !== obj2[key]) {
+          } else if (!equal(obj1[key], obj2[key])) {
             JsonObjectComparator.reportToLeft(
               comparisonResult,
               behavior,
@@ -266,7 +276,7 @@ export class JsonObjectComparator {
     actual: Primitive,
     path: JsonPath,
   ): JsonArtifactParsingResult {
-    if (blue !== actual) {
+    if (!equal(blue, actual)) {
       comparisonResult.addBlueprintComparisonError(new ComparisonError('opp1', ComparisonErrorType.VALUE_MISMATCH, path, blue, actual));
     }
     return comparisonResult;

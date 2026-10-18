@@ -1,3 +1,4 @@
+import { FieldValuePolicy } from '../../../../../policy/FieldValuePolicy';
 import { TextField } from './TextField';
 import { TemplateFieldBuilder } from '../../TemplateFieldBuilder';
 import { TextFieldBuilder } from './TextFieldBuilder';
@@ -38,6 +39,10 @@ export class TextFieldBuilderImpl extends TemplateFieldBuilder implements TextFi
   }
 
   public build(): TextField {
+    FieldValuePolicy.assertConsistent({
+      _ui: { inputType: 'textfield' },
+      _valueConstraints: { defaultValue: this.defaultValue, minLength: this.minLength, maxLength: this.maxLength, regex: this.regex },
+    });
     const textField = TextFieldImpl.buildEmpty();
     super.buildInternal(textField);
 

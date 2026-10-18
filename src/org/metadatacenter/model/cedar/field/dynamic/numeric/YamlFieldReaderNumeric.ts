@@ -29,8 +29,8 @@ export class YamlFieldReaderNumeric extends YamlTemplateFieldTypeSpecificReader 
     if (datatype !== null) {
       field.valueConstraints.numberType = NumberType.forValue(datatype);
     }
-    field.valueConstraints.minValue = ReaderUtil.getNumber(fieldSourceObject, YamlKeys.minValue);
-    field.valueConstraints.maxValue = ReaderUtil.getNumber(fieldSourceObject, YamlKeys.maxValue);
+    field.valueConstraints.minValue = ReaderUtil.getExactNumber(fieldSourceObject, YamlKeys.minValue);
+    field.valueConstraints.maxValue = ReaderUtil.getExactNumber(fieldSourceObject, YamlKeys.maxValue);
     field.valueConstraints.decimalPlaces = ReaderUtil.getNumber(fieldSourceObject, YamlKeys.decimalPlaces);
     field.valueConstraints.unitOfMeasure = ReaderUtil.getString(fieldSourceObject, YamlKeys.unit);
     field.valueConstraints.defaultValue = ReaderUtil.getNumericDefault(fieldSourceObject, YamlKeys.default);

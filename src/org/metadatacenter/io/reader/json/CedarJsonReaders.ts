@@ -1,3 +1,4 @@
+import { JsonSourcePolicy } from '../../../policy/JsonSourcePolicy';
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { ReaderUtil } from '../ReaderUtil';
@@ -27,7 +28,7 @@ export class CedarJsonReaders {
   public static detectArtifactType(artifactSource: JsonNode | string): CedarArtifactType {
     let artifactJSON: JsonNode;
     if (typeof artifactSource === 'string') {
-      artifactJSON = JSON.parse(artifactSource);
+      artifactJSON = JsonSourcePolicy.parse(artifactSource);
     } else {
       artifactJSON = artifactSource;
     }

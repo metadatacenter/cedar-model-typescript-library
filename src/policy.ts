@@ -10,3 +10,5 @@ export { NumericPolicy, ExactDecimal, NumericValue, NumericInput } from './org/m
 export { JsonSourcePolicy } from './org/metadatacenter/policy/JsonSourcePolicy';
 
 export { RegexPolicy, RegexVerdict, RegexWorker, RegexPolicyOptions, REGEX_WORKER_SOURCE } from './org/metadatacenter/policy/RegexPolicy';
+
+export { RegexChecks } from './org/metadatacenter/policy/RegexChecks';

@@ -375,3 +375,5 @@ export { JsonSourcePolicy } from './org/metadatacenter/policy/JsonSourcePolicy';
 export { YamlSourcePolicy } from './org/metadatacenter/io/reader/yaml/YamlSourcePolicy';
 
 export { RegexPolicy, RegexVerdict, RegexWorker, RegexPolicyOptions, REGEX_WORKER_SOURCE } from './org/metadatacenter/policy/RegexPolicy';
+
+export { RegexChecks } from './org/metadatacenter/policy/RegexChecks';

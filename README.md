@@ -216,3 +216,13 @@ responsiveness, timeout recovery, and failure when CSP blocks the worker.
 
 Artifact YAML always uses the core scalar rules, including documents explicitly
 marked YAML 1.1 or 1.2. Custom tags are rejected on mapping keys as well as values.
+
+`RegexChecks` owns the current regex work for one document or control. Call
+`checks.run(() => validate())` for a synchronous report; validators inside that
+scope use `RegexChecks.inspect(pattern, value)` and may receive `pending`.
+The owner callback runs when the current batch settles. Re-running retains only
+current checks and cancels obsolete work; results are bounded to 1,024 entries and
+4,000,000 retained UTF-16 code units. `await RegexChecks.validate(() => validate())`
+is the asynchronous boundary for a headless consumer. Pending results must block
+valid/saveable status without being presented as a malformed answer. Dispose the
+checks when their document or control is removed.

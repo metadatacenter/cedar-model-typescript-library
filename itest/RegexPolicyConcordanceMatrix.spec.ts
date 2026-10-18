@@ -2,7 +2,7 @@ import { Worker } from 'node:worker_threads';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
-import { RegexPolicy, RegexWorker, REGEX_WORKER_SOURCE } from '../src/policy';
+import { RegexChecks, RegexPolicy, RegexWorker, REGEX_WORKER_SOURCE } from '../src/policy';
 
 const bytes = readFileSync(join(__dirname, 'resources/concordance/regex-policy.json'));
 const corpus = JSON.parse(bytes.toString()) as { cases: { id: string; pattern: string; value: string | null; expected: string }[] };
@@ -87,4 +87,26 @@ test('a blocked factory or silent worker fails closed', async () => {
 test('rejects invalid limits before accepting work', () => {
   expect(() => new RegexPolicy({ workTimeoutMs: 0 })).toThrow(RangeError);
   expect(() => new RegexPolicy({ queueLimit: Infinity })).toThrow(RangeError);
+});
+
+test('report scopes retain current answers and cancel obsolete values', async () => {
+  let changes = 0;
+  const checks = new RegexChecks(() => changes++, policy);
+  expect(checks.run(() => RegexChecks.inspect('(a+)+', 'a'.repeat(40) + '!'))).toBe('pending');
+  expect(checks.run(() => RegexChecks.inspect('a+', 'aaa'))).toBe('pending');
+  await checks.settled();
+  expect(checks.run(() => RegexChecks.inspect('a+', 'aaa'))).toBe('match');
+  expect(changes).toBe(1);
+  expect(checks.pending).toBe(false);
+  checks.run(() => {});
+  expect(RegexChecks.inspect('a', 'a')).toBe('pending');
+  checks.dispose();
+});
+
+test('async report boundaries wait for checks discovered after compilation', async () => {
+  const result = await RegexChecks.validate(() => {
+    const syntax = RegexChecks.inspect('a+');
+    return syntax === 'valid' ? RegexChecks.inspect('a+', 'aaa') : syntax;
+  }, policy);
+  expect(result).toBe('match');
 });

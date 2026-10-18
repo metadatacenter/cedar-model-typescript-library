@@ -52,6 +52,11 @@ export abstract class IdentifierPolicy {
       }
     }
     if (/%(?![0-9a-fA-F]{2})/.test(raw)) throw new Error(`Invalid URI/IRI at "${key}": malformed percent escape.`);
+    const scheme = /^[A-Za-z][A-Za-z0-9+.-]*:/.exec(raw)?.[0] ?? '';
+    const specific = raw.slice(scheme.length).split('#', 1)[0];
+    if ((scheme && !specific) || specific === '//') {
+      throw new Error(`Invalid URI/IRI at "${key}": missing scheme-specific part or authority.`);
+    }
     // Keep the existing scheme/fragment checks, using an ASCII transport spelling only for validation.
     const transport = Array.from(raw, (c) => (c.codePointAt(0)! >= 0x80 ? encodeURIComponent(c) : c)).join('');
     this.assertIdentifierCharacters(transport, key);
@@ -93,6 +98,33 @@ export abstract class IdentifierPolicy {
     try {
       this.assertIdentifier(value, 'value');
       return true;
+    } catch {
+      return false;
+    }
+  }
+
+  /** Field values retain the RFC 3987 spelling, including Unicode spaces. */
+  public static isValidFieldValue(value: string): boolean {
+    if (typeof value !== 'string') return false;
+    try {
+      this.assertFieldIri(value, 'value');
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * The existing editor contract also requires an HTTP(S) address to have a host.
+   * URL is used only for that check: its normalized serialization is never stored.
+   */
+  public static isValidAuthoringIri(value: string, fieldValue = false): boolean {
+    if (!/^[A-Za-z][A-Za-z0-9+.-]*:/.test(value)) return false;
+    if (!(fieldValue ? this.isValidFieldValue(value) : this.isValid(value))) return false;
+    if (!/^https?:/i.test(value)) return true;
+    if (!/^https?:\/\//i.test(value)) return false;
+    try {
+      return new URL(value).hostname.length > 0;
     } catch {
       return false;
     }

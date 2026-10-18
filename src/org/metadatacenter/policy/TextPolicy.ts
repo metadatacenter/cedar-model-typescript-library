@@ -26,4 +26,9 @@ export class TextPolicy {
   public static codePointLength(value: string): number {
     return Array.from(value).length;
   }
+
+  /** Explicit authoring affordance only, never a reader/writer or identity normalization. */
+  public static trimInputPadding(value: string): string {
+    return value.replace(/^[\t\n\r ]+|[\t\n\r ]+$/g, '');
+  }
 }

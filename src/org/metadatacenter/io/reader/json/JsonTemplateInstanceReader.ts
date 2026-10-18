@@ -1,3 +1,4 @@
+import { TextPolicy } from '../../../policy/TextPolicy';
 import { AttributeValueFieldParent } from '../../../model/cedar/ReservedNames';
 import { InstanceDataNotationAtom } from '../../../model/cedar/template-instance/InstanceDataNotationAtom';
 import { InstanceDataLabelAtom } from '../../../model/cedar/template-instance/InstanceDataLabelAtom';
@@ -284,7 +285,7 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
         if (typeof atId !== 'string') {
           throw new Error(`Invalid URI at "${JsonSchema.atId}": expected a string.`);
         }
-        if (atId.trim() === '') {
+        if (TextPolicy.isBlank(atId)) {
           if (!this.behavior.useWarningForKnownIssues()) {
             JsonTemplateInstanceReader.refuseEmptyIdentifier(sourceObject);
           }

@@ -365,3 +365,4 @@ export type { AttributeValueFieldParent } from './org/metadatacenter/model/cedar
 
 export { TextPolicy } from './org/metadatacenter/policy/TextPolicy';
 export { IdentifierPolicy } from './org/metadatacenter/policy/IdentifierPolicy';
+export { DisplayText } from './org/metadatacenter/policy/DisplayText';

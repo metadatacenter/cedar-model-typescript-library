@@ -1,3 +1,4 @@
+import { FieldValuePolicy } from '../../../../../policy/FieldValuePolicy';
 import { NumericInput, NumericValue, NumericPolicy } from '../../../../../policy/NumericPolicy';
 import { NumericField } from './NumericField';
 import { TemplateFieldBuilder } from '../../TemplateFieldBuilder';
@@ -54,6 +55,16 @@ export class NumericFieldBuilderImpl extends TemplateFieldBuilder implements Num
 
   public build(): NumericField {
     NumericDefaultValueValidator.assertValid(this.numberType, this.defaultValue, this.minValue, this.maxValue);
+    FieldValuePolicy.assertConsistent({
+      _ui: { inputType: 'numeric' },
+      _valueConstraints: {
+        numberType: this.numberType.getValue(),
+        defaultValue: this.defaultValue,
+        minValue: this.minValue,
+        maxValue: this.maxValue,
+        decimalPlace: this.decimalPlaces,
+      },
+    });
     const numericField = NumericFieldImpl.buildEmpty();
     super.buildInternal(numericField);
 

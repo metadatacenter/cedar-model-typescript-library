@@ -139,6 +139,7 @@ describe('numeric and temporal declared defaults', () => {
     const original = base(CedarBuilders.temporalFieldBuilder())
       .withTemporalType(TemporalType.DATETIME)
       .withTemporalGranularity(TemporalGranularity.SECOND)
+      .withTimezoneEnabled(true)
       .withDefaultValue(value)
       .build() as TemporalField;
 
@@ -171,6 +172,7 @@ describe('numeric and temporal declared defaults', () => {
     const original = base(CedarBuilders.temporalFieldBuilder())
       .withTemporalType(temporalType)
       .withTemporalGranularity(granularity)
+      .withTimezoneEnabled(/(Z|[+-]\d{2}:\d{2})$/.test(defaultValue))
       .withDefaultValue(defaultValue)
       .build() as TemporalField;
 

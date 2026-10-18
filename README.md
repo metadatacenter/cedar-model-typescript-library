@@ -226,3 +226,29 @@ current checks and cancels obsolete work; results are bounded to 1,024 entries a
 is the asynchronous boundary for a headless consumer. Pending results must block
 valid/saveable status without being presented as a malformed answer. Dispose the
 checks when their document or control is removed.
+
+## Value validation and save policy
+
+`InstanceValidator.validateReport(instance, template)` returns categorized findings with RFC6901
+paths, `structurallyValid`, `canSave`, and `isValid`. The existing `validate` method retains its
+`JsonArtifactParsingResult` API, with structural errors and quality warnings. A well-formed answer
+outside a numeric bound or another declared constraint has `canSave: true` and `isValid: false`.
+Missing structural properties and malformed typed values block saving.
+
+`TemplateValueValidator.validate(templateOrElementOrField)` checks definition/default consistency
+without changing the model. `validateSource(rawDefinition)` supports retained imported definitions
+after structural parsing; it does not replace the structural reader. Inconsistent defaults block
+template saves. `FieldValuePolicy` supplies the shared local field rules; `ValidationPolicy` supplies
+the different template/instance save decisions and is also available from the lightweight `/policy`
+entry. Prefer these facts over a host-maintained list of warning codes.
+
+The offline library reports applicable terminology/authority checks as `notChecked`. Hosts resolve
+them through the existing services using exact identifiers and complete versioned constraints.
+`passed`, `failed`, `notChecked` and `unavailable` are separate outcomes. Uncertainty does not prove
+success or invalid membership; the common policy reports it without rejecting an instance.
+
+Java owns the normative value/default, configuration and semantic-verification concordance corpora. Use
+`npm run sync:concordance` against committed Java sources, then `npm run test:concordance`. For an
+explicitly uncommitted review, `node scripts/sync-concordance.mjs --matrix <name> --working-tree`
+records the base commit plus a hash of the actual Java source/test tree. Refresh it after further
+Java edits; do not describe that lock as evidence of a committed revision.

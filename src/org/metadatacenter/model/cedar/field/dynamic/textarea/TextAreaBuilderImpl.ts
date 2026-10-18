@@ -1,3 +1,4 @@
+import { FieldValuePolicy } from '../../../../../policy/FieldValuePolicy';
 import { TemplateFieldBuilder } from '../../TemplateFieldBuilder';
 import { TextArea } from './TextArea';
 import { TextAreaImpl } from './TextAreaImpl';
@@ -32,6 +33,10 @@ export class TextAreaBuilderImpl extends TemplateFieldBuilder implements TextAre
   }
 
   public build(): TextArea {
+    FieldValuePolicy.assertConsistent({
+      _ui: { inputType: 'textarea' },
+      _valueConstraints: { defaultValue: this.defaultValue, minLength: this.minLength, maxLength: this.maxLength },
+    });
     const textArea = TextAreaImpl.buildEmpty();
     super.buildInternal(textArea);
 

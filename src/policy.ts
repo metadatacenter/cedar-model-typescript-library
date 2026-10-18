@@ -12,3 +12,12 @@ export { JsonSourcePolicy } from './org/metadatacenter/policy/JsonSourcePolicy';
 export { RegexPolicy, RegexVerdict, RegexWorker, RegexPolicyOptions, REGEX_WORKER_SOURCE } from './org/metadatacenter/policy/RegexPolicy';
 
 export { RegexChecks } from './org/metadatacenter/policy/RegexChecks';
+
+export {
+  ValidationPolicy,
+  ValidationFinding,
+  ValidationCategory,
+  ValidationContext,
+  VerificationStatus,
+  ValidationSummary,
+} from './org/metadatacenter/policy/ValidationPolicy';

@@ -1,3 +1,4 @@
+import { FieldValuePolicy } from '../../../../../policy/FieldValuePolicy';
 import { TemplateFieldBuilder } from '../../TemplateFieldBuilder';
 import { PhoneNumberField } from './PhoneNumberField';
 import { PhoneNumberFieldBuilder } from './PhoneNumberFieldBuilder';
@@ -20,6 +21,7 @@ export class PhoneNumberFieldBuilderImpl extends TemplateFieldBuilder implements
   }
 
   public build(): PhoneNumberField {
+    FieldValuePolicy.assertConsistent({ _ui: { inputType: 'phone-number' }, _valueConstraints: { defaultValue: this.defaultValue } });
     const phoneNumberField = PhoneNumberFieldImpl.buildEmpty();
     super.buildInternal(phoneNumberField);
 

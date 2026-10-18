@@ -377,3 +377,16 @@ export { YamlSourcePolicy } from './org/metadatacenter/io/reader/yaml/YamlSource
 export { RegexPolicy, RegexVerdict, RegexWorker, RegexPolicyOptions, REGEX_WORKER_SOURCE } from './org/metadatacenter/policy/RegexPolicy';
 
 export { RegexChecks } from './org/metadatacenter/policy/RegexChecks';
+
+export {
+  ValidationPolicy,
+  ValidationFinding,
+  ValidationCategory,
+  ValidationContext,
+  VerificationStatus,
+  ValidationSummary,
+} from './org/metadatacenter/policy/ValidationPolicy';
+
+export { FieldValuePolicy, ValidationField } from './org/metadatacenter/policy/FieldValuePolicy';
+
+export { TemplateValueValidator } from './org/metadatacenter/model/cedar/TemplateValueValidator';

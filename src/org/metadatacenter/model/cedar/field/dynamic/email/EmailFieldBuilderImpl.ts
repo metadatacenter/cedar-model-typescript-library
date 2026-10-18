@@ -1,3 +1,4 @@
+import { FieldValuePolicy } from '../../../../../policy/FieldValuePolicy';
 import { EmailField } from './EmailField';
 import { TemplateFieldBuilder } from '../../TemplateFieldBuilder';
 import { EmailFieldImpl } from './EmailFieldImpl';
@@ -20,6 +21,7 @@ export class EmailFieldBuilderImpl extends TemplateFieldBuilder implements Email
   }
 
   public build(): EmailField {
+    FieldValuePolicy.assertConsistent({ _ui: { inputType: 'email' }, _valueConstraints: { defaultValue: this.defaultValue } });
     const emailField = EmailFieldImpl.buildEmpty();
     super.buildInternal(emailField);
 

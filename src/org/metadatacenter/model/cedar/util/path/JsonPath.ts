@@ -32,6 +32,22 @@ export class JsonPath {
     return result + '/';
   }
 
+  /** Standard JSON Pointer for validation APIs; the legacy display spelling is unchanged. */
+  toPointer(): string {
+    return this.path.map((component) => '/' + String(component).replace(/~/g, '~0').replace(/\//g, '~1')).join('');
+  }
+
+  static fromPointer(pointer: string): JsonPath {
+    return new JsonPath(
+      ...(pointer === ''
+        ? []
+        : pointer
+            .slice(1)
+            .split('/')
+            .map((part) => part.replace(/~1/g, '/').replace(/~0/g, '~'))),
+    );
+  }
+
   // noinspection JSUnusedGlobalSymbols
   toJSON() {
     return this.toString();

@@ -80,7 +80,10 @@ try {
   assert.equal(policy.TextPolicy.isBlank('\u001c'), true);
   assert.equal(policy.TextPolicy.isBlank('\u00a0'), false);
   assert.equal(policy.IdentifierPolicy.isValid('urn:x\ud800'), false);
-  assert.ok(fs.statSync(path.join(installedPackage, 'policy.js')).size < 20000);
+  const qualityFinding = policy.ValidationPolicy.finding('minValue', '/Count/@value', 'Below minimum');
+  assert.equal(policy.ValidationPolicy.summarize([qualityFinding], 'instance').canSave, true);
+  assert.equal(policy.ValidationPolicy.summarize([qualityFinding], 'template').canSave, false);
+  assert.ok(fs.statSync(path.join(installedPackage, 'policy.js')).size < 23000);
   const fullModel = require(installedPackage);
   const outside = fullModel.ExactDecimal.forValue('9007199254740993');
   assert.equal(policy.JsonSourcePolicy.stringify(policy.JsonSourcePolicy.clone({ n: outside })), '{"n":9007199254740993}');

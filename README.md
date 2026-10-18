@@ -93,9 +93,23 @@ mapping. Annotation entries follow the existing CEDAR meta-schema: an IRI object
 value object, with no extra properties. These declarations are platform metadata, not child fields.
 Older templates without the declarations remain readable; writing them adds the declarations.
 
-Finite numeric YAML and schema JSON values use Java 17's decimal digits, expanded without exponent notation.
-This includes midpoint and subnormal cases where JavaScript's shortest spelling differs. Shared
-Java-verified fixtures check the output and preservation of the original binary number.
+Existing JavaScript `number` inputs retain Java 17's decimal spelling compatibility. Raw JSON/YAML
+and numeric-string builder inputs preserve exact decimal values, including integers beyond 2^53.
+`NumericValue` is a `number` or immutable `ExactDecimal`; use `NumericPolicy.compare` for comparisons,
+`String(value)` for display, and `JsonSourcePolicy.stringify` for portable exact JSON serialization.
+Bounds stay JSON numbers and CEDAR numeric defaults stay strings. Supplying an already-rounded
+JavaScript number cannot recover the original digits; use a raw source or a string builder argument.
+
+Raw readers reject duplicate decoded keys, trailing JSON, multiple YAML documents, nonfinite numbers,
+custom YAML tags and recursive aliases. YAML uses core scalar resolution: `yes` is a string, `012`
+is decimal twelve, and timestamps stay strings until their model property reads them. Keys retain
+their exact spelling. Malformed sources raise an error; readers never replace them with empty artifacts.
+`JsonSourcePolicy` is also available from `/policy`; `YamlSourcePolicy` is in the full package.
+
+`TimestampPolicy` and `IsoDate` preserve the source calendar, explicit UTC offset and up to nine
+fractional-second digits. Missing offsets and impossible dates are rejected. Minute-only times,
+case-insensitive T/Z and legacy colonless offsets remain accepted and render canonically. Temporal
+field answers follow their own declared type and precision; they are not provenance timestamps.
 
 ## Unicode field identifiers
 

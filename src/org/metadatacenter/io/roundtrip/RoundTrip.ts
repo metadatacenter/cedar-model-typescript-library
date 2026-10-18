@@ -1,3 +1,4 @@
+import { JsonSourcePolicy } from '../../policy/JsonSourcePolicy';
 import { JsonTemplateFieldReaderResult } from '../reader/json/JsonTemplateFieldReaderResult';
 import { JsonTemplateFieldWriterInternal } from '../writer/json/JsonTemplateFieldWriterInternal';
 import { JsonArtifactParsingResult } from '../../model/cedar/util/compare/JsonArtifactParsingResult';
@@ -76,8 +77,8 @@ export class RoundTrip {
   }
 
   static compareString(left: string, right: string): JsonArtifactParsingResult {
-    const leftObject = JSON.parse(left);
-    const rightObject = JSON.parse(right);
+    const leftObject = JsonSourcePolicy.parse(left);
+    const rightObject = JsonSourcePolicy.parse(right);
     const compareResult = new JsonArtifactParsingResult();
     JsonObjectComparator.compareBothWays(compareResult, leftObject, rightObject, new JsonPath(), JsonWriterBehavior.STRICT);
     return compareResult;

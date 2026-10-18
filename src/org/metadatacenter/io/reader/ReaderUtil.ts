@@ -1,3 +1,4 @@
+import { ExactDecimal, NumericPolicy, NumericValue } from '../../policy/NumericPolicy';
 import { IdentifierPolicy } from '../../policy/IdentifierPolicy';
 import { JsonNode } from '../../model/cedar/types/basic-types/JsonNode';
 import { Iri } from '../../model/cedar/types/wrapped-types/Iri';
@@ -117,37 +118,26 @@ export abstract class ReaderUtil {
    *
    * JSON writes numeric defaults as strings to satisfy the CEDAR field schema,
    * while YAML normally uses a numeric scalar. Older JSON documents may also
-   * contain a bare number, so readers accept both and keep a number in memory.
+   * contain a bare number, so readers accept both and retain an exact numeric value.
    */
-  public static getNumericDefault(node: JsonNode, key: string): number | null {
-    if (!Object.hasOwn(node, key) || node[key] === null || node[key] === undefined) {
-      return null;
-    }
-
+  public static getNumericDefault(node: JsonNode, key: string): NumericValue | null {
     const raw = node[key];
-    if (typeof raw === 'number') {
-      if (Number.isFinite(raw)) {
-        return raw;
+    if (raw === null || raw === undefined || raw === '') return null;
+    if (typeof raw === 'number' || typeof raw === 'string' || raw instanceof ExactDecimal) {
+      try {
+        return NumericPolicy.value(raw);
+      } catch (cause) {
+        throw new Error('Numeric default must be a finite decimal number without surrounding whitespace.', { cause });
       }
-      throw new Error(`Numeric default at "${key}" must be finite.`);
     }
-
-    if (typeof raw === 'string') {
-      const text = raw.trim();
-      if (text === '') {
-        return null;
-      }
-      if (!/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/.test(text)) {
-        throw new Error(`Numeric default at "${key}" is not a valid number: "${raw}".`);
-      }
-      const value = Number(text);
-      if (Number.isFinite(value)) {
-        return value;
-      }
-      throw new Error(`Numeric default at "${key}" must be finite.`);
-    }
-
     throw new Error(`Numeric default at "${key}" must be a number or numeric string.`);
+  }
+
+  public static getExactNumber(node: JsonNode, key: string): NumericValue | null {
+    const raw = node[key];
+    if (raw === null || raw === undefined) return null;
+    if (typeof raw === 'number' || raw instanceof ExactDecimal) return NumericPolicy.value(raw);
+    throw new Error(`Numeric bound at "${key}" must be a JSON number.`);
   }
 
   static getNumberOrZero(node: JsonNode, key: string): number {
@@ -192,7 +182,7 @@ export abstract class ReaderUtil {
 
   public static getFilteredStringList(node: JsonNode, key: string): Array<string> {
     if (Object.hasOwn(node, key) && Array.isArray(node[key])) {
-      return (node[key] as Array<string>).filter((str) => str.trim() !== '');
+      return (node[key] as Array<string>).filter((str) => str !== '');
     } else {
       return [];
     }
@@ -219,6 +209,7 @@ export abstract class ReaderUtil {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public static deepUnfreeze(object: any): any {
+    if (object instanceof ExactDecimal) return object;
     if (object === null || (typeof object !== 'object' && typeof object !== 'function')) {
       return object;
     }

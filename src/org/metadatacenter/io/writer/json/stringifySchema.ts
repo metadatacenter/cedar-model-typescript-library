@@ -1,4 +1,5 @@
-import { javaPlainDecimal } from '../yaml/JavaPlainDecimal';
+import { JsonSourcePolicy } from '../../../policy/JsonSourcePolicy';
+import { ExactDecimal } from '../../../policy/NumericPolicy';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 
 // Ordinary JS objects enumerate array-index keys first. A temporary serialization view
@@ -16,7 +17,7 @@ function isObject(value: unknown): value is Record<string, unknown> {
 export function stringifySchema(schema: JsonNode, indent: number): string {
   function view(value: unknown): unknown {
     if (Array.isArray(value)) return value.map(view);
-    if (!isObject(value)) return value;
+    if (!isObject(value) || value instanceof ExactDecimal) return value;
     const result: Record<string, unknown> = Object.fromEntries(Object.entries(value).map(([key, child]) => [key, view(child)]));
     const ui = result._ui;
     const order = isObject(ui) ? ui.order : undefined;
@@ -43,10 +44,5 @@ export function stringifySchema(schema: JsonNode, indent: number): string {
     }
     return result;
   }
-  // Rewrite number tokens only; quoted keys/values are consumed as whole tokens and left intact.
-  // JSON.stringify otherwise chooses ECMAScript digits again after the YAML reader has restored
-  // a number, undoing our Java-compatible YAML spelling at the final leg of the pipeline.
-  return JSON.stringify(view(schema), null, indent).replace(/"(?:\\.|[^"\\])*"|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?/g, (token) =>
-    token.startsWith('"') ? token : javaPlainDecimal(Number(token)),
-  );
+  return JsonSourcePolicy.stringify(view(schema), indent);
 }

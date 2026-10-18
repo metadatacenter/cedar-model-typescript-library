@@ -133,9 +133,9 @@ describe('YAML instance edge cases', () => {
     expect(() => writer.getYamlAsJsonNode(instance)).toThrow(/reserved for CEDAR instance metadata/);
   });
 
-  test('malformed and null documents produce an empty usable instance', () => {
-    expect(Object.keys(reader.readFromString(':\n  - [').instance.dataContainer.values)).toEqual([]);
-    expect(Object.keys(reader.readFromObject(null as unknown as JsonNode).instance.dataContainer.values)).toEqual([]);
+  test('malformed and null documents are refused without creating an empty instance', () => {
+    for (const source of ['a: [unclosed', 'null', ''])
+      expect(() => CedarReaders.yaml().getStrict().getTemplateInstanceReader().readFromString(source)).toThrow(SyntaxError);
   });
 
   test('parses scalar, empty, list, typed, nested, link, and controlled values', () => {

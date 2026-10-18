@@ -1,3 +1,4 @@
+import { YamlSourcePolicy } from './YamlSourcePolicy';
 import { applySchemaReaderDefaults } from '../SchemaReaderDefaults';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
@@ -10,7 +11,6 @@ import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploy
 import { YamlAbstractArtifactReader } from './YamlAbstractArtifactReader';
 import { YamlReaderBehavior } from '../../../behavior/YamlReaderBehavior';
 import { YamlTemplateFieldTypeSpecificReader } from './YamlTemplateFieldTypeSpecificReader';
-import YAML from 'yaml';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 import { YamlArtifactType } from '../../../model/cedar/types/wrapped-types/YamlArtifactType';
 import { YamlFieldReaderTextField } from '../../../model/cedar/field/dynamic/textfield/YamlFieldReaderTextField';
@@ -93,12 +93,7 @@ export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
   ]);
 
   public readFromString(fieldSourceString: string): YamlTemplateFieldReaderResult {
-    let fieldObject;
-    try {
-      fieldObject = YAML.parse(fieldSourceString);
-    } catch {
-      fieldObject = {};
-    }
+    const fieldObject = YamlSourcePolicy.parse(fieldSourceString);
     return this.readFromObject(fieldObject, ChildDeploymentInfo.empty(), new JsonPath());
   }
 

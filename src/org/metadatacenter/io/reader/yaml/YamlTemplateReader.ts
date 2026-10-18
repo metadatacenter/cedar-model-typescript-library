@@ -1,3 +1,4 @@
+import { YamlSourcePolicy } from './YamlSourcePolicy';
 import { applySchemaReaderDefaults } from '../SchemaReaderDefaults';
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
 import { ReaderUtil } from '../ReaderUtil';
@@ -7,7 +8,6 @@ import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
 import { YamlReaderBehavior } from '../../../behavior/YamlReaderBehavior';
 import { YamlTemplateElementReader } from './YamlTemplateElementReader';
 import { Template } from '../../../model/cedar/template/Template';
-import YAML from 'yaml';
 import { YamlContainerArtifactReader } from './YamlContainerArtifactReader';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 import { YamlArtifactParsingResult } from '../../../model/cedar/util/compare/YamlArtifactParsingResult';
@@ -42,12 +42,7 @@ export class YamlTemplateReader extends YamlContainerArtifactReader {
   }
 
   public readFromString(templateSourceString: string): YamlTemplateReaderResult {
-    let templateObject;
-    try {
-      templateObject = YAML.parse(templateSourceString);
-    } catch {
-      templateObject = {};
-    }
+    const templateObject = YamlSourcePolicy.parse(templateSourceString);
     return this.readFromObject(templateObject);
   }
 

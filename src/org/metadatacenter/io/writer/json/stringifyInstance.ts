@@ -1,3 +1,4 @@
+import { JsonSourcePolicy } from '../../../policy/JsonSourcePolicy';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { InstanceDataContainer } from '../../../model/cedar/template-instance/InstanceDataContainer';
 import { InstanceDataAttributeValueField } from '../../../model/cedar/template-instance/InstanceDataAttributeValueField';
@@ -29,5 +30,5 @@ export function stringifyInstance(node: JsonNode, container: InstanceDataContain
     order.splice(boundary < 0 ? order.length : boundary, 0, ...childOrder);
     return new Proxy(result, { ownKeys: () => order });
   }
-  return JSON.stringify(view(node, container), null, indent);
+  return JsonSourcePolicy.stringify(view(node, container), indent);
 }

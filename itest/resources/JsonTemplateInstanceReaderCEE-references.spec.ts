@@ -26,6 +26,13 @@ describe('CEE compatibility corpus', () => {
 
   it.each(templateCases)('template %i has only its declared compatibility diagnostics', (testNumber) => {
     const resource = TestResource.ceeSuite(testNumber);
+    if (testNumber === 86) {
+      // This fixture deliberately contains malformed JSON; previous readers replaced it with {}.
+      expect(() => CedarReaders.json().getFebruary2024().getTemplateReader().readFromString(TestUtil.readReferenceJson(resource))).toThrow(
+        SyntaxError,
+      );
+      return;
+    }
     const result = CedarReaders.json().getFebruary2024().getTemplateReader().readFromString(TestUtil.readReferenceJson(resource));
 
     expect(diagnostics(result.parsingResult)).toStrictEqual(

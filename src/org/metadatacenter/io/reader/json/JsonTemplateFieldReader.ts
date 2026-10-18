@@ -1,3 +1,4 @@
+import { JsonSourcePolicy } from '../../../policy/JsonSourcePolicy';
 import { applySchemaReaderDefaults } from '../SchemaReaderDefaults';
 import { SchemaArtifactKind } from '../../../model/cedar/AbstractSchemaArtifact';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
@@ -101,12 +102,7 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
   ]);
 
   public readFromString(fieldSourceString: string): JsonTemplateFieldReaderResult {
-    let fieldObject;
-    try {
-      fieldObject = JSON.parse(fieldSourceString);
-    } catch {
-      fieldObject = {};
-    }
+    const fieldObject = JsonSourcePolicy.parse(fieldSourceString);
     return this.readFromObject(fieldObject);
   }
 

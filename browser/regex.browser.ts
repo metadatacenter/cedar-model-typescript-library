@@ -4,6 +4,10 @@ import { resolve } from 'node:path';
 import type * as Policy from '../src/policy';
 const corpus = JSON.parse(readFileSync(resolve('itest/resources/concordance/regex-policy.json'), 'utf8'));
 const bundle = resolve('dist/policy.umd.js');
+test.beforeEach(async ({ page }) => {
+  await page.route('https://cedar-policy.test/**', (route) => route.fulfill({ contentType: 'text/html', body: '<!doctype html><title>Policy</title>' }));
+  await page.goto('https://cedar-policy.test/');
+});
 test('matches the Java corpus and leaves the page responsive during catastrophic backtracking', async ({ page }) => {
   await page.addScriptTag({ path: bundle });
   const results = await page.evaluate(async (rows) => {
@@ -40,4 +44,28 @@ test('CSP cannot cause an unbounded synchronous fallback', async ({ page }) => {
     }
   });
   expect(verdict).toBe('unavailable');
+});
+
+test('keeps worker source URLs alive through startup and releases them on disposal', async ({ page }) => {
+  await page.addScriptTag({ path: bundle });
+  const result = await page.evaluate(async () => {
+    const { RegexPolicy } = (globalThis as unknown as { CedarValidationPolicy: typeof Policy }).CedarValidationPolicy;
+    const create = URL.createObjectURL.bind(URL), revoke = URL.revokeObjectURL.bind(URL);
+    const live = new Set<string>();
+    URL.createObjectURL = (blob) => { const url = create(blob); live.add(url); return url; };
+    URL.revokeObjectURL = (url) => { live.delete(url); revoke(url); };
+    const policy = new RegexPolicy();
+    try {
+      const pending = policy.evaluate('a+', 'aa');
+      const duringStartup = live.size;
+      const verdict = await pending;
+      policy.dispose();
+      return { duringStartup, verdict, afterDisposal: live.size };
+    } finally {
+      policy.dispose();
+      URL.createObjectURL = create;
+      URL.revokeObjectURL = revoke;
+    }
+  });
+  expect(result).toEqual({ duringStartup: 1, verdict: 'match', afterDisposal: 0 });
 });

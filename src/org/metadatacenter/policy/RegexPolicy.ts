@@ -52,6 +52,7 @@ interface Job {
 export class RegexPolicy {
   private worker: RegexWorker | null = null;
   private ready = false;
+  private releaseSource: (() => void) | null = null;
   private current: Job | null = null;
   private queue: Job[] = [];
   private serial = 0;
@@ -71,11 +72,10 @@ export class RegexPolicy {
             URL: { createObjectURL(blob: object): string; revokeObjectURL(url: string): void };
           };
           const url = environment.URL.createObjectURL(new environment.Blob([REGEX_WORKER_SOURCE], { type: 'text/javascript' }));
-          try {
-            return new environment.Worker(url);
-          } finally {
-            environment.URL.revokeObjectURL(url);
-          }
+          // WebKit may fetch the source after Worker() returns. Keep it alive until
+          // teardown, including constructor failure, cancellation and idle cleanup.
+          this.releaseSource = () => environment.URL.revokeObjectURL(url);
+          return new environment.Worker(url);
         }),
       workTimeoutMs: options.workTimeoutMs ?? 250,
       startupTimeoutMs: options.startupTimeoutMs ?? 5000,
@@ -123,6 +123,8 @@ export class RegexPolicy {
     }
     this.worker = null;
     this.ready = false;
+    this.releaseSource?.();
+    this.releaseSource = null;
   }
 
   private fail(result: RegexVerdict): void {

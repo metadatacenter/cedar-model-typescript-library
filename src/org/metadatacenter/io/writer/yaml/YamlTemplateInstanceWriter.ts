@@ -1,3 +1,4 @@
+import { TextPolicy } from '../../../policy/TextPolicy';
 import { ReservedNames } from '../../../model/cedar/ReservedNames';
 import { InstanceDataNotationAtom } from '../../../model/cedar/template-instance/InstanceDataNotationAtom';
 import { InstanceDataLabelAtom } from '../../../model/cedar/template-instance/InstanceDataLabelAtom';
@@ -182,7 +183,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
       const names = value
         .filter((item): item is InstanceDataAttributeValueFieldName => item instanceof InstanceDataAttributeValueFieldName)
         .map((item) => item.name)
-        .filter((name) => name.trim().length > 0);
+        .filter((name) => !TextPolicy.isBlank(name));
       if (names.length > 0) {
         groups.set(key, names);
       }

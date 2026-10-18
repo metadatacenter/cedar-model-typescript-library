@@ -104,3 +104,18 @@ if (!Number.isInteger(workers) || workers < 1 || workers > 16) {
   throw new Error('CEDAR_TEST_WORKERS must be an integer between 1 and 16');
 }
 module.exports.parallelism = Math.min(3, workers);
+
+// Pure policies are a separate entry: picker consumers must not download model/YAML machinery.
+module.exports.push(...module.exports.map((config) => ({
+  ...config,
+  entry: './src/policy.ts',
+  output: {
+    ...config.output,
+    filename: config.output.filename.replace('index', 'policy'),
+    ...(config.output.libraryTarget === 'umd' ? { library: 'CedarValidationPolicy' } : {}),
+  },
+  performance: {
+    maxAssetSize: 20000, maxEntrypointSize: 20000, hints: 'error',
+    assetFilter: (name) => /^policy.*\.js$/.test(name),
+  },
+})));

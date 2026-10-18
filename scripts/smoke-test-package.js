@@ -70,6 +70,22 @@ try {
   run(npmCommand, ['install', '--ignore-scripts', '--no-audit', '--no-fund', '--package-lock=false', tarball], temporaryRoot);
 
   const installedPackage = path.join(temporaryRoot, 'node_modules', ...packageName.split('/'));
+  for (const filename of ['policy.js', 'policy.esm.js', 'policy.umd.js', 'policy.d.ts']) {
+    assert.ok(
+      packed.files.some((file) => file.path === filename),
+      `${filename} missing from package`,
+    );
+  }
+  const policy = require(path.join(installedPackage, 'policy.js'));
+  assert.equal(policy.TextPolicy.isBlank('\u001c'), true);
+  assert.equal(policy.TextPolicy.isBlank('\u00a0'), false);
+  assert.equal(policy.IdentifierPolicy.isValid('urn:x\ud800'), false);
+  assert.ok(fs.statSync(path.join(installedPackage, 'policy.js')).size < 20000);
+  const vm = require('node:vm');
+  const sandbox = {};
+  vm.runInNewContext(fs.readFileSync(path.join(installedPackage, 'policy.umd.js'), 'utf8'), sandbox);
+  assert.equal(sandbox.CedarValidationPolicy.TextPolicy.codePointLength('😀'), 1);
+  fs.copyFileSync(path.join(installedPackage, 'policy.esm.js'), path.join(temporaryRoot, 'cedar-policy.mjs'));
   const commonJsConsumer = `
 const assert = require('node:assert/strict');
 const cedar = require('${packageName}');
@@ -86,6 +102,8 @@ assert.equal(template.cedarArtifactType, cedar.CedarArtifactType.TEMPLATE);
 import assert from 'node:assert/strict';
 import cedarCommonJs from '${packageName}';
 import * as cedarEsm from './cedar-index.mjs';
+import { TextPolicy } from './cedar-policy.mjs';
+assert.equal(TextPolicy.codePointLength('😀'), 1);
 assert.equal(typeof cedarCommonJs.CedarReaders.json, 'function');
 assert.ok(Object.keys(cedarEsm).length >= 100, 'ES module bundle exports are unexpectedly sparse');
 assert.equal(typeof cedarEsm.CedarWriters.yaml, 'function');
@@ -100,6 +118,9 @@ assert.equal(paragraph.valueConstraints.maxLength, 500);
 
   const typeScriptConsumer = `
 import { CedarBuilders, CedarReaders, CedarWriters, Template, TextArea } from '${packageName}';
+import { TextPolicy } from '${packageName}/policy';
+const count: number = TextPolicy.codePointLength('😀');
+void count;
 const template: Template = CedarBuilders.templateBuilder().withTitle('typed consumer').build();
 const readers = CedarReaders.json().getStrict();
 const writers = CedarWriters.yaml().getStrict();

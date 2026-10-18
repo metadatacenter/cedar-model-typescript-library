@@ -1,4 +1,4 @@
-import { ReaderUtil } from './ReaderUtil';
+import { IdentifierPolicy } from '../../policy/IdentifierPolicy';
 
 /**
  * The rule this library's readers hold an IRI to, for a caller that has to decide before reading.
@@ -15,7 +15,7 @@ export class IriSyntax {
   public static isValid(value: string): boolean {
     if (value === '') return false;
     try {
-      ReaderUtil.assertIdentifier(value, 'value');
+      IdentifierPolicy.assertIdentifier(value, 'value');
       return true;
     } catch {
       return false;

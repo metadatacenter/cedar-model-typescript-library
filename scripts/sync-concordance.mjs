@@ -7,18 +7,20 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const javaRoot = resolve(root, '../cedar-artifact-library');
 // Each Java concordance matrix, and the name its fixture and lock take here.
 const matrices = [
+  { fixture: 'src/test/resources/concordance/text-policy.json', name: 'text-policy', what: 'text policy', root: resolve(root, '../cedar-model-validation-library') },
   { fixture: 'src/test/resources/concordance/field-matrix.json', name: 'java-field-matrix', what: 'field' },
   { fixture: 'src/test/resources/concordance/instance-value-matrix.json', name: 'java-instance-value-matrix', what: 'instance value' },
   { fixture: 'src/test/resources/concordance/multiplicity-matrix.json', name: 'java-multiplicity-matrix', what: 'multiplicity' },
   { fixture: 'src/test/resources/concordance/rule-matrix.json', name: 'java-rule-matrix', what: 'rule' },
 ];
-const dirty = execFileSync('git', ['status', '--porcelain', '--', 'src/main', 'src/test'], { cwd: javaRoot, encoding: 'utf8' });
-if (dirty.trim()) throw new Error('Commit the Java implementation, matrix generator and fixture before syncing its provenance.');
-const javaCommit = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: javaRoot, encoding: 'utf8' }).trim();
 const destination = resolve(root, 'itest/resources/concordance');
 mkdirSync(destination, { recursive: true });
 for (const matrix of matrices) {
-  const bytes = readFileSync(resolve(javaRoot, matrix.fixture));
+  const sourceRoot = matrix.root ?? javaRoot;
+  const dirty = execFileSync('git', ['status', '--porcelain', '--', 'src/main', 'src/test'], { cwd: sourceRoot, encoding: 'utf8' });
+  if (dirty.trim()) throw new Error(`Commit the Java implementation, matrix and fixture in ${sourceRoot} before syncing provenance.`);
+  const javaCommit = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: sourceRoot, encoding: 'utf8' }).trim();
+  const bytes = readFileSync(resolve(sourceRoot, matrix.fixture));
   const parsed = JSON.parse(bytes.toString());
   const caseCount = Array.isArray(parsed)
     ? parsed.length

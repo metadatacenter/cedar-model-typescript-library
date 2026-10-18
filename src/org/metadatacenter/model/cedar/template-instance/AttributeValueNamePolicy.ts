@@ -1,3 +1,4 @@
+import { TextPolicy } from '../../../policy/TextPolicy';
 import { AttributeValueFieldParent, ReservedNames } from '../ReservedNames';
 import { InstanceDataAtomType } from './InstanceDataAtomType';
 import { InstanceDataAttributeValueField } from './InstanceDataAttributeValueField';
@@ -93,7 +94,7 @@ export class AttributeValueNamePolicy {
       }
       const namesInGroup = new Set<string>();
       for (const name of group.attributeNames) {
-        if (name.trim() === '') {
+        if (TextPolicy.isBlank(name)) {
           if (reading) conflicts.push({ kind: 'blank', name, groupName: group.name, path });
           continue;
         }

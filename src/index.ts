@@ -362,3 +362,6 @@ export { AnnotationAtValue } from './org/metadatacenter/model/cedar/annotation/A
 
 export { SchemaExtensions } from './org/metadatacenter/model/cedar/SchemaExtensions';
 export type { AttributeValueFieldParent } from './org/metadatacenter/model/cedar/ReservedNames';
+
+export { TextPolicy } from './org/metadatacenter/policy/TextPolicy';
+export { IdentifierPolicy } from './org/metadatacenter/policy/IdentifierPolicy';

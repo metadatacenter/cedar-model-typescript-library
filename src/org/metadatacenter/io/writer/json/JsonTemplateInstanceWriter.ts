@@ -1,3 +1,4 @@
+import { TextPolicy } from '../../../policy/TextPolicy';
 import { stringifyInstance } from './stringifyInstance';
 import { InstanceDataNotationAtom } from '../../../model/cedar/template-instance/InstanceDataNotationAtom';
 import { InstanceDataLabelAtom } from '../../../model/cedar/template-instance/InstanceDataLabelAtom';
@@ -91,7 +92,7 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
             // An unnamed row is editor state, not an attribute. Keep it in the
             // in-memory list so the user can finish typing, but never let an
             // empty property name escape in a serializable artifact.
-            if (attributeName.trim().length > 0) {
+            if (!TextPolicy.isBlank(attributeName)) {
               dataArray.push(attributeName as unknown as JsonNode);
             }
             return;

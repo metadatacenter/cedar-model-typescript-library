@@ -34,7 +34,7 @@ jobs:
       - name: Check out the library
         uses: actions/checkout@v7
 
-      # 24.19.0, the version `.nvmrc` names and CEE builds with. This was 20.20.2,
+      # 24.22.0, the version `.nvmrc` names and CEE builds with. This was 20.20.2,
       # which outlived Node 20's own support: that line left maintenance in April
       # 2026, so every tarball published after it was built on a runtime no longer
       # receiving security patches. The whole gate — lint, typecheck, 1,168 tests and
@@ -43,7 +43,7 @@ jobs:
       - name: Use Node.js 24
         uses: actions/setup-node@v7
         with:
-          node-version: 24.19.0
+          node-version: 24.22.0
           cache: npm
 
       - name: Install
@@ -118,7 +118,7 @@ jobs:
       - name: Use Node.js 24
         uses: actions/setup-node@v7
         with:
-          node-version: 24.19.0
+          node-version: 24.22.0
 
       - name: Restore the gated distributable
         uses: actions/download-artifact@v8

@@ -105,6 +105,8 @@ custom YAML tags and recursive aliases. YAML uses core scalar resolution: `yes` 
 is decimal twelve, and timestamps stay strings until their model property reads them. Keys retain
 their exact spelling. Malformed sources raise an error; readers never replace them with empty artifacts.
 `JsonSourcePolicy` is also available from `/policy`; `YamlSourcePolicy` is in the full package.
+Browser bundlers resolve `/policy` to its ES module bundle; CommonJS consumers retain the
+CommonJS entry point.
 
 `TimestampPolicy` and `IsoDate` preserve the source calendar, explicit UTC offset and up to nine
 fractional-second digits. Missing offsets and impossible dates are rejected. Minute-only times,

@@ -4,6 +4,9 @@
   "description": "TypeScript models, builders, readers, writers, and validators for CEDAR metadata artifacts",
   "main": "index.js",
   "module": "index.esm.js",
+  "browser": {
+    "./policy.js": "./policy.esm.js"
+  },
   "types": "index.d.ts",
   "repository": {
     "type": "git",

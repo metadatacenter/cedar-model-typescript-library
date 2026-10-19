@@ -12,7 +12,7 @@ const { spawnSync } = require('node:child_process');
 // it passed on a release manifest and failed on a snapshot for the wrong reason.
 const packageName = require('../package-dist.json').name;
 const repositoryRoot = path.resolve(__dirname, '..');
-const temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'cedar-package-smoke-'));
+const temporaryRoot = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'cedar-package-smoke-')));
 const npmCommand = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 
 function run(command, args, cwd) {
@@ -95,6 +95,8 @@ try {
   const commonJsConsumer = `
 const assert = require('node:assert/strict');
 const cedar = require('${packageName}');
+const policy = require('${packageName}/policy');
+assert.equal(policy.TextPolicy.codePointLength('😀'), 1);
 assert.ok(Object.keys(cedar).length >= 100, 'CommonJS package exports are unexpectedly sparse');
 assert.equal(typeof cedar.CedarBuilders.templateBuilder, 'function');
 const template = cedar.CedarBuilders.templateBuilder().build();
@@ -121,6 +123,64 @@ assert.equal(paragraph.valueConstraints.maxLength, 500);
 `;
   write('consumer.mjs', esModuleConsumer);
   run(process.execPath, ['consumer.mjs'], temporaryRoot);
+
+  // Import the public subpath through a browser bundler. Loading policy.esm.js directly
+  // above proves the file works, but misses a package that resolves /policy to CommonJS.
+  write(
+    'browser-consumer.js',
+    `
+import { JsonSourcePolicy, TextPolicy } from '${packageName}/policy';
+export const json = JsonSourcePolicy.stringify(JsonSourcePolicy.parse('{"n":9007199254740993}'));
+export const length = TextPolicy.codePointLength('😀');
+`,
+  );
+  write(
+    'webpack.config.cjs',
+    `module.exports = ${JSON.stringify({
+      mode: 'production',
+      target: 'web',
+      entry: './browser-consumer.js',
+      module: { rules: [{ include: path.join(temporaryRoot, 'browser-consumer.js'), resolve: { fullySpecified: false } }] },
+      output: {
+        path: path.join(temporaryRoot, 'browser'),
+        filename: 'consumer.mjs',
+        library: { type: 'module' },
+      },
+      experiments: { outputModule: true },
+    })};`,
+  );
+  try {
+    run(
+      process.execPath,
+      [require.resolve('webpack/bin/webpack.js'), '--config', 'webpack.config.cjs', '--json', 'browser-stats.json'],
+      temporaryRoot,
+    );
+  } catch (error) {
+    const statsPath = path.join(temporaryRoot, 'browser-stats.json');
+    if (fs.existsSync(statsPath)) {
+      const stats = JSON.parse(fs.readFileSync(statsPath, 'utf8'));
+      throw new Error(stats.errors.map((entry) => entry.message).join('\n'), { cause: error });
+    }
+    throw error;
+  }
+  const browserStats = JSON.parse(fs.readFileSync(path.join(temporaryRoot, 'browser-stats.json'), 'utf8'));
+  const browserModules = [...browserStats.modules];
+  for (let i = 0; i < browserModules.length; i++) browserModules.push(...(browserModules[i].modules ?? []));
+  const browserFiles = browserModules.map((module) => module.nameForCondition);
+  assert.ok(browserFiles.includes(path.join(installedPackage, 'policy.esm.js')), 'browser /policy import must resolve to ESM');
+  for (const filename of ['policy.js', 'index.js', 'index.esm.js']) {
+    assert.ok(!browserFiles.includes(path.join(installedPackage, filename)), `browser /policy import must not include ${filename}`);
+  }
+  write(
+    'browser-check.mjs',
+    `
+import assert from 'node:assert/strict';
+import { json, length } from './browser/consumer.mjs';
+assert.equal(json, '{"n":9007199254740993}');
+assert.equal(length, 1);
+`,
+  );
+  run(process.execPath, ['browser-check.mjs'], temporaryRoot);
 
   const typeScriptConsumer = `
 import { CedarBuilders, CedarReaders, CedarWriters, Template, TextArea } from '${packageName}';

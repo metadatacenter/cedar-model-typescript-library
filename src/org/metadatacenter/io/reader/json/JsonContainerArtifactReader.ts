@@ -132,6 +132,17 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
     );
 
     container.language = Language.forValue(ReaderUtil.getString(topContextNode, JsonSchema.atLanguage));
+    // This library's JSON writer used to put a container's language in the schema of its instances'
+    // context under `properties`, where the meta-schema refuses it, so no server holds one there. A
+    // draft written before the writer was corrected still may. Reading it from there keeps the
+    // language the author set, and the next write puts it where it belongs.
+    if (container.language === Language.NULL) {
+      const instanceContext: JsonNode = ReaderUtil.getNode(
+        ReaderUtil.getNode(elementSourceObject, JsonSchema.properties),
+        JsonSchema.atContext,
+      );
+      container.language = Language.forValue(ReaderUtil.getString(instanceContext, JsonSchema.atLanguage));
+    }
   }
 
   protected parseChildren(

@@ -10,10 +10,19 @@ import { CedarModel } from '../../../model/cedar/constants/CedarModel';
 import { WriterUtil } from '../WriterUtil';
 import { AbstractChildDeploymentInfo } from '../../../model/cedar/deployment/AbstractChildDeploymentInfo';
 import { ReaderUtil } from '../../reader/ReaderUtil';
+import { Language } from '../../../model/cedar/types/wrapped-types/Language';
 
 export abstract class JsonAbstractContainerArtifactWriter extends JsonAbstractArtifactWriter {
-  protected macroContext(_artifact: AbstractContainerArtifact) {
-    return JsonContainerArtifactContent.CONTEXT_VERBATIM;
+  /**
+   * The container's own context. Its language belongs here, beside the prefixes, where the readers in
+   * both libraries look for it and where the Java writer puts it. The schema of an instance's context
+   * under `properties` takes no `@language`, and the meta-schema refuses one there.
+   */
+  protected macroContext(artifact: AbstractContainerArtifact) {
+    if (artifact.language === Language.NULL) return JsonContainerArtifactContent.CONTEXT_VERBATIM;
+    const context = ReaderUtil.deepClone(JsonContainerArtifactContent.CONTEXT_VERBATIM);
+    context[JsonSchema.atLanguage] = this.atomicWriter.write(artifact.language);
+    return context;
   }
 
   protected getChildMapAsJson(container: AbstractContainerArtifact): JsonNode {

@@ -14,7 +14,6 @@ import { TemplateElement } from '../../../model/cedar/element/TemplateElement';
 import { JsonTemplateElementContent } from '../../../model/cedar/util/serialization/JsonTemplateElementContent';
 import { JsonAbstractContainerArtifactWriter } from './JsonAbstractContainerArtifactWriter';
 import { CedarJsonWriters } from './CedarJsonWriters';
-import { Language } from '../../../model/cedar/types/wrapped-types/Language';
 
 export class JsonTemplateElementWriter extends JsonAbstractContainerArtifactWriter {
   private constructor(behavior: JsonWriterBehavior, writers: CedarJsonWriters) {
@@ -28,11 +27,6 @@ export class JsonTemplateElementWriter extends JsonAbstractContainerArtifactWrit
   private buildProperties(element: TemplateElement): JsonNode {
     // clone, because we will need to modify deep content
     const properties = ReaderUtil.deepClone(JsonTemplateElementContent.PROPERTIES_PARTIAL);
-
-    // @language
-    if (element.language !== Language.NULL) {
-      properties[JsonSchema.atContext][JsonSchema.atLanguage] = this.atomicWriter.write(element.language);
-    }
 
     // Include the IRI mapping. The context may require exactly the terms it declares: a child with
     // no property IRI has no term yet, so the repository will add both when it assigns the IRI.

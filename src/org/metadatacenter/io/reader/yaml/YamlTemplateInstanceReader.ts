@@ -1,4 +1,5 @@
-import { YamlSourcePolicy } from './YamlSourcePolicy';
+import { YamlSourcePolicy, yamlSpelling } from './YamlSourcePolicy';
+import { ExactDecimal } from '../../../policy/NumericPolicy';
 import { ReservedNames } from '../../../model/cedar/ReservedNames';
 import { InstanceDataNotationAtom } from '../../../model/cedar/template-instance/InstanceDataNotationAtom';
 import { InstanceDataLabelAtom } from '../../../model/cedar/template-instance/InstanceDataLabelAtom';
@@ -151,8 +152,7 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
       }
       const avField = new InstanceDataAttributeValueField(key);
       Object.keys(avNode).forEach((attrName) => {
-        const inner = (avNode as JsonNode)[attrName];
-        avField.addValue(attrName, new InstanceDataStringAtom(this.parseAttributeValue(inner)));
+        avField.addValue(attrName, new InstanceDataStringAtom(this.parseAttributeValue(avNode as JsonNode, attrName)));
       });
       container.setValue(key, avField);
     });
@@ -164,15 +164,28 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
     return container;
   }
 
-  private parseAttributeValue(node: unknown): string | null {
-    if (typeof node === 'string') {
-      return node;
-    }
-    if (node !== null && typeof node === 'object' && !Array.isArray(node)) {
-      const value = (node as JsonNode)[YamlKeys.value];
+  private parseAttributeValue(field: JsonNode, attrName: string): string | null {
+    const node: unknown = field[attrName];
+    if (node !== null && typeof node === 'object' && !Array.isArray(node) && !ExactDecimal.isExact(node)) {
+      const value = YamlTemplateInstanceReader.readValue(node as JsonNode, YamlKeys.value);
       return typeof value === 'string' ? value : null;
     }
-    return null;
+    const value = YamlTemplateInstanceReader.readValue(field, attrName);
+    return typeof value === 'string' ? value : null;
+  }
+
+  /**
+   * A field value, read as a string. An unquoted number or boolean is read as the text it was written
+   * as, so `007` stays `007`: a field holds a literal, which a YAML 1.2 core resolver would otherwise
+   * read as the number 7. Java's reader keeps the same text. A value the source policy did not parse
+   * has no recorded text, and is read as the string form of the value it holds.
+   */
+  private static readValue(node: JsonNode, key: string): string | null {
+    const raw: unknown = node[key];
+    if (typeof raw === 'number' || typeof raw === 'boolean' || ExactDecimal.isExact(raw)) {
+      return yamlSpelling(node, key) ?? String(raw);
+    }
+    return ReaderUtil.getString(node, key);
   }
 
   private parseNode(node: JsonNode | string | null): InstanceDataAtomType {
@@ -208,7 +221,7 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
       throw new Error('A field value can have at most one datatype.');
     }
     if (Object.hasOwn(node, YamlKeys.value)) {
-      const value = ReaderUtil.getString(node, YamlKeys.value);
+      const value = YamlTemplateInstanceReader.readValue(node, YamlKeys.value);
       const datatype = ReaderUtil.getString(node, YamlKeys.datatype);
       const label = ReaderUtil.getString(node, YamlKeys.label);
       return datatype === null ? new InstanceDataStringAtom(value, label) : new InstanceDataTypedAtom(value, datatype, label);

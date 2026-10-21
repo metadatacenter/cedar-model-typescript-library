@@ -1,4 +1,12 @@
-import { CedarReaders, CedarWriters } from '../../../../../src';
+import {
+  CedarReaders,
+  CedarWriters,
+  InstanceDataAtomType,
+  InstanceDataAttributeValueField,
+  InstanceDataContainer,
+  InstanceDataStringAtom,
+  InstanceDataTypedAtom,
+} from '../../../../../src';
 
 /**
  * The YAML instance reader reads back what the YAML instance writer wrote.
@@ -73,5 +81,58 @@ describe('YamlTemplateInstanceReader', () => {
     expect(yaml).toContain('label: "Homo sapiens"'); // controlled term
     expect(yaml).toContain('https://example.org/thing'); // link
     expect(yaml).toContain('value: "Palo Alto"'); // value nested in an element
+  });
+});
+
+describe('YamlTemplateInstanceReader on an unquoted value', () => {
+  const yamlReader = CedarReaders.yaml().getStrict().getTemplateInstanceReader();
+
+  const literal = (atom: InstanceDataAtomType | undefined): string | null => {
+    if (atom instanceof InstanceDataStringAtom || atom instanceof InstanceDataTypedAtom) return atom.value;
+    throw new Error(`expected a literal, got ${String(atom)}`);
+  };
+  const first = (atom: InstanceDataAtomType | undefined): InstanceDataAtomType | undefined => {
+    if (Array.isArray(atom)) return atom[0];
+    throw new Error(`expected a list, got ${String(atom)}`);
+  };
+  const attribute = (atom: InstanceDataAtomType | undefined, name: string): InstanceDataAtomType | undefined => {
+    if (atom instanceof InstanceDataAttributeValueField) return atom.values[name];
+    throw new Error(`expected an attribute-value field, got ${String(atom)}`);
+  };
+
+  // A YAML 1.2 core resolver reads these plain scalars as numbers or booleans. A field holds a
+  // literal, so the value read must be the text written: a ZIP code of 007 is not 7. Java's reader
+  // keeps the same text.
+  test.each(['007', '0x1F', '0o17', '1e3', '+1', '.5', '-0', '1.50', '9007199254740993', 'True', 'TRUE', 'false'])(
+    '%s keeps the text it was written with',
+    (spelling) => {
+      const yaml =
+        'type: instance\nname: X\nisBasedOn: "https://repo.metadatacenter.org/templates/abc"\n' +
+        `children:\n  Count:\n    value: ${spelling}\n  Typed:\n    value: ${spelling}\n    datatype: xsd:int\n` +
+        `  Counts:\n    - value: ${spelling}\n  Element:\n    children:\n      Nested:\n        value: ${spelling}\n` +
+        `Group:\n  Attribute:\n    value: ${spelling}\n  Bare: ${spelling}\n`;
+      const values = yamlReader.readFromString(yaml).instance.dataContainer.values;
+      const element = values['Element'];
+      if (!(element instanceof InstanceDataContainer)) throw new Error('expected an element');
+
+      expect(literal(values['Count'])).toBe(spelling);
+      expect(literal(values['Typed'])).toBe(spelling);
+      expect(literal(first(values['Counts']))).toBe(spelling);
+      expect(literal(element.values['Nested'])).toBe(spelling);
+      expect(literal(attribute(values['Group'], 'Attribute'))).toBe(spelling);
+      expect(literal(attribute(values['Group'], 'Bare'))).toBe(spelling);
+    },
+  );
+
+  test('a value parsed elsewhere is still read as a string', () => {
+    const values = yamlReader.readFromObject({
+      type: 'instance',
+      name: 'X',
+      isBasedOn: 'https://repo.metadatacenter.org/templates/abc',
+      children: { Count: { value: 7 }, Flag: { value: true } },
+    }).instance.dataContainer.values;
+
+    expect(literal(values['Count'])).toBe('7');
+    expect(literal(values['Flag'])).toBe('true');
   });
 });

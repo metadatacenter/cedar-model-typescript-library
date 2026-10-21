@@ -13,9 +13,11 @@ export const TRIP_FAMILIES: Readonly<Record<string, readonly TripFamily[]>> = {
   ...each('uiEntryFilled', ['template-003', 'cee-template-076', 'cee-template-087']),
   // Ontologies addressed as http://data.bioontology.org/ or https://bioportal.bioontology.org/.
   ...each('ontologyAddress', ['cee-template-021', 'cee-template-042', 'cee-template-043', 'cee-template-045', 'cee-template-071']),
-  // Instances holding empty values, omitting children their template declares, or stating property
-  // IRIs other than their template's. cee-instance-072 also holds an element with nothing but an identifier.
+  // Instances holding empty values, omitting children their template declares, holding fewer
+  // occurrences of a repeated child than its lower bound, or stating property IRIs other than their
+  // template's. cee-instance-072 also holds an element with nothing but an identifier.
   ...each('instanceCompletion', [
+    'instance-002',
     'instance-004',
     'instance-005',
     'instance-009',
@@ -30,6 +32,7 @@ export const TRIP_FAMILIES: Readonly<Record<string, readonly TripFamily[]>> = {
     'instance-020',
     'instance-021',
     'instance-022',
+    'cee-instance-002',
     'cee-instance-004',
     'cee-instance-013',
     'cee-instance-016',

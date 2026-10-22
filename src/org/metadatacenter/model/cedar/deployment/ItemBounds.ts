@@ -12,6 +12,14 @@ export const UNBOUNDED_MAX_ITEMS = 0;
  * rewrote what the author stated, and turned a maximum of 0, meaning no upper bound, into a limit.
  */
 export function assertItemBounds(name: string | null, minItems: NullableNumber, maxItems: NullableNumber): void {
+  for (const [key, value] of [
+    ['minItems', minItems],
+    ['maxItems', maxItems],
+  ] as const) {
+    if (value !== null && (!Number.isInteger(value) || value > 2147483647)) {
+      throw new Error(`${key} must be an integer no greater than 2147483647 in ${name}`);
+    }
+  }
   if (minItems !== null && minItems < 0) {
     throw new Error(`minItems must be zero or greater in ${name}`);
   }

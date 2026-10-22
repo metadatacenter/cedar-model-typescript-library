@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.metadatacenter</groupId>
+  <artifactId>cedar-authoring-conformance</artifactId>
+  <version>1.0.0</version>
+  <!-- The oracle uses the same validator and mandatory reader as an artifact-server write. -->
+  <dependencies>
+    <dependency><groupId>org.metadatacenter</groupId><artifactId>cedar-model-validation-library</artifactId><version>2.9.29-SNAPSHOT</version></dependency>
+    <dependency><groupId>org.metadatacenter</groupId><artifactId>cedar-artifact-library</artifactId><version>2.9.29-SNAPSHOT</version></dependency>
+  </dependencies>
+  <repositories>
+    <repository><id>cedar-releases</id><url>https://nexus.bmir.stanford.edu/repository/maven-releases/</url><snapshots><enabled>false</enabled></snapshots></repository>
+    <repository><id>cedar-snapshots</id><url>https://nexus.bmir.stanford.edu/repository/maven-snapshots/</url><releases><enabled>false</enabled></releases><snapshots><enabled>true</enabled></snapshots></repository>
+  </repositories>
+</project>

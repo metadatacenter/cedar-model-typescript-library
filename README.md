@@ -260,3 +260,26 @@ Java owns the normative value/default, configuration and semantic-verification c
 explicitly uncommitted review, `node scripts/sync-concordance.mjs --matrix <name> --working-tree`
 records the base commit plus a hash of the actual Java source/test tree. Refresh it after further
 Java edits; do not describe that lock as evidence of a committed revision.
+
+### Validate the serialized schema
+
+`SchemaArtifactValidator.structure(json, kind?)` checks a template, element or field before a reader
+can normalize it. `validate(json, kind?)` also checks the raw constraints and defaults. Both return the
+shared `ValidationSummary`; unknown terminology verification stays advisory for saving. The optional
+kind is `template`, `element` or `field`. The lightweight browser entry is
+`cedar-model-typescript-library/schema` (`schema.esm.js` for direct module loading).
+
+The structural validators are compiled ahead of time from Java's Draft-04 meta-schemas. To adopt a
+canonical change, run `npm run schemas:compile -- --sync /path/to/cedar-model-validation-library`.
+The vendored resources, content hashes and generated validators travel together; `npm run schemas:check`
+and every package build reject drift. Runtime validation does not compile schemas or evaluate source.
+Occurrence counts are limited to Java's nonnegative 32-bit integer range in both the raw checker and
+model deployment builders.
+
+The package also carries `conformance/java-oracle.mjs` for consumer test gates. With Java 17 and Maven,
+`createJavaOracle(SchemaArtifactValidator.schemaDigests, JsonSourcePolicy.stringify.bind(JsonSourcePolicy))`
+starts the real Java validator and mandatory artifact reader, rejects a schema-hash mismatch, and
+returns `validate(artifact, kind)` and `close()`. This is test tooling, never a browser dependency.
+The Java dependency versions live in `tools/conformance/pom.xml`. CED tests its actual coordinator and
+serialized outputs with this oracle; the Designer host tests its final outgoing bodies with it.
+The deployed server remains authoritative, including its checks after write-time normalization.

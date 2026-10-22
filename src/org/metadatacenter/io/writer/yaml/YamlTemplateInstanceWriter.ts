@@ -19,6 +19,7 @@ import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 import { AttributeValueNamePolicy } from '../../../model/cedar/template-instance/AttributeValueNamePolicy';
 import { InstanceDataAttributeValueFieldName } from '../../../model/cedar/template-instance/InstanceDataAttributeValueFieldName';
 import { WriterUtil } from '../WriterUtil';
+import { CedarArtifactId } from '../../../model/cedar/types/cedar-types/CedarArtifactId';
 
 const ELEMENT_INSTANCE_TYPE = 'element-instance';
 
@@ -35,6 +36,11 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
     // Java's writer refuses an instance with no name, and both readers refuse a document without one.
     if (instance.schema_name === null) {
       throw new Error('A template instance must have a name.');
+    }
+    // An instance that does not name its template says nothing of what it is an instance of. Both
+    // readers refuse it, and Java cannot build one.
+    if (instance.schema_isBasedOn === CedarArtifactId.NULL) {
+      throw new Error('A template instance must name the template it is based on.');
     }
     AttributeValueNamePolicy.assertValid(instance.dataContainer);
     // build the final object

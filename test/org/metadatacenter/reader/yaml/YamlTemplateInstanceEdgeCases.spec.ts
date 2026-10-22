@@ -285,6 +285,19 @@ children:
     expect(() => writer.getAsYamlString(instance, compact)).toThrow(/A template instance must have a name/);
   });
 
+  // An instance whose template was never saved has no isBasedOn. Both readers refuse a document
+  // without one, so the writer refuses it too, and CEE's download reports why.
+  test.each([false, true])('refuses to write an instance that names no template (compact=%s)', (compact) => {
+    const instance = TemplateInstance.buildEmptyWithNullValues();
+    instance.schema_name = 'Unsaved';
+    expect(() => writer.getYamlAsJsonNode(instance, compact)).toThrow(
+      /A template instance must name the template it is based on/,
+    );
+    expect(() => writer.getAsYamlString(instance, compact)).toThrow(
+      /A template instance must name the template it is based on/,
+    );
+  });
+
   // An attribute is a field value. The writer wrote its label, and the reader kept only its value,
   // so the label was lost on the library's own round trip; a datatype or an identifier was lost
   // before the writer saw it. Java's reader keeps all three.

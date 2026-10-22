@@ -31,9 +31,6 @@ import { YamlArtifactType } from '../../../model/cedar/types/wrapped-types/YamlA
 
 const ELEMENT_INSTANCE_TYPE = 'element-instance';
 
-/** The keys beside which a null value is the shape of a term chosen without a literal. */
-const LABEL_KEYS: readonly string[] = [YamlKeys.label, YamlKeys.prefLabel, YamlKeys.notation];
-
 /** The keys other than its datatype that describe a field's value. Each holds text. */
 const DESCRIPTION_KEYS: readonly string[] = [YamlKeys.label, YamlKeys.notation, YamlKeys.prefLabel, YamlKeys.language];
 
@@ -82,10 +79,10 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
     const parsingResult = new YamlArtifactParsingResult();
     const instance = TemplateInstance.buildEmptyWithNullValues();
     const source = instanceSourceObject ?? {};
-    YamlTemplateInstanceReader.refuseNullAndEmptyValues(source, '');
-    YamlTemplateInstanceReader.assertType(source);
+    YamlTemplateInstanceReader.refuseNullAndEmptyValues(source, '', true);
+    YamlTemplateInstanceReader.assertType(source, YamlArtifactType.TEMPLATE_INSTANCE, 'A template instance');
 
-    instance.schema_name = YamlTemplateInstanceReader.readName(source);
+    instance.schema_name = YamlTemplateInstanceReader.readName(source, '', 'A template instance');
     // No description is the empty string, never null.
     YamlTemplateInstanceReader.assertText(source, YamlKeys.description, '');
     instance.schema_description = ReaderUtil.getString(source, YamlKeys.description) ?? '';
@@ -108,7 +105,6 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
     instance.pav_createdOn = IsoDate.forValue(ReaderUtil.getString(source, YamlKeys.createdOn));
     instance.oslc_modifiedBy = CedarUser.forValue(ReaderUtil.getString(source, YamlKeys.modifiedBy));
     instance.pav_lastUpdatedOn = IsoDate.forValue(ReaderUtil.getString(source, YamlKeys.modifiedOn));
-    YamlTemplateInstanceReader.assertAnnotationValues(source);
     this.readAnnotations(instance, source, parsingResult, new JsonPath());
 
     instance.dataContainer = this.parseContainer(source, '', true);
@@ -137,85 +133,6 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
   private static readonly RESERVED_KEYS: ReadonlySet<string> = ReservedNames.TEMPLATE_INSTANCE_YAML_KEYS;
 
   private static readonly ELEMENT_RESERVED_KEYS: ReadonlySet<string> = ReservedNames.NESTED_ELEMENT_INSTANCE_YAML_KEYS;
-
-  /** A YAML mapping: an object that is neither a list nor a number the source policy kept exact. */
-  private static isMapping(node: unknown): node is JsonNode {
-    return node !== null && typeof node === 'object' && !Array.isArray(node) && !ExactDecimal.isExact(node);
-  }
-
-  private static refuseNullOrEmpty(value: unknown, path: string): void {
-    if (value === null) {
-      throw new Error(`null is not a valid value at ${path}; omit the key if the value is unknown.`);
-    }
-    if (Array.isArray(value) && value.length === 0) {
-      throw new Error(`An empty list ([]) is not a valid value at ${path}; omit the key if the value is unknown.`);
-    }
-    if (YamlTemplateInstanceReader.isMapping(value) && Object.keys(value).length === 0) {
-      throw new Error(`An empty mapping ({}) is not a valid value at ${path}; omit the key if the value is unknown.`);
-    }
-  }
-
-  /**
-   * Refuse null, an empty mapping and an empty list anywhere in the document, as Java's reader does:
-   * in the instance's data and in its name, description, identifiers, provenance and annotations
-   * alike. A value that is not known is left out rather than written as one of them. The one
-   * exception, also Java's, is a null `value` beside a label, a preferred label or a notation.
-   */
-  private static refuseNullAndEmptyValues(node: unknown, path: string): void {
-    if (Array.isArray(node)) {
-      node.forEach((entry: unknown, index: number) => {
-        YamlTemplateInstanceReader.refuseNullOrEmpty(entry, `${path}[${index}]`);
-        YamlTemplateInstanceReader.refuseNullAndEmptyValues(entry, `${path}[${index}]`);
-      });
-    } else if (YamlTemplateInstanceReader.isMapping(node)) {
-      for (const [key, value] of Object.entries(node)) {
-        if (key === YamlKeys.value && value === null && LABEL_KEYS.some((label) => typeof node[label] === 'string')) {
-          continue;
-        }
-        YamlTemplateInstanceReader.refuseNullOrEmpty(value, `${path}/${key}`);
-        YamlTemplateInstanceReader.refuseNullAndEmptyValues(value, `${path}/${key}`);
-      }
-    }
-  }
-
-  /** A template instance states its type, and the type is `instance`, as Java's reader requires. */
-  private static assertType(source: JsonNode): void {
-    const expected = YamlArtifactType.TEMPLATE_INSTANCE.getValue();
-    if (!Object.hasOwn(source, YamlKeys.type)) {
-      throw new Error(`No ${YamlKeys.type} present. A template instance states its type, "${expected}".`);
-    }
-    YamlTemplateInstanceReader.assertText(source, YamlKeys.type, '');
-    const type = source[YamlKeys.type];
-    if (type !== expected) {
-      throw new Error(`Invalid artifact type "${type}" at /${YamlKeys.type}. A template instance has the type "${expected}".`);
-    }
-  }
-
-  /** An annotation's literal is a string, as Java's reader requires, so a number or a boolean is refused. */
-  private static assertAnnotationValues(source: JsonNode): void {
-    const annotations: unknown = source[YamlKeys.annotations];
-    if (!YamlTemplateInstanceReader.isMapping(annotations)) {
-      return;
-    }
-    for (const [name, annotation] of Object.entries(annotations)) {
-      if (YamlTemplateInstanceReader.isMapping(annotation)) {
-        YamlTemplateInstanceReader.assertText(annotation, YamlKeys.value, `/${YamlKeys.annotations}/${name}`);
-      }
-    }
-  }
-
-  /** A template instance has a name, and it is a non-empty string, as Java's reader requires. */
-  private static readName(source: JsonNode): string {
-    if (!Object.hasOwn(source, YamlKeys.name)) {
-      throw new Error(`No ${YamlKeys.name} present. A template instance must have a name.`);
-    }
-    YamlTemplateInstanceReader.assertText(source, YamlKeys.name, '');
-    const name = source[YamlKeys.name] as string;
-    if (name === '') {
-      throw new Error(`Expected a non-empty string at /${YamlKeys.name}.`);
-    }
-    return name;
-  }
 
   private parseContainer(node: JsonNode, path: string, isDocumentRoot: boolean = false): InstanceDataContainer {
     const container = new InstanceDataContainer();
@@ -316,12 +233,6 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
       throw new Error(`Expected a string, number or boolean at ${path}/${YamlKeys.value}.`);
     }
     DESCRIPTION_KEYS.forEach((key) => YamlTemplateInstanceReader.assertText(node, key, path));
-  }
-
-  private static assertText(node: JsonNode, key: string, path: string): void {
-    if (Object.hasOwn(node, key) && typeof node[key] !== 'string') {
-      throw new Error(`Expected a string at ${path}/${key}.`);
-    }
   }
 
   /**

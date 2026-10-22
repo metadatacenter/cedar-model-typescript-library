@@ -50,6 +50,7 @@ export class YamlTemplateReader extends YamlContainerArtifactReader {
     const parsingResult: YamlArtifactParsingResult = new YamlArtifactParsingResult();
     const template = Template.buildEmptyWithNullValues();
 
+    this.assertSchemaMetadata(templateSourceObject, topPath);
     ReaderUtil.getIdentifier(templateSourceObject, YamlKeys.id);
     this.readNonReportableAttributes(template, templateSourceObject);
     applySchemaReaderDefaults(template, templateSourceObject, topPath, 'yaml');

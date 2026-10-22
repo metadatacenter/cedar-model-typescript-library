@@ -19,6 +19,44 @@ import { ReaderUtil } from '../ReaderUtil';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 import { YamlArtifactParsingResult } from '../../../model/cedar/util/compare/YamlArtifactParsingResult';
 import { Language } from '../../../model/cedar/types/wrapped-types/Language';
+import { ExactDecimal } from '../../../policy/NumericPolicy';
+import { YamlArtifactType } from '../../../model/cedar/types/wrapped-types/YamlArtifactType';
+import { SchemaVersionValues } from '../../../model/cedar/types/wrapped-types/SchemaVersion';
+
+/** The keys beside which a null value is the shape of a term chosen without a literal. */
+const LABEL_KEYS: readonly string[] = [YamlKeys.label, YamlKeys.prefLabel, YamlKeys.notation];
+
+/**
+ * The keys that say what a schema artifact is and who made it, rather than what it holds. Java's
+ * reader refuses null, an empty mapping and an empty list anywhere in a schema document, and this
+ * reader refuses them at these keys wherever an artifact sits in the document.
+ */
+const SCHEMA_METADATA_KEYS: readonly string[] = [
+  YamlKeys.type,
+  YamlKeys.name,
+  YamlKeys.description,
+  YamlKeys.id,
+  YamlKeys.identifier,
+  YamlKeys.modelVersion,
+  YamlKeys.version,
+  YamlKeys.status,
+  YamlKeys.previousVersion,
+  YamlKeys.derivedFrom,
+  YamlKeys.createdBy,
+  YamlKeys.createdOn,
+  YamlKeys.modifiedBy,
+  YamlKeys.modifiedOn,
+  YamlKeys.language,
+  YamlKeys.annotations,
+  YamlKeys.instanceType,
+  YamlKeys.prefLabel,
+  YamlKeys.altLabels,
+  YamlKeys.header,
+  YamlKeys.footer,
+];
+
+/** The statuses Java's reader takes. */
+const STATUSES: readonly string[] = BiboStatus.values().map((status) => status.getYamlValue() as string);
 
 export abstract class YamlAbstractArtifactReader {
   protected behavior: YamlReaderBehavior;
@@ -100,42 +138,191 @@ export abstract class YamlAbstractArtifactReader {
    * corpus once did — and reading it as though the key were absent hides that from whoever wrote it. A
    * key that is not to be answered yet is written `null` or left out. Optional `derivedFrom` is a
    * compatibility exception: its legacy empty spelling loads as absence and is omitted on write.
+   *
+   * A refusal names the key, or where the key sits when that is below the document's top level.
    */
-  protected static refuseEmptyIdentifier(sourceObject: JsonNode, key: string = YamlKeys.id): void {
+  protected static refuseEmptyIdentifier(sourceObject: JsonNode, key: string = YamlKeys.id, location: string = key): void {
     const raw = ReaderUtil.getString(sourceObject, key);
     if (raw !== null && typeof raw !== 'string') {
-      throw new Error(`Invalid URI at "${key}": expected a string.`);
+      throw new Error(`Invalid URI at "${location}": expected a string.`);
     }
     if (raw !== null && TextPolicy.isBlank(raw)) {
-      throw new Error(`An empty string is not a URI at "${key}"; write null or leave the key out where there is no value.`);
+      throw new Error(`An empty string is not a URI at "${location}"; write null or leave the key out where there is no value.`);
     }
-    ReaderUtil.assertIri(raw, key);
+    ReaderUtil.assertIri(raw, location);
   }
 
+  /** A YAML mapping: an object that is neither a list nor a number the source policy kept exact. */
+  protected static isMapping(node: unknown): node is JsonNode {
+    return node !== null && typeof node === 'object' && !Array.isArray(node) && !ExactDecimal.isExact(node);
+  }
+
+  protected static refuseNullOrEmpty(value: unknown, path: string): void {
+    if (value === null) {
+      throw new Error(`null is not a valid value at ${path}; omit the key if the value is unknown.`);
+    }
+    if (Array.isArray(value) && value.length === 0) {
+      throw new Error(`An empty list ([]) is not a valid value at ${path}; omit the key if the value is unknown.`);
+    }
+    if (YamlAbstractArtifactReader.isMapping(value) && Object.keys(value).length === 0) {
+      throw new Error(`An empty mapping ({}) is not a valid value at ${path}; omit the key if the value is unknown.`);
+    }
+  }
+
+  /**
+   * Refuse null, an empty mapping and an empty list anywhere in `node`, as Java's reader does. A value
+   * that is not known is left out rather than written as one of them. In an instance, Java's reader
+   * makes one exception, and so does this one: a null `value` beside a label, a preferred label or a
+   * notation.
+   */
+  protected static refuseNullAndEmptyValues(node: unknown, path: string, isInstance: boolean = false): void {
+    if (Array.isArray(node)) {
+      node.forEach((entry: unknown, index: number) => {
+        YamlAbstractArtifactReader.refuseNullOrEmpty(entry, `${path}[${index}]`);
+        YamlAbstractArtifactReader.refuseNullAndEmptyValues(entry, `${path}[${index}]`, isInstance);
+      });
+    } else if (YamlAbstractArtifactReader.isMapping(node)) {
+      for (const [key, value] of Object.entries(node)) {
+        if (isInstance && key === YamlKeys.value && value === null && LABEL_KEYS.some((label) => typeof node[label] === 'string')) {
+          continue;
+        }
+        YamlAbstractArtifactReader.refuseNullOrEmpty(value, `${path}/${key}`);
+        YamlAbstractArtifactReader.refuseNullAndEmptyValues(value, `${path}/${key}`, isInstance);
+      }
+    }
+  }
+
+  protected static assertText(node: JsonNode, key: string, path: string): void {
+    if (Object.hasOwn(node, key) && typeof node[key] !== 'string') {
+      throw new Error(`Expected a string at ${path}/${key}.`);
+    }
+  }
+
+  /** An artifact states its type, and it is the one the reader reads, as Java's reader requires. */
+  protected static assertType(source: JsonNode, expected: YamlArtifactType, artifact: string): void {
+    const type = expected.getValue();
+    if (!Object.hasOwn(source, YamlKeys.type)) {
+      throw new Error(`No ${YamlKeys.type} present. ${artifact} states its type, "${type}".`);
+    }
+    YamlAbstractArtifactReader.assertText(source, YamlKeys.type, '');
+    if (source[YamlKeys.type] !== type) {
+      throw new Error(`Invalid artifact type "${source[YamlKeys.type]}" at /${YamlKeys.type}. ${artifact} has the type "${type}".`);
+    }
+  }
+
+  /** An artifact has a name, and it is a non-empty string, as Java's reader requires. */
+  protected static readName(source: JsonNode, path: string, artifact: string): string {
+    if (!Object.hasOwn(source, YamlKeys.name)) {
+      throw new Error(`No ${YamlKeys.name} present${path === '' ? '' : ` at ${path}`}. ${artifact} must have a name.`);
+    }
+    YamlAbstractArtifactReader.assertText(source, YamlKeys.name, path);
+    const name = source[YamlKeys.name] as string;
+    if (name === '') {
+      throw new Error(`Expected a non-empty string at ${path}/${YamlKeys.name}.`);
+    }
+    return name;
+  }
+
+  /**
+   * Hold a template's, an element's or a field's metadata to the rules Java's reader holds it to,
+   * wherever the artifact sits in the document: what it is, its name, who made it and when, its
+   * status, its annotations and its labels. Each was read as whatever the document held, so a number
+   * where a string belongs, or a status no artifact can have, was kept and then written to JSON.
+   */
+  protected assertSchemaMetadata(source: JsonNode, topPath: JsonPath): void {
+    const path = topPath.toPointer();
+    const isRoot = path === '';
+    for (const key of SCHEMA_METADATA_KEYS) {
+      if (Object.hasOwn(source, key)) {
+        YamlAbstractArtifactReader.refuseNullOrEmpty(source[key], `${path}/${key}`);
+        YamlAbstractArtifactReader.refuseNullAndEmptyValues(source[key], `${path}/${key}`);
+      }
+    }
+    const kind = this.artifactTypeWord();
+    const artifact = kind === 'template' ? 'A template' : kind === 'element' ? 'An element' : 'A field';
+    // A child's type is what chose its reader, and a field reader has already held its own to the
+    // field types it knows.
+    if (isRoot && kind === 'template') {
+      YamlAbstractArtifactReader.assertType(source, YamlArtifactType.TEMPLATE, artifact);
+    } else if (isRoot && kind === 'element') {
+      YamlAbstractArtifactReader.assertType(source, YamlArtifactType.ELEMENT, artifact);
+    }
+    // Java's reader checks the model version of the document it is given, and not its children's.
+    if (isRoot && Object.hasOwn(source, YamlKeys.modelVersion)) {
+      YamlAbstractArtifactReader.assertText(source, YamlKeys.modelVersion, path);
+      if (source[YamlKeys.modelVersion] !== SchemaVersionValues.CURRENT) {
+        throw new Error(
+          `Invalid ${YamlKeys.modelVersion} "${source[YamlKeys.modelVersion]}" at /${YamlKeys.modelVersion}. This library reads model version "${SchemaVersionValues.CURRENT}".`,
+        );
+      }
+    }
+    YamlAbstractArtifactReader.readName(source, path, artifact);
+    const textKeys = [YamlKeys.description, YamlKeys.identifier, YamlKeys.language, YamlKeys.createdOn, YamlKeys.modifiedOn];
+    if (kind !== 'field') textKeys.push(YamlKeys.header, YamlKeys.footer);
+    if (kind !== 'template') textKeys.push(YamlKeys.prefLabel);
+    textKeys.forEach((key) => YamlAbstractArtifactReader.assertText(source, key, path));
+    // Who created and last modified the artifact are IRIs, as in Java's reader.
+    [YamlKeys.createdBy, YamlKeys.modifiedBy].forEach((key) =>
+      YamlAbstractArtifactReader.refuseEmptyIdentifier(source, key, `${path}/${key}`.slice(1)),
+    );
+    // An empty status is no status, as in Java's reader; any other has to be one an artifact can have.
+    YamlAbstractArtifactReader.assertText(source, YamlKeys.status, path);
+    const status = source[YamlKeys.status];
+    if (Object.hasOwn(source, YamlKeys.status) && status !== '' && !STATUSES.includes(status as string)) {
+      throw new Error(`Invalid ${YamlKeys.status} "${status}" at ${path}/${YamlKeys.status}. A status is one of ${STATUSES.join(', ')}.`);
+    }
+    // An alternative label is not empty: Java's reader refuses one that is.
+    const altLabels: unknown = source[YamlKeys.altLabels];
+    if (kind !== 'template' && Array.isArray(altLabels)) {
+      const empty = altLabels.indexOf('');
+      if (empty >= 0) {
+        throw new Error(`Expected a non-empty string at ${path}/${YamlKeys.altLabels}[${empty}].`);
+      }
+    }
+  }
+
+  /**
+   * An element's or a field's alternative labels: the strings in the list. Java's reader passes over
+   * an entry that is not a string, where keeping it put a number in `skos:altLabel`.
+   */
+  protected static readAltLabels(source: JsonNode): Array<string> {
+    return ReaderUtil.getFilteredStringList(source, YamlKeys.altLabels).filter((label: unknown) => typeof label === 'string');
+  }
+
+  /**
+   * An artifact's annotations: a mapping of names, each to a literal `value` or an IRI `id`. Both are
+   * held to the Java reader's rules — the literal is a string, and the IRI is held to the rule of
+   * every other identifier here — and where an annotation states both, the literal is read, as Java
+   * reads it.
+   */
   protected readAnnotations(
     artifact: AbstractArtifact,
     artifactSourceObject: JsonNode,
     _parsingResult: YamlArtifactParsingResult,
-    _topPath: JsonPath,
+    topPath: JsonPath,
   ) {
     const annotations = new Annotations();
-    const annotationsNode: JsonNode = ReaderUtil.getNode(artifactSourceObject, YamlKeys.annotations);
+    if (!Object.hasOwn(artifactSourceObject, YamlKeys.annotations)) {
+      return;
+    }
+    const path = `${topPath.toPointer()}/${YamlKeys.annotations}`;
+    const annotationsNode: unknown = artifactSourceObject[YamlKeys.annotations];
+    if (!YamlAbstractArtifactReader.isMapping(annotationsNode)) {
+      throw new Error(`Expected a mapping at ${path}.`);
+    }
     Object.keys(annotationsNode).forEach((name: string) => {
-      const raw = annotationsNode[name];
-      if (raw === null || typeof raw !== 'object' || Array.isArray(raw)) {
-        throw new Error(`Expected map value for annotation at /annotations/${name}`);
+      const annotationNode: unknown = annotationsNode[name];
+      if (!YamlAbstractArtifactReader.isMapping(annotationNode)) {
+        throw new Error(`Expected map value for annotation at ${path}/${name}`);
       }
-      const annotationNode = ReaderUtil.getNode(annotationsNode, name);
-      const id: string | null = ReaderUtil.getString(annotationNode, YamlKeys.id);
-      const value: string | null = ReaderUtil.getString(annotationNode, YamlKeys.value);
-      if (name !== null) {
-        if (id !== null) {
-          annotations.add(new AnnotationAtId(name, id));
-        } else if (value !== null) {
-          annotations.add(new AnnotationAtValue(name, value));
-        } else {
-          throw new Error(`Annotation must have either a value or id at /annotations/${name}`);
-        }
+      if (Object.hasOwn(annotationNode, YamlKeys.value)) {
+        YamlAbstractArtifactReader.assertText(annotationNode, YamlKeys.value, `${path}/${name}`);
+        annotations.add(new AnnotationAtValue(name, annotationNode[YamlKeys.value] as string));
+      } else if (Object.hasOwn(annotationNode, YamlKeys.id)) {
+        YamlAbstractArtifactReader.refuseEmptyIdentifier(annotationNode, YamlKeys.id, `${path}/${name}/${YamlKeys.id}`.slice(1));
+        annotations.add(new AnnotationAtId(name, annotationNode[YamlKeys.id] as string));
+      } else {
+        throw new Error(`Annotation must have either a value or id at ${path}/${name}`);
       }
     });
     if (annotations.getSize() > 0) {

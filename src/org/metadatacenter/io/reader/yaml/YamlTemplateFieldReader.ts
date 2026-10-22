@@ -100,6 +100,7 @@ export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
   public readFromObject(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, path: JsonPath): YamlTemplateFieldReaderResult {
     const parsingResult: YamlArtifactParsingResult = new YamlArtifactParsingResult();
     const field: TemplateField = YamlTemplateFieldReader.readFieldSpecificAttributes(fieldSourceObject, childInfo, parsingResult, path);
+    this.assertSchemaMetadata(fieldSourceObject, path);
     // A child's `id` may be a temporary one the server replaces on a write.
     if (path.getLastComponent() === null) {
       ReaderUtil.getIdentifier(fieldSourceObject, YamlKeys.id);
@@ -114,7 +115,7 @@ export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
     super.readNonReportableAttributes(field, fieldSourceObject);
     // Read field-specific nodes
     field.skos_prefLabel = ReaderUtil.getString(fieldSourceObject, YamlKeys.prefLabel);
-    field.skos_altLabel = ReaderUtil.getFilteredStringList(fieldSourceObject, YamlKeys.altLabels);
+    field.skos_altLabel = YamlTemplateFieldReader.readAltLabels(fieldSourceObject);
     // A standalone field keeps value recommendation on itself, and the YAML writer states it at the
     // document's top level. Only the container reader read the key, and only out of a child's
     // configuration block, so a field written on its own came back with the setting off: the one

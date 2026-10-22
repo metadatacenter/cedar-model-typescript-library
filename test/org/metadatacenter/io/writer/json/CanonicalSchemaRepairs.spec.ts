@@ -22,7 +22,10 @@ describe('canonical schema repairs', () => {
   test('numeric field and template APIs retain Java decimal digits through YAML back to JSON', () => {
     const field = CedarBuilders.numericFieldBuilder().withSchemaName('Bounds').withMinValue(-1.2345e21).build();
     const fieldWriter = writers.getFieldWriterForType(field.cedarFieldType);
-    const template = CedarBuilders.templateBuilder().addChild(field, field.createDeploymentBuilder('bound').build()).build();
+    const template = CedarBuilders.templateBuilder()
+      .withSchemaName('Bounds')
+      .addChild(field, field.createDeploymentBuilder('bound').build())
+      .build();
     const expected = '"minValue":-1234499999999999900000';
     expect(fieldWriter.getAsJsonString(field, 0)).toContain(expected);
     expect(writers.getTemplateWriter().getAsJsonString(template, 0)).toContain(expected);

@@ -1,5 +1,8 @@
 import {
+  AbstractSchemaArtifact,
+  AnnotationAtId,
   AnnotationAtValue,
+  BiboStatus,
   CedarWriters,
   YamlTemplateElementReader,
   YamlTemplateFieldReader,
@@ -172,6 +175,24 @@ describe("an instance's metadata is held to the Java reader's rules", () => {
     expect((annotation as AnnotationAtValue).getAtValue()).toBe('42');
   });
 
+  // An annotation's IRI is held to the rule of the instance's other identifiers. A number, an empty
+  // string and a string that is no IRI were kept and written to JSON as the annotation's @id.
+  test.each([
+    ['a number', '42', /Invalid URI at "annotations\/note\/id": expected a string/],
+    ['an empty string', '""', /An empty string is not a URI at "annotations\/note\/id"/],
+    ['not an IRI', '"a note"', /Invalid URI\/IRI at "annotations\/note\/id": unescaped space/],
+  ])('an annotation id that is %s is refused', (_label: string, id: string, refusal: RegExp) => {
+    expect(() => named(`annotations:\n  note:\n    id: ${id}\n`)).toThrow(refusal);
+  });
+
+  test('an annotation that states a literal and an IRI is read as the literal, as Java reads it', () => {
+    const annotation = named('annotations:\n  note:\n    value: "A note"\n    id: "https://example.org/note"\n').instance.annotations?.get(
+      'note',
+    );
+    expect(annotation).toBeInstanceOf(AnnotationAtValue);
+    expect((annotation as AnnotationAtValue).getAtValue()).toBe('A note');
+  });
+
   // schema:description is never null: the empty string is the only spelling of no description.
   test('an empty or absent description reads as the empty string', () => {
     expect(named('description: ""\n').instance.schema_description).toBe('');
@@ -266,5 +287,131 @@ children:
     modelVersion: "1.6.0"
 `;
     expect(() => YamlTemplateElementReader.getStrict().readFromString(element)).toThrow(/Unknown child type "boolean"/);
+  });
+});
+
+describe("a schema artifact's metadata is held to the Java reader's rules", () => {
+  const fullElement = `type: "element"
+name: "Address"
+id: "https://repo.metadatacenter.org/template-elements/e1"
+modelVersion: "1.6.0"
+`;
+  const readers: ReadonlyArray<readonly [string, string, (yaml: string) => AbstractSchemaArtifact]> = [
+    ['template', fullTemplate, (yaml: string) => YamlTemplateReader.getStrict().readFromString(yaml).template],
+    ['element', fullElement, (yaml: string) => YamlTemplateElementReader.getStrict().readFromString(yaml).element],
+    ['field', fullField, (yaml: string) => YamlTemplateFieldReader.getStrict().readFromString(yaml).field],
+  ];
+  /** The document with `key` stated as `value` at its top level, or left out where `value` is absent. */
+  const stating = (yaml: string, key: string, value?: string) =>
+    yaml
+      .split('\n')
+      .filter((line) => !line.startsWith(`${key}:`))
+      .join('\n') + (value === undefined ? '' : `${key}: ${value}\n`);
+
+  // Each was read as whatever the document held, and the JSON writer then wrote it.
+  describe.each(readers)('the %s reader', (kind: string, yaml: string, read: (yaml: string) => AbstractSchemaArtifact) => {
+    test.each([
+      ['no name', 'name', undefined, /No name present\. .* must have a name/],
+      ['an empty name', 'name', '""', /Expected a non-empty string at \/name/],
+      ['a name that is a number', 'name', '42', /Expected a string at \/name/],
+      ['a null name', 'name', 'null', /null is not a valid value at \/name/],
+      ['a description that is a number', 'description', '42', /Expected a string at \/description/],
+      ['an identifier that is a number', 'identifier', '42', /Expected a string at \/identifier/],
+      ['a language that is a mapping', 'language', '{code: "en"}', /Expected a string at \/language/],
+      ['a model version this library does not read', 'modelVersion', '"1.5.0"', /Invalid modelVersion "1\.5\.0" at \/modelVersion/],
+      ['an empty createdBy', 'createdBy', '""', /An empty string is not a URI at "createdBy"/],
+      ['a createdBy that is a number', 'createdBy', '42', /Invalid URI at "createdBy": expected a string/],
+      ['an empty modifiedBy', 'modifiedBy', '""', /An empty string is not a URI at "modifiedBy"/],
+      ['a modifiedBy that is not an IRI', 'modifiedBy', '"a user"', /Invalid URI\/IRI at "modifiedBy": unescaped space/],
+      ['a null createdOn', 'createdOn', 'null', /null is not a valid value at \/createdOn/],
+      ['a createdOn that is a number', 'createdOn', '42', /Expected a string at \/createdOn/],
+      ['a status no artifact has', 'status', '"bogus"', /Invalid status "bogus" at \/status/],
+      ['a status that is a number', 'status', '42', /Expected a string at \/status/],
+      ['annotations that are not a mapping', 'annotations', '42', /Expected a mapping at \/annotations\./],
+      ['an empty annotations block', 'annotations', '{}', /empty mapping \(\{\}\) is not a valid value at \/annotations/],
+      ['an annotation value that is a number', 'annotations', '{note: {value: 42}}', /Expected a string at \/annotations\/note\/value/],
+      ['an annotation id that is a number', 'annotations', '{note: {id: 42}}', /Invalid URI at "annotations\/note\/id": expected a string/],
+      ['an empty annotation id', 'annotations', '{note: {id: ""}}', /An empty string is not a URI at "annotations\/note\/id"/],
+    ])('refuses %s', (_label: string, key: string, value: string | undefined, refusal: RegExp) => {
+      expect(() => read(stating(yaml, key, value))).toThrow(refusal);
+    });
+
+    test('reads metadata that keeps to the rules', () => {
+      const metadata = `description: ""
+identifier: "S1"
+language: "en"
+createdBy: "https://metadatacenter.org/users/u1"
+modifiedBy: "https://metadatacenter.org/users/u2"
+createdOn: "2024-01-01T10:00:00-07:00"
+annotations:
+  note: {value: "A note"}
+  link: {id: "https://example.org/a"}
+`;
+      const artifact = read(yaml + metadata);
+      expect(artifact.schema_identifier).toBe('S1');
+      expect(artifact.pav_createdBy.getValue()).toBe('https://metadatacenter.org/users/u1');
+      expect(artifact.oslc_modifiedBy.getValue()).toBe('https://metadatacenter.org/users/u2');
+      expect(artifact.annotations?.get('note')).toBeInstanceOf(AnnotationAtValue);
+      expect(artifact.annotations?.get('link')).toBeInstanceOf(AnnotationAtId);
+    });
+
+    // Java's reader reads an empty status as none, and the artifact at the top takes the default.
+    test('an empty status reads as draft', () => {
+      expect(read(stating(yaml, 'status', '""')).bibo_status).toBe(BiboStatus.DRAFT);
+    });
+
+    test('an annotation that states a literal and an IRI is read as the literal', () => {
+      const artifact = read(stating(yaml, 'annotations', '{note: {value: "A note", id: "https://example.org/a"}}'));
+      expect(artifact.annotations?.get('note')).toEqual(new AnnotationAtValue('note', 'A note'));
+    });
+
+    if (kind !== 'field') {
+      test.each(['header', 'footer'])('refuses a %s that is not a string', (key: string) => {
+        expect(() => read(stating(yaml, key, '42'))).toThrow(new RegExp(`Expected a string at /${key}`));
+      });
+    }
+
+    if (kind !== 'template') {
+      test('refuses a preferred label that is not a string', () => {
+        expect(() => read(stating(yaml, 'prefLabel', '42'))).toThrow(/Expected a string at \/prefLabel/);
+      });
+
+      test('refuses an empty alternative label, and passes over one that is not a string, as Java does', () => {
+        expect(() => read(stating(yaml, 'altLabels', '["Other", ""]'))).toThrow(/Expected a non-empty string at \/altLabels\[1\]/);
+        expect(read(stating(yaml, 'altLabels', '[42, "Other"]'))).toHaveProperty('skos_altLabel', ['Other']);
+      });
+    }
+  });
+
+  // A document that did not say it was a template or an element, or said it was something else, was read as one.
+  test.each([
+    ['A template', 'template', fullTemplate, (yaml: string) => YamlTemplateReader.getStrict().readFromString(yaml)],
+    ['An element', 'element', fullElement, (yaml: string) => YamlTemplateElementReader.getStrict().readFromString(yaml)],
+  ])('%s states its type, and it is its own', (artifact: string, type: string, yaml: string, read: (yaml: string) => unknown) => {
+    expect(() => read(stating(yaml, 'type'))).toThrow(`No type present. ${artifact} states its type, "${type}".`);
+    expect(() => read(stating(yaml, 'type', '42'))).toThrow(/Expected a string at \/type/);
+    expect(() => read(stating(yaml, 'type', '"instance"'))).toThrow(
+      `Invalid artifact type "instance" at /type. ${artifact} has the type "${type}".`,
+    );
+  });
+
+  // A child's metadata is held to the same rules, and the refusal says which child.
+  test.each([
+    ['name: 42', /Expected a string at \/children\/Study Name\/name/],
+    ['createdBy: ""', /An empty string is not a URI at "children\/Study Name\/createdBy"/],
+    ['annotations: {note: {id: 42}}', /Invalid URI at "children\/Study Name\/annotations\/note\/id"/],
+    ['status: "bogus"', /Invalid status "bogus" at \/children\/Study Name\/status/],
+  ])('a child stating %s is refused', (metadata: string, refusal: RegExp) => {
+    const key = metadata.slice(0, metadata.indexOf(':'));
+    const childLines = fullTemplate.split('\n').filter((line) => !line.startsWith(`    ${key}:`));
+    const child = `${childLines.join('\n')}    ${metadata}\n`;
+    expect(() => YamlTemplateReader.getStrict().readFromString(child)).toThrow(refusal);
+  });
+
+  test('a child without a name is refused, and the refusal says which child', () => {
+    const child = fullTemplate.replace('    name: "Study Name"\n', '');
+    expect(() => YamlTemplateReader.getStrict().readFromString(child)).toThrow(
+      'No name present at /children/Study Name. A field must have a name.',
+    );
   });
 });

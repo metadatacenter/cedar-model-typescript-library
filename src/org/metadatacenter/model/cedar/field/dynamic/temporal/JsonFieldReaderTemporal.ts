@@ -24,8 +24,14 @@ export class JsonFieldReaderTemporal extends JsonTemplateFieldTypeSpecificReader
 
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
     if (uiNode != null) {
-      field.temporalGranularity = TemporalGranularity.forValue(ReaderUtil.getString(uiNode, CedarModel.temporalGranularity));
-      field.inputTimeFormat = TimeFormat.forValue(ReaderUtil.getString(uiNode, CedarModel.inputTimeFormat));
+      const granularity = ReaderUtil.getString(uiNode, CedarModel.temporalGranularity);
+      if (granularity !== null) {
+        field.temporalGranularity = TemporalGranularity.forGranularity(granularity);
+      }
+      const inputTimeFormat = ReaderUtil.getString(uiNode, CedarModel.inputTimeFormat);
+      if (inputTimeFormat !== null) {
+        field.inputTimeFormat = TimeFormat.forInputTimeFormat(inputTimeFormat);
+      }
       field.timezoneEnabled = ReaderUtil.getBoolean(uiNode, CedarModel.timezoneEnabled);
     }
 

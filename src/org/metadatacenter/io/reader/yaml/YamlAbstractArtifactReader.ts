@@ -26,34 +26,8 @@ import { SchemaVersionValues } from '../../../model/cedar/types/wrapped-types/Sc
 /** The keys beside which a null value is the shape of a term chosen without a literal. */
 const LABEL_KEYS: readonly string[] = [YamlKeys.label, YamlKeys.prefLabel, YamlKeys.notation];
 
-/**
- * The keys that say what a schema artifact is and who made it, rather than what it holds. Java's
- * reader refuses null, an empty mapping and an empty list anywhere in a schema document, and this
- * reader refuses them at these keys wherever an artifact sits in the document.
- */
-const SCHEMA_METADATA_KEYS: readonly string[] = [
-  YamlKeys.type,
-  YamlKeys.name,
-  YamlKeys.description,
-  YamlKeys.id,
-  YamlKeys.identifier,
-  YamlKeys.modelVersion,
-  YamlKeys.version,
-  YamlKeys.status,
-  YamlKeys.previousVersion,
-  YamlKeys.derivedFrom,
-  YamlKeys.createdBy,
-  YamlKeys.createdOn,
-  YamlKeys.modifiedBy,
-  YamlKeys.modifiedOn,
-  YamlKeys.language,
-  YamlKeys.annotations,
-  YamlKeys.instanceType,
-  YamlKeys.prefLabel,
-  YamlKeys.altLabels,
-  YamlKeys.header,
-  YamlKeys.footer,
-];
+/** The key under which a schema artifact keeps its namespace-bound extensions, as `SchemaExtensions` reads it. */
+const EXTENSIONS = 'extensions';
 
 /** The statuses Java's reader takes. */
 const STATUSES: readonly string[] = BiboStatus.values().map((status) => status.getYamlValue() as string);
@@ -171,9 +145,11 @@ export abstract class YamlAbstractArtifactReader {
 
   /**
    * Refuse null, an empty mapping and an empty list anywhere in `node`, as Java's reader does. A value
-   * that is not known is left out rather than written as one of them. In an instance, Java's reader
-   * makes one exception, and so does this one: a null `value` beside a label, a preferred label or a
-   * notation.
+   * that is not known is left out rather than written as one of them. Java's reader makes one
+   * exception for each kind of document, and so does this one. In an instance, it is a null `value`
+   * beside a label, a preferred label or a notation. In a schema document, it is the extensions block
+   * of a template, an element or a field. Its namespace-bound values are opaque JSON, in which null and
+   * empty values are values, and `SchemaExtensions` holds the block to its own rules.
    */
   protected static refuseNullAndEmptyValues(node: unknown, path: string, isInstance: boolean = false): void {
     if (Array.isArray(node)) {
@@ -182,14 +158,30 @@ export abstract class YamlAbstractArtifactReader {
         YamlAbstractArtifactReader.refuseNullAndEmptyValues(entry, `${path}[${index}]`, isInstance);
       });
     } else if (YamlAbstractArtifactReader.isMapping(node)) {
+      const type = node[YamlKeys.type];
+      const artifactType = typeof type === 'string' ? YamlArtifactType.forValue(type) : YamlArtifactType.NULL;
+      const isSchemaArtifact = artifactType.isTemplate() || artifactType.isElement() || artifactType.isField();
       for (const [key, value] of Object.entries(node)) {
         if (isInstance && key === YamlKeys.value && value === null && LABEL_KEYS.some((label) => typeof node[label] === 'string')) {
+          continue;
+        }
+        if (!isInstance && key === EXTENSIONS && isSchemaArtifact) {
           continue;
         }
         YamlAbstractArtifactReader.refuseNullOrEmpty(value, `${path}/${key}`);
         YamlAbstractArtifactReader.refuseNullAndEmptyValues(value, `${path}/${key}`, isInstance);
       }
     }
+  }
+
+  /**
+   * Refuse null, an empty mapping and an empty list anywhere in a schema document before anything in it
+   * is read, as Java's reader does at each of its entry points. The rule holds in children, in a
+   * child's configuration, in value constraints, in defaults and in every other key. A reader calls
+   * this for the document it is given, and not again for each child, which the walk has already reached.
+   */
+  protected static refuseNullAndEmptySchemaValues(source: JsonNode, topPath: JsonPath): void {
+    YamlAbstractArtifactReader.refuseNullAndEmptyValues(source, topPath.toPointer());
   }
 
   protected static assertText(node: JsonNode, key: string, path: string): void {
@@ -232,12 +224,6 @@ export abstract class YamlAbstractArtifactReader {
   protected assertSchemaMetadata(source: JsonNode, topPath: JsonPath): void {
     const path = topPath.toPointer();
     const isRoot = path === '';
-    for (const key of SCHEMA_METADATA_KEYS) {
-      if (Object.hasOwn(source, key)) {
-        YamlAbstractArtifactReader.refuseNullOrEmpty(source[key], `${path}/${key}`);
-        YamlAbstractArtifactReader.refuseNullAndEmptyValues(source[key], `${path}/${key}`);
-      }
-    }
     const kind = this.artifactTypeWord();
     const artifact = kind === 'template' ? 'A template' : kind === 'element' ? 'An element' : 'A field';
     // A child's type is what chose its reader, and a field reader has already held its own to the

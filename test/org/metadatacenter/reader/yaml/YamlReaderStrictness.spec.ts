@@ -415,3 +415,121 @@ annotations:
     );
   });
 });
+
+// Java's reader refuses null, an empty mapping and an empty list anywhere in a schema document, and so
+// does this one. Only the metadata keys were held to the rule here, so a null or empty value anywhere
+// else was read as though the key were absent, or failed on a TypeError. The refusal names the value's
+// place in the document, a child by its position in the list, as Java's does.
+describe('null, an empty mapping and an empty list are refused anywhere in a schema document', () => {
+  const readTemplate = (yaml: string) => YamlTemplateReader.getStrict().readFromString(yaml).template;
+  const readElement = (yaml: string) => YamlTemplateElementReader.getStrict().readFromString(yaml).element;
+  const readField = (yaml: string) => YamlTemplateFieldReader.getStrict().readFromString(yaml).field;
+  const template = (children: string) =>
+    `type: "template"\nname: "T"\nid: "https://repo.metadatacenter.org/templates/t1"\nmodelVersion: "1.6.0"\n${children}`;
+  const field = (type: string, keys: string) =>
+    `type: "${type}"\nname: "F"\nid: "https://repo.metadatacenter.org/template-fields/f1"\nmodelVersion: "1.6.0"\n${keys}`;
+  const child = (keys: string) => `children:\n  - key: "C"\n    type: "text-field"\n    name: "C"\n    modelVersion: "1.6.0"\n${keys}`;
+
+  test.each([
+    ['an empty children list', () => readTemplate(template('children: []\n')), /empty list \(\[\]\) is not a valid value at \/children;/],
+    ['a null children list', () => readTemplate(template('children: null\n')), /null is not a valid value at \/children;/],
+    ['a null child', () => readTemplate(template('children:\n  - null\n')), /null is not a valid value at \/children\[0\];/],
+    [
+      'an empty configuration',
+      () => readField(field('text-field', 'configuration: {}\n')),
+      /empty mapping \(\{\}\) is not a valid value at \/configuration;/,
+    ],
+    [
+      'a null configuration',
+      () => readField(field('text-field', 'configuration: null\n')),
+      /null is not a valid value at \/configuration;/,
+    ],
+    [
+      'a null required',
+      () => readField(field('text-field', 'configuration:\n  required: null\n')),
+      /null is not a valid value at \/configuration\/required;/,
+    ],
+    ['a null minLength', () => readField(field('text-field', 'minLength: null\n')), /null is not a valid value at \/minLength;/],
+    ['a minLength spelled ~', () => readField(field('text-field', 'minLength: ~\n')), /null is not a valid value at \/minLength;/],
+    ['a minLength with no value', () => readField(field('text-field', 'minLength:\n')), /null is not a valid value at \/minLength;/],
+    ['a null default', () => readField(field('text-field', 'default: null\n')), /null is not a valid value at \/default;/],
+    [
+      'an empty default',
+      () => readField(field('controlled-term-field', 'default: {}\n')),
+      /empty mapping \(\{\}\) is not a valid value at \/default;/,
+    ],
+    ['a null datatype', () => readField(field('numeric-field', 'datatype: null\n')), /null is not a valid value at \/datatype;/],
+    ['a null granularity', () => readField(field('temporal-field', 'granularity: null\n')), /null is not a valid value at \/granularity;/],
+    [
+      'an empty list of values',
+      () => readField(field('radio-field', 'values: []\n')),
+      /empty list \(\[\]\) is not a valid value at \/values;/,
+    ],
+    [
+      'a null option label',
+      () => readField(field('radio-field', 'values:\n  - label: null\n')),
+      /null is not a valid value at \/values\[0\]\/label;/,
+    ],
+    [
+      'an empty ontology constraint',
+      () => readField(field('controlled-term-field', 'values:\n  - {}\n')),
+      /empty mapping \(\{\}\) is not a valid value at \/values\[0\];/,
+    ],
+    ['a key this library does not read', () => readField(field('text-field', 'unread: null\n')), /null is not a valid value at \/unread;/],
+    [
+      "an empty child's configuration",
+      () => readTemplate(template(child('    configuration: {}\n'))),
+      /empty mapping \(\{\}\) is not a valid value at \/children\[0\]\/configuration;/,
+    ],
+    [
+      "a null override of a child's label",
+      () => readTemplate(template(child('    configuration:\n      overrideLabel: null\n'))),
+      /null is not a valid value at \/children\[0\]\/configuration\/overrideLabel;/,
+    ],
+    [
+      "a null child's maxLength",
+      () => readTemplate(template(child('    maxLength: null\n'))),
+      /null is not a valid value at \/children\[0\]\/maxLength;/,
+    ],
+    [
+      "a null field's minLength in an element",
+      () =>
+        readElement(
+          `type: "element"\nname: "E"\nid: "https://repo.metadatacenter.org/template-elements/e1"\nmodelVersion: "1.6.0"\n${child('    minLength: null\n')}`,
+        ),
+      /null is not a valid value at \/children\[0\]\/minLength;/,
+    ],
+    [
+      'an extensions key where no artifact is',
+      () => readTemplate(template(child('    configuration:\n      extensions: {}\n'))),
+      /empty mapping \(\{\}\) is not a valid value at \/children\[0\]\/configuration\/extensions;/,
+    ],
+  ])('refuses %s', (_label: string, read: () => unknown, refusal: RegExp) => {
+    expect(read).toThrow(refusal);
+  });
+
+  // Java makes one exception. An artifact's extensions are opaque JSON, in which null and empty values
+  // are values, and the extension reader holds the block to its own rules.
+  const extensions = `extensions:\n  prefixes:\n    ex: "https://example.org/"\n  properties:\n    ex:none: null\n    ex:map: {}\n    ex:list: []\n`;
+  const kept = { 'ex:none': null, 'ex:map': {}, 'ex:list': [] };
+
+  test('keeps null and empty values in the extensions of a template, an element and a field', () => {
+    expect(readTemplate(template(extensions)).extensions.properties).toEqual(kept);
+    const element = `type: "element"\nname: "E"\nid: "https://repo.metadatacenter.org/template-elements/e1"\nmodelVersion: "1.6.0"\n`;
+    expect(readElement(element + extensions).extensions.properties).toEqual(kept);
+    expect(readField(field('text-field', extensions)).extensions.properties).toEqual(kept);
+  });
+
+  test("keeps them in a child's extensions, and in empty prefixes and properties", () => {
+    const indented = extensions.replace(/^/gm, '    ').trimEnd() + '\n';
+    const template1 = readTemplate(template(child(indented)));
+    expect(template1.getChild('C')?.extensions.properties).toEqual(kept);
+    const empty = readTemplate(template('extensions:\n  prefixes: {}\n  properties: {}\n'));
+    expect(empty.extensions.isEmpty).toBe(true);
+  });
+
+  test('refuses an extensions block that is null or empty, as Java does', () => {
+    expect(() => readTemplate(template('extensions: null\n'))).toThrow('extensions requires prefixes and properties objects');
+    expect(() => readField(field('text-field', 'extensions: {}\n'))).toThrow('extensions requires prefixes and properties objects');
+  });
+});

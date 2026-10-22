@@ -27,6 +27,25 @@ export class TextPolicy {
     return Array.from(value).length;
   }
 
+  /**
+   * Whether two strings are equal ignoring case, as Java's `String.equalsIgnoreCase` decides it: the
+   * same length, and at each position the same character, the same upper case, or the same lower case
+   * of the upper cases. JavaScript applies the full case mappings and Java the single-character ones,
+   * so the two can differ where a mapping yields more than one character, as the lower case of U+0130
+   * does.
+   */
+  public static equalsIgnoreCase(a: string, b: string): boolean {
+    const left = Array.from(a);
+    const right = Array.from(b);
+    if (a.length !== b.length || left.length !== right.length) return false;
+    return left.every((character: string, index: number) => {
+      const other = right[index];
+      const upper = character.toUpperCase();
+      const otherUpper = other.toUpperCase();
+      return character === other || upper === otherUpper || upper.toLowerCase() === otherUpper.toLowerCase();
+    });
+  }
+
   /** Explicit authoring affordance only, never a reader/writer or identity normalization. */
   public static trimInputPadding(value: string): string {
     return value.replace(/^[\t\n\r ]+|[\t\n\r ]+$/g, '');

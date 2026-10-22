@@ -33,7 +33,7 @@ export class JsonFieldReaderTemporal extends JsonTemplateFieldTypeSpecificReader
     if (valueConstraints != null) {
       const temporalType = ReaderUtil.getString(valueConstraints, CedarModel.temporalType);
       if (temporalType !== null) {
-        field.valueConstraints.temporalType = TemporalType.forValue(temporalType);
+        field.valueConstraints.temporalType = TemporalType.forDatatype(temporalType);
       }
       field.valueConstraints.defaultValue = ReaderUtil.getString(valueConstraints, CedarModel.defaultValue);
       TemporalDefaultValueValidator.assertValid(

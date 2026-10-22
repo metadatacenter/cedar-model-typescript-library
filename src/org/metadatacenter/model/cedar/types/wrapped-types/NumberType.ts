@@ -1,3 +1,5 @@
+import { TextPolicy } from '../../../../policy/TextPolicy';
+
 export const NumberTypeValues = {
   DECIMAL: 'xsd:decimal',
   INT: 'xsd:int',
@@ -41,5 +43,21 @@ export class NumberType {
       }
     }
     return this.NULL;
+  }
+
+  /**
+   * The constant a document's datatype names. Java's readers match the spelling to a constant ignoring
+   * case and refuse any other, a full XSD IRI among them, and so does this. A spelling that `forValue`
+   * did not know was read as no datatype, and the writers wrote it back as null.
+   */
+  public static forDatatype(value: unknown): NumberType {
+    const match = NumberType.values().find((numberType) => {
+      const constant = numberType.getValue();
+      return typeof value === 'string' && constant !== null && TextPolicy.equalsIgnoreCase(constant, value);
+    });
+    if (match === undefined) {
+      throw new Error(`No numeric datatype constant ${String(value)} found`);
+    }
+    return match;
   }
 }

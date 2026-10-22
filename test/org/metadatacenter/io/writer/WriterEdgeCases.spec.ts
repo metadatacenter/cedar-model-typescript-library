@@ -48,6 +48,47 @@ describe('writer edge cases', () => {
     expect(() => yaml.getWriterForValueConstraint({ className: 'missing' } as never)).toThrow('No YAML writer found');
   });
 
+  // A template, an element and a field each have a name. Java cannot build a template or an element
+  // without one, and both readers refuse a document that states `name: null`. The YAML writer wrote
+  // exactly that, so it now refuses the artifact at any depth, as it refuses a nameless instance.
+  describe('the YAML writer refuses a schema artifact that has no name', () => {
+    const yaml = CedarWriters.yaml().getStrict();
+    const named = <T extends { schema_name: string | null }>(artifact: T): T => {
+      artifact.schema_name = 'Named';
+      return artifact;
+    };
+
+    test.each([false, true])('a template, an element and a field (compact=%s)', (compact) => {
+      const template = CedarBuilders.templateBuilder().build();
+      const element = CedarBuilders.templateElementBuilder().build();
+      const field = CedarBuilders.textFieldBuilder().build();
+      const image = CedarBuilders.imageFieldBuilder().build();
+      expect(() => yaml.getTemplateWriter().getAsYamlString(template, compact)).toThrow('A template must have a name.');
+      expect(() => yaml.getTemplateWriter().getYamlAsJsonNode(template, compact)).toThrow('A template must have a name.');
+      expect(() => yaml.getTemplateElementWriter().getAsYamlString(element, compact)).toThrow('An element must have a name.');
+      expect(() => yaml.getFieldWriterForField(field).getAsYamlString(field, compact)).toThrow('A field must have a name.');
+      expect(() => yaml.getFieldWriterForField(image).getAsYamlString(image, compact)).toThrow('A field must have a name.');
+      expect(yaml.getTemplateWriter().getAsYamlString(named(template), compact)).toContain('name: "Named"');
+      expect(yaml.getFieldWriterForField(field).getAsYamlString(named(field), compact)).toContain('name: "Named"');
+    });
+
+    test.each([false, true])('a nameless child, however deep (compact=%s)', (compact) => {
+      const field = CedarBuilders.textFieldBuilder().build();
+      const element = CedarBuilders.templateElementBuilder()
+        .withSchemaName('Address')
+        .addChild(field, field.createDeploymentBuilder('City').build())
+        .build();
+      const template = CedarBuilders.templateBuilder()
+        .withSchemaName('Study')
+        .addChild(element, element.createDeploymentBuilder('Address').build())
+        .build();
+      expect(() => yaml.getTemplateWriter().getAsYamlString(template, compact)).toThrow('A field must have a name.');
+      expect(() => yaml.getTemplateElementWriter().getAsYamlString(element, compact)).toThrow('A field must have a name.');
+      named(field);
+      expect(yaml.getTemplateWriter().getAsYamlString(template, compact)).toContain('key: "City"');
+    });
+  });
+
   test('controlled-term constraints have useful standalone JSON representations', () => {
     const writers = CedarWriters.json().getStrict();
     /*
@@ -119,9 +160,10 @@ describe('writer edge cases', () => {
     const compatibilityJson = CedarWriters.json().getFebruary2024();
     const yaml = CedarWriters.yaml().getStrict();
     const text = CedarBuilders.textFieldBuilder().build();
-    const image = CedarBuilders.imageFieldBuilder().build();
-    const richText = CedarBuilders.richTextFieldBuilder().build();
-    const youtube = CedarBuilders.youtubeFieldBuilder().build();
+    // The YAML writer refuses a nameless field, so the static fields written as YAML have names.
+    const image = CedarBuilders.imageFieldBuilder().withSchemaName('Image').build();
+    const richText = CedarBuilders.richTextFieldBuilder().withSchemaName('Text').build();
+    const youtube = CedarBuilders.youtubeFieldBuilder().withSchemaName('Video').build();
 
     expect(json.getFieldWriterForField(text).getAsJsonNode(text)).toHaveProperty('_ui.inputType');
     const staticDeploymentJson = json.getFieldWriterForField(text).getAsJsonNode(text, ChildDeploymentInfoStatic.empty());

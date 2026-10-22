@@ -98,6 +98,10 @@ export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
   }
 
   public readFromObject(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, path: JsonPath): YamlTemplateFieldReaderResult {
+    // A child is part of a document whose walk has already reached it.
+    if (path.getLastComponent() === null) {
+      YamlTemplateFieldReader.refuseNullAndEmptySchemaValues(fieldSourceObject, path);
+    }
     const parsingResult: YamlArtifactParsingResult = new YamlArtifactParsingResult();
     const field: TemplateField = YamlTemplateFieldReader.readFieldSpecificAttributes(fieldSourceObject, childInfo, parsingResult, path);
     this.assertSchemaMetadata(fieldSourceObject, path);

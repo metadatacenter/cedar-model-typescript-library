@@ -27,7 +27,7 @@ export class YamlFieldReaderTemporal extends YamlTemplateFieldTypeSpecificReader
 
     const temporalType = ReaderUtil.getString(fieldSourceObject, YamlKeys.datatype);
     if (temporalType !== null) {
-      field.valueConstraints.temporalType = TemporalType.forValue(temporalType);
+      field.valueConstraints.temporalType = TemporalType.forDatatype(temporalType);
     }
     field.valueConstraints.defaultValue = ReaderUtil.getString(fieldSourceObject, YamlKeys.default);
     TemporalDefaultValueValidator.assertValid(

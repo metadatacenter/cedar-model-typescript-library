@@ -49,6 +49,10 @@ export class YamlTemplateElementReader extends YamlContainerArtifactReader {
     _childInfo: ChildDeploymentInfo,
     topPath: JsonPath,
   ): YamlTemplateElementReaderResult {
+    // A nested element is part of a document whose walk has already reached it.
+    if (topPath.getLastComponent() === null) {
+      YamlTemplateElementReader.refuseNullAndEmptySchemaValues(elementSourceObject, topPath);
+    }
     const parsingResult: YamlArtifactParsingResult = new YamlArtifactParsingResult();
     const element = TemplateElement.buildEmptyWithNullValues();
 

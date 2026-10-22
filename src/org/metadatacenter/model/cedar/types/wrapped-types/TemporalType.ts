@@ -1,3 +1,5 @@
+import { TextPolicy } from '../../../../policy/TextPolicy';
+
 export const TemporalTypeValues = {
   DATE: 'xsd:date',
   TIME: 'xsd:time',
@@ -33,5 +35,21 @@ export class TemporalType {
       }
     }
     return this.NULL;
+  }
+
+  /**
+   * The constant a document's datatype names. Java's readers match the spelling to a constant ignoring
+   * case and refuse any other, a full XSD IRI among them, and so does this. A spelling that `forValue`
+   * did not know was read as no datatype, and the writers wrote it back as null.
+   */
+  public static forDatatype(value: unknown): TemporalType {
+    const match = TemporalType.values().find((temporalType) => {
+      const constant = temporalType.getValue();
+      return typeof value === 'string' && constant !== null && TextPolicy.equalsIgnoreCase(constant, value);
+    });
+    if (match === undefined) {
+      throw new Error(`No temporal datatype constant ${String(value)} found`);
+    }
+    return match;
   }
 }

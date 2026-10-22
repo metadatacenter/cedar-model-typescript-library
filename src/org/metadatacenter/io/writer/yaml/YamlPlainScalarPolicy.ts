@@ -61,7 +61,7 @@ const typeValues = new Set<string>([
 
 const datatypeValues = new Set<string>([
   'xsd:string',
-  'xsd:anyUri',
+  'xsd:anyURI',
   ...Object.values(TemporalTypeValues),
   ...Object.values(NumberTypeValues),
   YamlValues.iri,

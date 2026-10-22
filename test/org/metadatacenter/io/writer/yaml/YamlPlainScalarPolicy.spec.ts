@@ -26,7 +26,7 @@ const members: ReadonlyArray<readonly [string, string]> = [
     ['modelVersion', value] as const,
   ]),
   ...Object.values(BiboStatusYamlValues).map((value) => ['status', value] as const),
-  ...['xsd:string', 'xsd:anyUri', ...Object.values(TemporalTypeValues), ...Object.values(NumberTypeValues), YamlValues.iri].map(
+  ...['xsd:string', 'xsd:anyURI', ...Object.values(TemporalTypeValues), ...Object.values(NumberTypeValues), YamlValues.iri].map(
     (value) => ['datatype', value] as const,
   ),
   ...['move', 'delete'].map((value) => ['action', value] as const),

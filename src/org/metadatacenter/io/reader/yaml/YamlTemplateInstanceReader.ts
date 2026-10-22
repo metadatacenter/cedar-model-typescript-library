@@ -27,6 +27,7 @@ import { AttributeValueNamePolicy } from '../../../model/cedar/template-instance
 import { ComparisonError } from '../../../model/cedar/util/compare/ComparisonError';
 import { YamlComparisonErrorType } from '../../../model/cedar/util/compare/YamlComparisonErrorType';
 import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
+import { YamlArtifactType } from '../../../model/cedar/types/wrapped-types/YamlArtifactType';
 
 const ELEMENT_INSTANCE_TYPE = 'element-instance';
 
@@ -82,6 +83,7 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
     const instance = TemplateInstance.buildEmptyWithNullValues();
     const source = instanceSourceObject ?? {};
     YamlTemplateInstanceReader.refuseNullAndEmptyValues(source, '');
+    YamlTemplateInstanceReader.assertType(source);
 
     instance.schema_name = YamlTemplateInstanceReader.readName(source);
     // No description is the empty string, never null.
@@ -98,11 +100,15 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
     instance.schema_isBasedOn = CedarArtifactId.forValue(ReaderUtil.getArtifactIdentifier(source, YamlKeys.isBasedOn, lenient));
     instance.pav_derivedFrom = CedarArtifactId.forValue(ReaderUtil.getArtifactIdentifier(source, YamlKeys.derivedFrom, lenient));
     // The writer emits an instance's provenance and its annotations; both were read by nobody, so
-    // either one was lost by writing what had just been read.
+    // either one was lost by writing what had just been read. Who created and last modified the
+    // instance are IRIs, as in Java's reader, so an empty string or a number is refused.
+    YamlAbstractArtifactReader.refuseEmptyIdentifier(source, YamlKeys.createdBy);
+    YamlAbstractArtifactReader.refuseEmptyIdentifier(source, YamlKeys.modifiedBy);
     instance.pav_createdBy = CedarUser.forValue(ReaderUtil.getString(source, YamlKeys.createdBy));
     instance.pav_createdOn = IsoDate.forValue(ReaderUtil.getString(source, YamlKeys.createdOn));
     instance.oslc_modifiedBy = CedarUser.forValue(ReaderUtil.getString(source, YamlKeys.modifiedBy));
     instance.pav_lastUpdatedOn = IsoDate.forValue(ReaderUtil.getString(source, YamlKeys.modifiedOn));
+    YamlTemplateInstanceReader.assertAnnotationValues(source);
     this.readAnnotations(instance, source, parsingResult, new JsonPath());
 
     instance.dataContainer = this.parseContainer(source, '', true);
@@ -168,6 +174,32 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
         }
         YamlTemplateInstanceReader.refuseNullOrEmpty(value, `${path}/${key}`);
         YamlTemplateInstanceReader.refuseNullAndEmptyValues(value, `${path}/${key}`);
+      }
+    }
+  }
+
+  /** A template instance states its type, and the type is `instance`, as Java's reader requires. */
+  private static assertType(source: JsonNode): void {
+    const expected = YamlArtifactType.TEMPLATE_INSTANCE.getValue();
+    if (!Object.hasOwn(source, YamlKeys.type)) {
+      throw new Error(`No ${YamlKeys.type} present. A template instance states its type, "${expected}".`);
+    }
+    YamlTemplateInstanceReader.assertText(source, YamlKeys.type, '');
+    const type = source[YamlKeys.type];
+    if (type !== expected) {
+      throw new Error(`Invalid artifact type "${type}" at /${YamlKeys.type}. A template instance has the type "${expected}".`);
+    }
+  }
+
+  /** An annotation's literal is a string, as Java's reader requires, so a number or a boolean is refused. */
+  private static assertAnnotationValues(source: JsonNode): void {
+    const annotations: unknown = source[YamlKeys.annotations];
+    if (!YamlTemplateInstanceReader.isMapping(annotations)) {
+      return;
+    }
+    for (const [name, annotation] of Object.entries(annotations)) {
+      if (YamlTemplateInstanceReader.isMapping(annotation)) {
+        YamlTemplateInstanceReader.assertText(annotation, YamlKeys.value, `/${YamlKeys.annotations}/${name}`);
       }
     }
   }

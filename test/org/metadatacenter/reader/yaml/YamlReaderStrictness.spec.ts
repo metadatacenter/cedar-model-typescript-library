@@ -1,4 +1,5 @@
 import {
+  AnnotationAtValue,
   CedarWriters,
   YamlTemplateElementReader,
   YamlTemplateFieldReader,
@@ -124,6 +125,51 @@ describe("an instance's metadata is held to the Java reader's rules", () => {
 
   test('an instance without isBasedOn is refused', () => {
     expect(() => read(`type: "instance"\nname: "Study metadata"\n${children}`)).toThrow(/No isBasedOn present/);
+  });
+
+  // A document that does not say it is an instance, or says it is something else, was read as one.
+  test.each([
+    ['no type', '', /No type present/],
+    ['a type that is not a string', 'type: 42\n', /Expected a string at \/type/],
+    ['a template type', 'type: "template"\n', /Invalid artifact type "template" at \/type/],
+    ['an element instance type', 'type: "element-instance"\n', /Invalid artifact type "element-instance" at \/type/],
+  ])('%s is refused', (_label: string, type: string, refusal: RegExp) => {
+    expect(() => read(`${type}name: "Study metadata"\n${isBasedOn}${children}`)).toThrow(refusal);
+  });
+
+  // Who created or modified an instance is an IRI. The reader kept an empty string or a number as
+  // the user, and the JSON writer then wrote it as one.
+  test.each([
+    ['createdBy', 'an empty string', '""', /An empty string is not a URI at "createdBy"/],
+    ['modifiedBy', 'an empty string', '""', /An empty string is not a URI at "modifiedBy"/],
+    ['createdBy', 'a number', '42', /Invalid URI at "createdBy": expected a string/],
+    ['modifiedBy', 'a number', '42', /Invalid URI at "modifiedBy": expected a string/],
+    ['createdBy', 'not an IRI', '"a user"', /Invalid URI\/IRI at "createdBy": unescaped space/],
+  ])('a %s that is %s is refused', (key: string, _label: string, value: string, refusal: RegExp) => {
+    expect(() => named(`${key}: ${value}\n`)).toThrow(refusal);
+  });
+
+  test('a creator and a modifier given as IRIs are read', () => {
+    const instance = named(
+      'createdBy: "https://metadatacenter.org/users/u1"\nmodifiedBy: "https://metadatacenter.org/users/u2"\n',
+    ).instance;
+    expect(instance.pav_createdBy.getValue()).toBe('https://metadatacenter.org/users/u1');
+    expect(instance.oslc_modifiedBy.getValue()).toBe('https://metadatacenter.org/users/u2');
+  });
+
+  // An annotation's literal is a string. A number was kept as a number and written to JSON as one.
+  test.each([
+    ['a number', '42'],
+    ['a boolean', 'true'],
+    ['a mapping', '{text: "A note"}'],
+  ])('an annotation value that is %s is refused', (_label: string, value: string) => {
+    expect(() => named(`annotations:\n  note:\n    value: ${value}\n`)).toThrow(/Expected a string at \/annotations\/note\/value/);
+  });
+
+  test('an annotation value written as a quoted number is read as the string', () => {
+    const annotation = named('annotations:\n  note:\n    value: "42"\n').instance.annotations?.get('note');
+    expect(annotation).toBeInstanceOf(AnnotationAtValue);
+    expect((annotation as AnnotationAtValue).getAtValue()).toBe('42');
   });
 
   // schema:description is never null: the empty string is the only spelling of no description.

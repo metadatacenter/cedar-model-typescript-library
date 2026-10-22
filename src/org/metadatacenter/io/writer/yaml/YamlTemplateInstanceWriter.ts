@@ -31,6 +31,10 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
   }
 
   public getYamlAsJsonNode(instance: TemplateInstance, isCompact: boolean = false): JsonNode {
+    // Java's writer refuses an instance with no name, and both readers refuse a document without one.
+    if (instance.schema_name === null) {
+      throw new Error('A template instance must have a name.');
+    }
     AttributeValueNamePolicy.assertValid(instance.dataContainer);
     // build the final object
     return {
@@ -142,13 +146,10 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
         const wrapper: JsonNode = JsonNode.getEmpty();
         let addedav = false;
         Object.keys(dataAtom.values).forEach((subKey) => {
-          const atom = dataAtom.values[subKey];
-          if (atom instanceof InstanceDataStringAtom) {
-            const serialized = this.serializeAtomString(atom);
-            if (serialized !== null) {
-              wrapper[subKey] = serialized;
-              addedav = true;
-            }
+          const serialized = this.serializeAttribute(dataAtom.values[subKey]);
+          if (serialized !== null) {
+            wrapper[subKey] = serialized;
+            addedav = true;
           }
         });
         if (addedav) {
@@ -161,17 +162,28 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
       const wrapper: JsonNode = JsonNode.getEmpty();
       for (const attributeName of attributeNames) {
         const atom = dataContainer.values[attributeName];
-        if (atom instanceof InstanceDataStringAtom) {
-          const serialized = this.serializeAtomString(atom);
-          if (serialized !== null) {
-            wrapper[attributeName] = serialized;
-          }
+        const serialized = atom === undefined ? null : this.serializeAttribute(atom);
+        if (serialized !== null) {
+          wrapper[attributeName] = serialized;
         }
       }
       if (JsonNode.hasEntries(wrapper)) {
         into[groupName] = wrapper;
       }
     }
+  }
+
+  /**
+   * An attribute is written as the field value it is, as Java's writer writes it, so its label,
+   * datatype and identifier survive. An attribute that holds nothing is left out, and an element is
+   * never an attribute.
+   */
+  private serializeAttribute(atom: InstanceDataAtomType): JsonNode | null {
+    if (atom instanceof InstanceDataContainer) {
+      return null;
+    }
+    const serialized = this.serializeCommonType(atom, false);
+    return serialized !== null && JsonNode.hasEntries(serialized) ? serialized : null;
   }
 
   private getUnpackedAttributeValueGroups(dataContainer: InstanceDataContainer): Map<string, string[]> {

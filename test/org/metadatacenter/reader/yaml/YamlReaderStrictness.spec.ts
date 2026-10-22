@@ -80,6 +80,59 @@ children:
   });
 });
 
+describe("an instance's metadata is held to the Java reader's rules", () => {
+  const isBasedOn = 'isBasedOn: "https://repo.metadatacenter.org/templates/t1"\n';
+  const children = 'children:\n  Study Name:\n    value: "A study"\n';
+  const read = (yaml: string) => YamlTemplateInstanceReader.getStrict().readFromString(yaml);
+  const named = (metadata: string) => read(`type: "instance"\nname: "Study metadata"\n${isBasedOn}${metadata}${children}`);
+
+  test.each([
+    ['a null name', 'name: null\n', /null is not a valid value at \/name/],
+    ['an empty name', 'name: ""\n', /non-empty string at \/name/],
+    ['a name that is not a string', 'name: 42\n', /Expected a string at \/name/],
+    ['no name', '', /No name present/],
+  ])('%s is refused', (_label: string, name: string, refusal: RegExp) => {
+    expect(() => read(`type: "instance"\n${name}${isBasedOn}${children}`)).toThrow(refusal);
+  });
+
+  test.each([
+    ['description', 'description: null\n'],
+    ['id', 'id: null\n'],
+    ['isBasedOn', 'isBasedOn: null\n'],
+    ['derivedFrom', 'derivedFrom: null\n'],
+    ['createdBy', 'createdBy: null\n'],
+    ['createdOn', 'createdOn: null\n'],
+    ['annotations', 'annotations: null\n'],
+  ])('a null %s is refused as null, not read as absent', (key: string, metadata: string) => {
+    const yaml =
+      key === 'isBasedOn'
+        ? `type: "instance"\nname: "Study metadata"\n${metadata}${children}`
+        : `type: "instance"\nname: "Study metadata"\n${isBasedOn}${metadata}${children}`;
+    expect(() => read(yaml)).toThrow(new RegExp(`null is not a valid value at /${key}`));
+  });
+
+  test.each([
+    ['a number', 'description: 42\n'],
+    ['a mapping', 'description:\n  text: "A study"\n'],
+  ])('a description that is %s is refused', (_label: string, metadata: string) => {
+    expect(() => named(metadata)).toThrow(/Expected a string at \/description/);
+  });
+
+  test('an empty annotations block is refused', () => {
+    expect(() => named('annotations: {}\n')).toThrow(/empty mapping \(\{\}\) is not a valid value at \/annotations/);
+  });
+
+  test('an instance without isBasedOn is refused', () => {
+    expect(() => read(`type: "instance"\nname: "Study metadata"\n${children}`)).toThrow(/No isBasedOn present/);
+  });
+
+  // schema:description is never null: the empty string is the only spelling of no description.
+  test('an empty or absent description reads as the empty string', () => {
+    expect(named('description: ""\n').instance.schema_description).toBe('');
+    expect(named('').instance.schema_description).toBe('');
+  });
+});
+
 describe('compact documents retain artifact identity', () => {
   const named = (yaml: string) => yaml.replace('name: "Study', 'id: "https://repo.metadatacenter.org/x/1"\nname: "Study');
 

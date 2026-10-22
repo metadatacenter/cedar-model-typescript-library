@@ -13,6 +13,7 @@ import {
 
 const instanceWith = (container: InstanceDataContainer) =>
   new TemplateInstanceBuilder()
+    .withSchemaName('Collisions')
     .withSchemaIsBasedOn('https://repo.metadatacenter.org/templates/collisions')
     .withDataContainer(container)
     .build();
@@ -195,6 +196,7 @@ describe('readers report names that cannot safely convert to JSON', () => {
   it('reports a YAML attribute that collides with a child', () => {
     const result = CedarReaders.yaml().getStrict().getTemplateInstanceReader().readFromString(`
 type: template-instance
+name: Collisions
 isBasedOn: https://repo.metadatacenter.org/templates/collisions
 children:
   _title:

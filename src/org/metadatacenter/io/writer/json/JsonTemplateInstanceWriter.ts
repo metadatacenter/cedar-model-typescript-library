@@ -196,18 +196,15 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
     return JsonTemplateInstanceWriter.writeValueNode(atom);
   }
 
-  private serializeAtomString(atom: InstanceDataStringAtom) {
-    return { [JsonSchema.atValue]: atom.value, ...(atom.label === null ? {} : { [JsonSchema.rdfsLabel]: atom.label }) };
-  }
-
+  /** An attribute is written as the field value it is, so its label, datatype and identifier survive. */
   private serializeAttributeValueFields(dataContainer: InstanceDataContainer, into: JsonNode) {
     Object.keys(dataContainer.values).forEach((key) => {
       const dataAtom: InstanceDataAtomType = dataContainer.values[key];
       if (dataAtom instanceof InstanceDataAttributeValueField) {
         Object.keys(dataAtom.values).forEach((subKey) => {
-          const atom = dataAtom.values[subKey];
-          if (atom instanceof InstanceDataStringAtom) {
-            into[subKey] = this.serializeAtomString(atom);
+          const serialized = JsonTemplateInstanceWriter.writeValueNode(dataAtom.values[subKey]);
+          if (serialized !== null) {
+            into[subKey] = serialized;
           }
         });
       }

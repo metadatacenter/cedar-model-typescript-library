@@ -1,6 +1,6 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { CedarReaders, CedarWriters, InstanceInflater, JsonNode, Template } from '../../src';
+import { CedarArtifactId, CedarReaders, CedarWriters, InstanceInflater, JsonNode, Template } from '../../src';
 import { TestUtil } from '../TestUtil';
 import { TestResource } from '../TestResource';
 import { ceeSuiteTestMap, elementTestNumbers, fieldTestNumbers, instanceTestNumbers, templateTestNumbers } from './generatedTestCases';
@@ -49,8 +49,15 @@ const fieldTrip = (source: string) => {
 };
 
 // A YAML instance is completed against its template before it is stored, so the trip completes it too.
+// It also names itself and its template, as Java requires; most CEE suite instances do neither, so the
+// trip supplies both before either JSON is written.
 const instanceTrip = (source: string, template: Template) => {
   const instance = jsonReaders().getTemplateInstanceReader().readFromString(source).instance;
+  instance.schema_name ??= `${template.schema_name ?? 'Template'} metadata`;
+  if (instance.schema_isBasedOn === CedarArtifactId.NULL) {
+    instance.schema_isBasedOn =
+      template.at_id === CedarArtifactId.NULL ? CedarArtifactId.forValue('https://repo.metadatacenter.org/templates/trip') : template.at_id;
+  }
   const read = yamlReaders()
     .getTemplateInstanceReader()
     .readFromString(yamlWriters().getTemplateInstanceWriter().getAsYamlString(instance)).instance;

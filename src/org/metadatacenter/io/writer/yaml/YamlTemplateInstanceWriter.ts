@@ -18,6 +18,7 @@ import { InstanceDataControlledAtom } from '../../../model/cedar/template-instan
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 import { AttributeValueNamePolicy } from '../../../model/cedar/template-instance/AttributeValueNamePolicy';
 import { InstanceDataAttributeValueFieldName } from '../../../model/cedar/template-instance/InstanceDataAttributeValueFieldName';
+import { WriterUtil } from '../WriterUtil';
 
 const ELEMENT_INSTANCE_TYPE = 'element-instance';
 
@@ -223,7 +224,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
 
   private serializeCommonTypeWithoutNotation(atom: InstanceDataAtomType, isCompact: boolean): JsonNode | null {
     if (atom instanceof InstanceDataNotationAtom) {
-      return atom.type === null ? JsonNode.getEmpty() : { [YamlKeys.datatype]: atom.type };
+      return atom.type === null ? JsonNode.getEmpty() : { [YamlKeys.datatype]: WriterUtil.writtenDatatype(atom.type) };
     }
     if (atom instanceof InstanceDataStringAtom) {
       return this.serializeAtomString(atom);
@@ -232,18 +233,21 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
       return atom.value === null && atom.label === null && atom.notation === null && atom.preferredLabel === null
         ? null
         : {
-            [YamlKeys.datatype]: atom.type,
+            [YamlKeys.datatype]: WriterUtil.writtenDatatype(atom.type),
             [YamlKeys.value]: atom.value,
             ...(atom.label === null ? {} : { [YamlKeys.label]: atom.label }),
           };
     }
     if (atom instanceof InstanceDataLabelAtom) {
-      return { ...(atom.type === null ? {} : { [YamlKeys.datatype]: atom.type }), [YamlKeys.label]: atom.label };
+      return {
+        ...(atom.type === null ? {} : { [YamlKeys.datatype]: WriterUtil.writtenDatatype(atom.type) }),
+        [YamlKeys.label]: atom.label,
+      };
     }
     if (atom instanceof InstanceDataControlledAtom) {
       const controlled: JsonNode = JsonNode.getEmpty();
       if (atom.type !== null && (this.hasId(atom.id) || atom.label !== null || atom.notation !== null)) {
-        controlled[YamlKeys.datatype] = atom.type;
+        controlled[YamlKeys.datatype] = WriterUtil.writtenDatatype(atom.type);
       }
       if (this.hasId(atom.id)) {
         controlled[YamlKeys.id] = atom.id;
@@ -273,9 +277,9 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
 
   private serializeAtomLink(atom: InstanceDataLinkAtom): JsonNode | null {
     return this.hasId(atom.id)
-      ? { ...(atom.type === null ? {} : { [YamlKeys.datatype]: atom.type }), [YamlKeys.id]: atom.id }
+      ? { ...(atom.type === null ? {} : { [YamlKeys.datatype]: WriterUtil.writtenDatatype(atom.type) }), [YamlKeys.id]: atom.id }
       : atom.notation !== null && atom.type !== null
-        ? { [YamlKeys.datatype]: atom.type }
+        ? { [YamlKeys.datatype]: WriterUtil.writtenDatatype(atom.type) }
         : null;
   }
 

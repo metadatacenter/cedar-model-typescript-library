@@ -4,6 +4,20 @@ import { AbstractDynamicChildDeploymentInfo } from '../../model/cedar/deployment
 import { AbstractChildDeploymentInfo } from '../../model/cedar/deployment/AbstractChildDeploymentInfo';
 
 export abstract class WriterUtil {
+  private static readonly XSD_NAMESPACE = 'http://www.w3.org/2001/XMLSchema#';
+
+  /**
+   * A value's datatype as both writers spell it, which is how the Java library spells it in JSON. An IRI
+   * in the XSD namespace with a local name is written as `xsd:` and that name, whether or not the library
+   * knows the datatype. Any other IRI is written as it is. So is the namespace IRI itself, since it has
+   * no local name and a bare `xsd:` is not an IRI.
+   */
+  public static writtenDatatype(type: string): string {
+    return type.startsWith(WriterUtil.XSD_NAMESPACE) && type.length > WriterUtil.XSD_NAMESPACE.length
+      ? 'xsd:' + type.substring(WriterUtil.XSD_NAMESPACE.length)
+      : type;
+  }
+
   public static getMultiMinMax(
     child: TemplateChild,
     childMetaAbstract: AbstractChildDeploymentInfo,

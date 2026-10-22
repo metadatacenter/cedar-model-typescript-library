@@ -23,6 +23,7 @@ import { InstanceDataLinkAtom } from '../../../model/cedar/template-instance/Ins
 import { InstanceDataEmptyAtom } from '../../../model/cedar/template-instance/InstanceDataEmptyAtom';
 import { InstanceDataEmptyNode } from '../../../model/cedar/template-instance/InstanceDataEmptyNode';
 import { AttributeValueNamePolicy } from '../../../model/cedar/template-instance/AttributeValueNamePolicy';
+import { WriterUtil } from '../WriterUtil';
 
 export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
   private constructor(behavior: JsonWriterBehavior, writers: CedarJsonWriters) {
@@ -151,7 +152,7 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
 
   private static writeValueNodeWithoutNotation(atom: InstanceDataAtomType): JsonNode | null {
     if (atom instanceof InstanceDataNotationAtom) {
-      return atom.type === null ? JsonNode.getEmpty() : { [JsonSchema.atType]: atom.type };
+      return atom.type === null ? JsonNode.getEmpty() : { [JsonSchema.atType]: WriterUtil.writtenDatatype(atom.type) };
     }
     if (atom instanceof InstanceDataStringAtom) {
       return { [JsonSchema.atValue]: atom.value, ...(atom.label === null ? {} : { [JsonSchema.rdfsLabel]: atom.label }) };
@@ -160,21 +161,24 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
       return {
         [JsonSchema.atValue]: atom.value,
         ...(atom.label === null ? {} : { [JsonSchema.rdfsLabel]: atom.label }),
-        [JsonSchema.atType]: atom.type,
+        [JsonSchema.atType]: WriterUtil.writtenDatatype(atom.type),
       };
     }
     if (atom instanceof InstanceDataLabelAtom) {
-      return { [JsonSchema.rdfsLabel]: atom.label, ...(atom.type === null ? {} : { [JsonSchema.atType]: atom.type }) };
+      return {
+        [JsonSchema.rdfsLabel]: atom.label,
+        ...(atom.type === null ? {} : { [JsonSchema.atType]: WriterUtil.writtenDatatype(atom.type) }),
+      };
     }
     if (atom instanceof InstanceDataControlledAtom) {
       return {
         [JsonSchema.atId]: atom.id,
         [JsonSchema.rdfsLabel]: atom.label,
-        ...(atom.type === null ? {} : { [JsonSchema.atType]: atom.type }),
+        ...(atom.type === null ? {} : { [JsonSchema.atType]: WriterUtil.writtenDatatype(atom.type) }),
       };
     }
     if (atom instanceof InstanceDataLinkAtom) {
-      return { [JsonSchema.atId]: atom.id, ...(atom.type === null ? {} : { [JsonSchema.atType]: atom.type }) };
+      return { [JsonSchema.atId]: atom.id, ...(atom.type === null ? {} : { [JsonSchema.atType]: WriterUtil.writtenDatatype(atom.type) }) };
     }
     if (atom instanceof InstanceDataEmptyAtom || atom instanceof InstanceDataEmptyNode) {
       // An empty controlled-term field is `{}` in the instance, and it is a

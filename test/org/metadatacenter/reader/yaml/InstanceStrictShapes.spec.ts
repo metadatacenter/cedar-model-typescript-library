@@ -59,7 +59,8 @@ describe('Strict instance values and canonical long keys', () => {
   ])('reads one type written as %s and writes it back as a string', (_form, type) => {
     const instance = json({ '@value': 'text', '@type': type }).instance;
     const written = CedarWriters.json().getStrict().getTemplateInstanceWriter().getAsJsonNode(instance) as any;
-    expect(written.field['@type']).toBe('http://www.w3.org/2001/XMLSchema#string');
+    // The writer spells an XSD datatype prefixed, as Java's does.
+    expect(written.field['@type']).toBe('xsd:string');
   });
   // Java's reader takes a repeated child to be all elements or all fields, as its first entry is.
   // Read entry by entry, a mixed list came out as something neither a template nor Java would make.

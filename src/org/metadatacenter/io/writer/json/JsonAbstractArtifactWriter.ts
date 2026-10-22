@@ -98,9 +98,13 @@ export abstract class JsonAbstractArtifactWriter extends AbstractArtifactWriter 
     return previousVersion;
   }
 
+  /**
+   * An empty identifier is left out, as the Java JSON renderer leaves it out: the meta-schema requires
+   * a stated `schema:identifier` to be non-empty. The YAML writer keeps it, as Java's YAML renderer does.
+   */
   protected macroSchemaIdentifier(artifact: AbstractSchemaArtifact): JsonNode {
     const schemaIdentifier: JsonNode = JsonNode.getEmpty();
-    if (artifact.schema_identifier !== null) {
+    if (artifact.schema_identifier !== null && artifact.schema_identifier !== '') {
       schemaIdentifier[JsonSchema.schemaIdentifier] = artifact.schema_identifier;
     }
     return schemaIdentifier;

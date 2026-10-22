@@ -1,6 +1,19 @@
 import { isAlias, isMap, isScalar, isSeq, parseAllDocuments, Scalar } from 'yaml';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { JsonSourcePolicy } from '../../../policy/JsonSourcePolicy';
+import { ExactDecimal } from '../../../policy/NumericPolicy';
+
+/** The source text of each number and boolean a parsed mapping holds, with the value read from it. */
+const spellings = new WeakMap<object, Map<string, { value: unknown; text: string }>>();
+
+/**
+ * The text a number or boolean in a parsed YAML mapping was written as, for a position that holds a
+ * literal rather than a number, while the mapping still holds the value read from that text.
+ */
+export function yamlSpelling(mapping: JsonNode, key: string): string | null {
+  const spelling = spellings.get(mapping)?.get(key);
+  return spelling !== undefined && Object.is(spelling.value, mapping[key]) ? spelling.text : null;
+}
 
 /** YAML 1.2 core values with exact numbers, literal mapping keys and bounded, acyclic alias expansion. */
 export class YamlSourcePolicy {
@@ -28,12 +41,13 @@ export class YamlSourcePolicy {
             if (pair.key.tag && !allowed.has(pair.key.tag)) throw new SyntaxError('Unsupported YAML key tag');
             const key = pair.key.source ?? String(pair.key.value ?? '');
             if (Object.hasOwn(result, key)) throw new SyntaxError('Duplicate YAML mapping key');
-            Object.defineProperty(result, key, {
-              value: read(pair.value, depth + 1),
-              enumerable: true,
-              writable: true,
-              configurable: true,
-            });
+            const value = read(pair.value, depth + 1);
+            Object.defineProperty(result, key, { value, enumerable: true, writable: true, configurable: true });
+            const scalar = isAlias(pair.value) ? pair.value.resolve(document) : pair.value;
+            if ((typeof value === 'number' || typeof value === 'boolean' || ExactDecimal.isExact(value)) && isScalar(scalar)) {
+              const recorded = spellings.get(result) ?? new Map<string, { value: unknown; text: string }>();
+              spellings.set(result, recorded.set(key, { value, text: scalar.source ?? String(value) }));
+            }
           }
           return result;
         }

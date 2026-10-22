@@ -217,8 +217,8 @@ children:
   _parent:
     children:
       _nested:
-        - children: {}
-        - children: {}
+        - type: element-instance
+        - type: element-instance
 `).instance;
     const writer = CedarWriters.json().getStrict().getTemplateInstanceWriter();
     InstanceInflater.inflate(instance, schema);
@@ -261,7 +261,6 @@ describe('InstanceInflater asked to start repeated children empty', () => {
       CedarReaders.yaml().getStrict().getTemplateInstanceReader().readFromString(`type: instance
 name: Sparse
 isBasedOn: https://repo.metadatacenter.org/templates/t1
-children: {}
 `).instance;
     const writer = CedarWriters.json().getStrict().getTemplateInstanceWriter();
     const empty = JSON.parse(writer.getAsJsonString(InstanceInflater.inflate(sparse(), schema, 'empty')));
@@ -273,6 +272,59 @@ children: {}
     expect(lowerBound._many).toHaveLength(3);
     expect(lowerBound._absentElements).toHaveLength(2);
     expect(lowerBound._absentSingle._many).toHaveLength(3);
+  });
+});
+
+// A repeated child the instance holds too few of is filled to its lower bound, as the Java inflater fills
+// it, while an editor asking for 'empty' sees exactly the occurrences the instance holds.
+describe('InstanceInflater filling a repeated child the instance holds', () => {
+  const child = field('value');
+  const nested = CedarBuilders.templateElementBuilder()
+    .withSchemaName('nested')
+    .withSchemaDescription('nested')
+    .addChild(child, child.createDeploymentBuilder('_single').build())
+    .build();
+  const schema = CedarBuilders.templateBuilder()
+    .withSchemaName('test')
+    .withSchemaDescription('test')
+    .addChild(child, child.createDeploymentBuilder('_short').withMultiInstance(true).withMinItems(3).build())
+    .addChild(nested, nested.createDeploymentBuilder('_elements').withMultiInstance(true).withMinItems(2).build())
+    .addChild(child, child.createDeploymentBuilder('_enough').withMultiInstance(true).withMinItems(1).build())
+    .build();
+  const held = () =>
+    CedarReaders.yaml().getStrict().getTemplateInstanceReader().readFromString(`type: instance
+name: Held
+isBasedOn: https://repo.metadatacenter.org/templates/t1
+children:
+  _short:
+    - value: "first"
+  _elements:
+    - children:
+        _single:
+          value: "kept"
+  _enough:
+    - value: "a"
+    - value: "b"
+`).instance;
+  const writer = CedarWriters.json().getStrict().getTemplateInstanceWriter();
+
+  test('keeps the occurrences held and adds empty ones after them, up to the lower bound', () => {
+    const instance = InstanceInflater.inflate(held(), schema);
+    const filled = JSON.parse(writer.getAsJsonString(instance));
+    expect(filled._short).toEqual([{ '@value': 'first' }, { '@value': null }, { '@value': null }]);
+    expect(filled._elements).toHaveLength(2);
+    expect(filled._elements[0]._single).toEqual({ '@value': 'kept' });
+    expect(filled._elements[1]._single).toEqual({ '@value': null });
+    expect(filled._enough).toEqual([{ '@value': 'a' }, { '@value': 'b' }]);
+    InstanceInflater.inflate(instance, schema);
+    expect(JSON.parse(writer.getAsJsonString(instance))).toEqual(filled);
+  });
+
+  test("leaves the occurrences held as they are when asked for 'empty'", () => {
+    const shown = JSON.parse(writer.getAsJsonString(InstanceInflater.inflate(held(), schema, 'empty')));
+    expect(shown._short).toEqual([{ '@value': 'first' }]);
+    expect(shown._elements).toHaveLength(1);
+    expect(shown._enough).toHaveLength(2);
   });
 });
 
@@ -292,7 +344,6 @@ describe('InstanceInflater empty single-field shapes', () => {
     const instance = CedarReaders.yaml().getStrict().getTemplateInstanceReader().readFromString(`type: instance
 name: Sparse
 isBasedOn: https://repo.metadatacenter.org/templates/t1
-children: {}
 `).instance;
     InstanceInflater.inflate(instance, schema);
     const json = JSON.parse(CedarWriters.json().getStrict().getTemplateInstanceWriter().getAsJsonString(instance));

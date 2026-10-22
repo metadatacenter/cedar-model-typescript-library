@@ -31,7 +31,8 @@ import { TemplateChild } from '../types/basic-types/TemplateChild';
  *    instance writer builds the `@context` from. Without them the emitted
  *    `@context` has no per-property entries and the instance is not valid JSON-LD.
  *  - **empty slots** — a child the sparse instance omitted is re-added empty, so
- *    every property the template's JSON Schema requires is present.
+ *    every property the template's JSON Schema requires is present, and a
+ *    repeated child short of its lower bound is filled to it.
  *  - **child order** — children are placed in the template's declared order.
  *
  * Values the sparse instance already carries are preserved untouched. Mirrors the
@@ -43,10 +44,12 @@ export class InstanceInflater {
   /**
    * Complete an instance against its template.
    *
-   * A repeated child the instance omits starts with the occurrences its lower bound demands, as the
-   * Java inflater's does, so the instance satisfies its template. An editor that shows a user the
-   * instance as stored can ask for `'empty'` instead, and an omitted repeated child then leaves as
-   * the empty list the user saw rather than as occurrences the user never created.
+   * A repeated child has the occurrences its lower bound demands, as the Java inflater gives it, so
+   * the instance satisfies its template: one the instance omits starts with that many empty ones,
+   * and one it holds fewer of keeps its own and gains empty ones after them. An editor that shows a
+   * user the instance as stored can ask for `'empty'` instead, and each repeated child then keeps
+   * exactly the occurrences the user saw, none for one the instance omits, rather than gaining
+   * occurrences the user never created.
    */
   public static inflate(
     instance: TemplateInstance,
@@ -79,18 +82,18 @@ export class InstanceInflater {
   }
 
   /**
-   * The occurrences a missing repeated child starts with: as many as its lower bound demands, which
+   * The empty occurrences a repeated child holding `held` of them is short of its lower bound, which
    * is the bound both writers state in the template. Every repeated child was given an empty list,
    * so an instance inflated here failed its own template wherever that bound was above zero, and the
-   * Java inflater filled it. An attribute-value field starts with none whatever its bound, as there,
+   * Java inflater filled it. An attribute-value field gains none whatever its bound, as there,
    * since its attributes need names nobody has given.
    */
-  private static startingOccurrences(child: TemplateChild | null, info: AbstractChildDeploymentInfo): InstanceDataAtomList {
+  private static missingOccurrences(child: TemplateChild | null, info: AbstractChildDeploymentInfo, held: number): InstanceDataAtomList {
     if (child instanceof TemplateField && child.cedarFieldType === CedarFieldType.ATTRIBUTE_VALUE) {
       return [];
     }
     const stated = info instanceof AbstractDynamicChildDeploymentInfo ? info.minItems : null;
-    const count = stated ?? AbstractChildDeploymentInfo.defaultMinItems;
+    const count = Math.max(0, (stated ?? AbstractChildDeploymentInfo.defaultMinItems) - held);
     return Array.from({ length: count }, (): InstanceDataAtomType => {
       if (child instanceof TemplateElement) return new InstanceDataContainer();
       if (child instanceof TemplateField) return InstanceInflater.emptyField(child);
@@ -128,13 +131,20 @@ export class InstanceInflater {
         // need the appropriate literal, IRI, or recursive element shape.
         const childInfo = template.getChildInfo(name);
         if (childInfo?.isMultiInAnyWay()) {
-          value = repeatedChildren === 'empty' ? [] : InstanceInflater.startingOccurrences(child, childInfo);
+          value = repeatedChildren === 'empty' ? [] : InstanceInflater.missingOccurrences(child, childInfo, 0);
         } else if (child instanceof TemplateElement) {
           value = new InstanceDataContainer();
         } else if (child instanceof TemplateField) {
           value = InstanceInflater.emptyField(child);
         } else {
           value = new InstanceDataEmptyNode();
+        }
+      } else if (Array.isArray(value) && repeatedChildren === 'lowerBound') {
+        // A repeated child the instance holds too few of keeps its occurrences in their places and
+        // gains empty ones after them, as the Java inflater fills it.
+        const childInfo = template.getChildInfo(name);
+        if (childInfo?.isMultiInAnyWay()) {
+          value = [...value, ...InstanceInflater.missingOccurrences(child, childInfo, value.length)];
         }
       }
       if (child instanceof TemplateElement) {

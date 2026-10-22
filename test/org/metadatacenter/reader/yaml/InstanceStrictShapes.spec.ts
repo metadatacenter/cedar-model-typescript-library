@@ -16,9 +16,12 @@ describe('Strict instance values and canonical long keys', () => {
     CedarYamlReaders.getStrict()
       .getTemplateInstanceReader()
       .readFromString('type: instance\nname: Example\nisBasedOn: https://example.org/t\nchildren:\n  field:\n' + field);
+  // The YAML reader refuses a null value with no label before it looks at the id, as Java's does.
   test.each([null, 'same', 'different'])('rejects id/value coexistence even with value=%s', (value) => {
     expect(() => json({ '@id': 'https://example.org/term', '@value': value })).toThrow('both');
-    expect(() => yaml(`    id: https://example.org/term\n    value: ${JSON.stringify(value)}\n`)).toThrow('both');
+    expect(() => yaml(`    id: https://example.org/term\n    value: ${JSON.stringify(value)}\n`)).toThrow(
+      value === null ? 'null is not a valid value' : 'both',
+    );
   });
   test.each(['https://example.org/x\u0085', 'https://example.org/x#a#b', '://bit.ly/x', '1bad:value'])(
     'rejects Java-invalid URI %j in both readers',

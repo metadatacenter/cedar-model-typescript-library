@@ -103,7 +103,13 @@ JavaScript number cannot recover the original digits; use a raw source or a stri
 Raw readers reject duplicate decoded keys, trailing JSON, multiple YAML documents, nonfinite numbers,
 custom YAML tags and recursive aliases. YAML uses core scalar resolution: `yes` is a string, `012`
 is decimal twelve, and timestamps stay strings until their model property reads them. Keys retain
-their exact spelling. Malformed sources raise an error; readers never replace them with empty artifacts.
+their exact spelling. An instance field value is always a string, so an unquoted number or boolean
+in one keeps the text it was written with, and `value: 007` reads as `"007"`. The YAML instance
+reader refuses what the Java reader refuses in an instance's data. A null, an empty mapping or an
+empty list is refused there, except a null value beside a label, a preferred label or a notation,
+which reads as no value. A field value must be a string, a number or a boolean, and a child or an
+attribute must be a mapping. Malformed sources raise an error; readers never replace them with
+empty artifacts.
 `JsonSourcePolicy` is also available from `/policy`; `YamlSourcePolicy` is in the full package.
 Browser bundlers resolve `/policy` to its ES module bundle; CommonJS consumers retain the
 CommonJS entry point.

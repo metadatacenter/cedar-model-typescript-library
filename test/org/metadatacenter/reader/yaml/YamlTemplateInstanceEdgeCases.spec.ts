@@ -11,19 +11,13 @@ import {
   InstanceDataStringAtom,
   InstanceDataTypedAtom,
   JsonNode,
+  TemplateInstance,
 } from '../../../../../src';
 
 const edgeCaseYaml = `type: "instance"
 name: "Edge cases"
 id: "https://example.org/instances/edge-cases"
 children:
-  _scalar: "plain text"
-  _empty:
-  _nullLiteral:
-    value:
-  _nullTyped:
-    datatype: "xsd:dateTime"
-    value:
   _dateTyped:
     datatype: "xsd:date"
     value: "2026-08-11"
@@ -35,16 +29,14 @@ children:
     - datatype: "xsd:int"
       value: "010"
   _list:
-    - "first"
+    - value: "first"
     - value: "2"
       datatype: "xsd:integer"
-    -
   _nested:
     id: "https://example.org/e1"
     children:
-      _inside: "nested text"
-  _emptyNested:
-    children: {}
+      _inside:
+        value: "nested text"
   _elements:
     - type: "element-instance"
     - children:
@@ -63,12 +55,25 @@ _ignoredList:
 _attributes:
   first:
     value: "one"
-_directAttributes:
-  value: "direct"
-_nullAttributes:
-  absent:
-    value:
 `;
+
+/**
+ * The empty values a document may not spell, which Java's reader and this one refuse, built in the
+ * model instead. An editor can hold them, and the writer must leave each one out.
+ */
+const withEmptyValues = (instance: TemplateInstance): TemplateInstance => {
+  const data = instance.dataContainer;
+  data.setValue('_empty', new InstanceDataEmptyNode());
+  data.setValue('_nullLiteral', new InstanceDataStringAtom(null));
+  data.setValue('_nullTyped', new InstanceDataTypedAtom(null, 'xsd:dateTime'));
+  data.setValue('_emptyNested', new InstanceDataContainer());
+  const list = data.values._list;
+  if (Array.isArray(list)) list.push(new InstanceDataEmptyNode());
+  const nullAttributes = new InstanceDataAttributeValueField('_nullAttributes');
+  nullAttributes.addValue('absent', new InstanceDataStringAtom(null));
+  data.setValue('_nullAttributes', nullAttributes);
+  return instance;
+};
 
 describe('an empty identifier is refused rather than dropped', () => {
   // `id: ""` is what a document writes where an identifier has not been assigned — half the element
@@ -138,18 +143,16 @@ describe('YAML instance edge cases', () => {
       expect(() => CedarReaders.yaml().getStrict().getTemplateInstanceReader().readFromString(source)).toThrow(SyntaxError);
   });
 
-  test('parses scalar, empty, list, typed, nested, link, and controlled values', () => {
+  test('parses list, typed, nested, link, and controlled values', () => {
     const values = reader.readFromString(edgeCaseYaml).instance.dataContainer.values;
 
-    expect(values._scalar).toBeInstanceOf(InstanceDataStringAtom);
-    expect(values._empty).toBeInstanceOf(InstanceDataEmptyNode);
     expect(Array.isArray(values._list)).toBe(true);
     if (!Array.isArray(values._list)) {
       throw new Error('Expected _list to be parsed as an array');
     }
+    expect(values._list).toHaveLength(2);
     expect(values._list[0]).toBeInstanceOf(InstanceDataStringAtom);
     expect(values._list[1]).toBeInstanceOf(InstanceDataTypedAtom);
-    expect(values._list[2]).toBeInstanceOf(InstanceDataEmptyNode);
     expect(values._nested).toBeInstanceOf(InstanceDataContainer);
     expect(values._link).toBeInstanceOf(InstanceDataLinkAtom);
     expect(values._term).toBeInstanceOf(InstanceDataControlledAtom);
@@ -157,21 +160,18 @@ describe('YAML instance edge cases', () => {
     expect((values._unknown as InstanceDataLabelAtom).label).toBe('label without an id');
   });
 
-  test('accepts both nested and direct attribute-value spellings while ignoring primitives and lists', () => {
+  test('reads attribute-value fields while ignoring primitives and lists', () => {
     const values = reader.readFromString(edgeCaseYaml).instance.dataContainer.values;
     expect(values._attributes).toBeInstanceOf(InstanceDataAttributeValueField);
-    expect(values._directAttributes).toBeInstanceOf(InstanceDataAttributeValueField);
     expect(Object.hasOwn(values, '_ignoredPrimitive')).toBe(false);
     expect(Object.hasOwn(values, '_ignoredList')).toBe(false);
 
     const nested = values._attributes as InstanceDataAttributeValueField;
-    const direct = values._directAttributes as InstanceDataAttributeValueField;
     expect((nested.values.first as InstanceDataStringAtom).value).toBe('one');
-    expect((direct.values.value as InstanceDataStringAtom).value).toBe('direct');
   });
 
   test('writes every supported atom and omits empty or unsupported values', () => {
-    const instance = reader.readFromString(edgeCaseYaml).instance;
+    const instance = withEmptyValues(reader.readFromString(edgeCaseYaml).instance);
     const unsupportedAttributes = new InstanceDataAttributeValueField('_unsupportedAttributes');
     unsupportedAttributes.addValue('link', new InstanceDataLinkAtom('https://example.org/not-a-string-attribute'));
     instance.dataContainer.setValue('_unsupportedAttributes', unsupportedAttributes);
@@ -180,7 +180,6 @@ describe('YAML instance edge cases', () => {
     const compact = writer.getYamlAsJsonNode(instance, true);
     const children = expanded.children as JsonNode;
 
-    expect(children._scalar).toEqual({ value: 'plain text' });
     expect(children._empty).toBeUndefined();
     expect(children._nullLiteral).toBeUndefined();
     expect(children._nullTyped).toBeUndefined();
@@ -202,7 +201,7 @@ describe('YAML instance edge cases', () => {
   });
 
   test('never writes nulls, empty mappings, or empty lists', () => {
-    const output = writer.getYamlAsJsonNode(reader.readFromString(edgeCaseYaml).instance);
+    const output = writer.getYamlAsJsonNode(withEmptyValues(reader.readFromString(edgeCaseYaml).instance));
 
     const assertCanonical = (value: unknown, path: string): void => {
       if (value === null) {

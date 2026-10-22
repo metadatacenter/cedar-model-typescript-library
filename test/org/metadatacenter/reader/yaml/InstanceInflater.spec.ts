@@ -217,8 +217,8 @@ children:
   _parent:
     children:
       _nested:
-        - children: {}
-        - children: {}
+        - type: element-instance
+        - type: element-instance
 `).instance;
     const writer = CedarWriters.json().getStrict().getTemplateInstanceWriter();
     InstanceInflater.inflate(instance, schema);
@@ -261,7 +261,6 @@ describe('InstanceInflater asked to start repeated children empty', () => {
       CedarReaders.yaml().getStrict().getTemplateInstanceReader().readFromString(`type: instance
 name: Sparse
 isBasedOn: https://repo.metadatacenter.org/templates/t1
-children: {}
 `).instance;
     const writer = CedarWriters.json().getStrict().getTemplateInstanceWriter();
     const empty = JSON.parse(writer.getAsJsonString(InstanceInflater.inflate(sparse(), schema, 'empty')));
@@ -345,7 +344,6 @@ describe('InstanceInflater empty single-field shapes', () => {
     const instance = CedarReaders.yaml().getStrict().getTemplateInstanceReader().readFromString(`type: instance
 name: Sparse
 isBasedOn: https://repo.metadatacenter.org/templates/t1
-children: {}
 `).instance;
     InstanceInflater.inflate(instance, schema);
     const json = JSON.parse(CedarWriters.json().getStrict().getTemplateInstanceWriter().getAsJsonString(instance));

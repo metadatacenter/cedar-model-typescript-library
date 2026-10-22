@@ -30,6 +30,12 @@ import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
 
 const ELEMENT_INSTANCE_TYPE = 'element-instance';
 
+/** The keys beside which a null value is the shape of a term chosen without a literal. */
+const LABEL_KEYS: readonly string[] = [YamlKeys.label, YamlKeys.prefLabel, YamlKeys.notation];
+
+/** The keys other than its datatype that describe a field's value. Each holds text. */
+const DESCRIPTION_KEYS: readonly string[] = [YamlKeys.label, YamlKeys.notation, YamlKeys.prefLabel, YamlKeys.language];
+
 /**
  * Read a CEDAR template instance from YAML into the same `TemplateInstance` the
  * JSON reader produces — the serialization the `YamlTemplateInstanceWriter`
@@ -75,6 +81,7 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
     const parsingResult = new YamlArtifactParsingResult();
     const instance = TemplateInstance.buildEmptyWithNullValues();
     const source = instanceSourceObject ?? {};
+    YamlTemplateInstanceReader.refuseNullAndEmptyValues(source, '', true);
 
     instance.schema_name = ReaderUtil.getString(source, YamlKeys.name);
     instance.schema_description = ReaderUtil.getString(source, YamlKeys.description) ?? '';
@@ -93,7 +100,7 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
     instance.pav_lastUpdatedOn = IsoDate.forValue(ReaderUtil.getString(source, YamlKeys.modifiedOn));
     this.readAnnotations(instance, source, parsingResult, new JsonPath());
 
-    instance.dataContainer = this.parseContainer(source, true);
+    instance.dataContainer = this.parseContainer(source, '', true);
     for (const conflict of AttributeValueNamePolicy.findConflicts(instance.dataContainer, 'template', true)) {
       parsingResult.addBlueprintComparisonError(
         new ComparisonError(
@@ -120,39 +127,94 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
 
   private static readonly ELEMENT_RESERVED_KEYS: ReadonlySet<string> = ReservedNames.NESTED_ELEMENT_INSTANCE_YAML_KEYS;
 
-  private parseContainer(node: JsonNode, isDocumentRoot: boolean = false): InstanceDataContainer {
+  /** A YAML mapping: an object that is neither a list nor a number the source policy kept exact. */
+  private static isMapping(node: unknown): node is JsonNode {
+    return node !== null && typeof node === 'object' && !Array.isArray(node) && !ExactDecimal.isExact(node);
+  }
+
+  private static refuseNullOrEmpty(value: unknown, path: string): void {
+    if (value === null) {
+      throw new Error(`null is not a valid value at ${path}; omit the key if the value is unknown.`);
+    }
+    if (Array.isArray(value) && value.length === 0) {
+      throw new Error(`An empty list ([]) is not a valid value at ${path}; omit the key if the value is unknown.`);
+    }
+    if (YamlTemplateInstanceReader.isMapping(value) && Object.keys(value).length === 0) {
+      throw new Error(`An empty mapping ({}) is not a valid value at ${path}; omit the key if the value is unknown.`);
+    }
+  }
+
+  /**
+   * Refuse null, an empty mapping and an empty list wherever the instance holds data, as Java's
+   * reader does. A value that is not known is left out rather than written as one of them. The one
+   * exception, also Java's, is a null `value` beside a label, a preferred label or a notation. At the
+   * document root this walks only the `children` block and the attribute-value fields beside it. The
+   * instance's own name, description, identifiers, provenance and annotations are read below.
+   */
+  private static refuseNullAndEmptyValues(node: unknown, path: string, isDocumentRoot: boolean = false): void {
+    if (Array.isArray(node)) {
+      node.forEach((entry: unknown, index: number) => {
+        YamlTemplateInstanceReader.refuseNullOrEmpty(entry, `${path}[${index}]`);
+        YamlTemplateInstanceReader.refuseNullAndEmptyValues(entry, `${path}[${index}]`);
+      });
+    } else if (YamlTemplateInstanceReader.isMapping(node)) {
+      for (const [key, value] of Object.entries(node)) {
+        if (isDocumentRoot && key !== YamlKeys.children && YamlTemplateInstanceReader.RESERVED_KEYS.has(key)) {
+          continue;
+        }
+        if (key === YamlKeys.value && value === null && LABEL_KEYS.some((label) => typeof node[label] === 'string')) {
+          continue;
+        }
+        YamlTemplateInstanceReader.refuseNullOrEmpty(value, `${path}/${key}`);
+        YamlTemplateInstanceReader.refuseNullAndEmptyValues(value, `${path}/${key}`);
+      }
+    }
+  }
+
+  private parseContainer(node: JsonNode, path: string, isDocumentRoot: boolean = false): InstanceDataContainer {
     const container = new InstanceDataContainer();
 
-    const children = ReaderUtil.getNode(node, YamlKeys.children);
-    if (children !== null) {
-      Object.keys(children).forEach((key) => {
-        const content = ReaderUtil.getNode(children, key) ?? (children as JsonNode)[key];
-        if (Array.isArray(content)) {
-          const list: InstanceDataAtomList = [];
-          container.setValue(key, list);
-          content.forEach((element: JsonNode, index: number) => {
-            list[index] = this.parseNode(element);
-          });
-        } else {
-          container.setValue(key, this.parseNode(content));
-        }
-      });
+    // A child is a mapping, or a list of mappings for a repeated child, as Java's reader requires.
+    const childrenPath = `${path}/${YamlKeys.children}`;
+    const children: unknown = ReaderUtil.getNode(node, YamlKeys.children);
+    if (!YamlTemplateInstanceReader.isMapping(children)) {
+      throw new Error(`Expected a mapping of child instances at ${childrenPath}.`);
     }
+    Object.keys(children).forEach((key) => {
+      const content: unknown = children[key];
+      const childPath = `${childrenPath}/${key}`;
+      if (Array.isArray(content)) {
+        const list: InstanceDataAtomList = [];
+        container.setValue(key, list);
+        content.forEach((entry: unknown, index: number) => {
+          const entryPath = `${childPath}[${index}]`;
+          if (!YamlTemplateInstanceReader.isMapping(entry)) {
+            throw new Error(`Expected a mapping for the entry of a multi-instance list at ${entryPath}.`);
+          }
+          list[index] = this.parseNode(entry, entryPath);
+        });
+      } else if (YamlTemplateInstanceReader.isMapping(content)) {
+        container.setValue(key, this.parseNode(content, childPath));
+      } else {
+        throw new Error(`Expected a mapping or a list for the child instance at ${childPath}.`);
+      }
+    });
 
     // Attribute-value fields sit beside `children`, their attributes named
-    // directly: `<field>: { <attr>: { value: … } }`.
+    // directly: `<field>: { <attr>: { value: … } }`. A scalar or a list there
+    // is not one, and Java's reader passes over it too.
     Object.keys(node).forEach((key) => {
       const reserved = isDocumentRoot ? YamlTemplateInstanceReader.RESERVED_KEYS : YamlTemplateInstanceReader.ELEMENT_RESERVED_KEYS;
       if (reserved.has(key)) {
         return;
       }
-      const avNode = (node as JsonNode)[key];
-      if (avNode === null || typeof avNode !== 'object' || Array.isArray(avNode)) {
+      const avNode: unknown = node[key];
+      if (!YamlTemplateInstanceReader.isMapping(avNode)) {
         return;
       }
       const avField = new InstanceDataAttributeValueField(key);
       Object.keys(avNode).forEach((attrName) => {
-        avField.addValue(attrName, new InstanceDataStringAtom(this.parseAttributeValue(avNode as JsonNode, attrName)));
+        avField.addValue(attrName, new InstanceDataStringAtom(this.parseAttributeValue(avNode, attrName, `${path}/${key}/${attrName}`)));
       });
       container.setValue(key, avField);
     });
@@ -164,14 +226,44 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
     return container;
   }
 
-  private parseAttributeValue(field: JsonNode, attrName: string): string | null {
+  /** An attribute is a mapping held to the rules of a field's value, as Java's reader holds it. */
+  private parseAttributeValue(field: JsonNode, attrName: string, path: string): string | null {
     const node: unknown = field[attrName];
-    if (node !== null && typeof node === 'object' && !Array.isArray(node) && !ExactDecimal.isExact(node)) {
-      const value = YamlTemplateInstanceReader.readValue(node as JsonNode, YamlKeys.value);
-      return typeof value === 'string' ? value : null;
+    if (!YamlTemplateInstanceReader.isMapping(node)) {
+      throw new Error(`Expected a mapping for the attribute-value field at ${path}.`);
     }
-    const value = YamlTemplateInstanceReader.readValue(field, attrName);
-    return typeof value === 'string' ? value : null;
+    YamlTemplateInstanceReader.assertFieldValue(node, path);
+    return YamlTemplateInstanceReader.readValue(node, YamlKeys.value);
+  }
+
+  /**
+   * Hold a field's value to what Java's reader takes: an id or a value but not both, at most one
+   * datatype and that an IRI, a literal that is a string, number or boolean, and text for the label,
+   * notation, preferred label and language.
+   */
+  private static assertFieldValue(node: JsonNode, path: string): void {
+    if (Object.hasOwn(node, YamlKeys.id) && Object.hasOwn(node, YamlKeys.value)) {
+      throw new Error('A field cannot contain both id and value.');
+    }
+    // One slot, as in Java's reader: the YAML form writes a lone datatype as a string.
+    if (Array.isArray(node[YamlKeys.datatype])) {
+      throw new Error('A field value can have at most one datatype.');
+    }
+    YamlTemplateInstanceReader.assertText(node, YamlKeys.datatype, path);
+    ReaderUtil.assertIri(ReaderUtil.getString(node, YamlKeys.datatype), YamlKeys.datatype);
+    ReaderUtil.assertFieldIri(ReaderUtil.getString(node, YamlKeys.id), YamlKeys.id);
+    const value: unknown = node[YamlKeys.value];
+    const isLiteral = typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean' || ExactDecimal.isExact(value);
+    if (Object.hasOwn(node, YamlKeys.value) && value !== null && !isLiteral) {
+      throw new Error(`Expected a string, number or boolean at ${path}/${YamlKeys.value}.`);
+    }
+    DESCRIPTION_KEYS.forEach((key) => YamlTemplateInstanceReader.assertText(node, key, path));
+  }
+
+  private static assertText(node: JsonNode, key: string, path: string): void {
+    if (Object.hasOwn(node, key) && typeof node[key] !== 'string') {
+      throw new Error(`Expected a string at ${path}/${key}.`);
+    }
   }
 
   /**
@@ -188,38 +280,26 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
     return ReaderUtil.getString(node, key);
   }
 
-  private parseNode(node: JsonNode | string | null): InstanceDataAtomType {
-    const atom = this.parseNodeWithoutNotation(node);
-    if (node !== null && typeof node === 'object' && 'language' in atom) {
+  private parseNode(node: JsonNode, path: string): InstanceDataAtomType {
+    const atom = this.parseNodeWithoutNotation(node, path);
+    if ('language' in atom) {
       atom.language = ReaderUtil.getString(node, YamlKeys.language);
     }
-    if (node !== null && typeof node === 'object' && 'preferredLabel' in atom) {
+    if ('preferredLabel' in atom) {
       atom.preferredLabel = ReaderUtil.getString(node, YamlKeys.prefLabel);
     }
-    if (node !== null && typeof node === 'object' && 'notation' in atom && !(atom instanceof InstanceDataNotationAtom)) {
+    if ('notation' in atom && !(atom instanceof InstanceDataNotationAtom)) {
       atom.notation = ReaderUtil.getString(node, YamlKeys.notation);
     }
     return atom;
   }
 
-  private parseNodeWithoutNotation(node: JsonNode | string | null): InstanceDataAtomType {
-    if (node === null || node === undefined) {
-      return new InstanceDataEmptyNode();
-    }
-    if (typeof node === 'string') {
-      return new InstanceDataStringAtom(node);
-    }
+  private parseNodeWithoutNotation(node: JsonNode, path: string): InstanceDataAtomType {
     // An element carries a `children` block; a value never does.
     if (Object.hasOwn(node, YamlKeys.children) || ReaderUtil.getString(node, YamlKeys.type) === ELEMENT_INSTANCE_TYPE) {
-      return this.parseContainer(node);
+      return this.parseContainer(node, path);
     }
-    if (Object.hasOwn(node, YamlKeys.id) && Object.hasOwn(node, YamlKeys.value)) {
-      throw new Error('A field cannot contain both id and value.');
-    }
-    // One slot, as in Java's reader: the YAML form writes a lone datatype as a string.
-    if (Array.isArray(node[YamlKeys.datatype])) {
-      throw new Error('A field value can have at most one datatype.');
-    }
+    YamlTemplateInstanceReader.assertFieldValue(node, path);
     if (Object.hasOwn(node, YamlKeys.value)) {
       const value = YamlTemplateInstanceReader.readValue(node, YamlKeys.value);
       const datatype = ReaderUtil.getString(node, YamlKeys.datatype);
@@ -227,7 +307,6 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
       return datatype === null ? new InstanceDataStringAtom(value, label) : new InstanceDataTypedAtom(value, datatype, label);
     }
     if (Object.hasOwn(node, YamlKeys.id)) {
-      ReaderUtil.assertFieldIri(ReaderUtil.getString(node, YamlKeys.id), YamlKeys.id);
       const id = ReaderUtil.getString(node, YamlKeys.id);
       const label = ReaderUtil.getString(node, YamlKeys.label);
       const datatype = ReaderUtil.getString(node, YamlKeys.datatype);

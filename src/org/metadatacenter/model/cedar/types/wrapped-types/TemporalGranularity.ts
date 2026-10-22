@@ -58,9 +58,13 @@ export class TemporalGranularity {
   /**
    * The constant a document's granularity names. Java's readers take only a constant's exact spelling
    * and refuse any other, a case variant among them, and so does this. A spelling that `forValue` did
-   * not know was read as no granularity, and the writers then left the key out.
+   * not know was read as no granularity, and the writers then left the key out. A temporal field has a
+   * granularity, so a document that states none, or states null, is refused too, as Java refuses it.
    */
   public static forGranularity(value: unknown): TemporalGranularity {
+    if (value === null || value === undefined) {
+      throw new Error('A temporal field must have a granularity.');
+    }
     const match = TemporalGranularity.values().find((granularity) => granularity.getValue() === value);
     if (match === undefined) {
       throw new Error(`No temporal granularity constant with name ${typeof value === 'string' ? value : JSON.stringify(value)} found`);

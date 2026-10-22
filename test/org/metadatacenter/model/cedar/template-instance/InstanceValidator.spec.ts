@@ -1,4 +1,12 @@
-import { CedarBuilders, CedarReaders, InstanceValidator, TemplateValueValidator, NumberType, TemporalType } from '../../../../../../src';
+import {
+  CedarBuilders,
+  CedarReaders,
+  InstanceValidator,
+  TemplateValueValidator,
+  NumberType,
+  TemporalGranularity,
+  TemporalType,
+} from '../../../../../../src';
 
 /**
  * An instance judged against its template.
@@ -41,6 +49,7 @@ const when = CedarBuilders.temporalFieldBuilder()
   .withSchemaName('when')
   .withSchemaDescription('when')
   .withTemporalType(TemporalType.DATE)
+  .withTemporalGranularity(TemporalGranularity.DAY)
   .build();
 
 const count = CedarBuilders.numericFieldBuilder()

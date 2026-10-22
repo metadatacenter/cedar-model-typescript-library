@@ -63,7 +63,12 @@ const TYPES: ReadonlyArray<TypeUnderTest> = [
   { label: 'DOI', shape: 'iri', builder: () => CedarBuilders.extDoiFieldBuilder() },
 
   { label: 'numeric', shape: 'numeric', builder: () => CedarBuilders.numericFieldBuilder() },
-  { label: 'temporal', shape: 'temporal', builder: () => CedarBuilders.temporalFieldBuilder() },
+  // A temporal field has a granularity, and the writers refuse one without it.
+  {
+    label: 'temporal',
+    shape: 'temporal',
+    builder: () => CedarBuilders.temporalFieldBuilder().withTemporalGranularity(TemporalGranularity.DAY),
+  },
   { label: 'controlled term', shape: 'controlledTerm', builder: () => CedarBuilders.controlledTermFieldBuilder() },
 
   { label: 'attribute value', shape: 'none', builder: () => CedarBuilders.attributeValueFieldBuilder() },

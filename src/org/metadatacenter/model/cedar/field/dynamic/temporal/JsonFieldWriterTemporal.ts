@@ -16,10 +16,13 @@ export class JsonFieldWriterTemporal extends JsonTemplateFieldWriterInternal {
   }
 
   override expandUINode(uiNode: JsonNode, field: TemporalField, childInfo: ChildDeploymentInfo): void {
-    super.expandUINode(uiNode, field, childInfo);
-    if (field.temporalGranularity !== TemporalGranularity.NULL) {
-      uiNode[CedarModel.temporalGranularity] = this.atomicWriter.write(field.temporalGranularity);
+    // A temporal field has a granularity, at any depth. Java cannot build one without it, and both
+    // readers refuse a document that states none.
+    if (field.temporalGranularity === TemporalGranularity.NULL) {
+      throw new Error('A temporal field must have a granularity.');
     }
+    super.expandUINode(uiNode, field, childInfo);
+    uiNode[CedarModel.temporalGranularity] = this.atomicWriter.write(field.temporalGranularity);
     if (TemporalGranularity.hasTime(field.temporalGranularity)) {
       if (field.inputTimeFormat !== TimeFormat.NULL) {
         uiNode[CedarModel.inputTimeFormat] = this.atomicWriter.write(field.inputTimeFormat);

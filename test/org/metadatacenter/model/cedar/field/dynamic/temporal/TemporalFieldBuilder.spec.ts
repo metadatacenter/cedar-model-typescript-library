@@ -86,7 +86,10 @@ describe('TemporalFieldBuilder', () => {
 
   test('creates element with one temporal field, single-instance', () => {
     const temporalFieldBuilder: TemporalFieldBuilder = CedarBuilders.temporalFieldBuilder();
-    const temporalField: TemporalField = temporalFieldBuilder.withTitle('Text area').build();
+    const temporalField: TemporalField = temporalFieldBuilder
+      .withTitle('Text area')
+      .withTemporalGranularity(TemporalGranularity.DAY)
+      .build();
 
     const temporalFieldDeploymentBuilder: ChildDeploymentInfoBuilder = temporalField.createDeploymentBuilder('temporal_field');
 
@@ -114,7 +117,10 @@ describe('TemporalFieldBuilder', () => {
 
   test('creates element with one temporal field, multi-instance', () => {
     const temporalFieldBuilder: TemporalFieldBuilder = CedarBuilders.temporalFieldBuilder();
-    const temporalField: TemporalField = temporalFieldBuilder.withTitle('Text field').build();
+    const temporalField: TemporalField = temporalFieldBuilder
+      .withTitle('Text field')
+      .withTemporalGranularity(TemporalGranularity.DAY)
+      .build();
 
     const temporalFieldDeploymentBuilder: ChildDeploymentInfoBuilder = temporalField.createDeploymentBuilder('temporal_field');
 

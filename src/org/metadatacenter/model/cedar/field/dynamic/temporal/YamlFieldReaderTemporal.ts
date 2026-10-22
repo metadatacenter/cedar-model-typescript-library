@@ -21,10 +21,7 @@ export class YamlFieldReaderTemporal extends YamlTemplateFieldTypeSpecificReader
   ): TemporalField {
     const field = TemporalFieldImpl.buildEmpty();
 
-    const granularity = ReaderUtil.getString(fieldSourceObject, YamlKeys.granularity);
-    if (granularity !== null) {
-      field.temporalGranularity = TemporalGranularity.forGranularity(granularity);
-    }
+    field.temporalGranularity = TemporalGranularity.forGranularity(ReaderUtil.getString(fieldSourceObject, YamlKeys.granularity));
     const inputTimeFormat = ReaderUtil.getString(fieldSourceObject, YamlKeys.inputTimeFormat);
     if (inputTimeFormat !== null) {
       field.inputTimeFormat = TimeFormat.forInputTimeFormat(inputTimeFormat);

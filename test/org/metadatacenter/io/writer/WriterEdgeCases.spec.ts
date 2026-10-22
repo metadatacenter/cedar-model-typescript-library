@@ -2,6 +2,7 @@ import {
   CedarBuilders,
   CedarFieldType,
   CedarWriters,
+  ChildDeploymentInfo,
   ChildDeploymentInfoStatic,
   ControlledTermActionBuilder,
   ControlledTermBranchBuilder,
@@ -12,6 +13,9 @@ import {
   Iri,
   JsonNode,
   SchemaVersion,
+  TemporalField,
+  TemporalGranularity,
+  TemporalType,
 } from '../../../../../src';
 import { AdditionalProperties } from '../../../../../src/org/metadatacenter/model/cedar/types/wrapped-types/AdditionalProperties';
 import { JsonValueConstraintsActionWriter } from '../../../../../src/org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/action/JsonValueConstraintsActionWriter';
@@ -86,6 +90,58 @@ describe('writer edge cases', () => {
       expect(() => yaml.getTemplateElementWriter().getAsYamlString(element, compact)).toThrow('A field must have a name.');
       named(field);
       expect(yaml.getTemplateWriter().getAsYamlString(template, compact)).toContain('key: "City"');
+    });
+  });
+
+  // A temporal field has a granularity. Java cannot build one without it, and both readers refuse a
+  // document that states none. The builder still starts without one, and the writers left the key
+  // out, so each writer now refuses the field at any depth.
+  describe('the writers refuse a temporal field that has no granularity', () => {
+    const REFUSAL = 'A temporal field must have a granularity.';
+    const temporal = (granularity: TemporalGranularity | null) => {
+      const builder = CedarBuilders.temporalFieldBuilder().withSchemaName('When').withTemporalType(TemporalType.DATE);
+      return (granularity === null ? builder : builder.withTemporalGranularity(granularity)).build();
+    };
+    const nested = (field: TemporalField) => {
+      const element = CedarBuilders.templateElementBuilder()
+        .withSchemaName('Visit')
+        .addChild(field, field.createDeploymentBuilder('When').build())
+        .build();
+      const template = CedarBuilders.templateBuilder()
+        .withSchemaName('Study')
+        .addChild(element, element.createDeploymentBuilder('Visit').build())
+        .build();
+      return { element, template };
+    };
+
+    test.each([
+      ['strict', CedarWriters.json().getStrict()],
+      ['February 2024', CedarWriters.json().getFebruary2024()],
+    ])('the %s JSON writer, standalone and as a nested child', (_behavior, json) => {
+      const field = temporal(null);
+      const { element, template } = nested(field);
+      expect(() => json.getFieldWriterForField(field).getAsJsonNode(field)).toThrow(REFUSAL);
+      expect(() => json.getFieldWriterForField(field).getAsJsonString(field)).toThrow(REFUSAL);
+      expect(() => json.getTemplateElementWriter().getAsJsonNode(element)).toThrow(REFUSAL);
+      expect(() => json.getTemplateWriter().getAsJsonNode(template)).toThrow(REFUSAL);
+      expect(() => json.getTemplateWriter().getAsJsonString(template)).toThrow(REFUSAL);
+      const day = temporal(TemporalGranularity.DAY);
+      expect(json.getFieldWriterForField(day).getAsJsonNode(day)).toHaveProperty('_ui.temporalGranularity', 'day');
+      expect(json.getTemplateWriter().getAsJsonString(nested(day).template)).toContain('"temporalGranularity": "day"');
+    });
+
+    test.each([false, true])('the YAML writer, standalone and as a nested child (compact=%s)', (compact) => {
+      const yaml = CedarWriters.yaml().getStrict();
+      const field = temporal(null);
+      const { element, template } = nested(field);
+      expect(() => yaml.getFieldWriterForField(field).getAsYamlString(field, compact)).toThrow(REFUSAL);
+      expect(() => yaml.getFieldWriterForField(field).getYamlAsJsonNode(field, ChildDeploymentInfo.empty(), compact)).toThrow(REFUSAL);
+      expect(() => yaml.getTemplateElementWriter().getAsYamlString(element, compact)).toThrow(REFUSAL);
+      expect(() => yaml.getTemplateWriter().getAsYamlString(template, compact)).toThrow(REFUSAL);
+      expect(() => yaml.getTemplateWriter().getYamlAsJsonNode(template, compact)).toThrow(REFUSAL);
+      const day = temporal(TemporalGranularity.DAY);
+      expect(yaml.getFieldWriterForField(day).getAsYamlString(day, compact)).toContain('granularity: day');
+      expect(yaml.getTemplateWriter().getAsYamlString(nested(day).template, compact)).toContain('granularity: day');
     });
   });
 

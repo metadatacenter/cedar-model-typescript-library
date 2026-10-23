@@ -326,6 +326,83 @@ describe('a declaration left out', () => {
   });
 });
 
+/**
+ * An `@type` given as a list. Java reads a list of one IRI as that IRI, in an artifact read on its own
+ * and in a child, and refuses a list of any other length. The field readers took the type as a string,
+ * so a field declared with a list read as a field of no known type, which no writer could write, and a
+ * template or an element recorded a blueprint difference.
+ */
+describe('an @type given as a list', () => {
+  const pageBreak = () =>
+    CedarBuilders.pageBreakFieldBuilder().withSchemaName('P').withAtId('https://repo.metadatacenter.org/template-fields/P').build();
+  const withStaticAndMultiple = () => {
+    const p = pageBreak();
+    const e = element();
+    return CedarBuilders.templateBuilder()
+      .withSchemaName('T')
+      .withAtId('https://repo.metadatacenter.org/templates/t2')
+      .addChild(p, p.createDeploymentBuilder('P').build())
+      .addChild(e, e.createDeploymentBuilder('E').withMultiInstance(true).withMinItems(1).build())
+      .build();
+  };
+  const LIST_SOURCES: Record<string, [Kind, () => JsonNode]> = {
+    ...Object.fromEntries(Object.entries(SOURCES).map(([kind, source]) => [kind, [kind as Kind, source]])),
+    'static field': ['field', () => plain(json.getFieldWriterForField(pageBreak()).getAsJsonNode(pageBreak()))],
+    'static and multiple': ['template', () => plain(json.getTemplateWriter().getAsJsonNode(withStaticAndMultiple()))],
+  };
+  const LIST_PLACES: Record<string, [string, string[]]> = {
+    ...PLACES,
+    'a static field': ['static field', []],
+    'a child static field': ['static and multiple', ['properties', 'P']],
+    'a multiple-instance child element': ['static and multiple', ['properties', 'E', 'items']],
+    'a field in an element read alone': ['element', ['properties', 'D']],
+  };
+  const readWithResult = (kind: Kind, document: JsonNode, behavior: Behavior) => {
+    const readers = READERS[behavior];
+    if (kind === 'field') {
+      const result = readers.getTemplateFieldReader().readFromObject(document);
+      return { written: written(kind, result.field), errors: result.parsingResult.getBlueprintComparisonErrors() };
+    }
+    if (kind === 'element') {
+      const result = readers.getTemplateElementReader().readFromObject(document);
+      return { written: written(kind, result.element), errors: result.parsingResult.getBlueprintComparisonErrors() };
+    }
+    const result = readers.getTemplateReader().readFromObject(document);
+    return { written: written(kind, result.template), errors: result.parsingResult.getBlueprintComparisonErrors() };
+  };
+  /** The document for `place`, with the type it declares there replaced by what `retype` makes of it. */
+  const retyped = (place: string, retype: (type: string) => unknown): [Kind, JsonNode] => {
+    const [source, path] = LIST_PLACES[place];
+    const [kind, build] = LIST_SOURCES[source];
+    const document = build();
+    const node = nodeAt(document, path);
+    node['@type'] = retype(node['@type'] as string) as JsonNode;
+    return [kind, document];
+  };
+
+  describe.each(Object.keys(READERS) as Behavior[])('in the %s JSON reader', (behavior: Behavior) => {
+    test.each(Object.keys(LIST_PLACES))('%s declared with a list of one reads as that type', (place: string) => {
+      const [kind, asString] = retyped(place, (type) => type);
+      const [, asList] = retyped(place, (type) => [type]);
+      const expected = readWithResult(kind, asString, behavior);
+      const actual = readWithResult(kind, asList, behavior);
+      expect(actual.written).toEqual(expected.written);
+      expect(actual.errors).toEqual(expected.errors);
+    });
+
+    test.each(
+      Object.keys(LIST_PLACES).flatMap((place): [string, string, (type: string) => unknown, string][] => [
+        [place, 'no entry', () => [], 'A schema artifact must declare a JSON-LD @type'],
+        [place, 'two entries', (type) => [type, type], 'Expecting a single JSON-LD @type for a schema artifact, got 2'],
+        [place, 'three entries', (type) => [type, `${T}TemplateField`, `${T}StaticTemplateField`], 'got 3'],
+      ]),
+    )('%s declared with a list of %s is refused', (place: string, _size: string, retype: (type: string) => unknown, refusal: string) => {
+      const [kind, document] = retyped(place, retype);
+      expect(() => readWithResult(kind, document, behavior)).toThrow(refusal);
+    });
+  });
+});
+
 describe('a YAML action is delete or move, exactly', () => {
   const yaml = CedarWriters.yaml().getStrict();
   const respell = (document: string, value: string) => document.replace(/^(\s*- )action: delete$/m, `$1action: ${value}`);

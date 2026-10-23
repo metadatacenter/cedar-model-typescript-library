@@ -33,8 +33,10 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
   }
 
   public getYamlAsJsonNode(instance: TemplateInstance, isCompact: boolean = false): JsonNode {
-    // Java's writer refuses an instance with no name, and both readers refuse a document without one.
-    if (instance.schema_name === null) {
+    // Both readers refuse a document without a name or with an empty one, `name: ""`. Java's writer
+    // refuses an instance without a name and writes an empty one. A name of nothing but white space is
+    // one both readers take.
+    if (instance.schema_name === null || instance.schema_name === '') {
       throw new Error('A template instance must have a name.');
     }
     // An instance that does not name its template says nothing of what it is an instance of. Both

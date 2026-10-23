@@ -229,7 +229,8 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     parsingResult: JsonArtifactParsingResult,
     path: JsonPath,
   ): TemplateField {
-    const artifactType: CedarArtifactType = CedarArtifactType.forValue(ReaderUtil.getString(fieldSourceObject, JsonSchema.atType));
+    // A type given as a list of one is that type, as in Java.
+    const artifactType: CedarArtifactType = JsonArtifactShape.declaredTypeOrNull(fieldSourceObject, path);
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
     const rawUiInputType = ReaderUtil.getString(uiNode, CedarModel.inputType);
     const uiInputType: UiInputType = UiInputType.forValue(rawUiInputType);

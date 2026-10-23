@@ -90,8 +90,46 @@ jobs:
       - name: Build and smoke-test the distributable
         run: npm run test:package
 
+      # Each Playwright release pins its own browser builds, so the browsers are cached under the
+      # Playwright version the lock resolves, and downloaded again only when that version changes.
+      - name: Resolve the Playwright version
+        id: playwright
+        run: echo "version=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Restore the conformance browsers
+        id: browsers
+        uses: actions/cache/restore@v5
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-browsers-${{ runner.os }}-${{ steps.playwright.outputs.version }}
+
+      # The install normally takes under a minute, and the slowest of 45 successful runs took 196
+      # seconds. Twice it hung until the job's 15-minute limit cancelled the job, both times while apt
+      # fetched the browsers' system libraries at a trickle. An attempt that runs past four minutes
+      # is stopped and tried once more, so a stalled download fails or recovers with time left in
+      # the job. With the browsers restored, only the system libraries are installed.
       - name: Install conformance browsers
-        run: npx playwright install --with-deps chromium firefox webkit
+        timeout-minutes: 10
+        env:
+          ATTEMPT_LIMIT: 4m
+        run: |
+          for attempt in 1 2; do
+            if timeout --kill-after=20s "${ATTEMPT_LIMIT}" npx playwright install --with-deps chromium firefox webkit; then
+              exit 0
+            fi
+            echo "::warning::Installing the conformance browsers failed or ran past ${ATTEMPT_LIMIT} (attempt ${attempt} of 2)."
+            # An attempt stopped while dpkg was unpacking leaves packages half-configured, and the next
+            # apt-get refuses to run until they are configured.
+            sudo dpkg --configure -a || true
+          done
+          exit 1
+
+      - name: Save the conformance browsers
+        if: steps.browsers.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v5
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ steps.browsers.outputs.cache-primary-key }}
 
       - name: Verify regex conformance and bounded browser execution
         run: npm run test:browser

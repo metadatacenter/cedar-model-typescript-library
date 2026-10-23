@@ -95,11 +95,12 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
     parsingResult: JsonArtifactParsingResult,
     path: JsonPath,
   ) {
-    // Read and validate, but do not store top level @type
+    // Read and validate, but do not store top level @type. A type given as a list of one is that type,
+    // as in Java.
     JsonObjectComparator.comparePrimitive(
       parsingResult,
       this.knownArtifactType.getValue(),
-      ReaderUtil.getString(elementSourceObject, JsonSchema.atType),
+      JsonArtifactShape.declaredTypeOrNull(elementSourceObject, path).getValue(),
       path.add(JsonSchema.atType),
     );
 

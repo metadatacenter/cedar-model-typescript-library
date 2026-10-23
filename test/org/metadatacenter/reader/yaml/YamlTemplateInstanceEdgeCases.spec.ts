@@ -1,4 +1,5 @@
 import {
+  CedarArtifactId,
   CedarReaders,
   CedarWriters,
   InstanceDataAttributeValueField,
@@ -12,6 +13,7 @@ import {
   InstanceDataTypedAtom,
   JsonNode,
   TemplateInstance,
+  YamlTemplateInstanceReader,
 } from '../../../../../src';
 
 const edgeCaseYaml = `type: "instance"
@@ -283,6 +285,23 @@ children:
     instance.dataContainer.setValue('_note', new InstanceDataStringAtom('kept'));
     expect(() => writer.getYamlAsJsonNode(instance, compact)).toThrow(/A template instance must have a name/);
     expect(() => writer.getAsYamlString(instance, compact)).toThrow(/A template instance must have a name/);
+  });
+
+  // An empty name is no name: both readers refuse `name: ""`, so the writer refuses it as it refuses a
+  // missing one. A name of nothing but white space is one both readers take, and it is written.
+  test.each([false, true])('refuses to write an instance whose name is empty (compact=%s)', (compact) => {
+    const instance = TemplateInstance.buildEmptyWithNullValues();
+    instance.schema_isBasedOn = CedarArtifactId.forValue('https://repo.metadatacenter.org/templates/t1');
+    instance.schema_name = '';
+    const formReader = compact ? YamlTemplateInstanceReader.getStrictForCompact() : reader;
+    const source = 'type: "instance"\nname: ""\nisBasedOn: "https://repo.metadatacenter.org/templates/t1"\n';
+    expect(() => formReader.readFromString(source)).toThrow('Expected a non-empty string at /name.');
+    expect(() => writer.getYamlAsJsonNode(instance, compact)).toThrow('A template instance must have a name.');
+    expect(() => writer.getAsYamlString(instance, compact)).toThrow('A template instance must have a name.');
+    instance.schema_name = ' ';
+    const written = writer.getAsYamlString(instance, compact);
+    expect(written).toContain('name: " "');
+    expect(formReader.readFromString(written).instance.schema_name).toBe(' ');
   });
 
   // An instance whose template was never saved has no isBasedOn. Both readers refuse a document

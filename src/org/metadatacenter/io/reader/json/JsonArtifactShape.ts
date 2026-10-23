@@ -64,6 +64,14 @@ export class JsonArtifactShape {
     return type;
   }
 
+  /**
+   * The type a schema artifact declares, read as `declaredType` reads it, or `CedarArtifactType.NULL`
+   * when it declares none. Only a compatibility reader reads an artifact that declares none.
+   */
+  static declaredTypeOrNull(node: JsonNode, path: JsonPath): CedarArtifactType {
+    return Object.hasOwn(node, JsonSchema.atType) ? JsonArtifactShape.declaredType(node, path) : CedarArtifactType.NULL;
+  }
+
   /** Whether `key` is left out of `node`, which only a compatibility reader takes. */
   static isTolerated(node: JsonNode, key: string, lenient: boolean): boolean {
     return lenient && !Object.hasOwn(node, key);

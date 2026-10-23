@@ -19,7 +19,14 @@ import { CedarReaders, CedarWriters, JsonNode } from '../../../../src';
 const CORPUS = path.resolve(__dirname, '../../../../cedar-test-artifacts/artifacts/cee-suite/013/instance-013.json');
 const CONTEXT = '@context';
 
-const instance = (): JsonNode => JSON.parse(fs.readFileSync(CORPUS, 'utf8'));
+/**
+ * The corpus instance, naming a template. It was extracted without its envelope, so it names none, and
+ * the writer refuses an instance that names no template.
+ */
+const instance = (): JsonNode => ({
+  ...JSON.parse(fs.readFileSync(CORPUS, 'utf8')),
+  'schema:isBasedOn': 'https://repo.metadatacenter.org/templates/attribute-values',
+});
 
 /** Every attribute an attribute-value field names: the field's value is the list of them. */
 const attributeNames = (document: JsonNode): string[] =>

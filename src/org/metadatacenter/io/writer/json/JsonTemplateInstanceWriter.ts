@@ -24,6 +24,7 @@ import { InstanceDataEmptyAtom } from '../../../model/cedar/template-instance/In
 import { InstanceDataEmptyNode } from '../../../model/cedar/template-instance/InstanceDataEmptyNode';
 import { AttributeValueNamePolicy } from '../../../model/cedar/template-instance/AttributeValueNamePolicy';
 import { WriterUtil } from '../WriterUtil';
+import { CedarArtifactId } from '../../../model/cedar/types/cedar-types/CedarArtifactId';
 
 export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
   private constructor(behavior: JsonWriterBehavior, writers: CedarJsonWriters) {
@@ -220,6 +221,11 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
   }
 
   public getAsJsonNode(instance: TemplateInstance): JsonNode {
+    // An instance that does not name its template says nothing of what it is an instance of. Java's
+    // reader refuses it, and Java cannot build one, so this writer refuses it as the YAML writer does.
+    if (instance.schema_isBasedOn === CedarArtifactId.NULL) {
+      throw new Error('A template instance must name the template it is based on.');
+    }
     AttributeValueNamePolicy.assertValid(instance.dataContainer);
     const extendedContext: JsonNode = this.buildContext(instance);
 

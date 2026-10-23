@@ -89,9 +89,8 @@ export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecific
         ReaderUtil.getStringOrEmpty(b, CedarModel.ValueConstraints.source),
         ReaderUtil.getStringOrEmpty(b, CedarModel.ValueConstraints.acronym),
         ReaderUtil.getStringOrEmpty(b, CedarModel.ValueConstraints.name),
-        // Java requires a branch's depth to be an integer, so a stated null is refused. A branch that
-        // states none reads as depth 0.
-        ReaderUtil.getJsonJavaIntOrNull(b, CedarModel.ValueConstraints.maxDepth, path.add(index), false) ?? 0,
+        // Java requires a branch to state its depth as an integer, so an absent or null one is refused.
+        ReaderUtil.getRequiredJsonJavaInt(b, CedarModel.ValueConstraints.maxDepth, path.add(index)),
         ReaderUtil.getIdentifierURI(b, CedarModel.ValueConstraints.uri),
         ...JsonFieldReaderControlledTerm.readSourceAndVersion(b),
       );

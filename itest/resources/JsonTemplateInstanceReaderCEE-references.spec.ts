@@ -1,4 +1,4 @@
-import { CedarReaders, CedarWriters, JsonArtifactParsingResult } from '../../src';
+import { CedarArtifactId, CedarReaders, CedarWriters, JsonArtifactParsingResult } from '../../src';
 import { TestUtil } from '../TestUtil';
 import { ceeSuiteTestMap } from './generatedTestCases';
 import { TestResource } from '../TestResource';
@@ -54,7 +54,14 @@ describe('CEE compatibility corpus', () => {
       diagnosticsFor(CEE_INSTANCE_DIAGNOSTICS, testNumber.toString().padStart(3, '0')),
     );
 
-    const emitted = CedarWriters.json().getFebruary2024().getTemplateInstanceWriter().getAsJsonNode(result.instance);
+    const writer = CedarWriters.json().getFebruary2024().getTemplateInstanceWriter();
+    if (result.instance.schema_isBasedOn === CedarArtifactId.NULL) {
+      // 28 of these 57 were extracted without their envelope, so they name no template, and the writer
+      // refuses an instance that names none.
+      expect(() => writer.getAsJsonNode(result.instance)).toThrow('A template instance must name the template it is based on.');
+      return;
+    }
+    const emitted = writer.getAsJsonNode(result.instance);
     expect(Object.keys(emitted).length).toBeGreaterThan(0);
   });
 

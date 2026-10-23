@@ -143,25 +143,42 @@ export abstract class ReaderUtil {
   }
 
   /**
-   * The integer at `key`, or null where the node states none, as Java's readers hold a Java `int`: a
-   * number the source typed as an integer, from -2147483648 to 2147483647. A stated null reads as none
-   * where `nullable` is true, and is refused otherwise. `spelling` is how the source wrote the value,
-   * where that is known, and says whether the source typed it as an integer. A value of no known
-   * spelling is judged by its value alone. Any other value is refused with an error that names the key
-   * and the path. A fraction, a number written as a decimal, a number past that range, a string, a
-   * boolean, a list and a mapping are all refused.
+   * The integer at `key`, or null where the node states none or states null, as Java's readers hold an
+   * optional Java `int`. `spelling` is how the source wrote the value, where that is known. Any other
+   * value is judged as `javaInt` judges it.
    */
-  static getJavaIntOrNull(
-    node: JsonNode,
-    key: string,
-    path: JsonPath,
-    spelling: { text: string; integer: boolean } | null,
-    nullable: boolean = true,
-  ): number | null {
+  static getJavaIntOrNull(node: JsonNode, key: string, path: JsonPath, spelling: { text: string; integer: boolean } | null): number | null {
     const value: unknown = Object.hasOwn(node, key) ? node[key] : undefined;
-    if (value === undefined || (value === null && nullable)) {
-      return null;
+    return value === undefined || value === null ? null : this.javaInt(value, key, path, spelling);
+  }
+
+  /** `getJavaIntOrNull` for a node parsed from JSON text, where a number written as a decimal is not an integer. */
+  static getJsonJavaIntOrNull(node: JsonNode, key: string, path: JsonPath): number | null {
+    return this.getJavaIntOrNull(node, key, path, this.jsonSpelling(node, key));
+  }
+
+  /**
+   * The integer at `key` in a node parsed from JSON text, as Java's `readRequiredInt` reads one. The
+   * node must state it, so an absent key is refused with an error that names the key and the path. A
+   * stated null is refused, and any other value is judged as `javaInt` judges it.
+   */
+  static getRequiredJsonJavaInt(node: JsonNode, key: string, path: JsonPath): number {
+    const value: unknown = Object.hasOwn(node, key) ? node[key] : undefined;
+    if (value === undefined) {
+      throw new Error(`Missing ${key} at ${path.add(key).toPointer()}. Expected an integer from -2147483648 to 2147483647.`);
     }
+    return this.javaInt(value, key, path, this.jsonSpelling(node, key));
+  }
+
+  /**
+   * `value`, the value stated at `key`, as a Java `int`: a number the source typed as an integer, from
+   * -2147483648 to 2147483647. `spelling` is how the source wrote the value, where that is known, and
+   * says whether the source typed it as an integer. A value of no known spelling is judged by its value
+   * alone. Any other value is refused with an error that names the key and the path. A null, a
+   * fraction, a number written as a decimal, a number past that range, a string, a boolean, a list and a
+   * mapping are all refused.
+   */
+  private static javaInt(value: unknown, key: string, path: JsonPath, spelling: { text: string; integer: boolean } | null): number {
     if (
       typeof value === 'number' &&
       Number.isInteger(value) &&
@@ -176,10 +193,10 @@ export abstract class ReaderUtil {
     throw new Error(`Invalid ${key} ${shown} at ${path.add(key).toPointer()}. Expected an integer from -2147483648 to 2147483647.`);
   }
 
-  /** `getJavaIntOrNull` for a node parsed from JSON text, where a number written as a decimal is not an integer. */
-  static getJsonJavaIntOrNull(node: JsonNode, key: string, path: JsonPath, nullable: boolean = true): number | null {
+  /** How JSON text spelled the number at `key`, where it wrote one as a decimal, which no Java `int` reads. */
+  private static jsonSpelling(node: JsonNode, key: string): { text: string; integer: boolean } | null {
     const decimal = JsonSourcePolicy.decimalSpelling(node, key);
-    return this.getJavaIntOrNull(node, key, path, decimal === null ? null : { text: decimal, integer: false }, nullable);
+    return decimal === null ? null : { text: decimal, integer: false };
   }
 
   public static getNode(node: JsonNode, key: string): JsonNode {

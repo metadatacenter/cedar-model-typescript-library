@@ -1014,7 +1014,50 @@ describe('a term count and a maximum depth are Java integers', () => {
         refusal('maxDepth', 'null', `${at}/_valueConstraints/branches/0`),
       );
     });
+
+    /**
+     * Java reads a JSON branch's depth with `readRequiredInt`, so it refuses a branch that states none.
+     * These readers read one as depth 0. Nothing the estate writes omits it: this library's JSON writer,
+     * the designer and the term picker all state a depth, and the artifact server reads every write
+     * with Java's reader, so no stored branch omits one either.
+     */
+    test.each(Object.keys(JSON_PLACES))('%s: a branch that states no depth is refused', (place: string) => {
+      const [write, readField, at] = JSON_PLACES[place];
+      // The writer states the depth last, after the branch's name.
+      const withoutDepth = respell(respell(write(), '"name": "disease",', '"name": "disease"'), '"maxDepth": 3', '');
+      expect(withoutDepth).not.toContain('"maxDepth"');
+      expect(() => readField(withoutDepth, behavior)).toThrow(
+        `Missing maxDepth at ${at}/_valueConstraints/branches/0/maxDepth. Expected an integer from -2147483648 to 2147483647.`,
+      );
+    });
   });
+
+  test('a JSON branch built by a caller with no depth, or an undefined one, is refused', () => {
+    const document = plain(json.getFieldWriterForField(constrained()).getAsJsonNode(constrained()));
+    const branch = ((document._valueConstraints as JsonNode).branches as JsonNode[])[0];
+    const missing = 'Missing maxDepth at /_valueConstraints/branches/0/maxDepth. Expected an integer from -2147483648 to 2147483647.';
+    for (const reader of Object.values(READERS)) {
+      delete branch.maxDepth;
+      expect(() => reader.getTemplateFieldReader().readFromObject(document)).toThrow(missing);
+      branch.maxDepth = undefined;
+      expect(() => reader.getTemplateFieldReader().readFromObject(document)).toThrow(missing);
+    }
+  });
+
+  test.each([false, true])(
+    'a YAML branch that states no depth still reads as depth 0, as Java reads it, compact=%s',
+    (compact: boolean) => {
+      const document = yaml.getFieldWriterForField(constrained()).getAsYamlString(constrained(), compact);
+      const withoutDepth = document
+        .split('\n')
+        .filter((line) => line.trim() !== 'termMaxDepth: 3')
+        .join('\n');
+      expect(document).toContain('termMaxDepth: 3');
+      expect(withoutDepth).not.toContain('termMaxDepth');
+      const reader = compact ? YamlTemplateFieldReader.getStrictForCompact() : YamlTemplateFieldReader.getStrict();
+      expect(stated(reader.readFromString(withoutDepth).field)).toEqual([5, 0, 4]);
+    },
+  );
 
   test('a JSON object built by a caller rather than parsed from text is judged by its values', () => {
     const document = plain(json.getFieldWriterForField(constrained()).getAsJsonNode(constrained()));

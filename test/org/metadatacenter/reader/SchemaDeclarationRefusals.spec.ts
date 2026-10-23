@@ -720,3 +720,310 @@ describe('a YAML choice-field option states no type, as in Java', () => {
     );
   });
 });
+
+/**
+ * An ontology's and a value set's term count and a branch's maximum depth are Java `int`s. Java's
+ * readers hold one only where the source typed an integer, from -2147483648 to 2147483647, so they
+ * refuse a fraction, a number written as a decimal such as `3.0`, a number past that range, a string,
+ * a boolean, a list and a mapping. These readers took any of them. YAML spells the keys `termCount`
+ * and `termMaxDepth`, and JSON `numTerms` and `maxDepth`. A choice field's YAML option that states a
+ * type is read as that constraint, so the same rule holds there.
+ */
+describe('a term count and a maximum depth are Java integers', () => {
+  const yaml = CedarWriters.yaml().getStrict();
+  const constrained = () =>
+    CedarBuilders.controlledTermFieldBuilder()
+      .withSchemaName('K')
+      .withAtId('https://repo.metadatacenter.org/template-fields/k1')
+      .addOntology(
+        new ControlledTermOntologyBuilder()
+          .withAcronym('DOID')
+          .withName('Human Disease Ontology')
+          .withUri(new Iri('https://data.bioontology.org/ontologies/DOID'))
+          .withNumTerms(5)
+          .build(),
+      )
+      .addBranch(
+        new ControlledTermBranchBuilder()
+          .withUri(new Iri('http://purl.obolibrary.org/obo/DOID_4'))
+          .withSource('Human Disease Ontology')
+          .withAcronym('DOID')
+          .withName('disease')
+          .withMaxDepth(3)
+          .build(),
+      )
+      .addValueSet(
+        new ControlledTermValueSetBuilder()
+          .withUri(new Iri('https://example.org/value-sets/colours'))
+          .withVsCollection('VS')
+          .withName('Colours')
+          .withNumTerms(4)
+          .build(),
+      )
+      .build();
+  const holding = (field: TemplateField) => {
+    const holder = CedarBuilders.templateElementBuilder()
+      .withSchemaName('E')
+      .withAtId('https://repo.metadatacenter.org/template-elements/e1')
+      .addChild(field, field.createDeploymentBuilder(field.schema_name ?? '').build())
+      .build();
+    return CedarBuilders.templateBuilder()
+      .withSchemaName('T')
+      .withAtId('https://repo.metadatacenter.org/templates/t1')
+      .addChild(holder, holder.createDeploymentBuilder('E').build())
+      .build();
+  };
+  const fieldIn = (template: { getChild(name: string): unknown }, name: string): TemplateField => {
+    const holder = template.getChild('E');
+    if (!(holder instanceof TemplateElement)) throw new Error('No element E');
+    return holder.getChild(name) as TemplateField;
+  };
+  /** Each constraint's count or depth, in the order ontology, branch, value set. */
+  const stated = (field: TemplateField) => {
+    const { ontologies, branches, valueSets } = (field as ControlledTermField).valueConstraints;
+    return [ontologies[0].numTerms, branches[0].maxDepth, valueSets[0].numTerms];
+  };
+  const refusal = (key: string, shown: string, at: string) =>
+    `Invalid ${key} ${shown} at ${at}/${key}. Expected an integer from -2147483648 to 2147483647.`;
+  /** The document with the one `key: was` line respelled as `key: now`. */
+  const respell = (document: string, pattern: string, replacement: string): string => {
+    const occurrences = document.split(pattern).length - 1;
+    expect(occurrences).toBe(1);
+    return document.replace(pattern, replacement);
+  };
+
+  /** Each key, how the writer spells the value it holds, and which value the field read from it holds. */
+  const YAML_KEYS: [string, string, number, number][] = [
+    ['termCount', 'termCount: 5', 0, 0],
+    ['termMaxDepth', 'termMaxDepth: 3', 1, 1],
+    ['termCount', 'termCount: 4', 2, 2],
+  ];
+  const YAML_REFUSED: [string, string][] = [
+    ['2.5', '2.5'],
+    ['3.0', '3.0'],
+    ['3e0', '3e0'],
+    ['"3"', '"3"'],
+    ["'3'", '"3"'],
+    ['true', 'true'],
+    ['2147483648', '2147483648'],
+    ['-2147483649', '-2147483649'],
+    ['[3]', '[3]'],
+    ['{n: 3}', '{"n":3}'],
+  ];
+  const YAML_READ: [string, number][] = [
+    ['0', 0],
+    ['7', 7],
+    ['-1', -1],
+    ['+4', 4],
+    ['0x10', 16],
+    ['0o17', 15],
+    ['!!int 5', 5],
+    ['2147483647', 2147483647],
+    ['-2147483648', -2147483648],
+  ];
+  /** Each place a controlled-term field can stand in YAML: its document, how to read the field back, and where it is. */
+  const YAML_PLACES: Record<string, [(compact: boolean) => string, (source: string, compact: boolean) => TemplateField, string]> = {
+    standalone: [
+      (compact) => yaml.getFieldWriterForField(constrained()).getAsYamlString(constrained(), compact),
+      (source, compact) =>
+        (compact ? YamlTemplateFieldReader.getStrictForCompact() : YamlTemplateFieldReader.getStrict()).readFromString(source).field,
+      '',
+    ],
+    "a child of a template's element": [
+      (compact) => yaml.getTemplateWriter().getAsYamlString(holding(constrained()), compact),
+      (source, compact) =>
+        fieldIn((compact ? YamlTemplateReader.getStrictForCompact() : YamlTemplateReader.getStrict()).readFromString(source).template, 'K'),
+      '/children/E/children/K',
+    ],
+  };
+
+  describe.each([false, true])('in YAML, compact=%s', (compact: boolean) => {
+    test.each(Object.keys(YAML_PLACES))('%s: a controlled-term field states integers, and they read back', (place: string) => {
+      const [write, readField] = YAML_PLACES[place];
+      const document = write(compact);
+      expect(stated(readField(document, compact))).toEqual([5, 3, 4]);
+      for (const [key, line, , position] of YAML_KEYS) {
+        for (const [spelling, value] of YAML_READ) {
+          const expected = [5, 3, 4];
+          expected[position] = value;
+          expect(stated(readField(respell(document, line, `${key}: ${spelling}`), compact))).toEqual(expected);
+        }
+      }
+    });
+
+    test.each(
+      Object.keys(YAML_PLACES).flatMap((place) =>
+        YAML_KEYS.map(([key, line, index]): [string, string, string, number] => [place, key, line, index]),
+      ),
+    )('%s: a controlled-term field whose %s is not an integer is refused', (place: string, key: string, line: string, index: number) => {
+      const [write, readField, at] = YAML_PLACES[place];
+      const document = write(compact);
+      for (const [spelling, shown] of YAML_REFUSED) {
+        expect(() => readField(respell(document, line, `${key}: ${spelling}`), compact)).toThrow(
+          refusal(key, shown, `${at}/values/${index}`),
+        );
+      }
+    });
+  });
+
+  const id = (name: string) => `https://repo.metadatacenter.org/template-fields/${name}`;
+  const CHOICES: Record<string, () => TemplateField> = {
+    radio: () => CedarBuilders.radioFieldBuilder().withSchemaName('F').withAtId(id('r')).addRadioOption('a').addRadioOption('b').build(),
+    checkbox: () =>
+      CedarBuilders.checkboxFieldBuilder().withSchemaName('F').withAtId(id('c')).addCheckboxOption('a').addCheckboxOption('b').build(),
+    'single-choice list': () =>
+      CedarBuilders.singleChoiceListFieldBuilder().withSchemaName('F').withAtId(id('l')).addListOption('a').addListOption('b').build(),
+    'multiple-choice list': () =>
+      CedarBuilders.multipleChoiceListFieldBuilder().withSchemaName('F').withAtId(id('m')).addListOption('a').addListOption('b').build(),
+  };
+  /** Each place a choice field can stand in YAML: its document, the JSON written from reading it back, and where it is. */
+  const CHOICE_PLACES: Record<string, [(field: TemplateField) => string, (source: string) => JsonNode, string]> = {
+    standalone: [
+      (field) => yaml.getFieldWriterForField(field).getAsYamlString(field, false),
+      (source) => {
+        const field = YamlTemplateFieldReader.getStrict().readFromString(source).field;
+        return plain(json.getFieldWriterForField(field).getAsJsonNode(field));
+      },
+      '',
+    ],
+    "a child of a template's element": [
+      (field) => yaml.getTemplateWriter().getAsYamlString(holding(field), false),
+      (source) => plain(json.getTemplateWriter().getAsJsonNode(YamlTemplateReader.getStrict().readFromString(source).template)),
+      '/children/E/children/F',
+    ],
+  };
+  /** Each constraint a choice option can state, complete but for the key, and the key. */
+  const STATED: [string, string[], string][] = [
+    ['ontology', ['sourceAcronym: "DOID"', 'sourceName: "Human Disease Ontology"'], 'termCount'],
+    [
+      'branch',
+      [
+        'sourceAcronym: "DOID"',
+        'sourceName: "Human Disease Ontology"',
+        'termBaseIri: "http://purl.obolibrary.org/obo/DOID_4"',
+        'termBaseLabel: "disease"',
+      ],
+      'termMaxDepth',
+    ],
+    ['valueSet', ['sourceAcronym: "VS"', 'termBaseIri: "https://example.org/value-sets/colours"', 'termBaseLabel: "Colours"'], 'termCount'],
+  ];
+  /** The document with `lines` added to the first option, which the writer spells `- label: "a"`. */
+  const amendFirstOption = (document: string, lines: string[]): string => {
+    const pattern = /^(\s*)- label: "a"$/gm;
+    expect(document.match(pattern)).toHaveLength(1);
+    return document.replace(pattern, (option: string, indent: string) => [option, ...lines.map((line) => `${indent}  ${line}`)].join('\n'));
+  };
+
+  test.each(
+    Object.keys(CHOICES).flatMap((choice) =>
+      Object.keys(CHOICE_PLACES).flatMap((place) =>
+        STATED.map(([type, lines, key]): [string, string, string, string[], string] => [choice, place, type, lines, key]),
+      ),
+    ),
+  )(
+    'in YAML, a %s, %s: an option of type %s reads with an integer, and is refused without one',
+    (choice: string, place: string, type: string, lines: string[], key: string) => {
+      const [write, read, at] = CHOICE_PLACES[place];
+      const document = write(CHOICES[choice]());
+      const expected = read(document);
+      for (const [spelling] of YAML_READ) {
+        expect(read(amendFirstOption(document, [`type: ${type}`, ...lines, `${key}: ${spelling}`]))).toEqual(expected);
+      }
+      for (const [spelling, shown] of YAML_REFUSED) {
+        expect(() => read(amendFirstOption(document, [`type: ${type}`, ...lines, `${key}: ${spelling}`]))).toThrow(
+          `The entry at ${at}/values/0 states the type "${type}" and is read as that kind of constraint. ` +
+            refusal(key, shown, `${at}/values/0`),
+        );
+      }
+    },
+  );
+
+  /** Each JSON key, how the writer spells the value it holds, where it is, and which value the field read from it holds. */
+  const JSON_KEYS: [string, string, string, number][] = [
+    ['numTerms', '"numTerms": 5', 'ontologies/0', 0],
+    ['maxDepth', '"maxDepth": 3', 'branches/0', 1],
+    ['numTerms', '"numTerms": 4', 'valueSets/0', 2],
+  ];
+  const JSON_REFUSED: [string, string][] = [
+    ['2.5', '2.5'],
+    ['3.0', '3.0'],
+    ['3e0', '3e0'],
+    ['1E2', '1E2'],
+    ['"3"', '"3"'],
+    ['true', 'true'],
+    ['2147483648', '2147483648'],
+    ['-2147483649', '-2147483649'],
+    ['[3]', '[3]'],
+    ['{}', '{}'],
+  ];
+  const JSON_READ: [string, number][] = [
+    ['0', 0],
+    ['7', 7],
+    ['-1', -1],
+    ['2147483647', 2147483647],
+    ['-2147483648', -2147483648],
+  ];
+  /** Each place a controlled-term field can stand in JSON: its document, how to read the field back, and where it is. */
+  const JSON_PLACES: Record<string, [() => string, (source: string, behavior: Behavior) => TemplateField, string]> = {
+    standalone: [
+      () => json.getFieldWriterForField(constrained()).getAsJsonString(constrained()),
+      (source, behavior) => READERS[behavior].getTemplateFieldReader().readFromString(source).field,
+      '',
+    ],
+    "a child of a template's element": [
+      () => json.getTemplateWriter().getAsJsonString(holding(constrained())),
+      (source, behavior) => fieldIn(READERS[behavior].getTemplateReader().readFromString(source).template, 'K'),
+      '/properties/E/properties/K',
+    ],
+  };
+
+  describe.each(Object.keys(READERS) as Behavior[])('in JSON, the %s reader', (behavior: Behavior) => {
+    test.each(Object.keys(JSON_PLACES))('%s: a controlled-term field states integers, and they read back', (place: string) => {
+      const [write, readField] = JSON_PLACES[place];
+      const document = write();
+      expect(stated(readField(document, behavior))).toEqual([5, 3, 4]);
+      for (const [key, line, , position] of JSON_KEYS) {
+        for (const [spelling, value] of JSON_READ) {
+          const expected = [5, 3, 4];
+          expected[position] = value;
+          expect(stated(readField(respell(document, line, `"${key}": ${spelling}`), behavior))).toEqual(expected);
+        }
+      }
+    });
+
+    test.each(
+      Object.keys(JSON_PLACES).flatMap((place) =>
+        JSON_KEYS.map(([key, line, at]): [string, string, string, string] => [place, key, line, at]),
+      ),
+    )('%s: a controlled-term field whose %s is not an integer is refused', (place: string, key: string, line: string, entry: string) => {
+      const [write, readField, at] = JSON_PLACES[place];
+      const document = write();
+      for (const [spelling, shown] of JSON_REFUSED) {
+        expect(() => readField(respell(document, line, `"${key}": ${spelling}`), behavior)).toThrow(
+          refusal(key, shown, `${at}/_valueConstraints/${entry}`),
+        );
+      }
+    });
+
+    test.each(Object.keys(JSON_PLACES))('%s: a null term count reads as none, and a null depth is refused', (place: string) => {
+      const [write, readField, at] = JSON_PLACES[place];
+      const document = write();
+      const withNullCounts = respell(respell(document, '"numTerms": 5', '"numTerms": null'), '"numTerms": 4', '"numTerms": null');
+      expect(stated(readField(withNullCounts, behavior))).toEqual([null, 3, null]);
+      expect(() => readField(respell(document, '"maxDepth": 3', '"maxDepth": null'), behavior)).toThrow(
+        refusal('maxDepth', 'null', `${at}/_valueConstraints/branches/0`),
+      );
+    });
+  });
+
+  test('a JSON object built by a caller rather than parsed from text is judged by its values', () => {
+    const document = plain(json.getFieldWriterForField(constrained()).getAsJsonNode(constrained()));
+    const ontology = ((document._valueConstraints as JsonNode).ontologies as JsonNode[])[0];
+    ontology.numTerms = 3.0;
+    expect(stated(READERS.strict.getTemplateFieldReader().readFromObject(document).field)).toEqual([3, 3, 4]);
+    ontology.numTerms = 2.5;
+    expect(() => READERS.strict.getTemplateFieldReader().readFromObject(document)).toThrow(
+      refusal('numTerms', '2.5', '/_valueConstraints/ontologies/0'),
+    );
+  });
+});

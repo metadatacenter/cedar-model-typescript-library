@@ -8,6 +8,7 @@ import { BiboStatus } from './types/wrapped-types/BiboStatus';
 import { CedarArtifactId } from './types/cedar-types/CedarArtifactId';
 import { SchemaVersion } from './types/wrapped-types/SchemaVersion';
 import { AbstractSchemaArtifact } from './AbstractSchemaArtifact';
+import { JavaStrings } from './util/JavaStrings';
 
 export abstract class AbstractArtifactBuilder {
   protected at_id: CedarArtifactId = CedarArtifactId.NULL;
@@ -136,6 +137,7 @@ export abstract class AbstractArtifactBuilder {
   }
 
   protected buildInternal(artifact: AbstractSchemaArtifact): void {
+    this.assertNameNotBlank(artifact.cedarArtifactType);
     artifact.at_id = this.at_id;
     artifact.title = this.title;
     artifact.description = this.description;
@@ -166,6 +168,25 @@ export abstract class AbstractArtifactBuilder {
         artifact.title = internalNameFor(artifact.schema_name, kind);
       }
     }
+  }
+
+  /**
+   * Refuse a template, element or field name that is not empty but is made only of whitespace, as the
+   * Java library's builders refuse it. Whitespace is what Java's `String.isBlank` counts: the ASCII
+   * controls from tab to carriage return and from U+001C to U+001F, the space, and the Unicode space,
+   * line and paragraph separators other than the no-break spaces. An empty or absent name is not
+   * refused here. Every template, element and field builder reaches this check when it builds, and
+   * nothing else does. The readers construct artifacts without a builder, so they accept such a name,
+   * as the meta-schema does.
+   */
+  private assertNameNotBlank(type: CedarArtifactType): void {
+    const name = this.schema_name;
+    if (name === null || name === '' || !JavaStrings.isBlank(name)) {
+      return;
+    }
+    const kind = AbstractArtifactBuilder.kindOf(type) ?? 'artifact';
+    const article = kind === 'element' || kind === 'artifact' ? 'an' : 'a';
+    throw new Error(`The name ${JSON.stringify(name)} is made only of whitespace, so ${article} ${kind} cannot be built with it.`);
   }
 
   private static kindOf(type: CedarArtifactType): SchemaArtifactKind | null {

@@ -94,7 +94,8 @@ describe('writer edge cases', () => {
 
     // An empty name is no name. Both readers refuse `name: ""`, and Java can no longer build a
     // template, an element or a field with one. A name of nothing but white space is one the
-    // meta-schema admits, and it is written.
+    // meta-schema admits and the readers accept, and it is written. No builder builds one, so the
+    // artifacts here are given it as a reader gives it.
     test.each([false, true])('an empty name, however deep, and not one of white space (compact=%s)', (compact) => {
       const artifacts = (name: string) => ({
         template: CedarBuilders.templateBuilder().withSchemaName(name).build(),
@@ -121,7 +122,8 @@ describe('writer edge cases', () => {
       expect(() => yaml.getTemplateWriter().getAsYamlString(template, compact)).toThrow('A field must have a name.');
       expect(() => yaml.getTemplateElementWriter().getAsYamlString(element, compact)).toThrow('A field must have a name.');
 
-      const blank = artifacts(' ');
+      const blank = artifacts('Named');
+      [blank.template, blank.element, blank.field].forEach((artifact) => (artifact.schema_name = ' '));
       expect(yaml.getTemplateWriter().getAsYamlString(blank.template, compact)).toContain('name: " "');
       expect(yaml.getTemplateElementWriter().getAsYamlString(blank.element, compact)).toContain('name: " "');
       expect(yaml.getFieldWriterForField(blank.field).getAsYamlString(blank.field, compact)).toContain('name: " "');

@@ -3,6 +3,8 @@ import { IdentifierPolicy } from '../../policy/IdentifierPolicy';
 import { JsonNode } from '../../model/cedar/types/basic-types/JsonNode';
 import { Iri } from '../../model/cedar/types/wrapped-types/Iri';
 import { NullableNumber } from '../../model/cedar/types/basic-types/NullableNumber';
+import { JsonPath } from '../../model/cedar/util/path/JsonPath';
+import { JsonSourcePolicy } from '../../policy/JsonSourcePolicy';
 
 export abstract class ReaderUtil {
   public static assertIdentifierCharacters = IdentifierPolicy.assertIdentifierCharacters.bind(IdentifierPolicy);
@@ -140,20 +142,44 @@ export abstract class ReaderUtil {
     throw new Error(`Numeric bound at "${key}" must be a JSON number.`);
   }
 
-  static getNumberOrZero(node: JsonNode, key: string): number {
-    if (Object.hasOwn(node, key)) {
-      return node[key] as number;
-    } else {
-      return 0;
-    }
-  }
-
-  static getNumberOrNull(node: JsonNode, key: string): number | null {
-    if (Object.hasOwn(node, key)) {
-      return node[key] as number;
-    } else {
+  /**
+   * The integer at `key`, or null where the node states none, as Java's readers hold a Java `int`: a
+   * number the source typed as an integer, from -2147483648 to 2147483647. A stated null reads as none
+   * where `nullable` is true, and is refused otherwise. `spelling` is how the source wrote the value,
+   * where that is known, and says whether the source typed it as an integer. A value of no known
+   * spelling is judged by its value alone. Any other value is refused with an error that names the key
+   * and the path. A fraction, a number written as a decimal, a number past that range, a string, a
+   * boolean, a list and a mapping are all refused.
+   */
+  static getJavaIntOrNull(
+    node: JsonNode,
+    key: string,
+    path: JsonPath,
+    spelling: { text: string; integer: boolean } | null,
+    nullable: boolean = true,
+  ): number | null {
+    const value: unknown = Object.hasOwn(node, key) ? node[key] : undefined;
+    if (value === undefined || (value === null && nullable)) {
       return null;
     }
+    if (
+      typeof value === 'number' &&
+      Number.isInteger(value) &&
+      value >= -2147483648 &&
+      value <= 2147483647 &&
+      spelling?.integer !== false
+    ) {
+      // Java reads `-0` as the integer 0.
+      return value === 0 ? 0 : value;
+    }
+    const shown = spelling?.text ?? JsonSourcePolicy.stringify(value);
+    throw new Error(`Invalid ${key} ${shown} at ${path.add(key).toPointer()}. Expected an integer from -2147483648 to 2147483647.`);
+  }
+
+  /** `getJavaIntOrNull` for a node parsed from JSON text, where a number written as a decimal is not an integer. */
+  static getJsonJavaIntOrNull(node: JsonNode, key: string, path: JsonPath, nullable: boolean = true): number | null {
+    const decimal = JsonSourcePolicy.decimalSpelling(node, key);
+    return this.getJavaIntOrNull(node, key, path, decimal === null ? null : { text: decimal, integer: false }, nullable);
   }
 
   public static getNode(node: JsonNode, key: string): JsonNode {

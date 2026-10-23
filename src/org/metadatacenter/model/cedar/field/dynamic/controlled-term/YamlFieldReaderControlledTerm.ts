@@ -19,6 +19,7 @@ import { YamlArtifactParsingResult } from '../../../util/compare/YamlArtifactPar
 import { Iri } from '../../../types/wrapped-types/Iri';
 import { ControlledTermVersion } from './value-constraint/ControlledTermVersion';
 import { JavaStrings } from '../../../util/JavaStrings';
+import { yamlNumberSpelling } from '../../../../../io/reader/yaml/YamlSourcePolicy';
 
 /** The kinds a `values:` entry can state, spelled as the writer spells them. */
 const VALUE_CONSTRAINT_TYPES: readonly string[] = [
@@ -42,7 +43,7 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
     const values: JsonNode[] = ReaderUtil.getNodeList(fieldSourceObject, YamlKeys.values);
     values.forEach((valueNode, index) => {
       YamlFieldReaderControlledTerm.assertValueConstraintType(valueNode, path.add(YamlKeys.values, index, YamlKeys.type));
-      this.readValueConstraint(valueNode, field);
+      this.readValueConstraint(valueNode, field, path.add(YamlKeys.values, index));
     });
 
     const defaultNode: JsonNode | null = ReaderUtil.getNodeOrNull(fieldSourceObject, YamlKeys.default);
@@ -81,7 +82,7 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
       }
       YamlFieldReaderControlledTerm.assertValueConstraintType(valueNode, path.add(YamlKeys.values, index, YamlKeys.type));
       try {
-        reader.readValueConstraint(valueNode, ControlledTermFieldImpl.buildEmpty());
+        reader.readValueConstraint(valueNode, ControlledTermFieldImpl.buildEmpty(), path.add(YamlKeys.values, index));
       } catch (error) {
         const reason = error instanceof Error ? error.message : String(error);
         throw new Error(
@@ -92,15 +93,18 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
     });
   }
 
-  /** Read one `values:` entry into `field` as the constraint its `type` names. An entry with no type is passed over. */
-  private readValueConstraint(valueNode: JsonNode, field: ControlledTermField): void {
+  /**
+   * Read one `values:` entry, at `entryPath`, into `field` as the constraint its `type` names. An entry
+   * with no type is passed over.
+   */
+  private readValueConstraint(valueNode: JsonNode, field: ControlledTermField, entryPath: JsonPath): void {
     const type = ReaderUtil.getString(valueNode, YamlKeys.type);
     if (type === YamlValues.Controlled.ontology) {
       const ontologyBuilder = new ControlledTermOntologyBuilder()
         .withAcronym(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceAcronym))
         .withName(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceName))
         .withUri(this.ontologyUri(valueNode))
-        .withNumTerms(ReaderUtil.getNumberOrNull(valueNode, YamlKeys.Controlled.termCount));
+        .withNumTerms(YamlFieldReaderControlledTerm.readInteger(valueNode, YamlKeys.Controlled.termCount, entryPath));
       this.readSourceAndVersion(valueNode, ontologyBuilder);
       field.valueConstraints.ontologies.push(ontologyBuilder.build());
     } else if (type === YamlValues.Controlled.class) {
@@ -122,7 +126,7 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
         .withSource(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceName))
         .withName(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.termBaseLabel))
         .withAcronym(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceAcronym))
-        .withMaxDepth(ReaderUtil.getNumberOrZero(valueNode, YamlKeys.Controlled.termMaxDepth));
+        .withMaxDepth(YamlFieldReaderControlledTerm.readInteger(valueNode, YamlKeys.Controlled.termMaxDepth, entryPath) ?? 0);
       this.readSourceAndVersion(valueNode, branchBuilder);
       field.valueConstraints.branches.push(branchBuilder.build());
     } else if (type === YamlValues.Controlled.valueSet) {
@@ -130,7 +134,7 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
         .withUri(ReaderUtil.getIdentifierURI(valueNode, YamlKeys.Controlled.termBaseIri))
         // Absent means the count is unknown, as it does for an ontology; zero would claim the set
         // is empty, which is a different thing and one the schema takes literally.
-        .withNumTerms(ReaderUtil.getNumberOrNull(valueNode, YamlKeys.Controlled.termCount))
+        .withNumTerms(YamlFieldReaderControlledTerm.readInteger(valueNode, YamlKeys.Controlled.termCount, entryPath))
         .withVsCollection(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceAcronym))
         .withName(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.termBaseLabel));
       this.readSourceAndVersion(valueNode, valueSetBuilder);
@@ -154,6 +158,15 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
         `Invalid value constraint type "${shown}" at ${path.toPointer()}. A value constraint type is one of ontology, class, branch or valueSet.`,
       );
     }
+  }
+
+  /**
+   * The integer at `key` in the entry at `entryPath`, or null where the entry states none, as Java's
+   * reader holds a Java `int`. A fraction, a number YAML types as a float such as `3.0`, a number past
+   * the range of an `int`, a string, a boolean, a list or a mapping is refused, as Java refuses it.
+   */
+  private static readInteger(valueNode: JsonNode, key: string, entryPath: JsonPath): number | null {
+    return ReaderUtil.getJavaIntOrNull(valueNode, key, entryPath, yamlNumberSpelling(valueNode, key));
   }
 
   /** Match Java: derive the service address from the acronym, including for legacy YAML. */

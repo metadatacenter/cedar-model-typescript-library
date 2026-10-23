@@ -38,7 +38,6 @@ export const TRIP_FAMILIES: Readonly<Record<string, readonly TripFamily[]>> = {
     'cee-instance-016',
     'cee-instance-020',
     'cee-instance-029',
-    'cee-instance-041',
     'cee-instance-046',
     'cee-instance-057',
     'cee-instance-059',

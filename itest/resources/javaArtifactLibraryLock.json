@@ -7,7 +7,7 @@
   },
   "sharedCorpus": {
     "repository": "https://github.com/metadatacenter/cedar-test-artifacts.git",
-    "gitCommit": "fa6b1251173bd9890165900ebd999d5ddf91ad95"
+    "gitCommit": "c94b1874f8115707d4e15cf655f4454078af700e"
   },
   "collections": {
     "javaReferenceTemplates": {
@@ -16,7 +16,7 @@
     },
     "sharedArtifactInputs": {
       "fileCount": 227,
-      "sha256": "84acf927a2ca44a2196cb96a8f8c9077a81009d02a09ecb32fd45db42d083498"
+      "sha256": "5bb13580ef3cb93b404ec5b14b57cc0096fbd1213bc299c7fd0690bcd153bf44"
     },
     "sharedJavaJsonFixtures": {
       "fileCount": 84,
@@ -28,7 +28,7 @@
     },
     "ceeSuite": {
       "fileCount": 143,
-      "sha256": "3f6f0d04e0980f5e4eb66b8ca920e34bb454e097bd84bfbc6f4ab8e311edfa30"
+      "sha256": "02870de314f66b52602028eb9515119f6a595c4bb1730c9f6fcac7bf638adb57"
     }
   },
   "fixtureAdjustments": [

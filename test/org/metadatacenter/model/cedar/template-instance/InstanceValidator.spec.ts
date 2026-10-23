@@ -90,6 +90,9 @@ const CONTEXT = {
   skos: 'http://www.w3.org/2004/02/skos/core#',
 };
 
+/** The element's own `@context`, which marks `_addr` as an element value. */
+const ADDR_CONTEXT = { _city: 'https://schema.metadatacenter.org/properties/city' };
+
 /** A complete, correct instance of the template above. */
 const complete = () => ({
   '@id': 'https://repo.metadatacenter.org/template-instances/i1',
@@ -101,7 +104,7 @@ const complete = () => ({
   _when: { '@value': '2020-01-01', '@type': 'xsd:date' },
   _count: { '@value': '3', '@type': 'xsd:int' },
   _tags: [{ '@value': 'a' }, { '@value': 'b' }],
-  _addr: { _city: { '@value': 'Palo Alto' } },
+  _addr: { '@context': ADDR_CONTEXT, _city: { '@value': 'Palo Alto' } },
 });
 
 const check = (source: object) => {
@@ -163,7 +166,7 @@ describe('a correct instance', () => {
       _when: { '@value': null, '@type': 'xsd:date' },
       _count: { '@value': null, '@type': 'xsd:int' },
       _tags: [{ '@value': null }, { '@value': null }],
-      _addr: { _city: { '@value': null } },
+      _addr: { '@context': ADDR_CONTEXT, _city: { '@value': null } },
     };
     expect(errorsOf(empty)).toStrictEqual([]);
   });
@@ -253,7 +256,7 @@ describe('@value and @id are not symmetrical', () => {
   });
 
   it('reports a null @id inside an element', () => {
-    const errors = errorsOf({ ...complete(), _addr: { _city: { '@id': null } } });
+    const errors = errorsOf({ ...complete(), _addr: { '@context': ADDR_CONTEXT, _city: { '@id': null } } });
     expect(errors).toHaveLength(1);
     expect(errors[0]).toContain('_city');
   });
@@ -351,7 +354,7 @@ describe('nested elements', () => {
       'schema:isBasedOn': 'https://repo.metadatacenter.org/templates/t2',
       'schema:name': 'An instance',
       'schema:description': '',
-      _dates: { _when: { '@value': '2020-01-01' } },
+      _dates: { '@context': { _when: 'https://schema.metadatacenter.org/properties/when' }, _when: { '@value': '2020-01-01' } },
     };
     const instance = CedarReaders.json()
       .getFebruary2024()

@@ -1,6 +1,6 @@
 import { JsonSourcePolicy } from '../../../policy/JsonSourcePolicy';
 import { TextPolicy } from '../../../policy/TextPolicy';
-import { AttributeValueFieldParent } from '../../../model/cedar/ReservedNames';
+import { AttributeValueFieldParent, ReservedNames } from '../../../model/cedar/ReservedNames';
 import { InstanceDataNotationAtom } from '../../../model/cedar/template-instance/InstanceDataNotationAtom';
 import { InstanceDataLabelAtom } from '../../../model/cedar/template-instance/InstanceDataLabelAtom';
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
@@ -115,12 +115,11 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
    * whether they were there. That is the whole of
    * https://github.com/metadatacenter/cedar-model-typescript-library/issues/2.
    *
-   * Warnings rather than errors, and the corpus is the reason: 29 of its 121
+   * Warnings rather than errors, and the corpus is the reason: many of its
    * instances carry no envelope at all. They are not malformed. An instance has
-   * no `@id` or provenance until it is saved, and the CEDAR Embeddable Editor's
-   * "extract" form strips `@context` from documents it passes around. Rejecting
-   * those would make the reader unable to open documents that demonstrably
-   * exist, which is the same trap the template reader avoids for pre-2024 forms.
+   * no `@id` or provenance until it is saved. Rejecting those would make the
+   * reader unable to open documents that demonstrably exist, which is the same
+   * trap the template reader avoids for pre-2024 forms.
    *
    * So the two verdicts split the answer: `wasSuccessful` stays true, because
    * the document read and the values are usable, while `adheresToBlueprint`
@@ -193,6 +192,9 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
               ) {
                 throw new Error(`Cannot mix fields and element instances in array "${key}" at index ${index}`);
               }
+              // An empty or identifier-only entry is still an occurrence of the
+              // element. One that carries a child without its @context is not.
+              JsonTemplateInstanceReader.refuseChildWithoutContext(arrayElement, path.add(key, index));
               arrayContainer[index] = this.parseContainer(arrayElement, path.add(key, index), parsingResult);
             } else {
               arrayContainer[index] = this.parseNode(arrayElement, path.add(key, index), parsingResult);
@@ -323,13 +325,45 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
   ]);
 
   /**
+   * The legacy key a field value may carry beside its value. No child takes
+   * it, although no rule reserves it.
+   */
+  private static readonly VALUE_LABEL = '_valueLabel';
+
+  /**
+   * Refuse an object without `@context` that carries a child key.
+   *
+   * `@context` is what marks an element value. An object without one is a
+   * field's value or, in a repeated element whose other entries carry one, an
+   * empty or identifier-only occurrence. Neither has children. A key that a
+   * child could take therefore marks an element written without its
+   * `@context`, and the reader refuses it rather than guess. The keys no child
+   * can take are the reserved names, and the legacy `_valueLabel` is a
+   * field-value key too. An object holding only those keys reads as a value or
+   * an empty node. The Java artifact library's JSON reader refuses the same
+   * objects.
+   */
+  private static refuseChildWithoutContext(sourceObject: JsonNode, path: JsonPath): void {
+    if (Array.isArray(sourceObject) || Object.hasOwn(sourceObject, JsonSchema.atContext)) {
+      return;
+    }
+    const child = Object.keys(sourceObject).find(
+      (key) => !ReservedNames.isReservedName(key) && key !== JsonTemplateInstanceReader.VALUE_LABEL,
+    );
+    if (child !== undefined) {
+      throw new Error(
+        `An element value must carry @context, and an object without one cannot carry the child key "${child}" at ${path.add(child).toPointer()}.`,
+      );
+    }
+  }
+
+  /**
    * True when this node is a field's value rather than an element.
    *
-   * A value carries only value keys. Anything else holding an `@id` is an
-   * element that has simply not written its `@context` — which is what the
-   * CEDAR Embeddable Editor's "extract" form of an instance looks like, and
-   * reading `@id` alone as the signal turns every element in it into a link
-   * atom, losing the whole subtree.
+   * A value carries only value keys. Anything else is not a value, and judging
+   * by `@id` alone would turn an element into a link atom and lose the whole
+   * subtree under it. The reader refuses such an object when it lacks
+   * `@context`. This classification does not refuse it.
    *
    * Public because consumers keep needing to ask it and keep answering it
    * differently. CEE had three separate rules for it — one matching on exact
@@ -389,6 +423,9 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     }
     if (typeof sourceObject === 'string') {
       return new InstanceDataAttributeValueFieldName(sourceObject);
+    }
+    if (typeof sourceObject === 'object') {
+      JsonTemplateInstanceReader.refuseChildWithoutContext(sourceObject, path);
     }
     if (JsonTemplateInstanceReader.isValueNode(sourceObject)) {
       const atom = JsonTemplateInstanceReader.parseDataAtom(sourceObject);

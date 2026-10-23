@@ -84,7 +84,6 @@ export const EXTERNAL_TEMPLATE_DIAGNOSTICS: Readonly<Record<string, DiagnosticEx
   'NullPropertyLabelsTemplate.json': { errors: 1, warnings: 12, reason: 'null property-label metadata' },
   'RADx2.0CLIGeneratedTemplate.json': { errors: 10, warnings: 3, reason: 'legacy CLI-generated schema shape' },
   'RADxCLIGeneratedTemplate.json': { errors: 10, warnings: 2, reason: 'legacy CLI-generated schema shape' },
-  'SampleFieldWithActions.json': { errors: 11, warnings: 12, reason: 'actions-era field schema shape' },
   'SimpleTemplateWithType.json': { errors: 0, warnings: 1, reason: 'known production blueprint variation' },
   'TemplateWithOverrideLabels.json': { errors: 0, warnings: 7, reason: 'legacy label metadata variations' },
   'template-029.json': { errors: 28, warnings: 6, reason: 'legacy deeply nested schema shape' },

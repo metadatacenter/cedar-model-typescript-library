@@ -62,7 +62,7 @@ export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecific
       const clazz = new ControlledTermClass(
         ReaderUtil.getStringOrEmpty(c, CedarModel.ValueConstraints.label),
         ReaderUtil.getStringOrEmpty(c, CedarModel.ValueConstraints.source),
-        BioportalTermType.forJsonValue(ReaderUtil.getStringOrEmpty(c, CedarModel.ValueConstraints.type)),
+        BioportalTermType.forJsonType(JsonFieldReaderControlledTerm.own(c, CedarModel.ValueConstraints.type), 'A class constraint'),
         ReaderUtil.getStringOrEmpty(c, CedarModel.ValueConstraints.prefLabel),
         ReaderUtil.getIdentifierURI(c, CedarModel.ValueConstraints.uri),
         ...JsonFieldReaderControlledTerm.readSourceAndVersion(c),
@@ -108,16 +108,21 @@ export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecific
     nodeList.forEach((vs) => {
       const action = new ControlledTermAction(
         ReaderUtil.getNumber(vs, CedarModel.ValueConstraints.to),
-        ReaderUtil.getStringOrEmpty(vs, CedarModel.ValueConstraints.action),
+        ControlledTermAction.forAction(JsonFieldReaderControlledTerm.own(vs, CedarModel.ValueConstraints.action)),
         ReaderUtil.getIdentifierURI(vs, CedarModel.ValueConstraints.termUri),
         // Not an identifier: the legacy editor writes "template" here for one of the template's own classes.
         ReaderUtil.getURI(vs, CedarModel.ValueConstraints.sourceUri),
         ReaderUtil.getStringOrEmpty(vs, CedarModel.ValueConstraints.source),
-        BioportalTermType.forJsonValue(ReaderUtil.getStringOrEmpty(vs, CedarModel.ValueConstraints.type)),
+        BioportalTermType.forJsonType(JsonFieldReaderControlledTerm.own(vs, CedarModel.ValueConstraints.type), 'A controlled-term action'),
       );
       ret.push(action);
     });
     return ret;
+  }
+
+  /** The value at `key`, or undefined where the node states none. */
+  private static own(node: JsonNode, key: string): unknown {
+    return Object.hasOwn(node, key) ? node[key] : undefined;
   }
 
   /**

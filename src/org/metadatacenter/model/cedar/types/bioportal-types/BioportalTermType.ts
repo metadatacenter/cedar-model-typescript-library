@@ -1,3 +1,5 @@
+import { TextPolicy } from '../../../../policy/TextPolicy';
+
 export const BioportalTermTypeJsonValues = {
   ONTOLOGY_CLASS: 'OntologyClass',
   VALUE: 'Value',
@@ -46,6 +48,26 @@ export class BioportalTermType {
       }
     }
     return this.NULL;
+  }
+
+  /**
+   * The term type a JSON constraint's `type` names. Java's reader matches the spelling to a constant
+   * ignoring case, so `ontologyclass` is an ontology class, and refuses any other, and a constraint
+   * that states none. A spelling that `forJsonValue` did not know was read as no type, and the writers
+   * then wrote `"type": null`.
+   */
+  public static forJsonType(value: unknown, constraint: string): BioportalTermType {
+    if (value === null || value === undefined) {
+      throw new Error(`${constraint} requires a term type.`);
+    }
+    const match = BioportalTermType.values().find((termType) => {
+      const constant = termType.getJsonValue();
+      return typeof value === 'string' && constant !== null && TextPolicy.equalsIgnoreCase(constant, value);
+    });
+    if (match === undefined) {
+      throw new Error(`No value type constant with name ${typeof value === 'string' ? value : JSON.stringify(value)} found`);
+    }
+    return match;
   }
 
   public static forYamlValue(value: string | null): BioportalTermType {

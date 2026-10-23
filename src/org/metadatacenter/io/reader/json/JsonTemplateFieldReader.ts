@@ -1,3 +1,4 @@
+import { JsonArtifactShape } from './JsonArtifactShape';
 import { JsonSourcePolicy } from '../../../policy/JsonSourcePolicy';
 import { applySchemaReaderDefaults } from '../SchemaReaderDefaults';
 import { SchemaArtifactKind } from '../../../model/cedar/AbstractSchemaArtifact';
@@ -123,6 +124,10 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     childInfo: AbstractChildDeploymentInfo,
     path: JsonPath,
   ): JsonTemplateFieldReaderResult {
+    JsonArtifactShape.assertDeclaredKind(fieldSourceObject, path, 'field', this.lenient);
+    // A child need not state the JSON Schema it is written in, as in Java.
+    JsonArtifactShape.assertJsonSchemaUri(fieldSourceObject, path, path.getLastComponent() === null, this.lenient);
+    JsonArtifactShape.assertModelVersion(fieldSourceObject, path, this.lenient);
     const parsingResult: JsonArtifactParsingResult = new JsonArtifactParsingResult();
     const field: TemplateField = JsonTemplateFieldReader.readFieldSpecificAttributes(fieldSourceObject, childInfo, parsingResult, path);
     // Standalone reads have no container to retain the deployment info. Keep the setting on the

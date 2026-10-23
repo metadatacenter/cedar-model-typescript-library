@@ -1,0 +1,353 @@
+import {
+  BioportalTermType,
+  CedarBuilders,
+  CedarReaders,
+  CedarWriters,
+  ControlledTermActionBuilder,
+  ControlledTermClassBuilder,
+  ControlledTermOntologyBuilder,
+  Iri,
+  JsonNode,
+  YamlTemplateFieldReader,
+  YamlTemplateReader,
+} from '../../../../src';
+
+/**
+ * What a schema artifact declares about itself, held to the Java JSON reader's rules.
+ *
+ * A schema artifact says what it is (`@type`), which JSON Schema it is written in (`$schema`), what
+ * JSON Schema type it is (`type`), which model it follows (`schema:schemaVersion`) and what state it
+ * is in (`bibo:status`). A controlled-term field's classes and actions say what kind of term each
+ * names, and each action says what it does. Java refuses an artifact that declares any of these
+ * wrongly. These readers recorded a difference, or read nothing, and the writers then wrote the
+ * expected value back, so a document Java refuses was read, and written as one it accepts. Java reads
+ * a status and a term type ignoring case, and these readers now do too.
+ */
+const T = 'https://schema.metadatacenter.org/core/';
+const DRAFT_04 = 'http://json-schema.org/draft-04/schema#';
+const READERS = { strict: CedarReaders.json().getStrict(), 'February 2024': CedarReaders.json().getFebruary2024() };
+type Behavior = keyof typeof READERS;
+type Kind = 'field' | 'element' | 'template';
+
+const text = (name: string) =>
+  CedarBuilders.textFieldBuilder().withSchemaName(name).withAtId(`https://repo.metadatacenter.org/template-fields/${name}`).build();
+const element = () => {
+  const d = text('D');
+  return CedarBuilders.templateElementBuilder()
+    .withSchemaName('E')
+    .withAtId('https://repo.metadatacenter.org/template-elements/e1')
+    .addChild(d, d.createDeploymentBuilder('D').build())
+    .build();
+};
+const template = () => {
+  const c = text('C');
+  const e = element();
+  const m = text('M');
+  return CedarBuilders.templateBuilder()
+    .withSchemaName('T')
+    .withAtId('https://repo.metadatacenter.org/templates/t1')
+    .addChild(c, c.createDeploymentBuilder('C').build())
+    .addChild(e, e.createDeploymentBuilder('E').build())
+    .addChild(m, m.createDeploymentBuilder('M').withMultiInstance(true).withMinItems(0).build())
+    .build();
+};
+const controlledTerm = () =>
+  CedarBuilders.controlledTermFieldBuilder()
+    .withSchemaName('K')
+    .withAtId('https://repo.metadatacenter.org/template-fields/k1')
+    .addOntology(
+      new ControlledTermOntologyBuilder()
+        .withAcronym('DOID')
+        .withName('Human Disease Ontology')
+        .withUri(new Iri('https://data.bioontology.org/ontologies/DOID'))
+        .build(),
+    )
+    .addClass(
+      new ControlledTermClassBuilder()
+        .withUri(new Iri('http://purl.obolibrary.org/obo/DOID_4'))
+        .withSource('DOID')
+        .withLabel('disease')
+        .withPrefLabel('disease')
+        .withType(BioportalTermType.ONTOLOGY_CLASS)
+        .build(),
+    )
+    .addAction(
+      new ControlledTermActionBuilder()
+        .withAction('delete')
+        .withSource('DOID')
+        .withType(BioportalTermType.ONTOLOGY_CLASS)
+        .withTermUri(new Iri('http://purl.obolibrary.org/obo/DOID_4'))
+        .withSourceUri(new Iri('https://data.bioontology.org/ontologies/DOID'))
+        .build(),
+    )
+    .build();
+
+const json = CedarWriters.json().getStrict();
+const plain = (node: unknown): JsonNode => JSON.parse(JSON.stringify(node));
+const SOURCES: Record<Kind, () => JsonNode> = {
+  field: () => plain(json.getFieldWriterForField(text('F')).getAsJsonNode(text('F'))),
+  element: () => plain(json.getTemplateElementWriter().getAsJsonNode(element())),
+  template: () => plain(json.getTemplateWriter().getAsJsonNode(template())),
+};
+
+/** Where a schema artifact can stand: the document it is read from, and the path to its node there. */
+const PLACES: Record<string, [Kind, string[]]> = {
+  'a field': ['field', []],
+  'an element': ['element', []],
+  'a template': ['template', []],
+  'a child field': ['template', ['properties', 'C']],
+  'a child element': ['template', ['properties', 'E']],
+  'a field in a child element': ['template', ['properties', 'E', 'properties', 'D']],
+  'a multiple-instance child field': ['template', ['properties', 'M', 'items']],
+};
+const NESTED = Object.keys(PLACES).filter((place) => PLACES[place][1].length > 0);
+
+const nodeAt = (document: JsonNode, path: string[]): JsonNode => path.reduce((node, key) => node[key] as JsonNode, document);
+/** Set `key` in `node` to `value`, or remove the key when `value` is undefined. */
+const put = (node: JsonNode, key: string, value: unknown): void => {
+  if (value === undefined) {
+    delete node[key];
+  } else {
+    node[key] = value as JsonNode;
+  }
+};
+const read = (kind: Kind, document: JsonNode, behavior: Behavior = 'strict') => {
+  const readers = READERS[behavior];
+  if (kind === 'field') return readers.getTemplateFieldReader().readFromObject(document).field;
+  if (kind === 'element') return readers.getTemplateElementReader().readFromObject(document).element;
+  return readers.getTemplateReader().readFromObject(document).template;
+};
+const written = (kind: Kind, artifact: unknown): JsonNode => {
+  if (kind === 'field') return plain(json.getFieldWriterForField(artifact as never).getAsJsonNode(artifact as never));
+  if (kind === 'element') return plain(json.getTemplateElementWriter().getAsJsonNode(artifact as never));
+  return plain(json.getTemplateWriter().getAsJsonNode(artifact as never));
+};
+/** The document for `place` with `key` set to `value` at the artifact standing there. */
+const declaring = (place: string, key: string, value: unknown): [Kind, JsonNode, string[]] => {
+  const [kind, path] = PLACES[place];
+  const document = SOURCES[kind]();
+  put(nodeAt(document, path), key, value);
+  return [kind, document, path];
+};
+
+describe.each(Object.keys(READERS) as Behavior[])('the %s JSON reader', (behavior: Behavior) => {
+  describe.each(Object.keys(PLACES))('in %s', (place: string) => {
+    test.each([
+      ['bibo:draft', 'bibo:draft'],
+      ['bibo:published', 'bibo:published'],
+      ['bibo:Draft', 'bibo:draft'],
+      ['BIBO:PUBLISHED', 'bibo:published'],
+    ])('a bibo:status of %s reads as %s', (spelling: string, status: string) => {
+      const [kind, document, path] = declaring(place, 'bibo:status', spelling);
+      expect(nodeAt(written(kind, read(kind, document, behavior)), path)['bibo:status']).toBe(status);
+    });
+
+    test.each([
+      ['draft', 'draft'],
+      ['bibo:bogus', 'bibo:bogus'],
+      ['', ''],
+      [' bibo:draft', ' bibo:draft'],
+      [42, '42'],
+    ])('a bibo:status of %j is refused', (value: unknown, shown: string) => {
+      const [kind, document] = declaring(place, 'bibo:status', value);
+      expect(() => read(kind, document, behavior)).toThrow(`No status constant with text ${shown} found`);
+    });
+
+    test.each([['1.5.0'], ['1.6.1'], ['2.0.0'], [42], [null]])('a schema:schemaVersion of %j is refused', (value: unknown) => {
+      const [kind, document] = declaring(place, 'schema:schemaVersion', value);
+      const shown = value === null ? 'none' : String(value);
+      expect(() => read(kind, document, behavior)).toThrow(`Expecting model version 1.6.0, got ${shown}`);
+    });
+
+    test.each([['http://json-schema.org/draft-07/schema#'], ['http://json-schema.org/draft-04/schema'], [''], [42], [null]])(
+      'a $schema of %j is refused',
+      (value: unknown) => {
+        const [kind, document] = declaring(place, '$schema', value);
+        expect(() => read(kind, document, behavior)).toThrow(`Expecting ${DRAFT_04}, got ${value === null ? 'null' : String(value)}`);
+      },
+    );
+
+    test.each([
+      [`${T}Bogus`],
+      [`${T}templatefield`],
+      [`${T}TEMPLATEELEMENT`],
+      ['TemplateField'],
+      [''],
+      [[`${T}TemplateField`, `${T}TemplateField`]],
+      [[]],
+      [42],
+      [null],
+    ])('an @type of %j is refused', (value: unknown) => {
+      const [kind, document] = declaring(place, '@type', value);
+      expect(() => read(kind, document, behavior)).toThrow(/JSON-LD @type/);
+    });
+  });
+
+  test.each([
+    ['a field', `${T}TemplateElement`],
+    ['a field', `${T}Template`],
+    ['an element', `${T}TemplateField`],
+    ['an element', `${T}Template`],
+    ['a template', `${T}TemplateElement`],
+    ['a template', `${T}TemplateField`],
+    ['a child field', `${T}Template`],
+    ['a child element', `${T}Template`],
+    ['a field in a child element', `${T}Template`],
+  ])('%s declaring itself %s is refused', (place: string, type: string) => {
+    const [kind, document] = declaring(place, '@type', type);
+    expect(() => read(kind, document, behavior)).toThrow(/JSON-LD @type|Invalid nesting of template schema artifact/);
+  });
+
+  test.each([
+    ['a template', 'Object'],
+    ['a template', 'array'],
+    ['an element', 'OBJECT'],
+    ['an element', 'string'],
+    ['an element', null],
+  ])('%s of JSON Schema type %j is refused', (place: string, value: unknown) => {
+    const [kind, document] = declaring(place, 'type', value);
+    const shown = value === undefined ? 'none' : String(value);
+    expect(() => read(kind, document, behavior)).toThrow(`Expecting artifact JSON Schema type object, got ${shown}`);
+  });
+
+  test.each([
+    ['a child field', 'Object'],
+    ['a child field', 'string'],
+    ['a child field', ''],
+    ['a child field', 42],
+    ['a child field', null],
+    ['a child element', 'Object'],
+    ['a child element', null],
+    ['a field in a child element', 'OBJECT'],
+  ])('%s of JSON Schema type %j is refused', (place: string, value: unknown) => {
+    const [kind, document] = declaring(place, 'type', value);
+    const shown = value === undefined ? 'none' : String(value);
+    expect(() => read(kind, document, behavior)).toThrow(`Expecting array or object, got ${shown}`);
+  });
+
+  describe("a controlled-term field's term types and actions", () => {
+    const source = () => plain(json.getFieldWriterForField(controlledTerm()).getAsJsonNode(controlledTerm()));
+    const entry = (document: JsonNode, list: 'classes' | 'actions'): JsonNode =>
+      ((document._valueConstraints as JsonNode)[list] as JsonNode[])[0];
+    const readField = (document: JsonNode) => written('field', read('field', document, behavior));
+
+    test.each([
+      ['classes', 'OntologyClass', 'OntologyClass'],
+      ['classes', 'Value', 'Value'],
+      ['classes', 'ontologyclass', 'OntologyClass'],
+      ['classes', 'VALUE', 'Value'],
+      ['actions', 'OntologyClass', 'OntologyClass'],
+      ['actions', 'value', 'Value'],
+    ])('a type in %s of %s reads as %s', (list: string, spelling: string, type: string) => {
+      const document = source();
+      entry(document, list as 'classes').type = spelling;
+      expect(entry(readField(document), list as 'classes').type).toBe(type);
+    });
+
+    test.each([
+      ['classes', 'Ontology Class', 'No value type constant with name Ontology Class found'],
+      ['classes', 'class', 'No value type constant with name class found'],
+      ['classes', '', 'No value type constant with name  found'],
+      ['classes', 42, 'No value type constant with name 42 found'],
+      ['classes', null, 'A class constraint requires a term type.'],
+      ['classes', undefined, 'A class constraint requires a term type.'],
+      ['actions', 'bogus', 'No value type constant with name bogus found'],
+      ['actions', null, 'A controlled-term action requires a term type.'],
+      ['actions', undefined, 'A controlled-term action requires a term type.'],
+    ])('a type in %s of %j is refused', (list: string, value: unknown, refusal: string) => {
+      const document = source();
+      put(entry(document, list as 'classes'), 'type', value);
+      expect(() => read('field', document, behavior)).toThrow(refusal);
+    });
+
+    test.each([
+      ['Delete', 'No value constraints action type constant with text Delete found'],
+      ['MOVE', 'No value constraints action type constant with text MOVE found'],
+      ['remove', 'No value constraints action type constant with text remove found'],
+      ['', 'No value constraints action type constant with text  found'],
+      [42, 'No value constraints action type constant with text 42 found'],
+      [null, 'A controlled-term action requires an action.'],
+      [undefined, 'A controlled-term action requires an action.'],
+    ])('an action of %j is refused', (value: unknown, refusal: string) => {
+      const document = source();
+      put(entry(document, 'actions'), 'action', value);
+      expect(() => read('field', document, behavior)).toThrow(refusal);
+    });
+
+    test('an action of delete or move reads', () => {
+      const document = source();
+      expect(entry(readField(document), 'actions').action).toBe('delete');
+      entry(document, 'actions').action = 'move';
+      entry(document, 'actions').to = 0;
+      expect(entry(readField(document), 'actions').action).toBe('move');
+    });
+  });
+});
+
+/**
+ * A declaration left out. A strict reader refuses it, as Java does. The compatibility reader, which
+ * CEE opens a host's template with, still opens it, as it always has: CEE reads a template that
+ * states nothing but its properties. It refuses a declaration that is there and wrong.
+ */
+describe('a declaration left out', () => {
+  const ROOTS = ['a field', 'an element', 'a template'];
+  const cases: [string, string, string][] = [
+    ...Object.keys(PLACES).map((place): [string, string, string] => [
+      place,
+      'schema:schemaVersion',
+      'Expecting model version 1.6.0, got none',
+    ]),
+    ...Object.keys(PLACES).map((place): [string, string, string] => [place, '@type', 'A schema artifact must declare a JSON-LD @type']),
+    ...ROOTS.map((place): [string, string, string] => [place, '$schema', `Expecting ${DRAFT_04}, got none`]),
+    ['a template', 'type', 'Expecting artifact JSON Schema type object, got none'],
+    ['an element', 'type', 'Expecting artifact JSON Schema type object, got none'],
+    ['a child element', 'type', 'Expecting array or object, got none'],
+    ['a child field', 'type', 'Expecting array or object, got none'],
+  ];
+
+  test.each(cases)('in %s, a missing %s is refused by the strict reader', (place: string, key: string, refusal: string) => {
+    const [kind, document] = declaring(place, key, undefined);
+    expect(() => read(kind, document, 'strict')).toThrow(refusal);
+  });
+
+  test.each(cases)('in %s, a missing %s still opens in the compatibility reader', (place: string, key: string) => {
+    const [kind, document] = declaring(place, key, undefined);
+    expect(() => read(kind, document, 'February 2024')).not.toThrow();
+  });
+
+  test.each(NESTED)('in %s, a missing $schema is not refused, as in Java', (place: string) => {
+    const [kind, document] = declaring(place, '$schema', undefined);
+    expect(() => read(kind, document, 'strict')).not.toThrow();
+  });
+
+  test('the compatibility reader opens a template that states nothing but its properties', () => {
+    expect(() => READERS['February 2024'].getTemplateReader().readFromObject({ properties: {} })).not.toThrow();
+    expect(() => READERS.strict.getTemplateReader().readFromObject({ properties: {} })).toThrow(/JSON-LD @type/);
+  });
+});
+
+describe('a YAML action is delete or move, exactly', () => {
+  const yaml = CedarWriters.yaml().getStrict();
+  const respell = (document: string, value: string) => document.replace(/^(\s*- )action: delete$/m, `$1action: ${value}`);
+
+  test.each([false, true])('standalone and as a child (compact=%s)', (compact: boolean) => {
+    const field = controlledTerm();
+    const holder = CedarBuilders.templateBuilder().withSchemaName('T').addChild(field, field.createDeploymentBuilder('K').build()).build();
+    const fieldYaml = yaml.getFieldWriterForField(field).getAsYamlString(field, compact);
+    const templateYaml = yaml.getTemplateWriter().getAsYamlString(holder, compact);
+    const fieldReader = compact ? YamlTemplateFieldReader.getStrictForCompact() : YamlTemplateFieldReader.getStrict();
+    const templateReader = compact ? YamlTemplateReader.getStrictForCompact() : YamlTemplateReader.getStrict();
+    for (const [value, shown] of [
+      ['"Delete"', 'Delete'],
+      ['MOVE', 'MOVE'],
+      ['remove', 'remove'],
+      ['42', '42'],
+    ]) {
+      const refusal = `No value constraints action type constant with text ${shown} found`;
+      expect(() => fieldReader.readFromString(respell(fieldYaml, value))).toThrow(refusal);
+      expect(() => templateReader.readFromString(respell(templateYaml, value))).toThrow(refusal);
+    }
+    expect(fieldReader.readFromString(fieldYaml).field).toBeDefined();
+    expect(templateReader.readFromString(templateYaml).template.getChild('K')).not.toBeNull();
+  });
+});

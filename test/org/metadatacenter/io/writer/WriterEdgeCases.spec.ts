@@ -91,6 +91,41 @@ describe('writer edge cases', () => {
       named(field);
       expect(yaml.getTemplateWriter().getAsYamlString(template, compact)).toContain('key: "City"');
     });
+
+    // An empty name is no name. Both readers refuse `name: ""`, and Java can no longer build a
+    // template, an element or a field with one. A name of nothing but white space is one the
+    // meta-schema admits, and it is written.
+    test.each([false, true])('an empty name, however deep, and not one of white space (compact=%s)', (compact) => {
+      const artifacts = (name: string) => ({
+        template: CedarBuilders.templateBuilder().withSchemaName(name).build(),
+        element: CedarBuilders.templateElementBuilder().withSchemaName(name).build(),
+        field: CedarBuilders.textFieldBuilder().withSchemaName(name).build(),
+        image: CedarBuilders.imageFieldBuilder().withSchemaName(name).build(),
+      });
+      const empty = artifacts('');
+      expect(() => yaml.getTemplateWriter().getAsYamlString(empty.template, compact)).toThrow('A template must have a name.');
+      expect(() => yaml.getTemplateWriter().getYamlAsJsonNode(empty.template, compact)).toThrow('A template must have a name.');
+      expect(() => yaml.getTemplateElementWriter().getAsYamlString(empty.element, compact)).toThrow('An element must have a name.');
+      expect(() => yaml.getFieldWriterForField(empty.field).getAsYamlString(empty.field, compact)).toThrow('A field must have a name.');
+      expect(() => yaml.getFieldWriterForField(empty.image).getAsYamlString(empty.image, compact)).toThrow('A field must have a name.');
+
+      const field = CedarBuilders.textFieldBuilder().withSchemaName('').build();
+      const element = CedarBuilders.templateElementBuilder()
+        .withSchemaName('Address')
+        .addChild(field, field.createDeploymentBuilder('City').build())
+        .build();
+      const template = CedarBuilders.templateBuilder()
+        .withSchemaName('Study')
+        .addChild(element, element.createDeploymentBuilder('Address').build())
+        .build();
+      expect(() => yaml.getTemplateWriter().getAsYamlString(template, compact)).toThrow('A field must have a name.');
+      expect(() => yaml.getTemplateElementWriter().getAsYamlString(element, compact)).toThrow('A field must have a name.');
+
+      const blank = artifacts(' ');
+      expect(yaml.getTemplateWriter().getAsYamlString(blank.template, compact)).toContain('name: " "');
+      expect(yaml.getTemplateElementWriter().getAsYamlString(blank.element, compact)).toContain('name: " "');
+      expect(yaml.getFieldWriterForField(blank.field).getAsYamlString(blank.field, compact)).toContain('name: " "');
+    });
   });
 
   // A temporal field has a granularity. Java cannot build one without it, and both readers refuse a

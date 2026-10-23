@@ -3,6 +3,7 @@ import * as path from 'node:path';
 import { CedarReaders, CedarWriters, JsonArtifactParsingResult } from '../../src';
 import { EXTERNAL_TEMPLATE_DIAGNOSTICS, diagnosticsFor } from './compatibilityExpectations';
 
+const FIELD = 'https://schema.metadatacenter.org/core/TemplateField';
 const REFERENCE_ROOT = path.resolve(__dirname, '../../cedar-artifact-library/src/test/resources/templates');
 
 const referenceFiles = (directory: string): string[] =>
@@ -28,12 +29,33 @@ describe('vendored Java reference-template compatibility', () => {
   });
 
   test.each(files)('%s has only its declared compatibility diagnostics', (relativeName, file) => {
-    const result = CedarReaders.json().getFebruary2024().getTemplateReader().readFromString(fs.readFileSync(file, 'utf8'));
+    const source = fs.readFileSync(file, 'utf8');
+    const readers = CedarReaders.json().getFebruary2024();
+    const writers = CedarWriters.json().getFebruary2024();
+    // One reference document is a field. A template reader refuses it, as Java's does, so it is read
+    // as what it declares itself to be.
+    const declared = (JSON.parse(source) as Record<string, unknown>)['@type'];
+    if (declared === FIELD) {
+      const result = readers.getTemplateFieldReader().readFromString(source);
+      expect(diagnostics(result.parsingResult)).toStrictEqual(diagnosticsFor(EXTERNAL_TEMPLATE_DIAGNOSTICS, relativeName));
+      expect(Object.keys(writers.getFieldWriterForField(result.field).getAsJsonNode(result.field)).length).toBeGreaterThan(0);
+      return;
+    }
+    const result = readers.getTemplateReader().readFromString(source);
 
     expect(diagnostics(result.parsingResult)).toStrictEqual(diagnosticsFor(EXTERNAL_TEMPLATE_DIAGNOSTICS, relativeName));
 
-    const emitted = CedarWriters.json().getFebruary2024().getTemplateWriter().getAsJsonNode(result.template);
+    const emitted = writers.getTemplateWriter().getAsJsonNode(result.template);
     expect(Object.keys(emitted).length).toBeGreaterThan(0);
+  });
+
+  test('a field among them is refused by a template reader', () => {
+    const field = files.find(([relativeName]) => relativeName === 'SampleFieldWithActions.json');
+    expect(field).toBeDefined();
+    const source = fs.readFileSync(field![1], 'utf8');
+    expect(() => CedarReaders.json().getFebruary2024().getTemplateReader().readFromString(source)).toThrow(
+      'Unexpected template schema artifact JSON-LD @type https://schema.metadatacenter.org/core/TemplateField',
+    );
   });
 
   it('has no stale diagnostic declaration', () => {

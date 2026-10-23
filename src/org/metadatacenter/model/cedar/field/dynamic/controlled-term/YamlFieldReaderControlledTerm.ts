@@ -13,6 +13,7 @@ import { ControlledTermClassBuilder } from './value-constraint/class/ControlledT
 import { ControlledTermBranchBuilder } from './value-constraint/branch/ControlledTermBranchBuilder';
 import { ControlledTermValueSetBuilder } from './value-constraint/value-set/ControlledTermValueSetBuilder';
 import { ControlledTermActionBuilder } from './value-constraint/action/ControlledTermActionBuilder';
+import { ControlledTermAction } from './value-constraint/action/ControlledTermAction';
 import { ControlledTermFieldImpl } from './ControlledTermFieldImpl';
 import { YamlArtifactParsingResult } from '../../../util/compare/YamlArtifactParsingResult';
 import { Iri } from '../../../types/wrapped-types/Iri';
@@ -84,7 +85,7 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
     const actions: JsonNode[] = ReaderUtil.getNodeList(fieldSourceObject, YamlKeys.actions);
     actions.forEach((actionNode) => {
       const actionBuilder = new ControlledTermActionBuilder()
-        .withAction(ReaderUtil.getStringOrEmpty(actionNode, YamlKeys.action))
+        .withAction(ControlledTermAction.forAction(Object.hasOwn(actionNode, YamlKeys.action) ? actionNode[YamlKeys.action] : undefined))
         .withSource(ReaderUtil.getStringOrEmpty(actionNode, YamlKeys.Controlled.sourceAcronym))
         .withType(BioportalTermType.forYamlValue(ReaderUtil.getStringOrEmpty(actionNode, YamlKeys.type)))
         .withTermUri(ReaderUtil.getIdentifierURI(actionNode, YamlKeys.Controlled.termIri))

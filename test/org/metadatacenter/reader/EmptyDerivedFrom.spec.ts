@@ -26,6 +26,7 @@ const TEMPLATE = (derivedFrom: unknown) => ({
   'schema:name': 'T',
   'schema:description': 'd',
   'schema:schemaVersion': '1.6.0',
+  $schema: 'http://json-schema.org/draft-04/schema#',
   ...(derivedFrom === undefined ? {} : { 'pav:derivedFrom': derivedFrom }),
 });
 

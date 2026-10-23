@@ -1,3 +1,4 @@
+import { JsonArtifactShape } from './JsonArtifactShape';
 import { JsonSourcePolicy } from '../../../policy/JsonSourcePolicy';
 import { applySchemaReaderDefaults } from '../SchemaReaderDefaults';
 import { CedarModel } from '../../../model/cedar/constants/CedarModel';
@@ -51,6 +52,11 @@ export class JsonTemplateElementReader extends JsonContainerArtifactReader {
   }
 
   public readFromObject(elementSourceObject: JsonNode, topPath: JsonPath = new JsonPath()): JsonTemplateElementReaderResult {
+    JsonArtifactShape.assertDeclaredKind(elementSourceObject, topPath, 'element', this.lenient);
+    // A nested element need not state the JSON Schema it is written in, as in Java.
+    JsonArtifactShape.assertJsonSchemaUri(elementSourceObject, topPath, topPath.getLastComponent() === null, this.lenient);
+    JsonArtifactShape.assertObjectType(elementSourceObject, topPath, this.lenient);
+    JsonArtifactShape.assertModelVersion(elementSourceObject, topPath, this.lenient);
     const parsingResult: JsonArtifactParsingResult = new JsonArtifactParsingResult();
     const element = TemplateElement.buildEmptyWithNullValues();
 

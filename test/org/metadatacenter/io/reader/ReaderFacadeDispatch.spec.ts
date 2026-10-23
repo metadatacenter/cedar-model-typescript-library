@@ -47,7 +47,12 @@ describe('reader facade dispatch', () => {
   });
 
   test('a template without a UI block keeps optional header and footer absent', () => {
-    const result = CedarJsonReaders.getStrict().getTemplateReader().readFromObject(JsonNode.getEmpty());
+    const result = CedarJsonReaders.getStrict().getTemplateReader().readFromObject({
+      '@type': 'https://schema.metadatacenter.org/core/Template',
+      $schema: 'http://json-schema.org/draft-04/schema#',
+      type: 'object',
+      'schema:schemaVersion': '1.6.0',
+    });
 
     expect(result.template.header).toBeNull();
     expect(result.template.footer).toBeNull();

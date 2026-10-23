@@ -21,7 +21,8 @@ describe('reserved child schema names', () => {
         if (typeArray) child['@type'] = [child['@type']];
         parent.properties[key] = array ? { type: 'array', items: child } : child;
         expect(() => CedarReaders.json().getStrict().getTemplateReader().readFromObject(parent)).toThrow('reserved instance property name');
-        expect(() => CedarReaders.json().getStrict().getTemplateElementReader().readFromObject(parent)).toThrow('reserved instance property name');
+        const asElement = { ...parent, '@type': 'https://schema.metadatacenter.org/core/TemplateElement' };
+        expect(() => CedarReaders.json().getStrict().getTemplateElementReader().readFromObject(asElement)).toThrow('reserved instance property name');
       }
     }
   });

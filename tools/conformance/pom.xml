@@ -9,8 +9,14 @@
     <dependency><groupId>org.metadatacenter</groupId><artifactId>cedar-model-validation-library</artifactId><version>2.9.29-SNAPSHOT</version></dependency>
     <dependency><groupId>org.metadatacenter</groupId><artifactId>cedar-artifact-library</artifactId><version>2.9.29-SNAPSHOT</version></dependency>
   </dependencies>
+  <!--
+    The Nexus repositories the Java builds read, which answer anonymous reads. Central comes first, as
+    in their settings: a third-party artifact asked of Nexus first costs two misses against its daily
+    request limit.
+  -->
   <repositories>
-    <repository><id>cedar-releases</id><url>https://nexus.bmir.stanford.edu/repository/maven-releases/</url><snapshots><enabled>false</enabled></snapshots></repository>
-    <repository><id>cedar-snapshots</id><url>https://nexus.bmir.stanford.edu/repository/maven-snapshots/</url><releases><enabled>false</enabled></releases><snapshots><enabled>true</enabled></snapshots></repository>
+    <repository><id>central</id><url>https://repo.maven.apache.org/maven2</url><snapshots><enabled>false</enabled></snapshots></repository>
+    <repository><id>cedar-snapshots</id><url>https://nexus.bmir.stanford.edu/repository/snapshots/</url><releases><enabled>false</enabled></releases><snapshots><enabled>true</enabled></snapshots></repository>
+    <repository><id>cedar-releases</id><url>https://nexus.bmir.stanford.edu/repository/releases/</url><snapshots><enabled>false</enabled></snapshots></repository>
   </repositories>
 </project>

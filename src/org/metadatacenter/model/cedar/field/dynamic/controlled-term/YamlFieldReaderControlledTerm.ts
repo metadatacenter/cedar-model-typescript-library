@@ -42,48 +42,7 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
     const values: JsonNode[] = ReaderUtil.getNodeList(fieldSourceObject, YamlKeys.values);
     values.forEach((valueNode, index) => {
       YamlFieldReaderControlledTerm.assertValueConstraintType(valueNode, path.add(YamlKeys.values, index, YamlKeys.type));
-      const type = ReaderUtil.getString(valueNode, YamlKeys.type);
-      if (type === YamlValues.Controlled.ontology) {
-        const ontologyBuilder = new ControlledTermOntologyBuilder()
-          .withAcronym(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceAcronym))
-          .withName(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceName))
-          .withUri(this.ontologyUri(valueNode))
-          .withNumTerms(ReaderUtil.getNumberOrNull(valueNode, YamlKeys.Controlled.termCount));
-        this.readSourceAndVersion(valueNode, ontologyBuilder);
-        field.valueConstraints.ontologies.push(ontologyBuilder.build());
-      } else if (type === YamlValues.Controlled.class) {
-        const prefLabel = ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.termLabel);
-        // A display label of the template's own where the author set one, the ontology's preferred
-        // label otherwise.
-        const displayLabel = ReaderUtil.getString(valueNode, YamlKeys.Controlled.termDisplayLabel);
-        const classBuilder = new ControlledTermClassBuilder()
-          .withUri(ReaderUtil.getIdentifierURI(valueNode, YamlKeys.Controlled.termIri))
-          .withSource(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceAcronym))
-          .withLabel(displayLabel ?? prefLabel)
-          .withPrefLabel(prefLabel)
-          .withType(BioportalTermType.forYamlValue(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.termType)));
-        this.readSourceAndVersion(valueNode, classBuilder);
-        field.valueConstraints.classes.push(classBuilder.build());
-      } else if (type === YamlValues.Controlled.branch) {
-        const branchBuilder = new ControlledTermBranchBuilder()
-          .withUri(ReaderUtil.getIdentifierURI(valueNode, YamlKeys.Controlled.termBaseIri))
-          .withSource(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceName))
-          .withName(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.termBaseLabel))
-          .withAcronym(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceAcronym))
-          .withMaxDepth(ReaderUtil.getNumberOrZero(valueNode, YamlKeys.Controlled.termMaxDepth));
-        this.readSourceAndVersion(valueNode, branchBuilder);
-        field.valueConstraints.branches.push(branchBuilder.build());
-      } else if (type === YamlValues.Controlled.valueSet) {
-        const valueSetBuilder = new ControlledTermValueSetBuilder()
-          .withUri(ReaderUtil.getIdentifierURI(valueNode, YamlKeys.Controlled.termBaseIri))
-          // Absent means the count is unknown, as it does for an ontology; zero would claim the set
-          // is empty, which is a different thing and one the schema takes literally.
-          .withNumTerms(ReaderUtil.getNumberOrNull(valueNode, YamlKeys.Controlled.termCount))
-          .withVsCollection(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceAcronym))
-          .withName(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.termBaseLabel));
-        this.readSourceAndVersion(valueNode, valueSetBuilder);
-        field.valueConstraints.valueSets.push(valueSetBuilder.build());
-      }
+      this.readValueConstraint(valueNode, field);
     });
 
     const defaultNode: JsonNode | null = ReaderUtil.getNodeOrNull(fieldSourceObject, YamlKeys.default);
@@ -105,6 +64,78 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
       field.valueConstraints.actions.push(actionBuilder.build());
     });
     return field;
+  }
+
+  /**
+   * Read the constraints a choice field's `values:` entries state, and discard them. Java's reader reads
+   * every field's `values:` for constraints, so an option that states a `type` is read as the constraint
+   * that type names. A type of another spelling is refused, and so is a constraint the entry does not
+   * complete. A complete one has no effect, since a choice field holds no constraint.
+   */
+  static readStatedConstraints(fieldSourceObject: JsonNode, path: JsonPath): void {
+    const reader = new YamlFieldReaderControlledTerm();
+    const values: JsonNode[] = ReaderUtil.getNodeList(fieldSourceObject, YamlKeys.values);
+    values.forEach((valueNode, index) => {
+      if (!isMapping(valueNode) || !Object.hasOwn(valueNode, YamlKeys.type)) {
+        return;
+      }
+      YamlFieldReaderControlledTerm.assertValueConstraintType(valueNode, path.add(YamlKeys.values, index, YamlKeys.type));
+      try {
+        reader.readValueConstraint(valueNode, ControlledTermFieldImpl.buildEmpty());
+      } catch (error) {
+        const reason = error instanceof Error ? error.message : String(error);
+        throw new Error(
+          `The entry at ${path.add(YamlKeys.values, index).toPointer()} states the ${YamlKeys.type} "${valueNode[YamlKeys.type]}" and is read as that kind of constraint. ${reason}`,
+          { cause: error },
+        );
+      }
+    });
+  }
+
+  /** Read one `values:` entry into `field` as the constraint its `type` names. An entry with no type is passed over. */
+  private readValueConstraint(valueNode: JsonNode, field: ControlledTermField): void {
+    const type = ReaderUtil.getString(valueNode, YamlKeys.type);
+    if (type === YamlValues.Controlled.ontology) {
+      const ontologyBuilder = new ControlledTermOntologyBuilder()
+        .withAcronym(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceAcronym))
+        .withName(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceName))
+        .withUri(this.ontologyUri(valueNode))
+        .withNumTerms(ReaderUtil.getNumberOrNull(valueNode, YamlKeys.Controlled.termCount));
+      this.readSourceAndVersion(valueNode, ontologyBuilder);
+      field.valueConstraints.ontologies.push(ontologyBuilder.build());
+    } else if (type === YamlValues.Controlled.class) {
+      const prefLabel = ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.termLabel);
+      // A display label of the template's own where the author set one, the ontology's preferred
+      // label otherwise.
+      const displayLabel = ReaderUtil.getString(valueNode, YamlKeys.Controlled.termDisplayLabel);
+      const classBuilder = new ControlledTermClassBuilder()
+        .withUri(ReaderUtil.getIdentifierURI(valueNode, YamlKeys.Controlled.termIri))
+        .withSource(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceAcronym))
+        .withLabel(displayLabel ?? prefLabel)
+        .withPrefLabel(prefLabel)
+        .withType(BioportalTermType.forYamlValue(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.termType)));
+      this.readSourceAndVersion(valueNode, classBuilder);
+      field.valueConstraints.classes.push(classBuilder.build());
+    } else if (type === YamlValues.Controlled.branch) {
+      const branchBuilder = new ControlledTermBranchBuilder()
+        .withUri(ReaderUtil.getIdentifierURI(valueNode, YamlKeys.Controlled.termBaseIri))
+        .withSource(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceName))
+        .withName(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.termBaseLabel))
+        .withAcronym(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceAcronym))
+        .withMaxDepth(ReaderUtil.getNumberOrZero(valueNode, YamlKeys.Controlled.termMaxDepth));
+      this.readSourceAndVersion(valueNode, branchBuilder);
+      field.valueConstraints.branches.push(branchBuilder.build());
+    } else if (type === YamlValues.Controlled.valueSet) {
+      const valueSetBuilder = new ControlledTermValueSetBuilder()
+        .withUri(ReaderUtil.getIdentifierURI(valueNode, YamlKeys.Controlled.termBaseIri))
+        // Absent means the count is unknown, as it does for an ontology; zero would claim the set
+        // is empty, which is a different thing and one the schema takes literally.
+        .withNumTerms(ReaderUtil.getNumberOrNull(valueNode, YamlKeys.Controlled.termCount))
+        .withVsCollection(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.sourceAcronym))
+        .withName(ReaderUtil.getStringOrEmpty(valueNode, YamlKeys.Controlled.termBaseLabel));
+      this.readSourceAndVersion(valueNode, valueSetBuilder);
+      field.valueConstraints.valueSets.push(valueSetBuilder.build());
+    }
   }
 
   /**

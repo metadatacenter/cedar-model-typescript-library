@@ -12,6 +12,7 @@ import {
   Iri,
   JsonNode,
   TemplateElement,
+  TemplateField,
   YamlTemplateElementReader,
   YamlTemplateFieldReader,
   YamlTemplateReader,
@@ -575,5 +576,147 @@ describe('a YAML values entry is an ontology, a class, a branch or a value set, 
         'A value constraint type is one of ontology, class, branch or valueSet.';
       expect(() => readField(respell(write(compact), kind, written), compact)).toThrow(refusal);
     });
+  });
+});
+
+/**
+ * A choice field's `values:` holds its options, and an option states no type. Java's reader reads every
+ * field's `values:` for constraints too, so an entry that states a `type` is read as the constraint it
+ * names. A type of another spelling is refused, and so is a constraint the entry does not complete. A
+ * complete one is read and has no effect, since a choice field holds no constraint. These readers took
+ * the option and passed over its type.
+ */
+describe('a YAML choice-field option states no type, as in Java', () => {
+  const yaml = CedarWriters.yaml().getStrict();
+  const id = (name: string) => `https://repo.metadatacenter.org/template-fields/${name}`;
+  const FIELDS: Record<string, () => TemplateField> = {
+    radio: () => CedarBuilders.radioFieldBuilder().withSchemaName('F').withAtId(id('r')).addRadioOption('a').addRadioOption('b').build(),
+    checkbox: () =>
+      CedarBuilders.checkboxFieldBuilder().withSchemaName('F').withAtId(id('c')).addCheckboxOption('a').addCheckboxOption('b').build(),
+    'single-choice list': () =>
+      CedarBuilders.singleChoiceListFieldBuilder().withSchemaName('F').withAtId(id('l')).addListOption('a').addListOption('b').build(),
+    'multiple-choice list': () =>
+      CedarBuilders.multipleChoiceListFieldBuilder().withSchemaName('F').withAtId(id('m')).addListOption('a').addListOption('b').build(),
+  };
+  const element = (field: TemplateField) =>
+    CedarBuilders.templateElementBuilder()
+      .withSchemaName('E')
+      .withAtId('https://repo.metadatacenter.org/template-elements/e1')
+      .addChild(field, field.createDeploymentBuilder('F').build())
+      .build();
+  const template = (field: TemplateField) => {
+    const holder = element(field);
+    return CedarBuilders.templateBuilder()
+      .withSchemaName('T')
+      .withAtId('https://repo.metadatacenter.org/templates/t1')
+      .addChild(holder, holder.createDeploymentBuilder('E').build())
+      .build();
+  };
+  /** Each place the field can stand: its YAML, the JSON written from reading it back, and where the field is. */
+  const PLACES: Record<
+    string,
+    [(field: TemplateField, compact: boolean) => string, (source: string, compact: boolean) => JsonNode, string]
+  > = {
+    standalone: [
+      (field, compact) => yaml.getFieldWriterForField(field).getAsYamlString(field, compact),
+      (source, compact) => {
+        const field = (compact ? YamlTemplateFieldReader.getStrictForCompact() : YamlTemplateFieldReader.getStrict()).readFromString(
+          source,
+        ).field;
+        return plain(json.getFieldWriterForField(field).getAsJsonNode(field));
+      },
+      '',
+    ],
+    'a child of an element': [
+      (field, compact) => yaml.getTemplateElementWriter().getAsYamlString(element(field), compact),
+      (source, compact) =>
+        plain(
+          json
+            .getTemplateElementWriter()
+            .getAsJsonNode(
+              (compact ? YamlTemplateElementReader.getStrictForCompact() : YamlTemplateElementReader.getStrict()).readFromString(source)
+                .element,
+            ),
+        ),
+      '/children/F',
+    ],
+    "a child of a template's element": [
+      (field, compact) => yaml.getTemplateWriter().getAsYamlString(template(field), compact),
+      (source, compact) =>
+        plain(
+          json
+            .getTemplateWriter()
+            .getAsJsonNode(
+              (compact ? YamlTemplateReader.getStrictForCompact() : YamlTemplateReader.getStrict()).readFromString(source).template,
+            ),
+        ),
+      '/children/E/children/F',
+    ],
+  };
+  const CLASS = [
+    'sourceAcronym: "DOID"',
+    'termIri: "http://purl.obolibrary.org/obo/DOID_530"',
+    'termType: class',
+    'termLabel: "eyelid disease"',
+  ];
+  /** The document with `lines` added to the first option, which the writer spells `- label: "a"`. */
+  const amendFirstOption = (document: string, lines: string[]): string => {
+    const pattern = /^(\s*)- label: "a"$/gm;
+    expect(document.match(pattern)).toHaveLength(1);
+    return document.replace(pattern, (option: string, indent: string) => [option, ...lines.map((line) => `${indent}  ${line}`)].join('\n'));
+  };
+  const CASES = Object.keys(FIELDS).flatMap((field) => Object.keys(PLACES).map((place): [string, string] => [field, place]));
+
+  describe.each([false, true])('compact=%s', (compact: boolean) => {
+    test.each(CASES)(
+      'a %s, %s: an option that states a complete constraint reads as the option it is',
+      (fieldKind: string, place: string) => {
+        const [write, read] = PLACES[place];
+        const document = write(FIELDS[fieldKind](), compact);
+        const expected = read(document, compact);
+        expect(read(amendFirstOption(document, ['type: class', ...CLASS]), compact)).toEqual(expected);
+        expect(
+          read(amendFirstOption(document, ['type: ontology', 'sourceAcronym: "DOID"', 'sourceName: "Human Disease Ontology"']), compact),
+        ).toEqual(expected);
+      },
+    );
+
+    test.each(
+      CASES.flatMap(([fieldKind, place]): [string, string, string, string][] =>
+        [
+          ['"Class"', 'Class'],
+          ['literal', 'literal'],
+          ['valueset', 'valueset'],
+          ['""', ''],
+          ['1', '1'],
+        ].map(([written, shown]): [string, string, string, string] => [fieldKind, place, written, shown]),
+      ),
+    )('a %s, %s: an option of type %s is refused', (fieldKind: string, place: string, written: string, shown: string) => {
+      const [write, read, at] = PLACES[place];
+      const refusal =
+        `Invalid value constraint type "${shown}" at ${at}/values/0/type. ` +
+        'A value constraint type is one of ontology, class, branch or valueSet.';
+      expect(() => read(amendFirstOption(write(FIELDS[fieldKind](), compact), [`type: ${written}`]), compact)).toThrow(refusal);
+    });
+
+    test.each(
+      CASES.flatMap(([fieldKind, place]): [string, string, string, string][] =>
+        [
+          ['ontology', 'An ontology constraint requires an acronym.'],
+          ['class', 'An empty string is not a URI at "termIri"'],
+          ['branch', 'An empty string is not a URI at "termBaseIri"'],
+          ['valueSet', 'An empty string is not a URI at "termBaseIri"'],
+        ].map(([type, reason]): [string, string, string, string] => [fieldKind, place, type, reason]),
+      ),
+    )(
+      'a %s, %s: an option of type %s is read as that constraint, and refused',
+      (fieldKind: string, place: string, type: string, reason: string) => {
+        const [write, read, at] = PLACES[place];
+        const amended = amendFirstOption(write(FIELDS[fieldKind](), compact), [`type: ${type}`]);
+        expect(() => read(amended, compact)).toThrow(
+          `The entry at ${at}/values/0 states the type "${type}" and is read as that kind of constraint. ${reason}`,
+        );
+      },
+    );
   });
 });

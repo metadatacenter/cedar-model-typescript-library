@@ -9,15 +9,18 @@ import { YamlKeys } from '../../../constants/YamlKeys';
 import { CheckboxFieldImpl } from './CheckboxFieldImpl';
 import { YamlArtifactParsingResult } from '../../../util/compare/YamlArtifactParsingResult';
 import { DefaultValueSerialization } from '../../DefaultValueSerialization';
+import { YamlFieldReaderControlledTerm } from '../controlled-term/YamlFieldReaderControlledTerm';
 
 export class YamlFieldReaderCheckbox extends YamlTemplateFieldTypeSpecificReader {
   override read(
     fieldSourceObject: JsonNode,
     _childInfo: ChildDeploymentInfo,
     _parsingResult: YamlArtifactParsingResult,
-    _path: JsonPath,
+    path: JsonPath,
   ): CheckboxField {
     const field = CheckboxFieldImpl.buildEmpty();
+    // An option states no type. Java reads an entry that states one as the constraint it names.
+    YamlFieldReaderControlledTerm.readStatedConstraints(fieldSourceObject, path);
     field.valueConstraints.defaultValue = DefaultValueSerialization.literalFromNode(fieldSourceObject, YamlKeys.default);
 
     const literals: Array<JsonNode> = ReaderUtil.getNodeList(fieldSourceObject, YamlKeys.values);

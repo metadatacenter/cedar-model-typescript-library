@@ -9,15 +9,18 @@ import { YamlKeys } from '../../../constants/YamlKeys';
 import { RadioFieldImpl } from './RadioFieldImpl';
 import { YamlArtifactParsingResult } from '../../../util/compare/YamlArtifactParsingResult';
 import { DefaultValueSerialization } from '../../DefaultValueSerialization';
+import { YamlFieldReaderControlledTerm } from '../controlled-term/YamlFieldReaderControlledTerm';
 
 export class YamlFieldReaderRadio extends YamlTemplateFieldTypeSpecificReader {
   override read(
     fieldSourceObject: JsonNode,
     _childInfo: ChildDeploymentInfo,
     _parsingResult: YamlArtifactParsingResult,
-    _path: JsonPath,
+    path: JsonPath,
   ): RadioField {
     const field = RadioFieldImpl.buildEmpty();
+    // An option states no type. Java reads an entry that states one as the constraint it names.
+    YamlFieldReaderControlledTerm.readStatedConstraints(fieldSourceObject, path);
 
     field.valueConstraints.defaultValue = DefaultValueSerialization.literalFromNode(fieldSourceObject, YamlKeys.default);
 

@@ -20,17 +20,28 @@ import { Iri } from '../../../types/wrapped-types/Iri';
 import { ControlledTermVersion } from './value-constraint/ControlledTermVersion';
 import { JavaStrings } from '../../../util/JavaStrings';
 
+/** The kinds a `values:` entry can state, spelled as the writer spells them. */
+const VALUE_CONSTRAINT_TYPES: readonly string[] = [
+  YamlValues.Controlled.ontology,
+  YamlValues.Controlled.class,
+  YamlValues.Controlled.branch,
+  YamlValues.Controlled.valueSet,
+];
+
+const isMapping = (value: unknown): value is JsonNode => value !== null && typeof value === 'object' && !Array.isArray(value);
+
 export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecificReader {
   override read(
     fieldSourceObject: JsonNode,
     _childInfo: ChildDeploymentInfo,
     _parsingResult: YamlArtifactParsingResult,
-    _path: JsonPath,
+    path: JsonPath,
   ): ControlledTermField {
     const field = ControlledTermFieldImpl.buildEmpty();
 
     const values: JsonNode[] = ReaderUtil.getNodeList(fieldSourceObject, YamlKeys.values);
-    values.forEach((valueNode) => {
+    values.forEach((valueNode, index) => {
+      YamlFieldReaderControlledTerm.assertValueConstraintType(valueNode, path.add(YamlKeys.values, index, YamlKeys.type));
       const type = ReaderUtil.getString(valueNode, YamlKeys.type);
       if (type === YamlValues.Controlled.ontology) {
         const ontologyBuilder = new ControlledTermOntologyBuilder()
@@ -94,6 +105,24 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
       field.valueConstraints.actions.push(actionBuilder.build());
     });
     return field;
+  }
+
+  /**
+   * Refuse a `values:` entry whose `type` is not one of the four kinds as the writer spells them, as
+   * Java refuses it. Each kind is read from the entries of its own type, so an entry of any other type
+   * was passed over and its constraint lost. A literal entry states no type, and is passed over still.
+   */
+  private static assertValueConstraintType(valueNode: unknown, path: JsonPath): void {
+    if (!isMapping(valueNode) || !Object.hasOwn(valueNode, YamlKeys.type)) {
+      return;
+    }
+    const type: unknown = valueNode[YamlKeys.type];
+    if (typeof type !== 'string' || !VALUE_CONSTRAINT_TYPES.includes(type)) {
+      const shown = typeof type === 'string' ? type : JSON.stringify(type);
+      throw new Error(
+        `Invalid value constraint type "${shown}" at ${path.toPointer()}. A value constraint type is one of ontology, class, branch or valueSet.`,
+      );
+    }
   }
 
   /** Match Java: derive the service address from the acronym, including for legacy YAML. */

@@ -4,10 +4,15 @@ import {
   CedarReaders,
   CedarWriters,
   ControlledTermActionBuilder,
+  ControlledTermBranchBuilder,
   ControlledTermClassBuilder,
+  ControlledTermField,
   ControlledTermOntologyBuilder,
+  ControlledTermValueSetBuilder,
   Iri,
   JsonNode,
+  TemplateElement,
+  YamlTemplateElementReader,
   YamlTemplateFieldReader,
   YamlTemplateReader,
 } from '../../../../src';
@@ -426,5 +431,149 @@ describe('a YAML action is delete or move, exactly', () => {
     }
     expect(fieldReader.readFromString(fieldYaml).field).toBeDefined();
     expect(templateReader.readFromString(templateYaml).template.getChild('K')).not.toBeNull();
+  });
+});
+
+/**
+ * A YAML `values:` entry states which kind of constraint it is in `type`, spelled as the writer spells
+ * it: ontology, class, branch or valueSet. The reader passed over an entry of any other spelling, so
+ * `type: Class` read as a field with no class, and the constraint was lost. Java refuses it, and so
+ * does this reader. A literal entry states no type, and is passed over as before.
+ */
+describe('a YAML values entry is an ontology, a class, a branch or a value set, exactly', () => {
+  const yaml = CedarWriters.yaml().getStrict();
+  const everyKind = () =>
+    CedarBuilders.controlledTermFieldBuilder()
+      .withSchemaName('Disease')
+      .withAtId('https://repo.metadatacenter.org/template-fields/d1')
+      .addOntology(
+        new ControlledTermOntologyBuilder()
+          .withAcronym('DOID')
+          .withName('Human Disease Ontology')
+          .withUri(new Iri('https://data.bioontology.org/ontologies/DOID'))
+          .build(),
+      )
+      .addClass(
+        new ControlledTermClassBuilder()
+          .withUri(new Iri('http://purl.obolibrary.org/obo/DOID_530'))
+          .withSource('DOID')
+          .withLabel('eyelid disease')
+          .withPrefLabel('eyelid disease')
+          .withType(BioportalTermType.ONTOLOGY_CLASS)
+          .build(),
+      )
+      .addBranch(
+        new ControlledTermBranchBuilder()
+          .withUri(new Iri('http://purl.obolibrary.org/obo/DOID_4'))
+          .withSource('Human Disease Ontology')
+          .withAcronym('DOID')
+          .withName('disease')
+          .withMaxDepth(3)
+          .build(),
+      )
+      .addValueSet(
+        new ControlledTermValueSetBuilder()
+          .withUri(new Iri('https://example.org/value-sets/colours'))
+          .withVsCollection('VS')
+          .withName('Colours')
+          .build(),
+      )
+      .build();
+  const element = () => {
+    const field = everyKind();
+    return CedarBuilders.templateElementBuilder()
+      .withSchemaName('E')
+      .withAtId('https://repo.metadatacenter.org/template-elements/e1')
+      .addChild(field, field.createDeploymentBuilder('Disease').build())
+      .build();
+  };
+  const template = () => {
+    const holder = element();
+    return CedarBuilders.templateBuilder()
+      .withSchemaName('T')
+      .withAtId('https://repo.metadatacenter.org/templates/t1')
+      .addChild(holder, holder.createDeploymentBuilder('E').build())
+      .build();
+  };
+  /** Each place the field can stand: its YAML, how to read the field back, and where the field is. */
+  const PLACES: Record<string, [(compact: boolean) => string, (source: string, compact: boolean) => unknown, string]> = {
+    standalone: [
+      (compact) => yaml.getFieldWriterForField(everyKind()).getAsYamlString(everyKind(), compact),
+      (source, compact) =>
+        (compact ? YamlTemplateFieldReader.getStrictForCompact() : YamlTemplateFieldReader.getStrict()).readFromString(source).field,
+      '',
+    ],
+    'a child of an element': [
+      (compact) => yaml.getTemplateElementWriter().getAsYamlString(element(), compact),
+      (source, compact) =>
+        (compact ? YamlTemplateElementReader.getStrictForCompact() : YamlTemplateElementReader.getStrict())
+          .readFromString(source)
+          .element.getChild('Disease'),
+      '/children/Disease',
+    ],
+    "a child of a template's element": [
+      (compact) => yaml.getTemplateWriter().getAsYamlString(template(), compact),
+      (source, compact) => {
+        const holder = (compact ? YamlTemplateReader.getStrictForCompact() : YamlTemplateReader.getStrict())
+          .readFromString(source)
+          .template.getChild('E');
+        return holder instanceof TemplateElement ? holder.getChild('Disease') : null;
+      },
+      '/children/E/children/Disease',
+    ],
+  };
+  const INDEX: Record<string, number> = { ontology: 0, class: 1, branch: 2, valueSet: 3 };
+  const respell = (document: string, kind: string, value: string): string => {
+    const pattern = new RegExp(`^(\\s*- )type: ${kind}$`, 'gm');
+    expect(document.match(pattern)).toHaveLength(1);
+    return document.replace(pattern, `$1type: ${value}`);
+  };
+  const constraints = (field: unknown) => {
+    const { ontologies, classes, branches, valueSets } = (field as ControlledTermField).valueConstraints;
+    return [ontologies.length, classes.length, branches.length, valueSets.length];
+  };
+
+  describe.each([false, true])('compact=%s', (compact: boolean) => {
+    test.each(Object.keys(PLACES))('%s: each kind as the writer spells it reads back, and so does a literal entry', (place: string) => {
+      const [write, readField] = PLACES[place];
+      const document = write(compact);
+      expect(constraints(readField(document, compact))).toEqual([1, 1, 1, 1]);
+      for (const kind of Object.keys(INDEX)) {
+        expect(constraints(readField(respell(document, kind, kind), compact))).toEqual([1, 1, 1, 1]);
+      }
+      const withLiteral = document.replace(/^(\s*)values:\n/m, '$1values:\n$1  - literal: "x"\n');
+      expect(withLiteral).not.toBe(document);
+      expect(constraints(readField(withLiteral, compact))).toEqual([1, 1, 1, 1]);
+    });
+
+    test.each(
+      Object.keys(PLACES).flatMap((place): [string, string, string, string][] =>
+        [
+          ['ontology', '"Ontology"', 'Ontology'],
+          ['ontology', 'ONTOLOGY', 'ONTOLOGY'],
+          ['ontology', 'ontologies', 'ontologies'],
+          ['class', '"Class"', 'Class'],
+          ['class', 'CLASS', 'CLASS'],
+          ['class', 'term', 'term'],
+          ['class', 'literal', 'literal'],
+          ['class', '""', ''],
+          ['class', '"class "', 'class '],
+          ['class', '[class]', '["class"]'],
+          ['branch', 'Branch', 'Branch'],
+          ['branch', 'tree', 'tree'],
+          ['branch', '1', '1'],
+          ['branch', 'true', 'true'],
+          ['valueSet', 'valueset', 'valueset'],
+          ['valueSet', 'ValueSet', 'ValueSet'],
+          ['valueSet', 'value-set', 'value-set'],
+        ].map(([kind, written, shown]): [string, string, string, string] => [place, kind, written, shown]),
+      ),
+    )('%s: a %s entry of type %s is refused', (place: string, kind: string, written: string, shown: string) => {
+      const [write, readField, at] = PLACES[place];
+      const refusal =
+        `Invalid value constraint type "${shown}" at ${at}/values/${INDEX[kind]}/type. ` +
+        'A value constraint type is one of ontology, class, branch or valueSet.';
+      expect(() => readField(respell(write(compact), kind, written), compact)).toThrow(refusal);
+    });
   });
 });

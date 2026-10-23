@@ -113,13 +113,22 @@ jobs:
         env:
           ATTEMPT_LIMIT: 4m
         run: |
+          # apt waits on a stalled mirror connection rather than failing, so it is told to give up on a
+          # silent fetch after 30 seconds and to retry it.
+          printf 'Acquire::Retries "3";\nAcquire::http::Timeout "30";\nAcquire::https::Timeout "30";\n' \
+            | sudo tee /etc/apt/apt.conf.d/80-ci-retries > /dev/null
           for attempt in 1 2; do
             if timeout --kill-after=20s "${ATTEMPT_LIMIT}" npx playwright install --with-deps chromium firefox webkit; then
               exit 0
             fi
             echo "::warning::Installing the conformance browsers failed or ran past ${ATTEMPT_LIMIT} (attempt ${attempt} of 2)."
-            # An attempt stopped while dpkg was unpacking leaves packages half-configured, and the next
-            # apt-get refuses to run until they are configured.
+            # Stopping npx does not stop the apt-get it started under sudo, which keeps the dpkg lock, and
+            # the second attempt then could not take it. Stop apt-get and dpkg first. An attempt stopped
+            # while dpkg was unpacking also leaves packages half-configured, which the next apt-get refuses.
+            sudo pkill -TERM -x apt-get || true
+            for second in $(seq 1 20); do pgrep -x 'apt-get|dpkg' > /dev/null || break; sleep 1; done
+            sudo pkill -KILL -x apt-get || true
+            sudo pkill -KILL -x dpkg || true
             sudo dpkg --configure -a || true
           done
           exit 1

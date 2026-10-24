@@ -1,5 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
+  workers: process.env.CEDAR_TEST_WORKERS ? Number(process.env.CEDAR_TEST_WORKERS) : undefined,
   testDir: '.',
   testMatch: '*.browser.ts',
   projects: [

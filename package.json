@@ -40,7 +40,10 @@
     "test:browser": "playwright test --config browser/playwright.config.ts",
     "schemas:compile": "node scripts/compile-artifact-schemas.cjs",
     "schemas:check": "node scripts/compile-artifact-schemas.cjs --check",
-    "prebuild": "npm run schemas:check"
+    "prebuild": "npm run schemas:check",
+    "test:ci:prebuilt": "node scripts/test-gate.mjs prebuilt",
+    "pretest:ci:prebuilt": "node --test scripts/test-gate.test.mjs",
+    "test:package:prebuilt": "node scripts/smoke-test-package.js"
   },
   "allowScripts": {
     "fsevents@2.3.3": true,

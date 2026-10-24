@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import { test } from 'node:test';
 
-function gate(workers, fail = '', environment = {}, copies = 1) {
+function gate(workers, fail = '', environment = {}, copies = 1, mode = 'full') {
   const directory = mkdtempSync(path.join(tmpdir(), 'model-gate-'));
   const log = path.join(directory, 'events');
   writeFileSync(
@@ -25,7 +25,7 @@ setTimeout(() => { emit('end'); process.exit(script === process.env.GATE_FAIL ? 
     // Several copies run at once, as gates in concurrent builds do.
     const command =
       copies === 1
-        ? [process.execPath, [script]]
+        ? [process.execPath, [script, mode]]
         : ['sh', ['-c', `for i in $(seq ${copies}); do "$GATE_NODE" "$GATE_SCRIPT" & done; wait`]];
     const result = spawnSync(...command, {
       encoding: 'utf8',
@@ -38,7 +38,7 @@ setTimeout(() => { emit('end'); process.exit(script === process.env.GATE_FAIL ? 
         GATE_LOG: log,
         GATE_FAIL: fail,
         // A build runs these tests inside its own pool, which no test may draw on.
-        CEDAR_WORKER_POOL: undefined,
+        CEDAR_WORKER_POOL: undefined, CEDAR_STAGE_CACHE_MODULE: undefined, CEDAR_STAGE_CACHE: undefined, CEDAR_TASK_CACHE_CONFIG: undefined,
         ...environment,
       },
     });
@@ -221,4 +221,17 @@ test('gates in concurrent builds stay within the pool they share', () => {
   } finally {
     rmSync(pool, { recursive: true, force: true });
   }
+});
+
+
+test('prebuilt mode verifies the existing package without rebuilding it', () => {
+  const { result, events } = gate(2, '', {}, 1, 'prebuilt');
+  assert.equal(result.status, 0, result.stderr);
+  const scripts = events.filter(event => event.event === 'start').map(event => event.script);
+  assert.ok(scripts.includes('test:package:prebuilt'));
+  assert.ok(!scripts.includes('test:package'));
+  assert.equal(scripts.length, 8);
+  const packageEnd = events.findIndex(event => event.event === 'end' && event.script === 'test:package:prebuilt');
+  const browserStart = events.findIndex(event => event.event === 'start' && event.script === 'test:browser');
+  assert.ok(packageEnd < browserStart);
 });

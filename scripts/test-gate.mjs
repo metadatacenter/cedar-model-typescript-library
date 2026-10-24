@@ -11,13 +11,15 @@ if (!Number.isInteger(budget) || budget < 1 || budget > 16) {
 }
 // Coverage owns most of the budget; the other checks read source or write
 // independent outputs (parity uses unique temporary trees; packaging owns dist).
+const mode = process.argv[2] ?? 'full';
+if (!['full', 'prebuilt'].includes(mode)) throw new Error(`Unknown gate: ${mode}`);
 const checks = [
   { name: 'coverage', script: 'test:coverage:prepared', weight: Math.max(1, budget - 3) },
   { name: 'lint', script: 'lint' },
   { name: 'types', script: 'typecheck' },
   { name: 'yaml', script: 'parity:yaml' },
   { name: 'json', script: 'parity:json' },
-  { name: 'package', script: 'test:package', weight: Math.min(3, budget) },
+  { name: 'package', script: mode === 'prebuilt' ? 'test:package:prebuilt' : 'test:package', weight: Math.min(3, budget) },
 ];
 // Parity imports generatedTestCases.ts too. Generate once before any checks
 // start, so no reader can observe the fixture module while it is being written.
@@ -26,7 +28,11 @@ const stages = [
   ...checks.map((stage) => ({ ...stage, after: ['fixtures'] })),
   { name: 'browser', script: 'test:browser', after: ['package'] },
 ];
+const cache = process.env.CEDAR_STAGE_CACHE_MODULE
+  ? (await import(process.env.CEDAR_STAGE_CACHE_MODULE)).stageCache()
+  : { reuse: () => false, save: () => {} };
 const pending = [...stages];
+const eligible = new Map();
 const running = new Map();
 const passed = new Set();
 let used = 0;
@@ -166,7 +172,14 @@ function schedule() {
   if (!failed) {
     for (const stage of [...pending]) {
       const weight = stage.weight ?? 1;
-      if (used + weight > budget || !(stage.after ?? []).every((name) => passed.has(name))) continue;
+      if (!(stage.after ?? []).every((name) => passed.has(name))) continue;
+      if (!eligible.has(stage.name)) eligible.set(stage.name, performance.now());
+      if (used + weight > budget) continue;
+      if (cache.reuse(stage)) {
+        pending.splice(pending.indexOf(stage), 1);
+        passed.add(stage.name);
+        continue;
+      }
       const workers = take(weight);
       if (!workers) {
         // Later stages queue behind this one rather than overtake it.
@@ -179,16 +192,17 @@ function schedule() {
       pending.splice(pending.indexOf(stage), 1);
       used += weight;
       const began = performance.now();
+      console.log(`[gate] allocation ${stage.name}: ${workers.count} workers, ${((began - eligible.get(stage.name)) / 1000).toFixed(2)}s queued`);
       console.log(`[gate] start ${stage.name} (${workers.count}/${budget} workers)`);
       const child = spawn('npm', ['run', stage.script], {
         // Stay in the CLI process group so cancellation reaps test descendants.
         detached: false,
         stdio: ['ignore', 'pipe', 'pipe'],
-        env: { ...process.env, CEDAR_TEST_WORKERS: String(workers.count), NG_BUILD_MAX_WORKERS: String(workers.count) },
+        env: { ...process.env, CEDAR_STAGE_CACHE_MODULE: undefined, CEDAR_STAGE_CACHE: undefined, CEDAR_TASK_CACHE_CONFIG: undefined, CEDAR_TEST_WORKERS: String(workers.count), NG_BUILD_MAX_WORKERS: String(workers.count) },
       });
       running.set(stage.name, child);
       for (const stream of [child.stdout, child.stderr]) {
-        stream.on('data', (data) => process.stdout.write(`[${stage.name}] ${data}`));
+        stream.on('data', (data) => { cache.observe?.(stage, data); process.stdout.write(`[${stage.name}] ${data}`); });
       }
       child.on('error', (error) => {
         console.error(error);
@@ -201,7 +215,7 @@ function schedule() {
         used -= weight;
         const seconds = ((performance.now() - began) / 1000).toFixed(2);
         console.log(`[gate] ${stage.name}: exit ${code}, ${seconds}s`);
-        if (code === 0) passed.add(stage.name);
+        if (code === 0) { cache.save(stage); passed.add(stage.name); }
         else {
           failed = true;
           process.exitCode ||= 1;

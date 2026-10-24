@@ -29,7 +29,9 @@ export class JsonFieldReaderTemporal extends JsonTemplateFieldTypeSpecificReader
       if (inputTimeFormat !== null) {
         field.inputTimeFormat = TimeFormat.forInputTimeFormat(inputTimeFormat);
       }
-      field.timezoneEnabled = ReaderUtil.getBoolean(uiNode, CedarModel.timezoneEnabled);
+      // A field may state that its values carry a time zone, state that they do not, or state nothing,
+      // as some stored fields do. The three stay apart, so nothing is written back where nothing was stated.
+      field.timezoneEnabled = ReaderUtil.getBooleanOrNull(uiNode, CedarModel.timezoneEnabled);
     }
 
     const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);

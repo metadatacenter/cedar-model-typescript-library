@@ -180,6 +180,12 @@ describe('the comparison behind it', () => {
     expect(compareInstanceTrip(direct, viaYaml).map((d) => d.family)).toEqual([null]);
   });
 
+  it('sorts a number of the same value into numberSpelling, and one of another value or type into none', () => {
+    const at = (minValue: unknown, maxValue: unknown) => ({ _valueConstraints: { minValue, maxValue } });
+    expect(compareSchemaTrip(at(-0, 5.1), at(0, 5)).map((d) => d.family)).toEqual(['numberSpelling', null]);
+    expect(compareSchemaTrip(at(1, 10), at(1, '10')).map((d) => d.family)).toEqual([null]);
+  });
+
   it('reports an ontology moved to a different acronym', () => {
     const at = (uri: string) => ({ _valueConstraints: { ontologies: [{ uri }] } });
     const differences = compareSchemaTrip(

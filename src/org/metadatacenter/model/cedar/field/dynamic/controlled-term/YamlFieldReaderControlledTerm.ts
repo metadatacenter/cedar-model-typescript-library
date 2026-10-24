@@ -169,9 +169,17 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
     return ReaderUtil.getJavaIntOrNull(valueNode, key, entryPath, yamlNumberSpelling(valueNode, key));
   }
 
-  /** Match Java: derive the service address from the acronym, including for legacy YAML. */
+  /**
+   * The service address the entry states, held to the identifier rule as Java holds it, or the BioPortal
+   * address derived from the acronym where it states none, as it states none for a BioPortal ontology.
+   */
   private ontologyUri(node: JsonNode): Iri {
-    return new Iri(`https://data.bioontology.org/ontologies/${ReaderUtil.getStringOrEmpty(node, YamlKeys.Controlled.sourceAcronym)}`);
+    if (ReaderUtil.getString(node, YamlKeys.Controlled.sourceUri) != null) {
+      return ReaderUtil.getIdentifierURI(node, YamlKeys.Controlled.sourceUri);
+    }
+    return new Iri(
+      YamlValues.Controlled.derivedOntologyAddressPrefix + ReaderUtil.getStringOrEmpty(node, YamlKeys.Controlled.sourceAcronym),
+    );
   }
 
   /** The keys every constraint kind shares: which vocabulary, on which system, at which snapshot. */

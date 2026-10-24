@@ -26,7 +26,9 @@ export class YamlFieldReaderTemporal extends YamlTemplateFieldTypeSpecificReader
     if (inputTimeFormat !== null) {
       field.inputTimeFormat = TimeFormat.forInputTimeFormat(inputTimeFormat);
     }
-    field.timezoneEnabled = ReaderUtil.getBoolean(fieldSourceObject, YamlKeys.inputTimeZone);
+    // The writer writes the key whenever the field states it, false included, so an absent key states
+    // nothing, as an absent `timezoneEnabled` states nothing in the JSON.
+    field.timezoneEnabled = ReaderUtil.getBooleanOrNull(fieldSourceObject, YamlKeys.inputTimeZone);
 
     const temporalType = ReaderUtil.getString(fieldSourceObject, YamlKeys.datatype);
     if (temporalType !== null) {

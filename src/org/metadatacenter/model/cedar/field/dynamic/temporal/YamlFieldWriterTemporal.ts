@@ -38,7 +38,9 @@ export class YamlFieldWriterTemporal extends YamlTemplateFieldWriterInternal {
       if (field.inputTimeFormat !== TimeFormat.NULL) {
         vcNode[YamlKeys.inputTimeFormat] = this.atomicWriter.write(field.inputTimeFormat);
       }
-      if (field.timezoneEnabled) {
+      // Written as the field states it, false included, and left out when the field states nothing,
+      // as the JSON leaves it out.
+      if (field.timezoneEnabled !== null) {
         vcNode[YamlKeys.inputTimeZone] = field.timezoneEnabled;
       }
     }

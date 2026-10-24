@@ -27,7 +27,9 @@ export class JsonFieldWriterTemporal extends JsonTemplateFieldWriterInternal {
       if (field.inputTimeFormat !== TimeFormat.NULL) {
         uiNode[CedarModel.inputTimeFormat] = this.atomicWriter.write(field.inputTimeFormat);
       }
-      uiNode[CedarModel.timezoneEnabled] = field.timezoneEnabled;
+      if (field.timezoneEnabled !== null) {
+        uiNode[CedarModel.timezoneEnabled] = field.timezoneEnabled;
+      }
     }
   }
 

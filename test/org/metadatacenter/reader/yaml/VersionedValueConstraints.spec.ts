@@ -313,12 +313,9 @@ describe('what the entry carries once, and what it no longer carries', () => {
   });
 });
 
-describe('ontology service addresses match Java', () => {
-  test.each<[string, string, string | null]>([
-    ['MESH', 'https://bioportal.bioontology.org/ontologies/MESH', null],
-    ['CL', 'https://other.example/ontologies/CL', 'agroportal'],
-  ])('reconstructs %s from its acronym rather than preserving %s', (acronym, uri, sourceSystem) => {
-    const original = CedarBuilders.controlledTermFieldBuilder()
+describe('ontology service addresses', () => {
+  const ontologyField = (acronym: string, uri: string, sourceSystem: string | null) =>
+    CedarBuilders.controlledTermFieldBuilder()
       .withSchemaName('Terms')
       .addOntology(
         new ControlledTermOntologyBuilder()
@@ -330,24 +327,51 @@ describe('ontology service addresses match Java', () => {
           .build(),
       )
       .build();
-    // JSON still carries the supplied service URI, as Java's JSON writer does.
+  const readerFor = (compact: boolean) => (compact ? YamlTemplateFieldReader.getStrictForCompact() : YamlTemplateFieldReader.getStrict());
+
+  // The reader derives https://data.bioontology.org/ontologies/<acronym> for an entry that states no
+  // address, so an address outside BioPortal is stated, in both forms, as Java states it. So is a
+  // BioPortal address naming another acronym, which the acronym cannot give.
+  test.each<[string, string, string | null]>([
+    ['UBERON', 'http://purl.obolibrary.org/obo/uberon.owl', null],
+    ['CL', 'https://other.example/ontologies/CL', 'agroportal'],
+    ['OBI', 'https://data.bioontology.org/ontologies/OBI-OLD', null],
+  ])('keeps %s at %s, which its acronym does not give', (acronym, uri, sourceSystem) => {
+    const original = ontologyField(acronym, uri, sourceSystem);
+    expect(jsonOf(original)._valueConstraints.ontologies[0].uri).toBe(uri);
+    for (const compact of [false, true]) {
+      const yaml = CedarWriters.yaml().getStrict().getFieldWriterForField(original).getAsYamlString(original, compact);
+      expect(yaml).toContain(`sourceUri: "${uri}"`);
+      const ontology = (readerFor(compact).readFromString(yaml).field as ControlledTermFieldImpl).valueConstraints.ontologies[0];
+      expect(ontology.uri.getValue()).toBe(uri);
+      expect(ontology.iri?.getValue()).toBe('http://example.org/ontology');
+      expect(ontology.sourceSystem).toBe(sourceSystem);
+    }
+  });
+
+  // YAML names a BioPortal ontology by its acronym, in whichever form its address was stored.
+  test.each([
+    'https://data.bioontology.org/ontologies/MESH',
+    'http://data.bioontology.org/ontologies/MESH',
+    'https://bioportal.bioontology.org/ontologies/MESH',
+    'http://bioportal.bioontology.org/ontologies/MESH',
+  ])('leaves out %s, and derives the address from the acronym on the way back', (uri) => {
+    const original = ontologyField('MESH', uri, null);
     expect(jsonOf(original)._valueConstraints.ontologies[0].uri).toBe(uri);
     for (const compact of [false, true]) {
       const yaml = CedarWriters.yaml().getStrict().getFieldWriterForField(original).getAsYamlString(original, compact);
       expect(yaml).not.toContain('sourceUri:');
-      expect(yaml).not.toContain(uri);
-      // Java also ignores an explicit legacy sourceUri when reading an ontology entry.
-      const legacyDocument = parse(yaml);
-      legacyDocument.values[0].sourceUri = uri;
-      const legacyYaml = stringify(legacyDocument);
-      for (const source of [yaml, legacyYaml]) {
-        const reader = compact ? YamlTemplateFieldReader.getStrictForCompact() : YamlTemplateFieldReader.getStrict();
-        const restored = reader.readFromString(source).field as ControlledTermFieldImpl;
-        const ontology = restored.valueConstraints.ontologies[0];
-        expect(ontology.uri.getValue()).toBe(`https://data.bioontology.org/ontologies/${acronym}`);
-        expect(ontology.iri?.getValue()).toBe('http://example.org/ontology');
-        expect(ontology.sourceSystem).toBe(sourceSystem);
-      }
+      const ontology = (readerFor(compact).readFromString(yaml).field as ControlledTermFieldImpl).valueConstraints.ontologies[0];
+      expect(ontology.uri.getValue()).toBe('https://data.bioontology.org/ontologies/MESH');
+    }
+  });
+
+  it('refuses a stated address that is not an absolute IRI, as Java refuses it', () => {
+    const field = ontologyField('DOID', 'https://data.bioontology.org/ontologies/DOID', null);
+    const document = parse(CedarWriters.yaml().getStrict().getFieldWriterForField(field).getAsYamlString(field));
+    for (const address of ['relative/path', '']) {
+      document.values[0].sourceUri = address;
+      expect(() => YamlTemplateFieldReader.getStrict().readFromString(stringify(document))).toThrow();
     }
   });
 });

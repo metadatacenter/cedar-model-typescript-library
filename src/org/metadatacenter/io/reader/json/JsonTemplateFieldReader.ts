@@ -52,6 +52,7 @@ import { JsonFieldReaderExtNihGrantId } from '../../../model/cedar/field/dynamic
 import { JsonFieldReaderExtDoi } from '../../../model/cedar/field/dynamic/ext-doi/JsonFieldReaderExtDoi';
 import { TextFieldImpl } from '../../../model/cedar/field/dynamic/textfield/TextFieldImpl';
 import { ControlledTermFieldImpl } from '../../../model/cedar/field/dynamic/controlled-term/ControlledTermFieldImpl';
+import { JsonTermConstraintChecks } from './JsonTermConstraintChecks';
 
 export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
   protected artifactTypeWord(): SchemaArtifactKind {
@@ -244,6 +245,11 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
           if (!reader) {
             throw new Error(`
           No reader defined for dynamic input type "${fieldType.getValue()}"`);
+          }
+          // Java judges a field's term constraints whatever its kind. The controlled-term reader reads them
+          // and holds them to Java's rules itself. Every other kind is held to those rules here and keeps nothing.
+          if (fieldType !== CedarFieldType.CONTROLLED_TERM) {
+            JsonTermConstraintChecks.assertReadable(fieldSourceObject, path);
           }
           return reader.read(fieldSourceObject, childInfo, parsingResult, path);
         }

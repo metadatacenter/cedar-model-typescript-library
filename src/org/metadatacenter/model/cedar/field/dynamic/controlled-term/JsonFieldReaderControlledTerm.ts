@@ -18,6 +18,7 @@ import { ControlledTermFieldImpl } from './ControlledTermFieldImpl';
 import { ControlledTermVersion } from './value-constraint/ControlledTermVersion';
 import { Iri } from '../../../types/wrapped-types/Iri';
 import { JavaStrings } from '../../../util/JavaStrings';
+import { JsonTermConstraintChecks } from '../../../../../io/reader/json/JsonTermConstraintChecks';
 
 export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecificReader {
   override read(
@@ -32,6 +33,8 @@ export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecific
     const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
     if (valueConstraints != null) {
       const at = path.add(CedarModel.valueConstraints);
+      // The reads below take each constraint to be an object, so one that is not is refused first.
+      JsonTermConstraintChecks.assertEntriesAreObjects(fieldSourceObject, path);
       field.valueConstraints.ontologies = this.getOntologies(
         ReaderUtil.getNodeList(valueConstraints, CedarModel.ontologies),
         at.add(CedarModel.ontologies),
@@ -45,6 +48,9 @@ export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecific
         ReaderUtil.getNodeList(valueConstraints, CedarModel.valueSets),
         at.add(CedarModel.valueSets),
       );
+      // The reads above refuse some malformed constraints, each with the message it always gave. Java
+      // refuses more, such as an ontology with no acronym, and these checks refuse the rest.
+      JsonTermConstraintChecks.assertReadable(fieldSourceObject, path);
       field.valueConstraints.defaultValue = this.getDefaultValue(ReaderUtil.getNodeOrNull(valueConstraints, CedarModel.defaultValue));
       field.valueConstraints.actions = this.getActions(ReaderUtil.getNodeList(valueConstraints, CedarModel.actions));
     }

@@ -643,6 +643,56 @@
    ]
   },
   {
+   "id": "cee-suite/021#context-term-undeclared",
+   "instance": "cee-suite/021/instance-021.json",
+   "template": "cee-suite/021/template-021.json",
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/@context/Probe",
+      "value": "https://example.org/properties/Probe"
+     }
+    ]
+   },
+   "javaValid": false,
+   "javaErrors": [
+    "object instance has properties which are not allowed by the schema: ['Probe']"
+   ]
+  },
+  {
+   "id": "cee-suite/021#context-term-missing",
+   "instance": "cee-suite/021/instance-021.json",
+   "template": "cee-suite/021/template-021.json",
+   "patch": {
+    "instance": [
+     {
+      "op": "remove",
+      "path": "/@context/Untitled"
+     }
+    ]
+   },
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/021#context-prefix-missing",
+   "instance": "cee-suite/021/instance-021.json",
+   "template": "cee-suite/021/template-021.json",
+   "patch": {
+    "instance": [
+     {
+      "op": "remove",
+      "path": "/@context/xsd"
+     }
+    ]
+   },
+   "javaValid": false,
+   "javaErrors": [
+    "object has missing required properties (['xsd'])"
+   ]
+  },
+  {
    "id": "cee-suite/022",
    "instance": "cee-suite/022/instance-022.json",
    "template": "cee-suite/022/template-022.json",

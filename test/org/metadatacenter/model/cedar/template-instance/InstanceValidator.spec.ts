@@ -94,10 +94,15 @@ const CONTEXT = {
 /** The element's own `@context`, which marks `_addr` as an element value. */
 const ADDR_CONTEXT = { _city: 'https://schema.metadatacenter.org/properties/city' };
 
+/** The property IRI each child of the template above maps to, as `dep` gives it. */
+const PROPERTIES = Object.fromEntries(
+  ['_note', '_when', '_count', '_tags', '_addr'].map((name) => [name, `https://schema.metadatacenter.org/properties/${name.slice(1)}`]),
+);
+
 /** A complete, correct instance of the template above. */
 const complete = () => ({
   '@id': 'https://repo.metadatacenter.org/template-instances/i1',
-  '@context': { ...CONTEXT },
+  '@context': { ...CONTEXT, ...PROPERTIES },
   'schema:isBasedOn': 'https://repo.metadatacenter.org/templates/t1',
   'schema:name': 'An instance',
   'schema:description': '',
@@ -365,6 +370,47 @@ describe('judged against the stored template', () => {
     stored.properties._when.required = ['@value'];
     expect(judge(unfilled, stored).canSave).toBe(true);
     expect(judge({ ...complete(), _when: { '@value': '2020-01-01' } }, stored).canSave).toBe(false);
+  });
+
+  it("holds each property IRI to the stored template's @context", () => {
+    expect(judge(complete(), written()).canSave).toBe(true);
+    const remapped = { ...complete(), '@context': { ...complete()['@context'], _note: 'https://example.org/properties/other' } };
+    expect(judge(remapped, written()).findings).toContainEqual(
+      expect.objectContaining({ code: 'valueShape', path: '/@context/_note', category: 'structural' }),
+    );
+    const extra = { ...complete(), '@context': { ...complete()['@context'], _gone: 'https://example.org/properties/gone' } };
+    expect(judge(extra, written()).canSave).toBe(false);
+    const unmapped: Record<string, string> = { ...complete()['@context'] };
+    delete unmapped._note;
+    expect(judge({ ...complete(), '@context': unmapped }, written()).findings).toContainEqual(
+      expect.objectContaining({ code: 'missingProperty', path: '/@context/_note' }),
+    );
+    const element = {
+      ...complete(),
+      _addr: { '@context': { _city: 'https://example.org/properties/other' }, _city: { '@value': 'Palo Alto' } },
+    };
+    expect(judge(element, written()).findings).toContainEqual(expect.objectContaining({ path: '/_addr/@context/_city' }));
+  });
+
+  it('leaves the child mappings to a writer that takes them from the template, and judges the rest', () => {
+    const options = { childIrisFromTemplate: true };
+    const mapped = (context: object) =>
+      InstanceValidator.validateReport(
+        CedarReaders.json()
+          .getFebruary2024()
+          .getTemplateInstanceReader()
+          .readFromObject({ ...complete(), '@context': context } as any, undefined as never).instance,
+        template,
+        written(),
+        options,
+      );
+    const unmapped: Record<string, string> = { ...complete()['@context'] };
+    delete unmapped._note;
+    expect(mapped(unmapped).canSave).toBe(true);
+    expect(mapped({ ...complete()['@context'], _note: 'https://example.org/properties/other' }).canSave).toBe(true);
+    expect(mapped({ ...complete()['@context'], _gone: 'https://example.org/properties/gone' }).findings).toContainEqual(
+      expect.objectContaining({ code: 'valueShape', path: '/@context/_gone' }),
+    );
   });
 
   it('admits an undeclared literal where the stored container admits further literals', () => {

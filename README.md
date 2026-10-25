@@ -262,8 +262,16 @@ The server judges an instance against the template document as it is stored. An 
 require fewer children than the model would write, admit further keys through `additionalProperties`,
 or require only `@value` of a date or number, and neither this library's model nor the Java one keeps
 those facts. A caller holding the stored JSON template passes it as a third argument,
-`validateReport(instance, template, storedTemplate)`, and the validator reads them from it. Without
-it, the instance is judged against the template as the model writes it.
+`validateReport(instance, template, storedTemplate)`, and the validator reads them from it. It
+also judges each container's property IRIs against the stored `@context` schema: a declared child
+must map to the IRI the template gives it, an undeclared term must be admitted, and a required one
+must be there. Without the stored template, the instance is judged against the template as the
+model writes it, and its `@context` is not judged.
+
+A caller that writes the instance through `InstanceInflater`, which maps each child to the
+template's property IRI, passes `{ childIrisFromTemplate: true }` as a fourth argument. The mapping
+the instance holds for a child is then not judged, since the write replaces it, and a term the
+template does not declare still is, since the write keeps it.
 
 `TemplateValueValidator.validate(templateOrElementOrField)` checks definition/default consistency
 without changing the model. `validateSource(rawDefinition)` supports retained imported definitions

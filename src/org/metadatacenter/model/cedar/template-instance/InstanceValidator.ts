@@ -27,9 +27,23 @@ import { validationFieldSchema } from '../util/validationFieldSchema';
 import { JsonNode } from '../types/basic-types/JsonNode';
 import { ReservedNames } from '../ReservedNames';
 import { ContainerArtifactChildrenInfo } from '../deployment/ContainerArtifactChildrenInfo';
+import { JsonTemplateInstanceContent } from '../util/serialization/JsonTemplateInstanceContent';
+import { IdentifierPolicy } from '../../../policy/IdentifierPolicy';
+import { JsonSchema } from '../constants/JsonSchema';
 import { ValidationField } from '../../../policy/FieldValuePolicy';
 
 const LOCATION = 'InstanceValidator';
+
+/** How the caller will write the instance it asks about. */
+export interface InstanceValidationOptions {
+  /**
+   * The caller writes each child's property IRI from the template, as
+   * `InstanceInflater` does, so the mapping the instance holds for a child is
+   * not judged. A term the template does not declare is still judged, since
+   * the write keeps it.
+   */
+  childIrisFromTemplate?: boolean;
+}
 
 /**
  * Compare a parsed instance with its template without repairing it. Missing slots,
@@ -61,18 +75,36 @@ export class InstanceValidator {
    * requires, which further keys a container admits, and which properties a
    * field's value must carry. Older templates state them differently, and
    * neither library's model keeps them, so where `stored` is given they come
-   * from it. Without it the instance is judged against the template as the
-   * model writes it.
+   * from it. Its `@context` schemas are also where the server checks each
+   * container's property IRIs, which are judged only where it is given. Without
+   * it the instance is judged against the template as the model writes it.
    */
-  public static validate(instance: TemplateInstance, template: Template, stored: JsonNode | null = null): JsonArtifactParsingResult {
+  public static validate(
+    instance: TemplateInstance,
+    template: Template,
+    stored: JsonNode | null = null,
+    options: InstanceValidationOptions = {},
+  ): JsonArtifactParsingResult {
     const result = new JsonArtifactParsingResult();
-    InstanceValidator.validateContainer(instance.dataContainer, template, new JsonPath(), result, InstanceValidator.object(stored));
+    InstanceValidator.validateContainer(
+      instance.dataContainer,
+      template,
+      new JsonPath(),
+      result,
+      InstanceValidator.object(stored),
+      options,
+    );
     return result;
   }
 
   /** Saveability and quality are different answers; semantic checks remain explicitly not checked. */
-  public static validateReport(instance: TemplateInstance, template: Template, stored: JsonNode | null = null): ValidationSummary {
-    return this.validate(instance, template, stored).getValidationReport();
+  public static validateReport(
+    instance: TemplateInstance,
+    template: Template,
+    stored: JsonNode | null = null,
+    options: InstanceValidationOptions = {},
+  ): ValidationSummary {
+    return this.validate(instance, template, stored, options).getValidationReport();
   }
 
   private static validateContainer(
@@ -81,6 +113,7 @@ export class InstanceValidator {
     path: JsonPath,
     result: JsonArtifactParsingResult,
     stored: JsonNode | null,
+    options: InstanceValidationOptions,
   ): void {
     const info = template.getChildrenInfo();
     const attributeNames = new Set(
@@ -126,6 +159,12 @@ export class InstanceValidator {
       }
     }
 
+    const context = InstanceValidator.object(InstanceValidator.object(stored?.properties)?.[JsonSchema.atContext]);
+    if (context !== null) {
+      const supplied = options.childIrisFromTemplate === true ? info.getChildIriMap() : {};
+      InstanceValidator.validateContext(container, context, supplied, path, result);
+    }
+
     for (const name of InstanceValidator.requiredChildren(info, stored)) {
       if (!Object.hasOwn(container.values, name)) {
         result.addBlueprintComparisonError(
@@ -161,8 +200,65 @@ export class InstanceValidator {
         path.add(name),
         result,
         InstanceValidator.object(InstanceValidator.object(stored?.properties)?.[name]),
+        options,
       );
     }
+  }
+
+  /**
+   * A container's property IRIs judged against its stored `@context` schema.
+   *
+   * The model keeps the IRIs an instance maps its children to as they were
+   * stored, and writes the standard prefixes and term definitions itself, so
+   * those are what is judged: a declared key must map to the IRI the template
+   * gives it, an undeclared one must be admitted by `additionalProperties`, and
+   * every required key the writer does not supply must be there. `supplied`
+   * holds the mappings the caller's writer takes from the template instead.
+   */
+  private static validateContext(
+    container: InstanceDataContainer,
+    context: JsonNode,
+    supplied: Record<string, string>,
+    path: JsonPath,
+    result: JsonArtifactParsingResult,
+  ): void {
+    const declared = InstanceValidator.object(context.properties) ?? JsonNode.getEmpty();
+    const at = path.add(JsonSchema.atContext);
+    for (const [key, iri] of Object.entries(container.iris)) {
+      if (Object.hasOwn(supplied, key)) continue;
+      const term = InstanceValidator.object(declared[key]);
+      if (term !== null) {
+        if (!InstanceValidator.conformsTo(term, iri)) {
+          result.addValidationFinding(
+            ValidationPolicy.finding('valueShape', at.add(key).toPointer(), 'The template maps this property to a different IRI.'),
+          );
+        }
+        continue;
+      }
+      const additional = context.additionalProperties;
+      const schema = InstanceValidator.object(additional);
+      if (additional === false || (schema !== null && !InstanceValidator.conformsTo(schema, iri))) {
+        result.addValidationFinding(
+          ValidationPolicy.finding('valueShape', at.add(key).toPointer(), "The template's @context does not declare this property."),
+        );
+      }
+    }
+    const required = Array.isArray(context.required) ? context.required : [];
+    for (const key of required) {
+      if (typeof key !== 'string' || Object.hasOwn(JsonTemplateInstanceContent.CONTEXT_VERBATIM, key)) continue;
+      if (Object.hasOwn(supplied, key) || container.hasIri(key)) continue;
+      result.addValidationFinding(
+        ValidationPolicy.finding('missingProperty', at.add(key).toPointer(), "The template's @context requires this property."),
+      );
+    }
+  }
+
+  /** Whether a property IRI meets the `enum`, `type` and `format` of the schema it is held to. */
+  private static conformsTo(schema: JsonNode, iri: string): boolean {
+    if (Array.isArray(schema.enum) && !schema.enum.includes(iri)) return false;
+    if (schema.type !== undefined && schema.type !== 'string' && !(Array.isArray(schema.type) && schema.type.includes('string')))
+      return false;
+    return schema.format !== 'uri' || IdentifierPolicy.isValid(iri);
   }
 
   /** A stored schema node, or null for anything that is not one. */
@@ -241,6 +337,7 @@ export class InstanceValidator {
     path: JsonPath,
     result: JsonArtifactParsingResult,
     stored: JsonNode | null,
+    options: InstanceValidationOptions,
   ): void {
     const isMulti = childInfo?.isMultiInAnyWay() ?? false;
 
@@ -265,11 +362,11 @@ export class InstanceValidator {
     if (values !== null) {
       InstanceValidator.validateCardinality(values, childInfo, path, result);
       const items = InstanceValidator.object(stored?.items) ?? stored;
-      values.forEach((item, index) => InstanceValidator.validateItem(item, child, path.add(index), result, items));
+      values.forEach((item, index) => InstanceValidator.validateItem(item, child, path.add(index), result, items, options));
       return;
     }
 
-    InstanceValidator.validateItem(value, child, path, result, stored);
+    InstanceValidator.validateItem(value, child, path, result, stored, options);
   }
 
   private static validateCardinality(
@@ -296,10 +393,11 @@ export class InstanceValidator {
     path: JsonPath,
     result: JsonArtifactParsingResult,
     stored: JsonNode | null,
+    options: InstanceValidationOptions,
   ): void {
     if (child instanceof TemplateElement) {
       if (value instanceof InstanceDataContainer) {
-        InstanceValidator.validateContainer(value, child, path, result, stored);
+        InstanceValidator.validateContainer(value, child, path, result, stored, options);
       } else if (InstanceValidator.isEmpty(value)) {
         /**
          * An element written as `{}`. The reader classifies that as an empty
@@ -309,7 +407,7 @@ export class InstanceValidator {
          * requires — so it is judged as the empty container it is, which names
          * them individually rather than reporting one opaque error.
          */
-        InstanceValidator.validateContainer(new InstanceDataContainer(), child, path, result, stored);
+        InstanceValidator.validateContainer(new InstanceDataContainer(), child, path, result, stored, options);
       } else {
         result.addBlueprintComparisonError(
           new ComparisonError(LOCATION, ComparisonErrorType.VALUE_MISMATCH, path, 'an element', 'a field value'),

@@ -1,0 +1,421 @@
+{
+ "cases": [
+  {
+   "id": "cee-suite/001",
+   "instance": "cee-suite/001/instance-001.json",
+   "template": "cee-suite/001/template-001-original.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/002",
+   "instance": "cee-suite/002/instance-002.json",
+   "template": "cee-suite/002/template-002.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/003",
+   "instance": "cee-suite/003/instance-003.json",
+   "template": "cee-suite/003/template-003.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/004",
+   "instance": "cee-suite/004/instance-004.json",
+   "template": "cee-suite/004/template-004.json",
+   "javaValid": false,
+   "javaErrors": [
+    "An integer datatype cannot have decimal places.",
+    "An integer datatype cannot have decimal places.",
+    "An integer datatype cannot have decimal places."
+   ]
+  },
+  {
+   "id": "cee-suite/006",
+   "instance": "cee-suite/006/instance-006.json",
+   "template": "cee-suite/006/template-006.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/007",
+   "instance": "cee-suite/007/instance-007.json",
+   "template": "cee-suite/007/template-007.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/008",
+   "instance": "cee-suite/008/instance-008.json",
+   "template": "cee-suite/008/template-008.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/009",
+   "instance": "cee-suite/009/instance-009.json",
+   "template": "cee-suite/009/template-009.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/011",
+   "instance": "cee-suite/011/instance-011.json",
+   "template": "cee-suite/011/template-011.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/012",
+   "instance": "cee-suite/012/instance-012.json",
+   "template": "cee-suite/012/template-012.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/013",
+   "instance": "cee-suite/013/instance-013.json",
+   "template": "cee-suite/013/template-013.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/014",
+   "instance": "cee-suite/014/instance-014.json",
+   "template": "cee-suite/014/template-014.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/015",
+   "instance": "cee-suite/015/instance-015.json",
+   "template": "cee-suite/015/template-015.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/016",
+   "instance": "cee-suite/016/instance-016.json",
+   "template": "cee-suite/016/template-016.json",
+   "javaValid": false,
+   "javaErrors": [
+    "/@context/Phone Field: does not have a value in the enumeration ['https://schema.metadatacenter.org/properties/6983fe2c-d004-4144-86ea-7132026364bc']",
+    "object has missing required properties (['Phone field'])"
+   ]
+  },
+  {
+   "id": "cee-suite/017",
+   "instance": "cee-suite/017/instance-017.json",
+   "template": "cee-suite/017/template-017.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/018",
+   "instance": "cee-suite/018/instance-018.json",
+   "template": "cee-suite/018/template-018.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/019",
+   "instance": "cee-suite/019/instance-019.json",
+   "template": "cee-suite/019/template-019.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/020",
+   "instance": "cee-suite/020/instance-020.json",
+   "template": "cee-suite/020/template-020.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/021",
+   "instance": "cee-suite/021/instance-021.json",
+   "template": "cee-suite/021/template-021.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/022",
+   "instance": "cee-suite/022/instance-022.json",
+   "template": "cee-suite/022/template-022.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/023",
+   "instance": "cee-suite/023/instance-023.json",
+   "template": "cee-suite/023/template-023.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/024",
+   "instance": "cee-suite/024/instance-024.json",
+   "template": "cee-suite/024/template-024.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/025",
+   "instance": "cee-suite/025/instance-025.json",
+   "template": "cee-suite/025/template-025.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/026",
+   "instance": "cee-suite/026/instance-026.json",
+   "template": "cee-suite/026/template-026.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/027",
+   "instance": "cee-suite/027/instance-027.json",
+   "template": "cee-suite/027/template-027.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/028",
+   "instance": "cee-suite/028/instance-028.json",
+   "template": "cee-suite/028/template-028.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/029",
+   "instance": "cee-suite/029/instance-029.json",
+   "template": "cee-suite/029/template-029.json",
+   "javaValid": false,
+   "javaErrors": [
+    "object has missing required properties (['@value'])",
+    "This field requires a literal value."
+   ]
+  },
+  {
+   "id": "cee-suite/030",
+   "instance": "cee-suite/030/instance-030.json",
+   "template": "cee-suite/030/template-030.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/032",
+   "instance": "cee-suite/032/instance-032.json",
+   "template": "cee-suite/032/template-032.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/034",
+   "instance": "cee-suite/034/instance-034.json",
+   "template": "cee-suite/034/template-034.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/035",
+   "instance": "cee-suite/035/instance-035.json",
+   "template": "cee-suite/035/template-035.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/036",
+   "instance": "cee-suite/036/instance-036.json",
+   "template": "cee-suite/036/template-036.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/041",
+   "instance": "cee-suite/041/instance-041.json",
+   "template": "cee-suite/041/template-041.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/042",
+   "instance": "cee-suite/042/instance-042.json",
+   "template": "cee-suite/042/template-042.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/044",
+   "instance": "cee-suite/044/instance-044.json",
+   "template": "cee-suite/044/template-044.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/046",
+   "instance": "cee-suite/046/instance-046.json",
+   "template": "cee-suite/046/template-046.json",
+   "javaValid": false,
+   "javaErrors": [
+    "/Element 1/Element 2/0/Element 3/1/Sample Attribute Value/0: object found, string expected",
+    "/Element 1/Element 2/0/Element 3/2/Sample Attribute Value/0: object found, string expected",
+    "object instance has properties which are not allowed by the schema: ['@value']"
+   ]
+  },
+  {
+   "id": "cee-suite/049",
+   "instance": "cee-suite/049/instance-049.json",
+   "template": "cee-suite/049/template-049.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/050",
+   "instance": "cee-suite/050/instance-050.json",
+   "template": "cee-suite/050/template-050.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/051",
+   "instance": "cee-suite/051/instance-051.json",
+   "template": "cee-suite/051/template-051.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/052",
+   "instance": "cee-suite/052/instance-052.json",
+   "template": "cee-suite/052/template-052.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/056",
+   "instance": "cee-suite/056/instance-056.json",
+   "template": "cee-suite/056/template-056.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/057",
+   "instance": "cee-suite/057/instance-057.json",
+   "template": "cee-suite/057/template-057.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/058",
+   "instance": "cee-suite/058/instance-058.json",
+   "template": "cee-suite/058/template-058.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/059",
+   "instance": "cee-suite/059/instance-059.json",
+   "template": "cee-suite/059/template-059.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/060",
+   "instance": "cee-suite/060/instance-060.json",
+   "template": "cee-suite/060/template-060.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/061",
+   "instance": "cee-suite/061/instance-061.json",
+   "template": "cee-suite/061/template-061.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/062",
+   "instance": "cee-suite/062/instance-062.json",
+   "template": "cee-suite/062/template-062.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/063",
+   "instance": "cee-suite/063/instance-063.json",
+   "template": "cee-suite/063/template-063.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/064",
+   "instance": "cee-suite/064/instance-064.json",
+   "template": "cee-suite/064/template-064.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/065",
+   "instance": "cee-suite/065/instance-065.json",
+   "template": "cee-suite/065/template-065.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/066",
+   "instance": "cee-suite/066/instance-066.json",
+   "template": "cee-suite/066/template-066.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/071",
+   "instance": "cee-suite/071/instance-071.json",
+   "template": "cee-suite/071/template-071.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/072",
+   "instance": "cee-suite/072/instance-072.json",
+   "template": "cee-suite/072/template-072.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/082",
+   "instance": "cee-suite/082/instance-082.json",
+   "template": "cee-suite/082/template-082.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/083",
+   "instance": "cee-suite/083/instance-083.json",
+   "template": "cee-suite/083/template-083.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/085",
+   "instance": "cee-suite/085/instance-085.json",
+   "template": "cee-suite/085/template-085.json",
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "instances/005",
+   "instance": "instances/005/instance-005.json",
+   "template": "instances/005/template-005.json",
+   "javaValid": false,
+   "javaErrors": [
+    "object has missing required properties (['Element'])",
+    "object instance has properties which are not allowed by the schema: ['Element as Single']",
+    "object instance has properties which are not allowed by the schema: ['Element as Multi']"
+   ]
+  }
+ ]
+}

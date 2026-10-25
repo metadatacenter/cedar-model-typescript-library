@@ -183,6 +183,17 @@ The unit suite covers the model and serialization behavior. The parity gates
 compare the TypeScript library with the Java CEDAR Artifact Library over the
 vendored JSON and YAML corpora.
 
+The two libraries must also reach the same verdict on every instance.
+`itest/InstanceVerdictConcordance.spec.ts` checks that `InstanceValidator`'s
+save decision equals the verdict of the Java validation library, which the
+server applies to every write, on each corpus instance that has its template
+beside it. The Java verdicts are recorded in
+`itest/resources/concordance/instance-verdicts.json` by cedar-development's
+`ops/cedar_corpus_instance_verdicts.py`, with a lock naming the validator and
+corpus commits; regenerate them after either changes. A case on which this
+library still disagrees is listed as an open defect in the spec, and fixing it
+makes the spec fail until the entry is removed.
+
 `npm run test:package` builds the package that would be published, packs and
 installs it into an isolated consumer, and exercises its CommonJS bundle, ES
 module bundle, and TypeScript declarations.

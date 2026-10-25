@@ -187,7 +187,9 @@ The two libraries must also reach the same verdict on every instance.
 `itest/InstanceVerdictConcordance.spec.ts` checks that `InstanceValidator`'s
 save decision equals the verdict of the Java validation library, which the
 server applies to every write, on each corpus instance that has its template
-beside it. The Java verdicts are recorded in
+beside it. Further cases probe shapes the corpus holds no example of: a corpus
+instance with one controlled-term or link value replaced by an unfilled,
+half-filled or malformed value. The Java verdicts are recorded in
 `itest/resources/concordance/instance-verdicts.json` by cedar-development's
 `ops/cedar_corpus_instance_verdicts.py`, with a lock naming the validator and
 corpus commits; regenerate them after either changes. A case on which this

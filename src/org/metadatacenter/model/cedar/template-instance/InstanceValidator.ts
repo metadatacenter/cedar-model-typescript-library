@@ -24,6 +24,7 @@ import { JsonTemplateInstanceWriter } from '../../../io/writer/json/JsonTemplate
 import { FieldValuePolicy } from '../../../policy/FieldValuePolicy';
 import { ValidationPolicy, ValidationSummary } from '../../../policy/ValidationPolicy';
 import { validationFieldSchema } from '../util/validationFieldSchema';
+import { JsonNode } from '../types/basic-types/JsonNode';
 
 const LOCATION = 'InstanceValidator';
 
@@ -235,11 +236,13 @@ export class InstanceValidator {
       const field = validationFieldSchema(child);
       const at = path.toPointer();
       for (const finding of FieldValuePolicy.validateConfiguration(field, at)) result.addValidationFinding(finding);
-      if (value instanceof InstanceDataEmptyAtom && value.hasDiscardedContent()) {
-        result.addValidationFinding(ValidationPolicy.finding('valueShape', at, 'The supplied node contains an unrecognized value shape.'));
-        return;
-      }
-      const node = JsonTemplateInstanceWriter.writeValueNode(value);
+      // An unfilled value can still hold something, such as a null label or a class as @type. It is
+      // judged as it was stored, the way the Java validator judges it, rather than as the `{}` the
+      // writer would make of it.
+      const node =
+        value instanceof InstanceDataEmptyAtom && value.hasDiscardedContent()
+          ? (value.discarded as JsonNode)
+          : JsonTemplateInstanceWriter.writeValueNode(value);
       for (const finding of FieldValuePolicy.validateNode(field, node, at)) {
         let diagnostic: ComparisonError | undefined;
         if ((finding.code === 'valueType' || (finding.code === 'missingProperty' && finding.path.endsWith('/@type'))) && node) {

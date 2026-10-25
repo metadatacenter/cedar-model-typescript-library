@@ -14,6 +14,7 @@ export interface ValidationField {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   properties?: { [key: string]: any };
   required?: string[];
+  additionalProperties?: boolean;
 }
 
 /** Local facts shared by model callers and editors. Remote checks are explicit, separate facts. */
@@ -141,6 +142,14 @@ export class FieldValuePolicy {
         add('valueShape', property, `${property} must be a string or null.`);
       }
     }
+    // A closed schema refuses a key it does not declare, as JSON Schema does. @id and @value have
+    // shape rules of their own, which report them.
+    const closed = field.additionalProperties === false && field.properties !== undefined;
+    const declares = (property: string) => !closed || Object.hasOwn(field.properties ?? {}, property);
+    for (const property of Object.keys(atom)) {
+      if (property !== '@id' && property !== '@value' && !declares(property))
+        add('valueShape', property, 'The template does not declare this property.');
+    }
     if (Object.hasOwn(atom, '@id') && (typeof atom['@id'] !== 'string' || atom['@id'] === '')) {
       add('iriMalformed', '@id', 'A populated IRI must be a nonempty string.');
       return out;
@@ -157,21 +166,18 @@ export class FieldValuePolicy {
       return out;
     }
     if (this.isIri(field)) {
-      if (!Object.hasOwn(atom, '@id')) {
-        // Preserve the established null-literal spelling of an unanswered IRI field.
-        if (atom['@value'] === null) {
-          if (c.requiredValue === true) add('required', null, 'A value is required.');
-          return out;
-        }
-        add('controlledStructure', '@id', 'An IRI field requires @id.');
-        return out;
-      }
-      if (typeof atom['@id'] !== 'string' || atom['@id'] === '') {
-        add('iriMalformed', '@id', 'A populated IRI must be a nonempty string.');
-        return out;
-      }
-      if (Object.hasOwn(atom, '@value') && atom['@value'] !== null)
+      // No IRI field declares @value, so where the schema is closed even a null one is refused.
+      if (Object.hasOwn(atom, '@value') && (atom['@value'] !== null || !declares('@value')))
         add('valueShape', '@value', 'An IRI field cannot contain a literal value.');
+      if (!Object.hasOwn(atom, '@id')) {
+        // A value without @id is unfilled, whatever else it holds: a null or empty label, or a class
+        // as @type. Only a controlled term's label claims a term, and one without an IRI names none.
+        if (c.requiredValue === true) add('required', null, 'A value is required.');
+        const label = atom['rdfs:label'];
+        if (this.isControlled(field) && typeof label === 'string' && label !== '')
+          add('controlledStructure', null, 'A controlled-term label requires an IRI.');
+        return out;
+      }
       out.push(...this.validate(field, atom['@id'], path + '/@id'));
       return out;
     }

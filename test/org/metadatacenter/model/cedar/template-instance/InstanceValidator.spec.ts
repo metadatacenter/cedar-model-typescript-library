@@ -262,6 +262,69 @@ describe('@value and @id are not symmetrical', () => {
   });
 });
 
+describe('an unfilled controlled term', () => {
+  /**
+   * A controlled-term value without `@id` is unfilled, whatever else it holds.
+   * Stored instances write one as a null or empty label, or as the class alone
+   * in `@type`, and the Java validator accepts each: only a label without the
+   * IRI of the term it names is refused. The reader keeps what such a value
+   * held, and the validator judges that rather than refusing it as an
+   * unrecognized shape.
+   */
+  const CLASS = 'https://example.org/classes/Term';
+  const term = CedarBuilders.controlledTermFieldBuilder()
+    .withAtId('https://repo.metadatacenter.org/template-fields/term')
+    .withSchemaName('term')
+    .withSchemaDescription('term')
+    .build();
+  const withTerm = CedarBuilders.templateBuilder()
+    .withAtId('https://repo.metadatacenter.org/templates/t2')
+    .withSchemaName('T')
+    .withSchemaDescription('T')
+    .addChild(term, dep(term, '_term'))
+    .build();
+  const judge = (value: object) =>
+    InstanceValidator.validateReport(
+      CedarReaders.json()
+        .getFebruary2024()
+        .getTemplateInstanceReader()
+        .readFromObject(
+          {
+            '@id': 'https://repo.metadatacenter.org/template-instances/i2',
+            '@context': { ...CONTEXT },
+            'schema:isBasedOn': 'https://repo.metadatacenter.org/templates/t2',
+            'schema:name': 'An instance',
+            'schema:description': '',
+            _term: value,
+          } as any,
+          undefined as never,
+        ).instance,
+      withTerm,
+    );
+
+  it.each([{}, { 'rdfs:label': null }, { 'rdfs:label': '' }, { '@type': CLASS }, { '@type': CLASS, 'rdfs:label': null }])(
+    'saves %j',
+    (value) => {
+      expect(judge(value).canSave).toBe(true);
+    },
+  );
+
+  it('refuses a label without the IRI of its term', () => {
+    const report = judge({ '@type': CLASS, 'rdfs:label': 'A term' });
+    expect(report.canSave).toBe(false);
+    expect(report.findings).toContainEqual(expect.objectContaining({ code: 'controlledStructure', path: '/_term' }));
+  });
+
+  it.each([{ '@value': null }, { 'rdfs:label': null, 'skos:prefLabel': 'A term' }])(
+    'refuses a key the field does not declare in %j',
+    (value) => {
+      const report = judge(value);
+      expect(report.canSave).toBe(false);
+      expect(report.findings).toContainEqual(expect.objectContaining({ code: 'valueShape' }));
+    },
+  );
+});
+
 describe('a property the template requires', () => {
   /**
    * A template lists every non-static, non-attribute-value child in its JSON

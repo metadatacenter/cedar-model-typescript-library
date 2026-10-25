@@ -141,6 +141,147 @@
    "javaErrors": []
   },
   {
+   "id": "cee-suite/021#empty",
+   "instance": "cee-suite/021/instance-021.json",
+   "template": "cee-suite/021/template-021.json",
+   "replace": {
+    "field": "Untitled",
+    "value": {}
+   },
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/021#label-null",
+   "instance": "cee-suite/021/instance-021.json",
+   "template": "cee-suite/021/template-021.json",
+   "replace": {
+    "field": "Untitled",
+    "value": {
+     "rdfs:label": null
+    }
+   },
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/021#label-empty",
+   "instance": "cee-suite/021/instance-021.json",
+   "template": "cee-suite/021/template-021.json",
+   "replace": {
+    "field": "Untitled",
+    "value": {
+     "rdfs:label": ""
+    }
+   },
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/021#label-text",
+   "instance": "cee-suite/021/instance-021.json",
+   "template": "cee-suite/021/template-021.json",
+   "replace": {
+    "field": "Untitled",
+    "value": {
+     "rdfs:label": "Probe"
+    }
+   },
+   "javaValid": false,
+   "javaErrors": [
+    "A controlled-term label requires an IRI."
+   ]
+  },
+  {
+   "id": "cee-suite/021#class-only",
+   "instance": "cee-suite/021/instance-021.json",
+   "template": "cee-suite/021/template-021.json",
+   "replace": {
+    "field": "Untitled",
+    "value": {
+     "@type": "https://example.org/classes/Probe"
+    }
+   },
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/021#class-and-label-null",
+   "instance": "cee-suite/021/instance-021.json",
+   "template": "cee-suite/021/template-021.json",
+   "replace": {
+    "field": "Untitled",
+    "value": {
+     "@type": "https://example.org/classes/Probe",
+     "rdfs:label": null
+    }
+   },
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/021#class-and-label-text",
+   "instance": "cee-suite/021/instance-021.json",
+   "template": "cee-suite/021/template-021.json",
+   "replace": {
+    "field": "Untitled",
+    "value": {
+     "@type": "https://example.org/classes/Probe",
+     "rdfs:label": "Probe"
+    }
+   },
+   "javaValid": false,
+   "javaErrors": [
+    "A controlled-term label requires an IRI."
+   ]
+  },
+  {
+   "id": "cee-suite/021#value-null",
+   "instance": "cee-suite/021/instance-021.json",
+   "template": "cee-suite/021/template-021.json",
+   "replace": {
+    "field": "Untitled",
+    "value": {
+     "@value": null
+    }
+   },
+   "javaValid": false,
+   "javaErrors": [
+    "object instance has properties which are not allowed by the schema: ['@value']"
+   ]
+  },
+  {
+   "id": "cee-suite/021#id-empty",
+   "instance": "cee-suite/021/instance-021.json",
+   "template": "cee-suite/021/template-021.json",
+   "replace": {
+    "field": "Untitled",
+    "value": {
+     "@id": ""
+    }
+   },
+   "javaValid": false,
+   "javaErrors": [
+    "The stored IRI is empty or malformed."
+   ]
+  },
+  {
+   "id": "cee-suite/021#undeclared-key",
+   "instance": "cee-suite/021/instance-021.json",
+   "template": "cee-suite/021/template-021.json",
+   "replace": {
+    "field": "Untitled",
+    "value": {
+     "rdfs:label": null,
+     "probe": "Probe"
+    }
+   },
+   "javaValid": false,
+   "javaErrors": [
+    "object instance has properties which are not allowed by the schema: ['probe']"
+   ]
+  },
+  {
    "id": "cee-suite/022",
    "instance": "cee-suite/022/instance-022.json",
    "template": "cee-suite/022/template-022.json",
@@ -181,6 +322,143 @@
    "template": "cee-suite/027/template-027.json",
    "javaValid": true,
    "javaErrors": []
+  },
+  {
+   "id": "cee-suite/027#empty",
+   "instance": "cee-suite/027/instance-027.json",
+   "template": "cee-suite/027/template-027.json",
+   "replace": {
+    "field": "Link here",
+    "value": {}
+   },
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/027#label-null",
+   "instance": "cee-suite/027/instance-027.json",
+   "template": "cee-suite/027/template-027.json",
+   "replace": {
+    "field": "Link here",
+    "value": {
+     "rdfs:label": null
+    }
+   },
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/027#label-empty",
+   "instance": "cee-suite/027/instance-027.json",
+   "template": "cee-suite/027/template-027.json",
+   "replace": {
+    "field": "Link here",
+    "value": {
+     "rdfs:label": ""
+    }
+   },
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/027#label-text",
+   "instance": "cee-suite/027/instance-027.json",
+   "template": "cee-suite/027/template-027.json",
+   "replace": {
+    "field": "Link here",
+    "value": {
+     "rdfs:label": "Probe"
+    }
+   },
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/027#class-only",
+   "instance": "cee-suite/027/instance-027.json",
+   "template": "cee-suite/027/template-027.json",
+   "replace": {
+    "field": "Link here",
+    "value": {
+     "@type": "https://example.org/classes/Probe"
+    }
+   },
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/027#class-and-label-null",
+   "instance": "cee-suite/027/instance-027.json",
+   "template": "cee-suite/027/template-027.json",
+   "replace": {
+    "field": "Link here",
+    "value": {
+     "@type": "https://example.org/classes/Probe",
+     "rdfs:label": null
+    }
+   },
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/027#class-and-label-text",
+   "instance": "cee-suite/027/instance-027.json",
+   "template": "cee-suite/027/template-027.json",
+   "replace": {
+    "field": "Link here",
+    "value": {
+     "@type": "https://example.org/classes/Probe",
+     "rdfs:label": "Probe"
+    }
+   },
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/027#value-null",
+   "instance": "cee-suite/027/instance-027.json",
+   "template": "cee-suite/027/template-027.json",
+   "replace": {
+    "field": "Link here",
+    "value": {
+     "@value": null
+    }
+   },
+   "javaValid": false,
+   "javaErrors": [
+    "object instance has properties which are not allowed by the schema: ['@value']"
+   ]
+  },
+  {
+   "id": "cee-suite/027#id-empty",
+   "instance": "cee-suite/027/instance-027.json",
+   "template": "cee-suite/027/template-027.json",
+   "replace": {
+    "field": "Link here",
+    "value": {
+     "@id": ""
+    }
+   },
+   "javaValid": false,
+   "javaErrors": [
+    "The stored IRI is empty or malformed."
+   ]
+  },
+  {
+   "id": "cee-suite/027#undeclared-key",
+   "instance": "cee-suite/027/instance-027.json",
+   "template": "cee-suite/027/template-027.json",
+   "replace": {
+    "field": "Link here",
+    "value": {
+     "rdfs:label": null,
+     "probe": "Probe"
+    }
+   },
+   "javaValid": false,
+   "javaErrors": [
+    "object instance has properties which are not allowed by the schema: ['probe']"
+   ]
   },
   {
    "id": "cee-suite/028",
@@ -412,8 +690,8 @@
    "template": "instances/005/template-005.json",
    "javaValid": false,
    "javaErrors": [
-    "object has missing required properties (['Element'])",
     "object instance has properties which are not allowed by the schema: ['Element as Single']",
+    "object has missing required properties (['Element1'])",
     "object instance has properties which are not allowed by the schema: ['Element as Multi']"
    ]
   }

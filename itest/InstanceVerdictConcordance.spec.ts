@@ -8,7 +8,9 @@ import { InstanceValidator, JsonNode, JsonSourcePolicy, JsonTemplateInstanceRead
 // verdict to a write and the embeddable editor's Save follows this library's, so the two must agree
 // on every case: an instance the server would store can be saved, and one it would refuse cannot.
 const bytes = readFileSync(join(__dirname, 'resources/concordance/instance-verdicts.json'));
-const corpus = JSON.parse(bytes.toString()) as { cases: { id: string; instance: string; template: string; javaValid: boolean }[] };
+const corpus = JSON.parse(bytes.toString()) as {
+  cases: { id: string; instance: string; template: string; replace?: { field: string; value: JsonNode }; javaValid: boolean }[];
+};
 const artifacts = join(__dirname, '..', 'cedar-test-artifacts', 'artifacts');
 
 function source(relative: string): JsonNode {
@@ -32,14 +34,21 @@ const OPEN_DEFECTS: Record<string, string> = {
 };
 
 // The editor reads a stored template with the FEBRUARY_2024 behavior, and an instance with the strict
-// reader, falling back to FEBRUARY_2024 where the strict reader refuses it.
-test.each(corpus.cases)('$id: Save follows the Java verdict', ({ id, instance, template, javaValid }) => {
+// reader, falling back to FEBRUARY_2024 where the strict reader refuses it. A case with a `replace` is
+// a corpus instance with one field's value replaced by a probe shape the corpus does not hold. An
+// instance neither reader accepts cannot be opened, so it cannot be saved either.
+test.each(corpus.cases)('$id: Save follows the Java verdict', ({ id, instance, template, replace, javaValid }) => {
   const model = JsonTemplateReader.getFebruary2024().readFromObject(source(template)).template;
-  const strict = JsonTemplateInstanceReader.getStrict().readFromObject(source(instance));
-  const read = strict.parsingResult.wasSuccessful()
-    ? strict
-    : JsonTemplateInstanceReader.getFebruary2024().readFromObject(source(instance));
-  const canSave = InstanceValidator.validateReport(read.instance, model).canSave;
+  const document = (): JsonNode => (replace ? { ...source(instance), [replace.field]: replace.value } : source(instance));
+  const read = (() => {
+    try {
+      const strict = JsonTemplateInstanceReader.getStrict().readFromObject(document());
+      return strict.parsingResult.wasSuccessful() ? strict : JsonTemplateInstanceReader.getFebruary2024().readFromObject(document());
+    } catch {
+      return null;
+    }
+  })();
+  const canSave = read !== null && InstanceValidator.validateReport(read.instance, model).canSave;
   expect(canSave).toBe(id in OPEN_DEFECTS ? !javaValid : javaValid);
 });
 

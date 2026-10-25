@@ -40,7 +40,9 @@ const UNPARSEABLE = ['086'];
 // 029 contains {} for a literal occurrence whose schema explicitly requires @value.
 // An unanswered literal is {"@value":null}; this missing structural member must block saving.
 // 004 declares two decimal places for an xsd:long field with three occurrences.
-const KNOWN_NONCONFORMANT: Record<string, number> = { '004': 3, '029': 1 };
+// 046 lists {"@value":null} in an attribute-value field of two element occurrences, where the schema
+// admits only attribute names; the Java validator refuses both.
+const KNOWN_NONCONFORMANT: Record<string, number> = { '004': 3, '029': 1, '046': 2 };
 
 const pairs = (): Array<[string, string, string]> => {
   if (!fs.existsSync(CORPUS)) {

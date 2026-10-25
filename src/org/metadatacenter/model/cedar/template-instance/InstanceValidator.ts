@@ -25,6 +25,7 @@ import { FieldValuePolicy } from '../../../policy/FieldValuePolicy';
 import { ValidationPolicy, ValidationSummary } from '../../../policy/ValidationPolicy';
 import { validationFieldSchema } from '../util/validationFieldSchema';
 import { JsonNode } from '../types/basic-types/JsonNode';
+import { StoredForm } from './StoredForm';
 import { ReservedNames } from '../ReservedNames';
 import { ContainerArtifactChildrenInfo } from '../deployment/ContainerArtifactChildrenInfo';
 import { JsonTemplateInstanceContent } from '../util/serialization/JsonTemplateInstanceContent';
@@ -37,12 +38,16 @@ const LOCATION = 'InstanceValidator';
 /** How the caller will write the instance it asks about. */
 export interface InstanceValidationOptions {
   /**
-   * The caller writes each child's property IRI from the template, as
-   * `InstanceInflater` does, so the mapping the instance holds for a child is
-   * not judged. A term the template does not declare is still judged, since
-   * the write keeps it.
+   * The caller writes the instance through `InstanceInflater` and this
+   * library's JSON writer, and asks whether the server would store what that
+   * write produces. The write maps each child to the template's property IRI,
+   * gives the root the standard `@context` terms, and leaves out an optional
+   * property held as null, so those are judged as written rather than as the
+   * instance holds them. A term the template does not declare is still judged,
+   * since the write keeps it. Without this the instance is judged as it was
+   * stored.
    */
-  childIrisFromTemplate?: boolean;
+  asWritten?: boolean;
 }
 
 /**
@@ -53,13 +58,6 @@ export interface InstanceValidationOptions {
  * Remote terminology and authority verification is explicitly not checked here.
  */
 export class InstanceValidator {
-  /**
-   * Properties the model keeps as no value when they are null, and writes only
-   * when they hold one. A slot written from the model cannot show whether the
-   * stored slot carried one of them as null.
-   */
-  private static readonly WRITTEN_WHEN_SET = new Set(['rdfs:label', 'skos:notation', 'skos:prefLabel', '@language']);
-
   private constructor() {}
 
   /**
@@ -161,8 +159,11 @@ export class InstanceValidator {
 
     const context = InstanceValidator.object(InstanceValidator.object(stored?.properties)?.[JsonSchema.atContext]);
     if (context !== null) {
-      const supplied = options.childIrisFromTemplate === true ? info.getChildIriMap() : {};
-      InstanceValidator.validateContext(container, context, supplied, path, result);
+      // The writer supplies the standard terms at the root and none below it.
+      const written = path.toPointer() === '' ? JsonTemplateInstanceContent.CONTEXT_VERBATIM : JsonNode.getEmpty();
+      const terms = options.asWritten === true ? written : StoredForm.contextTermsOf(container);
+      const supplied = options.asWritten === true ? info.getChildIriMap() : {};
+      InstanceValidator.validateContext(container, context, terms, supplied, path, result);
     }
 
     for (const name of InstanceValidator.requiredChildren(info, stored)) {
@@ -183,6 +184,7 @@ export class InstanceValidator {
        * `getChildrenNamesForRequiredInProperties` leaves it out of `required`.
        */
       if (childInfo?.uiInputType === UiInputType.ATTRIBUTE_VALUE) {
+        InstanceValidator.validateAttributeNames(container.values[name], path.add(name), result);
         continue;
       }
 
@@ -206,38 +208,43 @@ export class InstanceValidator {
   }
 
   /**
-   * A container's property IRIs judged against its stored `@context` schema.
+   * A container's `@context` judged against its stored `@context` schema.
    *
-   * The model keeps the IRIs an instance maps its children to as they were
-   * stored, and writes the standard prefixes and term definitions itself, so
-   * those are what is judged: a declared key must map to the IRI the template
-   * gives it, an undeclared one must be admitted by `additionalProperties`, and
-   * every required key the writer does not supply must be there. `supplied`
-   * holds the mappings the caller's writer takes from the template instead.
+   * The model holds the IRI an instance maps each child to, and `terms` holds
+   * the standard prefixes and term definitions: the stored ones, or the ones
+   * the writer gives the document. A declared key must take a value the
+   * template admits, an undeclared one must be admitted by
+   * `additionalProperties`, and every required key must be there. `supplied`
+   * holds the child mappings the caller's writer takes from the template
+   * instead, and `terms` is null where the stored terms are not known.
    */
   private static validateContext(
     container: InstanceDataContainer,
     context: JsonNode,
+    terms: { [key: string]: unknown } | null,
     supplied: Record<string, string>,
     path: JsonPath,
     result: JsonArtifactParsingResult,
   ): void {
     const declared = InstanceValidator.object(context.properties) ?? JsonNode.getEmpty();
     const at = path.add(JsonSchema.atContext);
-    for (const [key, iri] of Object.entries(container.iris)) {
-      if (Object.hasOwn(supplied, key)) continue;
+    const entries: Array<[string, unknown]> = [
+      ...Object.entries(terms ?? {}),
+      ...Object.entries(container.iris).filter(([key]) => !Object.hasOwn(supplied, key)),
+    ];
+    for (const [key, value] of entries) {
       const term = InstanceValidator.object(declared[key]);
       if (term !== null) {
-        if (!InstanceValidator.conformsTo(term, iri)) {
+        if (!InstanceValidator.conformsTo(term, value)) {
           result.addValidationFinding(
-            ValidationPolicy.finding('valueShape', at.add(key).toPointer(), 'The template maps this property to a different IRI.'),
+            ValidationPolicy.finding('valueShape', at.add(key).toPointer(), "The template's @context gives this property another value."),
           );
         }
         continue;
       }
       const additional = context.additionalProperties;
       const schema = InstanceValidator.object(additional);
-      if (additional === false || (schema !== null && !InstanceValidator.conformsTo(schema, iri))) {
+      if (additional === false || (schema !== null && !InstanceValidator.conformsTo(schema, value))) {
         result.addValidationFinding(
           ValidationPolicy.finding('valueShape', at.add(key).toPointer(), "The template's @context does not declare this property."),
         );
@@ -245,20 +252,55 @@ export class InstanceValidator {
     }
     const required = Array.isArray(context.required) ? context.required : [];
     for (const key of required) {
-      if (typeof key !== 'string' || Object.hasOwn(JsonTemplateInstanceContent.CONTEXT_VERBATIM, key)) continue;
-      if (Object.hasOwn(supplied, key) || container.hasIri(key)) continue;
+      if (typeof key !== 'string' || Object.hasOwn(supplied, key) || container.hasIri(key)) continue;
+      if (Object.hasOwn(JsonTemplateInstanceContent.CONTEXT_VERBATIM, key) && (terms === null || Object.hasOwn(terms, key))) continue;
       result.addValidationFinding(
         ValidationPolicy.finding('missingProperty', at.add(key).toPointer(), "The template's @context requires this property."),
       );
     }
   }
 
-  /** Whether a property IRI meets the `enum`, `type` and `format` of the schema it is held to. */
-  private static conformsTo(schema: JsonNode, iri: string): boolean {
-    if (Array.isArray(schema.enum) && !schema.enum.includes(iri)) return false;
-    if (schema.type !== undefined && schema.type !== 'string' && !(Array.isArray(schema.type) && schema.type.includes('string')))
-      return false;
-    return schema.format !== 'uri' || IdentifierPolicy.isValid(iri);
+  /**
+   * Whether a value meets the schema it is held to: its `enum`, `type` and
+   * `format`, and for an object its `properties`, `required` and
+   * `additionalProperties`. Enough of JSON Schema for a `@context` entry.
+   */
+  private static conformsTo(schema: JsonNode, value: unknown): boolean {
+    if (Array.isArray(schema.enum) && !schema.enum.some((option) => JSON.stringify(option) === JSON.stringify(value))) return false;
+    const types: unknown[] | null = schema.type === undefined ? null : Array.isArray(schema.type) ? schema.type : [schema.type];
+    if (types !== null && !types.some((type) => InstanceValidator.isOfType(type, value))) return false;
+    if (typeof value === 'string' && schema.format === 'uri' && !IdentifierPolicy.isValid(value)) return false;
+    const node = InstanceValidator.object(value);
+    if (node === null) return true;
+    const properties = InstanceValidator.object(schema.properties) ?? JsonNode.getEmpty();
+    if (Array.isArray(schema.required) && schema.required.some((key) => typeof key === 'string' && !Object.hasOwn(node, key))) return false;
+    return Object.entries(node).every(([key, member]) => {
+      const declared = InstanceValidator.object(properties[key]);
+      if (declared !== null) return InstanceValidator.conformsTo(declared, member);
+      const extra = InstanceValidator.object(schema.additionalProperties);
+      return schema.additionalProperties !== false && (extra === null || InstanceValidator.conformsTo(extra, member));
+    });
+  }
+
+  private static isOfType(type: unknown, value: unknown): boolean {
+    switch (type) {
+      case 'string':
+        return typeof value === 'string';
+      case 'object':
+        return InstanceValidator.object(value) !== null;
+      case 'array':
+        return Array.isArray(value);
+      case 'null':
+        return value === null;
+      case 'boolean':
+        return typeof value === 'boolean';
+      case 'number':
+        return typeof value === 'number';
+      case 'integer':
+        return Number.isInteger(value);
+      default:
+        return true;
+    }
   }
 
   /** A stored schema node, or null for anything that is not one. */
@@ -309,6 +351,29 @@ export class InstanceValidator {
       required: Array.isArray(stored.required) ? stored.required.filter((key): key is string => typeof key === 'string') : undefined,
       additionalProperties: typeof stored.additionalProperties === 'boolean' ? stored.additionalProperties : undefined,
     };
+  }
+
+  /**
+   * An attribute-value field's value lists the names of the attributes a user
+   * added, and the schema admits nothing else in the list: an entry holding a
+   * value, such as `{"@value": null}`, is refused, as is a value that is no
+   * list at all. A list of names alone reads as an attribute-value field.
+   */
+  private static validateAttributeNames(value: InstanceDataAtomType | undefined, path: JsonPath, result: JsonArtifactParsingResult): void {
+    if (value === undefined || value instanceof InstanceDataAttributeValueField) return;
+    if (!Array.isArray(value)) {
+      result.addValidationFinding(
+        ValidationPolicy.finding('valueShape', path.toPointer(), 'An attribute-value field holds a list of attribute names.'),
+      );
+      return;
+    }
+    value.forEach((entry, index) => {
+      if (!(entry instanceof InstanceDataAttributeValueFieldName)) {
+        result.addValidationFinding(
+          ValidationPolicy.finding('valueShape', path.add(index).toPointer(), 'An attribute-value field lists attribute names only.'),
+        );
+      }
+    });
   }
 
   private static attributeValueGroups(container: InstanceDataContainer): Array<[string, string[]]> {
@@ -420,18 +485,8 @@ export class InstanceValidator {
       const field = InstanceValidator.withStoredShape(validationFieldSchema(child), stored);
       const at = path.toPointer();
       for (const finding of FieldValuePolicy.validateConfiguration(field, at)) result.addValidationFinding(finding);
-      // An unfilled value can still hold something, such as a null label or a class as @type. It is
-      // judged as it was stored, the way the Java validator judges it, rather than as the `{}` the
-      // writer would make of it.
-      const discarded = value instanceof InstanceDataEmptyAtom && value.hasDiscardedContent();
-      const node = discarded ? (value.discarded as JsonNode) : JsonTemplateInstanceWriter.writeValueNode(value);
-      // A schema that requires one of the properties the model writes only when set is not held
-      // against a written slot, which leaves out a null one the stored slot carries.
-      const judged =
-        discarded || field.required === undefined
-          ? field
-          : { ...field, required: field.required.filter((property) => !InstanceValidator.WRITTEN_WHEN_SET.has(property)) };
-      for (const finding of FieldValuePolicy.validateNode(judged, node, at)) {
+      const node = options.asWritten === true ? JsonTemplateInstanceWriter.writeValueNode(value) : InstanceValidator.asStored(value);
+      for (const finding of FieldValuePolicy.validateNode(field, node, at)) {
         let diagnostic: ComparisonError | undefined;
         if ((finding.code === 'valueType' || (finding.code === 'missingProperty' && finding.path.endsWith('/@type'))) && node) {
           const expected = field._valueConstraints?.numberType ?? field._valueConstraints?.temporalType;
@@ -469,6 +524,21 @@ export class InstanceValidator {
         );
       }
     }
+  }
+
+  /**
+   * A value as the document stored it, which the writer's form of it can
+   * differ from in two ways. An unfilled value can still hold something, such
+   * as a null label or a class as `@type`, which the writer makes `{}` of. And
+   * the writer leaves out an optional property held as null, which a field may
+   * require.
+   */
+  private static asStored(value: InstanceDataAtomType): JsonNode | null {
+    if (value instanceof InstanceDataEmptyAtom && value.hasDiscardedContent()) return value.discarded as JsonNode;
+    const node = JsonTemplateInstanceWriter.writeValueNode(value);
+    if (node === null || value === null || typeof value !== 'object') return node;
+    const nulls = StoredForm.nullsOf(value).filter((key) => !Object.hasOwn(node, key));
+    return nulls.length === 0 ? node : { ...node, ...Object.fromEntries(nulls.map((key) => [key, null])) };
   }
 
   /** An unfilled slot, in any of the shapes the reader produces for one. */

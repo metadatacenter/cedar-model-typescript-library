@@ -268,10 +268,13 @@ must map to the IRI the template gives it, an undeclared term must be admitted, 
 must be there. Without the stored template, the instance is judged against the template as the
 model writes it, and its `@context` is not judged.
 
-A caller that writes the instance through `InstanceInflater`, which maps each child to the
-template's property IRI, passes `{ childIrisFromTemplate: true }` as a fourth argument. The mapping
-the instance holds for a child is then not judged, since the write replaces it, and a term the
-template does not declare still is, since the write keeps it.
+The instance is judged as it was stored: a value with an optional property held as null keeps it,
+and a container keeps the standard prefixes and term definitions its `@context` held, though the
+writer leaves out the first and writes its own of the second. A caller that saves through
+`InstanceInflater` and this library's JSON writer asks instead about what that write produces, and
+passes `{ asWritten: true }` as a fourth argument. Each child then maps to the template's property
+IRI, the root carries the standard terms, and a null optional property is left out, as the write
+does. A term the template does not declare is still judged, since the write keeps it.
 
 `TemplateValueValidator.validate(templateOrElementOrField)` checks definition/default consistency
 without changing the model. `validateSource(rawDefinition)` supports retained imported definitions

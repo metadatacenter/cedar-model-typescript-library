@@ -82,6 +82,7 @@ const template = CedarBuilders.templateBuilder()
   .addChild(element, dep(element, '_addr'))
   .build();
 
+/** The standard prefixes and term definitions every instance's @context carries. */
 const CONTEXT = {
   rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
   xsd: 'http://www.w3.org/2001/XMLSchema#',
@@ -89,6 +90,16 @@ const CONTEXT = {
   schema: 'http://schema.org/',
   oslc: 'http://open-services.net/ns/core#',
   skos: 'http://www.w3.org/2004/02/skos/core#',
+  'rdfs:label': { '@type': 'xsd:string' },
+  'schema:isBasedOn': { '@type': '@id' },
+  'schema:name': { '@type': 'xsd:string' },
+  'schema:description': { '@type': 'xsd:string' },
+  'pav:derivedFrom': { '@type': '@id' },
+  'pav:createdOn': { '@type': 'xsd:dateTime' },
+  'pav:createdBy': { '@type': '@id' },
+  'pav:lastUpdatedOn': { '@type': 'xsd:dateTime' },
+  'oslc:modifiedBy': { '@type': '@id' },
+  'skos:notation': { '@type': 'xsd:string' },
 };
 
 /** The element's own `@context`, which marks `_addr` as an element value. */
@@ -380,7 +391,7 @@ describe('judged against the stored template', () => {
     );
     const extra = { ...complete(), '@context': { ...complete()['@context'], _gone: 'https://example.org/properties/gone' } };
     expect(judge(extra, written()).canSave).toBe(false);
-    const unmapped: Record<string, string> = { ...complete()['@context'] };
+    const unmapped: Record<string, unknown> = { ...complete()['@context'] };
     delete unmapped._note;
     expect(judge({ ...complete(), '@context': unmapped }, written()).findings).toContainEqual(
       expect.objectContaining({ code: 'missingProperty', path: '/@context/_note' }),
@@ -393,7 +404,7 @@ describe('judged against the stored template', () => {
   });
 
   it('leaves the child mappings to a writer that takes them from the template, and judges the rest', () => {
-    const options = { childIrisFromTemplate: true };
+    const options = { asWritten: true };
     const mapped = (context: object) =>
       InstanceValidator.validateReport(
         CedarReaders.json()
@@ -404,13 +415,34 @@ describe('judged against the stored template', () => {
         written(),
         options,
       );
-    const unmapped: Record<string, string> = { ...complete()['@context'] };
+    const unmapped: Record<string, unknown> = { ...complete()['@context'] };
     delete unmapped._note;
     expect(mapped(unmapped).canSave).toBe(true);
     expect(mapped({ ...complete()['@context'], _note: 'https://example.org/properties/other' }).canSave).toBe(true);
     expect(mapped({ ...complete()['@context'], _gone: 'https://example.org/properties/gone' }).findings).toContainEqual(
       expect.objectContaining({ code: 'valueShape', path: '/@context/_gone' }),
     );
+  });
+
+  it('tells a label stored as null from one left out, where the stored field requires it', () => {
+    const stored = written();
+    stored.properties._note.required = ['@value', 'rdfs:label'];
+    expect(judge({ ...complete(), _note: { '@value': 'a note', 'rdfs:label': null } }, stored).canSave).toBe(true);
+    expect(judge(complete(), stored).findings).toContainEqual(expect.objectContaining({ path: '/_note/rdfs:label' }));
+  });
+
+  it("holds the stored @context's standard terms to the template, and leaves them to the writer as written", () => {
+    const unprefixed: Record<string, unknown> = { ...complete()['@context'] };
+    delete unprefixed.xsd;
+    const source = { ...complete(), '@context': unprefixed };
+    expect(judge(source, written()).findings).toContainEqual(expect.objectContaining({ code: 'missingProperty', path: '/@context/xsd' }));
+    const misprefixed = { ...complete(), '@context': { ...complete()['@context'], xsd: 'https://example.org/xsd#' } };
+    expect(judge(misprefixed, written()).canSave).toBe(false);
+    const instance = CedarReaders.json()
+      .getFebruary2024()
+      .getTemplateInstanceReader()
+      .readFromObject(source as any, undefined as never).instance;
+    expect(InstanceValidator.validateReport(instance, template, written(), { asWritten: true }).canSave).toBe(true);
   });
 
   it('admits an undeclared literal where the stored container admits further literals', () => {

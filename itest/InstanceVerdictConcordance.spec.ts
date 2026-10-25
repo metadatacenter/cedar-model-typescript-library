@@ -51,13 +51,7 @@ test('pins the instance verdicts to the Java validator and the shared corpus', (
 // Cases on which this library still reaches a different verdict. Each is a defect here, not an
 // accepted variation: a case listed must still disagree, so fixing one fails this spec until its entry
 // is removed, and every case not listed must agree.
-const OPEN_DEFECTS: Record<string, string> = {
-  'cee-suite/046': 'an attribute-value field lists an object where the schema allows only an attribute name',
-  'cee-suite/021#context-prefix-missing':
-    'the model writes the standard prefixes and term definitions of an instance @context itself, so it cannot see that a stored instance lacks one',
-  'cee-suite/017#label-absent-required':
-    'the model keeps a null rdfs:label as no label, so a slot without the rdfs:label its schema requires reads the same as one holding it as null',
-};
+const OPEN_DEFECTS: Record<string, string> = {};
 
 // The editor reads a stored template with the FEBRUARY_2024 behavior, and an instance with the strict
 // reader, falling back to FEBRUARY_2024 where the strict reader refuses it, and it judges the instance

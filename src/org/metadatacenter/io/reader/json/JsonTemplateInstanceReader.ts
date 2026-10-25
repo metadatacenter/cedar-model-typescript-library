@@ -21,6 +21,7 @@ import { InstanceDataAtomList } from '../../../model/cedar/template-instance/Ins
 import { InstanceDataLinkAtom } from '../../../model/cedar/template-instance/InstanceDataLinkAtom';
 import { InstanceDataAtomType } from '../../../model/cedar/template-instance/InstanceDataAtomType';
 import { InstanceDataEmptyAtom } from '../../../model/cedar/template-instance/InstanceDataEmptyAtom';
+import { StoredForm } from '../../../model/cedar/template-instance/StoredForm';
 import { InstanceDataControlledAtom } from '../../../model/cedar/template-instance/InstanceDataControlledAtom';
 import { InstanceDataTypedAtom } from '../../../model/cedar/template-instance/InstanceDataTypedAtom';
 import { InstanceDataEmptyNode } from '../../../model/cedar/template-instance/InstanceDataEmptyNode';
@@ -229,6 +230,14 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     const atContextNode = Object.hasOwn(sourceObject, JsonSchema.atContext) ? ReaderUtil.getNode(sourceObject, JsonSchema.atContext) : null;
     if (atContextNode !== null && atContextNode !== undefined) {
       const atContext = atContextNode;
+      StoredForm.recordContextTerms(
+        ret,
+        Object.fromEntries(
+          Object.keys(atContext)
+            .filter((key) => Object.hasOwn(JsonTemplateInstanceContent.CONTEXT_VERBATIM, key))
+            .map((key) => [key, atContext[key]]),
+        ),
+      );
       // add iri mapping for regular fields
       Object.keys(ret.values).forEach((key) => {
         const iri = ReaderUtil.getString(atContext, key);
@@ -472,11 +481,23 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     }
   }
 
+  /** The optional value properties a document may state as null, which the model keeps as no value. */
+  private static readonly NULLABLE_VALUE_KEYS = [
+    JsonSchema.rdfsLabel,
+    JsonSchema.skosNotation,
+    CedarModel.skosPrefLabel,
+    JsonSchema.atLanguage,
+  ];
+
   private static parseDataAtom(content: JsonNode): InstanceDataAtomType {
     if (Object.hasOwn(content, JsonSchema.atId) && Object.hasOwn(content, JsonSchema.atValue)) {
       throw new Error('A field cannot contain both @id and @value.');
     }
     const atom = this.parseDataAtomWithoutNotation(content);
+    StoredForm.recordNulls(
+      atom,
+      JsonTemplateInstanceReader.NULLABLE_VALUE_KEYS.filter((key) => Object.hasOwn(content, key) && content[key] === null),
+    );
     if ('language' in atom) atom.language = ReaderUtil.getString(content, JsonSchema.atLanguage);
     if ('preferredLabel' in atom) atom.preferredLabel = ReaderUtil.getString(content, CedarModel.skosPrefLabel);
     if ('notation' in atom && !(atom instanceof InstanceDataNotationAtom)) {

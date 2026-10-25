@@ -130,7 +130,7 @@ existing URI rules.
 
 ## Building
 
-Use Node 24.22.0, which `.nvmrc` and CI both specify:
+Use Node 24.22.1, which `.nvmrc` and CI both specify:
 
 ```shell
 nvm use

@@ -96,6 +96,42 @@
    "javaErrors": []
   },
   {
+   "id": "cee-suite/015#static-empty",
+   "instance": "cee-suite/015/instance-015.json",
+   "template": "cee-suite/015/template-015.json",
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/Rich Text Standalone",
+      "value": {}
+     }
+    ]
+   },
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/015#static-value-null",
+   "instance": "cee-suite/015/instance-015.json",
+   "template": "cee-suite/015/template-015.json",
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/Rich Text Standalone",
+      "value": {
+       "@value": null
+      }
+     }
+    ]
+   },
+   "javaValid": false,
+   "javaErrors": [
+    "object instance has properties which are not allowed by the schema: ['@value']"
+   ]
+  },
+  {
    "id": "cee-suite/016",
    "instance": "cee-suite/016/instance-016.json",
    "template": "cee-suite/016/template-016.json",
@@ -111,6 +147,105 @@
    "template": "cee-suite/017/template-017.json",
    "javaValid": true,
    "javaErrors": []
+  },
+  {
+   "id": "cee-suite/017#date-unfilled-untyped",
+   "instance": "cee-suite/017/instance-017.json",
+   "template": "cee-suite/017/template-017.json",
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/Datetime Field 1 (month~1year)",
+      "value": {
+       "@value": null
+      }
+     }
+    ]
+   },
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/017#date-filled-untyped",
+   "instance": "cee-suite/017/instance-017.json",
+   "template": "cee-suite/017/template-017.json",
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/Datetime Field 1 (month~1year)",
+      "value": {
+       "@value": "2023-08-31"
+      }
+     }
+    ]
+   },
+   "javaValid": false,
+   "javaErrors": [
+    "The literal datatype does not match xsd:date."
+   ]
+  },
+  {
+   "id": "cee-suite/017#label-null-required",
+   "instance": "cee-suite/017/instance-017.json",
+   "template": "cee-suite/017/template-017.json",
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/Datetime Field 1 (month~1year)",
+      "value": {
+       "@value": "2023-08-31",
+       "@type": "xsd:date",
+       "rdfs:label": null
+      }
+     }
+    ],
+    "template": [
+     {
+      "op": "add",
+      "path": "/properties/Datetime Field 1 (month~1year)/required",
+      "value": [
+       "@value",
+       "rdfs:label"
+      ]
+     }
+    ]
+   },
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/017#label-absent-required",
+   "instance": "cee-suite/017/instance-017.json",
+   "template": "cee-suite/017/template-017.json",
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/Datetime Field 1 (month~1year)",
+      "value": {
+       "@value": "2023-08-31",
+       "@type": "xsd:date"
+      }
+     }
+    ],
+    "template": [
+     {
+      "op": "add",
+      "path": "/properties/Datetime Field 1 (month~1year)/required",
+      "value": [
+       "@value",
+       "rdfs:label"
+      ]
+     }
+    ]
+   },
+   "javaValid": false,
+   "javaErrors": [
+    "object has missing required properties (['rdfs:label'])"
+   ]
   },
   {
    "id": "cee-suite/018",
@@ -144,9 +279,14 @@
    "id": "cee-suite/021#empty",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
-   "replace": {
-    "field": "Untitled",
-    "value": {}
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/Untitled",
+      "value": {}
+     }
+    ]
    },
    "javaValid": true,
    "javaErrors": []
@@ -155,11 +295,16 @@
    "id": "cee-suite/021#label-null",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
-   "replace": {
-    "field": "Untitled",
-    "value": {
-     "rdfs:label": null
-    }
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/Untitled",
+      "value": {
+       "rdfs:label": null
+      }
+     }
+    ]
    },
    "javaValid": true,
    "javaErrors": []
@@ -168,11 +313,16 @@
    "id": "cee-suite/021#label-empty",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
-   "replace": {
-    "field": "Untitled",
-    "value": {
-     "rdfs:label": ""
-    }
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/Untitled",
+      "value": {
+       "rdfs:label": ""
+      }
+     }
+    ]
    },
    "javaValid": true,
    "javaErrors": []
@@ -181,11 +331,16 @@
    "id": "cee-suite/021#label-text",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
-   "replace": {
-    "field": "Untitled",
-    "value": {
-     "rdfs:label": "Probe"
-    }
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/Untitled",
+      "value": {
+       "rdfs:label": "Probe"
+      }
+     }
+    ]
    },
    "javaValid": false,
    "javaErrors": [
@@ -196,11 +351,16 @@
    "id": "cee-suite/021#class-only",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
-   "replace": {
-    "field": "Untitled",
-    "value": {
-     "@type": "https://example.org/classes/Probe"
-    }
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/Untitled",
+      "value": {
+       "@type": "https://example.org/classes/Probe"
+      }
+     }
+    ]
    },
    "javaValid": true,
    "javaErrors": []
@@ -209,12 +369,17 @@
    "id": "cee-suite/021#class-and-label-null",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
-   "replace": {
-    "field": "Untitled",
-    "value": {
-     "@type": "https://example.org/classes/Probe",
-     "rdfs:label": null
-    }
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/Untitled",
+      "value": {
+       "@type": "https://example.org/classes/Probe",
+       "rdfs:label": null
+      }
+     }
+    ]
    },
    "javaValid": true,
    "javaErrors": []
@@ -223,12 +388,17 @@
    "id": "cee-suite/021#class-and-label-text",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
-   "replace": {
-    "field": "Untitled",
-    "value": {
-     "@type": "https://example.org/classes/Probe",
-     "rdfs:label": "Probe"
-    }
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/Untitled",
+      "value": {
+       "@type": "https://example.org/classes/Probe",
+       "rdfs:label": "Probe"
+      }
+     }
+    ]
    },
    "javaValid": false,
    "javaErrors": [
@@ -239,11 +409,16 @@
    "id": "cee-suite/021#value-null",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
-   "replace": {
-    "field": "Untitled",
-    "value": {
-     "@value": null
-    }
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/Untitled",
+      "value": {
+       "@value": null
+      }
+     }
+    ]
    },
    "javaValid": false,
    "javaErrors": [
@@ -254,11 +429,16 @@
    "id": "cee-suite/021#id-empty",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
-   "replace": {
-    "field": "Untitled",
-    "value": {
-     "@id": ""
-    }
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/Untitled",
+      "value": {
+       "@id": ""
+      }
+     }
+    ]
    },
    "javaValid": false,
    "javaErrors": [
@@ -269,16 +449,197 @@
    "id": "cee-suite/021#undeclared-key",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
-   "replace": {
-    "field": "Untitled",
-    "value": {
-     "rdfs:label": null,
-     "probe": "Probe"
-    }
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/Untitled",
+      "value": {
+       "rdfs:label": null,
+       "probe": "Probe"
+      }
+     }
+    ]
    },
    "javaValid": false,
    "javaErrors": [
     "object instance has properties which are not allowed by the schema: ['probe']"
+   ]
+  },
+  {
+   "id": "cee-suite/021#absent",
+   "instance": "cee-suite/021/instance-021.json",
+   "template": "cee-suite/021/template-021.json",
+   "patch": {
+    "instance": [
+     {
+      "op": "remove",
+      "path": "/Untitled"
+     }
+    ]
+   },
+   "javaValid": false,
+   "javaErrors": [
+    "object has missing required properties (['Untitled'])"
+   ]
+  },
+  {
+   "id": "cee-suite/021#absent-unrequired",
+   "instance": "cee-suite/021/instance-021.json",
+   "template": "cee-suite/021/template-021.json",
+   "patch": {
+    "instance": [
+     {
+      "op": "remove",
+      "path": "/Untitled"
+     }
+    ],
+    "template": [
+     {
+      "op": "add",
+      "path": "/required",
+      "value": [
+       "@context",
+       "@id",
+       "schema:isBasedOn",
+       "schema:name",
+       "schema:description",
+       "pav:createdOn",
+       "pav:createdBy",
+       "pav:lastUpdatedOn",
+       "oslc:modifiedBy"
+      ]
+     }
+    ]
+   },
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/021#extra-literal",
+   "instance": "cee-suite/021/instance-021.json",
+   "template": "cee-suite/021/template-021.json",
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/Probe",
+      "value": {
+       "@value": "Probe"
+      }
+     }
+    ]
+   },
+   "javaValid": false,
+   "javaErrors": [
+    "object instance has properties which are not allowed by the schema: ['Probe']"
+   ]
+  },
+  {
+   "id": "cee-suite/021#extra-literal-admitted",
+   "instance": "cee-suite/021/instance-021.json",
+   "template": "cee-suite/021/template-021.json",
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/Probe",
+      "value": {
+       "@value": "Probe"
+      }
+     }
+    ],
+    "template": [
+     {
+      "op": "add",
+      "path": "/additionalProperties",
+      "value": {
+       "type": "object",
+       "properties": {
+        "@value": {
+         "type": [
+          "string",
+          "null"
+         ]
+        },
+        "@type": {
+         "type": "string",
+         "format": "uri"
+        }
+       },
+       "required": [
+        "@value"
+       ],
+       "additionalProperties": false
+      }
+     }
+    ]
+   },
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/021#extra-iri-admitted",
+   "instance": "cee-suite/021/instance-021.json",
+   "template": "cee-suite/021/template-021.json",
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/Probe",
+      "value": {
+       "@id": "https://example.org/classes/Probe"
+      }
+     }
+    ],
+    "template": [
+     {
+      "op": "add",
+      "path": "/additionalProperties",
+      "value": {
+       "type": "object",
+       "properties": {
+        "@value": {
+         "type": [
+          "string",
+          "null"
+         ]
+        },
+        "@type": {
+         "type": "string",
+         "format": "uri"
+        }
+       },
+       "required": [
+        "@value"
+       ],
+       "additionalProperties": false
+      }
+     }
+    ]
+   },
+   "javaValid": false,
+   "javaErrors": [
+    "object instance has properties which are not allowed by the schema: ['@id']",
+    "object has missing required properties (['@value'])"
+   ]
+  },
+  {
+   "id": "cee-suite/021#context-property-mismatch",
+   "instance": "cee-suite/021/instance-021.json",
+   "template": "cee-suite/021/template-021.json",
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/@context/Untitled",
+      "value": "https://example.org/properties/Probe"
+     }
+    ]
+   },
+   "javaValid": false,
+   "javaErrors": [
+    "/@context/Untitled: does not have a value in the enumeration ['https://schema.metadatacenter.org/properties/97e1bf28-ebf3-457f-9155-7cdbb48b5860']"
    ]
   },
   {
@@ -327,9 +688,14 @@
    "id": "cee-suite/027#empty",
    "instance": "cee-suite/027/instance-027.json",
    "template": "cee-suite/027/template-027.json",
-   "replace": {
-    "field": "Link here",
-    "value": {}
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/Link here",
+      "value": {}
+     }
+    ]
    },
    "javaValid": true,
    "javaErrors": []
@@ -338,11 +704,16 @@
    "id": "cee-suite/027#label-null",
    "instance": "cee-suite/027/instance-027.json",
    "template": "cee-suite/027/template-027.json",
-   "replace": {
-    "field": "Link here",
-    "value": {
-     "rdfs:label": null
-    }
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/Link here",
+      "value": {
+       "rdfs:label": null
+      }
+     }
+    ]
    },
    "javaValid": true,
    "javaErrors": []
@@ -351,11 +722,16 @@
    "id": "cee-suite/027#label-empty",
    "instance": "cee-suite/027/instance-027.json",
    "template": "cee-suite/027/template-027.json",
-   "replace": {
-    "field": "Link here",
-    "value": {
-     "rdfs:label": ""
-    }
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/Link here",
+      "value": {
+       "rdfs:label": ""
+      }
+     }
+    ]
    },
    "javaValid": true,
    "javaErrors": []
@@ -364,11 +740,16 @@
    "id": "cee-suite/027#label-text",
    "instance": "cee-suite/027/instance-027.json",
    "template": "cee-suite/027/template-027.json",
-   "replace": {
-    "field": "Link here",
-    "value": {
-     "rdfs:label": "Probe"
-    }
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/Link here",
+      "value": {
+       "rdfs:label": "Probe"
+      }
+     }
+    ]
    },
    "javaValid": true,
    "javaErrors": []
@@ -377,11 +758,16 @@
    "id": "cee-suite/027#class-only",
    "instance": "cee-suite/027/instance-027.json",
    "template": "cee-suite/027/template-027.json",
-   "replace": {
-    "field": "Link here",
-    "value": {
-     "@type": "https://example.org/classes/Probe"
-    }
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/Link here",
+      "value": {
+       "@type": "https://example.org/classes/Probe"
+      }
+     }
+    ]
    },
    "javaValid": true,
    "javaErrors": []
@@ -390,12 +776,17 @@
    "id": "cee-suite/027#class-and-label-null",
    "instance": "cee-suite/027/instance-027.json",
    "template": "cee-suite/027/template-027.json",
-   "replace": {
-    "field": "Link here",
-    "value": {
-     "@type": "https://example.org/classes/Probe",
-     "rdfs:label": null
-    }
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/Link here",
+      "value": {
+       "@type": "https://example.org/classes/Probe",
+       "rdfs:label": null
+      }
+     }
+    ]
    },
    "javaValid": true,
    "javaErrors": []
@@ -404,12 +795,17 @@
    "id": "cee-suite/027#class-and-label-text",
    "instance": "cee-suite/027/instance-027.json",
    "template": "cee-suite/027/template-027.json",
-   "replace": {
-    "field": "Link here",
-    "value": {
-     "@type": "https://example.org/classes/Probe",
-     "rdfs:label": "Probe"
-    }
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/Link here",
+      "value": {
+       "@type": "https://example.org/classes/Probe",
+       "rdfs:label": "Probe"
+      }
+     }
+    ]
    },
    "javaValid": true,
    "javaErrors": []
@@ -418,11 +814,16 @@
    "id": "cee-suite/027#value-null",
    "instance": "cee-suite/027/instance-027.json",
    "template": "cee-suite/027/template-027.json",
-   "replace": {
-    "field": "Link here",
-    "value": {
-     "@value": null
-    }
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/Link here",
+      "value": {
+       "@value": null
+      }
+     }
+    ]
    },
    "javaValid": false,
    "javaErrors": [
@@ -433,11 +834,16 @@
    "id": "cee-suite/027#id-empty",
    "instance": "cee-suite/027/instance-027.json",
    "template": "cee-suite/027/template-027.json",
-   "replace": {
-    "field": "Link here",
-    "value": {
-     "@id": ""
-    }
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/Link here",
+      "value": {
+       "@id": ""
+      }
+     }
+    ]
    },
    "javaValid": false,
    "javaErrors": [
@@ -448,12 +854,17 @@
    "id": "cee-suite/027#undeclared-key",
    "instance": "cee-suite/027/instance-027.json",
    "template": "cee-suite/027/template-027.json",
-   "replace": {
-    "field": "Link here",
-    "value": {
-     "rdfs:label": null,
-     "probe": "Probe"
-    }
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/Link here",
+      "value": {
+       "rdfs:label": null,
+       "probe": "Probe"
+      }
+     }
+    ]
    },
    "javaValid": false,
    "javaErrors": [
@@ -490,6 +901,26 @@
    "template": "cee-suite/032/template-032.json",
    "javaValid": true,
    "javaErrors": []
+  },
+  {
+   "id": "cee-suite/032#number-unfilled-untyped",
+   "instance": "cee-suite/032/instance-032.json",
+   "template": "cee-suite/032/template-032.json",
+   "patch": {
+    "instance": [
+     {
+      "op": "add",
+      "path": "/Numeric",
+      "value": {
+       "@value": null
+      }
+     }
+    ]
+   },
+   "javaValid": false,
+   "javaErrors": [
+    "object has missing required properties (['@type'])"
+   ]
   },
   {
    "id": "cee-suite/034",

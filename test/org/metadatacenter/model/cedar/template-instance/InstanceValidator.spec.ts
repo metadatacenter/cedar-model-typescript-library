@@ -1,6 +1,7 @@
 import {
   CedarBuilders,
   CedarReaders,
+  CedarWriters,
   InstanceValidator,
   TemplateValueValidator,
   NumberType,
@@ -323,6 +324,111 @@ describe('an unfilled controlled term', () => {
       expect(report.findings).toContainEqual(expect.objectContaining({ code: 'valueShape' }));
     },
   );
+});
+
+describe('judged against the stored template', () => {
+  /**
+   * The server judges an instance against the template document as it is
+   * stored, and older templates state three things differently from how the
+   * model writes them: a container's `required` can omit a child, a field's can
+   * omit `@type`, and a container's `additionalProperties` can admit further
+   * literal values. Given the stored document, the validator takes those facts
+   * from it.
+   */
+  const written = () => CedarWriters.json().getStrict().getTemplateWriter().getAsJsonNode(template) as any;
+  const judge = (source: object, stored: object) =>
+    InstanceValidator.validateReport(
+      CedarReaders.json()
+        .getFebruary2024()
+        .getTemplateInstanceReader()
+        .readFromObject(source as any, undefined as never).instance,
+      template,
+      stored as any,
+    );
+
+  it('lets a child be absent where the stored template does not require it', () => {
+    const { _note, ...withoutNote } = complete();
+    const required = judge(withoutNote, written());
+    expect(required.canSave).toBe(false);
+    expect(required.findings).toContainEqual(
+      expect.objectContaining({ code: 'missingProperty', path: '/_note', message: 'The template requires this property.' }),
+    );
+    const stored = written();
+    stored.required = stored.required.filter((name: string) => name !== '_note');
+    expect(judge(withoutNote, stored).canSave).toBe(true);
+  });
+
+  it('lets a date be unfilled without @type where the stored field requires only @value', () => {
+    const unfilled = { ...complete(), _when: { '@value': null } };
+    expect(judge(unfilled, written()).canSave).toBe(false);
+    const stored = written();
+    stored.properties._when.required = ['@value'];
+    expect(judge(unfilled, stored).canSave).toBe(true);
+    expect(judge({ ...complete(), _when: { '@value': '2020-01-01' } }, stored).canSave).toBe(false);
+  });
+
+  it('admits an undeclared literal where the stored container admits further literals', () => {
+    const extra = { ...complete(), _extra: { '@value': 'more' } };
+    expect(judge(extra, written()).canSave).toBe(false);
+    const stored = {
+      ...written(),
+      additionalProperties: {
+        type: 'object',
+        properties: { '@value': { type: ['string', 'null'] } },
+        required: ['@value'],
+        additionalProperties: false,
+      },
+    };
+    expect(judge(extra, stored).canSave).toBe(true);
+    expect(judge({ ...complete(), _extra: { '@id': 'https://example.org/a' } }, stored).canSave).toBe(false);
+  });
+});
+
+describe('a static field', () => {
+  /**
+   * A static field presents content and takes no answer. The Java validator
+   * judges its slot by the schema alone, which declares no property, so `{}`
+   * is the only slot it holds.
+   */
+  const section = CedarBuilders.sectionBreakFieldBuilder()
+    .withAtId('https://repo.metadatacenter.org/template-fields/section')
+    .withSchemaName('section')
+    .withSchemaDescription('section')
+    .build();
+  const withSection = CedarBuilders.templateBuilder()
+    .withAtId('https://repo.metadatacenter.org/templates/t3')
+    .withSchemaName('T')
+    .withSchemaDescription('T')
+    .addChild(note, dep(note, '_note'))
+    .addChild(section, section.createDeploymentBuilder('_section').build())
+    .build();
+  const judge = (slot: object) =>
+    InstanceValidator.validateReport(
+      CedarReaders.json()
+        .getFebruary2024()
+        .getTemplateInstanceReader()
+        .readFromObject(
+          {
+            '@id': 'https://repo.metadatacenter.org/template-instances/i3',
+            '@context': { ...CONTEXT },
+            'schema:isBasedOn': 'https://repo.metadatacenter.org/templates/t3',
+            'schema:name': 'An instance',
+            'schema:description': '',
+            _note: { '@value': 'a note' },
+            _section: slot,
+          } as any,
+          undefined as never,
+        ).instance,
+      withSection,
+    );
+
+  it('holds an empty slot', () => {
+    expect(judge({}).canSave).toBe(true);
+  });
+
+  it('refuses any property, an unanswered @value included', () => {
+    expect(judge({ '@value': null }).canSave).toBe(false);
+  });
 });
 
 describe('a property the template requires', () => {

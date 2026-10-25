@@ -109,6 +109,12 @@ describe('raw field-value boundaries', () => {
     expect(codes(FieldValuePolicy.validateNode(literal, { '@id': null }))).toEqual(['iriMalformed']);
   });
 
+  test.each(['page-break', 'section-break', 'richtext', 'image', 'youtube'])('judges a %s slot by its schema alone', (inputType) => {
+    const field: ValidationField = { _ui: { inputType }, additionalProperties: false };
+    expect(FieldValuePolicy.validateNode(field, {})).toEqual([]);
+    expect(codes(FieldValuePolicy.validateNode(field, { '@value': null }))).toEqual(['valueShape']);
+  });
+
   test.each([null, '', 7])('refuses explicitly malformed IRI identifiers %j', (id) => {
     expect(codes(FieldValuePolicy.validateNode(iri, { '@id': id }))).toEqual(['iriMalformed']);
   });

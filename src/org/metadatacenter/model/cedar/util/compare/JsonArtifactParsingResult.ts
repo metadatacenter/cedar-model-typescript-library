@@ -32,8 +32,9 @@ export class JsonArtifactParsingResult {
     const findings = [...this.validationFindings];
     for (const error of this.blueprintComparisonErrors) {
       if (error.errorLocation === 'ValidationPolicy') continue;
-      const code = error.errorType === ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT ? 'missingProperty' : 'valueShape';
-      findings.push(ValidationPolicy.finding(code, error.errorPath.toPointer(), `Invalid structure: ${error.errorType}.`));
+      const missing = error.errorType === ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT;
+      const message = missing ? 'The template requires this property.' : `Invalid structure: ${error.errorType.getValue()}.`;
+      findings.push(ValidationPolicy.finding(missing ? 'missingProperty' : 'valueShape', error.errorPath.toPointer(), message));
     }
     return ValidationPolicy.summarize(findings, context);
   }

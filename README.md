@@ -188,8 +188,10 @@ The two libraries must also reach the same verdict on every instance.
 save decision equals the verdict of the Java validation library, which the
 server applies to every write, on each corpus instance that has its template
 beside it. Further cases probe shapes the corpus holds no example of: a corpus
-instance with one controlled-term or link value replaced by an unfilled,
-half-filled or malformed value. The Java verdicts are recorded in
+case whose instance, and sometimes template, is changed by a few JSON Patch
+operations, for instance into an unfilled controlled term or a template that
+requires fewer children. Each is judged against the stored template, as the
+server judges it. The Java verdicts are recorded in
 `itest/resources/concordance/instance-verdicts.json` by cedar-development's
 `ops/cedar_corpus_instance_verdicts.py`, with a lock naming the validator and
 corpus commits; regenerate them after either changes. A case on which this
@@ -255,6 +257,13 @@ paths, `structurallyValid`, `canSave`, and `isValid`. The existing `validate` me
 `JsonArtifactParsingResult` API, with structural errors and quality warnings. A well-formed answer
 outside a numeric bound or another declared constraint has `canSave: true` and `isValid: false`.
 Missing structural properties and malformed typed values block saving.
+
+The server judges an instance against the template document as it is stored. An older template can
+require fewer children than the model would write, admit further keys through `additionalProperties`,
+or require only `@value` of a date or number, and neither this library's model nor the Java one keeps
+those facts. A caller holding the stored JSON template passes it as a third argument,
+`validateReport(instance, template, storedTemplate)`, and the validator reads them from it. Without
+it, the instance is judged against the template as the model writes it.
 
 `TemplateValueValidator.validate(templateOrElementOrField)` checks definition/default consistency
 without changing the model. `validateSource(rawDefinition)` supports retained imported definitions

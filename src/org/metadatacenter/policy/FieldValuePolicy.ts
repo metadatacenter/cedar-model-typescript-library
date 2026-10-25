@@ -20,6 +20,8 @@ export interface ValidationField {
 /** Local facts shared by model callers and editors. Remote checks are explicit, separate facts. */
 export class FieldValuePolicy {
   static readonly authorityTypes = new Set(['ext-orcid', 'ext-ror', 'ext-pfas', 'ext-pubmed', 'ext-rrid', 'ext-nih-grant-id', 'ext-doi']);
+  /** Fields that present content rather than take an answer. */
+  static readonly staticTypes = new Set(['page-break', 'section-break', 'richtext', 'image', 'youtube']);
   private static readonly integerRanges: Record<string, readonly [string, string]> = {
     'xsd:byte': ['-128', '127'],
     'xsd:short': ['-32768', '32767'],
@@ -137,15 +139,21 @@ export class FieldValuePolicy {
       return out;
     }
     const atom = node as Record<string, unknown>;
+    // A closed schema refuses a key it does not declare, as JSON Schema does.
+    const closed = field.additionalProperties === false;
+    const declares = (property: string) => !closed || Object.hasOwn(field.properties ?? {}, property);
+    if (this.staticTypes.has(field._ui?.inputType ?? '')) {
+      // A static field takes no answer, so the Java validator judges its slot by the schema alone.
+      for (const property of Object.keys(atom).filter((key) => !declares(key)))
+        add('valueShape', property, 'The template does not declare this property.');
+      return out;
+    }
     for (const property of ['rdfs:label', 'skos:prefLabel', 'skos:notation', '@language']) {
       if (Object.hasOwn(atom, property) && atom[property] !== null && typeof atom[property] !== 'string') {
         add('valueShape', property, `${property} must be a string or null.`);
       }
     }
-    // A closed schema refuses a key it does not declare, as JSON Schema does. @id and @value have
-    // shape rules of their own, which report them.
-    const closed = field.additionalProperties === false && field.properties !== undefined;
-    const declares = (property: string) => !closed || Object.hasOwn(field.properties ?? {}, property);
+    // @id and @value have shape rules of their own, which report them when undeclared.
     for (const property of Object.keys(atom)) {
       if (property !== '@id' && property !== '@value' && !declares(property))
         add('valueShape', property, 'The template does not declare this property.');

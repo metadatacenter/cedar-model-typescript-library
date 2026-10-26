@@ -89,11 +89,6 @@ export abstract class YamlAbstractArtifactReader {
     container.oslc_modifiedBy = CedarUser.forValue(ReaderUtil.getString(sourceObject, YamlKeys.modifiedBy));
     container.pav_lastUpdatedOn = IsoDate.forValue(ReaderUtil.getString(sourceObject, YamlKeys.modifiedOn));
     const modelVersion: string | null = ReaderUtil.getString(sourceObject, YamlKeys.modelVersion);
-    if (modelVersion === null && !this.isCompact) {
-      throw new Error(
-        `No ${YamlKeys.modelVersion} present. A document without one is the compact form, which a reader has to be asked for.`,
-      );
-    }
     container.schema_schemaVersion = SchemaVersion.forValue(modelVersion);
     container.pav_version = PavVersion.forValue(ReaderUtil.getString(sourceObject, YamlKeys.version));
     container.bibo_status = BiboStatus.forYamlValue(ReaderUtil.getString(sourceObject, YamlKeys.status));
@@ -240,8 +235,14 @@ export abstract class YamlAbstractArtifactReader {
     } else if (isRoot && kind === 'element') {
       YamlAbstractArtifactReader.assertType(source, YamlArtifactType.ELEMENT, artifact);
     }
-    // The full form states the model version of the document and of each child in it, and any that is
-    // stated is the one this library reads, as in Java's reader.
+    // The full form states the document's model version. A writer states each child's too, and a
+    // hand-written child may leave it to the document, as Java's reader allows; any that is stated is
+    // the one this library reads.
+    if (isRoot && !this.isCompact && !Object.hasOwn(source, YamlKeys.modelVersion)) {
+      throw new Error(
+        `No ${YamlKeys.modelVersion} present. A document without one is the compact form, which a reader has to be asked for.`,
+      );
+    }
     if (Object.hasOwn(source, YamlKeys.modelVersion)) {
       YamlAbstractArtifactReader.assertText(source, YamlKeys.modelVersion, path);
       if (source[YamlKeys.modelVersion] !== SchemaVersionValues.CURRENT) {

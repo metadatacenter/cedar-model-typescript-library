@@ -60,9 +60,14 @@ describe('reading the compact form has to be asked for', () => {
     expect(YamlTemplateReader.getStrictForCompact().readFromString(compactTemplate).template.schema_name).toBe('Study');
   });
 
-  test('a compact child is refused by the ordinary reader as surely as a compact artifact', () => {
-    const compactChildInFullTemplate = fullTemplate.replace('    modelVersion: "1.6.0"\n', '');
-    expect(() => YamlTemplateReader.getStrict().readFromString(compactChildInFullTemplate)).toThrow(/modelVersion/);
+  test('a child may leave its model version to the document, as in Java', () => {
+    // A writer states every child's model version, and a hand-written document often states only its own.
+    const unstated = fullTemplate.replace('    modelVersion: "1.6.0"\n', '');
+    expect(unstated).not.toBe(fullTemplate);
+    expect(YamlTemplateReader.getStrict().readFromString(unstated).template.getChild('Study Name')).toBeTruthy();
+    expect(() =>
+      YamlTemplateReader.getStrict().readFromString(fullTemplate.replace('    modelVersion: "1.6.0"\n', '    modelVersion: "1.0.0"\n')),
+    ).toThrow(/Invalid modelVersion "1.0.0" at \/children\/Study Name\/modelVersion/);
   });
 
   test('the full form reads with the ordinary reader, and the compact reader accepts it as well', () => {

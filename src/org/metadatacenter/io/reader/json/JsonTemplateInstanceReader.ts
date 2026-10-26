@@ -221,6 +221,7 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
       );
     }
     this.packAttributeValues(ret);
+    ret.types = JsonTemplateInstanceReader.readTypes(sourceObject);
     StoredForm.recordMembers(
       ret,
       Object.fromEntries(
@@ -322,6 +323,21 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
       }
     }
     return ret;
+  }
+
+  /**
+   * The classes a container states as its `@type`, as Java's model reads them: a string is one, a list
+   * is several in order, and null or no key is none. Each must be an IRI.
+   */
+  private static readTypes(sourceObject: JsonNode): string[] {
+    const stated: unknown = Object.hasOwn(sourceObject, JsonSchema.atType) ? sourceObject[JsonSchema.atType] : null;
+    if (stated === null) return [];
+    const types = Array.isArray(stated) ? stated : [stated];
+    return types.map((type, index) => {
+      if (typeof type !== 'string') throw new Error(`Invalid @type at index ${index}: expected an IRI.`);
+      ReaderUtil.assertIri(type, JsonSchema.atType);
+      return type;
+    });
   }
 
   /**

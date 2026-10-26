@@ -287,6 +287,12 @@ provenance timestamp must match the `date-time` format as the server's validator
 format admits some values the model refuses, such as the 30th of February, and the model reads
 some the format refuses, such as a time without seconds.
 
+An instance's `@type`, at the root and on each element occurrence, and its `_annotations` are its
+own, so every save writes them as the instance holds them. The model keeps `@type`, one class as a
+string and several as a list, as the Java model does, and every mode holds both keys to the stored
+template: as stored, or with `asWritten` as the writer writes them. A `uri` format there is the
+server's, `IdentifierPolicy.matchesUriFormat`, which admits a relative reference.
+
 `TemplateValueValidator.validate(templateOrElementOrField)` checks definition/default consistency
 without changing the model. `validateSource(rawDefinition)` supports retained imported definitions
 after structural parsing; it does not replace the structural reader. Inconsistent defaults block

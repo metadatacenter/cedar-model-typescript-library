@@ -531,6 +531,90 @@ describe('judged as a verbatim write stores it', () => {
   });
 });
 
+describe("an instance's own @type and annotations", () => {
+  /**
+   * Neither is the host's or the server's to write, so every save writes them
+   * as the instance holds them, and they are judged in every mode: as stored,
+   * or, with `asWritten`, as the writer writes the model's.
+   */
+  const ANNOTATIONS_SCHEMA = {
+    type: 'object',
+    patternProperties: {
+      '^.+$': {
+        oneOf: [
+          { type: 'object', properties: { '@id': { type: 'string', format: 'uri' } }, additionalProperties: false },
+          { type: 'object', properties: { '@value': { type: ['string', 'number', 'boolean', 'null'] } }, additionalProperties: false },
+        ],
+      },
+    },
+    additionalProperties: false,
+  };
+  const TYPE_SCHEMA = {
+    oneOf: [
+      { type: 'string', format: 'uri' },
+      { type: 'array', minItems: 1, items: { type: 'string', format: 'uri' }, uniqueItems: true },
+    ],
+  };
+  const stored = (declareAnnotations = true) => {
+    const document = CedarWriters.json().getStrict().getTemplateWriter().getAsJsonNode(template) as any;
+    document.properties['@type'] = TYPE_SCHEMA;
+    if (declareAnnotations) document.properties._annotations = ANNOTATIONS_SCHEMA;
+    else delete document.properties._annotations;
+    return document;
+  };
+  const read = (source: object) =>
+    CedarReaders.json()
+      .getFebruary2024()
+      .getTemplateInstanceReader()
+      .readFromObject(source as any, undefined as never).instance;
+  const canSave = (source: object, options = {}, declareAnnotations = true) =>
+    InstanceValidator.validateReport(read(source), template, stored(declareAnnotations), options).canSave;
+  const CLASS = 'https://example.org/classes/Probe';
+  const annotated = (annotations: unknown) => ({ ...complete(), _annotations: annotations });
+
+  it('takes a class, or a list of distinct classes', () => {
+    expect(canSave({ ...complete(), '@type': CLASS })).toBe(true);
+    expect(canSave({ ...complete(), '@type': [CLASS, 'https://example.org/classes/Other'] })).toBe(true);
+  });
+
+  it('refuses an empty or repeated list of classes as stored, and judges the written form with asWritten', () => {
+    for (const types of [[], [CLASS, CLASS]]) {
+      expect(canSave({ ...complete(), '@type': types })).toBe(false);
+      expect(canSave({ ...complete(), '@type': types }, { verbatim: true })).toBe(false);
+    }
+    expect(canSave({ ...complete(), '@type': [] }, { asWritten: true })).toBe(true);
+    expect(canSave({ ...complete(), '@type': [CLASS, CLASS] }, { asWritten: true })).toBe(false);
+  });
+
+  it('takes an IRI or a literal annotation', () => {
+    expect(canSave(annotated({ [CLASS]: { '@id': CLASS } }))).toBe(true);
+    expect(canSave(annotated({ [CLASS]: { '@value': 'text' } }))).toBe(true);
+    expect(canSave(annotated({}))).toBe(true);
+  });
+
+  it('refuses an annotation the schema does not admit, as stored', () => {
+    expect(canSave(annotated({ [CLASS]: { '@id': CLASS, '@value': 'text' } }))).toBe(false);
+    expect(canSave(annotated({ [CLASS]: { '@id': CLASS, 'rdfs:label': 'text' } }))).toBe(false);
+    expect(canSave(annotated({ '': { '@value': 'text' } }))).toBe(false);
+    expect(canSave(annotated({ [CLASS]: { '@id': CLASS } }), {}, false)).toBe(false);
+  });
+
+  it('judges the annotations the writer writes with asWritten', () => {
+    expect(canSave(annotated({ [CLASS]: { '@id': CLASS, 'rdfs:label': 'text' } }), { asWritten: true })).toBe(true);
+    expect(canSave(annotated({ '': { '@value': 'text' } }), { asWritten: true })).toBe(false);
+  });
+
+  it('keeps the classes through a write', () => {
+    const element = { ...complete()._addr, '@type': CLASS };
+    const written = CedarWriters.json()
+      .getStrict()
+      .getTemplateInstanceWriter()
+      .getAsJsonNode(read({ ...complete(), '@type': [CLASS, 'https://example.org/classes/Other'], _addr: element })) as any;
+    expect(written['@type']).toEqual([CLASS, 'https://example.org/classes/Other']);
+    expect(written._addr['@type']).toBe(CLASS);
+  });
+});
+
 describe('a static field', () => {
   /**
    * A static field presents content and takes no answer. The Java validator

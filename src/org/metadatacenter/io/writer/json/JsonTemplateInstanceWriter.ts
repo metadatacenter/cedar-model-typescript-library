@@ -39,6 +39,13 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
     return new JsonTemplateInstanceWriter(behavior, writers);
   }
 
+  /** A container's `@type`: one class as a string, several as a list in order, and none as no key. */
+  public static writeTypes(dataContainer: InstanceDataContainer): JsonNode {
+    const types = dataContainer.types;
+    if (types.length === 0) return JsonNode.getEmpty();
+    return { [JsonSchema.atType]: types.length === 1 ? types[0] : [...types] } as JsonNode;
+  }
+
   private buildContext(instance: TemplateInstance): JsonNode {
     // clone, because we will need to modify deep content
     const context = ReaderUtil.deepClone(JsonTemplateInstanceContent.CONTEXT_VERBATIM);
@@ -74,6 +81,7 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
     // host loaded to edit kept its IRI while one assembled through the builder lost it.
     if (!isDocumentRoot) {
       into[JsonSchema.atId] = dataContainer.id === '' ? null : dataContainer.id;
+      Object.assign(into, JsonTemplateInstanceWriter.writeTypes(dataContainer));
     }
     Object.keys(dataContainer.values).forEach((key) => {
       const dataAtom: InstanceDataAtomType = dataContainer.values[key];
@@ -238,6 +246,7 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
     }
     return {
       [JsonSchema.atId]: this.atomicWriter.write(instance.at_id),
+      ...JsonTemplateInstanceWriter.writeTypes(instance.dataContainer),
       ...nameAndDescription,
       ...this.getDataTree(instance),
       ...this.macroAnnotations(instance),

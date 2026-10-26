@@ -59,7 +59,10 @@ test('pins the instance verdicts to the Java validator and the shared corpus', (
 // Cases on which this library still reaches a different verdict. Each is a defect here, not an
 // accepted variation: a case listed must still disagree, so fixing one fails this spec until its entry
 // is removed, and every case not listed must agree.
-const OPEN_DEFECTS: Record<string, string> = {};
+const OPEN_DEFECTS: Record<string, string> = {
+  'cee-suite/008#annotation-null-value':
+    "The template's annotation schema and the Java validator admit a null literal annotation, which neither library's model reads.",
+};
 
 // The editor reads a stored template with the FEBRUARY_2024 behavior, and an instance with the strict
 // reader, falling back to FEBRUARY_2024 where the strict reader refuses it, and it judges the instance

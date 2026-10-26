@@ -52,26 +52,11 @@ export class TimestampPolicy {
    */
   public static matchesFormat(value: string): boolean {
     const match =
-      /^(\d{4}|\+\d{5,9})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.(\d{1,9}))?(Z|([+-])(\d{2})(?::(\d{2})(?::(\d{2}))?|(\d{2})))$/.exec(
+      /^(\d{4}|\+\d{5,9})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])T(?:[01]\d|2[0-3]|24(?=:00:00(?:\.0{1,9})?[Z+-])):[0-5]\d:[0-5]\d(?:\.\d{1,9})?(?:Z|[+-](\d{2})(?::([0-5]\d)(?::([0-5]\d))?|([0-5]\d)))$/.exec(
         value,
       );
-    if (match === null) return false;
-    const [, year, month, day, hour, minute, second, fraction = '', , , offsetHours, colonMinutes, offsetSeconds, bareMinutes] = match;
-    const clock = Number(hour) < 24 || (minute === '00' && second === '00' && /^0*$/.test(fraction));
-    const offset = [offsetHours, colonMinutes ?? bareMinutes, offsetSeconds].map((part) => Number(part ?? 0));
-    return (
-      Number(year) >= 1 &&
-      Number(month) >= 1 &&
-      Number(month) <= 12 &&
-      Number(day) >= 1 &&
-      Number(day) <= 31 &&
-      clock &&
-      Number(hour) <= 24 &&
-      Number(minute) <= 59 &&
-      Number(second) <= 59 &&
-      offset[1] <= 59 &&
-      offset[2] <= 59 &&
-      offset[0] * 3600 + offset[1] * 60 + offset[2] <= 18 * 3600
-    );
+    if (match === null || Number(match[1]) < 1) return false;
+    const [, , , , hours = '0', colonMinutes, seconds = '0', bareMinutes] = match;
+    return Number(hours) * 3600 + Number(colonMinutes ?? bareMinutes ?? 0) * 60 + Number(seconds) <= 18 * 3600;
   }
 }

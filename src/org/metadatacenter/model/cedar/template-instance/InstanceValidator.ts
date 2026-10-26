@@ -31,6 +31,8 @@ import { ContainerArtifactChildrenInfo } from '../deployment/ContainerArtifactCh
 import { JsonTemplateInstanceContent } from '../util/serialization/JsonTemplateInstanceContent';
 import { IdentifierPolicy } from '../../../policy/IdentifierPolicy';
 import { TimestampPolicy } from '../../../policy/TimestampPolicy';
+import { JsonAnnotationsWriter } from '../../../io/writer/json/JsonAnnotationsWriter';
+import { CedarModel } from '../constants/CedarModel';
 import { JsonSchema } from '../constants/JsonSchema';
 import { ValidationField } from '../../../policy/FieldValuePolicy';
 
@@ -105,6 +107,10 @@ export class InstanceValidator {
       InstanceValidator.object(stored),
       options,
     );
+    const members = options.asWritten === true ? null : StoredForm.membersOf(instance.dataContainer);
+    const annotations =
+      members !== null ? members[CedarModel.annotations] : (JsonAnnotationsWriter.annotationsNode(instance.annotations) ?? undefined);
+    InstanceValidator.validateOwnTerm(CedarModel.annotations, annotations, InstanceValidator.object(stored), new JsonPath(), result);
     return result;
   }
 
@@ -182,6 +188,7 @@ export class InstanceValidator {
     if (options.verbatim === true && options.asWritten !== true) {
       InstanceValidator.validateMembers(container, stored, path, result);
     }
+    InstanceValidator.validateOwnTerm(JsonSchema.atType, InstanceValidator.statedTypes(container, options), stored, path, result);
 
     for (const name of InstanceValidator.requiredChildren(info, stored)) {
       if (!Object.hasOwn(container.values, name)) {
@@ -277,6 +284,51 @@ export class InstanceValidator {
     }
   }
 
+  /** Judged elsewhere: the `@context` by `validateContext`, the others by `validateOwnTerm` in every mode. */
+  private static readonly OWN_TERMS: ReadonlySet<string> = new Set([JsonSchema.atContext, JsonSchema.atType, CedarModel.annotations]);
+
+  /**
+   * A container's `@type`, as stored or, with `asWritten` or for a model the reader did not build, as
+   * the writer writes it. Undefined where there is none.
+   */
+  private static statedTypes(container: InstanceDataContainer, options: InstanceValidationOptions): unknown {
+    const members = options.asWritten === true ? null : StoredForm.membersOf(container);
+    if (members !== null) return members[JsonSchema.atType];
+    return JsonTemplateInstanceWriter.writeTypes(container)[JsonSchema.atType];
+  }
+
+  /**
+   * A key the instance holds of its own, its `@type` or its `_annotations`, against the stored
+   * template. Neither is the host's or the server's to write, so every save writes it as the instance
+   * holds it. A key the template declares must take a value its schema admits, and one it does not
+   * declare must be admitted by `additionalProperties`.
+   */
+  private static validateOwnTerm(
+    name: string,
+    value: unknown,
+    stored: JsonNode | null,
+    path: JsonPath,
+    result: JsonArtifactParsingResult,
+  ): void {
+    if (value === undefined || stored === null) return;
+    const schema = InstanceValidator.object(InstanceValidator.object(stored.properties)?.[name]);
+    if (schema !== null) {
+      if (!InstanceValidator.conformsTo(schema, value)) {
+        result.addValidationFinding(
+          ValidationPolicy.finding('valueShape', path.add(name).toPointer(), 'The template does not admit this value here.'),
+        );
+      }
+      return;
+    }
+    const additional = stored.additionalProperties;
+    const extra = InstanceValidator.object(additional);
+    if (additional === false || (extra !== null && !InstanceValidator.conformsTo(extra, value))) {
+      result.addValidationFinding(
+        ValidationPolicy.finding('valueShape', path.add(name).toPointer(), 'The template does not declare this property.'),
+      );
+    }
+  }
+
   /**
    * A container's own keys as a verbatim write stores them, against its stored
    * schema: its `@context` and `@id` and, at the root, the template, name and
@@ -303,35 +355,73 @@ export class InstanceValidator {
     const properties = InstanceValidator.object(stored.properties) ?? JsonNode.getEmpty();
     for (const [name, value] of Object.entries(members)) {
       const schema = InstanceValidator.object(properties[name]);
-      if (name === JsonSchema.atContext || name === '_annotations' || schema === null) continue;
+      if (InstanceValidator.OWN_TERMS.has(name) || schema === null) continue;
       if (!InstanceValidator.conformsTo(schema, value)) {
         result.addValidationFinding(
           ValidationPolicy.finding('valueShape', path.add(name).toPointer(), 'The template does not admit this value here.'),
         );
       }
     }
+    // Where the server's validator asks more than the format does: an identifier stated as a string
+    // must be an absolute IRI, the instance's own and its template's at the root, and an occurrence's.
+    const identifiers = path.toPointer() === '' ? InstanceValidator.ROOT_IDENTIFIERS : InstanceValidator.OCCURRENCE_IDENTIFIERS;
+    for (const name of identifiers) {
+      const value = members[name];
+      if (typeof value === 'string' && !IdentifierPolicy.isValid(value)) {
+        result.addValidationFinding(
+          ValidationPolicy.finding('valueShape', path.add(name).toPointer(), 'The server requires an absolute IRI here.'),
+        );
+      }
+    }
   }
 
+  private static readonly ROOT_IDENTIFIERS: readonly string[] = [JsonSchema.atId, JsonSchema.schemaIsBasedOn, JsonSchema.pavDerivedFrom];
+  private static readonly OCCURRENCE_IDENTIFIERS: readonly string[] = [JsonSchema.atId, JsonSchema.pavDerivedFrom];
+
   /**
-   * Whether a value meets the schema it is held to: its `enum`, `type`,
-   * `minLength` and `format`, and for an object its `properties`, `required`
-   * and `additionalProperties`. Enough of JSON Schema for a `@context` entry
-   * and for the keys of the instance's own.
+   * Whether a value meets the schema it is held to: its `oneOf`, `enum`, `type`,
+   * `minLength` and `format`, for a list its `items`, `minItems` and
+   * `uniqueItems`, and for an object its `properties`, `patternProperties`,
+   * `required` and `additionalProperties`. Enough of JSON Schema for a
+   * `@context` entry and for the keys of the instance's own.
    */
   private static conformsTo(schema: JsonNode, value: unknown): boolean {
+    if (Array.isArray(schema.oneOf)) {
+      const options = schema.oneOf
+        .map((option) => InstanceValidator.object(option))
+        .filter((option): option is JsonNode => option !== null);
+      if (options.filter((option) => InstanceValidator.conformsTo(option, value)).length !== 1) return false;
+    }
     if (Array.isArray(schema.enum) && !schema.enum.some((option) => JSON.stringify(option) === JSON.stringify(value))) return false;
     const types: unknown[] | null = schema.type === undefined ? null : Array.isArray(schema.type) ? schema.type : [schema.type];
     if (types !== null && !types.some((type) => InstanceValidator.isOfType(type, value))) return false;
     if (typeof value === 'string' && typeof schema.minLength === 'number' && [...value].length < schema.minLength) return false;
-    if (typeof value === 'string' && schema.format === 'uri' && !IdentifierPolicy.isValid(value)) return false;
+    if (typeof value === 'string' && schema.format === 'uri' && !IdentifierPolicy.matchesUriFormat(value)) return false;
     if (typeof value === 'string' && schema.format === 'date-time' && !TimestampPolicy.matchesFormat(value)) return false;
+    if (Array.isArray(value)) {
+      if (typeof schema.minItems === 'number' && value.length < schema.minItems) return false;
+      if (typeof schema.maxItems === 'number' && value.length > schema.maxItems) return false;
+      if (schema.uniqueItems === true && new Set(value.map((item) => JSON.stringify(item))).size !== value.length) return false;
+      const items = InstanceValidator.object(schema.items);
+      if (items !== null && !value.every((item) => InstanceValidator.conformsTo(items, item))) return false;
+    }
     const node = InstanceValidator.object(value);
     if (node === null) return true;
     const properties = InstanceValidator.object(schema.properties) ?? JsonNode.getEmpty();
     if (Array.isArray(schema.required) && schema.required.some((key) => typeof key === 'string' && !Object.hasOwn(node, key))) return false;
+    const patterns = Object.entries(InstanceValidator.object(schema.patternProperties) ?? JsonNode.getEmpty());
     return Object.entries(node).every(([key, member]) => {
       const declared = InstanceValidator.object(properties[key]);
-      if (declared !== null) return InstanceValidator.conformsTo(declared, member);
+      const matching = patterns
+        .filter(([pattern]) => new RegExp(pattern, 'u').test(key))
+        .map(([, patternSchema]) => InstanceValidator.object(patternSchema))
+        .filter((patternSchema): patternSchema is JsonNode => patternSchema !== null);
+      if (declared !== null || matching.length > 0) {
+        return (
+          (declared === null || InstanceValidator.conformsTo(declared, member)) &&
+          matching.every((patternSchema) => InstanceValidator.conformsTo(patternSchema, member))
+        );
+      }
       const extra = InstanceValidator.object(schema.additionalProperties);
       return schema.additionalProperties !== false && (extra === null || InstanceValidator.conformsTo(extra, member));
     });

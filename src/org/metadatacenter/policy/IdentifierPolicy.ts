@@ -93,6 +93,23 @@ export abstract class IdentifierPolicy {
     }
   }
 
+  /**
+   * Whether the `uri` format the meta-schemas name admits a value, as the server's validator checks
+   * it: an RFC 3987 IRI reference, relative or absolute, spelled as given, which is what
+   * `assertFieldIri` takes. The empty string is a relative reference and passes. Where a position
+   * needs more, an absolute identifier say, the validator asks for it separately.
+   */
+  public static matchesUriFormat(value: string): boolean {
+    if (typeof value !== 'string') return false;
+    if (value === '') return true;
+    try {
+      this.assertFieldIri(value, 'value');
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   public static isValid(value: string): boolean {
     if (typeof value !== 'string') return false;
     try {

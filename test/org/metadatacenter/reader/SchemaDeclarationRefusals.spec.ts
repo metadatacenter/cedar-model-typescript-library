@@ -535,8 +535,8 @@ describe('a YAML values entry is an ontology, a class, a branch or a value set, 
   };
 
   describe.each([false, true])('compact=%s', (compact: boolean) => {
-    test.each(Object.keys(PLACES))('%s: each kind as the writer spells it reads back, and so does a literal entry', (place: string) => {
-      const [write, readField] = PLACES[place];
+    test.each(Object.keys(PLACES))('%s: each kind as the writer spells it reads back, and an untyped entry is refused', (place: string) => {
+      const [write, readField, at] = PLACES[place];
       const document = write(compact);
       expect(constraints(readField(document, compact))).toEqual([1, 1, 1, 1]);
       for (const kind of Object.keys(INDEX)) {
@@ -544,7 +544,8 @@ describe('a YAML values entry is an ontology, a class, a branch or a value set, 
       }
       const withLiteral = document.replace(/^(\s*)values:\n/m, '$1values:\n$1  - literal: "x"\n');
       expect(withLiteral).not.toBe(document);
-      expect(constraints(readField(withLiteral, compact))).toEqual([1, 1, 1, 1]);
+      // An entry that states no type is none of the four, and nothing of it is read, as in Java's reader.
+      expect(() => readField(withLiteral, compact)).toThrow(`Unknown key "literal" at ${at}/values[0]/literal`);
     });
 
     test.each(
@@ -586,7 +587,7 @@ describe('a YAML values entry is an ontology, a class, a branch or a value set, 
  * complete one is read and has no effect, since a choice field holds no constraint. These readers took
  * the option and passed over its type.
  */
-describe('a YAML choice-field option states no type, as in Java', () => {
+describe('a YAML choice-field option is a label and a selection, as in Java', () => {
   const yaml = CedarWriters.yaml().getStrict();
   const id = (name: string) => `https://repo.metadatacenter.org/template-fields/${name}`;
   const FIELDS: Record<string, () => TemplateField> = {
@@ -666,58 +667,45 @@ describe('a YAML choice-field option states no type, as in Java', () => {
     return document.replace(pattern, (option: string, indent: string) => [option, ...lines.map((line) => `${indent}  ${line}`)].join('\n'));
   };
   const CASES = Object.keys(FIELDS).flatMap((field) => Object.keys(PLACES).map((place): [string, string] => [field, place]));
+  /** Each spelling of a stated type, with the lines of a constraint the entry completes or does not. */
+  const STATED: [string, string[]][] = [
+    ['class', CLASS],
+    ['ontology', ['sourceAcronym: "DOID"', 'sourceName: "Human Disease Ontology"']],
+    ['branch', []],
+    ['valueSet', []],
+    ['"Class"', []],
+    ['literal', []],
+    ['""', []],
+    ['1', []],
+  ];
 
   describe.each([false, true])('compact=%s', (compact: boolean) => {
-    test.each(CASES)(
-      'a %s, %s: an option that states a complete constraint reads as the option it is',
-      (fieldKind: string, place: string) => {
-        const [write, read] = PLACES[place];
-        const document = write(FIELDS[fieldKind](), compact);
-        const expected = read(document, compact);
-        expect(read(amendFirstOption(document, ['type: class', ...CLASS]), compact)).toEqual(expected);
-        expect(
-          read(amendFirstOption(document, ['type: ontology', 'sourceAcronym: "DOID"', 'sourceName: "Human Disease Ontology"']), compact),
-        ).toEqual(expected);
-      },
-    );
-
-    test.each(
-      CASES.flatMap(([fieldKind, place]): [string, string, string, string][] =>
-        [
-          ['"Class"', 'Class'],
-          ['literal', 'literal'],
-          ['valueset', 'valueset'],
-          ['""', ''],
-          ['1', '1'],
-        ].map(([written, shown]): [string, string, string, string] => [fieldKind, place, written, shown]),
-      ),
-    )('a %s, %s: an option of type %s is refused', (fieldKind: string, place: string, written: string, shown: string) => {
-      const [write, read, at] = PLACES[place];
-      const refusal =
-        `Invalid value constraint type "${shown}" at ${at}/values/0/type. ` +
-        'A value constraint type is one of ontology, class, branch or valueSet.';
-      expect(() => read(amendFirstOption(write(FIELDS[fieldKind](), compact), [`type: ${written}`]), compact)).toThrow(refusal);
+    test.each(CASES)('a %s, %s: the options as written read back', (fieldKind: string, place: string) => {
+      const [write, read] = PLACES[place];
+      const document = write(FIELDS[fieldKind](), compact);
+      expect(() => read(document, compact)).not.toThrow();
     });
 
     test.each(
-      CASES.flatMap(([fieldKind, place]): [string, string, string, string][] =>
-        [
-          ['ontology', 'An ontology constraint requires an acronym.'],
-          ['class', 'An empty string is not a URI at "termIri"'],
-          ['branch', 'An empty string is not a URI at "termBaseIri"'],
-          ['valueSet', 'An empty string is not a URI at "termBaseIri"'],
-        ].map(([type, reason]): [string, string, string, string] => [fieldKind, place, type, reason]),
+      CASES.flatMap(([fieldKind, place]) =>
+        STATED.map(([type, lines]): [string, string, string, string[]] => [fieldKind, place, type, lines]),
       ),
     )(
-      'a %s, %s: an option of type %s is read as that constraint, and refused',
-      (fieldKind: string, place: string, type: string, reason: string) => {
+      'a %s, %s: an option that states the type %s is refused for it',
+      (fieldKind: string, place: string, type: string, lines: string[]) => {
         const [write, read, at] = PLACES[place];
-        const amended = amendFirstOption(write(FIELDS[fieldKind](), compact), [`type: ${type}`]);
+        const amended = amendFirstOption(write(FIELDS[fieldKind](), compact), [`type: ${type}`, ...lines]);
         expect(() => read(amended, compact)).toThrow(
-          `The entry at ${at}/values/0 states the type "${type}" and is read as that kind of constraint. ${reason}`,
+          `Unknown key "type" at ${at}/values[0]/type; it is not part of this artifact's YAML form.`,
         );
       },
     );
+
+    test.each(CASES)('a %s, %s: an option without a label is refused for what it states', (fieldKind: string, place: string) => {
+      const [write, read, at] = PLACES[place];
+      const document = write(FIELDS[fieldKind](), compact).replace(/^(\s*)- label: "a"$/m, '$1- selected: true');
+      expect(() => read(document, compact)).toThrow(`Unknown key "selected" at ${at}/values[0]/selected`);
+    });
   });
 });
 
@@ -726,8 +714,7 @@ describe('a YAML choice-field option states no type, as in Java', () => {
  * readers hold one only where the source typed an integer, from -2147483648 to 2147483647, so they
  * refuse a fraction, a number written as a decimal such as `3.0`, a number past that range, a string,
  * a boolean, a list and a mapping. These readers took any of them. YAML spells the keys `termCount`
- * and `termMaxDepth`, and JSON `numTerms` and `maxDepth`. A choice field's YAML option that states a
- * type is read as that constraint, so the same rule holds there.
+ * and `termMaxDepth`, and JSON `numTerms` and `maxDepth`.
  */
 describe('a term count and a maximum depth are Java integers', () => {
   const yaml = CedarWriters.yaml().getStrict();
@@ -865,78 +852,6 @@ describe('a term count and a maximum depth are Java integers', () => {
       }
     });
   });
-
-  const id = (name: string) => `https://repo.metadatacenter.org/template-fields/${name}`;
-  const CHOICES: Record<string, () => TemplateField> = {
-    radio: () => CedarBuilders.radioFieldBuilder().withSchemaName('F').withAtId(id('r')).addRadioOption('a').addRadioOption('b').build(),
-    checkbox: () =>
-      CedarBuilders.checkboxFieldBuilder().withSchemaName('F').withAtId(id('c')).addCheckboxOption('a').addCheckboxOption('b').build(),
-    'single-choice list': () =>
-      CedarBuilders.singleChoiceListFieldBuilder().withSchemaName('F').withAtId(id('l')).addListOption('a').addListOption('b').build(),
-    'multiple-choice list': () =>
-      CedarBuilders.multipleChoiceListFieldBuilder().withSchemaName('F').withAtId(id('m')).addListOption('a').addListOption('b').build(),
-  };
-  /** Each place a choice field can stand in YAML: its document, the JSON written from reading it back, and where it is. */
-  const CHOICE_PLACES: Record<string, [(field: TemplateField) => string, (source: string) => JsonNode, string]> = {
-    standalone: [
-      (field) => yaml.getFieldWriterForField(field).getAsYamlString(field, false),
-      (source) => {
-        const field = YamlTemplateFieldReader.getStrict().readFromString(source).field;
-        return plain(json.getFieldWriterForField(field).getAsJsonNode(field));
-      },
-      '',
-    ],
-    "a child of a template's element": [
-      (field) => yaml.getTemplateWriter().getAsYamlString(holding(field), false),
-      (source) => plain(json.getTemplateWriter().getAsJsonNode(YamlTemplateReader.getStrict().readFromString(source).template)),
-      '/children/E/children/F',
-    ],
-  };
-  /** Each constraint a choice option can state, complete but for the key, and the key. */
-  const STATED: [string, string[], string][] = [
-    ['ontology', ['sourceAcronym: "DOID"', 'sourceName: "Human Disease Ontology"'], 'termCount'],
-    [
-      'branch',
-      [
-        'sourceAcronym: "DOID"',
-        'sourceName: "Human Disease Ontology"',
-        'termBaseIri: "http://purl.obolibrary.org/obo/DOID_4"',
-        'termBaseLabel: "disease"',
-      ],
-      'termMaxDepth',
-    ],
-    ['valueSet', ['sourceAcronym: "VS"', 'termBaseIri: "https://example.org/value-sets/colours"', 'termBaseLabel: "Colours"'], 'termCount'],
-  ];
-  /** The document with `lines` added to the first option, which the writer spells `- label: "a"`. */
-  const amendFirstOption = (document: string, lines: string[]): string => {
-    const pattern = /^(\s*)- label: "a"$/gm;
-    expect(document.match(pattern)).toHaveLength(1);
-    return document.replace(pattern, (option: string, indent: string) => [option, ...lines.map((line) => `${indent}  ${line}`)].join('\n'));
-  };
-
-  test.each(
-    Object.keys(CHOICES).flatMap((choice) =>
-      Object.keys(CHOICE_PLACES).flatMap((place) =>
-        STATED.map(([type, lines, key]): [string, string, string, string[], string] => [choice, place, type, lines, key]),
-      ),
-    ),
-  )(
-    'in YAML, a %s, %s: an option of type %s reads with an integer, and is refused without one',
-    (choice: string, place: string, type: string, lines: string[], key: string) => {
-      const [write, read, at] = CHOICE_PLACES[place];
-      const document = write(CHOICES[choice]());
-      const expected = read(document);
-      for (const [spelling] of YAML_READ) {
-        expect(read(amendFirstOption(document, [`type: ${type}`, ...lines, `${key}: ${spelling}`]))).toEqual(expected);
-      }
-      for (const [spelling, shown] of YAML_REFUSED) {
-        expect(() => read(amendFirstOption(document, [`type: ${type}`, ...lines, `${key}: ${spelling}`]))).toThrow(
-          `The entry at ${at}/values/0 states the type "${type}" and is read as that kind of constraint. ` +
-            refusal(key, shown, `${at}/values/0`),
-        );
-      }
-    },
-  );
 
   /** Each JSON key, how the writer spells the value it holds, where it is, and which value the field read from it holds. */
   const JSON_KEYS: [string, string, string, number][] = [

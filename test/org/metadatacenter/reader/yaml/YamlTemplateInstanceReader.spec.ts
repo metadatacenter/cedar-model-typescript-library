@@ -4,7 +4,6 @@ import {
   InstanceDataAtomType,
   InstanceDataAttributeValueField,
   InstanceDataContainer,
-  InstanceDataEmptyNode,
   InstanceDataStringAtom,
   InstanceDataTypedAtom,
 } from '../../../../../src';
@@ -331,18 +330,16 @@ describe('YamlTemplateInstanceReader refuses what the Java reader refuses', () =
   // number arrives as an exact decimal, an object, which was read as a field whose attributes were
   // that object's own properties.
   test.each(['7', '1.50', '9007199254740993'])(
-    'a number %s where an attribute-value field may be is passed over, as Java does',
+    'a number %s where an attribute-value field may be is refused, as Java refuses it',
     (number) => {
-      const values = read(`children: {E: {children: {F: {value: x}}, G: ${number}}}\nG: ${number}\n`)().instance.dataContainer.values;
-      expect(Object.keys(values)).toEqual(['E']);
-      const element = values['E'];
-      if (!(element instanceof InstanceDataContainer)) throw new Error('expected an element');
-      expect(Object.keys(element.values)).toEqual(['F']);
+      // Only a mapping there can be an attribute-value field, so a number is no key of the form.
+      expect(read(`children: {E: {children: {F: {value: x}}, G: ${number}}}\n`)).toThrow('Unknown key "G" at /children/E/G');
+      expect(read(`children: {F: {value: x}}\nG: ${number}\n`)).toThrow('Unknown key "G" at /G');
     },
   );
 
-  test('a field holding only a key the reader does not know reads as no value, as it does in Java', () => {
-    expect(read('children: {F: {note: x}}')().instance.dataContainer.values['F']).toBeInstanceOf(InstanceDataEmptyNode);
+  test('a field holding a key the reader does not know is refused for it, as it is in Java', () => {
+    expect(read('children: {F: {note: x}}')).toThrow('Unknown key "note" at /children/F/note');
   });
 
   // A null value beside a label, a preferred label or a notation is the shape of a term chosen

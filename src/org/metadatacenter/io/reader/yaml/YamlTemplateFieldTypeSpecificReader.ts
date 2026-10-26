@@ -30,10 +30,12 @@ export abstract class YamlTemplateFieldTypeSpecificReader {
     const literals: Array<JsonNode> = ReaderUtil.getNodeList(fieldSourceObject, YamlKeys.values);
     if (literals !== null) {
       literals.forEach((literal) => {
+        // An option is its label and whether it is selected by default, as in Java's reader, which
+        // reads nothing more of an entry and nothing of one without a label.
         const label = ReaderUtil.getString(literal, YamlKeys.label);
-        const selectedByDefault = ReaderUtil.getBoolean(literal, YamlKeys.selected);
-        const statesSelectedByDefault = Object.hasOwn(literal, YamlKeys.selected);
         if (label != null) {
+          const selectedByDefault = ReaderUtil.getBoolean(literal, YamlKeys.selected);
+          const statesSelectedByDefault = Object.hasOwn(literal, YamlKeys.selected);
           const option = new ListOption(label, selectedByDefault, statesSelectedByDefault);
           field.valueConstraints.literals.push(option);
         }

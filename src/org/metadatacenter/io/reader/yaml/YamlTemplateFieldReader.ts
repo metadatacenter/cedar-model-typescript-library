@@ -1,4 +1,5 @@
 import { YamlSourcePolicy } from './YamlSourcePolicy';
+import { YamlKeyTracking } from './YamlKeyTracking';
 import { applySchemaReaderDefaults } from '../SchemaReaderDefaults';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { JsonPath } from '../../../model/cedar/util/path/JsonPath';
@@ -97,22 +98,35 @@ export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
     return this.readFromObject(fieldObject, ChildDeploymentInfo.empty(), new JsonPath());
   }
 
-  public readFromObject(fieldSourceObject: JsonNode, childInfo: ChildDeploymentInfo, path: JsonPath): YamlTemplateFieldReaderResult {
-    // A child is part of a document whose walk has already reached it.
-    if (path.getLastComponent() === null) {
-      YamlTemplateFieldReader.refuseNullAndEmptySchemaValues(fieldSourceObject, path);
-    }
-    const parsingResult: YamlArtifactParsingResult = new YamlArtifactParsingResult();
-    const field: TemplateField = YamlTemplateFieldReader.readFieldSpecificAttributes(fieldSourceObject, childInfo, parsingResult, path);
-    this.assertSchemaMetadata(fieldSourceObject, path);
-    // A child's `id` may be a temporary one the server replaces on a write.
-    if (path.getLastComponent() === null) {
-      ReaderUtil.getIdentifier(fieldSourceObject, YamlKeys.id);
-    }
-    this.readNonReportableAttributes(field, fieldSourceObject);
-    applySchemaReaderDefaults(field, fieldSourceObject, path, 'yaml');
-    this.readAnnotations(field, fieldSourceObject, parsingResult, path);
-    return new YamlTemplateFieldReaderResult(field, parsingResult, fieldSourceObject);
+  public readFromObject(sourceObject: JsonNode, childInfo: ChildDeploymentInfo, path: JsonPath): YamlTemplateFieldReaderResult {
+    return YamlKeyTracking.read(sourceObject, path.toPointer(), (fieldSourceObject) => {
+      // A child is part of a document whose walk has already reached it.
+      if (path.getLastComponent() === null) {
+        YamlTemplateFieldReader.refuseNullAndEmptySchemaValues(fieldSourceObject, path);
+      }
+      const parsingResult: YamlArtifactParsingResult = new YamlArtifactParsingResult();
+      const field: TemplateField = YamlTemplateFieldReader.readFieldSpecificAttributes(fieldSourceObject, childInfo, parsingResult, path);
+      this.assertSchemaMetadata(fieldSourceObject, path);
+      // A child's `id` may be a temporary one the server replaces on a write.
+      if (path.getLastComponent() === null) {
+        ReaderUtil.getIdentifier(fieldSourceObject, YamlKeys.id);
+        // The Java library's model lets a field written on its own repeat, and its writer states the
+        // bounds in the field's configuration. This library's field has no multiplicity of its own,
+        // so it reads past them, as the Java library reads them, rather than refuse what it writes.
+        const configuration: JsonNode = ReaderUtil.getNode(fieldSourceObject, YamlKeys.configuration);
+        [YamlKeys.multiple, YamlKeys.minItems, YamlKeys.maxItems].forEach((key) => YamlKeyTracking.use(configuration, key));
+      }
+      this.readNonReportableAttributes(field, fieldSourceObject);
+      // A child's value recommendation is its parent's to state, in the child's configuration, and the
+      // container reads it there. A field written on its own may state it in either place.
+      if (path.getLastComponent() === null && (field instanceof ControlledTermFieldImpl || field instanceof TextFieldImpl)) {
+        const configuration: JsonNode = ReaderUtil.getNode(fieldSourceObject, YamlKeys.configuration);
+        field.valueRecommendationEnabled = YamlTemplateFieldReader.readFlag(configuration, fieldSourceObject, YamlKeys.valueRecommendation);
+      }
+      applySchemaReaderDefaults(field, fieldSourceObject, path, 'yaml');
+      this.readAnnotations(field, fieldSourceObject, parsingResult, path);
+      return new YamlTemplateFieldReaderResult(field, parsingResult, sourceObject);
+    });
   }
 
   protected readNonReportableAttributes(field: TemplateField, fieldSourceObject: JsonNode) {
@@ -126,24 +140,29 @@ export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
     // thing this library wrote and could not read. A child is unaffected, since its setting travels
     // in the deployment info the container reader fills. The guard is the writer's, so the two stay
     // symmetric; the Java library reads the field's own node and a child's configuration alike.
-    if (field instanceof ControlledTermFieldImpl || field instanceof TextFieldImpl) {
-      field.valueRecommendationEnabled = ReaderUtil.getBoolean(fieldSourceObject, YamlKeys.valueRecommendation);
-    }
     // Whether a field written on its own is hidden, and whether it demands a value. The renderer
     // states the first at the document's top level and the second under `configuration`, and a
     // hand-written document may put either in either place, so both are accepted from both — as
     // the Java library's reader accepts them. Reading neither left a standalone field shown and
     // optional whatever it was stored as.
     const configuration: JsonNode = ReaderUtil.getNode(fieldSourceObject, YamlKeys.configuration);
+    if (field instanceof ControlledTermFieldImpl || field instanceof TextFieldImpl) {
+      field.valueRecommendationEnabled = ReaderUtil.getBoolean(fieldSourceObject, YamlKeys.valueRecommendation);
+    }
     field.hidden = YamlTemplateFieldReader.readFlag(configuration, fieldSourceObject, YamlKeys.hidden);
     field.requiredValue = YamlTemplateFieldReader.readFlag(configuration, fieldSourceObject, YamlKeys.required);
     field.recommendedValue = YamlTemplateFieldReader.readFlag(configuration, fieldSourceObject, YamlKeys.recommended);
     field.continuePreviousLine = YamlTemplateFieldReader.readFlag(configuration, fieldSourceObject, YamlKeys.continuePreviousLine);
   }
 
-  /** A flag the document may state in its `configuration` block or at the field's own level. */
+  /**
+   * A flag the document may state in its `configuration` block or at the field's own level. Both
+   * are read, and where both state it the `configuration` block's is taken, as in Java's reader.
+   */
   private static readFlag(configuration: JsonNode, fieldSourceObject: JsonNode, key: string): boolean {
-    return ReaderUtil.getBoolean(configuration, key) || ReaderUtil.getBoolean(fieldSourceObject, key);
+    const configured = ReaderUtil.getBoolean(configuration, key);
+    const own = ReaderUtil.getBoolean(fieldSourceObject, key);
+    return Object.hasOwn(configuration, key) ? configured : own;
   }
 
   private static readFieldSpecificAttributes(

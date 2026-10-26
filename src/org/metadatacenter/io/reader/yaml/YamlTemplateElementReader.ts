@@ -1,4 +1,5 @@
 import { YamlSourcePolicy } from './YamlSourcePolicy';
+import { YamlKeyTracking } from './YamlKeyTracking';
 import { applySchemaReaderDefaults } from '../SchemaReaderDefaults';
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
@@ -44,29 +45,27 @@ export class YamlTemplateElementReader extends YamlContainerArtifactReader {
     return this.readFromObject(elementObject, ChildDeploymentInfo.empty(), new JsonPath());
   }
 
-  public readFromObject(
-    elementSourceObject: JsonNode,
-    _childInfo: ChildDeploymentInfo,
-    topPath: JsonPath,
-  ): YamlTemplateElementReaderResult {
-    // A nested element is part of a document whose walk has already reached it.
-    if (topPath.getLastComponent() === null) {
-      YamlTemplateElementReader.refuseNullAndEmptySchemaValues(elementSourceObject, topPath);
-    }
-    const parsingResult: YamlArtifactParsingResult = new YamlArtifactParsingResult();
-    const element = TemplateElement.buildEmptyWithNullValues();
+  public readFromObject(sourceObject: JsonNode, _childInfo: ChildDeploymentInfo, topPath: JsonPath): YamlTemplateElementReaderResult {
+    return YamlKeyTracking.read(sourceObject, topPath.toPointer(), (elementSourceObject) => {
+      // A nested element is part of a document whose walk has already reached it.
+      if (topPath.getLastComponent() === null) {
+        YamlTemplateElementReader.refuseNullAndEmptySchemaValues(elementSourceObject, topPath);
+      }
+      const parsingResult: YamlArtifactParsingResult = new YamlArtifactParsingResult();
+      const element = TemplateElement.buildEmptyWithNullValues();
 
-    this.assertSchemaMetadata(elementSourceObject, topPath);
-    // A nested element's `id` may be a temporary one the server replaces on a write.
-    if (topPath.getLastComponent() === null) {
-      ReaderUtil.getIdentifier(elementSourceObject, YamlKeys.id);
-    }
-    this.readNonReportableAttributes(element, elementSourceObject);
-    applySchemaReaderDefaults(element, elementSourceObject, topPath, 'yaml');
-    this.readAnnotations(element, elementSourceObject, parsingResult, topPath);
-    super.readAndValidateChildrenInfo(element, elementSourceObject, parsingResult, topPath);
+      this.assertSchemaMetadata(elementSourceObject, topPath);
+      // A nested element's `id` may be a temporary one the server replaces on a write.
+      if (topPath.getLastComponent() === null) {
+        ReaderUtil.getIdentifier(elementSourceObject, YamlKeys.id);
+      }
+      this.readNonReportableAttributes(element, elementSourceObject);
+      applySchemaReaderDefaults(element, elementSourceObject, topPath, 'yaml');
+      this.readAnnotations(element, elementSourceObject, parsingResult, topPath);
+      super.readAndValidateChildrenInfo(element, elementSourceObject, parsingResult, topPath);
 
-    return new YamlTemplateElementReaderResult(element, parsingResult, elementSourceObject);
+      return new YamlTemplateElementReaderResult(element, parsingResult, sourceObject);
+    });
   }
 
   protected readNonReportableAttributes(element: TemplateElement, elementSourceObject: JsonNode) {

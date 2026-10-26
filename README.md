@@ -110,6 +110,14 @@ empty list is refused there, except a null value beside a label, a preferred lab
 which reads as no value. A field value must be a string, a number or a boolean, and a child or an
 attribute must be a mapping. Malformed sources raise an error; readers never replace them with
 empty artifacts.
+
+The YAML readers refuse a key they do not read, as the Java readers do, and the error names the key
+and its path. A misspelled key, or a key the form has only for another field type, such as a `unit`
+on a text field, is refused rather than dropped. The keys a document names itself stay open: an
+instance's children, annotation names and an attribute-value field's attributes. Beside an
+instance's `children`, a mapping is read as an attribute-value field and anything else is refused.
+`YamlKeyVocabularyConcordance` holds the readers to the keys the Java reader reads in every corpus
+document.
 `JsonSourcePolicy` is also available from `/policy`; `YamlSourcePolicy` is in the full package.
 Browser bundlers resolve `/policy` to its ES module bundle; CommonJS consumers retain the
 CommonJS entry point.

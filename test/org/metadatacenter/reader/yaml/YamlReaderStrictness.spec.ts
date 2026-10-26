@@ -185,12 +185,11 @@ describe("an instance's metadata is held to the Java reader's rules", () => {
     expect(() => named(`annotations:\n  note:\n    id: ${id}\n`)).toThrow(refusal);
   });
 
-  test('an annotation that states a literal and an IRI is read as the literal, as Java reads it', () => {
-    const annotation = named('annotations:\n  note:\n    value: "A note"\n    id: "https://example.org/note"\n').instance.annotations?.get(
-      'note',
+  test('an annotation that states a literal and an IRI is refused for the IRI, as Java refuses it', () => {
+    // An annotation is a literal or an IRI. The literal is read, and the IRI beside it is no key of the form.
+    expect(() => named('annotations:\n  note:\n    value: "A note"\n    id: "https://example.org/note"\n')).toThrow(
+      'Unknown key "id" at /annotations/note/id',
     );
-    expect(annotation).toBeInstanceOf(AnnotationAtValue);
-    expect((annotation as AnnotationAtValue).getAtValue()).toBe('A note');
   });
 
   // schema:description is never null: the empty string is the only spelling of no description.
@@ -360,9 +359,10 @@ annotations:
       expect(read(stating(yaml, 'status', '""')).bibo_status).toBe(BiboStatus.DRAFT);
     });
 
-    test('an annotation that states a literal and an IRI is read as the literal', () => {
-      const artifact = read(stating(yaml, 'annotations', '{note: {value: "A note", id: "https://example.org/a"}}'));
-      expect(artifact.annotations?.get('note')).toEqual(new AnnotationAtValue('note', 'A note'));
+    test('an annotation that states a literal and an IRI is refused for the IRI', () => {
+      expect(() => read(stating(yaml, 'annotations', '{note: {value: "A note", id: "https://example.org/a"}}'))).toThrow(
+        'Unknown key "id" at /annotations/note/id',
+      );
     });
 
     if (kind !== 'field') {

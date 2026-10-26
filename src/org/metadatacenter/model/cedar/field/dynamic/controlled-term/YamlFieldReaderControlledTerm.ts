@@ -40,6 +40,15 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
   ): ControlledTermField {
     const field = ControlledTermFieldImpl.buildEmpty();
 
+    // The writer states the datatype a controlled term's value has, which is always an IRI, as
+    // Java's reader requires.
+    const datatype: unknown = fieldSourceObject[YamlKeys.datatype];
+    if (datatype !== undefined && datatype !== YamlValues.iri) {
+      throw new Error(
+        `A controlled-term field's datatype is ${YamlValues.iri}, not ${String(datatype)}, at ${path.add(YamlKeys.datatype).toPointer()}.`,
+      );
+    }
+
     const values: JsonNode[] = ReaderUtil.getNodeList(fieldSourceObject, YamlKeys.values);
     values.forEach((valueNode, index) => {
       YamlFieldReaderControlledTerm.assertValueConstraintType(valueNode, path.add(YamlKeys.values, index, YamlKeys.type));
@@ -65,32 +74,6 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
       field.valueConstraints.actions.push(actionBuilder.build());
     });
     return field;
-  }
-
-  /**
-   * Read the constraints a choice field's `values:` entries state, and discard them. Java's reader reads
-   * every field's `values:` for constraints, so an option that states a `type` is read as the constraint
-   * that type names. A type of another spelling is refused, and so is a constraint the entry does not
-   * complete. A complete one has no effect, since a choice field holds no constraint.
-   */
-  static readStatedConstraints(fieldSourceObject: JsonNode, path: JsonPath): void {
-    const reader = new YamlFieldReaderControlledTerm();
-    const values: JsonNode[] = ReaderUtil.getNodeList(fieldSourceObject, YamlKeys.values);
-    values.forEach((valueNode, index) => {
-      if (!isMapping(valueNode) || !Object.hasOwn(valueNode, YamlKeys.type)) {
-        return;
-      }
-      YamlFieldReaderControlledTerm.assertValueConstraintType(valueNode, path.add(YamlKeys.values, index, YamlKeys.type));
-      try {
-        reader.readValueConstraint(valueNode, ControlledTermFieldImpl.buildEmpty(), path.add(YamlKeys.values, index));
-      } catch (error) {
-        const reason = error instanceof Error ? error.message : String(error);
-        throw new Error(
-          `The entry at ${path.add(YamlKeys.values, index).toPointer()} states the ${YamlKeys.type} "${valueNode[YamlKeys.type]}" and is read as that kind of constraint. ${reason}`,
-          { cause: error },
-        );
-      }
-    });
   }
 
   /**

@@ -8,6 +8,7 @@ import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploy
 import { ChildDeploymentInfoElement } from '../../../model/cedar/deployment/ChildDeploymentInfoElement';
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
 import { ReaderUtil } from '../ReaderUtil';
+import { YamlKeyTracking } from './YamlKeyTracking';
 import { YamlTemplateElementReader } from './YamlTemplateElementReader';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 import { isSizedStaticField } from '../../../model/cedar/field/static/SizedStaticField';
@@ -66,10 +67,6 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
             ReaderUtil.getNumber(configuration, YamlKeys.minItems) ?? AbstractChildDeploymentInfo.defaultMinItems;
           childDeploymentInfo.maxItems = ReaderUtil.getNumber(configuration, YamlKeys.maxItems);
         }
-        childDeploymentInfo.requiredValue = ReaderUtil.getBoolean(configuration, YamlKeys.required);
-        childDeploymentInfo.recommendedValue = ReaderUtil.getBoolean(configuration, YamlKeys.recommended);
-        childDeploymentInfo.hidden = ReaderUtil.getBoolean(configuration, YamlKeys.hidden);
-        childDeploymentInfo.valueRecommendationEnabled = ReaderUtil.getBoolean(configuration, YamlKeys.valueRecommendation);
         /*
          * A line placement is a dynamic field's, so the field branch reads it and no other branch
          * does. A document stating it for an element states something the CEDAR model has nowhere
@@ -81,6 +78,14 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
         childDeploymentInfo.iri = ReaderUtil.getIdentifier(configuration, YamlKeys.propertyIri);
 
         if (yamlArtifactType.isField()) {
+          // What a field's parent says of it. An element keeps none of these, as in Java's reader.
+          childDeploymentInfo.requiredValue = ReaderUtil.getBoolean(configuration, YamlKeys.required);
+          childDeploymentInfo.recommendedValue = ReaderUtil.getBoolean(configuration, YamlKeys.recommended);
+          childDeploymentInfo.hidden = ReaderUtil.getBoolean(configuration, YamlKeys.hidden);
+          // Value recommendation is a text field's, a controlled-term field's included.
+          if (yamlArtifactType === YamlArtifactType.TEXTFIELD || yamlArtifactType === YamlArtifactType.CONTROLLED_TERM) {
+            childDeploymentInfo.valueRecommendationEnabled = ReaderUtil.getBoolean(configuration, YamlKeys.valueRecommendation);
+          }
           const cedarFieldType: CedarFieldType = CedarFieldType.forYamlArtifactType(yamlArtifactType);
           childDeploymentInfo.uiInputType = cedarFieldType.getUiInputType();
 
@@ -134,6 +139,11 @@ export abstract class YamlContainerArtifactReader extends YamlAbstractArtifactRe
           const finalChildInfo = finalChildInfoBuilder.build();
           container.addChild(fieldReadingResult.field, finalChildInfo);
         } else if (yamlArtifactType.isElement()) {
+          // A field's settings stated for an element are read past, as above, as the Java library reads
+          // past them.
+          [YamlKeys.continuePreviousLine, YamlKeys.valueRecommendation, YamlKeys.hidden, YamlKeys.required, YamlKeys.recommended].forEach(
+            (key) => YamlKeyTracking.use(configuration, key),
+          );
           const elementReadingResult = this.getElementReader().readFromObject(
             childNode,
             childDeploymentInfo,

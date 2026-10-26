@@ -5,18 +5,15 @@ import { YamlTemplateFieldTypeSpecificReader } from '../../../../../io/reader/ya
 import { SingleChoiceListFieldImpl } from './SingleChoiceListFieldImpl';
 import { SingleChoiceListField } from './SingleChoiceListField';
 import { YamlArtifactParsingResult } from '../../../util/compare/YamlArtifactParsingResult';
-import { YamlFieldReaderControlledTerm } from '../controlled-term/YamlFieldReaderControlledTerm';
 
 export class YamlFieldReaderSingleSelectList extends YamlTemplateFieldTypeSpecificReader {
   override read(
     fieldSourceObject: JsonNode,
     _childInfo: ChildDeploymentInfo,
     _parsingResult: YamlArtifactParsingResult,
-    path: JsonPath,
+    _path: JsonPath,
   ): SingleChoiceListField {
     const field = SingleChoiceListFieldImpl.buildEmpty();
-    // An option states no type. Java reads an entry that states one as the constraint it names.
-    YamlFieldReaderControlledTerm.readStatedConstraints(fieldSourceObject, path);
     YamlTemplateFieldTypeSpecificReader.readAndStoreListValueConstraints(fieldSourceObject, field);
     return field;
   }

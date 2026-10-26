@@ -50,6 +50,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
       ...this.macroType(instance),
       ...this.macroNameAndDescription(instance),
       ...this.macroId(instance, isCompact, true),
+      ...YamlTemplateInstanceWriter.typesNode(instance.dataContainer),
       ...this.macroIsBasedOn(instance),
       ...this.macroDerivedFrom(instance, isCompact),
       ...this.macroProvenance(instance, isCompact),
@@ -117,24 +118,40 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
     // A container is meaningful only when it carries a child value or an
     // attribute-value group. Its generated JSON-LD id alone is reconstructable
     // from the template and would be ambiguous with a field in YAML.
+    // The classes an occurrence states are its own data, not the repository's, so even a compact
+    // document keeps them, and an occurrence stating classes and nothing else is still written. The
+    // root's are written beside its other metadata.
+    const types = isDocumentRoot ? JsonNode.getEmpty() : YamlTemplateInstanceWriter.typesNode(dataContainer);
     if (JsonNode.hasEntries(target)) {
       if (this.hasId(dataContainer.id) && (!isCompact || isDocumentRoot)) {
         into[YamlKeys.id] = dataContainer.id;
       }
+      Object.assign(into, types);
       into[YamlKeys.children] = target;
     }
     const attributes = JsonNode.getEmpty();
     this.serializeAttributeValueFields(dataContainer, attributes, unpackedAttributeValueGroups, isDocumentRoot);
     // Emit element metadata before attribute groups, including elements with no ordinary children.
-    if (!isDocumentRoot && (JsonNode.hasEntries(into) || JsonNode.hasEntries(attributes))) {
+    if (!isDocumentRoot && (JsonNode.hasEntries(into) || JsonNode.hasEntries(attributes) || JsonNode.hasEntries(types))) {
       if (!Object.hasOwn(into, YamlKeys.children)) {
         into[YamlKeys.type] = ELEMENT_INSTANCE_TYPE;
       }
       if (!isCompact && this.hasId(dataContainer.id)) {
         into[YamlKeys.id] = dataContainer.id;
       }
+      Object.assign(into, types);
     }
     Object.assign(into, attributes);
+  }
+
+  /**
+   * A container's `@type` under `instanceType`, the key a template uses for the classes its
+   * instances take: one class as a string, several as a list in order, and none as no key.
+   */
+  private static typesNode(dataContainer: InstanceDataContainer): JsonNode {
+    const types = dataContainer.types;
+    if (types.length === 0) return JsonNode.getEmpty();
+    return { [YamlKeys.instanceType]: types.length === 1 ? types[0] : [...types] } as JsonNode;
   }
 
   private serializeAttributeValueFields(

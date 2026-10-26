@@ -144,7 +144,9 @@ const observed = (differences: TripDifference[]): TripFamily[] =>
 describe('JSON written through YAML', () => {
   it('covers the whole corpus, less its declared exclusions', () => {
     const ids = new Set(allCases.map((c) => c.id));
-    expect(allCases).toHaveLength(templateTestNumbers.length + elementTestNumbers.length + fieldTestNumbers.length + 21 + 85 + 57);
+    expect(allCases).toHaveLength(
+      templateTestNumbers.length + elementTestNumbers.length + fieldTestNumbers.length + instanceTestNumbers.length + 85 + 57,
+    );
     expect(Object.keys(TRIP_EXCLUSIONS).filter((id) => !ids.has(id))).toEqual([]);
     expect(Object.keys(TRIP_FAMILIES).filter((id) => !ids.has(id) || TRIP_EXCLUSIONS[id] !== undefined)).toEqual([]);
   });

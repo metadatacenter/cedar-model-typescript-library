@@ -1,3 +1,4 @@
+import { IdentifierPolicy } from '../../../policy/IdentifierPolicy';
 import { YamlSourcePolicy, yamlSpelling } from './YamlSourcePolicy';
 import { ExactDecimal } from '../../../policy/NumericPolicy';
 import { ReservedNames } from '../../../model/cedar/ReservedNames';
@@ -136,6 +137,7 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
 
   private parseContainer(node: JsonNode, path: string, isDocumentRoot: boolean = false): InstanceDataContainer {
     const container = new InstanceDataContainer();
+    container.types = YamlTemplateInstanceReader.readTypes(node, path);
 
     // A child is a mapping, or a list of mappings for a repeated child, as Java's reader requires.
     const childrenPath = `${path}/${YamlKeys.children}`;
@@ -250,6 +252,23 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
   }
 
   /** An element carries a `children` block, or is the stub written for an empty repeated one; a value never is. */
+  /**
+   * The classes an instance or an element occurrence states under `instanceType`, its JSON-LD
+   * `@type`, as Java's reader reads them: a string is one class, a list several in order, and each an
+   * absolute IRI.
+   */
+  private static readTypes(node: JsonNode, path: string): string[] {
+    if (!Object.hasOwn(node, YamlKeys.instanceType)) return [];
+    const stated: unknown = node[YamlKeys.instanceType];
+    const types = Array.isArray(stated) ? stated : [stated];
+    if (types.length === 0) throw new Error(`Instance types must not be empty at ${path}/${YamlKeys.instanceType}.`);
+    return types.map((type) => {
+      if (typeof type !== 'string') throw new Error(`An instance type must be an IRI string at ${path}/${YamlKeys.instanceType}.`);
+      IdentifierPolicy.assertIdentifier(type, `${path}/${YamlKeys.instanceType}`);
+      return type;
+    });
+  }
+
   private static isElementEntry(node: JsonNode): boolean {
     return Object.hasOwn(node, YamlKeys.children) || ReaderUtil.getString(node, YamlKeys.type) === ELEMENT_INSTANCE_TYPE;
   }

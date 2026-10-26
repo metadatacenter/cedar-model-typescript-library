@@ -49,9 +49,14 @@ export class YamlTemplateElementReader extends YamlContainerArtifactReader {
     _childInfo: ChildDeploymentInfo,
     topPath: JsonPath,
   ): YamlTemplateElementReaderResult {
+    // A nested element is part of a document whose walk has already reached it.
+    if (topPath.getLastComponent() === null) {
+      YamlTemplateElementReader.refuseNullAndEmptySchemaValues(elementSourceObject, topPath);
+    }
     const parsingResult: YamlArtifactParsingResult = new YamlArtifactParsingResult();
     const element = TemplateElement.buildEmptyWithNullValues();
 
+    this.assertSchemaMetadata(elementSourceObject, topPath);
     // A nested element's `id` may be a temporary one the server replaces on a write.
     if (topPath.getLastComponent() === null) {
       ReaderUtil.getIdentifier(elementSourceObject, YamlKeys.id);
@@ -71,7 +76,7 @@ export class YamlTemplateElementReader extends YamlContainerArtifactReader {
       throw new Error('Instance types must be an IRI or a nonempty array of IRIs');
     element.instanceTypeSpecifications = Array.isArray(types) ? (types as string[]) : typeof types === 'string' ? [types] : [];
     element.skos_prefLabel = ReaderUtil.getString(elementSourceObject, YamlKeys.prefLabel);
-    element.skos_altLabel = ReaderUtil.getFilteredStringList(elementSourceObject, YamlKeys.altLabels);
+    element.skos_altLabel = YamlTemplateElementReader.readAltLabels(elementSourceObject);
     element.header = ReaderUtil.getString(elementSourceObject, YamlKeys.header);
     element.footer = ReaderUtil.getString(elementSourceObject, YamlKeys.footer);
   }

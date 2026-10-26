@@ -70,12 +70,27 @@ try {
   run(npmCommand, ['install', '--ignore-scripts', '--no-audit', '--no-fund', '--package-lock=false', tarball], temporaryRoot);
 
   const installedPackage = path.join(temporaryRoot, 'node_modules', ...packageName.split('/'));
-  for (const filename of ['policy.js', 'policy.esm.js', 'policy.umd.js', 'policy.d.ts']) {
+  for (const filename of [
+    'policy.js',
+    'policy.esm.js',
+    'policy.umd.js',
+    'policy.d.ts',
+    'schema.js',
+    'schema.esm.js',
+    'schema.umd.js',
+    'schema.d.ts',
+    'conformance/java-oracle.mjs',
+    'conformance/CedarSchemaOracle.java',
+    'conformance/pom.xml',
+  ]) {
     assert.ok(
       packed.files.some((file) => file.path === filename),
       `${filename} missing from package`,
     );
   }
+  const schema = require(path.join(installedPackage, 'schema.js'));
+  assert.equal(schema.SchemaArtifactValidator.structure({}).canSave, false);
+  assert.equal(Object.keys(schema.SchemaArtifactValidator.schemaDigests).length, 6);
   const policy = require(path.join(installedPackage, 'policy.js'));
   assert.equal(policy.TextPolicy.isBlank('\u001c'), true);
   assert.equal(policy.TextPolicy.isBlank('\u00a0'), false);

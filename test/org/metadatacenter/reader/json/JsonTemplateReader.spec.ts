@@ -5,10 +5,10 @@ describe('JSONTemplateReader', () => {
     expect(() => JsonTemplateReader.getStrict().readFromString('')).toThrow(SyntaxError);
   });
 
-  test('reads empty template as object, should be not null', () => {
-    const templateSourceObject = {};
-    const reader: JsonTemplateReader = JsonTemplateReader.getStrict();
-    const jsonTemplateReaderResult = reader.readFromObject(templateSourceObject);
-    expect(jsonTemplateReaderResult).not.toBeNull();
+  // An empty object declares nothing, and Java refuses it. The compatibility reader, which CEE opens a
+  // host's template with, still reads one, as it reads any template that leaves its declarations out.
+  test('an empty object is refused by the strict reader and read by the compatibility reader', () => {
+    expect(() => JsonTemplateReader.getStrict().readFromObject({})).toThrow('A schema artifact must declare a JSON-LD @type');
+    expect(JsonTemplateReader.getFebruary2024().readFromObject({})).not.toBeNull();
   });
 });

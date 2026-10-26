@@ -16,6 +16,7 @@ import { InstanceDataAtomType } from './InstanceDataAtomType';
  */
 export class InstanceDataContainer {
   private _id: string | null = null;
+  private _types: string[] = [];
   private _values: { [key: string]: InstanceDataAtomType };
   private _iris: { [key: string]: string };
 
@@ -81,5 +82,14 @@ export class InstanceDataContainer {
 
   get id(): string | null {
     return this._id;
+  }
+
+  /** The classes the occurrence, or the instance at the root, states as its `@type`, in order. */
+  set types(value: string[]) {
+    this._types = [...value];
+  }
+
+  get types(): string[] {
+    return this._types;
   }
 }

@@ -1,4 +1,13 @@
-import { CedarBuilders, CedarReaders, InstanceValidator, TemplateValueValidator, NumberType, TemporalType } from '../../../../../../src';
+import {
+  CedarBuilders,
+  CedarReaders,
+  CedarWriters,
+  InstanceValidator,
+  TemplateValueValidator,
+  NumberType,
+  TemporalGranularity,
+  TemporalType,
+} from '../../../../../../src';
 
 /**
  * An instance judged against its template.
@@ -41,6 +50,7 @@ const when = CedarBuilders.temporalFieldBuilder()
   .withSchemaName('when')
   .withSchemaDescription('when')
   .withTemporalType(TemporalType.DATE)
+  .withTemporalGranularity(TemporalGranularity.DAY)
   .build();
 
 const count = CedarBuilders.numericFieldBuilder()
@@ -72,6 +82,7 @@ const template = CedarBuilders.templateBuilder()
   .addChild(element, dep(element, '_addr'))
   .build();
 
+/** The standard prefixes and term definitions every instance's @context carries. */
 const CONTEXT = {
   rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
   xsd: 'http://www.w3.org/2001/XMLSchema#',
@@ -79,12 +90,30 @@ const CONTEXT = {
   schema: 'http://schema.org/',
   oslc: 'http://open-services.net/ns/core#',
   skos: 'http://www.w3.org/2004/02/skos/core#',
+  'rdfs:label': { '@type': 'xsd:string' },
+  'schema:isBasedOn': { '@type': '@id' },
+  'schema:name': { '@type': 'xsd:string' },
+  'schema:description': { '@type': 'xsd:string' },
+  'pav:derivedFrom': { '@type': '@id' },
+  'pav:createdOn': { '@type': 'xsd:dateTime' },
+  'pav:createdBy': { '@type': '@id' },
+  'pav:lastUpdatedOn': { '@type': 'xsd:dateTime' },
+  'oslc:modifiedBy': { '@type': '@id' },
+  'skos:notation': { '@type': 'xsd:string' },
 };
+
+/** The element's own `@context`, which marks `_addr` as an element value. */
+const ADDR_CONTEXT = { _city: 'https://schema.metadatacenter.org/properties/city' };
+
+/** The property IRI each child of the template above maps to, as `dep` gives it. */
+const PROPERTIES = Object.fromEntries(
+  ['_note', '_when', '_count', '_tags', '_addr'].map((name) => [name, `https://schema.metadatacenter.org/properties/${name.slice(1)}`]),
+);
 
 /** A complete, correct instance of the template above. */
 const complete = () => ({
   '@id': 'https://repo.metadatacenter.org/template-instances/i1',
-  '@context': { ...CONTEXT },
+  '@context': { ...CONTEXT, ...PROPERTIES },
   'schema:isBasedOn': 'https://repo.metadatacenter.org/templates/t1',
   'schema:name': 'An instance',
   'schema:description': '',
@@ -92,7 +121,7 @@ const complete = () => ({
   _when: { '@value': '2020-01-01', '@type': 'xsd:date' },
   _count: { '@value': '3', '@type': 'xsd:int' },
   _tags: [{ '@value': 'a' }, { '@value': 'b' }],
-  _addr: { _city: { '@value': 'Palo Alto' } },
+  _addr: { '@context': ADDR_CONTEXT, _city: { '@value': 'Palo Alto' } },
 });
 
 const check = (source: object) => {
@@ -154,7 +183,7 @@ describe('a correct instance', () => {
       _when: { '@value': null, '@type': 'xsd:date' },
       _count: { '@value': null, '@type': 'xsd:int' },
       _tags: [{ '@value': null }, { '@value': null }],
-      _addr: { _city: { '@value': null } },
+      _addr: { '@context': ADDR_CONTEXT, _city: { '@value': null } },
     };
     expect(errorsOf(empty)).toStrictEqual([]);
   });
@@ -244,9 +273,406 @@ describe('@value and @id are not symmetrical', () => {
   });
 
   it('reports a null @id inside an element', () => {
-    const errors = errorsOf({ ...complete(), _addr: { _city: { '@id': null } } });
+    const errors = errorsOf({ ...complete(), _addr: { '@context': ADDR_CONTEXT, _city: { '@id': null } } });
     expect(errors).toHaveLength(1);
     expect(errors[0]).toContain('_city');
+  });
+});
+
+describe('an unfilled controlled term', () => {
+  /**
+   * A controlled-term value without `@id` is unfilled, whatever else it holds.
+   * Stored instances write one as a null or empty label, or as the class alone
+   * in `@type`, and the Java validator accepts each: only a label without the
+   * IRI of the term it names is refused. The reader keeps what such a value
+   * held, and the validator judges that rather than refusing it as an
+   * unrecognized shape.
+   */
+  const CLASS = 'https://example.org/classes/Term';
+  const term = CedarBuilders.controlledTermFieldBuilder()
+    .withAtId('https://repo.metadatacenter.org/template-fields/term')
+    .withSchemaName('term')
+    .withSchemaDescription('term')
+    .build();
+  const withTerm = CedarBuilders.templateBuilder()
+    .withAtId('https://repo.metadatacenter.org/templates/t2')
+    .withSchemaName('T')
+    .withSchemaDescription('T')
+    .addChild(term, dep(term, '_term'))
+    .build();
+  const judge = (value: object) =>
+    InstanceValidator.validateReport(
+      CedarReaders.json()
+        .getFebruary2024()
+        .getTemplateInstanceReader()
+        .readFromObject(
+          {
+            '@id': 'https://repo.metadatacenter.org/template-instances/i2',
+            '@context': { ...CONTEXT },
+            'schema:isBasedOn': 'https://repo.metadatacenter.org/templates/t2',
+            'schema:name': 'An instance',
+            'schema:description': '',
+            _term: value,
+          } as any,
+          undefined as never,
+        ).instance,
+      withTerm,
+    );
+
+  it.each([{}, { 'rdfs:label': null }, { 'rdfs:label': '' }, { '@type': CLASS }, { '@type': CLASS, 'rdfs:label': null }])(
+    'saves %j',
+    (value) => {
+      expect(judge(value).canSave).toBe(true);
+    },
+  );
+
+  it('refuses a label without the IRI of its term', () => {
+    const report = judge({ '@type': CLASS, 'rdfs:label': 'A term' });
+    expect(report.canSave).toBe(false);
+    expect(report.findings).toContainEqual(expect.objectContaining({ code: 'controlledStructure', path: '/_term' }));
+  });
+
+  it.each([{ '@value': null }, { 'rdfs:label': null, 'skos:prefLabel': 'A term' }])(
+    'refuses a key the field does not declare in %j',
+    (value) => {
+      const report = judge(value);
+      expect(report.canSave).toBe(false);
+      expect(report.findings).toContainEqual(expect.objectContaining({ code: 'valueShape' }));
+    },
+  );
+});
+
+describe('judged against the stored template', () => {
+  /**
+   * The server judges an instance against the template document as it is
+   * stored, and older templates state three things differently from how the
+   * model writes them: a container's `required` can omit a child, a field's can
+   * omit `@type`, and a container's `additionalProperties` can admit further
+   * literal values. Given the stored document, the validator takes those facts
+   * from it.
+   */
+  const written = () => CedarWriters.json().getStrict().getTemplateWriter().getAsJsonNode(template) as any;
+  const judge = (source: object, stored: object) =>
+    InstanceValidator.validateReport(
+      CedarReaders.json()
+        .getFebruary2024()
+        .getTemplateInstanceReader()
+        .readFromObject(source as any, undefined as never).instance,
+      template,
+      stored as any,
+    );
+
+  it('lets a child be absent where the stored template does not require it', () => {
+    const { _note, ...withoutNote } = complete();
+    const required = judge(withoutNote, written());
+    expect(required.canSave).toBe(false);
+    expect(required.findings).toContainEqual(
+      expect.objectContaining({ code: 'missingProperty', path: '/_note', message: 'The template requires this property.' }),
+    );
+    const stored = written();
+    stored.required = stored.required.filter((name: string) => name !== '_note');
+    expect(judge(withoutNote, stored).canSave).toBe(true);
+  });
+
+  it('lets a date be unfilled without @type where the stored field requires only @value', () => {
+    const unfilled = { ...complete(), _when: { '@value': null } };
+    expect(judge(unfilled, written()).canSave).toBe(false);
+    const stored = written();
+    stored.properties._when.required = ['@value'];
+    expect(judge(unfilled, stored).canSave).toBe(true);
+    expect(judge({ ...complete(), _when: { '@value': '2020-01-01' } }, stored).canSave).toBe(false);
+  });
+
+  it("holds each property IRI to the stored template's @context", () => {
+    expect(judge(complete(), written()).canSave).toBe(true);
+    const remapped = { ...complete(), '@context': { ...complete()['@context'], _note: 'https://example.org/properties/other' } };
+    expect(judge(remapped, written()).findings).toContainEqual(
+      expect.objectContaining({ code: 'valueShape', path: '/@context/_note', category: 'structural' }),
+    );
+    const extra = { ...complete(), '@context': { ...complete()['@context'], _gone: 'https://example.org/properties/gone' } };
+    expect(judge(extra, written()).canSave).toBe(false);
+    const unmapped: Record<string, unknown> = { ...complete()['@context'] };
+    delete unmapped._note;
+    expect(judge({ ...complete(), '@context': unmapped }, written()).findings).toContainEqual(
+      expect.objectContaining({ code: 'missingProperty', path: '/@context/_note' }),
+    );
+    const element = {
+      ...complete(),
+      _addr: { '@context': { _city: 'https://example.org/properties/other' }, _city: { '@value': 'Palo Alto' } },
+    };
+    expect(judge(element, written()).findings).toContainEqual(expect.objectContaining({ path: '/_addr/@context/_city' }));
+  });
+
+  it('leaves the child mappings to a writer that takes them from the template, and judges the rest', () => {
+    const options = { asWritten: true };
+    const mapped = (context: object) =>
+      InstanceValidator.validateReport(
+        CedarReaders.json()
+          .getFebruary2024()
+          .getTemplateInstanceReader()
+          .readFromObject({ ...complete(), '@context': context } as any, undefined as never).instance,
+        template,
+        written(),
+        options,
+      );
+    const unmapped: Record<string, unknown> = { ...complete()['@context'] };
+    delete unmapped._note;
+    expect(mapped(unmapped).canSave).toBe(true);
+    expect(mapped({ ...complete()['@context'], _note: 'https://example.org/properties/other' }).canSave).toBe(true);
+    expect(mapped({ ...complete()['@context'], _gone: 'https://example.org/properties/gone' }).findings).toContainEqual(
+      expect.objectContaining({ code: 'valueShape', path: '/@context/_gone' }),
+    );
+  });
+
+  it('tells a label stored as null from one left out, where the stored field requires it', () => {
+    const stored = written();
+    stored.properties._note.required = ['@value', 'rdfs:label'];
+    expect(judge({ ...complete(), _note: { '@value': 'a note', 'rdfs:label': null } }, stored).canSave).toBe(true);
+    expect(judge(complete(), stored).findings).toContainEqual(expect.objectContaining({ path: '/_note/rdfs:label' }));
+  });
+
+  it("holds the stored @context's standard terms to the template, and leaves them to the writer as written", () => {
+    const unprefixed: Record<string, unknown> = { ...complete()['@context'] };
+    delete unprefixed.xsd;
+    const source = { ...complete(), '@context': unprefixed };
+    expect(judge(source, written()).findings).toContainEqual(expect.objectContaining({ code: 'missingProperty', path: '/@context/xsd' }));
+    const misprefixed = { ...complete(), '@context': { ...complete()['@context'], xsd: 'https://example.org/xsd#' } };
+    expect(judge(misprefixed, written()).canSave).toBe(false);
+    const instance = CedarReaders.json()
+      .getFebruary2024()
+      .getTemplateInstanceReader()
+      .readFromObject(source as any, undefined as never).instance;
+    expect(InstanceValidator.validateReport(instance, template, written(), { asWritten: true }).canSave).toBe(true);
+  });
+
+  it('admits an undeclared literal where the stored container admits further literals', () => {
+    const extra = { ...complete(), _extra: { '@value': 'more' } };
+    expect(judge(extra, written()).canSave).toBe(false);
+    const stored = {
+      ...written(),
+      additionalProperties: {
+        type: 'object',
+        properties: { '@value': { type: ['string', 'null'] } },
+        required: ['@value'],
+        additionalProperties: false,
+      },
+    };
+    expect(judge(extra, stored).canSave).toBe(true);
+    expect(judge({ ...complete(), _extra: { '@id': 'https://example.org/a' } }, stored).canSave).toBe(false);
+  });
+});
+
+describe('judged as a verbatim write stores it', () => {
+  /**
+   * An editor's save leaves the instance's identity, its provenance and each
+   * element occurrence's @id to the host and the server. A verbatim write
+   * stores the document as it stands, so `verbatim` holds those to the stored
+   * template too, as the server does.
+   */
+  const written = () => CedarWriters.json().getStrict().getTemplateWriter().getAsJsonNode(template) as any;
+  const stamped = (): any => ({
+    ...complete(),
+    'pav:createdOn': '2026-01-01T00:00:00-08:00',
+    'pav:createdBy': 'https://metadatacenter.org/users/u1',
+    'pav:lastUpdatedOn': '2026-01-01T00:00:00-0800',
+    'oslc:modifiedBy': 'https://metadatacenter.org/users/u1',
+    _addr: {
+      '@id': 'https://repo.metadatacenter.org/template-element-instances/e1',
+      '@context': ADDR_CONTEXT,
+      _city: { '@value': 'Palo Alto' },
+    },
+  });
+  const judge = (source: object, verbatim: boolean) =>
+    InstanceValidator.validateReport(
+      CedarReaders.json()
+        .getFebruary2024()
+        .getTemplateInstanceReader()
+        .readFromObject(source as any, undefined as never).instance,
+      template,
+      written(),
+      { verbatim },
+    );
+  const without = (key: string) => {
+    const document = stamped();
+    delete document[key];
+    return document;
+  };
+
+  it('stores a complete document', () => {
+    expect(judge(stamped(), true).canSave).toBe(true);
+  });
+
+  it('refuses an element occurrence without its @id, which an editor leaves to the server', () => {
+    const document = stamped();
+    delete document._addr['@id'];
+    expect(judge(document, false).canSave).toBe(true);
+    expect(judge(document, true).canSave).toBe(false);
+    expect(judge({ ...document, _addr: { ...document._addr, '@id': '' } }, true).canSave).toBe(false);
+  });
+
+  it("holds an element occurrence's null @id to what the stored template admits", () => {
+    const document = stamped();
+    document._addr['@id'] = null;
+    const stored = written();
+    expect(judge(document, true).canSave).toBe(stored.properties._addr.properties['@id'].type.includes('null'));
+  });
+
+  it("refuses a document without its own identity or provenance, and admits the draft's null identity", () => {
+    for (const key of ['@id', 'schema:isBasedOn', 'schema:name', 'pav:createdOn', 'oslc:modifiedBy']) {
+      expect(judge(without(key), false).canSave).toBe(true);
+      expect(judge(without(key), true).canSave).toBe(false);
+    }
+    expect(judge({ ...stamped(), '@id': null }, true).canSave).toBe(true);
+  });
+
+  it('holds those keys to the values the stored template admits', () => {
+    expect(judge({ ...stamped(), 'schema:name': '' }, true).canSave).toBe(false);
+    expect(judge({ ...stamped(), 'pav:createdOn': null }, true).canSave).toBe(true);
+  });
+});
+
+describe("an instance's own @type and annotations", () => {
+  /**
+   * Neither is the host's or the server's to write, so every save writes them
+   * as the instance holds them, and they are judged in every mode: as stored,
+   * or, with `asWritten`, as the writer writes the model's.
+   */
+  const ANNOTATIONS_SCHEMA = {
+    type: 'object',
+    patternProperties: {
+      '^.+$': {
+        oneOf: [
+          { type: 'object', properties: { '@id': { type: 'string', format: 'uri' } }, additionalProperties: false },
+          { type: 'object', properties: { '@value': { type: ['string', 'number', 'boolean', 'null'] } }, additionalProperties: false },
+        ],
+      },
+    },
+    additionalProperties: false,
+  };
+  const TYPE_SCHEMA = {
+    oneOf: [
+      { type: 'string', format: 'uri' },
+      { type: 'array', minItems: 1, items: { type: 'string', format: 'uri' }, uniqueItems: true },
+    ],
+  };
+  const stored = (declareAnnotations = true) => {
+    const document = CedarWriters.json().getStrict().getTemplateWriter().getAsJsonNode(template) as any;
+    document.properties['@type'] = TYPE_SCHEMA;
+    if (declareAnnotations) document.properties._annotations = ANNOTATIONS_SCHEMA;
+    else delete document.properties._annotations;
+    return document;
+  };
+  const read = (source: object) =>
+    CedarReaders.json()
+      .getFebruary2024()
+      .getTemplateInstanceReader()
+      .readFromObject(source as any, undefined as never).instance;
+  const canSave = (source: object, options = {}, declareAnnotations = true) =>
+    InstanceValidator.validateReport(read(source), template, stored(declareAnnotations), options).canSave;
+  const CLASS = 'https://example.org/classes/Probe';
+  const annotated = (annotations: unknown) => ({ ...complete(), _annotations: annotations });
+
+  it('takes a class, or a list of distinct classes', () => {
+    expect(canSave({ ...complete(), '@type': CLASS })).toBe(true);
+    expect(canSave({ ...complete(), '@type': [CLASS, 'https://example.org/classes/Other'] })).toBe(true);
+  });
+
+  it('refuses an empty or repeated list of classes as stored, and judges the written form with asWritten', () => {
+    for (const types of [[], [CLASS, CLASS]]) {
+      expect(canSave({ ...complete(), '@type': types })).toBe(false);
+      expect(canSave({ ...complete(), '@type': types }, { verbatim: true })).toBe(false);
+    }
+    expect(canSave({ ...complete(), '@type': [] }, { asWritten: true })).toBe(true);
+    expect(canSave({ ...complete(), '@type': [CLASS, CLASS] }, { asWritten: true })).toBe(false);
+  });
+
+  it('takes an IRI or a literal annotation', () => {
+    expect(canSave(annotated({ [CLASS]: { '@id': CLASS } }))).toBe(true);
+    expect(canSave(annotated({ [CLASS]: { '@value': 'text' } }))).toBe(true);
+    expect(canSave(annotated({}))).toBe(true);
+  });
+
+  it('refuses an annotation the schema does not admit, as stored', () => {
+    expect(canSave(annotated({ [CLASS]: { '@id': CLASS, '@value': 'text' } }))).toBe(false);
+    expect(canSave(annotated({ [CLASS]: { '@id': CLASS, 'rdfs:label': 'text' } }))).toBe(false);
+    expect(canSave(annotated({ '': { '@value': 'text' } }))).toBe(false);
+    expect(canSave(annotated({ [CLASS]: { '@id': CLASS } }), {}, false)).toBe(false);
+  });
+
+  it('judges the annotations the writer writes with asWritten', () => {
+    expect(canSave(annotated({ [CLASS]: { '@id': CLASS, 'rdfs:label': 'text' } }), { asWritten: true })).toBe(true);
+    expect(canSave(annotated({ '': { '@value': 'text' } }), { asWritten: true })).toBe(false);
+  });
+
+  it('reads only an absolute class and annotation IRI, and only a string literal', () => {
+    expect(() => read({ ...complete(), '@type': 'Probe' })).toThrow();
+    expect(() => read(annotated({ [CLASS]: { '@id': 'Probe' } }))).toThrow();
+    for (const literal of [5, true, null]) expect(() => read(annotated({ [CLASS]: { '@value': literal } }))).toThrow();
+  });
+
+  it('refuses a relative class a model holds, as the writer would write it', () => {
+    const instance = read(complete());
+    instance.dataContainer.types = ['Probe'];
+    expect(InstanceValidator.validateReport(instance, template, stored(), { asWritten: true }).canSave).toBe(false);
+    instance.dataContainer.types = [CLASS];
+    expect(InstanceValidator.validateReport(instance, template, stored(), { asWritten: true }).canSave).toBe(true);
+  });
+
+  it('keeps the classes through a write', () => {
+    const element = { ...complete()._addr, '@type': CLASS };
+    const written = CedarWriters.json()
+      .getStrict()
+      .getTemplateInstanceWriter()
+      .getAsJsonNode(read({ ...complete(), '@type': [CLASS, 'https://example.org/classes/Other'], _addr: element })) as any;
+    expect(written['@type']).toEqual([CLASS, 'https://example.org/classes/Other']);
+    expect(written._addr['@type']).toBe(CLASS);
+  });
+});
+
+describe('a static field', () => {
+  /**
+   * A static field presents content and takes no answer. The Java validator
+   * judges its slot by the schema alone, which declares no property, so `{}`
+   * is the only slot it holds.
+   */
+  const section = CedarBuilders.sectionBreakFieldBuilder()
+    .withAtId('https://repo.metadatacenter.org/template-fields/section')
+    .withSchemaName('section')
+    .withSchemaDescription('section')
+    .build();
+  const withSection = CedarBuilders.templateBuilder()
+    .withAtId('https://repo.metadatacenter.org/templates/t3')
+    .withSchemaName('T')
+    .withSchemaDescription('T')
+    .addChild(note, dep(note, '_note'))
+    .addChild(section, section.createDeploymentBuilder('_section').build())
+    .build();
+  const judge = (slot: object) =>
+    InstanceValidator.validateReport(
+      CedarReaders.json()
+        .getFebruary2024()
+        .getTemplateInstanceReader()
+        .readFromObject(
+          {
+            '@id': 'https://repo.metadatacenter.org/template-instances/i3',
+            '@context': { ...CONTEXT },
+            'schema:isBasedOn': 'https://repo.metadatacenter.org/templates/t3',
+            'schema:name': 'An instance',
+            'schema:description': '',
+            _note: { '@value': 'a note' },
+            _section: slot,
+          } as any,
+          undefined as never,
+        ).instance,
+      withSection,
+    );
+
+  it('holds an empty slot', () => {
+    expect(judge({}).canSave).toBe(true);
+  });
+
+  it('refuses any property, an unanswered @value included', () => {
+    expect(judge({ '@value': null }).canSave).toBe(false);
   });
 });
 
@@ -342,7 +768,7 @@ describe('nested elements', () => {
       'schema:isBasedOn': 'https://repo.metadatacenter.org/templates/t2',
       'schema:name': 'An instance',
       'schema:description': '',
-      _dates: { _when: { '@value': '2020-01-01' } },
+      _dates: { '@context': { _when: 'https://schema.metadatacenter.org/properties/when' }, _when: { '@value': '2020-01-01' } },
     };
     const instance = CedarReaders.json()
       .getFebruary2024()

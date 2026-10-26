@@ -1,3 +1,4 @@
+import { JsonArtifactShape } from './JsonArtifactShape';
 import { ReservedNames } from '../../../model/cedar/ReservedNames';
 import { SchemaArtifactKind } from '../../../model/cedar/AbstractSchemaArtifact';
 import { JsonReaderBehavior } from '../../../behavior/JsonReaderBehavior';
@@ -61,25 +62,31 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
     candidateChildrenInfo: ContainerArtifactChildrenInfo,
     path: JsonPath,
   ): ChildDeploymentInfo | null {
-    const atType: CedarArtifactType = CedarArtifactType.forValue(ReaderUtil.getString(childDefinitionNode, JsonSchema.atType));
-    if (atType !== CedarArtifactType.NULL) {
-      const childInfo: ChildDeploymentInfo = new ChildDeploymentInfo(childCandidateName);
-      childInfo.atType = atType;
-      const uiNode: JsonNode = ReaderUtil.getNode(childDefinitionNode, CedarModel.ui);
-      childInfo.uiInputType = UiInputType.forValue(ReaderUtil.getString(uiNode, CedarModel.inputType));
-      // Read `hidden` here rather than leaving it to the per-type field
-      // readers. They cover the dynamic fields and nothing else, so a hidden
-      // element or a hidden static field came back visible.
-      childInfo.hidden = ReaderUtil.getBoolean(uiNode, CedarModel.Ui.hidden);
-      candidateChildrenInfo.add(childInfo);
-      return childInfo;
-    } else {
+    // An instance property's declaration is not a child, and a compatibility reader still leaves out a
+    // child that declares no type. Each is reported and left out, as before.
+    const passedOver =
+      ReservedNames.isReservedName(childCandidateName) ||
+      JsonArtifactShape.isTolerated(childDefinitionNode, JsonSchema.atType, this.lenient);
+    if (passedOver && CedarArtifactType.forValue(ReaderUtil.getString(childDefinitionNode, JsonSchema.atType)) === CedarArtifactType.NULL) {
       this.reportBlueprintDifference(
         parsingResult,
         new ComparisonError('jtr09', ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, path.add(childCandidateName, JsonSchema.atType)),
       );
       return null;
     }
+    // A child whose type is not a schema artifact's was left out of the container, where Java refuses
+    // the container, and so does this.
+    const atType: CedarArtifactType = JsonArtifactShape.childType(childDefinitionNode, path);
+    const childInfo: ChildDeploymentInfo = new ChildDeploymentInfo(childCandidateName);
+    childInfo.atType = atType;
+    const uiNode: JsonNode = ReaderUtil.getNode(childDefinitionNode, CedarModel.ui);
+    childInfo.uiInputType = UiInputType.forValue(ReaderUtil.getString(uiNode, CedarModel.inputType));
+    // Read `hidden` here rather than leaving it to the per-type field
+    // readers. They cover the dynamic fields and nothing else, so a hidden
+    // element or a hidden static field came back visible.
+    childInfo.hidden = ReaderUtil.getBoolean(uiNode, CedarModel.Ui.hidden);
+    candidateChildrenInfo.add(childInfo);
+    return childInfo;
   }
 
   protected readReportableAttributes(
@@ -88,11 +95,12 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
     parsingResult: JsonArtifactParsingResult,
     path: JsonPath,
   ) {
-    // Read and validate, but do not store top level @type
+    // Read and validate, but do not store top level @type. A type given as a list of one is that type,
+    // as in Java.
     JsonObjectComparator.comparePrimitive(
       parsingResult,
       this.knownArtifactType.getValue(),
-      ReaderUtil.getString(elementSourceObject, JsonSchema.atType),
+      JsonArtifactShape.declaredTypeOrNull(elementSourceObject, path).getValue(),
       path.add(JsonSchema.atType),
     );
 
@@ -302,6 +310,11 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
         const propertiesChildNode: JsonNode = ReaderUtil.getNode(containerProperties, key);
 
         if (typeof propertiesChildNode === 'object' && propertiesChildNode !== null) {
+          // A child that is neither one instance nor several was left out, where Java refuses it. An
+          // instance property's declaration is not a child, and Java passes over it, as this does.
+          if (!ReservedNames.isReservedName(key)) {
+            JsonArtifactShape.assertChildJsonSchemaType(propertiesChildNode, path.add(JsonSchema.properties, key), this.lenient);
+          }
           let childDefinitionNode = propertiesChildNode;
           const typeOfItems = ReaderUtil.getString(propertiesChildNode, JsonSchema.type);
           if (typeOfItems == 'object') {

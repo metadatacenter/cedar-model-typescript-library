@@ -22,12 +22,13 @@ describe('Java instance description insertion order', () => {
     }
   });
 
-  test.each(['', 'description: null\n', 'description: ""\n', 'description: "Details"\n'])('YAML description %p', (line) => {
+  // A null description is refused on read, as Java refuses it, so it has no order to keep.
+  test.each(['', 'description: ""\n', 'description: "Details"\n'])('YAML description %p', (line) => {
     const instance = CedarYamlReaders.getStrict()
       .getTemplateInstanceReader()
       .readFromString(line + baseYaml).instance;
     const keys = Object.keys(writer.getAsJsonNode(instance));
-    const after = line === '' || line.includes('null') ? 'schema:isBasedOn' : 'schema:name';
+    const after = line === '' ? 'schema:isBasedOn' : 'schema:name';
     expect(keys.indexOf('schema:description')).toBe(keys.indexOf(after) + 1);
   });
 

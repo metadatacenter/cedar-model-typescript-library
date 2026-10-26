@@ -7,7 +7,9 @@ import { SchemaVersion } from '../../../../../../src/org/metadatacenter/model/ce
  * republished an assertion about a model this library no longer emits, and the meta-schemas admit
  * exactly one — so a stale value survived a round trip only to be refused on write.
  *
- * The YAML writer has always stamped it. These pin the JSON writers to the same rule.
+ * The YAML writer has always stamped it. These pin the JSON writers to the same rule. The JSON
+ * readers now refuse a document that states another model version, as Java does, so the stale value
+ * is set on the model a reader produced.
  */
 const STALE = '1.5.0';
 const CURRENT = SchemaVersion.CURRENT.getValue();
@@ -26,15 +28,22 @@ const templateJson = (): JsonNode => {
 
 describe('JSON writers and the model version', () => {
   it('states the current model version for a template that stored another', () => {
-    const source = { ...templateJson(), 'schema:schemaVersion': STALE };
-    const template = readers.getTemplateReader().readFromObject(source).template;
+    expect(() => readers.getTemplateReader().readFromObject({ ...templateJson(), 'schema:schemaVersion': STALE })).toThrow(
+      `Expecting model version ${CURRENT}, got ${STALE}`,
+    );
+    const template = readers.getTemplateReader().readFromObject(templateJson()).template;
+    template.schema_schemaVersion = SchemaVersion.forValue(STALE);
     expect(writers.getTemplateWriter().getAsJsonNode(template)['schema:schemaVersion']).toBe(CURRENT);
   });
 
   it('states it for a field a container holds', () => {
-    const source = templateJson();
-    ((source['properties'] as JsonNode)['field'] as JsonNode)['schema:schemaVersion'] = STALE;
-    const template = readers.getTemplateReader().readFromObject(source).template;
+    const stale = templateJson();
+    ((stale['properties'] as JsonNode)['field'] as JsonNode)['schema:schemaVersion'] = STALE;
+    expect(() => readers.getTemplateReader().readFromObject(stale)).toThrow(`Expecting model version ${CURRENT}, got ${STALE}`);
+    const template = readers.getTemplateReader().readFromObject(templateJson()).template;
+    const child = template.getChild('field');
+    expect(child).not.toBeNull();
+    child!.schema_schemaVersion = SchemaVersion.forValue(STALE);
     const written = writers.getTemplateWriter().getAsJsonNode(template);
     const field = (written['properties'] as JsonNode)['field'] as JsonNode;
     expect(field['schema:schemaVersion']).toBe(CURRENT);
@@ -42,8 +51,12 @@ describe('JSON writers and the model version', () => {
 
   it('states it for a field written on its own', () => {
     const standalone = (templateJson()['properties'] as JsonNode)['field'] as JsonNode;
-    const source = { ...standalone, 'schema:schemaVersion': STALE };
+    const source = { ...standalone, $schema: 'http://json-schema.org/draft-04/schema#' };
+    expect(() => readers.getTemplateFieldReader().readFromObject({ ...source, 'schema:schemaVersion': STALE })).toThrow(
+      `Expecting model version ${CURRENT}, got ${STALE}`,
+    );
     const field = readers.getTemplateFieldReader().readFromObject(source).field;
+    field.schema_schemaVersion = SchemaVersion.forValue(STALE);
     expect(writers.getFieldWriterForField(field).getAsJsonNode(field)['schema:schemaVersion']).toBe(CURRENT);
   });
 });

@@ -1,6 +1,6 @@
 import { JsonSourcePolicy } from '../../../policy/JsonSourcePolicy';
 import { TextPolicy } from '../../../policy/TextPolicy';
-import { AttributeValueFieldParent } from '../../../model/cedar/ReservedNames';
+import { AttributeValueFieldParent, ReservedNames } from '../../../model/cedar/ReservedNames';
 import { InstanceDataNotationAtom } from '../../../model/cedar/template-instance/InstanceDataNotationAtom';
 import { InstanceDataLabelAtom } from '../../../model/cedar/template-instance/InstanceDataLabelAtom';
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
@@ -21,6 +21,7 @@ import { InstanceDataAtomList } from '../../../model/cedar/template-instance/Ins
 import { InstanceDataLinkAtom } from '../../../model/cedar/template-instance/InstanceDataLinkAtom';
 import { InstanceDataAtomType } from '../../../model/cedar/template-instance/InstanceDataAtomType';
 import { InstanceDataEmptyAtom } from '../../../model/cedar/template-instance/InstanceDataEmptyAtom';
+import { StoredForm } from '../../../model/cedar/template-instance/StoredForm';
 import { InstanceDataControlledAtom } from '../../../model/cedar/template-instance/InstanceDataControlledAtom';
 import { InstanceDataTypedAtom } from '../../../model/cedar/template-instance/InstanceDataTypedAtom';
 import { InstanceDataEmptyNode } from '../../../model/cedar/template-instance/InstanceDataEmptyNode';
@@ -115,12 +116,11 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
    * whether they were there. That is the whole of
    * https://github.com/metadatacenter/cedar-model-typescript-library/issues/2.
    *
-   * Warnings rather than errors, and the corpus is the reason: 29 of its 121
+   * Warnings rather than errors, and the corpus is the reason: many of its
    * instances carry no envelope at all. They are not malformed. An instance has
-   * no `@id` or provenance until it is saved, and the CEDAR Embeddable Editor's
-   * "extract" form strips `@context` from documents it passes around. Rejecting
-   * those would make the reader unable to open documents that demonstrably
-   * exist, which is the same trap the template reader avoids for pre-2024 forms.
+   * no `@id` or provenance until it is saved. Rejecting those would make the
+   * reader unable to open documents that demonstrably exist, which is the same
+   * trap the template reader avoids for pre-2024 forms.
    *
    * So the two verdicts split the answer: `wasSuccessful` stays true, because
    * the document read and the values are usable, while `adheresToBlueprint`
@@ -193,6 +193,9 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
               ) {
                 throw new Error(`Cannot mix fields and element instances in array "${key}" at index ${index}`);
               }
+              // An empty or identifier-only entry is still an occurrence of the
+              // element. One that carries a child without its @context is not.
+              JsonTemplateInstanceReader.refuseChildWithoutContext(arrayElement, path.add(key, index));
               arrayContainer[index] = this.parseContainer(arrayElement, path.add(key, index), parsingResult);
             } else {
               arrayContainer[index] = this.parseNode(arrayElement, path.add(key, index), parsingResult);
@@ -218,6 +221,15 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
       );
     }
     this.packAttributeValues(ret);
+    ret.types = JsonTemplateInstanceReader.readTypes(sourceObject);
+    StoredForm.recordMembers(
+      ret,
+      Object.fromEntries(
+        Object.keys(sourceObject)
+          .filter((key) => ReservedNames.isReservedName(key))
+          .map((key) => [key, sourceObject[key]]),
+      ),
+    );
 
     // `"@context": null` is a present key with nothing in it, and every lookup
     // below starts with `Object.hasOwn`, which throws on null — so a document
@@ -227,6 +239,14 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     const atContextNode = Object.hasOwn(sourceObject, JsonSchema.atContext) ? ReaderUtil.getNode(sourceObject, JsonSchema.atContext) : null;
     if (atContextNode !== null && atContextNode !== undefined) {
       const atContext = atContextNode;
+      StoredForm.recordContextTerms(
+        ret,
+        Object.fromEntries(
+          Object.keys(atContext)
+            .filter((key) => Object.hasOwn(JsonTemplateInstanceContent.CONTEXT_VERBATIM, key))
+            .map((key) => [key, atContext[key]]),
+        ),
+      );
       // add iri mapping for regular fields
       Object.keys(ret.values).forEach((key) => {
         const iri = ReaderUtil.getString(atContext, key);
@@ -306,6 +326,21 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
   }
 
   /**
+   * The classes a container states as its `@type`, as Java's model reads them: a string is one, a list
+   * is several in order, and null or no key is none. Each must be an absolute IRI.
+   */
+  private static readTypes(sourceObject: JsonNode): string[] {
+    const stated: unknown = Object.hasOwn(sourceObject, JsonSchema.atType) ? sourceObject[JsonSchema.atType] : null;
+    if (stated === null) return [];
+    const types = Array.isArray(stated) ? stated : [stated];
+    return types.map((type, index) => {
+      if (typeof type !== 'string') throw new Error(`Invalid @type at index ${index}: expected an IRI.`);
+      ReaderUtil.assertIdentifier(type, JsonSchema.atType);
+      return type;
+    });
+  }
+
+  /**
    * Everything a field's value may carry, and nothing an element would.
    * `@type`, `skos:notation` and `skos:prefLabel` appear on controlled terms;
    * `@id` and `rdfs:label` are the IRI-valued pair; `@value` is the literal
@@ -323,13 +358,45 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
   ]);
 
   /**
+   * The legacy key a field value may carry beside its value. No child takes
+   * it, although no rule reserves it.
+   */
+  private static readonly VALUE_LABEL = '_valueLabel';
+
+  /**
+   * Refuse an object without `@context` that carries a child key.
+   *
+   * `@context` is what marks an element value. An object without one is a
+   * field's value or, in a repeated element whose other entries carry one, an
+   * empty or identifier-only occurrence. Neither has children. A key that a
+   * child could take therefore marks an element written without its
+   * `@context`, and the reader refuses it rather than guess. The keys no child
+   * can take are the reserved names, and the legacy `_valueLabel` is a
+   * field-value key too. An object holding only those keys reads as a value or
+   * an empty node. The Java artifact library's JSON reader refuses the same
+   * objects.
+   */
+  private static refuseChildWithoutContext(sourceObject: JsonNode, path: JsonPath): void {
+    if (Array.isArray(sourceObject) || Object.hasOwn(sourceObject, JsonSchema.atContext)) {
+      return;
+    }
+    const child = Object.keys(sourceObject).find(
+      (key) => !ReservedNames.isReservedName(key) && key !== JsonTemplateInstanceReader.VALUE_LABEL,
+    );
+    if (child !== undefined) {
+      throw new Error(
+        `An element value must carry @context, and an object without one cannot carry the child key "${child}" at ${path.add(child).toPointer()}.`,
+      );
+    }
+  }
+
+  /**
    * True when this node is a field's value rather than an element.
    *
-   * A value carries only value keys. Anything else holding an `@id` is an
-   * element that has simply not written its `@context` — which is what the
-   * CEDAR Embeddable Editor's "extract" form of an instance looks like, and
-   * reading `@id` alone as the signal turns every element in it into a link
-   * atom, losing the whole subtree.
+   * A value carries only value keys. Anything else is not a value, and judging
+   * by `@id` alone would turn an element into a link atom and lose the whole
+   * subtree under it. The reader refuses such an object when it lacks
+   * `@context`. This classification does not refuse it.
    *
    * Public because consumers keep needing to ask it and keep answering it
    * differently. CEE had three separate rules for it — one matching on exact
@@ -390,6 +457,9 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     if (typeof sourceObject === 'string') {
       return new InstanceDataAttributeValueFieldName(sourceObject);
     }
+    if (typeof sourceObject === 'object') {
+      JsonTemplateInstanceReader.refuseChildWithoutContext(sourceObject, path);
+    }
     if (JsonTemplateInstanceReader.isValueNode(sourceObject)) {
       const atom = JsonTemplateInstanceReader.parseDataAtom(sourceObject);
       JsonTemplateInstanceReader.reportNullIri(atom, path, parsingResult);
@@ -435,11 +505,23 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     }
   }
 
+  /** The optional value properties a document may state as null, which the model keeps as no value. */
+  private static readonly NULLABLE_VALUE_KEYS = [
+    JsonSchema.rdfsLabel,
+    JsonSchema.skosNotation,
+    CedarModel.skosPrefLabel,
+    JsonSchema.atLanguage,
+  ];
+
   private static parseDataAtom(content: JsonNode): InstanceDataAtomType {
     if (Object.hasOwn(content, JsonSchema.atId) && Object.hasOwn(content, JsonSchema.atValue)) {
       throw new Error('A field cannot contain both @id and @value.');
     }
     const atom = this.parseDataAtomWithoutNotation(content);
+    StoredForm.recordNulls(
+      atom,
+      JsonTemplateInstanceReader.NULLABLE_VALUE_KEYS.filter((key) => Object.hasOwn(content, key) && content[key] === null),
+    );
     if ('language' in atom) atom.language = ReaderUtil.getString(content, JsonSchema.atLanguage);
     if ('preferredLabel' in atom) atom.preferredLabel = ReaderUtil.getString(content, CedarModel.skosPrefLabel);
     if ('notation' in atom && !(atom instanceof InstanceDataNotationAtom)) {

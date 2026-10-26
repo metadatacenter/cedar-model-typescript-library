@@ -24,16 +24,21 @@ export class JsonFieldReaderTemporal extends JsonTemplateFieldTypeSpecificReader
 
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
     if (uiNode != null) {
-      field.temporalGranularity = TemporalGranularity.forValue(ReaderUtil.getString(uiNode, CedarModel.temporalGranularity));
-      field.inputTimeFormat = TimeFormat.forValue(ReaderUtil.getString(uiNode, CedarModel.inputTimeFormat));
-      field.timezoneEnabled = ReaderUtil.getBoolean(uiNode, CedarModel.timezoneEnabled);
+      field.temporalGranularity = TemporalGranularity.forGranularity(ReaderUtil.getString(uiNode, CedarModel.temporalGranularity));
+      const inputTimeFormat = ReaderUtil.getString(uiNode, CedarModel.inputTimeFormat);
+      if (inputTimeFormat !== null) {
+        field.inputTimeFormat = TimeFormat.forInputTimeFormat(inputTimeFormat);
+      }
+      // A field may state that its values carry a time zone, state that they do not, or state nothing,
+      // as some stored fields do. The three stay apart, so nothing is written back where nothing was stated.
+      field.timezoneEnabled = ReaderUtil.getBooleanOrNull(uiNode, CedarModel.timezoneEnabled);
     }
 
     const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
     if (valueConstraints != null) {
       const temporalType = ReaderUtil.getString(valueConstraints, CedarModel.temporalType);
       if (temporalType !== null) {
-        field.valueConstraints.temporalType = TemporalType.forValue(temporalType);
+        field.valueConstraints.temporalType = TemporalType.forDatatype(temporalType);
       }
       field.valueConstraints.defaultValue = ReaderUtil.getString(valueConstraints, CedarModel.defaultValue);
       TemporalDefaultValueValidator.assertValid(

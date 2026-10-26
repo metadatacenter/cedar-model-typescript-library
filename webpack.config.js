@@ -124,3 +124,8 @@ module.exports.push(
     },
   })),
 );
+
+// The host validates retained JSON without downloading model readers and YAML a second time.
+module.exports.push(...module.exports.slice(0, 3).map(config => ({
+  ...config, entry: "./src/schema.ts", output: {...config.output, filename: config.output.filename.replace("index", "schema"), ...(config.output.libraryTarget === "umd" ? {library: "CedarSchemaValidation"} : {})},
+})));

@@ -18,36 +18,52 @@ import { ControlledTermFieldImpl } from './ControlledTermFieldImpl';
 import { ControlledTermVersion } from './value-constraint/ControlledTermVersion';
 import { Iri } from '../../../types/wrapped-types/Iri';
 import { JavaStrings } from '../../../util/JavaStrings';
+import { JsonTermConstraintChecks } from '../../../../../io/reader/json/JsonTermConstraintChecks';
 
 export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecificReader {
   override read(
     fieldSourceObject: JsonNode,
     childInfo: ChildDeploymentInfo,
     _parsingResult: JsonArtifactParsingResult,
-    _path: JsonPath,
+    path: JsonPath,
   ): ControlledTermField {
     const field = ControlledTermFieldImpl.buildEmpty();
     this.readRequiredAndHidden(fieldSourceObject, childInfo);
 
     const valueConstraints: JsonNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
     if (valueConstraints != null) {
-      field.valueConstraints.ontologies = this.getOntologies(ReaderUtil.getNodeList(valueConstraints, CedarModel.ontologies));
+      const at = path.add(CedarModel.valueConstraints);
+      // The reads below take each constraint to be an object, so one that is not is refused first.
+      JsonTermConstraintChecks.assertEntriesAreObjects(fieldSourceObject, path);
+      field.valueConstraints.ontologies = this.getOntologies(
+        ReaderUtil.getNodeList(valueConstraints, CedarModel.ontologies),
+        at.add(CedarModel.ontologies),
+      );
       field.valueConstraints.classes = this.getClasses(ReaderUtil.getNodeList(valueConstraints, CedarModel.classes));
-      field.valueConstraints.branches = this.getBranches(ReaderUtil.getNodeList(valueConstraints, CedarModel.branches));
-      field.valueConstraints.valueSets = this.getValueSets(ReaderUtil.getNodeList(valueConstraints, CedarModel.valueSets));
+      field.valueConstraints.branches = this.getBranches(
+        ReaderUtil.getNodeList(valueConstraints, CedarModel.branches),
+        at.add(CedarModel.branches),
+      );
+      field.valueConstraints.valueSets = this.getValueSets(
+        ReaderUtil.getNodeList(valueConstraints, CedarModel.valueSets),
+        at.add(CedarModel.valueSets),
+      );
+      // The reads above refuse some malformed constraints, each with the message it always gave. Java
+      // refuses more, such as an ontology with no acronym, and these checks refuse the rest.
+      JsonTermConstraintChecks.assertReadable(fieldSourceObject, path);
       field.valueConstraints.defaultValue = this.getDefaultValue(ReaderUtil.getNodeOrNull(valueConstraints, CedarModel.defaultValue));
       field.valueConstraints.actions = this.getActions(ReaderUtil.getNodeList(valueConstraints, CedarModel.actions));
     }
     return field;
   }
 
-  private getOntologies(nodeList: Array<JsonNode>): Array<ControlledTermOntology> {
+  private getOntologies(nodeList: Array<JsonNode>, path: JsonPath): Array<ControlledTermOntology> {
     const ret: Array<ControlledTermOntology> = [];
-    nodeList.forEach((o) => {
+    nodeList.forEach((o, index) => {
       const ontology = new ControlledTermOntology(
         ReaderUtil.getStringOrEmpty(o, CedarModel.ValueConstraints.acronym),
         ReaderUtil.getStringOrEmpty(o, CedarModel.ValueConstraints.name),
-        ReaderUtil.getNumberOrNull(o, CedarModel.ValueConstraints.numTerms),
+        ReaderUtil.getJsonJavaIntOrNull(o, CedarModel.ValueConstraints.numTerms, path.add(index)),
         ReaderUtil.getIdentifierURI(o, CedarModel.ValueConstraints.uri),
         ...JsonFieldReaderControlledTerm.readSourceAndVersion(o),
       );
@@ -62,7 +78,7 @@ export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecific
       const clazz = new ControlledTermClass(
         ReaderUtil.getStringOrEmpty(c, CedarModel.ValueConstraints.label),
         ReaderUtil.getStringOrEmpty(c, CedarModel.ValueConstraints.source),
-        BioportalTermType.forJsonValue(ReaderUtil.getStringOrEmpty(c, CedarModel.ValueConstraints.type)),
+        BioportalTermType.forJsonType(JsonFieldReaderControlledTerm.own(c, CedarModel.ValueConstraints.type), 'A class constraint'),
         ReaderUtil.getStringOrEmpty(c, CedarModel.ValueConstraints.prefLabel),
         ReaderUtil.getIdentifierURI(c, CedarModel.ValueConstraints.uri),
         ...JsonFieldReaderControlledTerm.readSourceAndVersion(c),
@@ -72,14 +88,15 @@ export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecific
     return ret;
   }
 
-  private getBranches(nodeList: Array<JsonNode>): Array<ControlledTermBranch> {
+  private getBranches(nodeList: Array<JsonNode>, path: JsonPath): Array<ControlledTermBranch> {
     const ret: Array<ControlledTermBranch> = [];
-    nodeList.forEach((b) => {
+    nodeList.forEach((b, index) => {
       const branch = new ControlledTermBranch(
         ReaderUtil.getStringOrEmpty(b, CedarModel.ValueConstraints.source),
         ReaderUtil.getStringOrEmpty(b, CedarModel.ValueConstraints.acronym),
         ReaderUtil.getStringOrEmpty(b, CedarModel.ValueConstraints.name),
-        ReaderUtil.getNumberOrZero(b, CedarModel.ValueConstraints.maxDepth),
+        // Java requires a branch to state its depth as an integer, so an absent or null one is refused.
+        ReaderUtil.getRequiredJsonJavaInt(b, CedarModel.ValueConstraints.maxDepth, path.add(index)),
         ReaderUtil.getIdentifierURI(b, CedarModel.ValueConstraints.uri),
         ...JsonFieldReaderControlledTerm.readSourceAndVersion(b),
       );
@@ -88,13 +105,13 @@ export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecific
     return ret;
   }
 
-  private getValueSets(nodeList: Array<JsonNode>): Array<ControlledTermValueSet> {
+  private getValueSets(nodeList: Array<JsonNode>, path: JsonPath): Array<ControlledTermValueSet> {
     const ret: Array<ControlledTermValueSet> = [];
-    nodeList.forEach((vs) => {
+    nodeList.forEach((vs, index) => {
       const valueSet = new ControlledTermValueSet(
         ReaderUtil.getStringOrEmpty(vs, CedarModel.ValueConstraints.vsCollection),
         ReaderUtil.getStringOrEmpty(vs, CedarModel.ValueConstraints.name),
-        ReaderUtil.getNumberOrNull(vs, CedarModel.ValueConstraints.numTerms),
+        ReaderUtil.getJsonJavaIntOrNull(vs, CedarModel.ValueConstraints.numTerms, path.add(index)),
         ReaderUtil.getIdentifierURI(vs, CedarModel.ValueConstraints.uri),
         ...JsonFieldReaderControlledTerm.readSourceAndVersion(vs),
       );
@@ -108,16 +125,21 @@ export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecific
     nodeList.forEach((vs) => {
       const action = new ControlledTermAction(
         ReaderUtil.getNumber(vs, CedarModel.ValueConstraints.to),
-        ReaderUtil.getStringOrEmpty(vs, CedarModel.ValueConstraints.action),
+        ControlledTermAction.forAction(JsonFieldReaderControlledTerm.own(vs, CedarModel.ValueConstraints.action)),
         ReaderUtil.getIdentifierURI(vs, CedarModel.ValueConstraints.termUri),
         // Not an identifier: the legacy editor writes "template" here for one of the template's own classes.
         ReaderUtil.getURI(vs, CedarModel.ValueConstraints.sourceUri),
         ReaderUtil.getStringOrEmpty(vs, CedarModel.ValueConstraints.source),
-        BioportalTermType.forJsonValue(ReaderUtil.getStringOrEmpty(vs, CedarModel.ValueConstraints.type)),
+        BioportalTermType.forJsonType(JsonFieldReaderControlledTerm.own(vs, CedarModel.ValueConstraints.type), 'A controlled-term action'),
       );
       ret.push(action);
     });
     return ret;
+  }
+
+  /** The value at `key`, or undefined where the node states none. */
+  private static own(node: JsonNode, key: string): unknown {
+    return Object.hasOwn(node, key) ? node[key] : undefined;
   }
 
   /**

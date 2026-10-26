@@ -3,6 +3,8 @@ import { IdentifierPolicy } from '../../policy/IdentifierPolicy';
 import { JsonNode } from '../../model/cedar/types/basic-types/JsonNode';
 import { Iri } from '../../model/cedar/types/wrapped-types/Iri';
 import { NullableNumber } from '../../model/cedar/types/basic-types/NullableNumber';
+import { JsonPath } from '../../model/cedar/util/path/JsonPath';
+import { JsonSourcePolicy } from '../../policy/JsonSourcePolicy';
 
 export abstract class ReaderUtil {
   public static assertIdentifierCharacters = IdentifierPolicy.assertIdentifierCharacters.bind(IdentifierPolicy);
@@ -140,20 +142,61 @@ export abstract class ReaderUtil {
     throw new Error(`Numeric bound at "${key}" must be a JSON number.`);
   }
 
-  static getNumberOrZero(node: JsonNode, key: string): number {
-    if (Object.hasOwn(node, key)) {
-      return node[key] as number;
-    } else {
-      return 0;
-    }
+  /**
+   * The integer at `key`, or null where the node states none or states null, as Java's readers hold an
+   * optional Java `int`. `spelling` is how the source wrote the value, where that is known. Any other
+   * value is judged as `javaInt` judges it.
+   */
+  static getJavaIntOrNull(node: JsonNode, key: string, path: JsonPath, spelling: { text: string; integer: boolean } | null): number | null {
+    const value: unknown = Object.hasOwn(node, key) ? node[key] : undefined;
+    return value === undefined || value === null ? null : this.javaInt(value, key, path, spelling);
   }
 
-  static getNumberOrNull(node: JsonNode, key: string): number | null {
-    if (Object.hasOwn(node, key)) {
-      return node[key] as number;
-    } else {
-      return null;
+  /** `getJavaIntOrNull` for a node parsed from JSON text, where a number written as a decimal is not an integer. */
+  static getJsonJavaIntOrNull(node: JsonNode, key: string, path: JsonPath): number | null {
+    return this.getJavaIntOrNull(node, key, path, this.jsonSpelling(node, key));
+  }
+
+  /**
+   * The integer at `key` in a node parsed from JSON text, as Java's `readRequiredInt` reads one. The
+   * node must state it, so an absent key is refused with an error that names the key and the path. A
+   * stated null is refused, and any other value is judged as `javaInt` judges it.
+   */
+  static getRequiredJsonJavaInt(node: JsonNode, key: string, path: JsonPath): number {
+    const value: unknown = Object.hasOwn(node, key) ? node[key] : undefined;
+    if (value === undefined) {
+      throw new Error(`Missing ${key} at ${path.add(key).toPointer()}. Expected an integer from -2147483648 to 2147483647.`);
     }
+    return this.javaInt(value, key, path, this.jsonSpelling(node, key));
+  }
+
+  /**
+   * `value`, the value stated at `key`, as a Java `int`: a number the source typed as an integer, from
+   * -2147483648 to 2147483647. `spelling` is how the source wrote the value, where that is known, and
+   * says whether the source typed it as an integer. A value of no known spelling is judged by its value
+   * alone. Any other value is refused with an error that names the key and the path. A null, a
+   * fraction, a number written as a decimal, a number past that range, a string, a boolean, a list and a
+   * mapping are all refused.
+   */
+  private static javaInt(value: unknown, key: string, path: JsonPath, spelling: { text: string; integer: boolean } | null): number {
+    if (
+      typeof value === 'number' &&
+      Number.isInteger(value) &&
+      value >= -2147483648 &&
+      value <= 2147483647 &&
+      spelling?.integer !== false
+    ) {
+      // Java reads `-0` as the integer 0.
+      return value === 0 ? 0 : value;
+    }
+    const shown = spelling?.text ?? JsonSourcePolicy.stringify(value);
+    throw new Error(`Invalid ${key} ${shown} at ${path.add(key).toPointer()}. Expected an integer from -2147483648 to 2147483647.`);
+  }
+
+  /** How JSON text spelled the number at `key`, where it wrote one as a decimal, which no Java `int` reads. */
+  private static jsonSpelling(node: JsonNode, key: string): { text: string; integer: boolean } | null {
+    const decimal = JsonSourcePolicy.decimalSpelling(node, key);
+    return decimal === null ? null : { text: decimal, integer: false };
   }
 
   public static getNode(node: JsonNode, key: string): JsonNode {

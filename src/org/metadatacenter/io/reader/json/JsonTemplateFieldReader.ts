@@ -1,3 +1,4 @@
+import { JsonArtifactShape } from './JsonArtifactShape';
 import { JsonSourcePolicy } from '../../../policy/JsonSourcePolicy';
 import { applySchemaReaderDefaults } from '../SchemaReaderDefaults';
 import { SchemaArtifactKind } from '../../../model/cedar/AbstractSchemaArtifact';
@@ -51,6 +52,7 @@ import { JsonFieldReaderExtNihGrantId } from '../../../model/cedar/field/dynamic
 import { JsonFieldReaderExtDoi } from '../../../model/cedar/field/dynamic/ext-doi/JsonFieldReaderExtDoi';
 import { TextFieldImpl } from '../../../model/cedar/field/dynamic/textfield/TextFieldImpl';
 import { ControlledTermFieldImpl } from '../../../model/cedar/field/dynamic/controlled-term/ControlledTermFieldImpl';
+import { JsonTermConstraintChecks } from './JsonTermConstraintChecks';
 
 export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
   protected artifactTypeWord(): SchemaArtifactKind {
@@ -123,6 +125,10 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     childInfo: AbstractChildDeploymentInfo,
     path: JsonPath,
   ): JsonTemplateFieldReaderResult {
+    JsonArtifactShape.assertDeclaredKind(fieldSourceObject, path, 'field', this.lenient);
+    // A child need not state the JSON Schema it is written in, as in Java.
+    JsonArtifactShape.assertJsonSchemaUri(fieldSourceObject, path, path.getLastComponent() === null, this.lenient);
+    JsonArtifactShape.assertModelVersion(fieldSourceObject, path, this.lenient);
     const parsingResult: JsonArtifactParsingResult = new JsonArtifactParsingResult();
     const field: TemplateField = JsonTemplateFieldReader.readFieldSpecificAttributes(fieldSourceObject, childInfo, parsingResult, path);
     // Standalone reads have no container to retain the deployment info. Keep the setting on the
@@ -224,7 +230,8 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     parsingResult: JsonArtifactParsingResult,
     path: JsonPath,
   ): TemplateField {
-    const artifactType: CedarArtifactType = CedarArtifactType.forValue(ReaderUtil.getString(fieldSourceObject, JsonSchema.atType));
+    // A type given as a list of one is that type, as in Java.
+    const artifactType: CedarArtifactType = JsonArtifactShape.declaredTypeOrNull(fieldSourceObject, path);
     const uiNode = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
     const rawUiInputType = ReaderUtil.getString(uiNode, CedarModel.inputType);
     const uiInputType: UiInputType = UiInputType.forValue(rawUiInputType);
@@ -238,6 +245,11 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
           if (!reader) {
             throw new Error(`
           No reader defined for dynamic input type "${fieldType.getValue()}"`);
+          }
+          // Java judges a field's term constraints whatever its kind. The controlled-term reader reads them
+          // and holds them to Java's rules itself. Every other kind is held to those rules here and keeps nothing.
+          if (fieldType !== CedarFieldType.CONTROLLED_TERM) {
+            JsonTermConstraintChecks.assertReadable(fieldSourceObject, path);
           }
           return reader.read(fieldSourceObject, childInfo, parsingResult, path);
         }

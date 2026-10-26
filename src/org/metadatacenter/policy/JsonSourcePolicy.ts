@@ -2,8 +2,21 @@ import { ExactDecimal, NumericPolicy, NumericValue } from './NumericPolicy';
 import { javaPlainDecimal } from '../io/writer/yaml/JavaPlainDecimal';
 import { JsonNode } from '../model/cedar/types/basic-types/JsonNode';
 
+/** The text of each number a parsed object holds that was written with a fraction or an exponent. */
+const decimalSpellings = new WeakMap<object, Map<string, { value: unknown; text: string }>>();
+
 /** Raw JSON boundary. Duplicate decoded keys and rounded or nonfinite source numbers are never accepted silently. */
 export class JsonSourcePolicy {
+  /**
+   * The text of the number at `key` in a parsed JSON object where it was written with a fraction or an
+   * exponent, as `3.0` or `3e0` is, and null otherwise. Java's reader holds such a number as a decimal
+   * whatever value it denotes, and holds an integer only where the text wrote one.
+   */
+  public static decimalSpelling(object: JsonNode, key: string): string | null {
+    const spelling = decimalSpellings.get(object)?.get(key);
+    return spelling !== undefined && Object.is(spelling.value, object[key]) ? spelling.text : null;
+  }
+
   public static sourceNumber(text: string): NumericValue {
     const value = NumericPolicy.value(text);
     return typeof value === 'number' && NumericPolicy.compare(text, javaPlainDecimal(value)) !== 0 ? ExactDecimal.forValue(text) : value;
@@ -11,6 +24,8 @@ export class JsonSourcePolicy {
 
   public static parse(source: string): JsonNode {
     let position = 0;
+    /** The text of the number token just read, where it has a fraction or an exponent. */
+    let decimalText: string | null = null;
     const whitespace = () => {
       while (/[ \t\n\r]/.test(source[position] ?? '\0')) position++;
     };
@@ -47,7 +62,13 @@ export class JsonSourcePolicy {
               if (Object.hasOwn(object, key)) throw new SyntaxError('Duplicate JSON mapping key');
               whitespace();
               if (source[position++] !== ':') return fail();
-              Object.defineProperty(object, key, { value: value(depth + 1), enumerable: true, writable: true, configurable: true });
+              decimalText = null;
+              const child = value(depth + 1);
+              Object.defineProperty(object, key, { value: child, enumerable: true, writable: true, configurable: true });
+              if (decimalText !== null && (typeof child === 'number' || ExactDecimal.isExact(child))) {
+                const recorded = decimalSpellings.get(object) ?? new Map<string, { value: unknown; text: string }>();
+                decimalSpellings.set(object, recorded.set(key, { value: child, text: decimalText }));
+              }
             } else array.push(value(depth + 1));
             whitespace();
             if (source[position] === end) break;
@@ -70,6 +91,7 @@ export class JsonSourcePolicy {
       if (!number) return fail();
       if (number[0].length > 1000) throw new RangeError('JSON number length limit exceeded');
       position += number[0].length;
+      decimalText = /[.eE]/.test(number[0]) ? number[0] : null;
       return JsonSourcePolicy.sourceNumber(number[0]);
     }
     const result = value(0);

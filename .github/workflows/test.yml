@@ -25,16 +25,18 @@ jobs:
     # Nothing here renders or screenshots, so the cheapest runner is the right one.
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    outputs:
+      playwright: ${{ steps.playwright.outputs.version }}
 
     steps:
       # One checkout. The test corpus (`cedar-test-artifacts/`) and the reference
       # templates (`cedar-artifact-library/src/test/resources/templates/`) are
-      # vendored into this repository, so nothing has to be assembled from
-      # sibling clones.
+      # vendored into this repository, so only the default-value check below
+      # needs a sibling clone.
       - name: Check out the library
         uses: actions/checkout@v7
 
-      # 24.22.0, the version `.nvmrc` names and CEE builds with. This was 20.20.2,
+      # 24.22.1, the version `.nvmrc` names and CEE builds with. This was 20.20.2,
       # which outlived Node 20's own support: that line left maintenance in April
       # 2026, so every tarball published after it was built on a runtime no longer
       # receiving security patches. The whole gate — lint, typecheck, 1,168 tests and
@@ -43,7 +45,7 @@ jobs:
       - name: Use Node.js 24
         uses: actions/setup-node@v7
         with:
-          node-version: 24.22.0
+          node-version: 24.22.1
           cache: npm
 
       - name: Install
@@ -71,19 +73,33 @@ jobs:
       - name: Verify Java lock and Java/TypeScript JSON parity
         run: npm run parity:json
 
+      # Which field types take a declared default, and in what shape, is stated in the `permits`
+      # clauses of five Java interfaces, and the check reads them from Java source. It looks for the
+      # Java library beside this checkout, so fetch the one commit the lock records into that place.
+      - name: Fetch the locked Java artifact library
+        run: |
+          repository=$(node -p "require('./itest/resources/javaArtifactLibraryLock.json').javaArtifactLibrary.repository")
+          commit=$(node -p "require('./itest/resources/javaArtifactLibraryLock.json').javaArtifactLibrary.gitCommit")
+          git init -q ../cedar-artifact-library
+          git -C ../cedar-artifact-library fetch -q --depth 1 "$repository" "$commit"
+          git -C ../cedar-artifact-library checkout -q FETCH_HEAD
+
+      - name: Verify Java/TypeScript default-value parity
+        run: npm run verify:java-defaults
+
       # Build the exact tarball consumers receive, install it into an isolated
       # project, and exercise CommonJS, ESM, and the shipped declarations.
       - name: Build and smoke-test the distributable
         run: npm run test:package
 
-      - name: Install conformance browsers
-        run: npx playwright install --with-deps chromium firefox webkit
+      # The browser job runs in the Playwright image for the version the lock resolves. This step reads
+      # that version from the installed package.
+      - name: Resolve the Playwright version
+        id: playwright
+        run: echo "version=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
 
-      - name: Verify regex conformance and bounded browser execution
-        run: npm run test:browser
-
-      # The bytes the publish job ships are the bytes this job just gated, so the
-      # staged tarball travels as an artifact rather than being rebuilt downstream.
+      # The bytes the browser job tests and the publish job ships are the bytes this job built and
+      # gated, so the staged tarball travels as an artifact rather than being rebuilt downstream.
       - name: Save the gated distributable
         uses: actions/upload-artifact@v7
         with:
@@ -91,6 +107,55 @@ jobs:
           path: dist
           if-no-files-found: error
           retention-days: 2
+
+  # The browser conformance tests run in Playwright's own image, which carries the browsers and the
+  # system libraries they need, so the job downloads neither. Installing them on the runner usually
+  # took under a minute, but twice it hung while apt fetched the system libraries, until the test
+  # job's 15-minute limit cancelled the run.
+  browser:
+    name: Browser conformance
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    # Each Playwright release accepts only the browser builds it pins, so the image must carry the
+    # version the lock resolves. The tag is derived from that version rather than written here, so an
+    # update that moves the package moves the image with it, and the two cannot drift apart. `noble`
+    # is Ubuntu 24.04, the release `ubuntu-latest` runs.
+    container:
+      image: mcr.microsoft.com/playwright:v${{ needs.test.outputs.playwright }}-noble
+
+    steps:
+      - name: Check out the library
+        uses: actions/checkout@v7
+
+      # The image carries its own Node, 24.22.1 in the v1.64.1 image. A tag can be rebuilt in place,
+      # as that one was nine days after the release, so its Node can change while the tag stays the
+      # same. The tests run on the version the rest of the gate uses.
+      - name: Use Node.js 24
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24.22.1
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      # The tests load `dist/policy.umd.js`, so they run against the bundle the publish job ships
+      # rather than one built here.
+      - name: Restore the gated distributable
+        uses: actions/download-artifact@v8
+        with:
+          name: model-library-dist
+          path: dist
+
+      # Steps run as root, the image's default user, but HOME is a directory the runner creates and
+      # its own user owns. Firefox refuses to start as root under a HOME that another user owns, so
+      # the tests run with root's own home.
+      - name: Verify regex conformance and bounded browser execution
+        env:
+          HOME: /root
+        run: npm run test:browser
 
   # Every merge to develop reaches the Nexus dev channel. Before this existed the
   # channel moved only when somebody published by hand or a release train ran, so it
@@ -100,7 +165,7 @@ jobs:
   # latest dev of this library.
   publish-dev:
     name: Publish the dev package
-    needs: test
+    needs: [test, browser]
     if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -118,7 +183,7 @@ jobs:
       - name: Use Node.js 24
         uses: actions/setup-node@v7
         with:
-          node-version: 24.22.0
+          node-version: 24.22.1
 
       - name: Restore the gated distributable
         uses: actions/download-artifact@v8

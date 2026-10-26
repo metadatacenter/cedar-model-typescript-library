@@ -27,7 +27,7 @@ export class YamlFieldReaderNumeric extends YamlTemplateFieldTypeSpecificReader 
     // the YAML side, so the same numeric field read as JSON and as YAML disagreed.
     const datatype = ReaderUtil.getString(fieldSourceObject, YamlKeys.datatype);
     if (datatype !== null) {
-      field.valueConstraints.numberType = NumberType.forValue(datatype);
+      field.valueConstraints.numberType = NumberType.forDatatype(datatype);
     }
     field.valueConstraints.minValue = ReaderUtil.getExactNumber(fieldSourceObject, YamlKeys.minValue);
     field.valueConstraints.maxValue = ReaderUtil.getExactNumber(fieldSourceObject, YamlKeys.maxValue);

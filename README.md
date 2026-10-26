@@ -130,7 +130,7 @@ existing URI rules.
 
 ## Building
 
-Use Node 24.22.0, which `.nvmrc` and CI both specify:
+Use Node 24.22.1, which `.nvmrc` and CI both specify:
 
 ```shell
 nvm use
@@ -182,6 +182,21 @@ Run concurrent gates in separate checkouts, not against the same output tree.
 The unit suite covers the model and serialization behavior. The parity gates
 compare the TypeScript library with the Java CEDAR Artifact Library over the
 vendored JSON and YAML corpora.
+
+The two libraries must also reach the same verdict on every instance.
+`itest/InstanceVerdictConcordance.spec.ts` checks that `InstanceValidator`'s
+save decision equals the verdict of the Java validation library, which the
+server applies to every write, on each corpus instance that has its template
+beside it. Further cases probe shapes the corpus holds no example of: a corpus
+case whose instance, and sometimes template, is changed by a few JSON Patch
+operations, for instance into an unfilled controlled term or a template that
+requires fewer children. Each is judged against the stored template, as the
+server judges it. The Java verdicts are recorded in
+`itest/resources/concordance/instance-verdicts.json` by cedar-development's
+`ops/cedar_corpus_instance_verdicts.py`, with a lock naming the validator and
+corpus commits; regenerate them after either changes. A case on which this
+library still disagrees is listed as an open defect in the spec, and fixing it
+makes the spec fail until the entry is removed.
 
 `npm run test:package` builds the package that would be published, packs and
 installs it into an isolated consumer, and exercises its CommonJS bundle, ES
@@ -243,6 +258,43 @@ paths, `structurallyValid`, `canSave`, and `isValid`. The existing `validate` me
 outside a numeric bound or another declared constraint has `canSave: true` and `isValid: false`.
 Missing structural properties and malformed typed values block saving.
 
+The server judges an instance against the template document as it is stored. An older template can
+require fewer children than the model would write, admit further keys through `additionalProperties`,
+or require only `@value` of a date or number, and neither this library's model nor the Java one keeps
+those facts. A caller holding the stored JSON template passes it as a third argument,
+`validateReport(instance, template, storedTemplate)`, and the validator reads them from it. It
+also judges each container's property IRIs against the stored `@context` schema: a declared child
+must map to the IRI the template gives it, an undeclared term must be admitted, and a required one
+must be there. Without the stored template, the instance is judged against the template as the
+model writes it, and its `@context` is not judged.
+
+The instance is judged as it was stored: a value with an optional property held as null keeps it,
+and a container keeps the standard prefixes and term definitions its `@context` held, though the
+writer leaves out the first and writes its own of the second. A caller that saves through
+`InstanceInflater` and this library's JSON writer asks instead about what that write produces, and
+passes `{ asWritten: true }` as a fourth argument. Each child then maps to the template's property
+IRI, the root carries the standard terms, and a null optional property is left out, as the write
+does. A term the template does not declare is still judged, since the write keeps it.
+
+An editor's save leaves the instance's identity, its provenance and each element occurrence's `@id`
+to the host and the server, which write them before judging the instance, so neither of those two
+ways asks them of it. A caller asking whether the server would store a document exactly as it
+stands, as a verbatim write stores it, passes `{ verbatim: true }`. Each container's own keys are
+then held to the stored template too: its `@context` and `@id` and, at the root, the template,
+name and provenance must be there where the template requires them and take values it admits. A
+provenance timestamp must match the `date-time` format as the server's validator checks it,
+`TimestampPolicy.matchesFormat`, and be readable by the model, `TimestampPolicy.canonical`. The
+format admits some values the model refuses, such as the 30th of February, and the model reads
+some the format refuses, such as a time without seconds.
+
+An instance's `@type`, at the root and on each element occurrence, and its `_annotations` are its
+own, so every save writes them as the instance holds them. The model keeps `@type`, one class as a
+string and several as a list, as the Java model does, and every mode holds both keys to the stored
+template: as stored, or with `asWritten` as the writer writes them. A `uri` format there is the
+server's, `IdentifierPolicy.matchesUriFormat`, which admits a relative reference. The model asks
+more, as Java's does: each class and each annotation's IRI is an absolute IRI, and a literal
+annotation is a string, whatever the template's schema admits.
+
 `TemplateValueValidator.validate(templateOrElementOrField)` checks definition/default consistency
 without changing the model. `validateSource(rawDefinition)` supports retained imported definitions
 after structural parsing; it does not replace the structural reader. Inconsistent defaults block
@@ -260,3 +312,26 @@ Java owns the normative value/default, configuration and semantic-verification c
 explicitly uncommitted review, `node scripts/sync-concordance.mjs --matrix <name> --working-tree`
 records the base commit plus a hash of the actual Java source/test tree. Refresh it after further
 Java edits; do not describe that lock as evidence of a committed revision.
+
+### Validate the serialized schema
+
+`SchemaArtifactValidator.structure(json, kind?)` checks a template, element or field before a reader
+can normalize it. `validate(json, kind?)` also checks the raw constraints and defaults. Both return the
+shared `ValidationSummary`; unknown terminology verification stays advisory for saving. The optional
+kind is `template`, `element` or `field`. The lightweight browser entry is
+`cedar-model-typescript-library/schema` (`schema.esm.js` for direct module loading).
+
+The structural validators are compiled ahead of time from Java's Draft-04 meta-schemas. To adopt a
+canonical change, run `npm run schemas:compile -- --sync /path/to/cedar-model-validation-library`.
+The vendored resources, content hashes and generated validators travel together; `npm run schemas:check`
+and every package build reject drift. Runtime validation does not compile schemas or evaluate source.
+Occurrence counts are limited to Java's nonnegative 32-bit integer range in both the raw checker and
+model deployment builders.
+
+The package also carries `conformance/java-oracle.mjs` for consumer test gates. With Java 17 and Maven,
+`createJavaOracle(SchemaArtifactValidator.schemaDigests, JsonSourcePolicy.stringify.bind(JsonSourcePolicy))`
+starts the real Java validator and mandatory artifact reader, rejects a schema-hash mismatch, and
+returns `validate(artifact, kind)` and `close()`. This is test tooling, never a browser dependency.
+The Java dependency versions live in `tools/conformance/pom.xml`. CED tests its actual coordinator and
+serialized outputs with this oracle; the Designer host tests its final outgoing bodies with it.
+The deployed server remains authoritative, including its checks after write-time normalization.

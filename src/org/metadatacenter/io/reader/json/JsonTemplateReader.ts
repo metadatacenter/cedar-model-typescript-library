@@ -1,3 +1,4 @@
+import { JsonArtifactShape } from './JsonArtifactShape';
 import { JsonSourcePolicy } from '../../../policy/JsonSourcePolicy';
 import { applySchemaReaderDefaults } from '../SchemaReaderDefaults';
 import { CedarModel } from '../../../model/cedar/constants/CedarModel';
@@ -54,6 +55,10 @@ export class JsonTemplateReader extends JsonContainerArtifactReader {
   }
 
   public readFromObject(templateSourceObject: JsonNode, topPath: JsonPath = new JsonPath()): JsonTemplateReaderResult {
+    JsonArtifactShape.assertDeclaredKind(templateSourceObject, topPath, 'template', this.lenient);
+    JsonArtifactShape.assertJsonSchemaUri(templateSourceObject, topPath, true, this.lenient);
+    JsonArtifactShape.assertObjectType(templateSourceObject, topPath, this.lenient);
+    JsonArtifactShape.assertModelVersion(templateSourceObject, topPath, this.lenient);
     const parsingResult: JsonArtifactParsingResult = new JsonArtifactParsingResult();
     const template = Template.buildEmptyWithNullValues();
 

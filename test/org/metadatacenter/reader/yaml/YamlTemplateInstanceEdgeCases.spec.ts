@@ -1,4 +1,5 @@
 import {
+  CedarArtifactId,
   CedarReaders,
   CedarWriters,
   InstanceDataAttributeValueField,
@@ -12,11 +13,13 @@ import {
   InstanceDataTypedAtom,
   JsonNode,
   TemplateInstance,
+  YamlTemplateInstanceReader,
 } from '../../../../../src';
 
 const edgeCaseYaml = `type: "instance"
 name: "Edge cases"
 id: "https://example.org/instances/edge-cases"
+isBasedOn: "https://example.org/templates/edge-cases"
 children:
   _dateTyped:
     datatype: "xsd:date"
@@ -80,10 +83,10 @@ describe('an empty identifier is refused rather than dropped', () => {
   // occurrences in the shared corpus once did. Reading it as though the key were absent dropped the
   // node silently, which is what this used to assert; the value a document should carry there is null.
   test.each([
-    ['a link value', 'type: "instance"\nname: "I"\nchildren:\n  _blankLink:\n    id: ""\n'],
+    ['a link value', 'type: "instance"\nname: "I"\nisBasedOn: "urn:template"\nchildren:\n  _blankLink:\n    id: ""\n'],
     [
       'an element occurrence',
-      'type: "instance"\nname: "I"\nchildren:\n  _nested:\n    id: ""\n    children:\n      _inner:\n        value: "v"\n',
+      'type: "instance"\nname: "I"\nisBasedOn: "urn:template"\nchildren:\n  _nested:\n    id: ""\n    children:\n      _inner:\n        value: "v"\n',
     ],
     ['the instance itself', 'type: "instance"\nname: "I"\nid: ""\n'],
   ])('%s', (_label: string, yaml: string) => {
@@ -129,7 +132,7 @@ describe('YAML instance edge cases', () => {
   });
 
   test.each(['type', 'id', 'children'])('rejects nested metadata collision %s', (key) => {
-    const instance = reader.readFromString('type: instance\nname: Test').instance;
+    const instance = reader.readFromString('type: instance\nname: Test\nisBasedOn: urn:template').instance;
     const element = new InstanceDataContainer();
     const group = new InstanceDataAttributeValueField(key);
     group.addValue('answer', new InstanceDataStringAtom('kept'));
@@ -170,11 +173,14 @@ describe('YAML instance edge cases', () => {
     expect((nested.values.first as InstanceDataStringAtom).value).toBe('one');
   });
 
-  test('writes every supported atom and omits empty or unsupported values', () => {
+  test('writes every supported atom, including a linked attribute, and omits empty values', () => {
     const instance = withEmptyValues(reader.readFromString(edgeCaseYaml).instance);
-    const unsupportedAttributes = new InstanceDataAttributeValueField('_unsupportedAttributes');
-    unsupportedAttributes.addValue('link', new InstanceDataLinkAtom('https://example.org/not-a-string-attribute'));
-    instance.dataContainer.setValue('_unsupportedAttributes', unsupportedAttributes);
+    const linkedAttributes = new InstanceDataAttributeValueField('_linkedAttributes');
+    linkedAttributes.addValue('link', new InstanceDataLinkAtom('https://example.org/linked-attribute'));
+    const element = new InstanceDataContainer();
+    element.setValue('_inside', new InstanceDataStringAtom('not an attribute'));
+    linkedAttributes.addValue('element', element);
+    instance.dataContainer.setValue('_linkedAttributes', linkedAttributes);
 
     const expanded = writer.getYamlAsJsonNode(instance);
     const compact = writer.getYamlAsJsonNode(instance, true);
@@ -197,7 +203,9 @@ describe('YAML instance edge cases', () => {
     expect(((compact.children as JsonNode)._nested as JsonNode).id).toBeUndefined();
     expect(expanded._attributes).toEqual({ first: { value: 'one' } });
     expect(expanded._nullAttributes).toBeUndefined();
-    expect(expanded._unsupportedAttributes).toBeUndefined();
+    // An attribute is a field value of any kind, as in Java, so a linked one is written rather than
+    // dropped. An element is never an attribute, and is not written as one.
+    expect(expanded._linkedAttributes).toEqual({ link: { id: 'https://example.org/linked-attribute' } });
   });
 
   test('never writes nulls, empty mappings, or empty lists', () => {
@@ -227,6 +235,7 @@ describe('YAML instance edge cases', () => {
   test('an empty repeated element stub survives write, read, and write', () => {
     const repeatedElements = `type: "instance"
 name: "Repeated elements"
+isBasedOn: "urn:template"
 children:
   _elements:
     - type: "element-instance"
@@ -244,6 +253,7 @@ children:
   test('an empty repeated element keeps the identifier it arrived with', () => {
     const identifiedStub = `type: "instance"
 name: "Repeated elements"
+isBasedOn: "urn:template"
 children:
   _elements:
     - type: "element-instance"
@@ -268,8 +278,97 @@ children:
     expect(once).toContain('id: "https://example.org/term"');
   });
 
+  // Java's writer refuses an instance with no name, and its reader refuses one written without it.
+  // Writing `name: null` produced a document neither reader takes.
+  test.each([false, true])('refuses to write an instance that has no name (compact=%s)', (compact) => {
+    const instance = TemplateInstance.buildEmptyWithNullValues();
+    instance.dataContainer.setValue('_note', new InstanceDataStringAtom('kept'));
+    expect(() => writer.getYamlAsJsonNode(instance, compact)).toThrow(/A template instance must have a name/);
+    expect(() => writer.getAsYamlString(instance, compact)).toThrow(/A template instance must have a name/);
+  });
+
+  // An empty name is no name: both readers refuse `name: ""`, so the writer refuses it as it refuses a
+  // missing one. A name of nothing but white space is one both readers take, and it is written.
+  test.each([false, true])('refuses to write an instance whose name is empty (compact=%s)', (compact) => {
+    const instance = TemplateInstance.buildEmptyWithNullValues();
+    instance.schema_isBasedOn = CedarArtifactId.forValue('https://repo.metadatacenter.org/templates/t1');
+    instance.schema_name = '';
+    const formReader = compact ? YamlTemplateInstanceReader.getStrictForCompact() : reader;
+    const source = 'type: "instance"\nname: ""\nisBasedOn: "https://repo.metadatacenter.org/templates/t1"\n';
+    expect(() => formReader.readFromString(source)).toThrow('Expected a non-empty string at /name.');
+    expect(() => writer.getYamlAsJsonNode(instance, compact)).toThrow('A template instance must have a name.');
+    expect(() => writer.getAsYamlString(instance, compact)).toThrow('A template instance must have a name.');
+    instance.schema_name = ' ';
+    const written = writer.getAsYamlString(instance, compact);
+    expect(written).toContain('name: " "');
+    expect(formReader.readFromString(written).instance.schema_name).toBe(' ');
+  });
+
+  // An instance whose template was never saved has no isBasedOn. Both readers refuse a document
+  // without one, so the writer refuses it too, and CEE's download reports why.
+  test.each([false, true])('refuses to write an instance that names no template (compact=%s)', (compact) => {
+    const instance = TemplateInstance.buildEmptyWithNullValues();
+    instance.schema_name = 'Unsaved';
+    expect(() => writer.getYamlAsJsonNode(instance, compact)).toThrow(
+      /A template instance must name the template it is based on/,
+    );
+    expect(() => writer.getAsYamlString(instance, compact)).toThrow(
+      /A template instance must name the template it is based on/,
+    );
+  });
+
+  // An attribute is a field value. The writer wrote its label, and the reader kept only its value,
+  // so the label was lost on the library's own round trip; a datatype or an identifier was lost
+  // before the writer saw it. Java's reader keeps all three.
+  test('an attribute keeps its label, datatype and identifier across write, read and write', () => {
+    const source = `type: "instance"
+name: "Attributes"
+isBasedOn: "https://repo.metadatacenter.org/templates/t1"
+_attributes:
+  labelled:
+    value: "one"
+    label: "One"
+  typed:
+    datatype: "xsd:int"
+    value: "1"
+  linked:
+    id: "https://example.org/link"
+  term:
+    id: "https://example.org/term"
+    label: "Term"
+`;
+    const instance = reader.readFromString(source).instance;
+    const group = instance.dataContainer.values._attributes as InstanceDataAttributeValueField;
+    expect(group.values.labelled).toBeInstanceOf(InstanceDataStringAtom);
+    expect((group.values.labelled as InstanceDataStringAtom).label).toBe('One');
+    expect(group.values.typed).toBeInstanceOf(InstanceDataTypedAtom);
+    expect((group.values.typed as InstanceDataTypedAtom).type).toBe('xsd:int');
+    expect(group.values.linked).toBeInstanceOf(InstanceDataLinkAtom);
+    expect((group.values.linked as InstanceDataLinkAtom).id).toBe('https://example.org/link');
+    expect(group.values.term).toBeInstanceOf(InstanceDataControlledAtom);
+
+    const expected = {
+      labelled: { value: 'one', label: 'One' },
+      typed: { datatype: 'xsd:int', value: '1' },
+      linked: { id: 'https://example.org/link' },
+      term: { id: 'https://example.org/term', label: 'Term' },
+    };
+    expect(writer.getYamlAsJsonNode(instance)._attributes).toEqual(expected);
+    const once = writer.getAsYamlString(instance);
+    expect(writer.getAsYamlString(reader.readFromString(once).instance)).toBe(once);
+
+    const json = CedarWriters.json().getStrict().getTemplateInstanceWriter().getAsJsonNode(instance) as JsonNode;
+    expect(json._attributes).toEqual(['labelled', 'typed', 'linked', 'term']);
+    expect(json.labelled).toEqual({ '@value': 'one', 'rdfs:label': 'One' });
+    expect(json.typed).toEqual({ '@value': '1', '@type': 'xsd:int' });
+    expect(json.linked).toEqual({ '@id': 'https://example.org/link' });
+    expect(json.term).toEqual({ '@id': 'https://example.org/term', 'rdfs:label': 'Term' });
+    const throughJson = CedarReaders.json().getStrict().getTemplateInstanceReader().readFromObject(json).instance;
+    expect(writer.getYamlAsJsonNode(throughJson)._attributes).toEqual(expected);
+  });
+
   test('writes CEE editable attribute-value fields under their field names', () => {
-    const instance = reader.readFromString('type: "instance"\nname: "Editable attributes"\n').instance;
+    const instance = reader.readFromString('type: "instance"\nname: "Editable attributes"\nisBasedOn: "urn:template"\n').instance;
     instance.dataContainer.setValue('My AV Field 1', [
       new InstanceDataAttributeValueFieldName('A11'),
       new InstanceDataAttributeValueFieldName('A12'),

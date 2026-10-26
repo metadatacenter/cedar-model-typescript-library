@@ -1,11 +1,12 @@
 {
   "name": "cedar-model-typescript-library",
-  "version": "1.0.23",
+  "version": "1.0.24",
   "description": "TypeScript models, builders, readers, writers, and validators for CEDAR metadata artifacts",
   "main": "index.js",
   "module": "index.esm.js",
   "browser": {
-    "./policy.js": "./policy.esm.js"
+    "./policy.js": "./policy.esm.js",
+    "./schema.js": "./schema.esm.js"
   },
   "types": "index.d.ts",
   "repository": {

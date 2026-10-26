@@ -1,7 +1,6 @@
 import { JsonSourcePolicy } from '../../../policy/JsonSourcePolicy';
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
-import { ReaderUtil } from '../ReaderUtil';
 import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
 import { JsonTemplateReader } from './JsonTemplateReader';
 import { JsonTemplateElementReader } from './JsonTemplateElementReader';
@@ -33,7 +32,9 @@ export class CedarJsonReaders {
       artifactJSON = artifactSource;
     }
     if (artifactJSON && artifactJSON['@type']) {
-      const atType: string | null = ReaderUtil.getString(artifactJSON, JsonSchema.atType);
+      // A type given as a list of one is that type, as in Java. A longer list is the reader's to refuse.
+      const declared: unknown = artifactJSON[JsonSchema.atType];
+      const atType = (Array.isArray(declared) && declared.length === 1 ? declared[0] : declared) as string | null;
       return CedarArtifactType.forValue(atType);
     }
     return CedarArtifactType.NULL;

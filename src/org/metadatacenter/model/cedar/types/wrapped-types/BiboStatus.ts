@@ -1,3 +1,5 @@
+import { TextPolicy } from '../../../../policy/TextPolicy';
+
 export const BiboStatusJsonValues = {
   DRAFT: 'bibo:draft',
   PUBLISHED: 'bibo:published',
@@ -43,6 +45,26 @@ export class BiboStatus {
       }
     }
     return this.NULL;
+  }
+
+  /**
+   * The status a JSON document's `bibo:status` names. Java's reader matches the spelling to a constant
+   * ignoring case, so `bibo:Draft` is a draft, and refuses any other. A spelling that `forJsonValue`
+   * did not know was read as no status, and the writers then left the key out. A document that states
+   * no status has none, as in Java.
+   */
+  public static forJsonStatus(value: unknown): BiboStatus {
+    if (value === null || value === undefined) {
+      return BiboStatus.NULL;
+    }
+    const match = BiboStatus.values().find((status) => {
+      const constant = status.getJsonValue();
+      return typeof value === 'string' && constant !== null && TextPolicy.equalsIgnoreCase(constant, value);
+    });
+    if (match === undefined) {
+      throw new Error(`No status constant with text ${typeof value === 'string' ? value : JSON.stringify(value)} found`);
+    }
+    return match;
   }
 
   public static forYamlValue(value: string | null): BiboStatus {

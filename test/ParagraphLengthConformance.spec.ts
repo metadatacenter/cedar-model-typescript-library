@@ -38,7 +38,8 @@ for (const entry of cases) {
 }
 
 test('limits can be cleared without mutating a previously built paragraph', () => {
-  const builder = CedarBuilders.textAreaBuilder().withMinLength(20).withMaxLength(500);
+  // Named, since the YAML writer refuses a nameless field.
+  const builder = CedarBuilders.textAreaBuilder().withSchemaName('Paragraph').withMinLength(20).withMaxLength(500);
   const bounded = builder.build();
   const unbounded = builder.withMinLength(null).withMaxLength(null).build();
   expect(bounded.valueConstraints).toMatchObject({ minLength: 20, maxLength: 500 });

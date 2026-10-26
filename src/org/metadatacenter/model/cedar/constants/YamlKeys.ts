@@ -89,7 +89,8 @@ export class YamlKeys {
     static sourceAcronym: string = 'sourceAcronym';
     static sourceName: string = 'sourceName';
     static sourceIri: string = 'sourceIri';
-    // Optional service address, distinct from the canonical source identity.
+    // An ontology's service address, distinct from its canonical identity. Written only where it is
+    // not a BioPortal address for the entry's acronym, which the reader derives from the acronym.
     static sourceUri: string = 'sourceUri';
     static termIri: string = 'termIri';
     static termType: string = 'termType';

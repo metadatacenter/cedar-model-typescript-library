@@ -16,7 +16,8 @@
  * library and not the other fails rather than passing unnoticed.
  *
  * Needs the sibling Java repository, in the way `verify:java-lock:source` does.
- * Run it from the repository root:
+ * CI clones it beside the checkout at the commit the Java lock records. Run it
+ * from the repository root:
  *
  *   npm run verify:java-defaults
  */
@@ -177,12 +178,19 @@ const named = (builder: any): any =>
     .withSchemaName('Declared default')
     .withSchemaDescription('Exercises declared defaults');
 
+/** A literal default each builder accepts. An e-mail and a phone field hold theirs to a format. */
+const LITERAL_DEFAULTS: Readonly<Record<string, string>> = {
+  emailFieldBuilder: 'alpha@example.org',
+  phoneNumberFieldBuilder: '+1 650 555 0100',
+};
+const literalDefault = (factory: string): string => LITERAL_DEFAULTS[factory] ?? 'Alpha';
+
 /** A field carrying a default of the shape Java says its type takes. */
 const built = (factory: string, shape: DefaultShape): TemplateField => {
   const builder = named((CedarBuilders as any)[factory]());
   switch (shape) {
     case 'literal':
-      return builder.withDefaultValue('Alpha').build();
+      return builder.withDefaultValue(literalDefault(factory)).build();
     case 'iri':
       return builder.withDefaultValue(new Iri('https://example.org/default-identifier')).build();
     case 'numeric':

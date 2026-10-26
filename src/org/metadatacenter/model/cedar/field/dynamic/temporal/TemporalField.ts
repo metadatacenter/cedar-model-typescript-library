@@ -7,9 +7,10 @@ import { ChildDeploymentInfoBuilder } from '../../../deployment/ChildDeploymentI
 export interface TemporalField extends TemplateField {
   get valueConstraints(): ValueConstraintsTemporalField;
 
-  get timezoneEnabled(): boolean;
+  /** Whether the field's values carry a time zone, or null where the field does not state it. */
+  get timezoneEnabled(): boolean | null;
 
-  set timezoneEnabled(timezoneEnable: boolean);
+  set timezoneEnabled(timezoneEnabled: boolean | null);
 
   get inputTimeFormat(): TimeFormat;
 

@@ -11,7 +11,7 @@ export class TemporalFieldImpl extends TemplateField implements TemporalField {
   // Redeclare valueConstraints with a more specific type
   public valueConstraints: ValueConstraintsTemporalField;
 
-  public timezoneEnabled: boolean = false;
+  public timezoneEnabled: boolean | null = null;
   public inputTimeFormat: TimeFormat = TimeFormat.NULL;
   public temporalGranularity: TemporalGranularity = TemporalGranularity.NULL;
 

@@ -21,13 +21,18 @@ export class YamlFieldReaderTemporal extends YamlTemplateFieldTypeSpecificReader
   ): TemporalField {
     const field = TemporalFieldImpl.buildEmpty();
 
-    field.temporalGranularity = TemporalGranularity.forValue(ReaderUtil.getString(fieldSourceObject, YamlKeys.granularity));
-    field.inputTimeFormat = TimeFormat.forValue(ReaderUtil.getString(fieldSourceObject, YamlKeys.inputTimeFormat));
-    field.timezoneEnabled = ReaderUtil.getBoolean(fieldSourceObject, YamlKeys.inputTimeZone);
+    field.temporalGranularity = TemporalGranularity.forGranularity(ReaderUtil.getString(fieldSourceObject, YamlKeys.granularity));
+    const inputTimeFormat = ReaderUtil.getString(fieldSourceObject, YamlKeys.inputTimeFormat);
+    if (inputTimeFormat !== null) {
+      field.inputTimeFormat = TimeFormat.forInputTimeFormat(inputTimeFormat);
+    }
+    // The writer writes the key whenever the field states it, false included, so an absent key states
+    // nothing, as an absent `timezoneEnabled` states nothing in the JSON.
+    field.timezoneEnabled = ReaderUtil.getBooleanOrNull(fieldSourceObject, YamlKeys.inputTimeZone);
 
     const temporalType = ReaderUtil.getString(fieldSourceObject, YamlKeys.datatype);
     if (temporalType !== null) {
-      field.valueConstraints.temporalType = TemporalType.forValue(temporalType);
+      field.valueConstraints.temporalType = TemporalType.forDatatype(temporalType);
     }
     field.valueConstraints.defaultValue = ReaderUtil.getString(fieldSourceObject, YamlKeys.default);
     TemporalDefaultValueValidator.assertValid(

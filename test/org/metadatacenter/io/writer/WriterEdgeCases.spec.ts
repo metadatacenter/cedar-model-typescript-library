@@ -2,6 +2,7 @@ import {
   CedarBuilders,
   CedarFieldType,
   CedarWriters,
+  ChildDeploymentInfo,
   ChildDeploymentInfoStatic,
   ControlledTermActionBuilder,
   ControlledTermBranchBuilder,
@@ -12,6 +13,9 @@ import {
   Iri,
   JsonNode,
   SchemaVersion,
+  TemporalField,
+  TemporalGranularity,
+  TemporalType,
 } from '../../../../../src';
 import { AdditionalProperties } from '../../../../../src/org/metadatacenter/model/cedar/types/wrapped-types/AdditionalProperties';
 import { JsonValueConstraintsActionWriter } from '../../../../../src/org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/action/JsonValueConstraintsActionWriter';
@@ -46,6 +50,136 @@ describe('writer edge cases', () => {
     expect(() => yaml.getFieldWriterForType(CedarFieldType.NULL)).toThrow('No YAML writer found');
     expect(() => json.getWriterForValueConstraint({ className: 'missing' } as never)).toThrow('No JSON writer found');
     expect(() => yaml.getWriterForValueConstraint({ className: 'missing' } as never)).toThrow('No YAML writer found');
+  });
+
+  // A template, an element and a field each have a name. Java cannot build a template or an element
+  // without one, and both readers refuse a document that states `name: null`. The YAML writer wrote
+  // exactly that, so it now refuses the artifact at any depth, as it refuses a nameless instance.
+  describe('the YAML writer refuses a schema artifact that has no name', () => {
+    const yaml = CedarWriters.yaml().getStrict();
+    const named = <T extends { schema_name: string | null }>(artifact: T): T => {
+      artifact.schema_name = 'Named';
+      return artifact;
+    };
+
+    test.each([false, true])('a template, an element and a field (compact=%s)', (compact) => {
+      const template = CedarBuilders.templateBuilder().build();
+      const element = CedarBuilders.templateElementBuilder().build();
+      const field = CedarBuilders.textFieldBuilder().build();
+      const image = CedarBuilders.imageFieldBuilder().build();
+      expect(() => yaml.getTemplateWriter().getAsYamlString(template, compact)).toThrow('A template must have a name.');
+      expect(() => yaml.getTemplateWriter().getYamlAsJsonNode(template, compact)).toThrow('A template must have a name.');
+      expect(() => yaml.getTemplateElementWriter().getAsYamlString(element, compact)).toThrow('An element must have a name.');
+      expect(() => yaml.getFieldWriterForField(field).getAsYamlString(field, compact)).toThrow('A field must have a name.');
+      expect(() => yaml.getFieldWriterForField(image).getAsYamlString(image, compact)).toThrow('A field must have a name.');
+      expect(yaml.getTemplateWriter().getAsYamlString(named(template), compact)).toContain('name: "Named"');
+      expect(yaml.getFieldWriterForField(field).getAsYamlString(named(field), compact)).toContain('name: "Named"');
+    });
+
+    test.each([false, true])('a nameless child, however deep (compact=%s)', (compact) => {
+      const field = CedarBuilders.textFieldBuilder().build();
+      const element = CedarBuilders.templateElementBuilder()
+        .withSchemaName('Address')
+        .addChild(field, field.createDeploymentBuilder('City').build())
+        .build();
+      const template = CedarBuilders.templateBuilder()
+        .withSchemaName('Study')
+        .addChild(element, element.createDeploymentBuilder('Address').build())
+        .build();
+      expect(() => yaml.getTemplateWriter().getAsYamlString(template, compact)).toThrow('A field must have a name.');
+      expect(() => yaml.getTemplateElementWriter().getAsYamlString(element, compact)).toThrow('A field must have a name.');
+      named(field);
+      expect(yaml.getTemplateWriter().getAsYamlString(template, compact)).toContain('key: "City"');
+    });
+
+    // An empty name is no name. Both readers refuse `name: ""`, and Java can no longer build a
+    // template, an element or a field with one. A name of nothing but white space is one the
+    // meta-schema admits and the readers accept, and it is written. No builder builds one, so the
+    // artifacts here are given it as a reader gives it.
+    test.each([false, true])('an empty name, however deep, and not one of white space (compact=%s)', (compact) => {
+      const artifacts = (name: string) => ({
+        template: CedarBuilders.templateBuilder().withSchemaName(name).build(),
+        element: CedarBuilders.templateElementBuilder().withSchemaName(name).build(),
+        field: CedarBuilders.textFieldBuilder().withSchemaName(name).build(),
+        image: CedarBuilders.imageFieldBuilder().withSchemaName(name).build(),
+      });
+      const empty = artifacts('');
+      expect(() => yaml.getTemplateWriter().getAsYamlString(empty.template, compact)).toThrow('A template must have a name.');
+      expect(() => yaml.getTemplateWriter().getYamlAsJsonNode(empty.template, compact)).toThrow('A template must have a name.');
+      expect(() => yaml.getTemplateElementWriter().getAsYamlString(empty.element, compact)).toThrow('An element must have a name.');
+      expect(() => yaml.getFieldWriterForField(empty.field).getAsYamlString(empty.field, compact)).toThrow('A field must have a name.');
+      expect(() => yaml.getFieldWriterForField(empty.image).getAsYamlString(empty.image, compact)).toThrow('A field must have a name.');
+
+      const field = CedarBuilders.textFieldBuilder().withSchemaName('').build();
+      const element = CedarBuilders.templateElementBuilder()
+        .withSchemaName('Address')
+        .addChild(field, field.createDeploymentBuilder('City').build())
+        .build();
+      const template = CedarBuilders.templateBuilder()
+        .withSchemaName('Study')
+        .addChild(element, element.createDeploymentBuilder('Address').build())
+        .build();
+      expect(() => yaml.getTemplateWriter().getAsYamlString(template, compact)).toThrow('A field must have a name.');
+      expect(() => yaml.getTemplateElementWriter().getAsYamlString(element, compact)).toThrow('A field must have a name.');
+
+      const blank = artifacts('Named');
+      [blank.template, blank.element, blank.field].forEach((artifact) => (artifact.schema_name = ' '));
+      expect(yaml.getTemplateWriter().getAsYamlString(blank.template, compact)).toContain('name: " "');
+      expect(yaml.getTemplateElementWriter().getAsYamlString(blank.element, compact)).toContain('name: " "');
+      expect(yaml.getFieldWriterForField(blank.field).getAsYamlString(blank.field, compact)).toContain('name: " "');
+    });
+  });
+
+  // A temporal field has a granularity. Java cannot build one without it, and both readers refuse a
+  // document that states none. The builder still starts without one, and the writers left the key
+  // out, so each writer now refuses the field at any depth.
+  describe('the writers refuse a temporal field that has no granularity', () => {
+    const REFUSAL = 'A temporal field must have a granularity.';
+    const temporal = (granularity: TemporalGranularity | null) => {
+      const builder = CedarBuilders.temporalFieldBuilder().withSchemaName('When').withTemporalType(TemporalType.DATE);
+      return (granularity === null ? builder : builder.withTemporalGranularity(granularity)).build();
+    };
+    const nested = (field: TemporalField) => {
+      const element = CedarBuilders.templateElementBuilder()
+        .withSchemaName('Visit')
+        .addChild(field, field.createDeploymentBuilder('When').build())
+        .build();
+      const template = CedarBuilders.templateBuilder()
+        .withSchemaName('Study')
+        .addChild(element, element.createDeploymentBuilder('Visit').build())
+        .build();
+      return { element, template };
+    };
+
+    test.each([
+      ['strict', CedarWriters.json().getStrict()],
+      ['February 2024', CedarWriters.json().getFebruary2024()],
+    ])('the %s JSON writer, standalone and as a nested child', (_behavior, json) => {
+      const field = temporal(null);
+      const { element, template } = nested(field);
+      expect(() => json.getFieldWriterForField(field).getAsJsonNode(field)).toThrow(REFUSAL);
+      expect(() => json.getFieldWriterForField(field).getAsJsonString(field)).toThrow(REFUSAL);
+      expect(() => json.getTemplateElementWriter().getAsJsonNode(element)).toThrow(REFUSAL);
+      expect(() => json.getTemplateWriter().getAsJsonNode(template)).toThrow(REFUSAL);
+      expect(() => json.getTemplateWriter().getAsJsonString(template)).toThrow(REFUSAL);
+      const day = temporal(TemporalGranularity.DAY);
+      expect(json.getFieldWriterForField(day).getAsJsonNode(day)).toHaveProperty('_ui.temporalGranularity', 'day');
+      expect(json.getTemplateWriter().getAsJsonString(nested(day).template)).toContain('"temporalGranularity": "day"');
+    });
+
+    test.each([false, true])('the YAML writer, standalone and as a nested child (compact=%s)', (compact) => {
+      const yaml = CedarWriters.yaml().getStrict();
+      const field = temporal(null);
+      const { element, template } = nested(field);
+      expect(() => yaml.getFieldWriterForField(field).getAsYamlString(field, compact)).toThrow(REFUSAL);
+      expect(() => yaml.getFieldWriterForField(field).getYamlAsJsonNode(field, ChildDeploymentInfo.empty(), compact)).toThrow(REFUSAL);
+      expect(() => yaml.getTemplateElementWriter().getAsYamlString(element, compact)).toThrow(REFUSAL);
+      expect(() => yaml.getTemplateWriter().getAsYamlString(template, compact)).toThrow(REFUSAL);
+      expect(() => yaml.getTemplateWriter().getYamlAsJsonNode(template, compact)).toThrow(REFUSAL);
+      const day = temporal(TemporalGranularity.DAY);
+      expect(yaml.getFieldWriterForField(day).getAsYamlString(day, compact)).toContain('granularity: day');
+      expect(yaml.getTemplateWriter().getAsYamlString(nested(day).template, compact)).toContain('granularity: day');
+    });
   });
 
   test('controlled-term constraints have useful standalone JSON representations', () => {
@@ -119,9 +253,10 @@ describe('writer edge cases', () => {
     const compatibilityJson = CedarWriters.json().getFebruary2024();
     const yaml = CedarWriters.yaml().getStrict();
     const text = CedarBuilders.textFieldBuilder().build();
-    const image = CedarBuilders.imageFieldBuilder().build();
-    const richText = CedarBuilders.richTextFieldBuilder().build();
-    const youtube = CedarBuilders.youtubeFieldBuilder().build();
+    // The YAML writer refuses a nameless field, so the static fields written as YAML have names.
+    const image = CedarBuilders.imageFieldBuilder().withSchemaName('Image').build();
+    const richText = CedarBuilders.richTextFieldBuilder().withSchemaName('Text').build();
+    const youtube = CedarBuilders.youtubeFieldBuilder().withSchemaName('Video').build();
 
     expect(json.getFieldWriterForField(text).getAsJsonNode(text)).toHaveProperty('_ui.inputType');
     const staticDeploymentJson = json.getFieldWriterForField(text).getAsJsonNode(text, ChildDeploymentInfoStatic.empty());

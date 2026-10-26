@@ -3,16 +3,42 @@ import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
 import { JsonSourcePolicy } from '../../../policy/JsonSourcePolicy';
 import { ExactDecimal } from '../../../policy/NumericPolicy';
 
+/** A number or boolean in a YAML mapping: the value, the text it was read from, and whether YAML typed it as an integer. */
+interface Spelling {
+  value: unknown;
+  text: string;
+  integer: boolean;
+}
+
 /** The source text of each number and boolean a parsed mapping holds, with the value read from it. */
-const spellings = new WeakMap<object, Map<string, { value: unknown; text: string }>>();
+const spellings = new WeakMap<object, Map<string, Spelling>>();
+
+const INT_TAG = 'tag:yaml.org,2002:int';
+const INTEGER = /^(?:[-+]?[0-9]+|0o[0-7]+|0x[0-9a-fA-F]+)$/;
+
+/** The record of the value at `key`, while the mapping still holds the value read from its text. */
+function spellingOf(mapping: JsonNode, key: string): Spelling | null {
+  const spelling = spellings.get(mapping)?.get(key);
+  return spelling !== undefined && Object.is(spelling.value, mapping[key]) ? spelling : null;
+}
 
 /**
  * The text a number or boolean in a parsed YAML mapping was written as, for a position that holds a
  * literal rather than a number, while the mapping still holds the value read from that text.
  */
 export function yamlSpelling(mapping: JsonNode, key: string): string | null {
-  const spelling = spellings.get(mapping)?.get(key);
-  return spelling !== undefined && Object.is(spelling.value, mapping[key]) ? spelling.text : null;
+  return spellingOf(mapping, key)?.text ?? null;
+}
+
+/**
+ * How the number or boolean at `key` in a parsed YAML mapping was written, or null where the mapping
+ * holds no value read from YAML text there. `integer` says whether YAML typed it as an integer. YAML
+ * 1.2's core schema types `3`, `-3`, `0o17` and `0x1F` as integers, and `3.0`, `3e0` and `!!float 3`
+ * as floats, whatever value each denotes. Java's reader holds an integer only where YAML typed one.
+ */
+export function yamlNumberSpelling(mapping: JsonNode, key: string): { text: string; integer: boolean } | null {
+  const spelling = spellingOf(mapping, key);
+  return spelling === null ? null : { text: spelling.text, integer: spelling.integer };
 }
 
 /** YAML 1.2 core values with exact numbers, literal mapping keys and bounded, acyclic alias expansion. */
@@ -45,8 +71,10 @@ export class YamlSourcePolicy {
             Object.defineProperty(result, key, { value, enumerable: true, writable: true, configurable: true });
             const scalar = isAlias(pair.value) ? pair.value.resolve(document) : pair.value;
             if ((typeof value === 'number' || typeof value === 'boolean' || ExactDecimal.isExact(value)) && isScalar(scalar)) {
-              const recorded = spellings.get(result) ?? new Map<string, { value: unknown; text: string }>();
-              spellings.set(result, recorded.set(key, { value, text: scalar.source ?? String(value) }));
+              const text = scalar.source ?? String(value);
+              const integer = typeof value !== 'boolean' && (scalar.tag ? scalar.tag === INT_TAG : INTEGER.test(text));
+              const recorded = spellings.get(result) ?? new Map<string, Spelling>();
+              spellings.set(result, recorded.set(key, { value, text, integer }));
             }
           }
           return result;

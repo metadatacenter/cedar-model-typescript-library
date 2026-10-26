@@ -1,4 +1,5 @@
 import { isDeepStrictEqual } from 'node:util';
+import { YamlValues } from '../../src/org/metadatacenter/model/cedar/constants/YamlValues';
 
 /**
  * Compares the JSON this library writes straight from an artifact with the JSON it writes after the
@@ -23,8 +24,12 @@ import { isDeepStrictEqual } from 'node:util';
  *   re-added where the stored instance omitted a child, an empty value takes its datatype from the
  *   template, and every `@context` property IRI is the template's. An element instance holding
  *   nothing but an identifier loses the identifier, since the element itself is dropped.
+ * - `numberSpelling`: YAML writes a number in its shortest spelling, so a number can come back with
+ *   the same value written another way: a decimal bound stored as `5.0` comes back as `5`. The two
+ *   are equal as decimals. A JavaScript number keeps no spelling, so this library writes `5.0` as
+ *   `5` on both paths and its own trip does not show the family. Java's does.
  */
-export type TripFamily = 'schemaText' | 'ontologyAddress' | 'uiEntryFilled' | 'instanceCompletion';
+export type TripFamily = 'schemaText' | 'ontologyAddress' | 'uiEntryFilled' | 'instanceCompletion' | 'numberSpelling';
 
 export interface TripDifference {
   path: string;
@@ -38,12 +43,11 @@ type Segment = string | number;
 
 const isObject = (value: unknown): value is JsonObject => value !== null && typeof value === 'object' && !Array.isArray(value);
 const isString = (value: unknown): value is string => typeof value === 'string';
+const isNumber = (value: unknown): value is number => typeof value === 'number';
 const keysOf = (a: JsonObject, b: JsonObject): string[] => [...new Set([...Object.keys(a), ...Object.keys(b)])];
 const pointer = (segments: Segment[]): string => segments.map((s) => '/' + String(s).replace(/~/g, '~0').replace(/\//g, '~1')).join('');
 const endsWith = (segments: Segment[], tail: Segment[]): boolean =>
   segments.length >= tail.length && tail.every((s, i) => s === '*' || s === segments[segments.length - tail.length + i]);
-
-const BIOPORTAL_ONTOLOGY = /^https?:\/\/(?:data|bioportal)\.bioontology\.org\/ontologies\/([^/]+)$/;
 
 /** A literal value with no `@value`, or an IRI value with nothing in it. */
 export const isEmptyValue = (value: unknown): boolean =>
@@ -99,7 +103,7 @@ function schemaFamily(parent: JsonObject, at: Segment[], direct: unknown, viaYam
     return direct === undefined && isString(viaYaml) ? 'uiEntryFilled' : null;
   }
   if (endsWith(at, ['_valueConstraints', 'ontologies', '*', 'uri']) && isString(direct) && isString(viaYaml)) {
-    const acronym = BIOPORTAL_ONTOLOGY.exec(direct)?.[1];
+    const acronym = YamlValues.Controlled.bioPortalOntologyAddress.exec(direct)?.[1];
     return acronym !== undefined && viaYaml === `https://data.bioontology.org/ontologies/${acronym}` ? 'ontologyAddress' : null;
   }
   return null;
@@ -121,7 +125,12 @@ function walkSchema(direct: unknown, viaYaml: unknown, at: Segment[], out: TripD
     direct.forEach((item, i) => walkSchema(item, viaYaml[i], [...at, i], out));
     return;
   }
-  record(out, at, direct, viaYaml, null);
+  record(out, at, direct, viaYaml, valueFamily(direct, viaYaml));
+}
+
+// Two values the walk cannot descend into, which differ as JSON.
+function valueFamily(direct: unknown, viaYaml: unknown): TripFamily | null {
+  return isNumber(direct) && isNumber(viaYaml) && direct === viaYaml ? 'numberSpelling' : null;
 }
 
 function walkInstance(direct: unknown, viaYaml: unknown, at: Segment[], out: TripDifference[]) {
@@ -160,7 +169,7 @@ function walkInstance(direct: unknown, viaYaml: unknown, at: Segment[], out: Tri
     kept.forEach((item, i) => walkInstance(item, keptViaYaml[i], [...at, i], out));
     return;
   }
-  record(out, at, direct, viaYaml, null);
+  record(out, at, direct, viaYaml, valueFamily(direct, viaYaml));
 }
 
 // A property's IRI is the template's on the YAML path. Any other `@context` entry has to survive.

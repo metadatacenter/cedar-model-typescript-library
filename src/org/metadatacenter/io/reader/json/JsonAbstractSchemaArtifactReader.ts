@@ -33,7 +33,9 @@ export abstract class JsonAbstractSchemaArtifactReader extends JsonAbstractArtif
     container.description = ReaderUtil.getString(sourceObject, TemplateProperty.description);
     container.schema_schemaVersion = SchemaVersion.forValue(ReaderUtil.getString(sourceObject, JsonSchema.schemaVersion));
     container.pav_version = PavVersion.forValue(ReaderUtil.getString(sourceObject, JsonSchema.pavVersion));
-    container.bibo_status = BiboStatus.forJsonValue(ReaderUtil.getString(sourceObject, JsonSchema.biboStatus));
+    container.bibo_status = BiboStatus.forJsonStatus(
+      Object.hasOwn(sourceObject, JsonSchema.biboStatus) ? sourceObject[JsonSchema.biboStatus] : undefined,
+    );
     // Older Designer/exporter generations wrote an empty string when no source artifact existed. A
     // compatibility reader still opens that; a strict one refuses it, as Java does.
     container.pav_derivedFrom = CedarArtifactId.forValue(

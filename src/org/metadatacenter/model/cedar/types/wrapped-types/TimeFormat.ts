@@ -32,4 +32,17 @@ export class TimeFormat {
     }
     return this.NULL;
   }
+
+  /**
+   * The constant a document's input time format names. Java's readers take only a constant's exact
+   * spelling and refuse any other, a case variant among them, and so does this. A spelling that
+   * `forValue` did not know was read as no input time format, and the writers then left the key out.
+   */
+  public static forInputTimeFormat(value: unknown): TimeFormat {
+    const match = TimeFormat.values().find((format) => format.getValue() === value);
+    if (match === undefined) {
+      throw new Error(`No input time format constant with text ${typeof value === 'string' ? value : JSON.stringify(value)} found`);
+    }
+    return match;
+  }
 }

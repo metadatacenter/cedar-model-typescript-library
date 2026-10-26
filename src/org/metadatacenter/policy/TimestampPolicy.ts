@@ -39,4 +39,24 @@ export class TimestampPolicy {
     const significantFraction = fraction.replace(/0+$/, '');
     return `${canonicalYear}-${monthText}-${dayText}T${hourText}:${minuteText}:${secondText}${significantFraction ? '.' + significantFraction : ''}${offset}`;
   }
+
+  /**
+   * Whether the `date-time` format the meta-schemas name admits a value, as the
+   * server's validator checks it. That check resolves a value leniently rather
+   * than reading it as a calendar: any month takes a day up to 31, and
+   * `24:00:00` is the next midnight. It wants a four-digit year from 0001, or a
+   * longer one after `+`, seconds, a fraction of one to nine digits, and an
+   * offset of `Z`, `±HH:MM`, `±HH:MM:SS` or `±HHMM` no further than 18 hours.
+   * The model reads a provenance timestamp more strictly in some respects and
+   * less in others, so a stored one must satisfy both.
+   */
+  public static matchesFormat(value: string): boolean {
+    const match =
+      /^(\d{4}|\+\d{5,9})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])T(?:[01]\d|2[0-3]|24(?=:00:00(?:\.0{1,9})?[Z+-])):[0-5]\d:[0-5]\d(?:\.\d{1,9})?(?:Z|[+-](\d{2})(?::([0-5]\d)(?::([0-5]\d))?|([0-5]\d)))$/.exec(
+        value,
+      );
+    if (match === null || Number(match[1]) < 1) return false;
+    const [, , , , hours = '0', colonMinutes, seconds = '0', bareMinutes] = match;
+    return Number(hours) * 3600 + Number(colonMinutes ?? bareMinutes ?? 0) * 60 + Number(seconds) <= 18 * 3600;
+  }
 }

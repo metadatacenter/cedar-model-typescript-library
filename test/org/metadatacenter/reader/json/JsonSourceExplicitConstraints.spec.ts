@@ -40,6 +40,8 @@ const CONSTRAINED = (extra: Record<string, unknown>) => ({
   },
   'schema:name': 'Cell Type',
   'schema:description': 'd',
+  'schema:schemaVersion': '1.6.0',
+  $schema: 'http://json-schema.org/draft-04/schema#',
 });
 
 const readOntology = (source: object) => {

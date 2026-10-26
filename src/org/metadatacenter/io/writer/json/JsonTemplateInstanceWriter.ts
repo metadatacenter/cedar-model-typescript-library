@@ -23,6 +23,8 @@ import { InstanceDataLinkAtom } from '../../../model/cedar/template-instance/Ins
 import { InstanceDataEmptyAtom } from '../../../model/cedar/template-instance/InstanceDataEmptyAtom';
 import { InstanceDataEmptyNode } from '../../../model/cedar/template-instance/InstanceDataEmptyNode';
 import { AttributeValueNamePolicy } from '../../../model/cedar/template-instance/AttributeValueNamePolicy';
+import { WriterUtil } from '../WriterUtil';
+import { CedarArtifactId } from '../../../model/cedar/types/cedar-types/CedarArtifactId';
 
 export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
   private constructor(behavior: JsonWriterBehavior, writers: CedarJsonWriters) {
@@ -35,6 +37,13 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
 
   public static getFor(behavior: JsonWriterBehavior, writers: CedarJsonWriters): JsonTemplateInstanceWriter {
     return new JsonTemplateInstanceWriter(behavior, writers);
+  }
+
+  /** A container's `@type`: one class as a string, several as a list in order, and none as no key. */
+  public static writeTypes(dataContainer: InstanceDataContainer): JsonNode {
+    const types = dataContainer.types;
+    if (types.length === 0) return JsonNode.getEmpty();
+    return { [JsonSchema.atType]: types.length === 1 ? types[0] : [...types] } as JsonNode;
   }
 
   private buildContext(instance: TemplateInstance): JsonNode {
@@ -72,6 +81,7 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
     // host loaded to edit kept its IRI while one assembled through the builder lost it.
     if (!isDocumentRoot) {
       into[JsonSchema.atId] = dataContainer.id === '' ? null : dataContainer.id;
+      Object.assign(into, JsonTemplateInstanceWriter.writeTypes(dataContainer));
     }
     Object.keys(dataContainer.values).forEach((key) => {
       const dataAtom: InstanceDataAtomType = dataContainer.values[key];
@@ -151,7 +161,7 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
 
   private static writeValueNodeWithoutNotation(atom: InstanceDataAtomType): JsonNode | null {
     if (atom instanceof InstanceDataNotationAtom) {
-      return atom.type === null ? JsonNode.getEmpty() : { [JsonSchema.atType]: atom.type };
+      return atom.type === null ? JsonNode.getEmpty() : { [JsonSchema.atType]: WriterUtil.writtenDatatype(atom.type) };
     }
     if (atom instanceof InstanceDataStringAtom) {
       return { [JsonSchema.atValue]: atom.value, ...(atom.label === null ? {} : { [JsonSchema.rdfsLabel]: atom.label }) };
@@ -160,21 +170,24 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
       return {
         [JsonSchema.atValue]: atom.value,
         ...(atom.label === null ? {} : { [JsonSchema.rdfsLabel]: atom.label }),
-        [JsonSchema.atType]: atom.type,
+        [JsonSchema.atType]: WriterUtil.writtenDatatype(atom.type),
       };
     }
     if (atom instanceof InstanceDataLabelAtom) {
-      return { [JsonSchema.rdfsLabel]: atom.label, ...(atom.type === null ? {} : { [JsonSchema.atType]: atom.type }) };
+      return {
+        [JsonSchema.rdfsLabel]: atom.label,
+        ...(atom.type === null ? {} : { [JsonSchema.atType]: WriterUtil.writtenDatatype(atom.type) }),
+      };
     }
     if (atom instanceof InstanceDataControlledAtom) {
       return {
         [JsonSchema.atId]: atom.id,
         [JsonSchema.rdfsLabel]: atom.label,
-        ...(atom.type === null ? {} : { [JsonSchema.atType]: atom.type }),
+        ...(atom.type === null ? {} : { [JsonSchema.atType]: WriterUtil.writtenDatatype(atom.type) }),
       };
     }
     if (atom instanceof InstanceDataLinkAtom) {
-      return { [JsonSchema.atId]: atom.id, ...(atom.type === null ? {} : { [JsonSchema.atType]: atom.type }) };
+      return { [JsonSchema.atId]: atom.id, ...(atom.type === null ? {} : { [JsonSchema.atType]: WriterUtil.writtenDatatype(atom.type) }) };
     }
     if (atom instanceof InstanceDataEmptyAtom || atom instanceof InstanceDataEmptyNode) {
       // An empty controlled-term field is `{}` in the instance, and it is a
@@ -196,18 +209,15 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
     return JsonTemplateInstanceWriter.writeValueNode(atom);
   }
 
-  private serializeAtomString(atom: InstanceDataStringAtom) {
-    return { [JsonSchema.atValue]: atom.value, ...(atom.label === null ? {} : { [JsonSchema.rdfsLabel]: atom.label }) };
-  }
-
+  /** An attribute is written as the field value it is, so its label, datatype and identifier survive. */
   private serializeAttributeValueFields(dataContainer: InstanceDataContainer, into: JsonNode) {
     Object.keys(dataContainer.values).forEach((key) => {
       const dataAtom: InstanceDataAtomType = dataContainer.values[key];
       if (dataAtom instanceof InstanceDataAttributeValueField) {
         Object.keys(dataAtom.values).forEach((subKey) => {
-          const atom = dataAtom.values[subKey];
-          if (atom instanceof InstanceDataStringAtom) {
-            into[subKey] = this.serializeAtomString(atom);
+          const serialized = JsonTemplateInstanceWriter.writeValueNode(dataAtom.values[subKey]);
+          if (serialized !== null) {
+            into[subKey] = serialized;
           }
         });
       }
@@ -219,6 +229,11 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
   }
 
   public getAsJsonNode(instance: TemplateInstance): JsonNode {
+    // An instance that does not name its template says nothing of what it is an instance of. Java's
+    // reader refuses it, and Java cannot build one, so this writer refuses it as the YAML writer does.
+    if (instance.schema_isBasedOn === CedarArtifactId.NULL) {
+      throw new Error('A template instance must name the template it is based on.');
+    }
     AttributeValueNamePolicy.assertValid(instance.dataContainer);
     const extendedContext: JsonNode = this.buildContext(instance);
 
@@ -231,6 +246,7 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
     }
     return {
       [JsonSchema.atId]: this.atomicWriter.write(instance.at_id),
+      ...JsonTemplateInstanceWriter.writeTypes(instance.dataContainer),
       ...nameAndDescription,
       ...this.getDataTree(instance),
       ...this.macroAnnotations(instance),

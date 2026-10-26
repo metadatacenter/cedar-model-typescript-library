@@ -199,6 +199,7 @@ export { JsonTemplateReader, YamlTemplateReader };
 export { YamlTemplateInstanceReader };
 export { InstanceInflater };
 export { InstanceValidator };
+export type { InstanceValidationOptions } from './org/metadatacenter/model/cedar/template-instance/InstanceValidator';
 export { JsonTemplateInstanceReader };
 
 export { JsonTemplateElementWriter, YamlTemplateElementWriter };

@@ -21,6 +21,14 @@ describe('reader facade dispatch', () => {
     expect(CedarJsonReaders.detectArtifactType(JsonNode.getEmpty())).toBe(CedarArtifactType.NULL);
   });
 
+  // Java reads a list of one IRI as that IRI, so detection does too. A longer list is the reader's to refuse.
+  test('JSON detection reads a type given as a list of one', () => {
+    const fieldType = CedarArtifactType.TEMPLATE_FIELD.getValue();
+    expect(CedarJsonReaders.detectArtifactType({ '@type': [fieldType] } as JsonNode)).toBe(CedarArtifactType.TEMPLATE_FIELD);
+    expect(CedarJsonReaders.detectArtifactType({ '@type': [fieldType, fieldType] } as JsonNode)).toBe(CedarArtifactType.NULL);
+    expect(CedarJsonReaders.detectArtifactType({ '@type': [] } as unknown as JsonNode)).toBe(CedarArtifactType.NULL);
+  });
+
   test.each([
     [CedarArtifactType.TEMPLATE, JsonTemplateReader],
     [CedarArtifactType.TEMPLATE_ELEMENT, JsonTemplateElementReader],
@@ -47,7 +55,12 @@ describe('reader facade dispatch', () => {
   });
 
   test('a template without a UI block keeps optional header and footer absent', () => {
-    const result = CedarJsonReaders.getStrict().getTemplateReader().readFromObject(JsonNode.getEmpty());
+    const result = CedarJsonReaders.getStrict().getTemplateReader().readFromObject({
+      '@type': 'https://schema.metadatacenter.org/core/Template',
+      $schema: 'http://json-schema.org/draft-04/schema#',
+      type: 'object',
+      'schema:schemaVersion': '1.6.0',
+    });
 
     expect(result.template.header).toBeNull();
     expect(result.template.footer).toBeNull();

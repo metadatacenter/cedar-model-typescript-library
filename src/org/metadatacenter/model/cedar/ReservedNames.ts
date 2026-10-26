@@ -45,6 +45,7 @@ export abstract class ReservedNames {
     YamlKeys.name,
     YamlKeys.description,
     YamlKeys.id,
+    YamlKeys.instanceType,
     YamlKeys.isBasedOn,
     YamlKeys.derivedFrom,
     YamlKeys.children,
@@ -56,7 +57,12 @@ export abstract class ReservedNames {
   ]);
 
   /** The metadata keys of an element instance's YAML mapping when it is written inside its parent. */
-  public static readonly NESTED_ELEMENT_INSTANCE_YAML_KEYS: ReadonlySet<string> = new Set([YamlKeys.type, YamlKeys.id, YamlKeys.children]);
+  public static readonly NESTED_ELEMENT_INSTANCE_YAML_KEYS: ReadonlySet<string> = new Set([
+    YamlKeys.type,
+    YamlKeys.id,
+    YamlKeys.instanceType,
+    YamlKeys.children,
+  ]);
 
   /** Keys of the standalone element-instance envelope (also includes every nested key). */
   public static readonly STANDALONE_ELEMENT_INSTANCE_YAML_KEYS: ReadonlySet<string> = new Set([
@@ -64,6 +70,7 @@ export abstract class ReservedNames {
     YamlKeys.name,
     YamlKeys.description,
     YamlKeys.id,
+    YamlKeys.instanceType,
     YamlKeys.children,
     YamlKeys.createdOn,
     YamlKeys.createdBy,

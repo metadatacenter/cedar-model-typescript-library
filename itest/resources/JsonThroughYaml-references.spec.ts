@@ -1,6 +1,6 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { CedarReaders, CedarWriters, InstanceInflater, JsonNode, Template } from '../../src';
+import { CedarArtifactId, CedarReaders, CedarWriters, InstanceInflater, JsonNode, Template } from '../../src';
 import { TestUtil } from '../TestUtil';
 import { TestResource } from '../TestResource';
 import { ceeSuiteTestMap, elementTestNumbers, fieldTestNumbers, instanceTestNumbers, templateTestNumbers } from './generatedTestCases';
@@ -49,8 +49,15 @@ const fieldTrip = (source: string) => {
 };
 
 // A YAML instance is completed against its template before it is stored, so the trip completes it too.
+// It also names itself and its template, as Java requires; most CEE suite instances do neither, so the
+// trip supplies both before either JSON is written.
 const instanceTrip = (source: string, template: Template) => {
   const instance = jsonReaders().getTemplateInstanceReader().readFromString(source).instance;
+  instance.schema_name ??= `${template.schema_name ?? 'Template'} metadata`;
+  if (instance.schema_isBasedOn === CedarArtifactId.NULL) {
+    instance.schema_isBasedOn =
+      template.at_id === CedarArtifactId.NULL ? CedarArtifactId.forValue('https://repo.metadatacenter.org/templates/trip') : template.at_id;
+  }
   const read = yamlReaders()
     .getTemplateInstanceReader()
     .readFromString(yamlWriters().getTemplateInstanceWriter().getAsYamlString(instance)).instance;
@@ -137,7 +144,9 @@ const observed = (differences: TripDifference[]): TripFamily[] =>
 describe('JSON written through YAML', () => {
   it('covers the whole corpus, less its declared exclusions', () => {
     const ids = new Set(allCases.map((c) => c.id));
-    expect(allCases).toHaveLength(templateTestNumbers.length + elementTestNumbers.length + fieldTestNumbers.length + 21 + 85 + 57);
+    expect(allCases).toHaveLength(
+      templateTestNumbers.length + elementTestNumbers.length + fieldTestNumbers.length + instanceTestNumbers.length + 85 + 57,
+    );
     expect(Object.keys(TRIP_EXCLUSIONS).filter((id) => !ids.has(id))).toEqual([]);
     expect(Object.keys(TRIP_FAMILIES).filter((id) => !ids.has(id) || TRIP_EXCLUSIONS[id] !== undefined)).toEqual([]);
   });
@@ -171,6 +180,12 @@ describe('the comparison behind it', () => {
     const direct = { '@context': { xsd: 'http://www.w3.org/2001/XMLSchema#' } };
     const viaYaml = { '@context': { xsd: 'http://www.w3.org/2001/XMLSchema' } };
     expect(compareInstanceTrip(direct, viaYaml).map((d) => d.family)).toEqual([null]);
+  });
+
+  it('sorts a number of the same value into numberSpelling, and one of another value or type into none', () => {
+    const at = (minValue: unknown, maxValue: unknown) => ({ _valueConstraints: { minValue, maxValue } });
+    expect(compareSchemaTrip(at(-0, 5.1), at(0, 5)).map((d) => d.family)).toEqual(['numberSpelling', null]);
+    expect(compareSchemaTrip(at(1, 10), at(1, '10')).map((d) => d.family)).toEqual([null]);
   });
 
   it('reports an ontology moved to a different acronym', () => {

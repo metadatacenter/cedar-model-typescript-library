@@ -42,6 +42,13 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
   protected macroNameAndDescription(artifact: AbstractArtifact): JsonNode {
     const node: JsonNode = JsonNode.getEmpty();
     if (artifact instanceof AbstractSchemaArtifact) {
+      // A template, an element and a field each have a name, at any depth. Java cannot build one
+      // without a name or with an empty one, and both readers refuse a document stating `name: null`
+      // or `name: ""`. A name of nothing but white space is one the meta-schema admits.
+      if (artifact.schema_name === null || artifact.schema_name === '') {
+        const kind = artifact instanceof Template ? 'A template' : artifact instanceof TemplateElement ? 'An element' : 'A field';
+        throw new Error(`${kind} must have a name.`);
+      }
       if (artifact.language !== Language.NULL) {
         node[YamlKeys.language] = this.atomicWriter.write(artifact.language);
       }

@@ -85,6 +85,36 @@ describe('raw field-value boundaries', () => {
     expect(ValidationPolicy.summarize(findings)).toMatchObject({ canSave: true, isValid: false });
   });
 
+  test.each([{ 'rdfs:label': null }, { 'rdfs:label': '' }, { '@type': 'urn:class' }, { '@type': 'urn:class', 'rdfs:label': null }])(
+    'reads an IRI slot without @id as unfilled, whatever else it holds: %j',
+    (node) => {
+      expect(FieldValuePolicy.validateNode(iri, node)).toEqual([]);
+      const required = { ...iri, _valueConstraints: { requiredValue: true } };
+      expect(codes(FieldValuePolicy.validateNode(required, node))).toEqual(['required']);
+    },
+  );
+
+  test('refuses a label without an IRI only where the label claims a controlled term', () => {
+    expect(codes(FieldValuePolicy.validateNode(iri, { '@type': 'urn:class', 'rdfs:label': 'Term' }))).toEqual(['controlledStructure']);
+    const link: ValidationField = { _ui: { inputType: 'link' }, properties: { '@id': { type: 'string' } } };
+    expect(FieldValuePolicy.validateNode(link, { 'rdfs:label': 'A page' })).toEqual([]);
+  });
+
+  test('refuses a key a closed schema does not declare, as JSON Schema does', () => {
+    const closed: ValidationField = { ...iri, properties: { '@type': {}, '@id': {}, 'rdfs:label': {} }, additionalProperties: false };
+    expect(FieldValuePolicy.validateNode(closed, { 'rdfs:label': null })).toEqual([]);
+    expect(codes(FieldValuePolicy.validateNode(closed, { '@value': null }))).toEqual(['valueShape']);
+    expect(codes(FieldValuePolicy.validateNode(closed, { '@id': 'urn:term', 'skos:notation': 'T1' }))).toEqual(['valueShape']);
+    const literal: ValidationField = { ...text, properties: { '@value': {} }, additionalProperties: false };
+    expect(codes(FieldValuePolicy.validateNode(literal, { '@id': null }))).toEqual(['iriMalformed']);
+  });
+
+  test.each(['page-break', 'section-break', 'richtext', 'image', 'youtube'])('judges a %s slot by its schema alone', (inputType) => {
+    const field: ValidationField = { _ui: { inputType }, additionalProperties: false };
+    expect(FieldValuePolicy.validateNode(field, {})).toEqual([]);
+    expect(codes(FieldValuePolicy.validateNode(field, { '@value': null }))).toEqual(['valueShape']);
+  });
+
   test.each([null, '', 7])('refuses explicitly malformed IRI identifiers %j', (id) => {
     expect(codes(FieldValuePolicy.validateNode(iri, { '@id': id }))).toEqual(['iriMalformed']);
   });

@@ -18,6 +18,8 @@ import { InstanceDataControlledAtom } from '../../../model/cedar/template-instan
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 import { AttributeValueNamePolicy } from '../../../model/cedar/template-instance/AttributeValueNamePolicy';
 import { InstanceDataAttributeValueFieldName } from '../../../model/cedar/template-instance/InstanceDataAttributeValueFieldName';
+import { WriterUtil } from '../WriterUtil';
+import { CedarArtifactId } from '../../../model/cedar/types/cedar-types/CedarArtifactId';
 
 const ELEMENT_INSTANCE_TYPE = 'element-instance';
 
@@ -31,12 +33,24 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
   }
 
   public getYamlAsJsonNode(instance: TemplateInstance, isCompact: boolean = false): JsonNode {
+    // Both readers refuse a document without a name or with an empty one, `name: ""`. Java's writer
+    // refuses an instance without a name and writes an empty one. A name of nothing but white space is
+    // one both readers take.
+    if (instance.schema_name === null || instance.schema_name === '') {
+      throw new Error('A template instance must have a name.');
+    }
+    // An instance that does not name its template says nothing of what it is an instance of. Both
+    // readers refuse it, and Java cannot build one.
+    if (instance.schema_isBasedOn === CedarArtifactId.NULL) {
+      throw new Error('A template instance must name the template it is based on.');
+    }
     AttributeValueNamePolicy.assertValid(instance.dataContainer);
     // build the final object
     return {
       ...this.macroType(instance),
       ...this.macroNameAndDescription(instance),
       ...this.macroId(instance, isCompact, true),
+      ...YamlTemplateInstanceWriter.typesNode(instance.dataContainer),
       ...this.macroIsBasedOn(instance),
       ...this.macroDerivedFrom(instance, isCompact),
       ...this.macroProvenance(instance, isCompact),
@@ -104,24 +118,40 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
     // A container is meaningful only when it carries a child value or an
     // attribute-value group. Its generated JSON-LD id alone is reconstructable
     // from the template and would be ambiguous with a field in YAML.
+    // The classes an occurrence states are its own data, not the repository's, so even a compact
+    // document keeps them, and an occurrence stating classes and nothing else is still written. The
+    // root's are written beside its other metadata.
+    const types = isDocumentRoot ? JsonNode.getEmpty() : YamlTemplateInstanceWriter.typesNode(dataContainer);
     if (JsonNode.hasEntries(target)) {
       if (this.hasId(dataContainer.id) && (!isCompact || isDocumentRoot)) {
         into[YamlKeys.id] = dataContainer.id;
       }
+      Object.assign(into, types);
       into[YamlKeys.children] = target;
     }
     const attributes = JsonNode.getEmpty();
     this.serializeAttributeValueFields(dataContainer, attributes, unpackedAttributeValueGroups, isDocumentRoot);
     // Emit element metadata before attribute groups, including elements with no ordinary children.
-    if (!isDocumentRoot && (JsonNode.hasEntries(into) || JsonNode.hasEntries(attributes))) {
+    if (!isDocumentRoot && (JsonNode.hasEntries(into) || JsonNode.hasEntries(attributes) || JsonNode.hasEntries(types))) {
       if (!Object.hasOwn(into, YamlKeys.children)) {
         into[YamlKeys.type] = ELEMENT_INSTANCE_TYPE;
       }
       if (!isCompact && this.hasId(dataContainer.id)) {
         into[YamlKeys.id] = dataContainer.id;
       }
+      Object.assign(into, types);
     }
     Object.assign(into, attributes);
+  }
+
+  /**
+   * A container's `@type` under `instanceType`, the key a template uses for the classes its
+   * instances take: one class as a string, several as a list in order, and none as no key.
+   */
+  private static typesNode(dataContainer: InstanceDataContainer): JsonNode {
+    const types = dataContainer.types;
+    if (types.length === 0) return JsonNode.getEmpty();
+    return { [YamlKeys.instanceType]: types.length === 1 ? types[0] : [...types] } as JsonNode;
   }
 
   private serializeAttributeValueFields(
@@ -142,13 +172,10 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
         const wrapper: JsonNode = JsonNode.getEmpty();
         let addedav = false;
         Object.keys(dataAtom.values).forEach((subKey) => {
-          const atom = dataAtom.values[subKey];
-          if (atom instanceof InstanceDataStringAtom) {
-            const serialized = this.serializeAtomString(atom);
-            if (serialized !== null) {
-              wrapper[subKey] = serialized;
-              addedav = true;
-            }
+          const serialized = this.serializeAttribute(dataAtom.values[subKey]);
+          if (serialized !== null) {
+            wrapper[subKey] = serialized;
+            addedav = true;
           }
         });
         if (addedav) {
@@ -161,17 +188,28 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
       const wrapper: JsonNode = JsonNode.getEmpty();
       for (const attributeName of attributeNames) {
         const atom = dataContainer.values[attributeName];
-        if (atom instanceof InstanceDataStringAtom) {
-          const serialized = this.serializeAtomString(atom);
-          if (serialized !== null) {
-            wrapper[attributeName] = serialized;
-          }
+        const serialized = atom === undefined ? null : this.serializeAttribute(atom);
+        if (serialized !== null) {
+          wrapper[attributeName] = serialized;
         }
       }
       if (JsonNode.hasEntries(wrapper)) {
         into[groupName] = wrapper;
       }
     }
+  }
+
+  /**
+   * An attribute is written as the field value it is, as Java's writer writes it, so its label,
+   * datatype and identifier survive. An attribute that holds nothing is left out, and an element is
+   * never an attribute.
+   */
+  private serializeAttribute(atom: InstanceDataAtomType): JsonNode | null {
+    if (atom instanceof InstanceDataContainer) {
+      return null;
+    }
+    const serialized = this.serializeCommonType(atom, false);
+    return serialized !== null && JsonNode.hasEntries(serialized) ? serialized : null;
   }
 
   private getUnpackedAttributeValueGroups(dataContainer: InstanceDataContainer): Map<string, string[]> {
@@ -211,7 +249,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
 
   private serializeCommonTypeWithoutNotation(atom: InstanceDataAtomType, isCompact: boolean): JsonNode | null {
     if (atom instanceof InstanceDataNotationAtom) {
-      return atom.type === null ? JsonNode.getEmpty() : { [YamlKeys.datatype]: atom.type };
+      return atom.type === null ? JsonNode.getEmpty() : { [YamlKeys.datatype]: WriterUtil.writtenDatatype(atom.type) };
     }
     if (atom instanceof InstanceDataStringAtom) {
       return this.serializeAtomString(atom);
@@ -220,18 +258,21 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
       return atom.value === null && atom.label === null && atom.notation === null && atom.preferredLabel === null
         ? null
         : {
-            [YamlKeys.datatype]: atom.type,
+            [YamlKeys.datatype]: WriterUtil.writtenDatatype(atom.type),
             [YamlKeys.value]: atom.value,
             ...(atom.label === null ? {} : { [YamlKeys.label]: atom.label }),
           };
     }
     if (atom instanceof InstanceDataLabelAtom) {
-      return { ...(atom.type === null ? {} : { [YamlKeys.datatype]: atom.type }), [YamlKeys.label]: atom.label };
+      return {
+        ...(atom.type === null ? {} : { [YamlKeys.datatype]: WriterUtil.writtenDatatype(atom.type) }),
+        [YamlKeys.label]: atom.label,
+      };
     }
     if (atom instanceof InstanceDataControlledAtom) {
       const controlled: JsonNode = JsonNode.getEmpty();
       if (atom.type !== null && (this.hasId(atom.id) || atom.label !== null || atom.notation !== null)) {
-        controlled[YamlKeys.datatype] = atom.type;
+        controlled[YamlKeys.datatype] = WriterUtil.writtenDatatype(atom.type);
       }
       if (this.hasId(atom.id)) {
         controlled[YamlKeys.id] = atom.id;
@@ -261,9 +302,9 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
 
   private serializeAtomLink(atom: InstanceDataLinkAtom): JsonNode | null {
     return this.hasId(atom.id)
-      ? { ...(atom.type === null ? {} : { [YamlKeys.datatype]: atom.type }), [YamlKeys.id]: atom.id }
+      ? { ...(atom.type === null ? {} : { [YamlKeys.datatype]: WriterUtil.writtenDatatype(atom.type) }), [YamlKeys.id]: atom.id }
       : atom.notation !== null && atom.type !== null
-        ? { [YamlKeys.datatype]: atom.type }
+        ? { [YamlKeys.datatype]: WriterUtil.writtenDatatype(atom.type) }
         : null;
   }
 

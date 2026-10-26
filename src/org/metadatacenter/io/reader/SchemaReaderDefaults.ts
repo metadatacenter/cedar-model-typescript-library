@@ -15,5 +15,6 @@ export function applySchemaReaderDefaults(
   const versionKey = format === 'json' ? 'pav:version' : 'version';
   const statusKey = format === 'json' ? 'bibo:status' : 'status';
   if (source[versionKey] == null) artifact.pav_version = PavVersion.DEFAULT;
-  if (source[statusKey] == null) artifact.bibo_status = BiboStatus.DRAFT;
+  // Java's YAML reader reads an empty status as none, so it takes the default as an absent one does.
+  if (source[statusKey] == null || (format === 'yaml' && source[statusKey] === '')) artifact.bibo_status = BiboStatus.DRAFT;
 }

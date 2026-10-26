@@ -59,7 +59,29 @@ describe('Strict instance values and canonical long keys', () => {
   ])('reads one type written as %s and writes it back as a string', (_form, type) => {
     const instance = json({ '@value': 'text', '@type': type }).instance;
     const written = CedarWriters.json().getStrict().getTemplateInstanceWriter().getAsJsonNode(instance) as any;
-    expect(written.field['@type']).toBe('http://www.w3.org/2001/XMLSchema#string');
+    // The writer spells an XSD datatype prefixed, as Java's does.
+    expect(written.field['@type']).toBe('xsd:string');
+  });
+  // Java's reader takes a repeated child to be all elements or all fields, as its first entry is.
+  // Read entry by entry, a mixed list came out as something neither a template nor Java would make.
+  test.each([
+    ['an element then a field', '    - children:\n        inner: {value: "x"}\n    - value: "y"\n'],
+    ['a field then an element', '    - value: "y"\n    - children:\n        inner: {value: "x"}\n'],
+    ['an element stub then a field', '    - type: element-instance\n    - value: "y"\n'],
+    ['a field then an element stub', '    - value: "y"\n    - type: element-instance\n'],
+  ])('rejects a repeated child that lists %s', (_order, entries) => {
+    expect(() => yaml(entries)).toThrow(/repeated child at \/children\/field\[1\] mixes element and field entries/);
+  });
+  test('rejects a mixed list inside a nested element as well', () => {
+    expect(() => yaml('    children:\n      list:\n        - children: {inner: {value: "x"}}\n        - value: "y"\n')).toThrow(
+      /repeated child at \/children\/field\/children\/list\[1\] mixes element and field entries/,
+    );
+  });
+  test.each([
+    ['fields', '    - value: "y"\n    - value: "z"\n', 2],
+    ['elements', '    - children:\n        inner: {value: "x"}\n    - type: element-instance\n', 2],
+  ])('still reads a repeated child that lists only %s', (_kind, entries, count) => {
+    expect(yaml(entries).instance.dataContainer.values.field).toHaveLength(count);
   });
   test.each(['a', 'é', '😀'])('matches the Java long-key boundary for %s', (character) => {
     for (const count of [63, 64, 127, 128, 129]) {

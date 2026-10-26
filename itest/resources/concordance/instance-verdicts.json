@@ -25,6 +25,48 @@
    "id": "cee-suite/004",
    "instance": "cee-suite/004/instance-004.json",
    "template": "cee-suite/004/template-004.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/d5ec9ed6-9f8c-42ad-8af9-121bed68662f"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": false,
    "javaErrors": [
     "An integer datatype cannot have decimal places.",
@@ -50,13 +92,1935 @@
    "id": "cee-suite/008",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/3/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000004"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/4/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000005"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/5/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000006"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a1bcf67e-b497-43ab-bebb-32f8cfb11a4a"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
+  },
+  {
+   "id": "cee-suite/008#stored-element-id-absent",
+   "instance": "cee-suite/008/instance-008.json",
+   "template": "cee-suite/008/template-008.json",
+   "patch": {
+    "stored": [
+     {
+      "op": "remove",
+      "path": "/Multiple Choice Element/0/@id"
+     }
+    ]
+   },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/3/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000004"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/4/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000005"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/5/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000006"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a1bcf67e-b497-43ab-bebb-32f8cfb11a4a"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
+   "javaValid": false,
+   "javaErrors": [
+    "object has missing required properties (['@id'])"
+   ]
+  },
+  {
+   "id": "cee-suite/008#stored-element-id-null",
+   "instance": "cee-suite/008/instance-008.json",
+   "template": "cee-suite/008/template-008.json",
+   "patch": {
+    "stored": [
+     {
+      "op": "add",
+      "path": "/Multiple Choice Element/0/@id",
+      "value": null
+     }
+    ]
+   },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/3/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000004"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/4/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000005"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/5/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000006"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a1bcf67e-b497-43ab-bebb-32f8cfb11a4a"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/008#stored-element-id-blank",
+   "instance": "cee-suite/008/instance-008.json",
+   "template": "cee-suite/008/template-008.json",
+   "patch": {
+    "stored": [
+     {
+      "op": "add",
+      "path": "/Multiple Choice Element/0/@id",
+      "value": ""
+     }
+    ]
+   },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/3/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000004"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/4/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000005"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/5/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000006"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a1bcf67e-b497-43ab-bebb-32f8cfb11a4a"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
+   "javaValid": false,
+   "javaErrors": [
+    "Element occurrence @id must be an absolute IRI or null"
+   ]
+  },
+  {
+   "id": "cee-suite/008#stored-root-id-absent",
+   "instance": "cee-suite/008/instance-008.json",
+   "template": "cee-suite/008/template-008.json",
+   "patch": {
+    "stored": [
+     {
+      "op": "remove",
+      "path": "/@id"
+     }
+    ]
+   },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/3/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000004"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/4/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000005"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/5/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000006"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a1bcf67e-b497-43ab-bebb-32f8cfb11a4a"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
+   "javaValid": false,
+   "javaErrors": [
+    "object has missing required properties (['@id'])"
+   ]
+  },
+  {
+   "id": "cee-suite/008#stored-root-id-null",
+   "instance": "cee-suite/008/instance-008.json",
+   "template": "cee-suite/008/template-008.json",
+   "patch": {
+    "stored": [
+     {
+      "op": "add",
+      "path": "/@id",
+      "value": null
+     }
+    ]
+   },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/3/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000004"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/4/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000005"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/5/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000006"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a1bcf67e-b497-43ab-bebb-32f8cfb11a4a"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/008#stored-based-on-absent",
+   "instance": "cee-suite/008/instance-008.json",
+   "template": "cee-suite/008/template-008.json",
+   "patch": {
+    "stored": [
+     {
+      "op": "remove",
+      "path": "/schema:isBasedOn"
+     }
+    ]
+   },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/3/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000004"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/4/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000005"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/5/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000006"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a1bcf67e-b497-43ab-bebb-32f8cfb11a4a"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
+   "javaValid": false,
+   "javaErrors": [
+    "object has missing required properties (['schema:isBasedOn'])"
+   ]
+  },
+  {
+   "id": "cee-suite/008#stored-name-absent",
+   "instance": "cee-suite/008/instance-008.json",
+   "template": "cee-suite/008/template-008.json",
+   "patch": {
+    "stored": [
+     {
+      "op": "remove",
+      "path": "/schema:name"
+     }
+    ]
+   },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/3/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000004"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/4/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000005"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/5/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000006"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a1bcf67e-b497-43ab-bebb-32f8cfb11a4a"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
+   "javaValid": false,
+   "javaErrors": [
+    "object has missing required properties (['schema:name'])"
+   ]
+  },
+  {
+   "id": "cee-suite/008#stored-name-empty",
+   "instance": "cee-suite/008/instance-008.json",
+   "template": "cee-suite/008/template-008.json",
+   "patch": {
+    "stored": [
+     {
+      "op": "add",
+      "path": "/schema:name",
+      "value": ""
+     }
+    ]
+   },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/3/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000004"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/4/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000005"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/5/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000006"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a1bcf67e-b497-43ab-bebb-32f8cfb11a4a"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
+   "javaValid": false,
+   "javaErrors": [
+    "/schema:name: must be at least 1 characters long"
+   ]
+  },
+  {
+   "id": "cee-suite/008#stored-created-on-absent",
+   "instance": "cee-suite/008/instance-008.json",
+   "template": "cee-suite/008/template-008.json",
+   "patch": {
+    "stored": [
+     {
+      "op": "remove",
+      "path": "/pav:createdOn"
+     }
+    ]
+   },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/3/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000004"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/4/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000005"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/5/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000006"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a1bcf67e-b497-43ab-bebb-32f8cfb11a4a"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
+   "javaValid": false,
+   "javaErrors": [
+    "object has missing required properties (['pav:createdOn'])"
+   ]
+  },
+  {
+   "id": "cee-suite/008#stored-created-on-null",
+   "instance": "cee-suite/008/instance-008.json",
+   "template": "cee-suite/008/template-008.json",
+   "patch": {
+    "stored": [
+     {
+      "op": "add",
+      "path": "/pav:createdOn",
+      "value": null
+     }
+    ]
+   },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/3/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000004"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/4/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000005"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/5/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000006"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a1bcf67e-b497-43ab-bebb-32f8cfb11a4a"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/008#stored-created-on-colonless-offset",
+   "instance": "cee-suite/008/instance-008.json",
+   "template": "cee-suite/008/template-008.json",
+   "patch": {
+    "stored": [
+     {
+      "op": "add",
+      "path": "/pav:createdOn",
+      "value": "2026-01-15T12:34:56-0800"
+     }
+    ]
+   },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/3/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000004"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/4/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000005"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/5/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000006"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a1bcf67e-b497-43ab-bebb-32f8cfb11a4a"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
+   "javaValid": true,
+   "javaErrors": []
+  },
+  {
+   "id": "cee-suite/008#stored-created-on-day-past-month",
+   "instance": "cee-suite/008/instance-008.json",
+   "template": "cee-suite/008/template-008.json",
+   "patch": {
+    "stored": [
+     {
+      "op": "add",
+      "path": "/pav:createdOn",
+      "value": "2026-02-30T00:00:00-08:00"
+     }
+    ]
+   },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/3/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000004"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/4/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000005"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/5/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000006"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a1bcf67e-b497-43ab-bebb-32f8cfb11a4a"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
+   "javaValid": false,
+   "javaErrors": [
+    "Not a real calendar date and time"
+   ]
+  },
+  {
+   "id": "cee-suite/008#stored-created-on-end-of-day",
+   "instance": "cee-suite/008/instance-008.json",
+   "template": "cee-suite/008/template-008.json",
+   "patch": {
+    "stored": [
+     {
+      "op": "add",
+      "path": "/pav:createdOn",
+      "value": "2026-01-15T24:00:00Z"
+     }
+    ]
+   },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/3/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000004"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/4/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000005"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/5/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000006"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a1bcf67e-b497-43ab-bebb-32f8cfb11a4a"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
+   "javaValid": false,
+   "javaErrors": [
+    "Not a real calendar date and time"
+   ]
+  },
+  {
+   "id": "cee-suite/008#stored-created-on-lowercase-t",
+   "instance": "cee-suite/008/instance-008.json",
+   "template": "cee-suite/008/template-008.json",
+   "patch": {
+    "stored": [
+     {
+      "op": "add",
+      "path": "/pav:createdOn",
+      "value": "2026-01-15t12:34:56Z"
+     }
+    ]
+   },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/3/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000004"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/4/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000005"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/5/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000006"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a1bcf67e-b497-43ab-bebb-32f8cfb11a4a"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
+   "javaValid": false,
+   "javaErrors": [
+    "/pav:createdOn: does not match the date-time pattern must be a valid RFC 3339 date-time"
+   ]
+  },
+  {
+   "id": "cee-suite/008#stored-created-on-no-seconds",
+   "instance": "cee-suite/008/instance-008.json",
+   "template": "cee-suite/008/template-008.json",
+   "patch": {
+    "stored": [
+     {
+      "op": "add",
+      "path": "/pav:createdOn",
+      "value": "2026-01-15T12:34-08:00"
+     }
+    ]
+   },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/3/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000004"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/4/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000005"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/5/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000006"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a1bcf67e-b497-43ab-bebb-32f8cfb11a4a"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
+   "javaValid": false,
+   "javaErrors": [
+    "/pav:createdOn: does not match the date-time pattern must be a valid RFC 3339 date-time"
+   ]
+  },
+  {
+   "id": "cee-suite/008#stored-created-on-hour-offset",
+   "instance": "cee-suite/008/instance-008.json",
+   "template": "cee-suite/008/template-008.json",
+   "patch": {
+    "stored": [
+     {
+      "op": "add",
+      "path": "/pav:createdOn",
+      "value": "2026-01-15T12:34:56-08"
+     }
+    ]
+   },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/3/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000004"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/4/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000005"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/5/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000006"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a1bcf67e-b497-43ab-bebb-32f8cfb11a4a"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
+   "javaValid": false,
+   "javaErrors": [
+    "/pav:createdOn: does not match the date-time pattern must be a valid RFC 3339 date-time"
+   ]
+  },
+  {
+   "id": "cee-suite/008#stored-created-on-date-only",
+   "instance": "cee-suite/008/instance-008.json",
+   "template": "cee-suite/008/template-008.json",
+   "patch": {
+    "stored": [
+     {
+      "op": "add",
+      "path": "/pav:createdOn",
+      "value": "2026-01-01"
+     }
+    ]
+   },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/3/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000004"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/4/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000005"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/5/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000006"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a1bcf67e-b497-43ab-bebb-32f8cfb11a4a"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
+   "javaValid": false,
+   "javaErrors": [
+    "/pav:createdOn: does not match the date-time pattern must be a valid RFC 3339 date-time"
+   ]
+  },
+  {
+   "id": "cee-suite/008#stored-created-on-offset-too-far",
+   "instance": "cee-suite/008/instance-008.json",
+   "template": "cee-suite/008/template-008.json",
+   "patch": {
+    "stored": [
+     {
+      "op": "add",
+      "path": "/pav:createdOn",
+      "value": "2026-01-15T12:34:56+18:01"
+     }
+    ]
+   },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/3/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000004"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/4/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000005"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/5/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000006"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a1bcf67e-b497-43ab-bebb-32f8cfb11a4a"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
+   "javaValid": false,
+   "javaErrors": [
+    "/pav:createdOn: does not match the date-time pattern must be a valid RFC 3339 date-time"
+   ]
+  },
+  {
+   "id": "cee-suite/008#stored-created-on-leap-second",
+   "instance": "cee-suite/008/instance-008.json",
+   "template": "cee-suite/008/template-008.json",
+   "patch": {
+    "stored": [
+     {
+      "op": "add",
+      "path": "/pav:createdOn",
+      "value": "2016-12-31T23:59:60Z"
+     }
+    ]
+   },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/3/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000004"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/4/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000005"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/5/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000006"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a1bcf67e-b497-43ab-bebb-32f8cfb11a4a"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
+   "javaValid": false,
+   "javaErrors": [
+    "/pav:createdOn: does not match the date-time pattern must be a valid RFC 3339 date-time"
+   ]
+  },
+  {
+   "id": "cee-suite/008#stored-derived-from-malformed",
+   "instance": "cee-suite/008/instance-008.json",
+   "template": "cee-suite/008/template-008.json",
+   "patch": {
+    "stored": [
+     {
+      "op": "add",
+      "path": "/pav:derivedFrom",
+      "value": "not an IRI"
+     }
+    ]
+   },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/3/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000004"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/4/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000005"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Choice Element/5/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000006"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a1bcf67e-b497-43ab-bebb-32f8cfb11a4a"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
+   "javaValid": false,
+   "javaErrors": [
+    "/pav:derivedFrom: does not match the uri pattern must be a valid URI or IRI",
+    "pav:derivedFrom must be an absolute IRI when present"
+   ]
   },
   {
    "id": "cee-suite/009",
    "instance": "cee-suite/009/instance-009.json",
    "template": "cee-suite/009/template-009.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Checkbox Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Checkbox Element/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Checkbox Element/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/Checkbox Element/3/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000004"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/64de739b-6430-4a6b-8bfa-3a881be62031"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -64,6 +2028,63 @@
    "id": "cee-suite/011",
    "instance": "cee-suite/011/instance-011.json",
    "template": "cee-suite/011/template-011.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Single Select Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Single Select Element/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Single Select Element/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/e7e3c0ef-2b59-443c-816b-af72176d7aeb"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -71,6 +2092,58 @@
    "id": "cee-suite/012",
    "instance": "cee-suite/012/instance-012.json",
    "template": "cee-suite/012/template-012.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Multi Select Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Multi Select Element/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/f7c65a2a-4345-4e4e-8d6d-aee3fa906aa4"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -78,6 +2151,58 @@
    "id": "cee-suite/013",
    "instance": "cee-suite/013/instance-013.json",
    "template": "cee-suite/013/template-013.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Attribute Value Element Multiple/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Attribute Value Element Single/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/521c0f77-ab6e-4c26-85ad-c289c02c09a9"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -92,6 +2217,53 @@
    "id": "cee-suite/015",
    "instance": "cee-suite/015/instance-015.json",
    "template": "cee-suite/015/template-015.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Rich Text Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/db2cc723-ba5c-4f35-9f00-de7c830a26d9"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -108,6 +2280,53 @@
      }
     ]
    },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Rich Text Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/db2cc723-ba5c-4f35-9f00-de7c830a26d9"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -126,6 +2345,53 @@
      }
     ]
    },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Rich Text Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/db2cc723-ba5c-4f35-9f00-de7c830a26d9"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": false,
    "javaErrors": [
     "object instance has properties which are not allowed by the schema: ['@value']"
@@ -137,14 +2403,56 @@
    "template": "cee-suite/016/template-016.json",
    "javaValid": false,
    "javaErrors": [
-    "/@context/Phone Field: does not have a value in the enumeration ['https://schema.metadatacenter.org/properties/6983fe2c-d004-4144-86ea-7132026364bc']",
-    "object has missing required properties (['Phone field'])"
+    "object has missing required properties (['Phone field'])",
+    "/@context/Phone Field: does not have a value in the enumeration ['https://schema.metadatacenter.org/properties/6983fe2c-d004-4144-86ea-7132026364bc']"
    ]
   },
   {
    "id": "cee-suite/017",
    "instance": "cee-suite/017/instance-017.json",
    "template": "cee-suite/017/template-017.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/3f78868d-76f4-4c12-adc6-c508308736a1"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -163,6 +2471,48 @@
      }
     ]
    },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/3f78868d-76f4-4c12-adc6-c508308736a1"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -181,6 +2531,48 @@
      }
     ]
    },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/3f78868d-76f4-4c12-adc6-c508308736a1"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": false,
    "javaErrors": [
     "The literal datatype does not match xsd:date."
@@ -213,6 +2605,48 @@
      }
     ]
    },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/3f78868d-76f4-4c12-adc6-c508308736a1"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -242,6 +2676,48 @@
      }
     ]
    },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/3f78868d-76f4-4c12-adc6-c508308736a1"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": false,
    "javaErrors": [
     "object has missing required properties (['rdfs:label'])"
@@ -251,6 +2727,58 @@
    "id": "cee-suite/018",
    "instance": "cee-suite/018/instance-018.json",
    "template": "cee-suite/018/template-018.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Datetime Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Datetime Element/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/ac4d1764-133e-4451-ac61-0d46d63d6534"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -258,6 +2786,58 @@
    "id": "cee-suite/019",
    "instance": "cee-suite/019/instance-019.json",
    "template": "cee-suite/019/template-019.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Paragraph Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Paragraph Element/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/8ef9346f-08d1-4dd7-89ff-0a3cd6457b57"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -265,6 +2845,53 @@
    "id": "cee-suite/020",
    "instance": "cee-suite/020/instance-020.json",
    "template": "cee-suite/020/template-020.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Sample Element/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/fcf8728b-57d6-49ef-9366-84f56c7a7ece"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -272,6 +2899,48 @@
    "id": "cee-suite/021",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a2028e54-17b5-421e-99af-3c5492005a28"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -288,6 +2957,48 @@
      }
     ]
    },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a2028e54-17b5-421e-99af-3c5492005a28"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -306,6 +3017,48 @@
      }
     ]
    },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a2028e54-17b5-421e-99af-3c5492005a28"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -324,6 +3077,48 @@
      }
     ]
    },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a2028e54-17b5-421e-99af-3c5492005a28"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -342,6 +3137,48 @@
      }
     ]
    },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a2028e54-17b5-421e-99af-3c5492005a28"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": false,
    "javaErrors": [
     "A controlled-term label requires an IRI."
@@ -362,6 +3199,48 @@
      }
     ]
    },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a2028e54-17b5-421e-99af-3c5492005a28"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -381,6 +3260,48 @@
      }
     ]
    },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a2028e54-17b5-421e-99af-3c5492005a28"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -400,6 +3321,48 @@
      }
     ]
    },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a2028e54-17b5-421e-99af-3c5492005a28"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": false,
    "javaErrors": [
     "A controlled-term label requires an IRI."
@@ -420,6 +3383,48 @@
      }
     ]
    },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a2028e54-17b5-421e-99af-3c5492005a28"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": false,
    "javaErrors": [
     "object instance has properties which are not allowed by the schema: ['@value']"
@@ -440,6 +3445,48 @@
      }
     ]
    },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a2028e54-17b5-421e-99af-3c5492005a28"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": false,
    "javaErrors": [
     "The stored IRI is empty or malformed."
@@ -461,6 +3508,48 @@
      }
     ]
    },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a2028e54-17b5-421e-99af-3c5492005a28"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": false,
    "javaErrors": [
     "object instance has properties which are not allowed by the schema: ['probe']"
@@ -478,6 +3567,48 @@
      }
     ]
    },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a2028e54-17b5-421e-99af-3c5492005a28"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": false,
    "javaErrors": [
     "object has missing required properties (['Untitled'])"
@@ -512,6 +3643,48 @@
      }
     ]
    },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a2028e54-17b5-421e-99af-3c5492005a28"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -530,6 +3703,48 @@
      }
     ]
    },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a2028e54-17b5-421e-99af-3c5492005a28"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": false,
    "javaErrors": [
     "object instance has properties which are not allowed by the schema: ['Probe']"
@@ -575,6 +3790,48 @@
      }
     ]
    },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a2028e54-17b5-421e-99af-3c5492005a28"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -618,6 +3875,48 @@
      }
     ]
    },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a2028e54-17b5-421e-99af-3c5492005a28"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": false,
    "javaErrors": [
     "object instance has properties which are not allowed by the schema: ['@id']",
@@ -637,6 +3936,48 @@
      }
     ]
    },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a2028e54-17b5-421e-99af-3c5492005a28"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": false,
    "javaErrors": [
     "/@context/Untitled: does not have a value in the enumeration ['https://schema.metadatacenter.org/properties/97e1bf28-ebf3-457f-9155-7cdbb48b5860']"
@@ -655,6 +3996,48 @@
      }
     ]
    },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a2028e54-17b5-421e-99af-3c5492005a28"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": false,
    "javaErrors": [
     "object instance has properties which are not allowed by the schema: ['Probe']"
@@ -672,6 +4055,48 @@
      }
     ]
    },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a2028e54-17b5-421e-99af-3c5492005a28"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -687,6 +4112,48 @@
      }
     ]
    },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a2028e54-17b5-421e-99af-3c5492005a28"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": false,
    "javaErrors": [
     "object has missing required properties (['xsd'])"
@@ -710,6 +4177,68 @@
    "id": "cee-suite/024",
    "instance": "cee-suite/024/instance-024.json",
    "template": "cee-suite/024/template-024.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Single Text Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Single Text Element/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Single Text Element/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/Single Text Element/3/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000004"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/9e19835f-dada-41a2-9808-e40163b0eb5f"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -717,6 +4246,118 @@
    "id": "cee-suite/025",
    "instance": "cee-suite/025/instance-025.json",
    "template": "cee-suite/025/template-025.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Element of Element/0/Single Text Element/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000008"
+    },
+    {
+     "op": "add",
+     "path": "/Element of Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Element of Element/1/Single Text Element/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000009"
+    },
+    {
+     "op": "add",
+     "path": "/Element of Element/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Element of Element/2/Single Text Element/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000010"
+    },
+    {
+     "op": "add",
+     "path": "/Element of Element/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/Element of Element/3/Single Text Element/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000011"
+    },
+    {
+     "op": "add",
+     "path": "/Element of Element/3/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000004"
+    },
+    {
+     "op": "add",
+     "path": "/Element of Element/4/Single Text Element/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000012"
+    },
+    {
+     "op": "add",
+     "path": "/Element of Element/4/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000005"
+    },
+    {
+     "op": "add",
+     "path": "/Element of Element/5/Single Text Element/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000013"
+    },
+    {
+     "op": "add",
+     "path": "/Element of Element/5/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000006"
+    },
+    {
+     "op": "add",
+     "path": "/Element of Element/6/Single Text Element/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000014"
+    },
+    {
+     "op": "add",
+     "path": "/Element of Element/6/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000007"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/db10d346-2c69-467b-8c1a-be151f37fc74"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -724,6 +4365,68 @@
    "id": "cee-suite/026",
    "instance": "cee-suite/026/instance-026.json",
    "template": "cee-suite/026/template-026.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Multiple Text Field/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Text Field/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Text Field/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Text Field/3/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000004"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/aa54d587-38c0-40de-9aa6-406eb90be214"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -925,6 +4628,13 @@
    "id": "cee-suite/028",
    "instance": "cee-suite/028/instance-028.json",
    "template": "cee-suite/028/template-028.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Element with Several Fields/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -932,6 +4642,48 @@
    "id": "cee-suite/029",
    "instance": "cee-suite/029/instance-029.json",
    "template": "cee-suite/029/template-029.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Element with Several Fields, some Multi/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Element with Several Fields, some Multi/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Multiple Text Field/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": false,
    "javaErrors": [
     "object has missing required properties (['@value'])",
@@ -942,6 +4694,48 @@
    "id": "cee-suite/030",
    "instance": "cee-suite/030/instance-030.json",
    "template": "cee-suite/030/template-030.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/3ab21c73-8052-442d-a01a-f1ec5620a5f3"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -949,6 +4743,48 @@
    "id": "cee-suite/032",
    "instance": "cee-suite/032/instance-032.json",
    "template": "cee-suite/032/template-032.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/86432620-0b56-4e27-8a4c-84dbf128f5fb"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -967,6 +4803,48 @@
      }
     ]
    },
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/86432620-0b56-4e27-8a4c-84dbf128f5fb"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": false,
    "javaErrors": [
     "object has missing required properties (['@type'])"
@@ -976,6 +4854,48 @@
    "id": "cee-suite/034",
    "instance": "cee-suite/034/instance-034.json",
    "template": "cee-suite/034/template-034.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/7a0dc8aa-9ab2-4981-9666-fcfe9f0b7f97"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -983,6 +4903,48 @@
    "id": "cee-suite/035",
    "instance": "cee-suite/035/instance-035.json",
    "template": "cee-suite/035/template-035.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/77996898-e754-44de-a9fa-2c0d86a8ab75"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -990,6 +4952,48 @@
    "id": "cee-suite/036",
    "instance": "cee-suite/036/instance-036.json",
    "template": "cee-suite/036/template-036.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/a2386a85-e024-471d-b9e1-d06b41a5d431"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -997,6 +5001,73 @@
    "id": "cee-suite/041",
    "instance": "cee-suite/041/instance-041.json",
    "template": "cee-suite/041/template-041.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Another Controlled Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Another Controlled Element/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Controlled Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/Controlled Element/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000004"
+    },
+    {
+     "op": "add",
+     "path": "/Controlled Element/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000005"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/fe8ddab9-e2da-4112-ab6c-140e20844ba8"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -1004,6 +5075,48 @@
    "id": "cee-suite/042",
    "instance": "cee-suite/042/instance-042.json",
    "template": "cee-suite/042/template-042.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/8013ab3d-5313-406f-81a9-f2ee14d27919"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -1011,6 +5124,63 @@
    "id": "cee-suite/044",
    "instance": "cee-suite/044/instance-044.json",
    "template": "cee-suite/044/template-044.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Spatial Box and keyword/SpatialCoverage/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Spatial Box and keyword/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/eDNA Sampling/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/30f40c2b-0fe2-4ad5-a130-d7329d0e6b50"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -1018,11 +5188,78 @@
    "id": "cee-suite/046",
    "instance": "cee-suite/046/instance-046.json",
    "template": "cee-suite/046/template-046.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Element 1/Element 2/0/Element 3/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/Element 1/Element 2/0/Element 3/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000004"
+    },
+    {
+     "op": "add",
+     "path": "/Element 1/Element 2/0/Element 3/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000005"
+    },
+    {
+     "op": "add",
+     "path": "/Element 1/Element 2/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Element 1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/ccd36336-0a7e-4de7-a1ac-9b7904140494"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": false,
    "javaErrors": [
-    "/Element 1/Element 2/0/Element 3/1/Sample Attribute Value/0: object found, string expected",
-    "/Element 1/Element 2/0/Element 3/2/Sample Attribute Value/0: object found, string expected",
-    "object instance has properties which are not allowed by the schema: ['@value']"
+    "object instance has properties which are not allowed by the schema: ['@value']",
+    "object instance has properties which are not allowed by the schema: ['@value']",
+    "/Element 1/Element 2/0/Element 3/1/Sample Attribute Value/0: object found, string expected"
    ]
   },
   {
@@ -1064,6 +5301,48 @@
    "id": "cee-suite/057",
    "instance": "cee-suite/057/instance-057.json",
    "template": "cee-suite/057/template-057.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.orgx/templates/2a06c576-bb48-4e87-b88c-ae40aa2b5a94"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -1085,6 +5364,63 @@
    "id": "cee-suite/060",
    "instance": "cee-suite/060/instance-060.json",
    "template": "cee-suite/060/template-060.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Element with attribute-value/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Element with attribute-value/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Element with attribute-value/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.orgx/templates/60976d38-b88d-4fed-b15f-f30794977b48"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -1106,6 +5442,53 @@
    "id": "cee-suite/063",
    "instance": "cee-suite/063/instance-063.json",
    "template": "cee-suite/063/template-063.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/Controlled Element/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.org/templates/fe8ddab9-e2da-4112-ab6c-140e20844ba8"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -1127,6 +5510,68 @@
    "id": "cee-suite/066",
    "instance": "cee-suite/066/instance-066.json",
    "template": "cee-suite/066/template-066.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/creator/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/creator/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/title/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/title/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000004"
+    },
+    {
+     "op": "add",
+     "path": "/schema:isBasedOn",
+     "value": "https://repo.metadatacenter.orgx/templates/9378d41b-c557-4932-8c62-9976db822cbf"
+    },
+    {
+     "op": "add",
+     "path": "/schema:name",
+     "value": "Corpus instance"
+    },
+    {
+     "op": "add",
+     "path": "/schema:description",
+     "value": ""
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -1134,6 +5579,173 @@
    "id": "cee-suite/071",
    "instance": "cee-suite/071/instance-071.json",
    "template": "cee-suite/071/template-071.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/Data File Titles/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/Data File Identity/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000002"
+    },
+    {
+     "op": "add",
+     "path": "/Data File Language/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000003"
+    },
+    {
+     "op": "add",
+     "path": "/Data File Subjects/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000004"
+    },
+    {
+     "op": "add",
+     "path": "/Data File Descriptions/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000005"
+    },
+    {
+     "op": "add",
+     "path": "/Data File Data Dictionary/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000006"
+    },
+    {
+     "op": "add",
+     "path": "/Data File Creators/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000007"
+    },
+    {
+     "op": "add",
+     "path": "/Data File Creators/1/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000008"
+    },
+    {
+     "op": "add",
+     "path": "/Data File Creators/2/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000009"
+    },
+    {
+     "op": "add",
+     "path": "/Data File Related Resources/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000010"
+    },
+    {
+     "op": "add",
+     "path": "/Data File Contributors/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000011"
+    },
+    {
+     "op": "add",
+     "path": "/Data File Rights/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000012"
+    },
+    {
+     "op": "add",
+     "path": "/Data File Dates/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000013"
+    },
+    {
+     "op": "add",
+     "path": "/Data File Parent Studies/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000014"
+    },
+    {
+     "op": "add",
+     "path": "/Data File Funding Sources/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000015"
+    },
+    {
+     "op": "add",
+     "path": "/Data File Distributions/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000016"
+    },
+    {
+     "op": "add",
+     "path": "/Data File Distributions/0/Data File Publication Date/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000017"
+    },
+    {
+     "op": "add",
+     "path": "/Data Characteristics Summary/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000018"
+    },
+    {
+     "op": "add",
+     "path": "/Data Sources/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000019"
+    },
+    {
+     "op": "add",
+     "path": "/Data Streams/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000020"
+    },
+    {
+     "op": "add",
+     "path": "/Data File Creation Processes/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000021"
+    },
+    {
+     "op": "add",
+     "path": "/Data File Temporal Coverage/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000022"
+    },
+    {
+     "op": "add",
+     "path": "/Data File Spatial Coverage/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000023"
+    },
+    {
+     "op": "add",
+     "path": "/Data File Spatial Coverage/0/Bounding Boxes/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000024"
+    },
+    {
+     "op": "add",
+     "path": "/Data File Spatial Coverage/0/Bounding Shapes/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000025"
+    },
+    {
+     "op": "add",
+     "path": "/Data File Spatial Coverage/0/Data File Geopolitical Coverage/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000026"
+    },
+    {
+     "op": "add",
+     "path": "/Data File Elevation Coverage/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000027"
+    },
+    {
+     "op": "add",
+     "path": "/Auxiliary Metadata/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000028"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -1162,6 +5774,38 @@
    "id": "cee-suite/085",
    "instance": "cee-suite/085/instance-085.json",
    "template": "cee-suite/085/template-085.json",
+   "completion": [
+    {
+     "op": "add",
+     "path": "/@id",
+     "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/pav:createdBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/pav:lastUpdatedOn",
+     "value": "2026-01-01T00:00:00-08:00"
+    },
+    {
+     "op": "add",
+     "path": "/oslc:modifiedBy",
+     "value": "https://metadatacenter.org/users/00000000-0000-4000-8000-000000000000"
+    },
+    {
+     "op": "add",
+     "path": "/Data File Titles/0/@id",
+     "value": "https://repo.metadatacenter.org/template-element-instances/00000000-0000-4000-8000-000000000001"
+    }
+   ],
    "javaValid": true,
    "javaErrors": []
   },
@@ -1171,8 +5815,8 @@
    "template": "instances/005/template-005.json",
    "javaValid": false,
    "javaErrors": [
-    "object instance has properties which are not allowed by the schema: ['Element as Single']",
     "object has missing required properties (['Element1'])",
+    "object has missing required properties (['Element'])",
     "object instance has properties which are not allowed by the schema: ['Element as Multi']"
    ]
   }

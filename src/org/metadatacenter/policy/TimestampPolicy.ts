@@ -39,4 +39,39 @@ export class TimestampPolicy {
     const significantFraction = fraction.replace(/0+$/, '');
     return `${canonicalYear}-${monthText}-${dayText}T${hourText}:${minuteText}:${secondText}${significantFraction ? '.' + significantFraction : ''}${offset}`;
   }
+
+  /**
+   * Whether the `date-time` format the meta-schemas name admits a value, as the
+   * server's validator checks it. That check resolves a value leniently rather
+   * than reading it as a calendar: any month takes a day up to 31, and
+   * `24:00:00` is the next midnight. It wants a four-digit year from 0001, or a
+   * longer one after `+`, seconds, a fraction of one to nine digits, and an
+   * offset of `Z`, `±HH:MM`, `±HH:MM:SS` or `±HHMM` no further than 18 hours.
+   * The model reads a provenance timestamp more strictly in some respects and
+   * less in others, so a stored one must satisfy both.
+   */
+  public static matchesFormat(value: string): boolean {
+    const match =
+      /^(\d{4}|\+\d{5,9})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.(\d{1,9}))?(Z|([+-])(\d{2})(?::(\d{2})(?::(\d{2}))?|(\d{2})))$/.exec(
+        value,
+      );
+    if (match === null) return false;
+    const [, year, month, day, hour, minute, second, fraction = '', , , offsetHours, colonMinutes, offsetSeconds, bareMinutes] = match;
+    const clock = Number(hour) < 24 || (minute === '00' && second === '00' && /^0*$/.test(fraction));
+    const offset = [offsetHours, colonMinutes ?? bareMinutes, offsetSeconds].map((part) => Number(part ?? 0));
+    return (
+      Number(year) >= 1 &&
+      Number(month) >= 1 &&
+      Number(month) <= 12 &&
+      Number(day) >= 1 &&
+      Number(day) <= 31 &&
+      clock &&
+      Number(hour) <= 24 &&
+      Number(minute) <= 59 &&
+      Number(second) <= 59 &&
+      offset[1] <= 59 &&
+      offset[2] <= 59 &&
+      offset[0] * 3600 + offset[1] * 60 + offset[2] <= 18 * 3600
+    );
+  }
 }

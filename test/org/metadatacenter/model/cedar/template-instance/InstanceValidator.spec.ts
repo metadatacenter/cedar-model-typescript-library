@@ -462,6 +462,75 @@ describe('judged against the stored template', () => {
   });
 });
 
+describe('judged as a verbatim write stores it', () => {
+  /**
+   * An editor's save leaves the instance's identity, its provenance and each
+   * element occurrence's @id to the host and the server. A verbatim write
+   * stores the document as it stands, so `verbatim` holds those to the stored
+   * template too, as the server does.
+   */
+  const written = () => CedarWriters.json().getStrict().getTemplateWriter().getAsJsonNode(template) as any;
+  const stamped = (): any => ({
+    ...complete(),
+    'pav:createdOn': '2026-01-01T00:00:00-08:00',
+    'pav:createdBy': 'https://metadatacenter.org/users/u1',
+    'pav:lastUpdatedOn': '2026-01-01T00:00:00-0800',
+    'oslc:modifiedBy': 'https://metadatacenter.org/users/u1',
+    _addr: {
+      '@id': 'https://repo.metadatacenter.org/template-element-instances/e1',
+      '@context': ADDR_CONTEXT,
+      _city: { '@value': 'Palo Alto' },
+    },
+  });
+  const judge = (source: object, verbatim: boolean) =>
+    InstanceValidator.validateReport(
+      CedarReaders.json()
+        .getFebruary2024()
+        .getTemplateInstanceReader()
+        .readFromObject(source as any, undefined as never).instance,
+      template,
+      written(),
+      { verbatim },
+    );
+  const without = (key: string) => {
+    const document = stamped();
+    delete document[key];
+    return document;
+  };
+
+  it('stores a complete document', () => {
+    expect(judge(stamped(), true).canSave).toBe(true);
+  });
+
+  it('refuses an element occurrence without its @id, which an editor leaves to the server', () => {
+    const document = stamped();
+    delete document._addr['@id'];
+    expect(judge(document, false).canSave).toBe(true);
+    expect(judge(document, true).canSave).toBe(false);
+    expect(judge({ ...document, _addr: { ...document._addr, '@id': '' } }, true).canSave).toBe(false);
+  });
+
+  it("holds an element occurrence's null @id to what the stored template admits", () => {
+    const document = stamped();
+    document._addr['@id'] = null;
+    const stored = written();
+    expect(judge(document, true).canSave).toBe(stored.properties._addr.properties['@id'].type.includes('null'));
+  });
+
+  it("refuses a document without its own identity or provenance, and admits the draft's null identity", () => {
+    for (const key of ['@id', 'schema:isBasedOn', 'schema:name', 'pav:createdOn', 'oslc:modifiedBy']) {
+      expect(judge(without(key), false).canSave).toBe(true);
+      expect(judge(without(key), true).canSave).toBe(false);
+    }
+    expect(judge({ ...stamped(), '@id': null }, true).canSave).toBe(true);
+  });
+
+  it('holds those keys to the values the stored template admits', () => {
+    expect(judge({ ...stamped(), 'schema:name': '' }, true).canSave).toBe(false);
+    expect(judge({ ...stamped(), 'pav:createdOn': null }, true).canSave).toBe(true);
+  });
+});
+
 describe('a static field', () => {
   /**
    * A static field presents content and takes no answer. The Java validator

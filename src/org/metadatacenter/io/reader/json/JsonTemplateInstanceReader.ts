@@ -221,6 +221,14 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
       );
     }
     this.packAttributeValues(ret);
+    StoredForm.recordMembers(
+      ret,
+      Object.fromEntries(
+        Object.keys(sourceObject)
+          .filter((key) => ReservedNames.isReservedName(key))
+          .map((key) => [key, sourceObject[key]]),
+      ),
+    );
 
     // `"@context": null` is a present key with nothing in it, and every lookup
     // below starts with `Object.hasOwn`, which throws on null — so a document

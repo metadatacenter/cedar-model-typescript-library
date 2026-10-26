@@ -30,6 +30,7 @@ import { ReservedNames } from '../ReservedNames';
 import { ContainerArtifactChildrenInfo } from '../deployment/ContainerArtifactChildrenInfo';
 import { JsonTemplateInstanceContent } from '../util/serialization/JsonTemplateInstanceContent';
 import { IdentifierPolicy } from '../../../policy/IdentifierPolicy';
+import { TimestampPolicy } from '../../../policy/TimestampPolicy';
 import { JsonSchema } from '../constants/JsonSchema';
 import { ValidationField } from '../../../policy/FieldValuePolicy';
 
@@ -48,6 +49,18 @@ export interface InstanceValidationOptions {
    * stored.
    */
   asWritten?: boolean;
+
+  /**
+   * The caller asks whether the server would store the document exactly as it
+   * stands, as a verbatim write stores it. An editor's save leaves the
+   * document's identity, its provenance and each element occurrence's `@id` to
+   * the host and the server, which write them before judging it, so without
+   * this they are not asked of the instance. A verbatim write is judged with
+   * them, so each container's own keys are then held to what its stored schema
+   * requires and admits. It has no effect with `asWritten`, whose write gets
+   * those keys from the host and the server too.
+   */
+  verbatim?: boolean;
 }
 
 /**
@@ -166,6 +179,10 @@ export class InstanceValidator {
       InstanceValidator.validateContext(container, context, terms, supplied, path, result);
     }
 
+    if (options.verbatim === true && options.asWritten !== true) {
+      InstanceValidator.validateMembers(container, stored, path, result);
+    }
+
     for (const name of InstanceValidator.requiredChildren(info, stored)) {
       if (!Object.hasOwn(container.values, name)) {
         result.addBlueprintComparisonError(
@@ -261,15 +278,53 @@ export class InstanceValidator {
   }
 
   /**
-   * Whether a value meets the schema it is held to: its `enum`, `type` and
-   * `format`, and for an object its `properties`, `required` and
-   * `additionalProperties`. Enough of JSON Schema for a `@context` entry.
+   * A container's own keys as a verbatim write stores them, against its stored
+   * schema: its `@context` and `@id` and, at the root, the template, name and
+   * provenance. Each key the schema requires must be there, and each one there
+   * must take a value the schema admits. The `@context` entries themselves are
+   * judged by `validateContext`, and annotations by the reader.
+   */
+  private static validateMembers(
+    container: InstanceDataContainer,
+    stored: JsonNode | null,
+    path: JsonPath,
+    result: JsonArtifactParsingResult,
+  ): void {
+    const members = StoredForm.membersOf(container);
+    if (members === null || stored === null) return;
+    const required = Array.isArray(stored.required) ? stored.required : [];
+    for (const name of required) {
+      if (typeof name === 'string' && ReservedNames.isReservedName(name) && !Object.hasOwn(members, name)) {
+        result.addBlueprintComparisonError(
+          new ComparisonError(LOCATION, ComparisonErrorType.MISSING_KEY_IN_REAL_OBJECT, path.add(name), name),
+        );
+      }
+    }
+    const properties = InstanceValidator.object(stored.properties) ?? JsonNode.getEmpty();
+    for (const [name, value] of Object.entries(members)) {
+      const schema = InstanceValidator.object(properties[name]);
+      if (name === JsonSchema.atContext || name === '_annotations' || schema === null) continue;
+      if (!InstanceValidator.conformsTo(schema, value)) {
+        result.addValidationFinding(
+          ValidationPolicy.finding('valueShape', path.add(name).toPointer(), 'The template does not admit this value here.'),
+        );
+      }
+    }
+  }
+
+  /**
+   * Whether a value meets the schema it is held to: its `enum`, `type`,
+   * `minLength` and `format`, and for an object its `properties`, `required`
+   * and `additionalProperties`. Enough of JSON Schema for a `@context` entry
+   * and for the keys of the instance's own.
    */
   private static conformsTo(schema: JsonNode, value: unknown): boolean {
     if (Array.isArray(schema.enum) && !schema.enum.some((option) => JSON.stringify(option) === JSON.stringify(value))) return false;
     const types: unknown[] | null = schema.type === undefined ? null : Array.isArray(schema.type) ? schema.type : [schema.type];
     if (types !== null && !types.some((type) => InstanceValidator.isOfType(type, value))) return false;
+    if (typeof value === 'string' && typeof schema.minLength === 'number' && [...value].length < schema.minLength) return false;
     if (typeof value === 'string' && schema.format === 'uri' && !IdentifierPolicy.isValid(value)) return false;
+    if (typeof value === 'string' && schema.format === 'date-time' && !TimestampPolicy.matchesFormat(value)) return false;
     const node = InstanceValidator.object(value);
     if (node === null) return true;
     const properties = InstanceValidator.object(schema.properties) ?? JsonNode.getEmpty();
@@ -472,7 +527,10 @@ export class InstanceValidator {
          * requires — so it is judged as the empty container it is, which names
          * them individually rather than reporting one opaque error.
          */
-        InstanceValidator.validateContainer(new InstanceDataContainer(), child, path, result, stored, options);
+        const empty = new InstanceDataContainer();
+        // As stored, the element's own object held nothing, its @context and @id included.
+        StoredForm.recordMembers(empty, {});
+        InstanceValidator.validateContainer(empty, child, path, result, stored, options);
       } else {
         result.addBlueprintComparisonError(
           new ComparisonError(LOCATION, ComparisonErrorType.VALUE_MISMATCH, path, 'an element', 'a field value'),

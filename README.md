@@ -276,6 +276,17 @@ passes `{ asWritten: true }` as a fourth argument. Each child then maps to the t
 IRI, the root carries the standard terms, and a null optional property is left out, as the write
 does. A term the template does not declare is still judged, since the write keeps it.
 
+An editor's save leaves the instance's identity, its provenance and each element occurrence's `@id`
+to the host and the server, which write them before judging the instance, so neither of those two
+ways asks them of it. A caller asking whether the server would store a document exactly as it
+stands, as a verbatim write stores it, passes `{ verbatim: true }`. Each container's own keys are
+then held to the stored template too: its `@context` and `@id` and, at the root, the template,
+name and provenance must be there where the template requires them and take values it admits. A
+provenance timestamp must match the `date-time` format as the server's validator checks it,
+`TimestampPolicy.matchesFormat`, and be readable by the model, `TimestampPolicy.canonical`. The
+format admits some values the model refuses, such as the 30th of February, and the model reads
+some the format refuses, such as a time without seconds.
+
 `TemplateValueValidator.validate(templateOrElementOrField)` checks definition/default consistency
 without changing the model. `validateSource(rawDefinition)` supports retained imported definitions
 after structural parsing; it does not replace the structural reader. Inconsistent defaults block

@@ -12,6 +12,7 @@
 export class StoredForm {
   private static readonly nulls = new WeakMap<object, readonly string[]>();
   private static readonly contextTerms = new WeakMap<object, { [key: string]: unknown }>();
+  private static readonly members = new WeakMap<object, { [key: string]: unknown }>();
 
   private constructor() {}
 
@@ -32,5 +33,19 @@ export class StoredForm {
   /** Null for a container the reader did not build from a document. */
   static contextTermsOf(container: object): { [key: string]: unknown } | null {
     return StoredForm.contextTerms.get(container) ?? null;
+  }
+
+  /**
+   * The keys a container's own object held besides its children, as stored:
+   * its `@context` and `@id` and, at the root, the template, name and
+   * provenance. The model keeps a missing identifier and a null one alike.
+   */
+  static recordMembers(container: object, members: { [key: string]: unknown }): void {
+    StoredForm.members.set(container, members);
+  }
+
+  /** Null for a container the reader did not build from a document. */
+  static membersOf(container: object): { [key: string]: unknown } | null {
+    return StoredForm.members.get(container) ?? null;
   }
 }

@@ -1,7 +1,14 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
-import { InstanceValidator, JsonNode, JsonSourcePolicy, JsonTemplateInstanceReader, JsonTemplateReader } from '../src';
+import {
+  InstanceValidationOptions,
+  InstanceValidator,
+  JsonNode,
+  JsonSourcePolicy,
+  JsonTemplateInstanceReader,
+  JsonTemplateReader,
+} from '../src';
 
 // The Java validator's verdict on every corpus instance, recorded by cedar-development's
 // ops/cedar_corpus_instance_verdicts.py from cedar-model-validation-library. The server applies that
@@ -14,7 +21,8 @@ const corpus = JSON.parse(bytes.toString()) as {
     id: string;
     instance: string;
     template: string;
-    patch?: { instance?: Operation[]; template?: Operation[] };
+    patch?: { instance?: Operation[]; template?: Operation[]; stored?: Operation[] };
+    completion?: Operation[];
     javaValid: boolean;
   }[];
 };
@@ -55,13 +63,10 @@ const OPEN_DEFECTS: Record<string, string> = {};
 
 // The editor reads a stored template with the FEBRUARY_2024 behavior, and an instance with the strict
 // reader, falling back to FEBRUARY_2024 where the strict reader refuses it, and it judges the instance
-// against the stored template as the server does. A case with a `patch` is a corpus case changed into a
-// probe shape the corpus does not hold. An instance neither reader accepts cannot be opened, so it
-// cannot be saved either.
-test.each(corpus.cases)('$id: Save follows the Java verdict', ({ id, instance, template, patch, javaValid }) => {
-  const stored = patched(source(template), patch?.template);
-  const model = JsonTemplateReader.getFebruary2024().readFromObject(stored).template;
-  const document = (): JsonNode => patched(source(instance), patch?.instance);
+// against the stored template as the server does. An instance neither reader accepts cannot be opened,
+// so it cannot be saved either.
+function canSave(document: () => JsonNode, template: JsonNode, options: InstanceValidationOptions = {}): boolean {
+  const model = JsonTemplateReader.getFebruary2024().readFromObject(template).template;
   const read = (() => {
     try {
       const strict = JsonTemplateInstanceReader.getStrict().readFromObject(document());
@@ -70,8 +75,25 @@ test.each(corpus.cases)('$id: Save follows the Java verdict', ({ id, instance, t
       return null;
     }
   })();
-  const canSave = read !== null && InstanceValidator.validateReport(read.instance, model, stored).canSave;
-  expect(canSave).toBe(id in OPEN_DEFECTS ? !javaValid : javaValid);
+  return read !== null && InstanceValidator.validateReport(read.instance, model, template, options).canSave;
+}
+
+// Java judged each instance as the server stores it from an editor's save, which supplies the identity,
+// provenance and element-occurrence identifiers an editor's document lacks. So the instance as the
+// editor holds it is judged as the editor's save is, leaving those to the server, and the completed
+// document is judged as a verbatim write would store it. A case with a `patch` is a corpus case changed
+// into a probe shape the corpus does not hold; a stored probe changes the completed document, the shape
+// only a verbatim write can store, and is judged verbatim alone.
+const saved = corpus.cases.filter((c) => c.patch?.stored === undefined);
+test.each(saved)('$id: Save follows the Java verdict', ({ id, instance, template, patch, javaValid }) => {
+  const stored = patched(source(template), patch?.template);
+  expect(canSave(() => patched(source(instance), patch?.instance), stored)).toBe(id in OPEN_DEFECTS ? !javaValid : javaValid);
+});
+
+test.each(corpus.cases)('$id: a verbatim write follows the Java verdict', ({ id, instance, template, patch, completion, javaValid }) => {
+  const stored = patched(source(template), patch?.template);
+  const document = (): JsonNode => patched(patched(patched(source(instance), patch?.instance), completion), patch?.stored);
+  expect(canSave(document, stored, { verbatim: true })).toBe(id in OPEN_DEFECTS ? !javaValid : javaValid);
 });
 
 test('lists only cases the corpus holds', () => {

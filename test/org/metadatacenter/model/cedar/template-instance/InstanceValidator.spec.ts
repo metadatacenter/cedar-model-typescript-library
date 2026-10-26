@@ -604,6 +604,20 @@ describe("an instance's own @type and annotations", () => {
     expect(canSave(annotated({ '': { '@value': 'text' } }), { asWritten: true })).toBe(false);
   });
 
+  it('reads only an absolute class and annotation IRI, and only a string literal', () => {
+    expect(() => read({ ...complete(), '@type': 'Probe' })).toThrow();
+    expect(() => read(annotated({ [CLASS]: { '@id': 'Probe' } }))).toThrow();
+    for (const literal of [5, true, null]) expect(() => read(annotated({ [CLASS]: { '@value': literal } }))).toThrow();
+  });
+
+  it('refuses a relative class a model holds, as the writer would write it', () => {
+    const instance = read(complete());
+    instance.dataContainer.types = ['Probe'];
+    expect(InstanceValidator.validateReport(instance, template, stored(), { asWritten: true }).canSave).toBe(false);
+    instance.dataContainer.types = [CLASS];
+    expect(InstanceValidator.validateReport(instance, template, stored(), { asWritten: true }).canSave).toBe(true);
+  });
+
   it('keeps the classes through a write', () => {
     const element = { ...complete()._addr, '@type': CLASS };
     const written = CedarWriters.json()

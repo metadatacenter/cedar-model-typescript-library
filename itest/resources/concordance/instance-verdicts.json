@@ -560,8 +560,10 @@
      "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
     }
    ],
-   "javaValid": true,
-   "javaErrors": []
+   "javaValid": false,
+   "javaErrors": [
+    "An annotation's @value must be a string"
+   ]
   },
   {
    "id": "cee-suite/008#annotation-boolean",
@@ -692,8 +694,10 @@
      "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
     }
    ],
-   "javaValid": true,
-   "javaErrors": []
+   "javaValid": false,
+   "javaErrors": [
+    "An annotation's @value must be a string"
+   ]
   },
   {
    "id": "cee-suite/008#annotation-null-value",
@@ -824,8 +828,10 @@
      "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
     }
    ],
-   "javaValid": true,
-   "javaErrors": []
+   "javaValid": false,
+   "javaErrors": [
+    "An annotation's @value must be a string"
+   ]
   },
   {
    "id": "cee-suite/008#annotation-null-iri",
@@ -1364,8 +1370,8 @@
    ],
    "javaValid": false,
    "javaErrors": [
-    "object instance has properties which are not allowed by the schema: ['rdfs:label']",
     "object instance has properties which are not allowed by the schema: ['@id']",
+    "object instance has properties which are not allowed by the schema: ['rdfs:label']",
     "object instance has properties which are not allowed by the schema: ['rdfs:label']"
    ]
   },
@@ -1498,8 +1504,10 @@
      "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
     }
    ],
-   "javaValid": true,
-   "javaErrors": []
+   "javaValid": false,
+   "javaErrors": [
+    "An annotation's @id must be an absolute IRI"
+   ]
   },
   {
    "id": "cee-suite/008#annotation-blank-key",
@@ -2118,8 +2126,8 @@
    ],
    "javaValid": false,
    "javaErrors": [
-    "object has missing required properties (['@value'])",
-    "object instance has properties which are not allowed by the schema: ['https://example.org/properties/Probe']"
+    "object instance has properties which are not allowed by the schema: ['https://example.org/properties/Probe']",
+    "object has missing required properties (['@value'])"
    ]
   },
   {
@@ -2387,8 +2395,8 @@
    ],
    "javaValid": false,
    "javaErrors": [
-    "/@type: must be valid to one and only one schema, but 0 are valid",
     "/@type: must have at least 1 items but found 0",
+    "/@type: must be valid to one and only one schema, but 0 are valid",
     "/@type: array found, string expected"
    ]
   },
@@ -2482,9 +2490,9 @@
    ],
    "javaValid": false,
    "javaErrors": [
+    "/@type: must have only unique items in the array",
     "/@type: must be valid to one and only one schema, but 0 are valid",
-    "/@type: array found, string expected",
-    "/@type: must have only unique items in the array"
+    "/@type: array found, string expected"
    ]
   },
   {
@@ -2572,8 +2580,10 @@
      "value": "https://repo.metadatacenter.org/template-instances/00000000-0000-4000-8000-000000000001"
     }
    ],
-   "javaValid": true,
-   "javaErrors": []
+   "javaValid": false,
+   "javaErrors": [
+    "@type must be an absolute IRI"
+   ]
   },
   {
    "id": "cee-suite/008#type-number",
@@ -2663,8 +2673,8 @@
    "javaValid": false,
    "javaErrors": [
     "/@type: integer found, string expected",
-    "/@type: must be valid to one and only one schema, but 0 are valid",
-    "/@type: integer found, array expected"
+    "/@type: integer found, array expected",
+    "/@type: must be valid to one and only one schema, but 0 are valid"
    ]
   },
   {
@@ -2754,9 +2764,9 @@
    ],
    "javaValid": false,
    "javaErrors": [
-    "/@type: null found, array expected",
+    "/@type: null found, string expected",
     "/@type: must be valid to one and only one schema, but 0 are valid",
-    "/@type: null found, string expected"
+    "/@type: null found, array expected"
    ]
   },
   {
@@ -5443,8 +5453,8 @@
    "template": "cee-suite/016/template-016.json",
    "javaValid": false,
    "javaErrors": [
-    "object has missing required properties (['Phone field'])",
-    "/@context/Phone Field: does not have a value in the enumeration ['https://schema.metadatacenter.org/properties/6983fe2c-d004-4144-86ea-7132026364bc']"
+    "/@context/Phone Field: does not have a value in the enumeration ['https://schema.metadatacenter.org/properties/6983fe2c-d004-4144-86ea-7132026364bc']",
+    "object has missing required properties (['Phone field'])"
    ]
   },
   {
@@ -8298,8 +8308,8 @@
    "javaValid": false,
    "javaErrors": [
     "object instance has properties which are not allowed by the schema: ['@value']",
-    "object instance has properties which are not allowed by the schema: ['@value']",
-    "/Element 1/Element 2/0/Element 3/1/Sample Attribute Value/0: object found, string expected"
+    "/Element 1/Element 2/0/Element 3/1/Sample Attribute Value/0: object found, string expected",
+    "/Element 1/Element 2/0/Element 3/2/Sample Attribute Value/0: object found, string expected"
    ]
   },
   {
@@ -8856,8 +8866,8 @@
    "javaValid": false,
    "javaErrors": [
     "object has missing required properties (['Element1'])",
-    "object has missing required properties (['Element'])",
-    "object instance has properties which are not allowed by the schema: ['Element as Multi']"
+    "object instance has properties which are not allowed by the schema: ['Element as Multi']",
+    "object instance has properties which are not allowed by the schema: ['Element as Single']"
    ]
   }
  ]

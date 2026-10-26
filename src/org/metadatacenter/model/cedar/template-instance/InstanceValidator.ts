@@ -298,6 +298,33 @@ export class InstanceValidator {
   }
 
   /**
+   * What the model cannot read in a `@type` or `_annotations`, wherever the schema would admit it: each
+   * class and each annotation's IRI is an absolute IRI, and a literal annotation is a string.
+   */
+  private static unreadableOwnTerms(name: string, value: unknown): Array<[string[], string]> {
+    const found: Array<[string[], string]> = [];
+    if (name === JsonSchema.atType) {
+      (Array.isArray(value) ? value : [value]).forEach((type, index) => {
+        if (typeof type === 'string' && !IdentifierPolicy.isValid(type)) {
+          found.push([Array.isArray(value) ? [String(index)] : [], 'A class must be an absolute IRI.']);
+        }
+      });
+    }
+    const annotations = name === CedarModel.annotations ? InstanceValidator.object(value) : null;
+    for (const [key, annotation] of Object.entries(annotations ?? {})) {
+      const node = InstanceValidator.object(annotation);
+      if (node === null) continue;
+      if (typeof node[JsonSchema.atId] === 'string' && !IdentifierPolicy.isValid(node[JsonSchema.atId] as string)) {
+        found.push([[key, JsonSchema.atId], "An annotation's @id must be an absolute IRI."]);
+      }
+      if (Object.hasOwn(node, JsonSchema.atValue) && typeof node[JsonSchema.atValue] !== 'string') {
+        found.push([[key, JsonSchema.atValue], "An annotation's @value must be a string."]);
+      }
+    }
+    return found;
+  }
+
+  /**
    * A key the instance holds of its own, its `@type` or its `_annotations`, against the stored
    * template. Neither is the host's or the server's to write, so every save writes it as the instance
    * holds it. A key the template declares must take a value its schema admits, and one it does not
@@ -310,7 +337,11 @@ export class InstanceValidator {
     path: JsonPath,
     result: JsonArtifactParsingResult,
   ): void {
-    if (value === undefined || stored === null) return;
+    if (value === undefined) return;
+    for (const [at, message] of InstanceValidator.unreadableOwnTerms(name, value)) {
+      result.addValidationFinding(ValidationPolicy.finding('valueShape', path.add(name, ...at).toPointer(), message));
+    }
+    if (stored === null) return;
     const schema = InstanceValidator.object(InstanceValidator.object(stored.properties)?.[name]);
     if (schema !== null) {
       if (!InstanceValidator.conformsTo(schema, value)) {

@@ -1,3 +1,4 @@
+import { IdentifierPolicy } from '../../../policy/IdentifierPolicy';
 import { TextPolicy } from '../../../policy/TextPolicy';
 import { SchemaExtensions } from '../../../model/cedar/SchemaExtensions';
 import { AbstractArtifact } from '../../../model/cedar/AbstractArtifact';
@@ -306,6 +307,7 @@ export abstract class YamlAbstractArtifactReader {
         annotations.add(new AnnotationAtValue(name, annotationNode[YamlKeys.value] as string));
       } else if (Object.hasOwn(annotationNode, YamlKeys.id)) {
         YamlAbstractArtifactReader.refuseEmptyIdentifier(annotationNode, YamlKeys.id, `${path}/${name}/${YamlKeys.id}`.slice(1));
+        IdentifierPolicy.assertIdentifier(annotationNode[YamlKeys.id] as string, `${path}/${name}/${YamlKeys.id}`);
         annotations.add(new AnnotationAtId(name, annotationNode[YamlKeys.id] as string));
       } else {
         throw new Error(`Annotation must have either a value or id at ${path}/${name}`);

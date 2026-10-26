@@ -291,7 +291,9 @@ An instance's `@type`, at the root and on each element occurrence, and its `_ann
 own, so every save writes them as the instance holds them. The model keeps `@type`, one class as a
 string and several as a list, as the Java model does, and every mode holds both keys to the stored
 template: as stored, or with `asWritten` as the writer writes them. A `uri` format there is the
-server's, `IdentifierPolicy.matchesUriFormat`, which admits a relative reference.
+server's, `IdentifierPolicy.matchesUriFormat`, which admits a relative reference. The model asks
+more, as Java's does: each class and each annotation's IRI is an absolute IRI, and a literal
+annotation is a string, whatever the template's schema admits.
 
 `TemplateValueValidator.validate(templateOrElementOrField)` checks definition/default consistency
 without changing the model. `validateSource(rawDefinition)` supports retained imported definitions

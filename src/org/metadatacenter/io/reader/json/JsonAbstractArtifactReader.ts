@@ -70,7 +70,8 @@ export abstract class JsonAbstractArtifactReader {
       if (typeof annotationsNode !== 'object' || Array.isArray(annotationsNode)) {
         throw new Error('The annotations must be an object at /_annotations');
       }
-      // As Java's model reads them: a value stating @value is a literal, and one stating only @id an IRI.
+      // As Java's model reads them: a value stating @value is a literal, which is a string, and one
+      // stating only @id an IRI, which is absolute.
       Object.keys(annotationsNode).forEach((key) => {
         const raw = annotationsNode[key];
         if (raw === null || typeof raw !== 'object' || Array.isArray(raw)) {
@@ -78,12 +79,13 @@ export abstract class JsonAbstractArtifactReader {
         }
         const annotationNode: JsonNode = ReaderUtil.getNode(annotationsNode, key);
         if (Object.hasOwn(annotationNode, JsonSchema.atValue)) {
-          const atValue: string | null = ReaderUtil.getString(annotationNode, JsonSchema.atValue);
-          if (atValue === null) throw new Error(`The @value of an annotation must not be null at /_annotations/${key}`);
+          const atValue: unknown = annotationNode[JsonSchema.atValue];
+          if (typeof atValue !== 'string') throw new Error(`The @value of an annotation must be a string at /_annotations/${key}`);
           annotations.add(new AnnotationAtValue(key, atValue));
         } else if (Object.hasOwn(annotationNode, JsonSchema.atId)) {
           const atId: unknown = annotationNode[JsonSchema.atId];
           if (typeof atId !== 'string') throw new Error(`The @id of an annotation must be an IRI at /_annotations/${key}`);
+          ReaderUtil.assertIdentifier(atId, `/_annotations/${key}/@id`);
           annotations.add(new AnnotationAtId(key, atId));
         } else {
           throw new Error(`Value of annotation must contain an @id or @value at /_annotations/${key}`);

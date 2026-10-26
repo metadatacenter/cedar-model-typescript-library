@@ -327,7 +327,7 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
 
   /**
    * The classes a container states as its `@type`, as Java's model reads them: a string is one, a list
-   * is several in order, and null or no key is none. Each must be an IRI.
+   * is several in order, and null or no key is none. Each must be an absolute IRI.
    */
   private static readTypes(sourceObject: JsonNode): string[] {
     const stated: unknown = Object.hasOwn(sourceObject, JsonSchema.atType) ? sourceObject[JsonSchema.atType] : null;
@@ -335,7 +335,7 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     const types = Array.isArray(stated) ? stated : [stated];
     return types.map((type, index) => {
       if (typeof type !== 'string') throw new Error(`Invalid @type at index ${index}: expected an IRI.`);
-      ReaderUtil.assertIri(type, JsonSchema.atType);
+      ReaderUtil.assertIdentifier(type, JsonSchema.atType);
       return type;
     });
   }

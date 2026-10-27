@@ -88,23 +88,14 @@ export abstract class JsonTemplateFieldWriterInternal extends JsonAbstractArtifa
   protected expandTypeNode(_typeNode: JsonNode, _field: TemplateField): void {}
 
   protected expandValueConstraintsNode(vcNode: JsonNode, field: TemplateField, childInfo: AbstractChildDeploymentInfo): void {
+    // Whether a field is required or recommended is what its parent says of it, in the deployment
+    // info. A field written on its own has no parent, so its deployment info says neither, and the
+    // requiredValue the meta-schema requires is false, as in Java's writer.
     if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
       vcNode[CedarModel.requiredValue] = childInfo.requiredValue;
-    }
-    // A field written on its own carries the requirement itself: there is no container to state
-    // it, and the deployment info a standalone write passes says nothing, so the branch above
-    // reported every such field as optional however it was stored. A child is unaffected, since
-    // reading a container leaves the field's own flag off.
-    if (!vcNode[CedarModel.requiredValue] && field.requiredValue) {
-      vcNode[CedarModel.requiredValue] = true;
-    }
-    if (childInfo instanceof AbstractDynamicChildDeploymentInfo) {
       if (childInfo.recommendedValue) {
         vcNode[CedarModel.ValueConstraints.recommendedValue] = childInfo.recommendedValue;
       }
-    }
-    if (!vcNode[CedarModel.ValueConstraints.recommendedValue] && field.recommendedValue) {
-      vcNode[CedarModel.ValueConstraints.recommendedValue] = true;
     }
   }
 

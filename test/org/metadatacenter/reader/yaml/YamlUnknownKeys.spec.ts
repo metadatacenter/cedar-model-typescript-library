@@ -97,12 +97,31 @@ describe('a YAML key the form does not have', () => {
     );
   });
 
-  test("is refused where a standalone field states it, and a field's own spelling of its settings reads", () => {
+  test("is refused where a standalone field states it, and a field's own settings read", () => {
     const field = (body: string) =>
       YamlTemplateFieldReader.getStrict().readFromString(`type: text-field\nname: "F"\nmodelVersion: 1.6.0\n${body}`).field;
-    expect(field('hidden: true\nconfiguration:\n  required: true\n').requiredValue).toBe(true);
+    expect(field('hidden: true\n').hidden).toBe(true);
     expect(() => field('hiden: true\n')).toThrow(refusal('hiden', '/hiden'));
   });
+
+  // A configuration is what a parent says of its child, so a field written on its own has none.
+  test.each(['configuration:\n  required: true\n', 'required: true\n', 'recommended: true\n'])(
+    'is refused where a field written on its own states a requirement, %j',
+    (body: string) => {
+      const field = () => YamlTemplateFieldReader.getStrict().readFromString(`type: text-field\nname: "F"\nmodelVersion: 1.6.0\n${body}`);
+      const key = body.slice(0, body.indexOf(':'));
+      expect(field).toThrow(refusal(key, `/${key}`));
+    },
+  );
+
+  test.each(['multiple: true', 'minItems: 1', 'maxItems: 4'])(
+    'is refused where a field written on its own states a bound, %s, which only a parent states',
+    (bound: string) => {
+      const field = (body: string) =>
+        YamlTemplateFieldReader.getStrict().readFromString(`type: text-field\nname: "F"\nmodelVersion: 1.6.0\n${body}`).field;
+      expect(() => field(`configuration:\n  ${bound}\n`)).toThrow(refusal('configuration', '/configuration'));
+    },
+  );
 
   test('is refused where a child of another model version states its version', () => {
     expect(() => template(TEMPLATE.replace(/(key: "Title"[\s\S]*?modelVersion: )\S+/, '$11.0.0'))).toThrow(

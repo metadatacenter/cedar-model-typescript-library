@@ -110,49 +110,31 @@ export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
       // A child's `id` may be a temporary one the server replaces on a write.
       if (path.getLastComponent() === null) {
         ReaderUtil.getIdentifier(fieldSourceObject, YamlKeys.id);
-        // The Java library's model lets a field written on its own repeat, and its writer states the
-        // bounds in the field's configuration. This library's field has no multiplicity of its own,
-        // so it reads past them, as the Java library reads them, rather than refuse what it writes.
-        const configuration: JsonNode = ReaderUtil.getNode(fieldSourceObject, YamlKeys.configuration);
-        [YamlKeys.multiple, YamlKeys.minItems, YamlKeys.maxItems].forEach((key) => YamlKeyTracking.use(configuration, key));
       }
-      this.readNonReportableAttributes(field, fieldSourceObject);
-      // A child's value recommendation is its parent's to state, in the child's configuration, and the
-      // container reads it there. A field written on its own may state it in either place.
-      if (path.getLastComponent() === null && (field instanceof ControlledTermFieldImpl || field instanceof TextFieldImpl)) {
-        const configuration: JsonNode = ReaderUtil.getNode(fieldSourceObject, YamlKeys.configuration);
-        field.valueRecommendationEnabled = YamlTemplateFieldReader.readFlag(configuration, fieldSourceObject, YamlKeys.valueRecommendation);
-      }
+      this.readNonReportableAttributes(field, fieldSourceObject, path.getLastComponent() === null);
       applySchemaReaderDefaults(field, fieldSourceObject, path, 'yaml');
       this.readAnnotations(field, fieldSourceObject, parsingResult, path);
       return new YamlTemplateFieldReaderResult(field, parsingResult, sourceObject);
     });
   }
 
-  protected readNonReportableAttributes(field: TemplateField, fieldSourceObject: JsonNode) {
+  protected readNonReportableAttributes(field: TemplateField, fieldSourceObject: JsonNode, isDocumentRoot: boolean = false) {
     super.readNonReportableAttributes(field, fieldSourceObject);
     // Read field-specific nodes
     field.skos_prefLabel = ReaderUtil.getString(fieldSourceObject, YamlKeys.prefLabel);
     field.skos_altLabel = YamlTemplateFieldReader.readAltLabels(fieldSourceObject);
-    // A standalone field keeps value recommendation on itself, and the YAML writer states it at the
-    // document's top level. Only the container reader read the key, and only out of a child's
-    // configuration block, so a field written on its own came back with the setting off: the one
-    // thing this library wrote and could not read. A child is unaffected, since its setting travels
-    // in the deployment info the container reader fills. The guard is the writer's, so the two stay
-    // symmetric; the Java library reads the field's own node and a child's configuration alike.
-    // Whether a field written on its own is hidden, and whether it demands a value. The renderer
-    // states the first at the document's top level and the second under `configuration`, and a
-    // hand-written document may put either in either place, so both are accepted from both — as
-    // the Java library's reader accepts them. Reading neither left a standalone field shown and
-    // optional whatever it was stored as.
-    const configuration: JsonNode = ReaderUtil.getNode(fieldSourceObject, YamlKeys.configuration);
+    // A field's own presentation settings sit among its keys, and a child's may also sit in its
+    // configuration, as in Java's reader. A configuration is what a parent says of its child,
+    // whether it is required or recommended among it, so a field written on its own has none and
+    // is neither, and a document stating one for it is refused.
+    const configuration: JsonNode = isDocumentRoot ? JsonNode.getEmpty() : ReaderUtil.getNode(fieldSourceObject, YamlKeys.configuration);
     if (field instanceof ControlledTermFieldImpl || field instanceof TextFieldImpl) {
       field.valueRecommendationEnabled = ReaderUtil.getBoolean(fieldSourceObject, YamlKeys.valueRecommendation);
     }
     field.hidden = YamlTemplateFieldReader.readFlag(configuration, fieldSourceObject, YamlKeys.hidden);
-    field.requiredValue = YamlTemplateFieldReader.readFlag(configuration, fieldSourceObject, YamlKeys.required);
-    field.recommendedValue = YamlTemplateFieldReader.readFlag(configuration, fieldSourceObject, YamlKeys.recommended);
     field.continuePreviousLine = YamlTemplateFieldReader.readFlag(configuration, fieldSourceObject, YamlKeys.continuePreviousLine);
+    field.requiredValue = !isDocumentRoot && YamlTemplateFieldReader.readFlag(configuration, fieldSourceObject, YamlKeys.required);
+    field.recommendedValue = !isDocumentRoot && YamlTemplateFieldReader.readFlag(configuration, fieldSourceObject, YamlKeys.recommended);
   }
 
   /**

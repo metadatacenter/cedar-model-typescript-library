@@ -109,11 +109,34 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
   }
 
   public readFromObject(fieldSourceObject: JsonNode): JsonTemplateFieldReaderResult {
-    // The canonical standalone attribute-value representation has the same array envelope as
-    // a deployed group. Continue to accept the historical unwrapped field definition too.
-    const items = ReaderUtil.getNode(fieldSourceObject, JsonSchema.items);
-    if (fieldSourceObject.type === 'array' && ReaderUtil.getNode(items, CedarModel.ui)[CedarModel.inputType] === 'attribute-value') {
+    // Whether a field repeats, and how often, is what a template or element says of its child, so a
+    // field written on its own has neither. The one array a standalone field document may be is the
+    // meta-schema's form of an attribute-value field, a list of attribute names by nature, and the
+    // bounds that array states are no field's. Any other array is refused, as Java's reader and the
+    // validator refuse it. The historical unwrapped attribute-value definition is still accepted.
+    if (fieldSourceObject.type === 'array') {
+      const items = ReaderUtil.getNode(fieldSourceObject, JsonSchema.items);
+      if (ReaderUtil.getNode(items, CedarModel.ui)[CedarModel.inputType] !== 'attribute-value') {
+        throw new Error(
+          'A field written on its own does not repeat, so it is an object, not an array; only a template or an element repeats a field, at /type.',
+        );
+      }
       fieldSourceObject = items;
+    }
+    // Whether a field is required or recommended is likewise what a parent says of its child. The
+    // meta-schema requires every field to state requiredValue, so a field on its own states false,
+    // as Java's reader requires. The compatibility reader reads past a stored requirement, which
+    // fields written before this held, and keeps none.
+    const valueConstraints = ReaderUtil.getNode(fieldSourceObject, CedarModel.valueConstraints);
+    for (const [key, word] of [
+      [CedarModel.requiredValue, 'required'],
+      [CedarModel.ValueConstraints.recommendedValue, 'recommended'],
+    ] as const) {
+      if (valueConstraints[key] === true && !this.lenient) {
+        throw new Error(
+          `A field written on its own is not ${word}; only a template or an element requires or recommends a field, at /${CedarModel.valueConstraints}/${key}.`,
+        );
+      }
     }
     const childInfo: AbstractChildDeploymentInfo = ChildDeploymentInfo.standalone();
     const path: JsonPath = new JsonPath();
@@ -144,10 +167,9 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
       const ui = ReaderUtil.getNode(fieldSourceObject, CedarModel.ui);
       field.hidden = ReaderUtil.getBoolean(ui, CedarModel.Ui.hidden);
       field.continuePreviousLine = childInfo.continuePreviousLine;
-      if (field.cedarFieldType.recordsRequirement) {
-        field.requiredValue = childInfo.requiredValue;
-        field.recommendedValue = childInfo.recommendedValue;
-      }
+      // A field written on its own is neither required nor recommended.
+      field.requiredValue = false;
+      field.recommendedValue = false;
     }
     // A child's `@id` may be a temporary one the server replaces on a write.
     if (childInfo instanceof ChildDeploymentInfo && childInfo.isStandalone()) {

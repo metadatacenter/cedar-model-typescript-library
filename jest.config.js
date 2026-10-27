@@ -6,7 +6,8 @@ if (!Number.isInteger(workers) || workers < 1 || workers > 16) {
 }
 
 module.exports = {
-  preset: 'ts-jest',
+  // TypeScript includes only the global type packages a configuration names. Only the test configuration names Jest's.
+  transform: { '^.+\\.tsx?$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.test.json' }] },
   maxWorkers: workers,
   testEnvironment: 'node',
   roots: ['<rootDir>/src', '<rootDir>/test', '<rootDir>/itest'],

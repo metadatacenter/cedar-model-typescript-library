@@ -52,9 +52,6 @@ children:
     label: "Term"
   _unknown:
     label: "label without an id"
-_ignoredPrimitive: "not an attribute-value field"
-_ignoredList:
-  - "not an attribute-value field"
 _attributes:
   first:
     value: "one"
@@ -163,11 +160,16 @@ describe('YAML instance edge cases', () => {
     expect((values._unknown as InstanceDataLabelAtom).label).toBe('label without an id');
   });
 
-  test('reads attribute-value fields while ignoring primitives and lists', () => {
+  test('reads attribute-value fields, and refuses a scalar or a list beside them, as Java does', () => {
     const values = reader.readFromString(edgeCaseYaml).instance.dataContainer.values;
     expect(values._attributes).toBeInstanceOf(InstanceDataAttributeValueField);
-    expect(Object.hasOwn(values, '_ignoredPrimitive')).toBe(false);
-    expect(Object.hasOwn(values, '_ignoredList')).toBe(false);
+    // Only a mapping there can be an attribute-value field, so anything else is no key of the form.
+    expect(() => reader.readFromString(`${edgeCaseYaml}_ignoredPrimitive: "not an attribute-value field"\n`)).toThrow(
+      'Unknown key "_ignoredPrimitive" at /_ignoredPrimitive',
+    );
+    expect(() => reader.readFromString(`${edgeCaseYaml}_ignoredList:\n  - "not an attribute-value field"\n`)).toThrow(
+      'Unknown key "_ignoredList" at /_ignoredList',
+    );
 
     const nested = values._attributes as InstanceDataAttributeValueField;
     expect((nested.values.first as InstanceDataStringAtom).value).toBe('one');

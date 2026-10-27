@@ -17,6 +17,7 @@ import { AnnotationAtId } from '../../../model/cedar/annotation/AnnotationAtId';
 import { AnnotationAtValue } from '../../../model/cedar/annotation/AnnotationAtValue';
 import { YamlReaderBehavior } from '../../../behavior/YamlReaderBehavior';
 import { ReaderUtil } from '../ReaderUtil';
+import { YamlKeyTracking } from './YamlKeyTracking';
 import { YamlKeys } from '../../../model/cedar/constants/YamlKeys';
 import { YamlArtifactParsingResult } from '../../../model/cedar/util/compare/YamlArtifactParsingResult';
 import { Language } from '../../../model/cedar/types/wrapped-types/Language';
@@ -88,11 +89,6 @@ export abstract class YamlAbstractArtifactReader {
     container.oslc_modifiedBy = CedarUser.forValue(ReaderUtil.getString(sourceObject, YamlKeys.modifiedBy));
     container.pav_lastUpdatedOn = IsoDate.forValue(ReaderUtil.getString(sourceObject, YamlKeys.modifiedOn));
     const modelVersion: string | null = ReaderUtil.getString(sourceObject, YamlKeys.modelVersion);
-    if (modelVersion === null && !this.isCompact) {
-      throw new Error(
-        `No ${YamlKeys.modelVersion} present. A document without one is the compact form, which a reader has to be asked for.`,
-      );
-    }
     container.schema_schemaVersion = SchemaVersion.forValue(modelVersion);
     container.pav_version = PavVersion.forValue(ReaderUtil.getString(sourceObject, YamlKeys.version));
     container.bibo_status = BiboStatus.forYamlValue(ReaderUtil.getString(sourceObject, YamlKeys.status));
@@ -153,10 +149,15 @@ export abstract class YamlAbstractArtifactReader {
    * empty values are values, and `SchemaExtensions` holds the block to its own rules.
    */
   protected static refuseNullAndEmptyValues(node: unknown, path: string, isInstance: boolean = false): void {
+    // The walk checks values; it reads no key, so it counts none as used.
+    YamlKeyTracking.untracked(() => YamlAbstractArtifactReader.refuseNullAndEmptyValuesWalk(node, path, isInstance));
+  }
+
+  private static refuseNullAndEmptyValuesWalk(node: unknown, path: string, isInstance: boolean): void {
     if (Array.isArray(node)) {
       node.forEach((entry: unknown, index: number) => {
         YamlAbstractArtifactReader.refuseNullOrEmpty(entry, `${path}[${index}]`);
-        YamlAbstractArtifactReader.refuseNullAndEmptyValues(entry, `${path}[${index}]`, isInstance);
+        YamlAbstractArtifactReader.refuseNullAndEmptyValuesWalk(entry, `${path}[${index}]`, isInstance);
       });
     } else if (YamlAbstractArtifactReader.isMapping(node)) {
       const type = node[YamlKeys.type];
@@ -170,7 +171,7 @@ export abstract class YamlAbstractArtifactReader {
           continue;
         }
         YamlAbstractArtifactReader.refuseNullOrEmpty(value, `${path}/${key}`);
-        YamlAbstractArtifactReader.refuseNullAndEmptyValues(value, `${path}/${key}`, isInstance);
+        YamlAbstractArtifactReader.refuseNullAndEmptyValuesWalk(value, `${path}/${key}`, isInstance);
       }
     }
   }
@@ -234,12 +235,19 @@ export abstract class YamlAbstractArtifactReader {
     } else if (isRoot && kind === 'element') {
       YamlAbstractArtifactReader.assertType(source, YamlArtifactType.ELEMENT, artifact);
     }
-    // Java's reader checks the model version of the document it is given, and not its children's.
-    if (isRoot && Object.hasOwn(source, YamlKeys.modelVersion)) {
+    // The full form states the document's model version. A writer states each child's too, and a
+    // hand-written child may leave it to the document, as Java's reader allows; any that is stated is
+    // the one this library reads.
+    if (isRoot && !this.isCompact && !Object.hasOwn(source, YamlKeys.modelVersion)) {
+      throw new Error(
+        `No ${YamlKeys.modelVersion} present. A document without one is the compact form, which a reader has to be asked for.`,
+      );
+    }
+    if (Object.hasOwn(source, YamlKeys.modelVersion)) {
       YamlAbstractArtifactReader.assertText(source, YamlKeys.modelVersion, path);
       if (source[YamlKeys.modelVersion] !== SchemaVersionValues.CURRENT) {
         throw new Error(
-          `Invalid ${YamlKeys.modelVersion} "${source[YamlKeys.modelVersion]}" at /${YamlKeys.modelVersion}. This library reads model version "${SchemaVersionValues.CURRENT}".`,
+          `Invalid ${YamlKeys.modelVersion} "${source[YamlKeys.modelVersion]}" at ${path}/${YamlKeys.modelVersion}. This library reads model version "${SchemaVersionValues.CURRENT}".`,
         );
       }
     }
@@ -258,9 +266,9 @@ export abstract class YamlAbstractArtifactReader {
     if (Object.hasOwn(source, YamlKeys.status) && status !== '' && !STATUSES.includes(status as string)) {
       throw new Error(`Invalid ${YamlKeys.status} "${status}" at ${path}/${YamlKeys.status}. A status is one of ${STATUSES.join(', ')}.`);
     }
-    // An alternative label is not empty: Java's reader refuses one that is.
-    const altLabels: unknown = source[YamlKeys.altLabels];
-    if (kind !== 'template' && Array.isArray(altLabels)) {
+    // An alternative label is not empty: Java's reader refuses one that is. A template has none.
+    const altLabels: unknown = kind === 'template' ? undefined : source[YamlKeys.altLabels];
+    if (Array.isArray(altLabels)) {
       const empty = altLabels.indexOf('');
       if (empty >= 0) {
         throw new Error(`Expected a non-empty string at ${path}/${YamlKeys.altLabels}[${empty}].`);

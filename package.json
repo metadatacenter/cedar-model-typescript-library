@@ -1,6 +1,6 @@
 {
   "name": "cedar-model-typescript-library",
-  "version": "1.0.24",
+  "version": "1.0.25",
   "description": "TypeScript models, builders, readers, writers, and validators for CEDAR metadata artifacts",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -68,6 +68,7 @@
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.63.0",
     "@types/jest": "^30.0.0",
+    "@types/node": "^24.19.2",
     "@typescript-eslint/eslint-plugin": "^8.70.0",
     "@typescript-eslint/parser": "^8.70.0",
     "ajv": "8.20.0",
@@ -82,7 +83,7 @@
     "ts-jest": "^29.4.12",
     "ts-loader": "^9.6.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.3",
+    "typescript": "~6.0.3",
     "webpack": "^5.111.0",
     "webpack-cli": "^7.2.3"
   },

@@ -63,7 +63,6 @@ export abstract class YamlTemplateFieldWriterInternal extends YamlAbstractArtifa
       ...this.macroAnnotations(field),
       ...(isDocumentRoot ? this.macroStandaloneFieldFlags(field) : {}),
       ...this.macroValueRecommendation(field),
-      ...(isDocumentRoot ? this.macroStandaloneFieldConfiguration(field) : {}),
     });
   }
 

@@ -41,6 +41,12 @@ export function yamlNumberSpelling(mapping: JsonNode, key: string): { text: stri
   return spelling === null ? null : { text: spelling.text, integer: spelling.integer };
 }
 
+/** Give `to`, a copy of the parsed mapping `from`, the source text of each number and boolean `from` holds. */
+export function carryYamlSpellings(from: object, to: object): void {
+  const recorded = spellings.get(from);
+  if (recorded !== undefined) spellings.set(to, recorded);
+}
+
 /** YAML 1.2 core values with exact numbers, literal mapping keys and bounded, acyclic alias expansion. */
 export class YamlSourcePolicy {
   public static parse(source: string): JsonNode {

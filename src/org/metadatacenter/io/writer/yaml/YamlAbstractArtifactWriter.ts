@@ -105,7 +105,10 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
     return skosObject;
   }
 
-  /** Standalone UI flags follow provenance; requirements live in a final configuration block. */
+  /**
+   * Standalone UI flags follow provenance. A configuration is what a parent says of its child, so a
+   * field written on its own has none: no requirement and no bounds.
+   */
   protected macroStandaloneFieldFlags(field: TemplateField): JsonNode {
     const ret: JsonNode = JsonNode.getEmpty();
     if (field.hidden) {
@@ -115,15 +118,6 @@ export abstract class YamlAbstractArtifactWriter extends AbstractArtifactWriter 
       ret[YamlKeys.continuePreviousLine] = true;
     }
     return ret;
-  }
-
-  protected macroStandaloneFieldConfiguration(field: TemplateField): JsonNode {
-    const configuration = JsonNode.getEmpty();
-    if (field.cedarFieldType.recordsRequirement) {
-      if (field.requiredValue) configuration[YamlKeys.required] = true;
-      if (field.recommendedValue) configuration[YamlKeys.recommended] = true;
-    }
-    return JsonNode.hasEntries(configuration) ? { [YamlKeys.configuration]: configuration } : {};
   }
 
   protected macroValueRecommendation(field: TemplateField): JsonNode {

@@ -148,7 +148,7 @@ describe('a standalone field with value recommendation', () => {
  * the Java library because of it. The renderer states `hidden` at the document's top level and
  * `required` under `configuration`, and both placements are accepted from either.
  */
-describe('a standalone field that is hidden or demands a value', () => {
+describe('a standalone field that is hidden, and that cannot demand a value', () => {
   const roundTrip = (yaml: string) => {
     const read = YamlTemplateFieldReader.getStrict().readFromString(yaml);
     const json = JSON.parse(CedarWriters.json().getStrict().getFieldWriterForField(read.field).getAsJsonString(read.field));
@@ -168,15 +168,12 @@ describe('a standalone field that is hidden or demands a value', () => {
     expect(backToYaml).toContain('hidden: true');
   });
 
-  test('comes back demanding a value, and says so again', () => {
-    const { json, backToYaml } = roundTrip(base + 'configuration:\n  required: true\n');
-    expect(json['_valueConstraints'].requiredValue).toBe(true);
-    expect(backToYaml).toContain('required: true');
-  });
-
-  test('accepts either placement, as the Java reader does', () => {
-    expect(roundTrip(base + 'required: true\n').json['_valueConstraints'].requiredValue).toBe(true);
-    expect(roundTrip(base + 'configuration:\n  hidden: true\n').json['_ui'].hidden).toBe(true);
+  // Whether a field demands a value is what its parent says of it, so a field written on its own
+  // states no requirement, and no configuration in which a parent would state one.
+  test('is refused when it states a requirement or a configuration, as the Java reader refuses it', () => {
+    expect(() => roundTrip(base + 'configuration:\n  required: true\n')).toThrow(/Unknown key "configuration" at \/configuration/);
+    expect(() => roundTrip(base + 'required: true\n')).toThrow(/Unknown key "required" at \/required/);
+    expect(() => roundTrip(base + 'configuration:\n  hidden: true\n')).toThrow(/Unknown key "configuration"/);
   });
 
   test('stays shown and optional where the document says neither', () => {

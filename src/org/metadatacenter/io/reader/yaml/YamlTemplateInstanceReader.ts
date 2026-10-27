@@ -1,4 +1,5 @@
 import { IdentifierPolicy } from '../../../policy/IdentifierPolicy';
+import { YamlKeyTracking } from './YamlKeyTracking';
 import { YamlSourcePolicy, yamlSpelling } from './YamlSourcePolicy';
 import { ExactDecimal } from '../../../policy/NumericPolicy';
 import { ReservedNames } from '../../../model/cedar/ReservedNames';
@@ -76,51 +77,53 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
     return this.readFromObject(instanceObject);
   }
 
-  public readFromObject(instanceSourceObject: JsonNode): YamlTemplateInstanceReaderResult {
-    const parsingResult = new YamlArtifactParsingResult();
-    const instance = TemplateInstance.buildEmptyWithNullValues();
-    const source = instanceSourceObject ?? {};
-    YamlTemplateInstanceReader.refuseNullAndEmptyValues(source, '', true);
-    YamlTemplateInstanceReader.assertType(source, YamlArtifactType.TEMPLATE_INSTANCE, 'A template instance');
+  public readFromObject(sourceObject: JsonNode): YamlTemplateInstanceReaderResult {
+    return YamlKeyTracking.read(sourceObject, '', (instanceSourceObject) => {
+      const parsingResult = new YamlArtifactParsingResult();
+      const instance = TemplateInstance.buildEmptyWithNullValues();
+      const source = instanceSourceObject ?? {};
+      YamlTemplateInstanceReader.refuseNullAndEmptyValues(source, '', true);
+      YamlTemplateInstanceReader.assertType(source, YamlArtifactType.TEMPLATE_INSTANCE, 'A template instance');
 
-    instance.schema_name = YamlTemplateInstanceReader.readName(source, '', 'A template instance');
-    // No description is the empty string, never null.
-    YamlTemplateInstanceReader.assertText(source, YamlKeys.description, '');
-    instance.schema_description = ReaderUtil.getString(source, YamlKeys.description) ?? '';
-    instance.descriptionWasAbsent = ReaderUtil.getString(source, YamlKeys.description) === null;
-    instance.at_id = CedarArtifactId.forValue(ReaderUtil.getIdentifier(source, YamlKeys.id));
-    if (!Object.hasOwn(source, YamlKeys.isBasedOn)) {
-      throw new Error(`No ${YamlKeys.isBasedOn} present. A template instance names the template it is based on, as Java requires.`);
-    }
-    // A compatibility reader takes the legacy empty spelling as absence, and the writer omits the
-    // optional key; a strict one refuses it, as Java does.
-    const lenient = this.behavior.useWarningForKnownIssues();
-    instance.schema_isBasedOn = CedarArtifactId.forValue(ReaderUtil.getArtifactIdentifier(source, YamlKeys.isBasedOn, lenient));
-    instance.pav_derivedFrom = CedarArtifactId.forValue(ReaderUtil.getArtifactIdentifier(source, YamlKeys.derivedFrom, lenient));
-    // The writer emits an instance's provenance and its annotations; both were read by nobody, so
-    // either one was lost by writing what had just been read. Who created and last modified the
-    // instance are IRIs, as in Java's reader, so an empty string or a number is refused.
-    YamlAbstractArtifactReader.refuseEmptyIdentifier(source, YamlKeys.createdBy);
-    YamlAbstractArtifactReader.refuseEmptyIdentifier(source, YamlKeys.modifiedBy);
-    instance.pav_createdBy = CedarUser.forValue(ReaderUtil.getString(source, YamlKeys.createdBy));
-    instance.pav_createdOn = IsoDate.forValue(ReaderUtil.getString(source, YamlKeys.createdOn));
-    instance.oslc_modifiedBy = CedarUser.forValue(ReaderUtil.getString(source, YamlKeys.modifiedBy));
-    instance.pav_lastUpdatedOn = IsoDate.forValue(ReaderUtil.getString(source, YamlKeys.modifiedOn));
-    this.readAnnotations(instance, source, parsingResult, new JsonPath());
+      instance.schema_name = YamlTemplateInstanceReader.readName(source, '', 'A template instance');
+      // No description is the empty string, never null.
+      YamlTemplateInstanceReader.assertText(source, YamlKeys.description, '');
+      instance.schema_description = ReaderUtil.getString(source, YamlKeys.description) ?? '';
+      instance.descriptionWasAbsent = ReaderUtil.getString(source, YamlKeys.description) === null;
+      instance.at_id = CedarArtifactId.forValue(ReaderUtil.getIdentifier(source, YamlKeys.id));
+      if (!Object.hasOwn(source, YamlKeys.isBasedOn)) {
+        throw new Error(`No ${YamlKeys.isBasedOn} present. A template instance names the template it is based on, as Java requires.`);
+      }
+      // A compatibility reader takes the legacy empty spelling as absence, and the writer omits the
+      // optional key; a strict one refuses it, as Java does.
+      const lenient = this.behavior.useWarningForKnownIssues();
+      instance.schema_isBasedOn = CedarArtifactId.forValue(ReaderUtil.getArtifactIdentifier(source, YamlKeys.isBasedOn, lenient));
+      instance.pav_derivedFrom = CedarArtifactId.forValue(ReaderUtil.getArtifactIdentifier(source, YamlKeys.derivedFrom, lenient));
+      // The writer emits an instance's provenance and its annotations; both were read by nobody, so
+      // either one was lost by writing what had just been read. Who created and last modified the
+      // instance are IRIs, as in Java's reader, so an empty string or a number is refused.
+      YamlAbstractArtifactReader.refuseEmptyIdentifier(source, YamlKeys.createdBy);
+      YamlAbstractArtifactReader.refuseEmptyIdentifier(source, YamlKeys.modifiedBy);
+      instance.pav_createdBy = CedarUser.forValue(ReaderUtil.getString(source, YamlKeys.createdBy));
+      instance.pav_createdOn = IsoDate.forValue(ReaderUtil.getString(source, YamlKeys.createdOn));
+      instance.oslc_modifiedBy = CedarUser.forValue(ReaderUtil.getString(source, YamlKeys.modifiedBy));
+      instance.pav_lastUpdatedOn = IsoDate.forValue(ReaderUtil.getString(source, YamlKeys.modifiedOn));
+      this.readAnnotations(instance, source, parsingResult, new JsonPath());
 
-    instance.dataContainer = this.parseContainer(source, '', true);
-    for (const conflict of AttributeValueNamePolicy.findConflicts(instance.dataContainer, 'template', true)) {
-      parsingResult.addBlueprintComparisonError(
-        new ComparisonError(
-          'YamlTemplateInstanceReader',
-          YamlComparisonErrorType.VALUE_MISMATCH,
-          new JsonPath(...AttributeValueNamePolicy.locationOf(conflict)),
-          'a unique, non-reserved attribute-value name',
-          conflict.name,
-        ),
-      );
-    }
-    return new YamlTemplateInstanceReaderResult(instance, parsingResult, source);
+      instance.dataContainer = this.parseContainer(source, '', true);
+      for (const conflict of AttributeValueNamePolicy.findConflicts(instance.dataContainer, 'template', true)) {
+        parsingResult.addBlueprintComparisonError(
+          new ComparisonError(
+            'YamlTemplateInstanceReader',
+            YamlComparisonErrorType.VALUE_MISMATCH,
+            new JsonPath(...AttributeValueNamePolicy.locationOf(conflict)),
+            'a unique, non-reserved attribute-value name',
+            conflict.name,
+          ),
+        );
+      }
+      return new YamlTemplateInstanceReaderResult(instance, parsingResult, sourceObject ?? {});
+    });
   }
 
   /**
@@ -175,17 +178,20 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
     });
 
     // Attribute-value fields sit beside `children`, their attributes named
-    // directly: `<field>: { <attr>: { value: … } }`. A scalar or a list there
-    // is not one, and Java's reader passes over it too.
-    Object.keys(node).forEach((key) => {
+    // directly: `<field>: { <attr>: { value: … } }`. A reader without the template can not tell a
+    // misspelled key holding a mapping from a field whose name the form-filler chose, so every
+    // mapping there is one and the template judges it. A scalar or a list there is not one, and is
+    // left unread, so the document is refused for it, as Java's reader refuses it.
+    YamlKeyTracking.untracked(() => Object.keys(node)).forEach((key) => {
       const reserved = isDocumentRoot ? YamlTemplateInstanceReader.RESERVED_KEYS : YamlTemplateInstanceReader.ELEMENT_RESERVED_KEYS;
       if (reserved.has(key)) {
         return;
       }
-      const avNode: unknown = node[key];
+      const avNode: unknown = YamlKeyTracking.untracked(() => node[key]);
       if (!YamlTemplateInstanceReader.isMapping(avNode)) {
         return;
       }
+      YamlKeyTracking.use(node, key);
       const avField = new InstanceDataAttributeValueField(key);
       Object.keys(avNode).forEach((attrName) => {
         avField.addValue(attrName, YamlTemplateInstanceReader.parseAttributeValue(avNode, attrName, `${path}/${key}/${attrName}`));

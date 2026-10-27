@@ -1,4 +1,5 @@
 import { YamlSourcePolicy } from './YamlSourcePolicy';
+import { YamlKeyTracking } from './YamlKeyTracking';
 import { applySchemaReaderDefaults } from '../SchemaReaderDefaults';
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
 import { ReaderUtil } from '../ReaderUtil';
@@ -46,20 +47,22 @@ export class YamlTemplateReader extends YamlContainerArtifactReader {
     return this.readFromObject(templateObject);
   }
 
-  public readFromObject(templateSourceObject: JsonNode, topPath: JsonPath = new JsonPath()): YamlTemplateReaderResult {
-    YamlTemplateReader.refuseNullAndEmptySchemaValues(templateSourceObject, topPath);
-    const parsingResult: YamlArtifactParsingResult = new YamlArtifactParsingResult();
-    const template = Template.buildEmptyWithNullValues();
+  public readFromObject(sourceObject: JsonNode, topPath: JsonPath = new JsonPath()): YamlTemplateReaderResult {
+    return YamlKeyTracking.read(sourceObject, topPath.toPointer(), (templateSourceObject) => {
+      YamlTemplateReader.refuseNullAndEmptySchemaValues(templateSourceObject, topPath);
+      const parsingResult: YamlArtifactParsingResult = new YamlArtifactParsingResult();
+      const template = Template.buildEmptyWithNullValues();
 
-    this.assertSchemaMetadata(templateSourceObject, topPath);
-    ReaderUtil.getIdentifier(templateSourceObject, YamlKeys.id);
-    this.readNonReportableAttributes(template, templateSourceObject);
-    applySchemaReaderDefaults(template, templateSourceObject, topPath, 'yaml');
-    this.readAnnotations(template, templateSourceObject, parsingResult, topPath);
-    this.readInstanceTypeSpecification(template, templateSourceObject, parsingResult);
-    this.readAndValidateChildrenInfo(template, templateSourceObject, parsingResult, topPath);
+      this.assertSchemaMetadata(templateSourceObject, topPath);
+      ReaderUtil.getIdentifier(templateSourceObject, YamlKeys.id);
+      this.readNonReportableAttributes(template, templateSourceObject);
+      applySchemaReaderDefaults(template, templateSourceObject, topPath, 'yaml');
+      this.readAnnotations(template, templateSourceObject, parsingResult, topPath);
+      this.readInstanceTypeSpecification(template, templateSourceObject, parsingResult);
+      this.readAndValidateChildrenInfo(template, templateSourceObject, parsingResult, topPath);
 
-    return new YamlTemplateReaderResult(template, parsingResult, templateSourceObject);
+      return new YamlTemplateReaderResult(template, parsingResult, sourceObject);
+    });
   }
 
   protected readNonReportableAttributes(template: Template, templateSourceObject: JsonNode) {

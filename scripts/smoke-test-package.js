@@ -210,21 +210,23 @@ const minimum: number | null = paragraph.valueConstraints.minLength;
 const maximum: number | null = paragraph.valueConstraints.maxLength;
 void [template, readers, writers, minimum, maximum];
 `;
-  write('consumer.ts', typeScriptConsumer);
+  // A CommonJS consumer under Node's own resolution. The consumer project is an ES module package,
+  // so only the .cts extension makes this file CommonJS.
+  write('consumer.cts', typeScriptConsumer);
   write(
     'tsconfig.json',
     JSON.stringify(
       {
         compilerOptions: {
           lib: ['ES2022'],
-          module: 'CommonJS',
-          moduleResolution: 'Node',
+          module: 'Node16',
+          moduleResolution: 'Node16',
           noEmit: true,
           skipLibCheck: false,
           strict: true,
           target: 'ES2022',
         },
-        files: ['consumer.ts'],
+        files: ['consumer.cts'],
       },
       null,
       2,

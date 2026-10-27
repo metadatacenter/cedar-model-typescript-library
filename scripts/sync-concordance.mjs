@@ -54,6 +54,7 @@ const matrices = [
   { fixture: 'src/test/resources/concordance/instance-value-matrix.json', name: 'java-instance-value-matrix', what: 'instance value' },
   { fixture: 'src/test/resources/concordance/multiplicity-matrix.json', name: 'java-multiplicity-matrix', what: 'multiplicity' },
   { fixture: 'src/test/resources/concordance/rule-matrix.json', name: 'java-rule-matrix', what: 'rule' },
+  { fixture: 'src/test/resources/concordance/yaml-key-vocabulary.json', name: 'java-yaml-key-vocabulary', what: 'YAML key vocabulary' },
 ];
 const workingTree = process.argv.includes('--working-tree');
 const matrixIndex = process.argv.indexOf('--matrix');

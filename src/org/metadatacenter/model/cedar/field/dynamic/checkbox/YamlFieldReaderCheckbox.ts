@@ -9,27 +9,26 @@ import { YamlKeys } from '../../../constants/YamlKeys';
 import { CheckboxFieldImpl } from './CheckboxFieldImpl';
 import { YamlArtifactParsingResult } from '../../../util/compare/YamlArtifactParsingResult';
 import { DefaultValueSerialization } from '../../DefaultValueSerialization';
-import { YamlFieldReaderControlledTerm } from '../controlled-term/YamlFieldReaderControlledTerm';
 
 export class YamlFieldReaderCheckbox extends YamlTemplateFieldTypeSpecificReader {
   override read(
     fieldSourceObject: JsonNode,
     _childInfo: ChildDeploymentInfo,
     _parsingResult: YamlArtifactParsingResult,
-    path: JsonPath,
+    _path: JsonPath,
   ): CheckboxField {
     const field = CheckboxFieldImpl.buildEmpty();
-    // An option states no type. Java reads an entry that states one as the constraint it names.
-    YamlFieldReaderControlledTerm.readStatedConstraints(fieldSourceObject, path);
     field.valueConstraints.defaultValue = DefaultValueSerialization.literalFromNode(fieldSourceObject, YamlKeys.default);
 
     const literals: Array<JsonNode> = ReaderUtil.getNodeList(fieldSourceObject, YamlKeys.values);
     if (literals !== null) {
       literals.forEach((literal) => {
+        // An option is its label and whether it is selected by default, as in Java's reader, which
+        // reads nothing more of an entry and nothing of one without a label.
         const label = ReaderUtil.getString(literal, YamlKeys.label);
-        const selectedByDefault = ReaderUtil.getBoolean(literal, YamlKeys.selected);
-        const statesSelectedByDefault = Object.hasOwn(literal, YamlKeys.selected);
         if (label != null) {
+          const selectedByDefault = ReaderUtil.getBoolean(literal, YamlKeys.selected);
+          const statesSelectedByDefault = Object.hasOwn(literal, YamlKeys.selected);
           const option = new CheckboxOption(label, selectedByDefault, statesSelectedByDefault);
           field.valueConstraints.literals.push(option);
         }

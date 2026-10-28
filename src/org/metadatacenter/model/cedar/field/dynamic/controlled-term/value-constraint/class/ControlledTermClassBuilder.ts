@@ -2,6 +2,7 @@ import { Iri } from '../../../../../types/wrapped-types/Iri';
 import { ControlledTermClass } from './ControlledTermClass';
 import { ValueConstraintRequirements } from '../ValueConstraintRequirements';
 import { ControlledTermVersion } from '../ControlledTermVersion';
+import { ConstraintLinks } from '../ConstraintLinks';
 import { BioportalTermType } from '../../../../../types/bioportal-types/BioportalTermType';
 
 export class ControlledTermClassBuilder {
@@ -13,6 +14,7 @@ export class ControlledTermClassBuilder {
   private _iri: Iri | null = null;
   private _sourceSystem: string | null = null;
   private _version: ControlledTermVersion | null = null;
+  private _links: ConstraintLinks | null = null;
 
   public withLabel(label: string): ControlledTermClassBuilder {
     this._label = label;
@@ -57,6 +59,11 @@ export class ControlledTermClassBuilder {
     return this;
   }
 
+  public withLinks(links: ConstraintLinks | null): ControlledTermClassBuilder {
+    this._links = links;
+    return this;
+  }
+
   public build(): ControlledTermClass {
     ValueConstraintRequirements.requireIri(this._uri, 'a URI', 'A class constraint');
     ValueConstraintRequirements.requireText(this._label, 'a label', 'A class constraint');
@@ -72,6 +79,7 @@ export class ControlledTermClassBuilder {
       this._iri,
       this._sourceSystem,
       this._version,
+      this._links,
     );
   }
 }

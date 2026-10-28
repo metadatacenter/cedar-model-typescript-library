@@ -2,6 +2,7 @@ import { Iri } from '../../../../../types/wrapped-types/Iri';
 import { ControlledTermValueSet } from './ControlledTermValueSet';
 import { ValueConstraintRequirements } from '../ValueConstraintRequirements';
 import { ControlledTermVersion } from '../ControlledTermVersion';
+import { ConstraintLinks } from '../ConstraintLinks';
 
 export class ControlledTermValueSetBuilder {
   private _vsCollection: string = '';
@@ -11,6 +12,7 @@ export class ControlledTermValueSetBuilder {
   private _iri: Iri | null = null;
   private _sourceSystem: string | null = null;
   private _version: ControlledTermVersion | null = null;
+  private _links: ConstraintLinks | null = null;
 
   public withVsCollection(vsCollection: string): ControlledTermValueSetBuilder {
     this._vsCollection = vsCollection;
@@ -51,6 +53,11 @@ export class ControlledTermValueSetBuilder {
     return this;
   }
 
+  public withLinks(links: ConstraintLinks | null): ControlledTermValueSetBuilder {
+    this._links = links;
+    return this;
+  }
+
   public build(): ControlledTermValueSet {
     ValueConstraintRequirements.requireIri(this._uri, 'a URI', 'A value-set constraint');
     ValueConstraintRequirements.requireText(this._vsCollection, 'a value-set collection', 'A value-set constraint');
@@ -63,6 +70,7 @@ export class ControlledTermValueSetBuilder {
       this._iri,
       this._sourceSystem,
       this._version,
+      this._links,
     );
   }
 }

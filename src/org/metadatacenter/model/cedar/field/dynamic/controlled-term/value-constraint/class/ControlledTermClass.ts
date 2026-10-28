@@ -1,6 +1,7 @@
 import { Iri } from '../../../../../types/wrapped-types/Iri';
 import { ControlledTermAbstractValueConstraint } from '../ControlledTermAbstractValueConstraint';
 import { ControlledTermVersion } from '../ControlledTermVersion';
+import { ConstraintLinks } from '../ConstraintLinks';
 import { BioportalTermType } from '../../../../../types/bioportal-types/BioportalTermType';
 
 export class ControlledTermClass extends ControlledTermAbstractValueConstraint {
@@ -21,8 +22,9 @@ export class ControlledTermClass extends ControlledTermAbstractValueConstraint {
     iri: Iri | null = null,
     sourceSystem: string | null = null,
     version: ControlledTermVersion | null = null,
+    links: ConstraintLinks | null = null,
   ) {
-    super(iri, sourceSystem, version);
+    super(iri, sourceSystem, version, links);
     this._label = label;
     this._source = source;
     this._type = type;

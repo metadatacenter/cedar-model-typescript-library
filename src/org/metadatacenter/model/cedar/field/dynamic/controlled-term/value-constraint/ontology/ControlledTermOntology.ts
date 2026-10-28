@@ -1,6 +1,7 @@
 import { Iri } from '../../../../../types/wrapped-types/Iri';
 import { ControlledTermAbstractValueConstraint } from '../ControlledTermAbstractValueConstraint';
 import { ControlledTermVersion } from '../ControlledTermVersion';
+import { ConstraintLinks } from '../ConstraintLinks';
 
 export class ControlledTermOntology extends ControlledTermAbstractValueConstraint {
   static className = 'ControlledTermOntology';
@@ -18,8 +19,9 @@ export class ControlledTermOntology extends ControlledTermAbstractValueConstrain
     iri: Iri | null = null,
     sourceSystem: string | null = null,
     version: ControlledTermVersion | null = null,
+    links: ConstraintLinks | null = null,
   ) {
-    super(iri, sourceSystem, version);
+    super(iri, sourceSystem, version, links);
     this._acronym = acronym;
     this._name = name;
     this._uri = uri;

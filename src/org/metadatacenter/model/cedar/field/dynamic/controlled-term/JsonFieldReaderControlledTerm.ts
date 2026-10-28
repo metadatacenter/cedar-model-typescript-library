@@ -16,6 +16,7 @@ import { ControlledTermAction } from './value-constraint/action/ControlledTermAc
 import { BioportalTermType } from '../../../types/bioportal-types/BioportalTermType';
 import { ControlledTermFieldImpl } from './ControlledTermFieldImpl';
 import { ControlledTermVersion } from './value-constraint/ControlledTermVersion';
+import { ConstraintLinks, readConstraintLinks } from './value-constraint/ConstraintLinks';
 import { Iri } from '../../../types/wrapped-types/Iri';
 import { JavaStrings } from '../../../util/JavaStrings';
 import { JsonTermConstraintChecks } from '../../../../../io/reader/json/JsonTermConstraintChecks';
@@ -146,10 +147,15 @@ export class JsonFieldReaderControlledTerm extends JsonTemplateFieldTypeSpecific
    * The three source-explicit keys, in the order every constraint constructor takes them. Optional and
    * usually absent: a constraint written before they existed has none, and reads as it always did.
    */
-  private static readSourceAndVersion(node: JsonNode): [Iri | null, string | null, ControlledTermVersion | null] {
+  private static readSourceAndVersion(node: JsonNode): [Iri | null, string | null, ControlledTermVersion | null, ConstraintLinks | null] {
     const iri = ReaderUtil.getURI(node, CedarModel.ValueConstraints.iri);
     const version = JsonFieldReaderControlledTerm.readVersion(ReaderUtil.getNodeOrNull(node, CedarModel.ValueConstraints.version));
-    return [iri.isEmpty() ? null : iri, ReaderUtil.getString(node, CedarModel.ValueConstraints.sourceSystem), version];
+    return [
+      iri.isEmpty() ? null : iri,
+      ReaderUtil.getString(node, CedarModel.ValueConstraints.sourceSystem),
+      version,
+      readConstraintLinks(node.links),
+    ];
   }
 
   /**

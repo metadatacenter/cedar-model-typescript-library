@@ -6,8 +6,8 @@
   <version>1.0.0</version>
   <!-- The oracle uses the same validator and mandatory reader as an artifact-server write. -->
   <dependencies>
-    <dependency><groupId>org.metadatacenter</groupId><artifactId>cedar-model-validation-library</artifactId><version>2.9.31-SNAPSHOT</version></dependency>
-    <dependency><groupId>org.metadatacenter</groupId><artifactId>cedar-artifact-library</artifactId><version>2.9.31-SNAPSHOT</version></dependency>
+    <dependency><groupId>org.metadatacenter</groupId><artifactId>cedar-model-validation-library</artifactId><version>2.9.32-SNAPSHOT</version></dependency>
+    <dependency><groupId>org.metadatacenter</groupId><artifactId>cedar-artifact-library</artifactId><version>2.9.32-SNAPSHOT</version></dependency>
   </dependencies>
   <!--
     The Nexus repositories the Java builds read, which answer anonymous reads. Central comes first, as

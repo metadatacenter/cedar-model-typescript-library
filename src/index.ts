@@ -391,3 +391,8 @@ export {
 export { FieldValuePolicy, ValidationField } from './org/metadatacenter/policy/FieldValuePolicy';
 
 export { TemplateValueValidator } from './org/metadatacenter/model/cedar/TemplateValueValidator';
+
+export {
+  ConstraintLinks,
+  readConstraintLinks,
+} from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/ConstraintLinks';

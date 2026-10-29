@@ -2,6 +2,7 @@ import { Iri } from '../../../../../types/wrapped-types/Iri';
 import { ControlledTermBranch } from './ControlledTermBranch';
 import { ValueConstraintRequirements } from '../ValueConstraintRequirements';
 import { ControlledTermVersion } from '../ControlledTermVersion';
+import { ConstraintLinks } from '../ConstraintLinks';
 
 export class ControlledTermBranchBuilder {
   private _source: string = '';
@@ -12,6 +13,7 @@ export class ControlledTermBranchBuilder {
   private _iri: Iri | null = null;
   private _sourceSystem: string | null = null;
   private _version: ControlledTermVersion | null = null;
+  private _links: ConstraintLinks | null = null;
 
   public withSource(source: string): ControlledTermBranchBuilder {
     this._source = source;
@@ -56,6 +58,11 @@ export class ControlledTermBranchBuilder {
     return this;
   }
 
+  public withLinks(links: ConstraintLinks | null): ControlledTermBranchBuilder {
+    this._links = links;
+    return this;
+  }
+
   public build(): ControlledTermBranch {
     ValueConstraintRequirements.requireIri(this._uri, 'a URI', 'A branch constraint');
     ValueConstraintRequirements.requireText(this._source, 'a source', 'A branch constraint');
@@ -70,6 +77,7 @@ export class ControlledTermBranchBuilder {
       this._iri,
       this._sourceSystem,
       this._version,
+      this._links,
     );
   }
 }

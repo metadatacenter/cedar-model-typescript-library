@@ -2,6 +2,7 @@ import { Iri } from '../../../../../types/wrapped-types/Iri';
 import { ControlledTermOntology } from './ControlledTermOntology';
 import { ValueConstraintRequirements } from '../ValueConstraintRequirements';
 import { ControlledTermVersion } from '../ControlledTermVersion';
+import { ConstraintLinks } from '../ConstraintLinks';
 
 export class ControlledTermOntologyBuilder {
   private acronym: string = '';
@@ -11,6 +12,7 @@ export class ControlledTermOntologyBuilder {
   private iri: Iri | null = null;
   private sourceSystem: string | null = null;
   private version: ControlledTermVersion | null = null;
+  private links: ConstraintLinks | null = null;
 
   public withAcronym(acronym: string): ControlledTermOntologyBuilder {
     this.acronym = acronym;
@@ -50,10 +52,24 @@ export class ControlledTermOntologyBuilder {
     return this;
   }
 
+  public withLinks(links: ConstraintLinks | null): ControlledTermOntologyBuilder {
+    this.links = links;
+    return this;
+  }
+
   public build(): ControlledTermOntology {
     ValueConstraintRequirements.requireIri(this.uri, 'a URI', 'An ontology constraint');
     ValueConstraintRequirements.requireText(this.acronym, 'an acronym', 'An ontology constraint');
     ValueConstraintRequirements.requireText(this.name, 'a name', 'An ontology constraint');
-    return new ControlledTermOntology(this.acronym, this.name, this.numTerms, this.uri, this.iri, this.sourceSystem, this.version);
+    return new ControlledTermOntology(
+      this.acronym,
+      this.name,
+      this.numTerms,
+      this.uri,
+      this.iri,
+      this.sourceSystem,
+      this.version,
+      this.links,
+    );
   }
 }

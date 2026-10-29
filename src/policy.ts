@@ -21,3 +21,8 @@ export {
   VerificationStatus,
   ValidationSummary,
 } from './org/metadatacenter/policy/ValidationPolicy';
+
+export {
+  ConstraintLinks,
+  readConstraintLinks,
+} from './org/metadatacenter/model/cedar/field/dynamic/controlled-term/value-constraint/ConstraintLinks';

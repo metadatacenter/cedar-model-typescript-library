@@ -116,9 +116,9 @@ module.exports.push(
       ...(config.output.libraryTarget === 'umd' ? { library: 'CedarValidationPolicy' } : {}),
     },
     performance: {
-      // Shared finding/save-policy facts add about 1.5 KiB; field validators stay in the main entry.
-      maxAssetSize: 23000,
-      maxEntrypointSize: 23000,
+      // Includes the small generated constraint-links validator (about 3.5 KiB); full artifact validators stay separate.
+      maxAssetSize: 27000,
+      maxEntrypointSize: 27000,
       hints: 'error',
       assetFilter: (name) => /^policy.*\.js$/.test(name),
     },

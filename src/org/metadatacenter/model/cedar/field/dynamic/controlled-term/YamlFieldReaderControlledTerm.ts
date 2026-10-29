@@ -18,6 +18,7 @@ import { ControlledTermFieldImpl } from './ControlledTermFieldImpl';
 import { YamlArtifactParsingResult } from '../../../util/compare/YamlArtifactParsingResult';
 import { Iri } from '../../../types/wrapped-types/Iri';
 import { ControlledTermVersion } from './value-constraint/ControlledTermVersion';
+import { ConstraintLinks, readConstraintLinks } from './value-constraint/ConstraintLinks';
 import { JavaStrings } from '../../../util/JavaStrings';
 import { yamlNumberSpelling } from '../../../../../io/reader/yaml/YamlSourcePolicy';
 
@@ -174,6 +175,7 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
     builder.withSourceSystem(ReaderUtil.getString(valueNode, YamlKeys.Controlled.sourceSystem));
 
     builder.withVersion(this.readVersion(ReaderUtil.getNodeOrNull(valueNode, YamlKeys.version)));
+    builder.withLinks(readConstraintLinks(valueNode.links));
   }
 
   /**
@@ -206,5 +208,6 @@ export class YamlFieldReaderControlledTerm extends YamlTemplateFieldTypeSpecific
 interface SourceExplicitBuilder {
   withIri(iri: Iri | null): unknown;
   withSourceSystem(sourceSystem: string | null): unknown;
+  withLinks(links: ConstraintLinks | null): unknown;
   withVersion(version: ControlledTermVersion | null): unknown;
 }

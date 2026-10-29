@@ -1,6 +1,7 @@
 import { ValueConstraints } from '../../../ValueConstraints';
 import { Iri } from '../../../../types/wrapped-types/Iri';
 import { ControlledTermVersion } from './ControlledTermVersion';
+import { ConstraintLinks, readConstraintLinks } from './ConstraintLinks';
 
 interface ClassWithClassName {
   className: string;
@@ -22,11 +23,23 @@ export abstract class ControlledTermAbstractValueConstraint extends ValueConstra
   private readonly _sourceSystem: string | null;
   private readonly _version: ControlledTermVersion | null;
 
-  protected constructor(iri: Iri | null = null, sourceSystem: string | null = null, version: ControlledTermVersion | null = null) {
+  private readonly _links: ConstraintLinks | null;
+
+  protected constructor(
+    iri: Iri | null = null,
+    sourceSystem: string | null = null,
+    version: ControlledTermVersion | null = null,
+    links: ConstraintLinks | null = null,
+  ) {
     super();
     this._iri = iri;
     this._sourceSystem = sourceSystem;
     this._version = version;
+    this._links = links === null ? null : readConstraintLinks(links);
+  }
+
+  get links(): ConstraintLinks | null {
+    return this._links;
   }
 
   get iri(): Iri | null {

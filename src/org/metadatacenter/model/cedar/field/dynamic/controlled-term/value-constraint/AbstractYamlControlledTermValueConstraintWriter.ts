@@ -23,20 +23,20 @@ export abstract class AbstractYamlControlledTermValueConstraintWriter extends Ya
     }
   }
 
-  /** The pinned snapshot, written last. Omitted when the entry resolves against the latest. */
+  /** Write the optional pin and links after the constraint identity. */
   protected writeVersion(entry: JsonNode, constraint: ControlledTermAbstractValueConstraint): void {
     const version = constraint.version;
-    if (version === null) {
-      return;
+    if (version !== null) {
+      const rendering = JsonNode.getEmpty();
+      rendering[YamlKeys.Controlled.versionId] = version.id;
+      if (version.effectiveDate !== null) {
+        rendering[YamlKeys.Controlled.versionEffectiveDate] = version.effectiveDate;
+      }
+      if (version.declaredVersion !== null) {
+        rendering[YamlKeys.Controlled.versionDeclaredVersion] = version.declaredVersion;
+      }
+      entry[YamlKeys.version] = rendering;
     }
-    const rendering = JsonNode.getEmpty();
-    rendering[YamlKeys.Controlled.versionId] = version.id;
-    if (version.effectiveDate !== null) {
-      rendering[YamlKeys.Controlled.versionEffectiveDate] = version.effectiveDate;
-    }
-    if (version.declaredVersion !== null) {
-      rendering[YamlKeys.Controlled.versionDeclaredVersion] = version.declaredVersion;
-    }
-    entry[YamlKeys.version] = rendering;
+    if (constraint.links !== null) entry.links = { ...constraint.links };
   }
 }

@@ -98,7 +98,9 @@ try {
   const qualityFinding = policy.ValidationPolicy.finding('minValue', '/Count/@value', 'Below minimum');
   assert.equal(policy.ValidationPolicy.summarize([qualityFinding], 'instance').canSave, true);
   assert.equal(policy.ValidationPolicy.summarize([qualityFinding], 'template').canSave, false);
-  assert.ok(fs.statSync(path.join(installedPackage, 'policy.js')).size < 23000);
+  assert.ok(fs.statSync(path.join(installedPackage, 'policy.js')).size < 27000);
+  assert.deepEqual(policy.readConstraintLinks({ landingPage: 'https://example.org' }), { landingPage: 'https://example.org' });
+  assert.throws(() => policy.readConstraintLinks({ icon: 'javascript:alert(1)' }));
   const fullModel = require(installedPackage);
   const outside = fullModel.ExactDecimal.forValue('9007199254740993');
   assert.equal(policy.JsonSourcePolicy.stringify(policy.JsonSourcePolicy.clone({ n: outside })), '{"n":9007199254740993}');

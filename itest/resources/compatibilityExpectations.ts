@@ -82,8 +82,12 @@ export const CEE_INSTANCE_DIAGNOSTICS: Readonly<Record<string, DiagnosticExpecta
 export const EXTERNAL_TEMPLATE_DIAGNOSTICS: Readonly<Record<string, DiagnosticExpectation>> = {
   'ADVANCETemplate.json': { errors: 0, warnings: 3, reason: 'known production blueprint variations' },
   'NullPropertyLabelsTemplate.json': { errors: 1, warnings: 12, reason: 'null property-label metadata' },
-  'RADx2.0CLIGeneratedTemplate.json': { errors: 10, warnings: 3, reason: 'legacy CLI-generated schema shape' },
-  'RADxCLIGeneratedTemplate.json': { errors: 10, warnings: 2, reason: 'legacy CLI-generated schema shape' },
+  'RADx2.0CLIGeneratedTemplate.json': {
+    errors: 0,
+    warnings: 3,
+    reason: 'element @context closed to further IRIs, and @language in a field @context',
+  },
+  'RADxCLIGeneratedTemplate.json': { errors: 0, warnings: 2, reason: 'element @context closed to further IRIs' },
   'SimpleTemplateWithType.json': { errors: 0, warnings: 1, reason: 'known production blueprint variation' },
   'TemplateWithOverrideLabels.json': { errors: 0, warnings: 7, reason: 'legacy label metadata variations' },
   'template-029.json': { errors: 28, warnings: 6, reason: 'legacy deeply nested schema shape' },

@@ -1,9 +1,9 @@
 {
   "repository": "cedar-model-validation-library",
-  "revision": "3b97b8c798c24e303be61ac831d7ac9d50162527",
+  "revision": "75380d2ab4d80ff8f714694771719cbc2f262cb1",
   "modified": false,
   "hashes": {
-    "template-meta-schema.json": "c84d4c6da608acf09edb15459c36c085c1c3743bbf367279be738d46ccbee733",
+    "template-meta-schema.json": "602d86e62f7a9662050550c98899ec131b0cd2770703de6564e421a6acd4604d",
     "element-meta-schema.json": "15e51482a88da9bd56bdb2287407cbf7d94d33ed683874937928435528dee587",
     "literal-field-meta-schema.json": "45a8fea71c09913333c872118aaec38197a62f351f36e98cdbf31bfd7467549a",
     "iri-field-meta-schema.json": "ad02a5ffedd42449d7807fc7c00f923979f55044c716ecbe0cc4dcc042d28b92",

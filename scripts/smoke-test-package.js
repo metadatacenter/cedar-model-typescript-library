@@ -79,6 +79,14 @@ try {
     'schema.esm.js',
     'schema.umd.js',
     'schema.d.ts',
+    'esm/index.js',
+    'esm/policy.js',
+    'esm/schema.js',
+    'esm/index-namespace.js',
+    'esm/policy-namespace.js',
+    'esm/schema-namespace.js',
+    'esm/package.json',
+    'esm/vendor/yaml/LICENSE',
     'conformance/java-oracle.mjs',
     'conformance/CedarSchemaOracle.java',
     'conformance/pom.xml',
@@ -147,6 +155,8 @@ assert.equal(paragraph.valueConstraints.maxLength, 500);
     'browser-consumer.js',
     `
 import { JsonSourcePolicy, TextPolicy } from '${packageName}/policy';
+import policy from '${packageName}/policy';
+if (policy.JsonSourcePolicy !== JsonSourcePolicy) throw new Error('default and named policy exports must agree');
 export const json = JsonSourcePolicy.stringify(JsonSourcePolicy.parse('{"n":9007199254740993}'));
 export const length = TextPolicy.codePointLength('😀');
 `,
@@ -156,15 +166,31 @@ export const length = TextPolicy.codePointLength('😀');
     `module.exports = ${JSON.stringify({
       mode: 'production',
       target: 'web',
-      entry: './browser-consumer.js',
-      module: { rules: [{ include: path.join(temporaryRoot, 'browser-consumer.js'), resolve: { fullySpecified: false } }] },
+      entry: { consumer: './browser-consumer.js', narrow: './narrow-consumer.js', model: './model-consumer.js' },
+      module: {
+        rules: [
+          {
+            include: ['browser-consumer.js', 'narrow-consumer.js', 'model-consumer.js'].map((file) => path.join(temporaryRoot, file)),
+            resolve: { fullySpecified: false },
+          },
+        ],
+      },
       output: {
         path: path.join(temporaryRoot, 'browser'),
-        filename: 'consumer.mjs',
+        filename: '[name].mjs',
         library: { type: 'module' },
       },
       experiments: { outputModule: true },
     })};`,
+  );
+  write('narrow-consumer.js', `import { TextPolicy } from '${packageName}'; export const length = TextPolicy.codePointLength;`);
+  write(
+    'model-consumer.js',
+    `
+export * from '${packageName}';
+export { ExactDecimal as PolicyExactDecimal } from '${packageName}/policy';
+export { SchemaArtifactValidator } from '${packageName}/schema';
+`,
   );
   try {
     run(
@@ -184,7 +210,8 @@ export const length = TextPolicy.codePointLength('😀');
   const browserModules = [...browserStats.modules];
   for (let i = 0; i < browserModules.length; i++) browserModules.push(...(browserModules[i].modules ?? []));
   const browserFiles = browserModules.map((module) => module.nameForCondition);
-  assert.ok(browserFiles.includes(path.join(installedPackage, 'policy.esm.js')), 'browser /policy import must resolve to ESM');
+  assert.ok(browserFiles.includes(path.join(installedPackage, 'esm/policy.js')), 'browser /policy import must resolve to modular ESM');
+  assert.ok(browserFiles.includes(path.join(installedPackage, 'esm/schema.js')), 'browser /schema import must resolve to modular ESM');
   for (const filename of ['policy.js', 'index.js', 'index.esm.js']) {
     assert.ok(!browserFiles.includes(path.join(installedPackage, filename)), `browser /policy import must not include ${filename}`);
   }
@@ -198,6 +225,17 @@ assert.equal(length, 1);
 `,
   );
   run(process.execPath, ['browser-check.mjs'], temporaryRoot);
+  const narrowSize = fs.statSync(path.join(temporaryRoot, 'browser/narrow.mjs')).size;
+  assert.ok(narrowSize < 2000, `A scalar-only import retains ${narrowSize} bytes; it must not retain model/YAML code`);
+  assert.ok(
+    fs.statSync(path.join(temporaryRoot, 'browser/consumer.mjs')).size < 15000,
+    'The JSON/policy consumer must not retain unrelated policies or schema validators',
+  );
+  run(
+    process.execPath,
+    [path.join(repositoryRoot, 'scripts/packed-api-check.mjs'), installedPackage, path.join(temporaryRoot, 'browser/model.mjs')],
+    temporaryRoot,
+  );
 
   const typeScriptConsumer = `
 import { CedarBuilders, CedarReaders, CedarWriters, Template, TextArea } from '${packageName}';

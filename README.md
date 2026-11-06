@@ -150,6 +150,15 @@ The build writes the publishable package to `dist/`. It contains the CommonJS an
 ES module bundles, source maps, TypeScript declarations, package manifest,
 license, and this README.
 
+Bundlers use the modular `esm/` tree through the package's `module` and browser mappings.
+The main, `/policy` and `/schema` entries share their policies and class identities, and an
+unused model or YAML module can be discarded. YAML is vendored with its license, so these
+entries need no extra dependency installation. Keep the `esm/` directory with the package.
+The existing `index.esm.js`, `policy.esm.js` and `schema.esm.js` files remain self-contained
+for hosts that copy one script; CommonJS and UMD entry points keep their existing paths.
+`npm run test:package` checks the packed interfaces and bounds narrow browser imports so
+the full model cannot accidentally return to a scalar-only consumer.
+
 For local development, rebuild when source files change:
 
 ```shell

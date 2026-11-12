@@ -13,7 +13,10 @@ export async function createJavaOracle(schemaDigests, stringify = JSON.stringify
   let child;
   try {
     const classpathFile = join(directory, 'classpath');
-    await promisify(execFile)('mvn', ['-q', '-f', fileURLToPath(new URL('pom.xml', import.meta.url)),
+    // The POM checks CEDAR snapshots on every run. When Nexus cannot be reached, a short connect
+    // timeout lets resolution fall back to the cached jars in seconds rather than most of a minute.
+    await promisify(execFile)('mvn', ['-q', '-Daether.connector.connectTimeout=3000',
+      '-f', fileURLToPath(new URL('pom.xml', import.meta.url)),
       'org.apache.maven.plugins:maven-dependency-plugin:3.8.1:build-classpath', `-Dmdep.outputFile=${classpathFile}`],
     {timeout: 300000, maxBuffer: 4 * 1024 * 1024});
     const classpath = (await readFile(classpathFile, 'utf8')).trim();

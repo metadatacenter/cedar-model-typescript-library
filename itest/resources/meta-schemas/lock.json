@@ -1,13 +1,13 @@
 {
   "repository": "cedar-model-validation-library",
-  "revision": "75380d2ab4d80ff8f714694771719cbc2f262cb1",
+  "revision": "0d83a6315c6ee35f410c0254e2a8c0264ebcb307",
   "modified": false,
   "hashes": {
-    "template-meta-schema.json": "602d86e62f7a9662050550c98899ec131b0cd2770703de6564e421a6acd4604d",
-    "element-meta-schema.json": "15e51482a88da9bd56bdb2287407cbf7d94d33ed683874937928435528dee587",
-    "literal-field-meta-schema.json": "45a8fea71c09913333c872118aaec38197a62f351f36e98cdbf31bfd7467549a",
+    "template-meta-schema.json": "ebc1bcdadd1d5c229911681f1bcabb516c6a72448b0565bbd16d0a24db6e938d",
+    "element-meta-schema.json": "d9fde03926c0af55ad2af4308fdb7cb1cda68c8d9813868b2534c7507ef6c172",
+    "literal-field-meta-schema.json": "89c6e773273dd29f82458c508132346aac076034cdc2b0342b841291b36dbeec",
     "iri-field-meta-schema.json": "ad02a5ffedd42449d7807fc7c00f923979f55044c716ecbe0cc4dcc042d28b92",
-    "static-field-meta-schema.json": "d5f0d3e42ef8d35df07bcf38e063789df1eebbec63dbfa0e535c26a8b6078429",
-    "multi-instance-field-meta-schema.json": "a683ff6c676047145669efb9e0b8b5c590cf562637f2bebf1e47580e1df737fc"
+    "static-field-meta-schema.json": "35062f4426cec50117a126b57e599b312ed9af9326f7b3814c4bfc8a7d5fb389",
+    "multi-instance-field-meta-schema.json": "4d71c428f157ee35fdf3795d58a396375ee5236aaf2b62daa65ded5f45456441"
   }
 }

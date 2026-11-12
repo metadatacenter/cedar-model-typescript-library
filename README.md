@@ -349,6 +349,8 @@ The package also carries `conformance/java-oracle.mjs` for consumer test gates. 
 `createJavaOracle(SchemaArtifactValidator.schemaDigests, JsonSourcePolicy.stringify.bind(JsonSourcePolicy))`
 starts the real Java validator and mandatory artifact reader, rejects a schema-hash mismatch, and
 returns `validate(artifact, kind)` and `close()`. This is test tooling, never a browser dependency.
-The Java dependency versions live in `tools/conformance/pom.xml`. CED tests its actual coordinator and
+The Java dependency versions live in `tools/conformance/pom.xml`. Maven checks Nexus for a newer
+CEDAR snapshot on every run, so a cached jar cannot stand in for the Java libraries on `develop`; a
+local install newer than the latest published build still takes precedence. CED tests its actual coordinator and
 serialized outputs with this oracle; the Designer host tests its final outgoing bodies with it.
 The deployed server remains authoritative, including its checks after write-time normalization.

@@ -108,3 +108,19 @@ test('a nested language error reports only the applicable field schema, not ever
     expect.objectContaining({ path: '/properties/Value/@context/@language', code: 'schema.format' }),
   ]);
 });
+
+test('a literal field must declare a value slot, @value or the @id a controlled term holds', () => {
+  const model = CedarBuilders.textFieldBuilder().withSchemaName('Value').withDescription('Schema').build();
+  const slotless: any = structuredClone(writers.getFieldWriterForField(model).getAsJsonNode(model));
+  delete slotless.properties['@value'];
+  expect(SchemaArtifactValidator.structure(slotless, 'field').canSave).toBe(false);
+  const identified: any = structuredClone(slotless);
+  identified.properties['@id'] = { type: 'string', format: 'uri' };
+  expect(SchemaArtifactValidator.structure(identified, 'field').canSave).toBe(true);
+
+  const template = CedarBuilders.templateBuilder().withSchemaName('Study').withDescription('Schema').build();
+  template.addChild(model, model.createDeploymentBuilder('Value').build());
+  const nested: any = structuredClone(writers.getTemplateWriter().getAsJsonNode(template));
+  delete nested.properties.Value.properties['@value'];
+  expect(SchemaArtifactValidator.structure(nested).canSave).toBe(false);
+});

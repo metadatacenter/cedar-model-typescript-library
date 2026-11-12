@@ -6,17 +6,23 @@
   <version>1.0.0</version>
   <!-- The oracle uses the same validator and mandatory reader as an artifact-server write. -->
   <dependencies>
-    <dependency><groupId>org.metadatacenter</groupId><artifactId>cedar-model-validation-library</artifactId><version>2.9.32-SNAPSHOT</version></dependency>
-    <dependency><groupId>org.metadatacenter</groupId><artifactId>cedar-artifact-library</artifactId><version>2.9.32-SNAPSHOT</version></dependency>
+    <dependency><groupId>org.metadatacenter</groupId><artifactId>cedar-model-validation-library</artifactId><version>2.9.35-SNAPSHOT</version></dependency>
+    <dependency><groupId>org.metadatacenter</groupId><artifactId>cedar-artifact-library</artifactId><version>2.9.35-SNAPSHOT</version></dependency>
   </dependencies>
   <!--
     The Nexus repositories the Java builds read, which answer anonymous reads. Central comes first, as
     in their settings: a third-party artifact asked of Nexus first costs two misses against its daily
     request limit.
+
+    CEDAR snapshots are checked on every run rather than once a day. The gate compares the browser
+    meta-schemas with the Java libraries on develop, and a cached snapshot up to a day old, or one a
+    failed check left in place, makes it fail or pass against the wrong Java. A check costs a few
+    small metadata requests, and a jar is fetched only after a new build. A local install newer than
+    the latest build is still used.
   -->
   <repositories>
     <repository><id>central</id><url>https://repo.maven.apache.org/maven2</url><snapshots><enabled>false</enabled></snapshots></repository>
-    <repository><id>cedar-snapshots</id><url>https://nexus.bmir.stanford.edu/repository/snapshots/</url><releases><enabled>false</enabled></releases><snapshots><enabled>true</enabled></snapshots></repository>
+    <repository><id>cedar-snapshots</id><url>https://nexus.bmir.stanford.edu/repository/snapshots/</url><releases><enabled>false</enabled></releases><snapshots><enabled>true</enabled><updatePolicy>always</updatePolicy></snapshots></repository>
     <repository><id>cedar-releases</id><url>https://nexus.bmir.stanford.edu/repository/releases/</url><snapshots><enabled>false</enabled></snapshots></repository>
   </repositories>
 </project>

@@ -1,3 +1,5 @@
+import type { AttributeValueNameConflict } from './AttributeValueNamePolicy';
+
 /**
  * What a document stated that the instance model does not keep.
  *
@@ -13,6 +15,7 @@ export class StoredForm {
   private static readonly nulls = new WeakMap<object, readonly string[]>();
   private static readonly contextTerms = new WeakMap<object, { [key: string]: unknown }>();
   private static readonly members = new WeakMap<object, { [key: string]: unknown }>();
+  private static readonly attributeNameConflicts = new WeakMap<object, readonly AttributeValueNameConflict[]>();
 
   private constructor() {}
 
@@ -47,5 +50,18 @@ export class StoredForm {
   /** Null for a container the reader did not build from a document. */
   static membersOf(container: object): { [key: string]: unknown } | null {
     return StoredForm.members.get(container) ?? null;
+  }
+
+  /**
+   * The attribute names a container's document gave that `AttributeValueNamePolicy` refuses. The
+   * model cannot hold such a name, a reserved or blank one or a second use of one, so the reader
+   * leaves its attribute out, and only this record says that the document stated it.
+   */
+  static recordAttributeNameConflicts(container: object, conflicts: readonly AttributeValueNameConflict[]): void {
+    if (conflicts.length > 0) StoredForm.attributeNameConflicts.set(container, conflicts);
+  }
+
+  static attributeNameConflictsOf(container: object): readonly AttributeValueNameConflict[] {
+    return StoredForm.attributeNameConflicts.get(container) ?? [];
   }
 }

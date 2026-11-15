@@ -209,7 +209,9 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     // Nested containers run through this method in their own right. Report
     // only this level here so a nested conflict is not repeated once for every
     // ancestor on the way back out of the recursive parse.
-    for (const conflict of AttributeValueNamePolicy.findConflicts(ret, parent, true).filter((candidate) => candidate.path.length === 0)) {
+    const conflicts = AttributeValueNamePolicy.findConflicts(ret, parent, true).filter((candidate) => candidate.path.length === 0);
+    StoredForm.recordAttributeNameConflicts(ret, conflicts);
+    for (const conflict of conflicts) {
       parsingResult.addBlueprintComparisonError(
         new ComparisonError(
           'JsonTemplateInstanceReader',

@@ -140,54 +140,9 @@ const validators: Record<string, ((document: JsonNode) => Verdict) | null> = {
   elementInstance: null,
 };
 
-// Where this library's validators still accept what Java's validator refuses, by position and input.
-// Each is a defect here, not an accepted variation: a listed input must still differ, so fixing one
-// fails this spec until its entry is removed, and every case not listed must agree.
-const OPEN_VALIDATOR_DEFECTS: Record<string, { reason: string; inputs: string[] }> = {
-  'attribute name in a template instance': {
-    reason: "The instance validator admits an attribute name Java's validator refuses.",
-    inputs: [
-      '@context',
-      'schema:description',
-      'schema:identifier',
-      'schema:isBasedOn',
-      'pav:createdOn',
-      'oslc:modifiedBy',
-      '',
-      ' ',
-      '\u001c',
-      '\u001d',
-      '\u001e',
-      '\u001f',
-      '<another attribute in the same field>',
-    ],
-  },
-  'attribute name in a nested element instance': {
-    reason: "The instance validator admits an attribute name Java's validator refuses.",
-    inputs: [
-      '@context',
-      'schema:name',
-      'schema:description',
-      'schema:identifier',
-      'schema:isBasedOn',
-      'pav:derivedFrom',
-      'pav:createdOn',
-      'oslc:modifiedBy',
-      '_annotations',
-      '',
-      ' ',
-      '\u001c',
-      '\u001d',
-      '\u001e',
-      '\u001f',
-    ],
-  },
-};
-
 it("gives every case the verdict Java's validator gives, where this library has one", () => {
   expect(Object.keys(validators).sort()).toEqual(Object.keys(fixture.bases).sort());
   const differences: string[] = [];
-  const stillOpen = new Set<string>();
   for (const position of fixture.positions) {
     const judge = validators[position.base];
     if (judge === null) continue;
@@ -195,16 +150,10 @@ it("gives every case the verdict Java's validator gives, where this library has 
       const java = row.java.validator;
       if (java === undefined) continue;
       const ours = judge(replace((fixture.bases[position.base] as any).json, position.slot, row.value ?? row.input) as JsonNode);
-      const open = OPEN_VALIDATOR_DEFECTS[position.name]?.inputs.includes(row.input) === true;
-      if (open && ours !== java) stillOpen.add(`${position.name} / ${JSON.stringify(row.input)}`);
-      else if (ours !== java || open) differences.push(`${position.name} / ${JSON.stringify(row.input)}: ${ours} where Java ${java}`);
+      if (ours !== java) differences.push(`${position.name} / ${JSON.stringify(row.input)}: ${ours} where Java ${java}`);
     }
   }
   expect(differences).toEqual([]);
-  const listed = Object.entries(OPEN_VALIDATOR_DEFECTS).flatMap(([name, entry]) =>
-    entry.inputs.map((input) => `${name} / ${JSON.stringify(input)}`),
-  );
-  expect(listed.filter((entry) => !stillOpen.has(entry))).toEqual([]);
 });
 
 it('pins Java fixture provenance', () => {

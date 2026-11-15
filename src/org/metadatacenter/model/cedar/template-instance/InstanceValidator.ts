@@ -17,7 +17,7 @@ import { JsonPath } from '../util/path/JsonPath';
 import { UiInputType } from '../types/wrapped-types/UiInputType';
 import { InstanceDataAttributeValueField } from './InstanceDataAttributeValueField';
 import { InstanceDataAttributeValueFieldName } from './InstanceDataAttributeValueFieldName';
-import { AttributeValueNamePolicy } from './AttributeValueNamePolicy';
+import { AttributeValueNameConflict, AttributeValueNamePolicy } from './AttributeValueNamePolicy';
 import { CedarArtifactType } from '../types/cedar-types/CedarArtifactType';
 import { TemplateField } from '../field/TemplateField';
 import { JsonTemplateInstanceWriter } from '../../../io/writer/json/JsonTemplateInstanceWriter';
@@ -163,7 +163,14 @@ export class InstanceValidator {
     }
 
     const parent = template.cedarArtifactType === CedarArtifactType.TEMPLATE ? 'template' : 'element';
-    for (const conflict of AttributeValueNamePolicy.findConflicts(container, parent).filter((candidate) => candidate.path.length === 0)) {
+    // The model's own names, and, judged as stored, those the document gave that the model could not hold.
+    const conflicts = new Map<string, AttributeValueNameConflict>();
+    for (const conflict of [
+      ...AttributeValueNamePolicy.findConflicts(container, parent).filter((candidate) => candidate.path.length === 0),
+      ...(options.asWritten === true ? [] : StoredForm.attributeNameConflictsOf(container)),
+    ])
+      conflicts.set(ValidationPolicy.pointer(AttributeValueNamePolicy.locationOf(conflict)) + ' ' + conflict.kind, conflict);
+    for (const conflict of conflicts.values()) {
       result.addBlueprintComparisonError(
         new ComparisonError(
           LOCATION,

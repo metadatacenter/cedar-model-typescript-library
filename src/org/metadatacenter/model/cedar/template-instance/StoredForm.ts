@@ -10,9 +10,15 @@ import type { AttributeValueNameConflict } from './AttributeValueNamePolicy';
  * records both here, keyed by the objects it builds, which leaves the model, its
  * equality and its serializations as they were. A copy of a model carries no
  * record, and is judged as the writer would write it.
+ *
+ * One record does reach a serialization. `InstanceInflater` keeps each stated
+ * null whose key the stored template requires of the field's value, and the
+ * JSON writer writes the kept ones, since leaving them out would make the
+ * written document fail the template the stored one satisfied.
  */
 export class StoredForm {
   private static readonly nulls = new WeakMap<object, readonly string[]>();
+  private static readonly keptNulls = new WeakMap<object, readonly string[]>();
   private static readonly contextTerms = new WeakMap<object, { [key: string]: unknown }>();
   private static readonly members = new WeakMap<object, { [key: string]: unknown }>();
   private static readonly attributeNameConflicts = new WeakMap<object, readonly AttributeValueNameConflict[]>();
@@ -26,6 +32,15 @@ export class StoredForm {
 
   static nullsOf(value: object): readonly string[] {
     return StoredForm.nulls.get(value) ?? [];
+  }
+
+  /** The stated nulls of a value that the JSON writer writes: those its stored value schema requires. */
+  static recordKeptNulls(value: object, keys: readonly string[]): void {
+    if (keys.length > 0) StoredForm.keptNulls.set(value, keys);
+  }
+
+  static keptNullsOf(value: object): readonly string[] {
+    return StoredForm.keptNulls.get(value) ?? [];
   }
 
   /** The standard prefixes and term definitions a container's `@context` held. */

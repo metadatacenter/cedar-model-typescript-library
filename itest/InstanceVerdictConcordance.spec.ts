@@ -87,12 +87,7 @@ test('holds a case for every instance in the corpus that has its template beside
 // a defect here, not an accepted variation: a case listed must still disagree in the judgements named,
 // so fixing one fails this spec until its entry is removed, and every case not listed must agree.
 type Judgement = 'save' | 'verbatim' | 'asWritten' | 'write';
-const OPEN_DEFECTS: Record<string, { judgements: Judgement[]; reason: string }> = {
-  'cee-suite/017#label-null-required': {
-    judgements: ['write'],
-    reason: 'The writer drops the null rdfs:label the template requires, so the server refuses the written document.',
-  },
-};
+const OPEN_DEFECTS: Record<string, { judgements: Judgement[]; reason: string }> = {};
 const expected = (id: string, judgement: Judgement, javaValid: boolean): boolean =>
   OPEN_DEFECTS[id]?.judgements.includes(judgement) === true ? !javaValid : javaValid;
 

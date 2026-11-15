@@ -16,6 +16,8 @@ import { AbstractChildDeploymentInfo } from '../deployment/AbstractChildDeployme
 import { AbstractDynamicChildDeploymentInfo } from '../deployment/AbstractDynamicChildDeploymentInfo';
 import { InstanceDataAtomList } from './InstanceDataAtomList';
 import { TemplateChild } from '../types/basic-types/TemplateChild';
+import { StoredForm } from './StoredForm';
+import { StoredValueRequirements } from '../StoredValueRequirements';
 
 /**
  * Reconstruct a complete instance from a sparse one and its template.
@@ -34,6 +36,11 @@ import { TemplateChild } from '../types/basic-types/TemplateChild';
  *    every property the template's JSON Schema requires is present, and a
  *    repeated child short of its lower bound is filled to it.
  *  - **child order** — children are placed in the template's declared order.
+ *  - **stated nulls** — a field value keeps each optional key the document
+ *    stated as null where the stored template's value schema for that field
+ *    requires the key, so the JSON writer writes it. The model holds a stated
+ *    null as no value, and writing none made an instance the server stored fail
+ *    the same template once written back.
  *
  * Values the sparse instance already carries are preserved untouched. Mirrors the
  * Java library's `InstanceInflater`.
@@ -90,6 +97,22 @@ export class InstanceInflater {
     if (value instanceof InstanceDataContainer) return InstanceInflater.copyContainer(value);
     if (Array.isArray(value)) return value.map((item) => InstanceInflater.copyValue(item)) as InstanceDataAtomList;
     return value;
+  }
+
+  /**
+   * The value keeping each stated null its stored value schema requires. A value that keeps one is copied,
+   * since `inflated` shares values with the instance it leaves as it was.
+   */
+  private static keepingStatedNulls(value: InstanceDataAtomType, required: readonly string[]): InstanceDataAtomType {
+    if (value === null || typeof value !== 'object' || value instanceof InstanceDataContainer) return value;
+    if (Array.isArray(value)) return value.map((item) => InstanceInflater.keepingStatedNulls(item, required)) as InstanceDataAtomList;
+    const stated = StoredForm.nullsOf(value);
+    const kept = stated.filter((key) => required.includes(key));
+    if (kept.length === 0) return value;
+    const copy: InstanceDataAtomType = Object.assign(Object.create(Object.getPrototypeOf(value)), value);
+    StoredForm.recordNulls(copy, stated);
+    StoredForm.recordKeptNulls(copy, kept);
+    return copy;
   }
 
   private static emptyField(field: TemplateField): InstanceDataAtomType {
@@ -178,6 +201,9 @@ export class InstanceInflater {
         if (childInfo?.isMultiInAnyWay()) {
           value = [...value, ...InstanceInflater.missingOccurrences(child, childInfo, value.length)];
         }
+      }
+      if (child instanceof TemplateField) {
+        value = InstanceInflater.keepingStatedNulls(value, StoredValueRequirements.of(template, name));
       }
       if (child instanceof TemplateElement) {
         if (value instanceof InstanceDataContainer) {

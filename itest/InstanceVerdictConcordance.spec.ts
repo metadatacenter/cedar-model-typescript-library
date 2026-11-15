@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
 import { JsonNode } from '../src';
@@ -17,6 +17,8 @@ const corpus = JSON.parse(bytes.toString()) as {
     template: string;
     patch?: { instance?: Operation[]; template?: Operation[]; stored?: Operation[] };
     completion?: Operation[];
+    instanceSha256: string;
+    templateSha256: string;
     javaValid: boolean;
     written?: { document: JsonNode; javaValid: boolean; javaErrors: string[] } | null;
   }[];
@@ -29,7 +31,55 @@ test('pins the instance verdicts to the Java validator and the shared corpus', (
   expect(createHash('sha256').update(bytes).digest('hex')).toBe(lock.sha256);
   expect(corpus.cases).toHaveLength(lock.caseCount);
   expect(lock.javaCommit).toMatch(/^[a-f0-9]{40}$/);
-  expect(lock.corpusCommit).toMatch(/^[a-f0-9]{40}$/);
+  // The verdicts judged the corpus this repository vendors, which the Java compatibility lock names.
+  const vendored = JSON.parse(readFileSync(join(__dirname, 'resources/javaArtifactLibraryLock.json'), 'utf8'));
+  expect(lock.corpusCommit).toBe(vendored.sharedCorpus.gitCommit);
+});
+
+test('judges the corpus files Java judged, byte for byte', () => {
+  const digest = (relative: string): string =>
+    createHash('sha256')
+      .update(readFileSync(join(artifacts, relative)))
+      .digest('hex');
+  const changed = corpus.cases.filter((c) => digest(c.instance) !== c.instanceSha256 || digest(c.template) !== c.templateSha256);
+  expect(changed.map((c) => c.id)).toEqual([]);
+});
+
+// The recorder's pairing: every instance in a case directory with a template beside it, the first
+// template by name, neither a generated file nor anything but a JSON object.
+function corpusPairs(): string[] {
+  const isObject = (file: string): boolean => {
+    try {
+      const value: unknown = JSON.parse(readFileSync(file, 'utf8'));
+      return value !== null && typeof value === 'object' && !Array.isArray(value);
+    } catch {
+      return false;
+    }
+  };
+  const directories = (root: string): string[] =>
+    readdirSync(root)
+      .sort()
+      .filter((name) => statSync(join(root, name)).isDirectory());
+  const pairs: string[] = [];
+  for (const kind of directories(artifacts)) {
+    for (const name of directories(join(artifacts, kind))) {
+      const files = readdirSync(join(artifacts, kind, name)).sort();
+      const usable = (prefix: string) =>
+        files.filter(
+          (file) =>
+            file.startsWith(prefix) && file.endsWith('.json') && !file.includes('generated') && isObject(join(artifacts, kind, name, file)),
+        );
+      const [template] = usable('template-');
+      if (template === undefined) continue;
+      for (const instance of usable('instance-')) pairs.push(`${kind}/${name}/${instance} ${kind}/${name}/${template}`);
+    }
+  }
+  return pairs;
+}
+
+test('holds a case for every instance in the corpus that has its template beside it', () => {
+  const recorded = corpus.cases.filter((c) => !c.id.includes('#')).map((c) => `${c.instance} ${c.template}`);
+  expect(recorded.sort()).toEqual(corpusPairs().sort());
 });
 
 // Cases on which this library still reaches a different verdict, by the judgement that differs. Each is

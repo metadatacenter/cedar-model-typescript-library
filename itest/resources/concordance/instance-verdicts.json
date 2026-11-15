@@ -4,6 +4,8 @@
    "id": "cee-suite/001",
    "instance": "cee-suite/001/instance-001.json",
    "template": "cee-suite/001/template-001-original.json",
+   "instanceSha256": "4981c780e17de3bd4df899803e5b2d81289ada1da8eac5061d0cbe4be28f6e96",
+   "templateSha256": "59f0d2732913db63fe48c421a59edff5eb391972110de88d33ba56a3e5cee7d7",
    "javaValid": true,
    "javaErrors": [],
    "written": {
@@ -67,6 +69,8 @@
    "id": "cee-suite/002",
    "instance": "cee-suite/002/instance-002.json",
    "template": "cee-suite/002/template-002.json",
+   "instanceSha256": "cb955f52ed098e69d4fbe2f1223a446b8e9bf9ff270c5c663e11d5b6bb579262",
+   "templateSha256": "197784adb82dabe3f1f6aecd626ae29c46d4dba9b55e91878693510f552bb61d",
    "javaValid": true,
    "javaErrors": [],
    "written": {
@@ -135,6 +139,8 @@
    "id": "cee-suite/003",
    "instance": "cee-suite/003/instance-003.json",
    "template": "cee-suite/003/template-003.json",
+   "instanceSha256": "75065429f0b36c99dbf7632d535096bb0bbce3390450394fa9e2d8f154d76a6e",
+   "templateSha256": "9b26b3eb56661b0d60ac848b1ef221b2b0904e581277d9b87b6b668d004b4016",
    "javaValid": true,
    "javaErrors": [],
    "written": {
@@ -203,6 +209,8 @@
    "id": "cee-suite/004",
    "instance": "cee-suite/004/instance-004.json",
    "template": "cee-suite/004/template-004.json",
+   "instanceSha256": "415ef29f03c4061b55153f78f8d97347a93f9b8984a69d5a57cda56d460d8f53",
+   "templateSha256": "6f8a5000dd3e121c1cf27a40109d7c80a95d9c585115060dc8ee65e9b2001641",
    "completion": [
     {
      "op": "add",
@@ -332,6 +340,8 @@
    "id": "cee-suite/006",
    "instance": "cee-suite/006/instance-006.json",
    "template": "cee-suite/006/template-006.json",
+   "instanceSha256": "ba4665e3da68748436d2d31c34691a278a17b75789b72070c86b3fc253ce59fa",
+   "templateSha256": "b4f46a9381f7a7e0e63036e578e098485b51a999a1fcc506438fdd5a5222bae9",
    "javaValid": true,
    "javaErrors": [],
    "written": {
@@ -412,6 +422,8 @@
    "id": "cee-suite/007",
    "instance": "cee-suite/007/instance-007.json",
    "template": "cee-suite/007/template-007.json",
+   "instanceSha256": "ade13d884ce47eb1fde6718805c139d2f6d137b68fef6784d9ea48d685f3b80e",
+   "templateSha256": "da3194a4e27a776b6077bfb7f8cd76f57dfbd58a7594784a4c9a7320b56b76b7",
    "javaValid": true,
    "javaErrors": [],
    "written": {
@@ -477,6 +489,8 @@
    "id": "cee-suite/008",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "completion": [
     {
      "op": "add",
@@ -669,6 +683,8 @@
    "id": "cee-suite/008#annotation-iri",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "instance": [
      {
@@ -919,6 +935,8 @@
    "id": "cee-suite/008#annotation-literal",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "instance": [
      {
@@ -1169,6 +1187,8 @@
    "id": "cee-suite/008#annotation-number",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "instance": [
      {
@@ -1304,6 +1324,8 @@
    "id": "cee-suite/008#annotation-boolean",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "instance": [
      {
@@ -1439,6 +1461,8 @@
    "id": "cee-suite/008#annotation-null-value",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "instance": [
      {
@@ -1574,6 +1598,8 @@
    "id": "cee-suite/008#annotation-null-iri",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "instance": [
      {
@@ -1711,6 +1737,8 @@
    "id": "cee-suite/008#annotation-empty",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "instance": [
      {
@@ -1844,6 +1872,8 @@
    "id": "cee-suite/008#annotation-iri-and-value",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "instance": [
      {
@@ -2099,6 +2129,8 @@
    "id": "cee-suite/008#annotation-extra-key",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "instance": [
      {
@@ -2354,6 +2386,8 @@
    "id": "cee-suite/008#annotation-relative-iri",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "instance": [
      {
@@ -2489,6 +2523,8 @@
    "id": "cee-suite/008#annotation-blank-key",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "instance": [
      {
@@ -2743,6 +2779,8 @@
    "id": "cee-suite/008#annotation-not-object",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "instance": [
      {
@@ -2878,6 +2916,8 @@
    "id": "cee-suite/008#annotations-empty",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "instance": [
      {
@@ -3119,6 +3159,8 @@
    "id": "cee-suite/008#annotations-list",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "instance": [
      {
@@ -3250,6 +3292,8 @@
    "id": "cee-suite/008#annotation-undeclared",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "instance": [
      {
@@ -3466,6 +3510,8 @@
    "id": "cee-suite/008#type-iri",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "instance": [
      {
@@ -3668,6 +3714,8 @@
    "id": "cee-suite/008#type-list",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "instance": [
      {
@@ -3872,6 +3920,8 @@
    "id": "cee-suite/008#type-empty-list",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "instance": [
      {
@@ -4077,6 +4127,8 @@
    "id": "cee-suite/008#type-repeated",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "instance": [
      {
@@ -4293,6 +4345,8 @@
    "id": "cee-suite/008#type-relative",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "instance": [
      {
@@ -4384,6 +4438,8 @@
    "id": "cee-suite/008#type-number",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "instance": [
      {
@@ -4477,6 +4533,8 @@
    "id": "cee-suite/008#type-null",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "instance": [
      {
@@ -4682,6 +4740,8 @@
    "id": "cee-suite/008#derived-from-relative",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "instance": [
      {
@@ -4888,6 +4948,8 @@
    "id": "cee-suite/008#derived-from-absolute",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "instance": [
      {
@@ -5090,6 +5152,8 @@
    "id": "cee-suite/008#element-type",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "instance": [
      {
@@ -5292,6 +5356,8 @@
    "id": "cee-suite/008#element-type-list",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "instance": [
      {
@@ -5500,6 +5566,8 @@
    "id": "cee-suite/008#element-type-relative",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "instance": [
      {
@@ -5591,6 +5659,8 @@
    "id": "cee-suite/008#stored-element-id-absent",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "stored": [
      {
@@ -5680,6 +5750,8 @@
    "id": "cee-suite/008#stored-element-id-null",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "stored": [
      {
@@ -5768,6 +5840,8 @@
    "id": "cee-suite/008#stored-element-id-blank",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "stored": [
      {
@@ -5858,6 +5932,8 @@
    "id": "cee-suite/008#stored-element-id-relative",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "stored": [
      {
@@ -5948,6 +6024,8 @@
    "id": "cee-suite/008#stored-root-id-relative",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "stored": [
      {
@@ -6038,6 +6116,8 @@
    "id": "cee-suite/008#stored-based-on-relative",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "stored": [
      {
@@ -6128,6 +6208,8 @@
    "id": "cee-suite/008#stored-root-id-absent",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "stored": [
      {
@@ -6217,6 +6299,8 @@
    "id": "cee-suite/008#stored-root-id-null",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "stored": [
      {
@@ -6305,6 +6389,8 @@
    "id": "cee-suite/008#stored-based-on-absent",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "stored": [
      {
@@ -6394,6 +6480,8 @@
    "id": "cee-suite/008#stored-name-absent",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "stored": [
      {
@@ -6483,6 +6571,8 @@
    "id": "cee-suite/008#stored-name-empty",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "stored": [
      {
@@ -6573,6 +6663,8 @@
    "id": "cee-suite/008#stored-created-on-absent",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "stored": [
      {
@@ -6662,6 +6754,8 @@
    "id": "cee-suite/008#stored-created-on-null",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "stored": [
      {
@@ -6750,6 +6844,8 @@
    "id": "cee-suite/008#stored-created-on-colonless-offset",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "stored": [
      {
@@ -6838,6 +6934,8 @@
    "id": "cee-suite/008#stored-created-on-day-past-month",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "stored": [
      {
@@ -6928,6 +7026,8 @@
    "id": "cee-suite/008#stored-created-on-end-of-day",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "stored": [
      {
@@ -7018,6 +7118,8 @@
    "id": "cee-suite/008#stored-created-on-lowercase-t",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "stored": [
      {
@@ -7108,6 +7210,8 @@
    "id": "cee-suite/008#stored-created-on-no-seconds",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "stored": [
      {
@@ -7198,6 +7302,8 @@
    "id": "cee-suite/008#stored-created-on-hour-offset",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "stored": [
      {
@@ -7288,6 +7394,8 @@
    "id": "cee-suite/008#stored-created-on-date-only",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "stored": [
      {
@@ -7378,6 +7486,8 @@
    "id": "cee-suite/008#stored-created-on-offset-too-far",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "stored": [
      {
@@ -7468,6 +7578,8 @@
    "id": "cee-suite/008#stored-created-on-leap-second",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "stored": [
      {
@@ -7558,6 +7670,8 @@
    "id": "cee-suite/008#stored-derived-from-malformed",
    "instance": "cee-suite/008/instance-008.json",
    "template": "cee-suite/008/template-008.json",
+   "instanceSha256": "9568933e8817ce90ef79f5a6ccd0a9fc2d9166bc1a2f78c09f548c5f19d18152",
+   "templateSha256": "47fa3cf095b126c52e9e487a45ea82c18b16388df887ab425b78401bcab921cd",
    "patch": {
     "stored": [
      {
@@ -7649,6 +7763,8 @@
    "id": "cee-suite/009",
    "instance": "cee-suite/009/instance-009.json",
    "template": "cee-suite/009/template-009.json",
+   "instanceSha256": "a37c16645ed053e97a1213f947a9ff61d9ec1207cc8f9666d5a0a3dbdae0b23d",
+   "templateSha256": "19830419f10f6edd40ae1204adeccbaea11f85c465c562a6f5741b04c3199b15",
    "completion": [
     {
      "op": "add",
@@ -7838,6 +7954,8 @@
    "id": "cee-suite/011",
    "instance": "cee-suite/011/instance-011.json",
    "template": "cee-suite/011/template-011.json",
+   "instanceSha256": "5c67b11c06f5b932ef709876a6c0c412d107fc8460e74ef33c46a2bdd43b5b66",
+   "templateSha256": "57c0185c9bcc732e58787adda3ee09e9b52983dd1496f1a3e1e3f9b7a1ffb161",
    "completion": [
     {
      "op": "add",
@@ -7988,6 +8106,8 @@
    "id": "cee-suite/012",
    "instance": "cee-suite/012/instance-012.json",
    "template": "cee-suite/012/template-012.json",
+   "instanceSha256": "8fdebbd3b279b6731c40f8bde54a52dfc9e172111d4a57ce9c670ace52f37ece",
+   "templateSha256": "85369ba334b7f4b916cbe45be817bf90cf54d17ea8537805d0f671f57f5fb8e8",
    "completion": [
     {
      "op": "add",
@@ -8148,6 +8268,8 @@
    "id": "cee-suite/013",
    "instance": "cee-suite/013/instance-013.json",
    "template": "cee-suite/013/template-013.json",
+   "instanceSha256": "7784048814981024d72d12f6f623cc6ed51c8916dfe619230e9cd9983f691318",
+   "templateSha256": "ff23ea0a30fe535b1123ccd3f90f72a9ded4cb48eaebc55ef612379c3646f2a9",
    "completion": [
     {
      "op": "add",
@@ -8321,6 +8443,8 @@
    "id": "cee-suite/014",
    "instance": "cee-suite/014/instance-014.json",
    "template": "cee-suite/014/template-014.json",
+   "instanceSha256": "b823f01fd9f03f035275dc1e287ad3bf30e716fd0fc2442e6da6401c0e7a99b5",
+   "templateSha256": "58f72894064d5aa70b4808e5e5ecb6c044fe9aba9e0bc6c32551083030ddb9a9",
    "javaValid": true,
    "javaErrors": [],
    "written": {
@@ -8400,6 +8524,8 @@
    "id": "cee-suite/015",
    "instance": "cee-suite/015/instance-015.json",
    "template": "cee-suite/015/template-015.json",
+   "instanceSha256": "1676a168e5df07f25d3c5598b0152819b3bbddca85a3f07820654afc806b8043",
+   "templateSha256": "6218ddee11f4263c4332def07d794b8989e5077514b0c1a684d2000a4a2aa40e",
    "completion": [
     {
      "op": "add",
@@ -8548,6 +8674,8 @@
    "id": "cee-suite/015#static-empty",
    "instance": "cee-suite/015/instance-015.json",
    "template": "cee-suite/015/template-015.json",
+   "instanceSha256": "1676a168e5df07f25d3c5598b0152819b3bbddca85a3f07820654afc806b8043",
+   "templateSha256": "6218ddee11f4263c4332def07d794b8989e5077514b0c1a684d2000a4a2aa40e",
    "patch": {
     "instance": [
      {
@@ -8706,6 +8834,8 @@
    "id": "cee-suite/015#static-value-null",
    "instance": "cee-suite/015/instance-015.json",
    "template": "cee-suite/015/template-015.json",
+   "instanceSha256": "1676a168e5df07f25d3c5598b0152819b3bbddca85a3f07820654afc806b8043",
+   "templateSha256": "6218ddee11f4263c4332def07d794b8989e5077514b0c1a684d2000a4a2aa40e",
    "patch": {
     "instance": [
      {
@@ -8872,6 +9002,8 @@
    "id": "cee-suite/016",
    "instance": "cee-suite/016/instance-016.json",
    "template": "cee-suite/016/template-016.json",
+   "instanceSha256": "4fd45e5ec617486a05e2fbe751f5b5bcb44be885c2357409420955bd966d1133",
+   "templateSha256": "a36e584c042f94edc764dfe3e4317a8e029806f95749c1cded8223a6f36cff2c",
    "javaValid": false,
    "javaErrors": [
     "/@context/Phone Field: does not have a value in the enumeration ['https://schema.metadatacenter.org/properties/6983fe2c-d004-4144-86ea-7132026364bc']",
@@ -8940,6 +9072,8 @@
    "id": "cee-suite/017",
    "instance": "cee-suite/017/instance-017.json",
    "template": "cee-suite/017/template-017.json",
+   "instanceSha256": "ec3c53e640acce3b322514c9d8c1eab01816b0619124d7c044d68e87c07eb899",
+   "templateSha256": "d8688701632a73de110aa84e500b19c15a263d554f7dfc1526fea6540f7a24cf",
    "completion": [
     {
      "op": "add",
@@ -9067,6 +9201,8 @@
    "id": "cee-suite/017#date-unfilled-untyped",
    "instance": "cee-suite/017/instance-017.json",
    "template": "cee-suite/017/template-017.json",
+   "instanceSha256": "ec3c53e640acce3b322514c9d8c1eab01816b0619124d7c044d68e87c07eb899",
+   "templateSha256": "d8688701632a73de110aa84e500b19c15a263d554f7dfc1526fea6540f7a24cf",
    "patch": {
     "instance": [
      {
@@ -9204,6 +9340,8 @@
    "id": "cee-suite/017#date-filled-untyped",
    "instance": "cee-suite/017/instance-017.json",
    "template": "cee-suite/017/template-017.json",
+   "instanceSha256": "ec3c53e640acce3b322514c9d8c1eab01816b0619124d7c044d68e87c07eb899",
+   "templateSha256": "d8688701632a73de110aa84e500b19c15a263d554f7dfc1526fea6540f7a24cf",
    "patch": {
     "instance": [
      {
@@ -9345,6 +9483,8 @@
    "id": "cee-suite/017#label-null-required",
    "instance": "cee-suite/017/instance-017.json",
    "template": "cee-suite/017/template-017.json",
+   "instanceSha256": "ec3c53e640acce3b322514c9d8c1eab01816b0619124d7c044d68e87c07eb899",
+   "templateSha256": "d8688701632a73de110aa84e500b19c15a263d554f7dfc1526fea6540f7a24cf",
    "patch": {
     "instance": [
      {
@@ -9497,6 +9637,8 @@
    "id": "cee-suite/017#label-absent-required",
    "instance": "cee-suite/017/instance-017.json",
    "template": "cee-suite/017/template-017.json",
+   "instanceSha256": "ec3c53e640acce3b322514c9d8c1eab01816b0619124d7c044d68e87c07eb899",
+   "templateSha256": "d8688701632a73de110aa84e500b19c15a263d554f7dfc1526fea6540f7a24cf",
    "patch": {
     "instance": [
      {
@@ -9650,6 +9792,8 @@
    "id": "cee-suite/018",
    "instance": "cee-suite/018/instance-018.json",
    "template": "cee-suite/018/template-018.json",
+   "instanceSha256": "8917178c93946fc9b129242f9c46a6513fd63888b72b8cb8a9c2740aab237bd1",
+   "templateSha256": "bb734158dbcf2ce19b3d4715b3e3face88c0d87b45722961cfdda3bbd78b22fa",
    "completion": [
     {
      "op": "add",
@@ -9833,6 +9977,8 @@
    "id": "cee-suite/019",
    "instance": "cee-suite/019/instance-019.json",
    "template": "cee-suite/019/template-019.json",
+   "instanceSha256": "c73b3772ffb68b066c99fe5970b90be1e4ef8d19e7f807b5adec527082224a56",
+   "templateSha256": "b0d5d2e85436c5178c0add359e9860fbbaac50788def260f5e6dc66b8635aaf5",
    "completion": [
     {
      "op": "add",
@@ -10004,6 +10150,8 @@
    "id": "cee-suite/020",
    "instance": "cee-suite/020/instance-020.json",
    "template": "cee-suite/020/template-020.json",
+   "instanceSha256": "a9e7af80bd37345ba34a8457d071f8e8b9bc777461ea8014971f48cc196b950b",
+   "templateSha256": "bb4e067c4e537c15bb0cbb56d4eb476099fc845883cf47edda5441887e0a4287",
    "completion": [
     {
      "op": "add",
@@ -10174,6 +10322,8 @@
    "id": "cee-suite/021",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
+   "instanceSha256": "faba94f4e4a42d1821969ea1bc99b34499011e6878333442b1f7ba568db29cdf",
+   "templateSha256": "e42619a748e652e21d2d912b331b50fdad7a57281ead9db124d466fe05f9e679",
    "completion": [
     {
      "op": "add",
@@ -10280,6 +10430,8 @@
    "id": "cee-suite/021#empty",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
+   "instanceSha256": "faba94f4e4a42d1821969ea1bc99b34499011e6878333442b1f7ba568db29cdf",
+   "templateSha256": "e42619a748e652e21d2d912b331b50fdad7a57281ead9db124d466fe05f9e679",
    "patch": {
     "instance": [
      {
@@ -10392,6 +10544,8 @@
    "id": "cee-suite/021#label-null",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
+   "instanceSha256": "faba94f4e4a42d1821969ea1bc99b34499011e6878333442b1f7ba568db29cdf",
+   "templateSha256": "e42619a748e652e21d2d912b331b50fdad7a57281ead9db124d466fe05f9e679",
    "patch": {
     "instance": [
      {
@@ -10506,6 +10660,8 @@
    "id": "cee-suite/021#label-empty",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
+   "instanceSha256": "faba94f4e4a42d1821969ea1bc99b34499011e6878333442b1f7ba568db29cdf",
+   "templateSha256": "e42619a748e652e21d2d912b331b50fdad7a57281ead9db124d466fe05f9e679",
    "patch": {
     "instance": [
      {
@@ -10622,6 +10778,8 @@
    "id": "cee-suite/021#label-text",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
+   "instanceSha256": "faba94f4e4a42d1821969ea1bc99b34499011e6878333442b1f7ba568db29cdf",
+   "templateSha256": "e42619a748e652e21d2d912b331b50fdad7a57281ead9db124d466fe05f9e679",
    "patch": {
     "instance": [
      {
@@ -10742,6 +10900,8 @@
    "id": "cee-suite/021#class-only",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
+   "instanceSha256": "faba94f4e4a42d1821969ea1bc99b34499011e6878333442b1f7ba568db29cdf",
+   "templateSha256": "e42619a748e652e21d2d912b331b50fdad7a57281ead9db124d466fe05f9e679",
    "patch": {
     "instance": [
      {
@@ -10856,6 +11016,8 @@
    "id": "cee-suite/021#class-and-label-null",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
+   "instanceSha256": "faba94f4e4a42d1821969ea1bc99b34499011e6878333442b1f7ba568db29cdf",
+   "templateSha256": "e42619a748e652e21d2d912b331b50fdad7a57281ead9db124d466fe05f9e679",
    "patch": {
     "instance": [
      {
@@ -10971,6 +11133,8 @@
    "id": "cee-suite/021#class-and-label-text",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
+   "instanceSha256": "faba94f4e4a42d1821969ea1bc99b34499011e6878333442b1f7ba568db29cdf",
+   "templateSha256": "e42619a748e652e21d2d912b331b50fdad7a57281ead9db124d466fe05f9e679",
    "patch": {
     "instance": [
      {
@@ -11093,6 +11257,8 @@
    "id": "cee-suite/021#value-null",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
+   "instanceSha256": "faba94f4e4a42d1821969ea1bc99b34499011e6878333442b1f7ba568db29cdf",
+   "templateSha256": "e42619a748e652e21d2d912b331b50fdad7a57281ead9db124d466fe05f9e679",
    "patch": {
     "instance": [
      {
@@ -11213,6 +11379,8 @@
    "id": "cee-suite/021#id-empty",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
+   "instanceSha256": "faba94f4e4a42d1821969ea1bc99b34499011e6878333442b1f7ba568db29cdf",
+   "templateSha256": "e42619a748e652e21d2d912b331b50fdad7a57281ead9db124d466fe05f9e679",
    "patch": {
     "instance": [
      {
@@ -11276,6 +11444,8 @@
    "id": "cee-suite/021#undeclared-key",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
+   "instanceSha256": "faba94f4e4a42d1821969ea1bc99b34499011e6878333442b1f7ba568db29cdf",
+   "templateSha256": "e42619a748e652e21d2d912b331b50fdad7a57281ead9db124d466fe05f9e679",
    "patch": {
     "instance": [
      {
@@ -11340,6 +11510,8 @@
    "id": "cee-suite/021#absent",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
+   "instanceSha256": "faba94f4e4a42d1821969ea1bc99b34499011e6878333442b1f7ba568db29cdf",
+   "templateSha256": "e42619a748e652e21d2d912b331b50fdad7a57281ead9db124d466fe05f9e679",
    "patch": {
     "instance": [
      {
@@ -11453,6 +11625,8 @@
    "id": "cee-suite/021#absent-unrequired",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
+   "instanceSha256": "faba94f4e4a42d1821969ea1bc99b34499011e6878333442b1f7ba568db29cdf",
+   "templateSha256": "e42619a748e652e21d2d912b331b50fdad7a57281ead9db124d466fe05f9e679",
    "patch": {
     "instance": [
      {
@@ -11581,6 +11755,8 @@
    "id": "cee-suite/021#extra-literal",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
+   "instanceSha256": "faba94f4e4a42d1821969ea1bc99b34499011e6878333442b1f7ba568db29cdf",
+   "templateSha256": "e42619a748e652e21d2d912b331b50fdad7a57281ead9db124d466fe05f9e679",
    "patch": {
     "instance": [
      {
@@ -11705,6 +11881,8 @@
    "id": "cee-suite/021#extra-literal-admitted",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
+   "instanceSha256": "faba94f4e4a42d1821969ea1bc99b34499011e6878333442b1f7ba568db29cdf",
+   "templateSha256": "e42619a748e652e21d2d912b331b50fdad7a57281ead9db124d466fe05f9e679",
    "patch": {
     "instance": [
      {
@@ -11850,6 +12028,8 @@
    "id": "cee-suite/021#extra-iri-admitted",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
+   "instanceSha256": "faba94f4e4a42d1821969ea1bc99b34499011e6878333442b1f7ba568db29cdf",
+   "templateSha256": "e42619a748e652e21d2d912b331b50fdad7a57281ead9db124d466fe05f9e679",
    "patch": {
     "instance": [
      {
@@ -12001,6 +12181,8 @@
    "id": "cee-suite/021#context-property-mismatch",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
+   "instanceSha256": "faba94f4e4a42d1821969ea1bc99b34499011e6878333442b1f7ba568db29cdf",
+   "templateSha256": "e42619a748e652e21d2d912b331b50fdad7a57281ead9db124d466fe05f9e679",
    "patch": {
     "instance": [
      {
@@ -12118,6 +12300,8 @@
    "id": "cee-suite/021#context-term-undeclared",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
+   "instanceSha256": "faba94f4e4a42d1821969ea1bc99b34499011e6878333442b1f7ba568db29cdf",
+   "templateSha256": "e42619a748e652e21d2d912b331b50fdad7a57281ead9db124d466fe05f9e679",
    "patch": {
     "instance": [
      {
@@ -12238,6 +12422,8 @@
    "id": "cee-suite/021#context-term-missing",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
+   "instanceSha256": "faba94f4e4a42d1821969ea1bc99b34499011e6878333442b1f7ba568db29cdf",
+   "templateSha256": "e42619a748e652e21d2d912b331b50fdad7a57281ead9db124d466fe05f9e679",
    "patch": {
     "instance": [
      {
@@ -12352,6 +12538,8 @@
    "id": "cee-suite/021#context-prefix-missing",
    "instance": "cee-suite/021/instance-021.json",
    "template": "cee-suite/021/template-021.json",
+   "instanceSha256": "faba94f4e4a42d1821969ea1bc99b34499011e6878333442b1f7ba568db29cdf",
+   "templateSha256": "e42619a748e652e21d2d912b331b50fdad7a57281ead9db124d466fe05f9e679",
    "patch": {
     "instance": [
      {
@@ -12468,6 +12656,8 @@
    "id": "cee-suite/022",
    "instance": "cee-suite/022/instance-022.json",
    "template": "cee-suite/022/template-022.json",
+   "instanceSha256": "754ca4b8f2362312c2afdea25f9a8126dbbf45b762a9030ee43f1b80e66441b8",
+   "templateSha256": "3c7f860d704b9cbffa11072c450548bfac14bc58652316486a13c786ec387fda",
    "javaValid": true,
    "javaErrors": [],
    "written": {
@@ -12539,6 +12729,8 @@
    "id": "cee-suite/023",
    "instance": "cee-suite/023/instance-023.json",
    "template": "cee-suite/023/template-023.json",
+   "instanceSha256": "18ab6d4772c32844e06aea951819f9ec03dc336eb3b6ee9b14f33ff8f5fdc365",
+   "templateSha256": "891aa249f294153d49d5fe2276730acfc2c62452287dd7a7040c094d818d13f5",
    "javaValid": true,
    "javaErrors": [],
    "written": {
@@ -12610,6 +12802,8 @@
    "id": "cee-suite/024",
    "instance": "cee-suite/024/instance-024.json",
    "template": "cee-suite/024/template-024.json",
+   "instanceSha256": "6ff295aa4501c15f44c7565fb37aee156399a1aecbd1373c87635ceb2518de8c",
+   "templateSha256": "abf68fe3c1c8f207d62e053d1bf2dc76e588b79c079596bcb983f3d44d1af2a7",
    "completion": [
     {
      "op": "add",
@@ -12770,6 +12964,8 @@
    "id": "cee-suite/025",
    "instance": "cee-suite/025/instance-025.json",
    "template": "cee-suite/025/template-025.json",
+   "instanceSha256": "7d1afa8a62eeb32cde89a207b9a7c6ab2e84942ab37e6250b6609e1cbaeaca75",
+   "templateSha256": "9c1f8d1301de8cd911463fab73e19d0a623171583fb60e75feb0410c6be4da37",
    "completion": [
     {
      "op": "add",
@@ -13077,6 +13273,8 @@
    "id": "cee-suite/026",
    "instance": "cee-suite/026/instance-026.json",
    "template": "cee-suite/026/template-026.json",
+   "instanceSha256": "7a4d11c1d8111dfc6fd6ea68297d37807f9858327e51ecf30da61d1e8527953f",
+   "templateSha256": "41615b8733e0851ad2f3c080bbd7e68b1e7f631d2df306aebe453ba291253800",
    "completion": [
     {
      "op": "add",
@@ -13287,6 +13485,8 @@
    "id": "cee-suite/027",
    "instance": "cee-suite/027/instance-027.json",
    "template": "cee-suite/027/template-027.json",
+   "instanceSha256": "7010359c414b1d880b6cb28c2e2be69384b6668898491646f890a184917b6b2c",
+   "templateSha256": "6dfaa7f812d3a7e2d18bdb760355d5f276d35937b3c9cbf5c83b0d0192624484",
    "javaValid": true,
    "javaErrors": [],
    "written": {
@@ -13350,6 +13550,8 @@
    "id": "cee-suite/027#empty",
    "instance": "cee-suite/027/instance-027.json",
    "template": "cee-suite/027/template-027.json",
+   "instanceSha256": "7010359c414b1d880b6cb28c2e2be69384b6668898491646f890a184917b6b2c",
+   "templateSha256": "6dfaa7f812d3a7e2d18bdb760355d5f276d35937b3c9cbf5c83b0d0192624484",
    "patch": {
     "instance": [
      {
@@ -13420,6 +13622,8 @@
    "id": "cee-suite/027#label-null",
    "instance": "cee-suite/027/instance-027.json",
    "template": "cee-suite/027/template-027.json",
+   "instanceSha256": "7010359c414b1d880b6cb28c2e2be69384b6668898491646f890a184917b6b2c",
+   "templateSha256": "6dfaa7f812d3a7e2d18bdb760355d5f276d35937b3c9cbf5c83b0d0192624484",
    "patch": {
     "instance": [
      {
@@ -13492,6 +13696,8 @@
    "id": "cee-suite/027#label-empty",
    "instance": "cee-suite/027/instance-027.json",
    "template": "cee-suite/027/template-027.json",
+   "instanceSha256": "7010359c414b1d880b6cb28c2e2be69384b6668898491646f890a184917b6b2c",
+   "templateSha256": "6dfaa7f812d3a7e2d18bdb760355d5f276d35937b3c9cbf5c83b0d0192624484",
    "patch": {
     "instance": [
      {
@@ -13566,6 +13772,8 @@
    "id": "cee-suite/027#label-text",
    "instance": "cee-suite/027/instance-027.json",
    "template": "cee-suite/027/template-027.json",
+   "instanceSha256": "7010359c414b1d880b6cb28c2e2be69384b6668898491646f890a184917b6b2c",
+   "templateSha256": "6dfaa7f812d3a7e2d18bdb760355d5f276d35937b3c9cbf5c83b0d0192624484",
    "patch": {
     "instance": [
      {
@@ -13640,6 +13848,8 @@
    "id": "cee-suite/027#class-only",
    "instance": "cee-suite/027/instance-027.json",
    "template": "cee-suite/027/template-027.json",
+   "instanceSha256": "7010359c414b1d880b6cb28c2e2be69384b6668898491646f890a184917b6b2c",
+   "templateSha256": "6dfaa7f812d3a7e2d18bdb760355d5f276d35937b3c9cbf5c83b0d0192624484",
    "patch": {
     "instance": [
      {
@@ -13712,6 +13922,8 @@
    "id": "cee-suite/027#class-and-label-null",
    "instance": "cee-suite/027/instance-027.json",
    "template": "cee-suite/027/template-027.json",
+   "instanceSha256": "7010359c414b1d880b6cb28c2e2be69384b6668898491646f890a184917b6b2c",
+   "templateSha256": "6dfaa7f812d3a7e2d18bdb760355d5f276d35937b3c9cbf5c83b0d0192624484",
    "patch": {
     "instance": [
      {
@@ -13785,6 +13997,8 @@
    "id": "cee-suite/027#class-and-label-text",
    "instance": "cee-suite/027/instance-027.json",
    "template": "cee-suite/027/template-027.json",
+   "instanceSha256": "7010359c414b1d880b6cb28c2e2be69384b6668898491646f890a184917b6b2c",
+   "templateSha256": "6dfaa7f812d3a7e2d18bdb760355d5f276d35937b3c9cbf5c83b0d0192624484",
    "patch": {
     "instance": [
      {
@@ -13861,6 +14075,8 @@
    "id": "cee-suite/027#value-null",
    "instance": "cee-suite/027/instance-027.json",
    "template": "cee-suite/027/template-027.json",
+   "instanceSha256": "7010359c414b1d880b6cb28c2e2be69384b6668898491646f890a184917b6b2c",
+   "templateSha256": "6dfaa7f812d3a7e2d18bdb760355d5f276d35937b3c9cbf5c83b0d0192624484",
    "patch": {
     "instance": [
      {
@@ -13939,6 +14155,8 @@
    "id": "cee-suite/027#id-empty",
    "instance": "cee-suite/027/instance-027.json",
    "template": "cee-suite/027/template-027.json",
+   "instanceSha256": "7010359c414b1d880b6cb28c2e2be69384b6668898491646f890a184917b6b2c",
+   "templateSha256": "6dfaa7f812d3a7e2d18bdb760355d5f276d35937b3c9cbf5c83b0d0192624484",
    "patch": {
     "instance": [
      {
@@ -13960,6 +14178,8 @@
    "id": "cee-suite/027#undeclared-key",
    "instance": "cee-suite/027/instance-027.json",
    "template": "cee-suite/027/template-027.json",
+   "instanceSha256": "7010359c414b1d880b6cb28c2e2be69384b6668898491646f890a184917b6b2c",
+   "templateSha256": "6dfaa7f812d3a7e2d18bdb760355d5f276d35937b3c9cbf5c83b0d0192624484",
    "patch": {
     "instance": [
      {
@@ -13982,6 +14202,8 @@
    "id": "cee-suite/028",
    "instance": "cee-suite/028/instance-028.json",
    "template": "cee-suite/028/template-028.json",
+   "instanceSha256": "0e232f814b23a36cb040116f3db631e2e807e57406412e639a8d859e39e17f32",
+   "templateSha256": "d27b29155c4b1b270b691da00c2cb306200a864c5cd6555172de911e3a764767",
    "completion": [
     {
      "op": "add",
@@ -14105,6 +14327,8 @@
    "id": "cee-suite/029",
    "instance": "cee-suite/029/instance-029.json",
    "template": "cee-suite/029/template-029.json",
+   "instanceSha256": "474dbb377402be0073f37e9218ae60cc9b2093296cb21a930575fb425b3fd54c",
+   "templateSha256": "ed569858bd85cf8328357943ec1cfd5fbcda67283aca8efc43be6a6b979708e6",
    "completion": [
     {
      "op": "add",
@@ -14293,6 +14517,8 @@
    "id": "cee-suite/030",
    "instance": "cee-suite/030/instance-030.json",
    "template": "cee-suite/030/template-030.json",
+   "instanceSha256": "c97dbed2aaa718e44da7a00a0503c281cc4c031ac9a94144cb4947a7cf61d13e",
+   "templateSha256": "f6010dd8478b4e74401c2721b86529a46be1cf32632eb63bdeb0562984516b5c",
    "completion": [
     {
      "op": "add",
@@ -14396,6 +14622,8 @@
    "id": "cee-suite/032",
    "instance": "cee-suite/032/instance-032.json",
    "template": "cee-suite/032/template-032.json",
+   "instanceSha256": "63a7cd222a69e8ba5a849004ed0e81b49e8791ed2a9ce3f8e8a4d181a8b1d521",
+   "templateSha256": "e9d565d27c69a59fab1067c1da1738294135a916c82abeeb3792b03460d40ea7",
    "completion": [
     {
      "op": "add",
@@ -14502,6 +14730,8 @@
    "id": "cee-suite/032#number-unfilled-untyped",
    "instance": "cee-suite/032/instance-032.json",
    "template": "cee-suite/032/template-032.json",
+   "instanceSha256": "63a7cd222a69e8ba5a849004ed0e81b49e8791ed2a9ce3f8e8a4d181a8b1d521",
+   "templateSha256": "e9d565d27c69a59fab1067c1da1738294135a916c82abeeb3792b03460d40ea7",
    "patch": {
     "instance": [
      {
@@ -14622,6 +14852,8 @@
    "id": "cee-suite/034",
    "instance": "cee-suite/034/instance-034.json",
    "template": "cee-suite/034/template-034.json",
+   "instanceSha256": "62c5ac42c8b15931edfd9e413ad257e555642d7267986b408745f172887ba9aa",
+   "templateSha256": "c10f72010646d68b1230d90e86d13e0f3383226e75a166646183525f36769c96",
    "completion": [
     {
      "op": "add",
@@ -14728,6 +14960,8 @@
    "id": "cee-suite/035",
    "instance": "cee-suite/035/instance-035.json",
    "template": "cee-suite/035/template-035.json",
+   "instanceSha256": "51d59d87b1002dacc110c3ddd2e3b8ebad951784982a8f1ed21dd7c85d8e0c15",
+   "templateSha256": "a38891f39c966f3f17262f43e710a3dc80c7e531d5e2f7aa857edd1455846dcc",
    "completion": [
     {
      "op": "add",
@@ -14834,6 +15068,8 @@
    "id": "cee-suite/036",
    "instance": "cee-suite/036/instance-036.json",
    "template": "cee-suite/036/template-036.json",
+   "instanceSha256": "deba1f7a92648634639d1414746236bcd218ee9d7d2250d72c315d2f7a43856b",
+   "templateSha256": "917472f065ad717f06e00dc82c075d82768131a25460a9fc713734adb6aa51f8",
    "completion": [
     {
      "op": "add",
@@ -14952,6 +15188,8 @@
    "id": "cee-suite/041",
    "instance": "cee-suite/041/instance-041.json",
    "template": "cee-suite/041/template-041.json",
+   "instanceSha256": "70ddf4466fdeb5b7cd45d21f99505eeb6d9fb45dc079492e677c50993af54d45",
+   "templateSha256": "b6c81b331319e8eaf2fc67cee833ea2e84352f63813f1ed9c9d6f9b4a8e3ad21",
    "completion": [
     {
      "op": "add",
@@ -15168,6 +15406,8 @@
    "id": "cee-suite/042",
    "instance": "cee-suite/042/instance-042.json",
    "template": "cee-suite/042/template-042.json",
+   "instanceSha256": "5c3ff18caf4c65304895e3bfb4c6966b2a54bc8fc71521f18882f04f11e79b37",
+   "templateSha256": "54da301414c6d81345529cf74d6a1521c35343a004fc25315ea53510ffe8deeb",
    "completion": [
     {
      "op": "add",
@@ -15274,6 +15514,8 @@
    "id": "cee-suite/044",
    "instance": "cee-suite/044/instance-044.json",
    "template": "cee-suite/044/template-044.json",
+   "instanceSha256": "addc04993697ddb42257d43fdc5493708da5fbb00b41875c5fc074eed7862563",
+   "templateSha256": "489e406a4c54f9c80f07437eb0dfb5d0acb0195db62faedb5502c418b78f3ee9",
    "completion": [
     {
      "op": "add",
@@ -15465,6 +15707,8 @@
    "id": "cee-suite/046",
    "instance": "cee-suite/046/instance-046.json",
    "template": "cee-suite/046/template-046.json",
+   "instanceSha256": "11563cd151f78816ac8071b106fae2f5153a513aeba9a9b2ab95ea60f5f527b8",
+   "templateSha256": "3c1b05b78ddb98e8bdb2e90363358dbdbb2295486420f12796be7002416cd9cb",
    "completion": [
     {
      "op": "add",
@@ -15767,6 +16011,8 @@
    "id": "cee-suite/049",
    "instance": "cee-suite/049/instance-049.json",
    "template": "cee-suite/049/template-049.json",
+   "instanceSha256": "6744ac915d56eb8e197accdae210118b00886aabba730811ac0b871d58fbc8ad",
+   "templateSha256": "d11945081b72dd528420a0fdfae60136e2095e6885c373c25e169e1fbd6fda36",
    "javaValid": true,
    "javaErrors": [],
    "written": {
@@ -15839,6 +16085,8 @@
    "id": "cee-suite/050",
    "instance": "cee-suite/050/instance-050.json",
    "template": "cee-suite/050/template-050.json",
+   "instanceSha256": "7161e281a6b0b480750aeea7ba5675320a16675b5904802f1ddbae500f4088bf",
+   "templateSha256": "d11945081b72dd528420a0fdfae60136e2095e6885c373c25e169e1fbd6fda36",
    "javaValid": true,
    "javaErrors": [],
    "written": {
@@ -15913,6 +16161,8 @@
    "id": "cee-suite/051",
    "instance": "cee-suite/051/instance-051.json",
    "template": "cee-suite/051/template-051.json",
+   "instanceSha256": "c1a538a4197261b4863de8b87a290057a32552225d58a975258c7c929ec9528b",
+   "templateSha256": "7f380bb9e39cca0b869229277c93ab7b8e4085fe8474f9850ba20a9ed05235d8",
    "javaValid": true,
    "javaErrors": [],
    "written": {
@@ -15984,6 +16234,8 @@
    "id": "cee-suite/052",
    "instance": "cee-suite/052/instance-052.json",
    "template": "cee-suite/052/template-052.json",
+   "instanceSha256": "75abdab40b71184bc934ff7ef44e22fdceb1edbd37185d0f6ae4b773130743de",
+   "templateSha256": "7f380bb9e39cca0b869229277c93ab7b8e4085fe8474f9850ba20a9ed05235d8",
    "javaValid": true,
    "javaErrors": [],
    "written": {
@@ -16058,6 +16310,8 @@
    "id": "cee-suite/056",
    "instance": "cee-suite/056/instance-056.json",
    "template": "cee-suite/056/template-056.json",
+   "instanceSha256": "209b477278f683ede4c47bf5191675e8f34afc2fef4e23414627b5cb01f347d4",
+   "templateSha256": "00a16e5cae648086ebd804a7a017b26aea4fc4bd0b1a65a3b559729f4eb7630d",
    "javaValid": true,
    "javaErrors": [],
    "written": {
@@ -16224,6 +16478,8 @@
    "id": "cee-suite/057",
    "instance": "cee-suite/057/instance-057.json",
    "template": "cee-suite/057/template-057.json",
+   "instanceSha256": "f9d33298db42faff255d81d921a3e572a4d5df86c8444efa12913b2edd18aa23",
+   "templateSha256": "248445c634ad60a5823100d0a1a56e89a716a7bb1d375b461b50115086879c50",
    "completion": [
     {
      "op": "add",
@@ -16339,6 +16595,8 @@
    "id": "cee-suite/058",
    "instance": "cee-suite/058/instance-058.json",
    "template": "cee-suite/058/template-058.json",
+   "instanceSha256": "f2d1ecdaaf6060d092da30082bf4287bf0c2ae4abf551c174d3b8ab1e58f028f",
+   "templateSha256": "79d5f358bcc57cd929cd0cff9e25ff45e42dfaaeafcb5a6a4ea489f7bf60ccd5",
    "javaValid": true,
    "javaErrors": [],
    "written": {
@@ -16407,6 +16665,8 @@
    "id": "cee-suite/059",
    "instance": "cee-suite/059/instance-059.json",
    "template": "cee-suite/059/template-059.json",
+   "instanceSha256": "ae269d4f9b361b15ddfab26f72c5dcc8500b8228796993ba99bada5b5a21dab5",
+   "templateSha256": "28505d2767031e09e6e859d0db0a195bb93dab0779e8e4ffd70e31af0d374540",
    "javaValid": true,
    "javaErrors": [],
    "written": {
@@ -16483,6 +16743,8 @@
    "id": "cee-suite/060",
    "instance": "cee-suite/060/instance-060.json",
    "template": "cee-suite/060/template-060.json",
+   "instanceSha256": "bac10e67aa5662315a887825a20c50a17019c34a1b715aea339c170e227a8680",
+   "templateSha256": "e17a6f56f62fe2d4f061022e4ebd9dcb037c9c001327ed497e67bb1383c32b79",
    "completion": [
     {
      "op": "add",
@@ -16636,6 +16898,8 @@
    "id": "cee-suite/061",
    "instance": "cee-suite/061/instance-061.json",
    "template": "cee-suite/061/template-061.json",
+   "instanceSha256": "30bf4fcef282b51b66a395fc2b38550ee03b22e92fd6b2579b65209331338114",
+   "templateSha256": "cdc04141ba4ec2ff03a6136ab396d4e8c00a09d08e7b8a3f657652918a7de0f1",
    "javaValid": true,
    "javaErrors": [],
    "written": {
@@ -16704,6 +16968,8 @@
    "id": "cee-suite/062",
    "instance": "cee-suite/062/instance-062.json",
    "template": "cee-suite/062/template-062.json",
+   "instanceSha256": "90d4a508e78acb394258f53cd1eff889c4b01358a58655b7e8c867405acb24b5",
+   "templateSha256": "1e8ce7d86dd657b38839024a2a738be9a09a959fb71341b5c2f008f206193e9c",
    "javaValid": true,
    "javaErrors": [],
    "written": {
@@ -16775,6 +17041,8 @@
    "id": "cee-suite/063",
    "instance": "cee-suite/063/instance-063.json",
    "template": "cee-suite/063/template-063.json",
+   "instanceSha256": "9a56488122acb457490e4954792c8be55285f014e9235e6691c3848db553e412",
+   "templateSha256": "84d2ad64da2853c43025c0c1d42c7036e6c03ec5ce0f37c65c3c9ecb6917a93a",
    "completion": [
     {
      "op": "add",
@@ -16898,6 +17166,8 @@
    "id": "cee-suite/064",
    "instance": "cee-suite/064/instance-064.json",
    "template": "cee-suite/064/template-064.json",
+   "instanceSha256": "bd1e705a70c0889042f006075069c5b98783c5af06dcce2896d6d2ea3e96087c",
+   "templateSha256": "d30d1fac4c08a830d08f689130e0317b087fb7aa65a7917e99ea7e376809f653",
    "javaValid": true,
    "javaErrors": [],
    "written": {
@@ -16961,6 +17231,8 @@
    "id": "cee-suite/065",
    "instance": "cee-suite/065/instance-065.json",
    "template": "cee-suite/065/template-065.json",
+   "instanceSha256": "c4bca4d0ad1d38179708d24606a8ee8a64b05b9e6eaef35516177348fc051068",
+   "templateSha256": "2321c38b36dff96c485d98ea52bc3a5de5e6a887abeaf1693af98f1cea516ce8",
    "javaValid": true,
    "javaErrors": [],
    "written": {
@@ -17024,6 +17296,8 @@
    "id": "cee-suite/066",
    "instance": "cee-suite/066/instance-066.json",
    "template": "cee-suite/066/template-066.json",
+   "instanceSha256": "afdb2993915b32a717c09c6256cef5ed44147b8af811660672a83e428d04b18c",
+   "templateSha256": "17f79f0cec048a753bbcab6bccc8b2d336f096c0de90c31c0bbf18db1dafdb00",
    "completion": [
     {
      "op": "add",
@@ -17272,6 +17546,8 @@
    "id": "cee-suite/071",
    "instance": "cee-suite/071/instance-071.json",
    "template": "cee-suite/071/template-071.json",
+   "instanceSha256": "c4e69a11ebcac9b24b7a389e117a237846db426f0c7875e8c36b2bf0689218a6",
+   "templateSha256": "c33d2cb4c598bfbe2330ca94482210a307fceab0e087ef4461f86d2ec847b9a5",
    "completion": [
     {
      "op": "add",
@@ -18189,6 +18465,8 @@
    "id": "cee-suite/072",
    "instance": "cee-suite/072/instance-072.json",
    "template": "cee-suite/072/template-072.json",
+   "instanceSha256": "6503c8394971f5d83181daae900d46f36b4abb99f8f999162d90f8fd0a49f196",
+   "templateSha256": "2eb866f3ad5015eae406ee430018986b8e0a7d34bee575bb8b9117ae8945cba7",
    "javaValid": true,
    "javaErrors": [],
    "written": {
@@ -18268,6 +18546,8 @@
    "id": "cee-suite/082",
    "instance": "cee-suite/082/instance-082.json",
    "template": "cee-suite/082/template-082.json",
+   "instanceSha256": "49b80f8c4ee8ffbd152f6fa6886e262cd2e74a19c5197fd46555622da4b21431",
+   "templateSha256": "78f5af618d26b7857745899cb929ee088bd276d28205b290ed4134e533b68091",
    "javaValid": true,
    "javaErrors": [],
    "written": {
@@ -18333,6 +18613,8 @@
    "id": "cee-suite/083",
    "instance": "cee-suite/083/instance-083.json",
    "template": "cee-suite/083/template-083.json",
+   "instanceSha256": "d253dd8cd8736cf33fe32dffcfa62cbe6ba9ac6b1340cfd9d80b9099299187b7",
+   "templateSha256": "78f5af618d26b7857745899cb929ee088bd276d28205b290ed4134e533b68091",
    "javaValid": true,
    "javaErrors": [],
    "written": {
@@ -18398,6 +18680,8 @@
    "id": "cee-suite/085",
    "instance": "cee-suite/085/instance-085.json",
    "template": "cee-suite/085/template-085.json",
+   "instanceSha256": "266895d5c9a0d484ca3f52de495e6e7ac208d039ef2e4c4fa9dbd93301f21ee5",
+   "templateSha256": "6ade5cf651f16c249627d02d03d52c8d80ec44467e70d26881298cc759304e20",
    "completion": [
     {
      "op": "add",
@@ -18505,6 +18789,8 @@
    "id": "instances/005",
    "instance": "instances/005/instance-005.json",
    "template": "instances/005/template-005.json",
+   "instanceSha256": "022d93c37fa22be07de4219d42de900a9b5cf60a7302fa8399476a9da95a5f41",
+   "templateSha256": "cde0a52904bf2b0941d43abeb234457620a549c3fdb05d470b0a9849da7c95fa",
    "javaValid": false,
    "javaErrors": [
     "object has missing required properties (['Element1'])",
@@ -18630,6 +18916,8 @@
    "id": "instances/023",
    "instance": "instances/023/instance-023.json",
    "template": "instances/023/template-023.json",
+   "instanceSha256": "c0998a6c04955baed0c55d5d2b7d85180c0c2529f2d74e861f673558ae499dd5",
+   "templateSha256": "cde0a52904bf2b0941d43abeb234457620a549c3fdb05d470b0a9849da7c95fa",
    "javaValid": false,
    "javaErrors": [
     "object has missing required properties (['Element1'])",

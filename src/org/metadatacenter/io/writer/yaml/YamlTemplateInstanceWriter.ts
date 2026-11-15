@@ -172,7 +172,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
         const wrapper: JsonNode = JsonNode.getEmpty();
         let addedav = false;
         Object.keys(dataAtom.values).forEach((subKey) => {
-          const serialized = this.serializeAttribute(dataAtom.values[subKey]);
+          const serialized = this.serializeAttribute(dataAtom.values[subKey], dataContainer, subKey);
           if (serialized !== null) {
             wrapper[subKey] = serialized;
             addedav = true;
@@ -188,7 +188,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
       const wrapper: JsonNode = JsonNode.getEmpty();
       for (const attributeName of attributeNames) {
         const atom = dataContainer.values[attributeName];
-        const serialized = atom === undefined ? null : this.serializeAttribute(atom);
+        const serialized = atom === undefined ? null : this.serializeAttribute(atom, dataContainer, attributeName);
         if (serialized !== null) {
           wrapper[attributeName] = serialized;
         }
@@ -203,13 +203,23 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
    * An attribute is written as the field value it is, as Java's writer writes it, so its label,
    * datatype and identifier survive. An attribute that holds nothing is left out, and an element is
    * never an attribute.
+   *
+   * An attribute's property IRI is the instance's own, minted when the attribute was named, and no
+   * template states it, so it is written beside the value under `propertyIri`, the key a template uses
+   * for a child's property IRI. The container that holds the attribute keeps it among its IRIs.
    */
-  private serializeAttribute(atom: InstanceDataAtomType): JsonNode | null {
+  private serializeAttribute(atom: InstanceDataAtomType, holder: InstanceDataContainer, name: string): JsonNode | null {
     if (atom instanceof InstanceDataContainer) {
       return null;
     }
     const serialized = this.serializeCommonType(atom, false);
-    return serialized !== null && JsonNode.hasEntries(serialized) ? serialized : null;
+    if (serialized === null || !JsonNode.hasEntries(serialized)) {
+      return null;
+    }
+    if (holder.hasIri(name)) {
+      serialized[YamlKeys.propertyIri] = holder.iris[name];
+    }
+    return serialized;
   }
 
   private getUnpackedAttributeValueGroups(dataContainer: InstanceDataContainer): Map<string, string[]> {

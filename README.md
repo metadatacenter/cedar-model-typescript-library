@@ -116,6 +116,15 @@ and its path. A misspelled key, or a key the form has only for another field typ
 on a text field, is refused rather than dropped. The keys a document names itself stay open: an
 instance's children, annotation names and an attribute-value field's attributes. Beside an
 instance's `children`, a mapping is read as an attribute-value field and anything else is refused.
+
+A YAML instance leaves out the `@context` property IRIs of its children, because the template states
+them, and the inflater takes them from the template. An attribute of an attribute-value field is the
+exception, since its name and its property IRI belong to the instance. Each attribute states its IRI
+beside its value under `propertyIri`, the key a template uses for a child's property IRI, in the full
+and the compact form. The reader puts it back among the IRIs of the container that holds the
+attribute. An attribute may omit it, as a draft does before the server assigns one, and an ordinary
+field value that states one is refused. The Java library writes and reads the same form.
+
 `YamlKeyVocabularyConcordance` holds the readers to the keys the Java reader reads in every corpus
 document.
 `JsonSourcePolicy` is also available from `/policy`; `YamlSourcePolicy` is in the full package.

@@ -194,7 +194,9 @@ function walkInstance(
   record(out, at, direct, viaYaml, valueFamily(direct, viaYaml));
 }
 
-// A property's IRI is the template's on the YAML path. Any other `@context` entry has to survive.
+// A child's property IRI is the template's on the YAML path. An attribute's is the instance's own, which
+// the YAML form carries, so it has to survive, unless the attribute was dropped for holding nothing. Any
+// other `@context` entry has to survive too.
 function compareContext(
   container: JsonObject,
   containerViaYaml: JsonObject,
@@ -205,15 +207,31 @@ function compareContext(
   artifact: AbstractContainerArtifact | null,
 ) {
   const iris = artifact?.getChildrenInfo().getChildIriMap() ?? {};
+  const attributes = new Set([...attributeNames(container), ...attributeNames(containerViaYaml)]);
   for (const key of keysOf(context, contextViaYaml)) {
     const [x, y] = [context[key], contextViaYaml[key]];
     if (isDeepStrictEqual(x, y)) continue;
+    if (attributes.has(key)) {
+      const dropped = y === undefined && !(key in containerViaYaml) && isEmptyContent(container[key]);
+      record(out, [...at, key], x, y, dropped ? 'instanceCompletion' : null);
+      continue;
+    }
     // Completion gives each child the template maps exactly the template's IRI, and drops the IRI of
-    // any other key, which YAML does not carry: an attribute's, or an attribute-value group's own.
+    // any other key, which YAML does not carry, such as an attribute-value group's own.
     const expected = Object.hasOwn(iris, key) ? iris[key] : undefined;
     const completed = (key in container || key in containerViaYaml) && (x === undefined || isString(x)) && y === expected;
     record(out, [...at, key], x, y, completed ? 'instanceCompletion' : null);
   }
+}
+
+// The attributes a container holds: every name its attribute-value fields list.
+function attributeNames(container: JsonObject): string[] {
+  return Object.keys(container)
+    .filter((key) => !key.startsWith('@'))
+    .flatMap((key) => {
+      const value = container[key];
+      return Array.isArray(value) && value.length > 0 && value.every(isString) ? value : [];
+    });
 }
 
 // An attribute-value field lists the names of its attributes. One whose value is empty is dropped.

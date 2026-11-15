@@ -29,6 +29,7 @@ children:
     Sample Attribute Value:
       Attribute name 1:
         value: "value 1"
+        propertyIri: "https://schema.metadatacenter.org/properties/d6b2e884-9791-4aca-b412-5d7947fed203"
   Sample Email:
     value: "email@domain.com"
   Link Field:

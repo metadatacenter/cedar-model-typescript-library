@@ -45,10 +45,12 @@ const DESCRIPTION_KEYS: readonly string[] = [YamlKeys.label, YamlKeys.notation, 
  * a value is `value` / `id` / `datatype` / `label` where the JSON uses `@value`
  * / `@id` / `@type` / `rdfs:label`, an element nests its own `id` and `children`,
  * and an attribute-value field sits at the container level with its attributes
- * named directly. Two things the JSON instance carries are deliberately absent
- * and cannot be recovered from the YAML alone: the `@context` property IRIs and
- * the empty slots the template's JSON Schema requires. Both are template data;
- * `InstanceInflater` reconstructs them. This reader's job is the values.
+ * named directly, each stating its own property IRI under `propertyIri`. Two
+ * things the JSON instance carries are deliberately absent and cannot be
+ * recovered from the YAML alone: the `@context` property IRIs of the template's
+ * children and the empty slots the template's JSON Schema requires. Both are
+ * template data; `InstanceInflater` reconstructs them. This reader's job is the
+ * values, and the attributes' IRIs, which no template holds.
  */
 export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
   private constructor(behavior: YamlReaderBehavior, isCompact: boolean = false) {
@@ -195,6 +197,12 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
       const avField = new InstanceDataAttributeValueField(key);
       Object.keys(avNode).forEach((attrName) => {
         avField.addValue(attrName, YamlTemplateInstanceReader.parseAttributeValue(avNode, attrName, `${path}/${key}/${attrName}`));
+        // An attribute's property IRI is the instance's own, as no template states it, so the container
+        // holding the attribute keeps it among its IRIs, where the JSON reader puts its `@context` entry.
+        const iri = ReaderUtil.getIdentifier(avNode[attrName] as JsonNode, YamlKeys.propertyIri);
+        if (iri !== null) {
+          container.setIri(attrName, iri);
+        }
       });
       container.setValue(key, avField);
     });

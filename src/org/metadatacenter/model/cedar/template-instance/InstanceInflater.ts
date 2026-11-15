@@ -60,6 +60,38 @@ export class InstanceInflater {
     return instance;
   }
 
+  /**
+   * The instance completed as `inflate` completes it, leaving the instance itself as it was, for a
+   * caller that asks about the document a save would write without changing the instance it holds.
+   * Containers are copied; the values inside them are shared, since completion only adds to containers.
+   */
+  public static inflated(
+    instance: TemplateInstance,
+    template: Template,
+    repeatedChildren: 'lowerBound' | 'empty' = 'lowerBound',
+  ): TemplateInstance {
+    const copy: TemplateInstance = Object.assign(Object.create(Object.getPrototypeOf(instance)), instance);
+    copy.dataContainer = InstanceInflater.copyContainer(instance.dataContainer);
+    return InstanceInflater.inflate(copy, template, repeatedChildren);
+  }
+
+  private static copyContainer(container: InstanceDataContainer): InstanceDataContainer {
+    const copy = new InstanceDataContainer();
+    copy.id = container.id;
+    copy.types = [...container.types];
+    Object.keys(container.iris).forEach((name) => copy.setIri(name, container.iris[name]));
+    const values: { [key: string]: InstanceDataAtomType } = {};
+    Object.keys(container.values).forEach((name) => (values[name] = InstanceInflater.copyValue(container.values[name])));
+    copy.values = values;
+    return copy;
+  }
+
+  private static copyValue(value: InstanceDataAtomType): InstanceDataAtomType {
+    if (value instanceof InstanceDataContainer) return InstanceInflater.copyContainer(value);
+    if (Array.isArray(value)) return value.map((item) => InstanceInflater.copyValue(item)) as InstanceDataAtomList;
+    return value;
+  }
+
   private static emptyField(field: TemplateField): InstanceDataAtomType {
     if (field.valueConstraints instanceof ValueConstraintsNumericField) {
       return new InstanceDataTypedAtom(null, field.valueConstraints.numberType.getValue() ?? 'xsd:decimal');

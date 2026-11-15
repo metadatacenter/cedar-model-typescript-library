@@ -41,10 +41,6 @@ const OPEN_DEFECTS: Record<string, { judgements: Judgement[]; reason: string }> 
     judgements: ['write'],
     reason: 'The writer drops the null rdfs:label the template requires, so the server refuses the written document.',
   },
-  'cee-suite/021#absent': {
-    judgements: ['asWritten'],
-    reason: 'asWritten reports a missing child that the inflated write supplies, and the server stores that document.',
-  },
 };
 const expected = (id: string, judgement: Judgement, javaValid: boolean): boolean =>
   OPEN_DEFECTS[id]?.judgements.includes(judgement) === true ? !javaValid : javaValid;

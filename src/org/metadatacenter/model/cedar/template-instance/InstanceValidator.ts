@@ -33,6 +33,7 @@ import { IdentifierPolicy } from '../../../policy/IdentifierPolicy';
 import { TimestampPolicy } from '../../../policy/TimestampPolicy';
 import { JsonAnnotationsWriter } from '../../../io/writer/json/JsonAnnotationsWriter';
 import { CedarModel } from '../constants/CedarModel';
+import { InstanceInflater } from './InstanceInflater';
 import { JsonSchema } from '../constants/JsonSchema';
 import { ValidationField } from '../../../policy/FieldValuePolicy';
 
@@ -47,8 +48,10 @@ export interface InstanceValidationOptions {
    * gives the root the standard `@context` terms, and leaves out an optional
    * property held as null, so those are judged as written rather than as the
    * instance holds them. A term the template does not declare is still judged,
-   * since the write keeps it. Without this the instance is judged as it was
-   * stored.
+   * since the write keeps it. The instance is completed as an editor completes
+   * it, with `InstanceInflater` and `'empty'`, so a child it omits is judged as
+   * the empty slot the write supplies, and a repeated child as the occurrences
+   * it holds. Without this the instance is judged as it was stored.
    */
   asWritten?: boolean;
 
@@ -99,14 +102,8 @@ export class InstanceValidator {
     options: InstanceValidationOptions = {},
   ): JsonArtifactParsingResult {
     const result = new JsonArtifactParsingResult();
-    InstanceValidator.validateContainer(
-      instance.dataContainer,
-      template,
-      new JsonPath(),
-      result,
-      InstanceValidator.object(stored),
-      options,
-    );
+    const judged = options.asWritten === true ? InstanceInflater.inflated(instance, template, 'empty') : instance;
+    InstanceValidator.validateContainer(judged.dataContainer, template, new JsonPath(), result, InstanceValidator.object(stored), options);
     const members = options.asWritten === true ? null : StoredForm.membersOf(instance.dataContainer);
     const annotations =
       members !== null ? members[CedarModel.annotations] : (JsonAnnotationsWriter.annotationsNode(instance.annotations) ?? undefined);

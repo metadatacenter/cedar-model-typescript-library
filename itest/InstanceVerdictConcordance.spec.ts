@@ -1,8 +1,8 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
-import { JsonNode } from '../src';
-import { corpusDocument, editorCanSave, editorInstance, editorWrite, Operation, patched } from './EditorSave';
+import { JsonNode, ValidationPolicy } from '../src';
+import { corpusDocument, editorCanSave, editorInstance, editorReport, editorWrite, Operation, patched } from './EditorSave';
 
 // The Java validator's verdict on every corpus instance, recorded by cedar-development's
 // ops/cedar_corpus_instance_verdicts.py from cedar-model-validation-library. The server applies that
@@ -20,6 +20,7 @@ const corpus = JSON.parse(bytes.toString()) as {
     instanceSha256: string;
     templateSha256: string;
     javaValid: boolean;
+    javaLocations: string[];
     written?: { document: JsonNode; javaValid: boolean; javaErrors: string[] } | null;
   }[];
 };
@@ -126,6 +127,26 @@ test.each(saved)(
     const document = patched(source(instance), patch?.instance);
     expect(editorWrite(document, stored)).toEqual(written?.document ?? null);
     expect(editorCanSave(document, stored, { asWritten: true })).toBe(written ? expected(id, 'asWritten', written.javaValid) : false);
+  },
+);
+
+// Where both refuse an instance, they must refuse it for the same thing: some blocking finding of this
+// library's must lie at, above or below a place Java's validator reports, or two different defects
+// could pass for agreement. An instance the editor cannot open is refused by its reader, not here.
+const overlaps = (path: string, location: string): boolean =>
+  path === location || (path !== '' && location !== '' && (path.startsWith(location + '/') || location.startsWith(path + '/')));
+test.each(corpus.cases.filter((c) => !c.javaValid && !(c.id in OPEN_DEFECTS)))(
+  '$id: refuses where Java refuses',
+  ({ instance, template, patch, completion, javaLocations }) => {
+    const stored = patched(source(template), patch?.template);
+    const document =
+      patch?.stored === undefined
+        ? patched(source(instance), patch?.instance)
+        : patched(patched(patched(source(instance), patch?.instance), completion), patch.stored);
+    const report = editorReport(document, stored, patch?.stored === undefined ? {} : { verbatim: true });
+    if (report === null) return expect(editorInstance(document)).toBeNull();
+    const blocking = report.findings.filter((finding) => ValidationPolicy.blocksSave(finding, 'instance')).map((finding) => finding.path);
+    expect(blocking.filter((path) => javaLocations.some((location) => overlaps(path, location)))).not.toEqual([]);
   },
 );
 

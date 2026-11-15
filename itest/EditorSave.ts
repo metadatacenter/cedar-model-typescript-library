@@ -12,6 +12,7 @@ import {
   JsonTemplateReader,
   Template,
   TemplateInstance,
+  ValidationSummary,
 } from '../src';
 
 // How the embeddable editor opens, judges and writes an instance, for the verdict gate and for the
@@ -59,10 +60,15 @@ export function editorInstance(document: JsonNode): TemplateInstance | null {
   }
 }
 
+/** The editor's judgement of the instance against the stored template, or null where it cannot open it. */
+export function editorReport(document: JsonNode, template: JsonNode, options: InstanceValidationOptions = {}): ValidationSummary | null {
+  const instance = editorInstance(document);
+  return instance === null ? null : InstanceValidator.validateReport(instance, editorTemplate(template), template, options);
+}
+
 /** Whether the editor would let the instance be saved, judged against the stored template. */
 export function editorCanSave(document: JsonNode, template: JsonNode, options: InstanceValidationOptions = {}): boolean {
-  const instance = editorInstance(document);
-  return instance !== null && InstanceValidator.validateReport(instance, editorTemplate(template), template, options).canSave;
+  return editorReport(document, template, options)?.canSave ?? false;
 }
 
 /**

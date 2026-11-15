@@ -8,6 +8,7 @@
    "templateSha256": "59f0d2732913db63fe48c421a59edff5eb391972110de88d33ba56a3e5cee7d7",
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.org/template-instances/19f5261e-9259-45ec-b961-b3d17c92f27f",
@@ -73,6 +74,7 @@
    "templateSha256": "197784adb82dabe3f1f6aecd626ae29c46d4dba9b55e91878693510f552bb61d",
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.org/template-instances/2ee5bd6a-47ca-4e77-be67-8a5d51d6fd9c",
@@ -143,6 +145,7 @@
    "templateSha256": "9b26b3eb56661b0d60ac848b1ef221b2b0904e581277d9b87b6b668d004b4016",
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.org/template-instances/c4ee3780-5ab7-4e1b-ac42-4e5569494096",
@@ -259,6 +262,11 @@
     "An integer datatype cannot have decimal places.",
     "An integer datatype cannot have decimal places."
    ],
+   "javaLocations": [
+    "/Number 2/0/_valueConstraints/decimalPlace",
+    "/Number 2/1/_valueConstraints/decimalPlace",
+    "/Number 2/2/_valueConstraints/decimalPlace"
+   ],
    "written": {
     "document": {
      "@id": null,
@@ -344,6 +352,7 @@
    "templateSha256": "b4f46a9381f7a7e0e63036e578e098485b51a999a1fcc506438fdd5a5222bae9",
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.org/template-instances/b102f719-a0e1-424c-8e27-f9e71d0136b4",
@@ -426,6 +435,7 @@
    "templateSha256": "da3194a4e27a776b6077bfb7f8cd76f57dfbd58a7594784a4c9a7320b56b76b7",
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.org/template-instances/1da98ce2-9b74-4257-af64-e6ef1c143f6e",
@@ -565,6 +575,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -812,6 +823,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -1064,6 +1076,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -1318,6 +1331,9 @@
    "javaErrors": [
     "An annotation's @value must be a string"
    ],
+   "javaLocations": [
+    "/_annotations/https:~1~1example.org~1properties~1Probe/@value"
+   ],
    "written": null
   },
   {
@@ -1455,6 +1471,9 @@
    "javaErrors": [
     "An annotation's @value must be a string"
    ],
+   "javaLocations": [
+    "/_annotations/https:~1~1example.org~1properties~1Probe/@value"
+   ],
    "written": null
   },
   {
@@ -1591,6 +1610,9 @@
    "javaValid": false,
    "javaErrors": [
     "An annotation's @value must be a string"
+   ],
+   "javaLocations": [
+    "/_annotations/https:~1~1example.org~1properties~1Probe/@value"
    ],
    "written": null
   },
@@ -1731,6 +1753,10 @@
     "object instance has properties which are not allowed by the schema: ['@id']",
     "/_annotations/https:~1~1example.org~1properties~1Probe: must be valid to one and only one schema, but 0 are valid"
    ],
+   "javaLocations": [
+    "/_annotations/https:~1~1example.org~1properties~1Probe",
+    "/_annotations/https:~1~1example.org~1properties~1Probe/@id"
+   ],
    "written": null
   },
   {
@@ -1865,6 +1891,9 @@
    "javaValid": false,
    "javaErrors": [
     "/_annotations/https:~1~1example.org~1properties~1Probe: must be valid to one and only one schema, but 2 are valid with indexes '0, 1'"
+   ],
+   "javaLocations": [
+    "/_annotations/https:~1~1example.org~1properties~1Probe"
    ],
    "written": null
   },
@@ -2005,6 +2034,11 @@
     "object instance has properties which are not allowed by the schema: ['@value']",
     "object instance has properties which are not allowed by the schema: ['@id']",
     "/_annotations/https:~1~1example.org~1properties~1Probe: must be valid to one and only one schema, but 0 are valid"
+   ],
+   "javaLocations": [
+    "/_annotations/https:~1~1example.org~1properties~1Probe",
+    "/_annotations/https:~1~1example.org~1properties~1Probe/@id",
+    "/_annotations/https:~1~1example.org~1properties~1Probe/@value"
    ],
    "written": {
     "document": {
@@ -2263,6 +2297,11 @@
     "object instance has properties which are not allowed by the schema: ['rdfs:label']",
     "object instance has properties which are not allowed by the schema: ['rdfs:label']"
    ],
+   "javaLocations": [
+    "/_annotations/https:~1~1example.org~1properties~1Probe",
+    "/_annotations/https:~1~1example.org~1properties~1Probe/@id",
+    "/_annotations/https:~1~1example.org~1properties~1Probe/rdfs:label"
+   ],
    "written": {
     "document": {
      "@id": null,
@@ -2517,6 +2556,9 @@
    "javaErrors": [
     "An annotation's @id must be an absolute IRI"
    ],
+   "javaLocations": [
+    "/_annotations/https:~1~1example.org~1properties~1Probe/@id"
+   ],
    "written": null
   },
   {
@@ -2653,6 +2695,9 @@
    "javaValid": false,
    "javaErrors": [
     "object instance has properties which are not allowed by the schema: ['']"
+   ],
+   "javaLocations": [
+    "/_annotations"
    ],
    "written": {
     "document": {
@@ -2910,6 +2955,9 @@
     "/_annotations/https:~1~1example.org~1properties~1Probe: string found, object expected",
     "/_annotations/https:~1~1example.org~1properties~1Probe: must be valid to one and only one schema, but 0 are valid"
    ],
+   "javaLocations": [
+    "/_annotations/https:~1~1example.org~1properties~1Probe"
+   ],
    "written": null
   },
   {
@@ -3041,6 +3089,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -3286,6 +3335,9 @@
    "javaErrors": [
     "/_annotations: array found, object expected"
    ],
+   "javaLocations": [
+    "/_annotations"
+   ],
    "written": null
   },
   {
@@ -3383,6 +3435,10 @@
    "javaErrors": [
     "object instance has properties which are not allowed by the schema: ['https://example.org/properties/Probe']",
     "object has missing required properties (['@value'])"
+   ],
+   "javaLocations": [
+    "/_annotations/@value",
+    "/_annotations/https:~1~1example.org~1properties~1Probe"
    ],
    "written": {
     "document": {
@@ -3595,6 +3651,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -3801,6 +3858,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -4008,6 +4066,9 @@
     "/@type: must have at least 1 items but found 0",
     "/@type: must be valid to one and only one schema, but 0 are valid",
     "/@type: array found, string expected"
+   ],
+   "javaLocations": [
+    "/@type"
    ],
    "written": {
     "document": {
@@ -4218,6 +4279,9 @@
     "/@type: must have only unique items in the array",
     "/@type: must be valid to one and only one schema, but 0 are valid",
     "/@type: array found, string expected"
+   ],
+   "javaLocations": [
+    "/@type"
    ],
    "written": {
     "document": {
@@ -4432,6 +4496,9 @@
    "javaErrors": [
     "@type must be an absolute IRI"
    ],
+   "javaLocations": [
+    "/@type"
+   ],
    "written": null
   },
   {
@@ -4527,6 +4594,9 @@
     "/@type: integer found, array expected",
     "/@type: must be valid to one and only one schema, but 0 are valid"
    ],
+   "javaLocations": [
+    "/@type"
+   ],
    "written": null
   },
   {
@@ -4621,6 +4691,9 @@
     "/@type: null found, string expected",
     "/@type: must be valid to one and only one schema, but 0 are valid",
     "/@type: null found, array expected"
+   ],
+   "javaLocations": [
+    "/@type"
    ],
    "written": {
     "document": {
@@ -4826,6 +4899,9 @@
    "javaValid": false,
    "javaErrors": [
     "pav:derivedFrom must be an absolute IRI when present"
+   ],
+   "javaLocations": [
+    "/pav:derivedFrom"
    ],
    "written": {
     "document": {
@@ -5033,6 +5109,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -5237,6 +5314,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -5444,6 +5522,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -5653,6 +5732,9 @@
    "javaErrors": [
     "@type must be an absolute IRI"
    ],
+   "javaLocations": [
+    "/Multiple Choice Element/0/@type"
+   ],
    "written": null
   },
   {
@@ -5744,6 +5826,9 @@
    "javaValid": false,
    "javaErrors": [
     "object has missing required properties (['@id'])"
+   ],
+   "javaLocations": [
+    "/Multiple Choice Element/0/@id"
    ]
   },
   {
@@ -5834,7 +5919,8 @@
     }
    ],
    "javaValid": true,
-   "javaErrors": []
+   "javaErrors": [],
+   "javaLocations": []
   },
   {
    "id": "cee-suite/008#stored-element-id-blank",
@@ -5926,6 +6012,9 @@
    "javaValid": false,
    "javaErrors": [
     "Element occurrence @id must be an absolute IRI or null"
+   ],
+   "javaLocations": [
+    "/Multiple Choice Element/0/@id"
    ]
   },
   {
@@ -6018,6 +6107,9 @@
    "javaValid": false,
    "javaErrors": [
     "Element occurrence @id must be an absolute IRI or null"
+   ],
+   "javaLocations": [
+    "/Multiple Choice Element/0/@id"
    ]
   },
   {
@@ -6110,6 +6202,9 @@
    "javaValid": false,
    "javaErrors": [
     "@id must be an absolute IRI"
+   ],
+   "javaLocations": [
+    "/@id"
    ]
   },
   {
@@ -6202,6 +6297,9 @@
    "javaValid": false,
    "javaErrors": [
     "schema:isBasedOn must be an absolute IRI"
+   ],
+   "javaLocations": [
+    "/schema:isBasedOn"
    ]
   },
   {
@@ -6293,6 +6391,9 @@
    "javaValid": false,
    "javaErrors": [
     "object has missing required properties (['@id'])"
+   ],
+   "javaLocations": [
+    "/@id"
    ]
   },
   {
@@ -6383,7 +6484,8 @@
     }
    ],
    "javaValid": true,
-   "javaErrors": []
+   "javaErrors": [],
+   "javaLocations": []
   },
   {
    "id": "cee-suite/008#stored-based-on-absent",
@@ -6474,6 +6576,9 @@
    "javaValid": false,
    "javaErrors": [
     "object has missing required properties (['schema:isBasedOn'])"
+   ],
+   "javaLocations": [
+    "/schema:isBasedOn"
    ]
   },
   {
@@ -6565,6 +6670,9 @@
    "javaValid": false,
    "javaErrors": [
     "object has missing required properties (['schema:name'])"
+   ],
+   "javaLocations": [
+    "/schema:name"
    ]
   },
   {
@@ -6657,6 +6765,9 @@
    "javaValid": false,
    "javaErrors": [
     "/schema:name: must be at least 1 characters long"
+   ],
+   "javaLocations": [
+    "/schema:name"
    ]
   },
   {
@@ -6748,6 +6859,9 @@
    "javaValid": false,
    "javaErrors": [
     "object has missing required properties (['pav:createdOn'])"
+   ],
+   "javaLocations": [
+    "/pav:createdOn"
    ]
   },
   {
@@ -6838,7 +6952,8 @@
     }
    ],
    "javaValid": true,
-   "javaErrors": []
+   "javaErrors": [],
+   "javaLocations": []
   },
   {
    "id": "cee-suite/008#stored-created-on-colonless-offset",
@@ -6928,7 +7043,8 @@
     }
    ],
    "javaValid": true,
-   "javaErrors": []
+   "javaErrors": [],
+   "javaLocations": []
   },
   {
    "id": "cee-suite/008#stored-created-on-day-past-month",
@@ -7020,6 +7136,9 @@
    "javaValid": false,
    "javaErrors": [
     "Not a real calendar date and time"
+   ],
+   "javaLocations": [
+    "/pav:createdOn"
    ]
   },
   {
@@ -7112,6 +7231,9 @@
    "javaValid": false,
    "javaErrors": [
     "Not a real calendar date and time"
+   ],
+   "javaLocations": [
+    "/pav:createdOn"
    ]
   },
   {
@@ -7204,6 +7326,9 @@
    "javaValid": false,
    "javaErrors": [
     "/pav:createdOn: does not match the date-time pattern must be a valid RFC 3339 date-time"
+   ],
+   "javaLocations": [
+    "/pav:createdOn"
    ]
   },
   {
@@ -7296,6 +7421,9 @@
    "javaValid": false,
    "javaErrors": [
     "/pav:createdOn: does not match the date-time pattern must be a valid RFC 3339 date-time"
+   ],
+   "javaLocations": [
+    "/pav:createdOn"
    ]
   },
   {
@@ -7388,6 +7516,9 @@
    "javaValid": false,
    "javaErrors": [
     "/pav:createdOn: does not match the date-time pattern must be a valid RFC 3339 date-time"
+   ],
+   "javaLocations": [
+    "/pav:createdOn"
    ]
   },
   {
@@ -7480,6 +7611,9 @@
    "javaValid": false,
    "javaErrors": [
     "/pav:createdOn: does not match the date-time pattern must be a valid RFC 3339 date-time"
+   ],
+   "javaLocations": [
+    "/pav:createdOn"
    ]
   },
   {
@@ -7572,6 +7706,9 @@
    "javaValid": false,
    "javaErrors": [
     "/pav:createdOn: does not match the date-time pattern must be a valid RFC 3339 date-time"
+   ],
+   "javaLocations": [
+    "/pav:createdOn"
    ]
   },
   {
@@ -7664,6 +7801,9 @@
    "javaValid": false,
    "javaErrors": [
     "/pav:createdOn: does not match the date-time pattern must be a valid RFC 3339 date-time"
+   ],
+   "javaLocations": [
+    "/pav:createdOn"
    ]
   },
   {
@@ -7757,6 +7897,9 @@
    "javaErrors": [
     "/pav:derivedFrom: does not match the uri pattern must be a valid URI or IRI",
     "pav:derivedFrom must be an absolute IRI when present"
+   ],
+   "javaLocations": [
+    "/pav:derivedFrom"
    ]
   },
   {
@@ -7829,6 +7972,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -8015,6 +8159,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -8162,6 +8307,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -8324,6 +8470,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -8447,6 +8594,7 @@
    "templateSha256": "58f72894064d5aa70b4808e5e5ecb6c044fe9aba9e0bc6c32551083030ddb9a9",
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.org/template-instances/66e46c72-d310-451f-93a9-368cf3d483ee",
@@ -8575,6 +8723,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -8734,6 +8883,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -8898,6 +9048,9 @@
    "javaErrors": [
     "object instance has properties which are not allowed by the schema: ['@value']"
    ],
+   "javaLocations": [
+    "/Rich Text Standalone/@value"
+   ],
    "written": {
     "document": {
      "@id": null,
@@ -9009,6 +9162,10 @@
     "/@context/Phone Field: does not have a value in the enumeration ['https://schema.metadatacenter.org/properties/6983fe2c-d004-4144-86ea-7132026364bc']",
     "object has missing required properties (['Phone field'])"
    ],
+   "javaLocations": [
+    "/@context/Phone Field",
+    "/Phone field"
+   ],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.org/template-instances/19f5261e-9259-45ec-b961-b3d17c92f27f",
@@ -9118,6 +9275,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -9258,6 +9416,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -9398,6 +9557,9 @@
    "javaValid": false,
    "javaErrors": [
     "The literal datatype does not match xsd:date."
+   ],
+   "javaLocations": [
+    "/Datetime Field 1 (month~1year)/@type"
    ],
    "written": {
     "document": {
@@ -9552,6 +9714,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -9707,6 +9870,9 @@
    "javaErrors": [
     "object has missing required properties (['rdfs:label'])"
    ],
+   "javaLocations": [
+    "/Datetime Field 1 (month~1year)/rdfs:label"
+   ],
    "written": {
     "document": {
      "@id": null,
@@ -9848,6 +10014,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -10033,6 +10200,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -10201,6 +10369,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -10368,6 +10537,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -10485,6 +10655,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -10601,6 +10772,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -10717,6 +10889,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -10836,6 +11009,9 @@
    "javaValid": false,
    "javaErrors": [
     "A controlled-term label requires an IRI."
+   ],
+   "javaLocations": [
+    "/Untitled"
    ],
    "written": {
     "document": {
@@ -10957,6 +11133,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -11074,6 +11251,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -11192,6 +11370,9 @@
    "javaValid": false,
    "javaErrors": [
     "A controlled-term label requires an IRI."
+   ],
+   "javaLocations": [
+    "/Untitled"
    ],
    "written": {
     "document": {
@@ -11316,6 +11497,9 @@
    "javaErrors": [
     "object instance has properties which are not allowed by the schema: ['@value']"
    ],
+   "javaLocations": [
+    "/Untitled/@value"
+   ],
    "written": {
     "document": {
      "@id": null,
@@ -11438,6 +11622,9 @@
    "javaErrors": [
     "The stored IRI is empty or malformed."
    ],
+   "javaLocations": [
+    "/Untitled/@id"
+   ],
    "written": null
   },
   {
@@ -11504,6 +11691,9 @@
    "javaErrors": [
     "object instance has properties which are not allowed by the schema: ['probe']"
    ],
+   "javaLocations": [
+    "/Untitled/probe"
+   ],
    "written": null
   },
   {
@@ -11565,6 +11755,9 @@
    "javaValid": false,
    "javaErrors": [
     "object has missing required properties (['Untitled'])"
+   ],
+   "javaLocations": [
+    "/Untitled"
    ],
    "written": {
     "document": {
@@ -11696,6 +11889,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -11813,6 +12007,9 @@
    "javaValid": false,
    "javaErrors": [
     "object instance has properties which are not allowed by the schema: ['Probe']"
+   ],
+   "javaLocations": [
+    "/Probe"
    ],
    "written": {
     "document": {
@@ -11963,6 +12160,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -12113,6 +12311,10 @@
     "object instance has properties which are not allowed by the schema: ['@id']",
     "object has missing required properties (['@value'])"
    ],
+   "javaLocations": [
+    "/Probe/@id",
+    "/Probe/@value"
+   ],
    "written": {
     "document": {
      "@id": null,
@@ -12238,6 +12440,9 @@
    "javaErrors": [
     "/@context/Untitled: does not have a value in the enumeration ['https://schema.metadatacenter.org/properties/97e1bf28-ebf3-457f-9155-7cdbb48b5860']"
    ],
+   "javaLocations": [
+    "/@context/Untitled"
+   ],
    "written": {
     "document": {
      "@id": null,
@@ -12356,6 +12561,9 @@
    "javaValid": false,
    "javaErrors": [
     "object instance has properties which are not allowed by the schema: ['Probe']"
+   ],
+   "javaLocations": [
+    "/@context/Probe"
    ],
    "written": {
     "document": {
@@ -12476,6 +12684,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -12594,6 +12803,9 @@
    "javaErrors": [
     "object has missing required properties (['xsd'])"
    ],
+   "javaLocations": [
+    "/@context/xsd"
+   ],
    "written": {
     "document": {
      "@id": null,
@@ -12660,6 +12872,7 @@
    "templateSha256": "3c7f860d704b9cbffa11072c450548bfac14bc58652316486a13c786ec387fda",
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.org/template-instances/c84ae283-73b3-46b6-ae02-3ccd12ed80b6",
@@ -12733,6 +12946,7 @@
    "templateSha256": "891aa249f294153d49d5fe2276730acfc2c62452287dd7a7040c094d818d13f5",
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.org/template-instances/a8123233-c303-4767-bc19-fbdfa3a7c03d",
@@ -12868,6 +13082,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -13080,6 +13295,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -13339,6 +13555,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -13489,6 +13706,7 @@
    "templateSha256": "6dfaa7f812d3a7e2d18bdb760355d5f276d35937b3c9cbf5c83b0d0192624484",
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.org/template-instances/00d373b1-571c-46bb-b560-b6a3253d8d72",
@@ -13563,6 +13781,7 @@
    },
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.org/template-instances/00d373b1-571c-46bb-b560-b6a3253d8d72",
@@ -13637,6 +13856,7 @@
    },
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.org/template-instances/00d373b1-571c-46bb-b560-b6a3253d8d72",
@@ -13711,6 +13931,7 @@
    },
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.org/template-instances/00d373b1-571c-46bb-b560-b6a3253d8d72",
@@ -13787,6 +14008,7 @@
    },
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.org/template-instances/00d373b1-571c-46bb-b560-b6a3253d8d72",
@@ -13863,6 +14085,7 @@
    },
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.org/template-instances/00d373b1-571c-46bb-b560-b6a3253d8d72",
@@ -13938,6 +14161,7 @@
    },
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.org/template-instances/00d373b1-571c-46bb-b560-b6a3253d8d72",
@@ -14013,6 +14237,7 @@
    },
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.org/template-instances/00d373b1-571c-46bb-b560-b6a3253d8d72",
@@ -14091,6 +14316,9 @@
    "javaValid": false,
    "javaErrors": [
     "object instance has properties which are not allowed by the schema: ['@value']"
+   ],
+   "javaLocations": [
+    "/Link here/@value"
    ],
    "written": {
     "document": {
@@ -14172,6 +14400,9 @@
    "javaErrors": [
     "The stored IRI is empty or malformed."
    ],
+   "javaLocations": [
+    "/Link here/@id"
+   ],
    "written": null
   },
   {
@@ -14196,6 +14427,9 @@
    "javaErrors": [
     "object instance has properties which are not allowed by the schema: ['probe']"
    ],
+   "javaLocations": [
+    "/Link here/probe"
+   ],
    "written": null
   },
   {
@@ -14213,6 +14447,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.org/template-instances/ad80b288-4d79-4bb4-82c3-0d9653ed4c46",
@@ -14375,6 +14610,10 @@
    "javaErrors": [
     "object has missing required properties (['@value'])",
     "This field requires a literal value."
+   ],
+   "javaLocations": [
+    "/Element with Several Fields, some Multi/1/Another text field/2",
+    "/Element with Several Fields, some Multi/1/Another text field/2/@value"
    ],
    "written": {
     "document": {
@@ -14563,6 +14802,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -14668,6 +14908,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -14789,6 +15030,9 @@
    "javaErrors": [
     "object has missing required properties (['@type'])"
    ],
+   "javaLocations": [
+    "/Numeric/@type"
+   ],
    "written": {
     "document": {
      "@id": null,
@@ -14898,6 +15142,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -15006,6 +15251,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -15114,6 +15360,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -15259,6 +15506,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -15452,6 +15700,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -15575,6 +15824,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -15781,6 +16031,12 @@
     "object instance has properties which are not allowed by the schema: ['@value']",
     "/Element 1/Element 2/0/Element 3/1/Sample Attribute Value/0: object found, string expected",
     "/Element 1/Element 2/0/Element 3/2/Sample Attribute Value/0: object found, string expected"
+   ],
+   "javaLocations": [
+    "/Element 1/Element 2/0/Element 3/1/Sample Attribute Value/0",
+    "/Element 1/Element 2/0/Element 3/1/Sample Attribute Value/0/@value",
+    "/Element 1/Element 2/0/Element 3/2/Sample Attribute Value/0",
+    "/Element 1/Element 2/0/Element 3/2/Sample Attribute Value/0/@value"
    ],
    "written": {
     "document": {
@@ -16015,6 +16271,7 @@
    "templateSha256": "d11945081b72dd528420a0fdfae60136e2095e6885c373c25e169e1fbd6fda36",
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.orgx/template-instances/928829e9-fb1e-4c40-a203-329ebfe53df1",
@@ -16089,6 +16346,7 @@
    "templateSha256": "d11945081b72dd528420a0fdfae60136e2095e6885c373c25e169e1fbd6fda36",
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.orgx/template-instances/823f06fc-10c0-4447-b47e-ab9dc058af85",
@@ -16165,6 +16423,7 @@
    "templateSha256": "7f380bb9e39cca0b869229277c93ab7b8e4085fe8474f9850ba20a9ed05235d8",
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.orgx/template-instances/380da0c7-313e-4ff6-96f5-4995bb348880",
@@ -16238,6 +16497,7 @@
    "templateSha256": "7f380bb9e39cca0b869229277c93ab7b8e4085fe8474f9850ba20a9ed05235d8",
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.orgx/template-instances/4d46ab9e-a121-4fba-bae7-8a78b52f4679",
@@ -16314,6 +16574,7 @@
    "templateSha256": "00a16e5cae648086ebd804a7a017b26aea4fc4bd0b1a65a3b559729f4eb7630d",
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.orgx/template-instances/ceb1554f-b468-4ccb-bf42-086874c467fa",
@@ -16524,6 +16785,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -16599,6 +16861,7 @@
    "templateSha256": "79d5f358bcc57cd929cd0cff9e25ff45e42dfaaeafcb5a6a4ea489f7bf60ccd5",
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.orgx/template-instances/28f60f26-42cb-47e4-b4d2-648e771a1981",
@@ -16669,6 +16932,7 @@
    "templateSha256": "28505d2767031e09e6e859d0db0a195bb93dab0779e8e4ffd70e31af0d374540",
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.org/template-instances/e46bb9d4-aa53-46ec-9de5-bc4c968f7eed",
@@ -16804,6 +17068,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -16902,6 +17167,7 @@
    "templateSha256": "cdc04141ba4ec2ff03a6136ab396d4e8c00a09d08e7b8a3f657652918a7de0f1",
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.orgx/template-instances/24e9d7b9-b782-4a29-aa15-ef88b9b164d7",
@@ -16972,6 +17238,7 @@
    "templateSha256": "1e8ce7d86dd657b38839024a2a738be9a09a959fb71341b5c2f008f206193e9c",
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.orgx/template-instances/16be755f-aa71-40c3-9766-d0bce2bcb76c",
@@ -17092,6 +17359,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -17170,6 +17438,7 @@
    "templateSha256": "d30d1fac4c08a830d08f689130e0317b087fb7aa65a7917e99ea7e376809f653",
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.orgx/template-instances/5b572ec6-54eb-494a-9023-c0894a7ec7dd",
@@ -17235,6 +17504,7 @@
    "templateSha256": "2321c38b36dff96c485d98ea52bc3a5de5e6a887abeaf1693af98f1cea516ce8",
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.org/template-instances/72a81c7d-302b-48b8-8f2d-39b2ad6dd9d6",
@@ -17362,6 +17632,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -17717,6 +17988,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -18469,6 +18741,7 @@
    "templateSha256": "2eb866f3ad5015eae406ee430018986b8e0a7d34bee575bb8b9117ae8945cba7",
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.org/template-instances/7091d051-ec0e-401a-81ab-ade6c74a7138",
@@ -18550,6 +18823,7 @@
    "templateSha256": "78f5af618d26b7857745899cb929ee088bd276d28205b290ed4134e533b68091",
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.org/template-instances/a02696a4-9522-46aa-aa16-cc4a97a1c077",
@@ -18617,6 +18891,7 @@
    "templateSha256": "78f5af618d26b7857745899cb929ee088bd276d28205b290ed4134e533b68091",
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": "https://repo.metadatacenter.org/template-instances/a02696a4-9522-46aa-aa16-cc4a97a1c077",
@@ -18716,6 +18991,7 @@
    ],
    "javaValid": true,
    "javaErrors": [],
+   "javaLocations": [],
    "written": {
     "document": {
      "@id": null,
@@ -18796,6 +19072,12 @@
     "object has missing required properties (['Element1'])",
     "object instance has properties which are not allowed by the schema: ['Element as Multi']",
     "object instance has properties which are not allowed by the schema: ['Element as Single']"
+   ],
+   "javaLocations": [
+    "/Element",
+    "/Element as Multi",
+    "/Element as Single",
+    "/Element1"
    ],
    "written": {
     "document": {
@@ -18923,6 +19205,12 @@
     "object has missing required properties (['Element1'])",
     "object instance has properties which are not allowed by the schema: ['Element as Multi']",
     "object instance has properties which are not allowed by the schema: ['Element as Single']"
+   ],
+   "javaLocations": [
+    "/Element",
+    "/Element as Multi",
+    "/Element as Single",
+    "/Element1"
    ],
    "written": {
     "document": {

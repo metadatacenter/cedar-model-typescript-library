@@ -19,6 +19,9 @@ const checks = [
   { name: 'types', script: 'typecheck' },
   { name: 'yaml', script: 'parity:yaml' },
   { name: 'json', script: 'parity:json' },
+  // Reads the Java library's sources, from CEDAR_HOME's checkout where that is set, as CI reads the
+  // locked commit beside its clone.
+  { name: 'defaults', script: 'verify:java-defaults' },
   { name: 'package', script: mode === 'prebuilt' ? 'test:package:prebuilt' : 'test:package', weight: Math.min(3, budget) },
 ];
 // Parity imports generatedTestCases.ts too. Generate once before any checks

@@ -144,85 +144,6 @@ const validators: Record<string, ((document: JsonNode) => Verdict) | null> = {
 // Each is a defect here, not an accepted variation: a listed input must still differ, so fixing one
 // fails this spec until its entry is removed, and every case not listed must agree.
 const OPEN_VALIDATOR_DEFECTS: Record<string, { reason: string; inputs: string[] }> = {
-  'template child key': {
-    reason: "The schema artifact validator admits a reserved or ill-formed child name, which Java's validator refuses.",
-    inputs: ['@foo', '@value', '__proto__', 'constructor', 'prototype', ' ', '\u001c', '\u001d', '\u001e', '\u001f'],
-  },
-  'element child key': {
-    reason: "The schema artifact validator admits a reserved or ill-formed child name, which Java's validator refuses.",
-    inputs: [
-      '@foo',
-      '@value',
-      '@language',
-      'skos:prefLabel',
-      'skos:notation',
-      'skos:altLabel',
-      '_annotations',
-      '__proto__',
-      'constructor',
-      'prototype',
-      ' ',
-      '\u001c',
-      '\u001d',
-      '\u001e',
-      '\u001f',
-    ],
-  },
-  'attribute-value field key in a template': {
-    reason: 'The schema artifact validator admits a reserved or ill-formed attribute-value field name.',
-    inputs: [
-      '@foo',
-      '@value',
-      '@language',
-      'rdfs:label',
-      'skos:prefLabel',
-      'skos:notation',
-      'skos:altLabel',
-      '__proto__',
-      'constructor',
-      'prototype',
-      'name',
-      'description',
-      'id',
-      'type',
-      'children',
-      'isBasedOn',
-      'derivedFrom',
-      'annotations',
-      'createdOn',
-      ' ',
-      '\u001c',
-      '\u001d',
-      '\u001e',
-      '\u001f',
-    ],
-  },
-  'attribute-value field key in an element': {
-    reason: 'The schema artifact validator admits a reserved or ill-formed attribute-value field name.',
-    inputs: [
-      '@foo',
-      '@value',
-      '@language',
-      'skos:prefLabel',
-      'skos:notation',
-      'skos:altLabel',
-      '_annotations',
-      '__proto__',
-      'constructor',
-      'prototype',
-      'name',
-      'description',
-      'id',
-      'type',
-      'children',
-      'createdOn',
-      ' ',
-      '\u001c',
-      '\u001d',
-      '\u001e',
-      '\u001f',
-    ],
-  },
   'attribute name in a template instance': {
     reason: "The instance validator admits an attribute name Java's validator refuses.",
     inputs: [
@@ -260,46 +181,6 @@ const OPEN_VALIDATOR_DEFECTS: Record<string, { reason: string; inputs: string[] 
       '\u001e',
       '\u001f',
     ],
-  },
-  'template version': {
-    reason: 'The schema artifact validator admits a version that is not a resource version.',
-    inputs: ['0.0.0', '2147483648.0.0', '99999999999.0.0'],
-  },
-  'element version': {
-    reason: 'The schema artifact validator admits a version that is not a resource version.',
-    inputs: ['0.0.0', '2147483648.0.0', '99999999999.0.0'],
-  },
-  'field version': {
-    reason: 'The schema artifact validator admits a version that is not a resource version.',
-    inputs: ['0.0.0', '2147483648.0.0', '99999999999.0.0'],
-  },
-  'static field version': {
-    reason: 'The schema artifact validator admits a version that is not a resource version.',
-    inputs: ['0.0.0', '2147483648.0.0', '99999999999.0.0'],
-  },
-  'template identifier': {
-    reason: 'The schema artifact validator admits an identifier that is not an absolute IRI.',
-    inputs: ['https://example.org/Niger\u00a0NER', 'https://example.org/\u2003term', 'urn:example:Niger\u00a0NER', '', 'relative/path'],
-  },
-  'derived from': {
-    reason: 'The schema artifact validator admits a pav:derivedFrom that is not an absolute IRI.',
-    inputs: ['https://example.org/Niger\u00a0NER', 'https://example.org/\u2003term', 'urn:example:Niger\u00a0NER', '', 'relative/path'],
-  },
-  'property IRI': {
-    reason: 'The schema artifact validator admits a property IRI that is not an absolute IRI.',
-    inputs: ['https://example.org/Niger\u00a0NER', 'https://example.org/\u2003term', 'urn:example:Niger\u00a0NER', '', 'relative/path'],
-  },
-  'ontology constraint': {
-    reason: 'The schema artifact validator admits an ontology that is not an absolute IRI.',
-    inputs: ['https://example.org/Niger\u00a0NER', 'https://example.org/\u2003term', 'urn:example:Niger\u00a0NER', '', 'relative/path'],
-  },
-  'class constraint': {
-    reason: 'The schema artifact validator admits a class that is not an absolute IRI.',
-    inputs: ['https://example.org/Niger\u00a0NER', 'https://example.org/\u2003term', 'urn:example:Niger\u00a0NER', '', 'relative/path'],
-  },
-  'default value': {
-    reason: "The schema artifact validator admits a default value Java's validator refuses.",
-    inputs: ['https://example.org/Niger\u00a0NER', 'https://example.org/\u2003term', 'urn:example:Niger\u00a0NER'],
   },
 };
 

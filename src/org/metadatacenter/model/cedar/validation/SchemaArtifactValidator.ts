@@ -2,10 +2,17 @@ import * as schemas from './generated/artifact-schemas';
 import { ExactDecimal } from '../../../policy/NumericPolicy';
 import { ValidationFinding, ValidationPolicy, ValidationSummary } from '../../../policy/ValidationPolicy';
 import { SchemaValuePolicy } from '../../../policy/SchemaValuePolicy';
+import { IdentifierPolicy } from '../../../policy/IdentifierPolicy';
+import { TextPolicy } from '../../../policy/TextPolicy';
+import { AttributeValueFieldParent, ReservedNames } from '../ReservedNames';
 
 export type SchemaArtifactKind = 'template' | 'element' | 'field';
 type ObjectNode = Record<string, unknown>;
 const object = (value: unknown): value is ObjectNode => value !== null && typeof value === 'object' && !Array.isArray(value);
+/** A child's definition: the declaration itself, or the items of a repeated child's list. */
+const definition = (declared: unknown): ObjectNode | null =>
+  !object(declared) ? null : object(declared.items) ? declared.items : declared;
+const text = (value: unknown): string => (typeof value === 'string' ? value : '');
 const core = 'https://schema.metadatacenter.org/core/';
 const iriInputs = new Set([
   'controlled-term',
@@ -80,6 +87,7 @@ export class SchemaArtifactValidator {
         }
       }
       this.occurrences(source, '', findings);
+      this.serverRules(node, inferred, findings);
     } catch (error) {
       findings.push(ValidationPolicy.finding('schema.invalid', '', error instanceof Error ? error.message : 'Invalid schema artifact.'));
     }
@@ -158,5 +166,136 @@ export class SchemaArtifactValidator {
       for (const [key, child] of Object.entries(value.properties))
         this.occurrences(child, ValidationPolicy.child(path + '/properties', key), findings);
     }
+  }
+  /**
+   * What the server's validator asks of a schema artifact beyond its meta-schema, as Java's
+   * `CedarValidator` asks it. A child's key becomes a property of every instance, so it may not be
+   * blank or a name `ReservedNames` keeps for instance metadata, and an attribute-value field's key
+   * also stays off the YAML metadata keys of its parent. A version must be one `ResourceVersion` can
+   * hold. Wherever the artifact names another resource, the IRI must be absolute, which `format: uri`
+   * does not require: its own `@id`, a previous version, `pav:derivedFrom` at any depth, each child's
+   * property IRI, the terms its constraints name and an IRI default.
+   */
+  private static serverRules(node: ObjectNode, kind: SchemaArtifactKind, findings: ValidationFinding[]): void {
+    if (kind !== 'field') {
+      this.propertyIris(node, '', findings);
+      this.childKeys(node, kind, '', findings);
+    }
+    this.derivedFrom(node, '', findings);
+    this.iriDefaults(node, '', findings);
+    this.identifiers(node, '', true, findings);
+    this.versions(node, '', findings);
+  }
+
+  /** A template's or element's children: each property whose definition has a `_ui`, with that definition. */
+  private static children(container: ObjectNode): [string, unknown, ObjectNode][] {
+    if (!object(container.properties)) return [];
+    return Object.entries(container.properties).flatMap(([key, declared]): [string, unknown, ObjectNode][] => {
+      const child = definition(declared);
+      return child !== null && object(child._ui) ? [[key, declared, child]] : [];
+    });
+  }
+
+  private static refuse(findings: ValidationFinding[], path: string, message: string): void {
+    findings.push(ValidationPolicy.finding('valueShape', path, message));
+  }
+
+  private static childKeys(container: ObjectNode, parent: AttributeValueFieldParent, path: string, findings: ValidationFinding[]): void {
+    for (const [key, , child] of this.children(container)) {
+      const location = ValidationPolicy.child(path + '/properties', key);
+      if (TextPolicy.isBlank(key)) this.refuse(findings, location, 'A child key must not be blank.');
+      else if (ReservedNames.isReservedName(key)) this.refuse(findings, location, `Child key "${key}" is reserved for instance metadata.`);
+      else if (
+        text((child._ui as ObjectNode).inputType) === 'attribute-value' &&
+        ReservedNames.isReservedAttributeValueFieldName(key, parent)
+      )
+        this.refuse(findings, location, `Attribute-value field key "${key}" is reserved for the YAML metadata of its parent.`);
+      if (child['@type'] === core + 'TemplateElement') this.childKeys(child, 'element', location, findings);
+    }
+  }
+
+  private static propertyIris(container: ObjectNode, path: string, findings: ValidationFinding[]): void {
+    const context = object(container.properties) ? container.properties['@context'] : undefined;
+    const mappings = object(context) && object(context.properties) ? context.properties : {};
+    for (const [key, , child] of this.children(container)) {
+      const mapping = mappings[key];
+      for (const iri of object(mapping) && Array.isArray(mapping.enum) ? mapping.enum : [])
+        if (typeof iri === 'string' && !IdentifierPolicy.isValid(iri))
+          this.refuse(
+            findings,
+            ValidationPolicy.child(path + '/properties/@context/properties', key) + '/enum',
+            `The property IRI of child "${key}" must be an absolute IRI.`,
+          );
+      this.propertyIris(child, ValidationPolicy.child(path + '/properties', key), findings);
+    }
+  }
+
+  private static derivedFrom(node: unknown, path: string, findings: ValidationFinding[]): void {
+    if (Array.isArray(node)) node.forEach((item, index) => this.derivedFrom(item, ValidationPolicy.child(path, index), findings));
+    if (!object(node)) return;
+    const value = node['pav:derivedFrom'];
+    if (typeof value === 'string' && !IdentifierPolicy.isValid(value))
+      this.refuse(findings, path + '/pav:derivedFrom', 'pav:derivedFrom must be an absolute IRI when present.');
+    for (const [key, item] of Object.entries(node)) this.derivedFrom(item, ValidationPolicy.child(path, key), findings);
+  }
+
+  /** A stated default of a field whose value is an IRI. The readers take an empty one as no default. */
+  private static iriDefaults(declared: unknown, path: string, findings: ValidationFinding[]): void {
+    const node = definition(declared);
+    if (node === null) return;
+    const value = object(node._valueConstraints) ? node._valueConstraints.defaultValue : undefined;
+    if (iriInputs.has(text(object(node._ui) ? node._ui.inputType : undefined)) && typeof value === 'string' && value !== '')
+      if (!IdentifierPolicy.isValid(value))
+        this.refuse(findings, path + '/_valueConstraints/defaultValue', 'This default value must be an IRI.');
+    for (const [key, child] of this.children(node)) this.iriDefaults(child, ValidationPolicy.child(path + '/properties', key), findings);
+  }
+
+  /**
+   * The identifiers an artifact states outside its children's values. A nested child's `@id` is left
+   * alone: the Template Designer writes a temporary, relative one for a child it has just added, and
+   * the server replaces it. So is an action's `sourceUri`, where the legacy editor writes `template`.
+   */
+  private static identifiers(declared: unknown, path: string, root: boolean, findings: ValidationFinding[]): void {
+    const node = definition(declared);
+    if (node === null) return;
+    const require = (value: unknown, location: string, what: string): void => {
+      if (typeof value === 'string' && !IdentifierPolicy.isValid(value))
+        this.refuse(findings, location, `${what} must be an absolute IRI.`);
+    };
+    if (root) require(node['@id'], path + '/@id', '@id');
+    require(node['pav:previousVersion'], path + '/pav:previousVersion', 'pav:previousVersion');
+    const constraints = object(node._valueConstraints) ? node._valueConstraints : {};
+    for (const group of ['ontologies', 'classes', 'branches', 'valueSets']) {
+      const entries = constraints[group];
+      if (Array.isArray(entries))
+        entries.forEach((entry, index) =>
+          require(object(entry) ? entry.uri : undefined, `${path}/_valueConstraints/${group}/${index}/uri`, `A ${group} constraint's uri`),
+        );
+    }
+    const actions = constraints.actions;
+    if (Array.isArray(actions))
+      actions.forEach((entry, index) =>
+        require(object(entry) ? entry.termUri : undefined, `${path}/_valueConstraints/actions/${index}/termUri`, "An action's termUri"),
+      );
+    if (object(constraints.defaultValue))
+      require(constraints.defaultValue.termUri, path + '/_valueConstraints/defaultValue/termUri', "A default value's termUri");
+    for (const [key, child] of this.children(node))
+      this.identifiers(child, ValidationPolicy.child(path + '/properties', key), false, findings);
+  }
+
+  /**
+   * A version of three numbers, each of which fits an int, other than `0.0.0`, as the readers and the
+   * server's `ResourceVersion` hold it. The meta-schemas' pattern refuses every other shape.
+   */
+  private static versions(node: unknown, path: string, findings: ValidationFinding[]): void {
+    if (Array.isArray(node)) node.forEach((item, index) => this.versions(item, ValidationPolicy.child(path, index), findings));
+    if (!object(node)) return;
+    const version = node['pav:version'];
+    if (typeof version === 'string' && /^\d+\.\d+\.\d+$/.test(version)) {
+      const fits = version.split('.').every((part) => part.length < 10 || (part.length === 10 && part <= '2147483647'));
+      if (!fits) this.refuse(findings, path + '/pav:version', 'Each part of pav:version must fit an int.');
+      else if (version === '0.0.0') this.refuse(findings, path + '/pav:version', 'pav:version must not be 0.0.0.');
+    }
+    for (const [key, item] of Object.entries(node)) this.versions(item, ValidationPolicy.child(path, key), findings);
   }
 }

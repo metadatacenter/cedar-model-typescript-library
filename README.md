@@ -207,7 +207,11 @@ Run concurrent gates in separate checkouts, not against the same output tree.
 
 The unit suite covers the model and serialization behavior. The parity gates
 compare the TypeScript library with the Java CEDAR Artifact Library over the
-vendored JSON and YAML corpora.
+vendored JSON and YAML corpora: the four numbered collections and the CEE
+suite's templates and instances. A CEE suite instance that names no template
+is rendered as a host stores it, with the template in its own case and its case
+identifier as its name. `itest/scripts/ceeSuiteParity.ts` lists each suite case
+that only one library renders, with the reason; each one is an open defect.
 
 The two libraries must also reach the same verdict on every instance.
 `itest/InstanceVerdictConcordance.spec.ts` checks that `InstanceValidator`'s

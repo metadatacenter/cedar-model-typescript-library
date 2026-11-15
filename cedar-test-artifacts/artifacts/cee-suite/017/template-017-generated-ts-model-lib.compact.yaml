@@ -1,0 +1,37 @@
+type: template
+name: "datetime template"
+id: "https://repo.metadatacenter.org/templates/3f78868d-76f4-4c12-adc6-c508308736a1"
+children:
+  - key: "Datetime Field 1 (month/year)"
+    type: temporal-field
+    name: "Datetime Field 1 (month/year)"
+    description: "Help Text"
+    datatype: xsd:date
+    granularity: month
+  - key: "Datetime Field 2 (time)"
+    type: temporal-field
+    name: "Datetime Field 2 (time)"
+    description: "Help Text"
+    datatype: xsd:time
+    granularity: decimalSecond
+    inputTimeFormat: 12h
+    inputTimeZone: true
+  - key: "Datetime Field 3 (datetime no timezone)"
+    type: temporal-field
+    name: "Datetime Field 3 (datetime no timezone)"
+    description: "Help Text"
+    datatype: xsd:dateTime
+    granularity: decimalSecond
+    inputTimeFormat: 12h
+    inputTimeZone: false
+  - key: "Datetime Field 4 (datetime multiple)"
+    type: temporal-field
+    name: "Datetime Field 4 (datetime multiple)"
+    description: "Help Text"
+    datatype: xsd:dateTime
+    granularity: second
+    inputTimeFormat: 12h
+    inputTimeZone: true
+    configuration:
+      multiple: true
+      minItems: 1

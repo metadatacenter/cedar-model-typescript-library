@@ -1,0 +1,83 @@
+type: template
+name: "page break"
+id: "https://repo.metadatacenter.org/templates/fcf8728b-57d6-49ef-9366-84f56c7a7ece"
+children:
+  - key: "Page Break 3 of 5"
+    type: static-page-break
+    name: "Page Break 3 of 5"
+    description: "Help Text"
+  - key: "Sample Standalone Text"
+    type: text-field
+    name: "Sample Standalone Text"
+    description: "Help Text"
+    default: "My sample default value"
+    configuration:
+      multiple: true
+      minItems: 1
+  - key: "Sample Element"
+    type: element
+    name: "Sample Element"
+    children:
+      - key: "Sample Text"
+        type: controlled-term-field
+        name: "Sample Text"
+        description: "Help Text"
+        datatype: iri
+        values:
+          - type: branch
+            sourceAcronym: "NCIT"
+            sourceName: "undefined (NCIT)"
+            termBaseIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C3224"
+            termBaseLabel: "Melanoma"
+            termMaxDepth: 0
+        configuration:
+          multiple: true
+          minItems: 1
+      - key: "Sample Datetime"
+        type: temporal-field
+        name: "Sample Datetime"
+        description: "Help Text"
+        datatype: xsd:dateTime
+        granularity: second
+        inputTimeFormat: 12h
+        inputTimeZone: true
+        configuration:
+          multiple: true
+          minItems: 1
+      - key: "Sample Checkbox"
+        type: checkbox-field
+        name: "Sample Checkbox"
+        description: "Help Text"
+        values:
+          - label: "Option 1"
+          - label: "Option 2"
+            selected: true
+          - label: "Option 3"
+        configuration:
+          required: true
+          minItems: 1
+      - key: "Sample Attribute Value"
+        type: attribute-value-field
+        name: "Sample Attribute Value"
+        description: "Help Text"
+        configuration:
+          minItems: 0
+  - key: "Page Break 4 of 5"
+    type: static-page-break
+    name: "Page Break 4 of 5"
+    description: "Help Text"
+  - key: "Sample Email"
+    type: email-field
+    name: "Sample Email"
+    description: "Help Text"
+  - key: "Link Field"
+    type: link-field
+    name: "Link Field"
+    description: "Help Text"
+    configuration:
+      multiple: true
+      minItems: 1
+  - key: "Page Break 5 of 5"
+    type: static-page-break
+    name: "Page Break 5 of 5"
+    description: "Help Text"

@@ -1,0 +1,11 @@
+type: template
+name: "multiple min 3"
+id: "https://repo.metadatacenter.org/templates/9b23f2d8-16ca-4472-8a37-6ddf223f43a1"
+children:
+  - key: "Text Field"
+    type: text-field
+    name: "Text Field"
+    description: "Help Text"
+    configuration:
+      multiple: true
+      minItems: 3

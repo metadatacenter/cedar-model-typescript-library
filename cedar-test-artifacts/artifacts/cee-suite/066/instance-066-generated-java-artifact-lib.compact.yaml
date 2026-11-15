@@ -1,0 +1,31 @@
+type: instance
+name: "cee-instance-066"
+isBasedOn: "https://repo.metadatacenter.orgx/templates/9378d41b-c557-4932-8c62-9976db822cbf"
+children:
+  prefix:
+    value: "10.82658"
+  url:
+    value: "http://localhost:4400/"
+  creator:
+    - children:
+        creatorName:
+          value: "Creator 1"
+    - children:
+        creatorName:
+          value: "Creator 2"
+  title:
+    - children:
+        title:
+          value: "Test Title 1"
+    - children:
+        title:
+          value: "Test Title 2"
+  publicationYear:
+    datatype: xsd:date
+    value: "2023-01-01"
+  publisher:
+    value: "CEDAR"
+  resourceType:
+    value: "Template"
+  language:
+    value: "en"

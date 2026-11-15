@@ -1,0 +1,18 @@
+type: template
+name: "Multiple select"
+id: "https://repo.metadatacenter.orgx/templates/3b14c261-d8f6-48dc-a162-718f9acae800"
+children:
+  - key: "Favorite Bands"
+    type: multi-select-list-field
+    name: "Favorite Bands"
+    description: "Help Text"
+    values:
+      - label: "AC/DC"
+      - label: "Beatles"
+        selected: true
+      - label: "Rolling Stones"
+      - label: "ABBA"
+        selected: true
+      - label: "Taylor Swift"
+    configuration:
+      minItems: 1

@@ -3,6 +3,7 @@ import { CedarArtifactType } from '../../src';
 import { elementTestNumbers, fieldTestNumbers, instanceTestNumbers, templateTestNumbers } from '../resources/generatedTestCases';
 import { TestResource } from '../TestResource';
 import { TestUtil } from '../TestUtil';
+import { verifyCeeSuiteParity } from './ceeSuiteParity';
 
 const cohorts: Array<{ type: CedarArtifactType; numbers: number[] }> = [
   { type: CedarArtifactType.TEMPLATE_FIELD, numbers: fieldTestNumbers },
@@ -30,6 +31,8 @@ for (const { type, numbers } of cohorts) {
   for (const number of differing) console.error(`  DIVERGENCE: ${TestResource.artifact(number, type)}`);
   failures += differing.length;
 }
+
+failures += verifyCeeSuiteParity('json');
 
 if (failures > 0) {
   console.error(`\nJava/TypeScript JSON parity failed with ${failures} problem${failures === 1 ? '' : 's'}.`);

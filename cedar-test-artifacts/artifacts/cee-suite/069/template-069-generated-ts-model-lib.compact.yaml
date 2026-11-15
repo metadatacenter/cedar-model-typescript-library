@@ -1,0 +1,24 @@
+type: template
+name: "Template with multi link element"
+id: "https://repo.metadatacenter.orgx/templates/89f67526-f9b5-4177-9447-9ac6b6351d64"
+children:
+  - key: "Element with 2 Links 1-N"
+    type: element
+    name: "Element with 2 Links 1-N"
+    children:
+      - key: "Flat link"
+        type: link-field
+        name: "Flat link"
+        description: "Help Text"
+        configuration:
+          multiple: true
+          minItems: 1
+      - key: "Simple link"
+        type: link-field
+        name: "Simple link"
+        configuration:
+          multiple: true
+          minItems: 1
+    configuration:
+      multiple: true
+      minItems: 1

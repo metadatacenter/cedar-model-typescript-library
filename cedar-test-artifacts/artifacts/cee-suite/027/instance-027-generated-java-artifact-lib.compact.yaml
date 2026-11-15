@@ -1,0 +1,7 @@
+type: instance
+name: "27 - link metadata"
+id: "https://repo.metadatacenter.org/template-instances/00d373b1-571c-46bb-b560-b6a3253d8d72"
+isBasedOn: "https://repo.metadatacenter.org/templates/dc1090d9-9cbf-48c7-bb41-66254531d033"
+children:
+  Link here:
+    id: "https://metadatacenter.org"

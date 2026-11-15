@@ -1,0 +1,46 @@
+type: template
+name: "controlled - mixed"
+id: "https://repo.metadatacenter.org/templates/a2028e54-17b5-421e-99af-3c5492005a28"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+createdOn: "2020-07-20T13:38:27-07:00"
+createdBy: "https://metadatacenter.org/users/2fa8910d-96e7-4e2f-ae60-4dfa8ec9877d"
+modifiedOn: "2020-07-20T13:38:27-07:00"
+modifiedBy: "https://metadatacenter.org/users/2fa8910d-96e7-4e2f-ae60-4dfa8ec9877d"
+children:
+  - key: "Untitled"
+    type: controlled-term-field
+    name: "Untitled"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/276a7bfa-6315-4046-aac6-359956ac6443"
+    modelVersion: 1.6.0
+    datatype: iri
+    values:
+      - type: ontology
+        sourceAcronym: "OBI"
+        sourceName: "Ontology for Biomedical Investigations"
+        termCount: 3584
+      - type: class
+        sourceAcronym: "MEDDRA"
+        termIri: "http://purl.bioontology.org/ontology/MEDDRA/10007050"
+        termType: class
+        termLabel: "Cancer"
+      - type: branch
+        sourceAcronym: "DTO"
+        sourceName: "undefined (DTO)"
+        termBaseIri: "http://purl.obolibrary.org/obo/DOID_162"
+        termBaseLabel: "cancer"
+        termMaxDepth: 0
+      - type: branch
+        sourceAcronym: "LOINC"
+        sourceName: "Logical Observation Identifier Names and Codes (LOINC)"
+        termBaseIri: "http://purl.bioontology.org/ontology/LNC/LP248771-0"
+        termBaseLabel: "CLINICAL.NOTYETCATEG"
+        termMaxDepth: 0
+    createdOn: "2020-07-20T13:38:27-07:00"
+    createdBy: "https://metadatacenter.org/users/2fa8910d-96e7-4e2f-ae60-4dfa8ec9877d"
+    modifiedOn: "2020-07-20T13:38:27-07:00"
+    modifiedBy: "https://metadatacenter.org/users/2fa8910d-96e7-4e2f-ae60-4dfa8ec9877d"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/97e1bf28-ebf3-457f-9155-7cdbb48b5860"

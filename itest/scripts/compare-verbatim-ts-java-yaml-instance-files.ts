@@ -1,6 +1,7 @@
 import { instanceTestNumbers } from '../resources/generatedTestCases';
 import { CedarArtifactType } from '../../src';
 import { VerbatimComparator } from './VerbatimComparator';
+import { verifyCeeSuiteParity } from './ceeSuiteParity';
 import { CompareFileSource } from '../../src/org/metadatacenter/model/cedar/types/helper-types/CompareFileSource';
 import { CompareFileFormat } from '../../src/org/metadatacenter/model/cedar/types/helper-types/CompareFileFormat';
 
@@ -20,3 +21,6 @@ new VerbatimComparator().compare(
   CompareFileFormat.YAML,
   true,
 );
+
+verifyCeeSuiteParity('yaml', ['instance']);
+verifyCeeSuiteParity('compact', ['instance']);

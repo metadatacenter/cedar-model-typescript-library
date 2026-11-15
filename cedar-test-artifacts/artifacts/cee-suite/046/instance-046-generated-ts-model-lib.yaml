@@ -1,0 +1,55 @@
+type: instance
+name: "cee-instance-046"
+isBasedOn: "https://repo.metadatacenter.org/templates/ccd36336-0a7e-4de7-a1ac-9b7904140494"
+children:
+  Element 1:
+    children:
+      Element 2:
+        - children:
+            Element 3:
+              - children:
+                  Sample Datetime:
+                    - datatype: xsd:dateTime
+                      value: "2035-11-29T07:09:12"
+                    - datatype: xsd:dateTime
+                      value: "2022-04-21T07:11:06"
+                  Sample Checkbox:
+                    - value: "Option 1"
+                    - value: "Option 2"
+                    - value: "Option 3"
+                Sample Attribute Value:
+                  Attribute Value Field1:
+                    value: "45"
+                    propertyIri: "https://schema.metadatacenter.org/properties/218f5fa7-599c-46cc-88ff-6affac234273"
+                  Attribute Value Field2:
+                    value: "67"
+                    propertyIri: "https://schema.metadatacenter.org/properties/1b9a486a-3f5e-4d09-9344-e4e81dde8b92"
+              - children:
+                  Sample Datetime:
+                    - datatype: xsd:dateTime
+                      value: "2022-04-21T07:10:12"
+              - children:
+                  Sample Text:
+                    - id: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C140659"
+                      label: "Choroidal and Ciliary Body Melanoma by AJCC v8 Stage"
+                    - id: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C111022"
+                      label: "Class 1a Uveal Melanoma"
+                  Sample Datetime:
+                    - datatype: xsd:dateTime
+                      value: "2034-11-16T07:10:14"
+                    - datatype: xsd:dateTime
+                      value: "2022-04-21T07:10:36"
+                    - datatype: xsd:dateTime
+                      value: "2022-04-21T07:10:39"
+                    - datatype: xsd:dateTime
+                      value: "2033-10-11T07:10:39"
+                  Sample Checkbox:
+                    - value: "Option 1"
+                    - value: "Option 2"
+      Multiple Text in Element 1:
+        - value: "111"
+        - value: "222"
+        - value: "4444"
+  Numeric Field in Template:
+    datatype: xsd:decimal
+    value: "45667889"

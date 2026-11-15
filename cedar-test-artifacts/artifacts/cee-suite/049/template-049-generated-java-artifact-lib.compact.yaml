@@ -1,0 +1,15 @@
+type: template
+name: "Template with element 0-N"
+id: "https://repo.metadatacenter.orgx/templates/070b506a-ef19-45b5-8337-7402978f09f4"
+children:
+  - key: "Element card 0-N"
+    type: element
+    name: "Element card 0-N"
+    children:
+      - key: "Untitled"
+        type: text-field
+        name: "Untitled"
+        description: "Help Text"
+        configuration:
+          multiple: true
+          minItems: 0

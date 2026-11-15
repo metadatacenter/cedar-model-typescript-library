@@ -1,0 +1,17 @@
+type: template
+name: "image before element"
+id: "https://repo.metadatacenter.org/templates/401da1e4-8519-4b2a-9d63-1cc11d9f9a71"
+children:
+  - key: "Image before element"
+    type: static-image
+    name: "Image before element"
+    description: "Help Text"
+    content: "https://cedar.metadatacenter.org/img/cedar-logo-main.png"
+  - key: "Single Text Element"
+    type: element
+    name: "Single Text Element"
+    children:
+      - key: "Text Field in Element"
+        type: text-field
+        name: "Text Field in Element"
+        description: "Help Text"

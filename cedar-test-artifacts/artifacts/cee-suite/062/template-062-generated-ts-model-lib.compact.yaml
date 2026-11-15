@@ -1,0 +1,24 @@
+type: template
+name: "Multi-page"
+id: "https://repo.metadatacenter.orgx/templates/c40f4e75-962b-4d58-b94e-8061dacd8c9a"
+children:
+  - key: "Text 1"
+    type: text-field
+    name: "Text 1"
+    description: "Help Text"
+  - key: "Page break 1"
+    type: static-page-break
+    name: "Page break 1"
+    description: "Help Text"
+  - key: "Text 2"
+    type: text-field
+    name: "Text 2"
+    description: "Help Text"
+  - key: "Page break 2"
+    type: static-page-break
+    name: "Page break 2"
+    description: "Help Text"
+  - key: "Text 3"
+    type: text-field
+    name: "Text 3"
+    description: "Help Text"

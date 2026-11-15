@@ -1,0 +1,878 @@
+type: template
+name: "CEDAR-NCBI Human Tissue"
+description: "Description of human tissue samples and sequence analysis for submission to the NCBI BioProject, BioSample, and SRA repositories, based on the BioSample Human Tissue 1.0 profile."
+id: "https://repo.metadatacenter.org/templates/dc3fa214-88f4-49dd-b56b-f4552b2d3474"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+createdOn: "2019-06-10T21:07:49-07:00"
+createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+modifiedOn: "2019-06-10T21:34:07-07:00"
+modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+children:
+  - key: "Release Date"
+    type: temporal-field
+    name: "Release Date"
+    description: "The date upon which all the submissions in this metadata form will be made publicly visible by NCBI. If this field is empty, submissions will be released immediately. (Note that release of an SRA submission also forces the release of referenced BioSample submission entries, and in turn release of the referenced BioProject.)"
+    id: "https://repo.metadatacenter.org/template-fields/84727edd-4a7d-409d-a891-81401ddcdee9"
+    modelVersion: 1.6.0
+    datatype: xsd:date
+    granularity: day
+    createdOn: "2019-06-10T21:34:07-07:00"
+    createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+    modifiedOn: "2019-06-10T21:34:07-07:00"
+    modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/e2303235-ec20-4f88-a25c-3e04c0e3dbfe"
+  - key: "NCBI BioProject for Human Tissue"
+    type: element
+    name: "NCBI BioProject for Human Tissue"
+    description: "Project description for NCBI (based on AIRR NCBI BioProject)"
+    id: "https://repo.metadatacenter.org/template-elements/58078545-c5fb-4461-b292-957fa5bad0ec"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    derivedFrom: "https://repo.metadatacenter.org/template-elements/d4e47c7e-9943-45ab-a770-c8918e06552a"
+    createdOn: "2019-06-10T21:34:07-07:00"
+    createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+    modifiedOn: "2019-06-10T21:34:07-07:00"
+    modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+    children:
+      - key: "Study ID"
+        type: text-field
+        name: "Study ID"
+        description: "Permanent identifier for each study (Example: 'PRJNA349')"
+        id: "https://repo.staging.metadatacenter.net/template-fields/a7fb387f-b081-4667-9771-ec3767121f92"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-10T15:27:13-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T15:27:13-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/88119527-3676-4ff8-9889-4e711d1d6e9a"
+      - key: "Study Title"
+        type: text-field
+        name: "Study Title"
+        description: "Descriptive study title (Example: 'Effects of sun light exposure of the Treg repertoire')"
+        id: "https://repo.staging.metadatacenter.net/template-fields/cebd78ee-22b3-4c59-9008-303a5b702edb"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-10T15:27:13-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T15:27:13-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/a763c102-e6f1-441a-b171-ca6141ef98d0"
+      - key: "Study Type"
+        type: controlled-term-field
+        name: "Study Type"
+        description: "Generic study design (Example: 'Controlled clinical trial'"
+        id: "https://repo.staging.metadatacenter.net/template-fields/21e26552-d619-44e1-a3c9-0de8ab466401"
+        modelVersion: 1.6.0
+        datatype: iri
+        values:
+          - type: branch
+            sourceAcronym: "NCIT"
+            sourceName: "National Cancer Institute Thesaurus (NCIT)"
+            termBaseIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C15320"
+            termBaseLabel: "Study Design"
+            termMaxDepth: 0
+          - type: valueSet
+            sourceAcronym: "CEDARVS"
+            termBaseIri: "http://data.bioontology.org/provisional_classes/71d8deb0-3457-0136-2939-005056010074"
+            termBaseLabel: "Negative Values"
+            termCount: 3
+        createdOn: "2019-06-10T15:27:13-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T15:27:13-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/a187b4f5-e242-4719-a214-f611d0f1a066"
+      - key: "Study Criteria"
+        type: text-field
+        name: "Study Criteria"
+        description: "List of criteria for inclusion/exclusion for the study (Example: 'Include: Clinical P. falciparum infection; Exclude: Seropositive for HIV')"
+        id: "https://repo.staging.metadatacenter.net/template-fields/6bfd0eb1-be1f-478f-9ec3-452ed2c28a2a"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-10T15:27:13-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T15:27:13-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          propertyIri: "http://scdontology.h3abionet.org/ontology/SCDO_0001033"
+      - key: "Contact Information"
+        type: text-field
+        name: "Contact Information"
+        description: "Full name and other relevant contact information of the corresponding author for this dataâ\x80\x94that is, the person who is legally responsible for data collection and release. (Example: 'Peter Stibbons, +1-987-654-3210')"
+        id: "https://repo.staging.metadatacenter.org/template-fields/4a69c329-41a2-4649-ad70-555fc8223118"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-10T15:27:13-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T15:27:13-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/c0dd60f3-bcf6-44be-b1e3-7adc27cedda5"
+      - key: "Contact Email"
+        type: email-field
+        name: "Contact Email"
+        description: "Email address of the corresponding author for this dataâ\x80\x94that is, the person who is legally responsible for data collection and release. This email will be used as the account name which has access to this data record in NCBI."
+        id: "https://repo.metadatacenter.org/template-fields/457aa129-c8b0-4f93-bdba-82dd75aa7214"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-10T15:27:13-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T15:27:13-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/96f054e4-b80a-462b-a995-7991928885ff"
+      - key: "Lab Name"
+        type: text-field
+        name: "Lab Name"
+        description: "Department of corresponding author responsible for data collection (Example: 'Department of Planar Immunology')"
+        id: "https://repo.staging.metadatacenter.net/template-fields/57fb5ecd-1987-4513-a3ff-9f87e5528c96"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-10T15:27:13-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T15:27:13-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/3ff98b64-88bc-4b84-b2a9-10c55dbaf5ce"
+      - key: "Lab Address"
+        type: text-field
+        name: "Lab Address"
+        description: "Institutional address of corresponding author responsible for data collection (Example: 'School of Medicine, Unseen University, Ankh-Morpork, Disk World')"
+        id: "https://repo.staging.metadatacenter.net/template-fields/c48fe039-63da-4562-baea-4721d0c41e87"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-10T15:27:13-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T15:27:13-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/2f5e4303-ceb3-4156-91ca-9fe3f6634af1"
+      - key: "Relevant Publications"
+        type: text-field
+        name: "Relevant Publications"
+        description: "Publications describing the rationale and/or outcome of the study, using PubMed or other persistent globally unique identifiers (Example: 'PMID85642')"
+        id: "https://repo.staging.metadatacenter.net/template-fields/85f01481-85c7-4d69-b0dd-d6f1bd5d243c"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-10T15:27:13-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T15:27:13-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          propertyIri: "http://xmlns.com/foaf/0.1/publications"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/ba2521d9-f23e-4700-9c12-4efef9e720a6"
+  - key: "NCBI BioSample for Human Tissue"
+    type: element
+    name: "NCBI BioSample for Human Tissue"
+    description: "Only use for human samples or cell lines that have no privacy concerns. For all studies involving human subjects, it is the submitter's responsibility to ensure that the information supplied protects participant privacy in accordance with all applicable laws, regulations and institutional policies. Make sure to remove any direct personal identifiers from your submission. If there are patient privacy concerns regarding making data fully public, please submit samples and data to NCBI's dbGaP database. dbGaP has controlled access mechanisms and is an appropriate resource for hosting sensitive patient data. For samples isolated from humans use the Pathogen, Microbe or appropriate MIxS package."
+    id: "https://repo.metadatacenter.org/template-elements/2d0d138d-d40c-4ee4-9d03-908d16d8a90d"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    createdOn: "2019-06-10T21:34:07-07:00"
+    createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+    modifiedOn: "2019-06-10T21:34:07-07:00"
+    modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+    children:
+      - key: "Sample Name"
+        type: text-field
+        name: "Sample Name"
+        description: "Sample Name is a name that you choose for the sample. It can have any format, but we suggest that you make it concise, unique and consistent within your lab, and as informative as possible. Every Sample Name from a single Submitter must be unique."
+        id: "https://repo.metadatacenter.org/template-fields/0f22e0d1-1c6e-40ee-a816-61679f5ec2f5"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-10T21:33:31-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T21:33:31-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/d2f6f0d4-c2d5-44e3-b467-307bc8539de1"
+      - key: "Sample Title"
+        type: text-field
+        name: "Sample Title"
+        description: "Title of the sample"
+        id: "https://repo.metadatacenter.org/template-fields/b131c3c9-a0d2-49a7-8d9a-d5f2783e8403"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-10T21:33:31-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T21:33:31-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/7d7154aa-2507-4ac5-b17d-21e36bf709ba"
+      - key: "Organism"
+        type: controlled-term-field
+        name: "Organism"
+        description: "Binomial designation of experimental subject's species (Example: 'Homo sapiens')"
+        id: "https://repo.staging.metadatacenter.net/template-fields/f80b9bf1-4a31-49fb-8a2b-cc1753178479"
+        modelVersion: 1.6.0
+        datatype: iri
+        default:
+          value: "http://purl.bioontology.org/ontology/NCBITAXON/9606"
+          label: "Homo sapiens"
+        values:
+          - type: ontology
+            sourceAcronym: "NCBITAXON-GNA"
+            sourceName: "NCBITAXON Gnathostomata Module"
+            termCount: 68674
+        createdOn: "2019-06-10T21:33:31-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T21:33:31-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/5b5276ba-52fe-4725-9c7a-485a46b979f3"
+      - key: "Isolate"
+        type: text-field
+        name: "Isolate"
+        description: "identification or description of the specific individual from which this sample was obtained (Example: 'SUB856413')"
+        id: "https://repo.staging.metadatacenter.net/template-fields/ebc4ea70-08a3-419f-bd77-0f78cf60bdd1"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-10T21:33:31-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T21:33:31-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/a0e35dfc-f2d9-4544-b0bb-f44c03446281"
+      - key: "Age"
+        type: text-field
+        name: "Age"
+        description: "Age at the time of sampling; relevant scale depends on species and study, e.g. could be seconds for amoebae or centuries for trees. Provide the SI unit after the value (Examples: '65 years', '23 weeks', '15 days', '3.2 seconds'))"
+        id: "https://repo.staging.metadatacenter.net/template-fields/849b66db-68b9-46e4-a58c-171e5f34ed94"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-10T21:33:31-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T21:33:31-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          required: true
+          propertyIri: "http://xmlns.com/foaf/0.1/age"
+      - key: "Biomaterial Provider"
+        type: text-field
+        name: "Biomaterial Provider"
+        description: "name and address of the lab or PI, or a culture collection identifier"
+        id: "https://repo.staging.metadatacenter.net/template-fields/e25992b7-04d4-44b8-a5fb-c4d4209b5575"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-10T21:33:31-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T21:33:31-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/f5854bbc-2a4d-47f6-ac4e-64b56e455def"
+      - key: "Sex"
+        type: radio-field
+        name: "Sex"
+        description: "Physical sex of sampled organism (Example: 'Female')"
+        id: "https://repo.metadatacenter.org/template-fields/043b9511-2f13-404d-b71b-9b14b1b16823"
+        modelVersion: 1.6.0
+        values:
+          - label: "male"
+          - label: "female"
+          - label: "pooled male and female"
+          - label: "neuter"
+          - label: "hermaphrodite"
+          - label: "intersex"
+          - label: "not determined"
+          - label: "missing"
+          - label: "not applicable"
+          - label: "not collected"
+        createdOn: "2019-06-10T21:33:31-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T21:33:31-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/7528ed15-7eaf-4ef2-9b26-6543fb163c35"
+      - key: "Tissue"
+        type: controlled-term-field
+        name: "Tissue"
+        description: "The actual tissue sampled, e.g. lymph node, liver, peripheral blood (Example: 'Bone marrow')"
+        id: "https://repo.staging.metadatacenter.net/template-fields/e44a3716-dab0-430b-ac17-6cd38e5244cb"
+        modelVersion: 1.6.0
+        datatype: iri
+        values:
+          - type: branch
+            sourceAcronym: "BTO"
+            sourceName: "BRENDA Tissue and Enzyme Source Ontology (BTO)"
+            termBaseIri: "http://purl.obolibrary.org/obo/BTO_0000000"
+            termBaseLabel: "tissues, cell types and enzyme sources"
+            termMaxDepth: 0
+        createdOn: "2019-06-10T21:33:31-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T21:33:31-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/159b14f5-b5e9-4362-a92e-b310a4e3fa93"
+      - key: "Cell Line"
+        type: controlled-term-field
+        name: "Cell Line"
+        description: "Name of the cell line of the sample, or from which the sample was obtained. (Example: HEK293)"
+        id: "https://repo.metadatacenter.org/template-fields/26d6310c-fff0-4620-998f-56c2c182fd93"
+        modelVersion: 1.6.0
+        datatype: iri
+        values:
+          - type: ontology
+            sourceAcronym: "CLO"
+            sourceName: "Cell Line Ontology"
+            termCount: 44874
+        createdOn: "2019-06-10T21:33:31-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T21:33:31-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/1b6754d2-b1ef-404d-9bd1-b5d559a115c4"
+      - key: "Cell Type"
+        type: controlled-term-field
+        name: "Cell Type"
+        description: "Type of cell of the sample or from which the sample was obtained. (Example: PBMC)"
+        id: "https://repo.metadatacenter.org/template-fields/7e6a6601-648f-4fbf-b2eb-80859c7af40e"
+        modelVersion: 1.6.0
+        datatype: iri
+        values:
+          - type: ontology
+            sourceAcronym: "CL"
+            sourceName: "Cell Ontology"
+            termCount: 10586
+        createdOn: "2019-06-10T21:33:31-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T21:33:31-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/9d76ca8c-3663-49bd-9ce7-2c15350aa93e"
+      - key: "Cell Subtype"
+        type: controlled-term-field
+        name: "Cell Subtype"
+        description: "Sub type of cell of the sample or from which the sample was obtain (Example: 'B cell')"
+        id: "https://repo.metadatacenter.org/template-fields/247e8625-b31f-4b07-bf51-02558f113464"
+        modelVersion: 1.6.0
+        datatype: iri
+        values:
+          - type: ontology
+            sourceAcronym: "CL"
+            sourceName: "Cell Ontology"
+            termCount: 10586
+        createdOn: "2019-06-10T21:33:31-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T21:33:31-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/46f2de26-8fa5-4f34-81f4-20f89757ad2a"
+      - key: "Culture Collection"
+        type: text-field
+        name: "Culture Collection"
+        description: "Name of source institute and unique culture identifier. See the description for the proper format and list of allowed institutes, http://www.insdc.org/controlled-vocabulary-culturecollection-qualifier. Format is Value format: \"<institution-code>:[<collection-code>:]<culture_id>\" (Example: 'ATCC:26370')"
+        id: "https://repo.metadatacenter.org/template-fields/544cddb3-f604-44db-b599-cdfc59a3f2b9"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-10T21:33:31-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T21:33:31-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/9c68c880-3833-4ea9-9bc1-e36dbbc5fa30"
+      - key: "Development Stage"
+        type: text-field
+        name: "Development Stage"
+        description: "Developmental stage at the time of sampling (Example: '1 day after inoculation')"
+        id: "https://repo.metadatacenter.org/template-fields/f16667c7-72fe-41be-8429-142e944ac8ee"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-10T21:33:31-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T21:33:31-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/1e933091-9bb7-4038-828e-3fc19c455172"
+      - key: "Disease"
+        type: controlled-term-field
+        name: "Disease"
+        description: "List of diseases diagnosed; can include multiple diagnoses. Select from Disease Ontology (https://bioportal.bioontology.org/ontologies/DOID/?p=classes). (Example: 'adrenal medulla carcinoma, myeloid sarcoma')"
+        id: "https://repo.metadatacenter.org/template-fields/e0393e37-7b07-4acb-afb8-a58314d75364"
+        modelVersion: 1.6.0
+        datatype: iri
+        values:
+          - type: ontology
+            sourceAcronym: "DOID"
+            sourceName: "Human Disease Ontology"
+            termCount: 12694
+        createdOn: "2019-06-10T21:33:31-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T21:33:31-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/c599e063-9217-443f-87df-8071b740f0aa"
+      - key: "Disease Stage"
+        type: text-field
+        name: "Disease Stage"
+        description: "Stage of disease at the time of sampling."
+        id: "https://repo.metadatacenter.org/template-fields/049cf903-a056-4207-8182-dafddb8a484d"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-10T21:33:31-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T21:33:31-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/c675bda2-95e0-4b76-8007-02f7b7ba484d"
+      - key: "Ethnicity"
+        type: text-field
+        name: "Ethnicity"
+        description: "IHMC code for ethnicity of the subject, integer or text (Examples: 01=Hispanic or Latino or Spanish, 02=Non-Hispanic or Non-Latino or Non-Spanish)"
+        id: "https://repo.metadatacenter.org/template-fields/ffbbaa14-f577-4f01-8de2-b8e111b3a756"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-10T21:33:31-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T21:33:31-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/8548eac4-328d-4ccc-bf9a-6ddb38336f6f"
+      - key: "Health State"
+        type: text-field
+        name: "Health State"
+        description: "Health or disease status of sample at time of collection"
+        id: "https://repo.metadatacenter.org/template-fields/41ad276b-f1dd-4f84-b6ad-667a521c1f2b"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-10T21:33:31-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T21:33:31-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/394dd33b-9d6d-4844-8bf2-a0b638f97c77"
+      - key: "Karyotype"
+        type: text-field
+        name: "Karyotype"
+        description: "The number and visual appearance of the chromosomes in the cell nuclei of an organism or species."
+        id: "https://repo.metadatacenter.org/template-fields/16e2a667-9e3e-482a-b877-b723974ba750"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-10T21:33:31-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T21:33:31-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/46d1b879-5213-464b-a971-f81acd4e2fa9"
+      - key: "Phenotype"
+        type: text-field
+        name: "Phenotype"
+        description: "Phenotype of sampled organism."
+        id: "https://repo.metadatacenter.org/template-fields/4b7fd853-9bb1-4fe8-8268-35956eb00f88"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-10T21:33:31-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T21:33:31-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/36b12ce1-b260-4b71-b36f-6b5756b45ec9"
+      - key: "Population"
+        type: text-field
+        name: "Population"
+        description: "The full, unabbreviated population descriptor from the Coriell Institute"
+        id: "https://repo.metadatacenter.org/template-fields/8687e2fc-241d-450f-aba9-3753c99e211d"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-10T21:33:31-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T21:33:31-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/543aa730-de51-4c1a-b1e7-0d344b1abf30"
+      - key: "Race"
+        type: controlled-term-field
+        name: "Race"
+        description: "Racial group of subject (as defined by NIH) (Examples: 'White', 'American Indian or Alaska Native', 'Black', 'Asian', 'Native Hawaiian or Other Pacific Islander', 'Other')"
+        id: "https://repo.metadatacenter.org/template-fields/b771eb3e-c76f-4df8-ac03-45d10db6deff"
+        modelVersion: 1.6.0
+        datatype: iri
+        values:
+          - type: branch
+            sourceAcronym: "NCIT"
+            sourceName: "National Cancer Institute Thesaurus (NCIT)"
+            termBaseIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C17049"
+            termBaseLabel: "Race"
+            termMaxDepth: 0
+        createdOn: "2019-06-10T21:33:31-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T21:33:31-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/56f3caa2-ca0f-4e72-b9ad-4beaa0247dc7"
+      - key: "Sample Type"
+        type: text-field
+        name: "Sample Type"
+        description: "Sample type, such as cell culture, mixed culture, tissue sample, whole organism, single cell, metagenomic assembly"
+        id: "https://repo.metadatacenter.org/template-fields/1cc0b4ce-c6c8-4a19-be12-23d51476e8c2"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-10T21:33:31-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T21:33:31-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/abc350fa-0d0f-4c2c-9e27-e27f3172fe2f"
+      - key: "Treatment"
+        type: text-field
+        name: "Treatment"
+        description: "Description of the treatment protocol for the subject from whom this sample was obtained"
+        id: "https://repo.metadatacenter.org/template-fields/dea11994-91c1-4f5c-8294-ebfcbb9e7951"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-10T21:33:31-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T21:33:31-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/a246e5e3-7abb-42b5-ad76-f592982d3c13"
+      - key: "Sample Description"
+        type: text-field
+        name: "Sample Description"
+        description: "Description of the sample"
+        id: "https://repo.metadatacenter.org/template-fields/d8222aee-435b-48ff-bf0c-8013bff366a4"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-10T21:33:31-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-10T21:33:31-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/2ed9bb89-519f-4844-9e49-415e5f4cd041"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/1f63bb07-8e76-4203-9923-d79ce13297da"
+      multiple: true
+      minItems: 1
+  - key: "NCBI SRA for Human Tissue"
+    type: element
+    name: "NCBI SRA for Human Tissue"
+    description: "For each BioSample described in the previous section, describe the corresponding SRA information here. Each sample must have a file type and filename entered that correspond to one of the files provided with the submission. Additional attributes may be specified for each sample using the Optional SRA Attribute-Value fields."
+    id: "https://repo.metadatacenter.org/template-elements/eaba7288-4bb9-4348-846a-499ee31ef732"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    createdOn: "2019-06-10T21:34:07-07:00"
+    createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+    modifiedOn: "2019-06-10T21:34:07-07:00"
+    modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+    children:
+      - key: "Sample Name"
+        type: text-field
+        name: "Sample Name"
+        description: "BioSample Accession or Sample Name assigned by submitter, unique within study. This needs to match the Sample Name in the corresponding BioSample entry. (Example: 'SUP52415')"
+        id: "https://repo.staging.metadatacenter.org/template-fields/e9a10ebb-5a10-44ee-bdd6-5684650a3a4f"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-06T16:44:09-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-06T16:44:09-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/417bce6e-0a00-4b91-ba3b-f7deb2eb3057"
+      - key: "Library ID"
+        type: text-field
+        name: "Library ID"
+        description: "Short unique identifier for the sequencing library. Each Library ID MUST be unique! (Example: 'Homo-sapiens-UTSoM-T19273')"
+        id: "https://repo.metadatacenter.org/template-fields/0c2577f4-8288-434a-9d4c-7ee73080ccb9"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-06T16:44:09-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-06T16:44:09-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/2d1da4e3-ced9-430e-a35e-f47d82f7dd3b"
+      - key: "Title"
+        type: text-field
+        name: "Title"
+        description: "Short description that will identify the dataset on public pages. A clear and concise formula for the title is of the form:  {methodology} of {organism}: {sample info}  (Example: `RNA-Seq of mus musculus: adult female spleen`)"
+        id: "https://repo.metadatacenter.org/template-fields/41490fa0-b0e4-4a0e-b258-79c2e7bac6a6"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-06T16:44:09-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-06T16:44:09-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/ed0cbe9e-8df9-432b-8ce6-63d849857083"
+      - key: "Library Strategy"
+        type: single-select-list-field
+        name: "Library Strategy"
+        description: "Sequencing strategy used in the experiment (Example: 'RNA-Seq')"
+        id: "https://repo.staging.metadatacenter.org/template-fields/43a3ce74-49d0-425a-a6b9-0a69a906ebdb"
+        modelVersion: 1.6.0
+        values:
+          - label: "WGA"
+          - label: "WGS"
+          - label: "WXS"
+          - label: "RNA-Seq"
+          - label: "miRNA-Seq"
+          - label: "WCS"
+          - label: "CLONE"
+          - label: "POOLCLONE"
+          - label: "AMPLICON"
+          - label: "CLONEEND"
+          - label: "FINISHING"
+          - label: "ChIP-Seq"
+          - label: "MNase-Seq"
+          - label: "DNase-Hypersensitivity"
+          - label: "Bisulfite-Seq"
+          - label: "Tn-Seq"
+          - label: "EST"
+          - label: "FL-cDNA"
+          - label: "CTS"
+          - label: "MRE-Seq"
+          - label: "MeDIP-Seq"
+          - label: "MBD-Seq"
+          - label: "Synthetic-Long-Read"
+          - label: "ATAC-seq"
+          - label: "ChIA-PET"
+          - label: "FAIRE-seq"
+          - label: "Hi-C"
+          - label: "ncRNA-Seq"
+          - label: "RAD-Seq"
+          - label: "RIP-Seq"
+          - label: "SELEX"
+          - label: "ssRNA-seq"
+          - label: "Targeted-Capture"
+          - label: "Tethered Chromatin Conformation Capture"
+          - label: "OTHER"
+        createdOn: "2019-06-06T16:44:09-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-06T16:44:09-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/4023b4ce-80ce-4c08-be86-84f7a24f9d11"
+      - key: "Library Source"
+        type: radio-field
+        name: "Library Source"
+        description: "Type of genetic source material sequenced in the experiment (Example: 'Metagenomic')"
+        id: "https://repo.staging.metadatacenter.org/template-fields/53a3ce74-49d0-425a-a6b9-0a69a906ebdb"
+        modelVersion: 1.6.0
+        values:
+          - label: "GENOMIC"
+          - label: "TRANSCRIPTOMIC"
+          - label: "METAGENOMIC"
+          - label: "METATRANSCRIPTOMIC"
+          - label: "SYNTHETIC"
+          - label: "VIRAL RNA"
+          - label: "GENOMIC SINGLE CELL"
+          - label: "TRANSCRIPTOMIC SINGLE CELL"
+          - label: "OTHER"
+        createdOn: "2019-06-06T16:44:09-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-06T16:44:09-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/0fdba7e4-0d6e-446c-a38e-783371be275e"
+      - key: "Library Selection"
+        type: single-select-list-field
+        name: "Library Selection"
+        description: "Method of selection or enrichment used in the Experiment (Example: 'RANDOM-PCR')"
+        id: "https://repo.staging.metadatacenter.org/template-fields/63a3ce74-49d0-425a-a6b9-0a69a906ebdb"
+        modelVersion: 1.6.0
+        values:
+          - label: "RANDOM"
+          - label: "PCR"
+          - label: "RANDOM PCR"
+          - label: "RT-PCR"
+          - label: "HMPR"
+          - label: "MF"
+          - label: "CF-S"
+          - label: "CF-M"
+          - label: "CF-H"
+          - label: "CF-T"
+          - label: "MDA"
+          - label: "MSLL"
+          - label: "cDNA"
+          - label: "ChIP"
+          - label: "MNase"
+          - label: "DNAse"
+          - label: "Hybrid Selection"
+          - label: "Reduced Representation"
+          - label: "Restriction Digest"
+          - label: "5-methylcytidine antibody"
+          - label: "MBD2 protein methyl-CpG binding domain"
+          - label: "CAGE"
+          - label: "RACE"
+          - label: "size fractionation"
+          - label: "Padlock probes capture method"
+          - label: "other"
+          - label: "unspecified"
+          - label: "cDNA_oligo_dT"
+          - label: "cDNA_randomPriming"
+          - label: "Inverse rRNA"
+          - label: "Oligo-dT"
+          - label: "PolyA"
+          - label: "repeat fractionation"
+        createdOn: "2019-06-06T16:44:09-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-06T16:44:09-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/bd7c7c06-0266-409a-bba7-1bb1d165b128"
+      - key: "Library Layout"
+        type: text-field
+        name: "Library Layout"
+        description: "Number, order, orientation, and distance of associated reads (Example: '2 Kbp paired ends')"
+        id: "https://repo.staging.metadatacenter.org/template-fields/1404945a-a7d4-4ab7-a069-2552d124786a"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-06T16:44:09-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-06T16:44:09-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/480f3f8a-d94b-45a9-b8cd-fbe8e99bb5aa"
+      - key: "Platform"
+        type: radio-field
+        name: "Platform"
+        description: "Designation of sequencing instrument used (Example: 'Alumina LoSeq 1000')"
+        id: "https://repo.metadatacenter.org/template-fields/b6e9c207-9f9c-45b1-8ece-5c2c0084ccf4"
+        modelVersion: 1.6.0
+        values:
+          - label: "LS454"
+          - label: "ABI_SOLID"
+          - label: "BGISEQ"
+          - label: "CAPILLARY"
+          - label: "COMPLETE_GENOMICS"
+          - label: "HELICOS"
+          - label: "ILLUMINA"
+          - label: "ION_TORRENT"
+          - label: "OXFORD_NANOPORE"
+          - label: "PACBIO_SMRT"
+          - label: "Other"
+        createdOn: "2019-06-06T16:44:09-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-06T16:44:09-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/fb86be44-87ea-42e2-a708-d872dfc855b4"
+      - key: "Instrument Model"
+        type: text-field
+        name: "Instrument Model"
+        description: "Model identifier of the instrument used to perform the sequencing. Acceptable instrument models may be viewed at https://sramongo.readthedocs.io/en/latest/sraConstants.html#instrument-models. (Examples: 'Illumina HiSeq 2000', '"
+        id: "https://repo.metadatacenter.org/template-fields/aa9d86ed-a57f-4ff0-a1e4-a4f392367de6"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-06T16:44:09-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-06T16:44:09-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/6b19fe93-63c4-4e34-a844-e4f160a0b36e"
+      - key: "Design Description"
+        type: text-field
+        name: "Design Description"
+        description: "Free-form description of the methods used to create the sequencing library; a brief 'materials and methods' section."
+        id: "https://repo.metadatacenter.org/template-fields/df46899a-7aff-4fe4-94c7-08d8290bcee5"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-06T16:44:09-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-06T16:44:09-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/7dc16b80-c3c6-4259-8717-84e7a21bbd8a"
+      - key: "Optional SRA Attribute"
+        type: attribute-value-field
+        name: "Optional SRA Attribute"
+        description: "Enter the name of the optional attribute, followed by the value of that attribute. Add additional attributes as needed."
+        id: "https://repo.metadatacenter.org/template-fields/50b4a127-cf30-4cd0-8850-b11eabed2fcd"
+        modelVersion: 1.6.0
+        prefLabel: "Optional SRA Attribute-Value"
+        createdOn: "2019-06-06T16:44:09-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-06T16:44:09-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          minItems: 0
+      - key: "File Type"
+        type: radio-field
+        name: "File Type"
+        description: "Type of the raw data file. Must be one of the acceptable file types, including bam, sra, kar, srf, sff, fastq, tab, 454_native, Helicos_native, SOLiD_native_csfasta, SOLiD_native_qual, SOLiD_native, PacBio_HDF5, CompleteGenomics_native, bam_header, reference_fasta. For multiple files of different types, enter one File Type per file, separated by commas."
+        id: "https://repo.metadatacenter.org/template-fields/8837db18-7973-4cc2-8d7e-5b9a46b9049e"
+        modelVersion: 1.6.0
+        values:
+          - label: "sra-run-fastq"
+          - label: "sra-run-bam"
+          - label: "sra-run-sff"
+          - label: "sra-run-Helicos_native"
+          - label: "sra-run-PacBio_HDF5"
+          - label: "sra-run-CompleteGenomics_native"
+          - label: "sra-run-OxfordNanopore_native"
+        createdOn: "2019-06-06T16:44:09-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-06T16:44:09-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/4fb86884-a60f-4459-96be-4a1f18dafd34"
+      - key: "File Name"
+        type: attribute-value-field
+        name: "File Name"
+        description: "Enter the name of the raw data file into the Value field of each attribute-value pair. Each name must match the name of a file selected for upload. (The attributes are automatically named as 'filename1', 'filename2', etc..)"
+        id: "https://repo.staging.metadatacenter.org/template-fields/063c87b2-1542-4d58-9b6f-f2341c294d09"
+        modelVersion: 1.6.0
+        createdOn: "2019-06-06T16:44:09-07:00"
+        createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        modifiedOn: "2019-06-06T16:44:09-07:00"
+        modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+        configuration:
+          minItems: 0
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/478c8001-c214-47be-a42c-8aa2e0f9267b"
+      multiple: true
+      minItems: 1
+  - key: "Notations for NCBI Human Element"
+    type: element
+    name: "Notations for NCBI Human Element"
+    description: "Provides detailed description of the template, and allows user to enter annotations of instances."
+    id: "https://repo.metadatacenter.org/template-elements/1be1b5ca-674b-483a-914d-9b78aea2fb41"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    createdOn: "2019-06-10T21:34:07-07:00"
+    createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+    modifiedOn: "2019-06-10T21:34:07-07:00"
+    modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+    children:
+      - key: "Template Annotations"
+        type: static-rich-text
+        name: "Template Annotations"
+        description: "An overview of this template, with an optional field for user notes."
+        id: "https://repo.metadatacenter.org/template-fields/111290cb-34a4-43b9-b1da-330a6f944370"
+        modelVersion: 1.6.0
+        content: "<p><strong>About this Metadata Form (template)</strong></p>\n\n<p>The NCBI Human Element template was created by adapting the MiAIRR NCBI template to be appropriate for the more general Human Elements 1.0 package of NCBI.&nbsp;</p>\n\n<p>This is a submission template to deposit &lsquo;Human; version 1.0&rsquo; samples to the NCBI BioSample database (https://www.ncbi.nlm.nih.gov/biosample/). Only use for human samples or cell lines that have no privacy concerns. (Please see descriptive help for the BioSample element for more details.)</p>\n\n<p>Fields with an asterisk (*) are mandatory. Your submission will fail if any mandatory fields are not completed. If information is unavailable for any mandatory field, please enter &lsquo;not collected&rsquo;, &lsquo;not applicable&rsquo; or &lsquo;missing&rsquo; as appropriate.</p>\n\n<p>All other fields are optional. Leave optional fields empty if no information is available.</p>\n\n<p>Once your metadata is complete, go to the Workspace and choose this metadata file&#39;s Submit menu item. A window will appear to let you choose your files to submit with the metadata, and to complete the submission.</p>\n\n<p>This template was created by Syed Ahmad Chan of Yale University, with support of John Graybeal and Marcos Martinez Romero of Stanford University, on behalf of the CEDAR project. Instructions and citation information may be found at&nbsp;<a href=\"https://github.com/metadatacenter/pipelines/wiki/CEDAR-NCBI-SRA-Pipeline\">https://github.com/metadatacenter/pipelines/wiki/CEDAR-NCBI-SRA-Pipeline</a>.&nbsp;</p>\n\n<p><b>How to Add User Notes (optional)</b></p>\n\n<p>You may enter any notes you wish to make about this collection of metadata in the field below. The notes will not be sent to NCBI or made part of the submission; it will be saved within CEDAR as reference information.&nbsp;</p>\n"
+        createdOn: "2019-05-16T08:49:56-07:00"
+        createdBy: "https://metadatacenter.org/users/1adf5ee5-cee0-47d1-9769-efbe00cdebee"
+        modifiedOn: "2019-05-16T08:49:56-07:00"
+        modifiedBy: "https://metadatacenter.org/users/1adf5ee5-cee0-47d1-9769-efbe00cdebee"
+      - key: "User Annotations"
+        type: text-area-field
+        name: "User Annotations"
+        description: "Enter any notes you wish to make about this metadata instance (e.g., how it was created, any open questions, or notes for the historical record.) The information will not be included with your submission to NCBI."
+        id: "https://repo.metadatacenter.org/template-fields/c7a1daef-65ef-4194-a452-c65db7beb090"
+        modelVersion: 1.6.0
+        createdOn: "2019-05-16T08:49:56-07:00"
+        createdBy: "https://metadatacenter.org/users/1adf5ee5-cee0-47d1-9769-efbe00cdebee"
+        modifiedOn: "2019-05-16T08:49:56-07:00"
+        modifiedBy: "https://metadatacenter.org/users/1adf5ee5-cee0-47d1-9769-efbe00cdebee"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/c8da19ce-de5c-4f74-87be-3c6ed0d15be3"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/feda4ef2-fb27-4845-988f-1397de11f813"
+  - key: "submission_pipeline"
+    type: text-field
+    name: "submission_pipeline"
+    description: "Specifies the CEDAR submission pipeline that will be used to process metadata created using this template."
+    id: "https://repo.metadatacenter.org/template-fields/66f64451-63c8-451f-89d8-88c36243f248"
+    modelVersion: 1.6.0
+    default: "NCBI-HUMAN"
+    createdOn: "2019-06-10T21:34:07-07:00"
+    createdBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+    modifiedOn: "2019-06-10T21:34:07-07:00"
+    modifiedBy: "https://metadatacenter.org/users/cd36dea6-9222-412b-99ab-bec50f6ecd00"
+    configuration:
+      hidden: true
+      propertyIri: "https://schema.metadatacenter.org/properties/64e3f1d9-d5d4-4bac-b3bc-3c0a25866c06"

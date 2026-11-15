@@ -1,0 +1,8 @@
+type: template
+name: "One text field"
+id: "https://repo.metadatacenter.orgx/templates/26ac27cf-a494-4a8e-90ad-e0c17cff11bf"
+children:
+  - key: "Text field 1"
+    type: text-field
+    name: "Text field 1"
+    description: "Help Text"

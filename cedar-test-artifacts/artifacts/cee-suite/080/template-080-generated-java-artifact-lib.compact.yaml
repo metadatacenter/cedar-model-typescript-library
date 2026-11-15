@@ -1,0 +1,10 @@
+type: template
+name: "Mandatory link"
+id: "https://repo.metadatacenter.org/templates/7fd7f2d9-e8ce-4d9b-b04a-88d3be460998"
+children:
+  - key: "Link"
+    type: link-field
+    name: "Link"
+    description: "Help Text"
+    configuration:
+      required: true

@@ -1,0 +1,11 @@
+type: template
+name: "numeric field - long integer"
+id: "https://repo.metadatacenter.org/templates/fbfc7b93-d626-4526-9d2c-1cd05b4d3a41"
+children:
+  - key: "Numeric"
+    type: numeric-field
+    name: "Numeric"
+    description: "Help Text"
+    datatype: xsd:long
+    minValue: 10
+    maxValue: 25

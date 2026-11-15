@@ -1,0 +1,7 @@
+type: instance
+name: "cee-instance-035"
+isBasedOn: "https://repo.metadatacenter.org/templates/77996898-e754-44de-a9fa-2c0d86a8ab75"
+children:
+  Double:
+    datatype: xsd:double
+    value: "-101.276"

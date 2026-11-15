@@ -1,0 +1,40 @@
+type: template
+name: "Template with Element 1-N"
+id: "https://repo.metadatacenter.orgx/templates/fbec8923-2582-4c19-8019-e27e9aa9d576"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+createdOn: "2023-08-16T14:41:42-07:00"
+createdBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+modifiedOn: "2023-08-16T14:41:42-07:00"
+modifiedBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+children:
+  - key: "Element card 1-N"
+    type: element
+    name: "Element card 1-N"
+    id: "https://repo.metadatacenter.orgx/template-elements/ad3e0330-a13e-4ad5-9c92-a696bf000922"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    derivedFrom: "https://repo.metadatacenter.orgx/template-elements/61d3fd4e-c831-496e-b504-87c3c2b103f9"
+    createdOn: "2023-08-16T14:41:42-07:00"
+    createdBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+    modifiedOn: "2023-08-16T14:41:42-07:00"
+    modifiedBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+    children:
+      - key: "Input1"
+        type: text-field
+        name: "Input1"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.orgx/template-fields/1491c7e2-0f80-467b-b6cb-41df2afc329f"
+        modelVersion: 1.6.0
+        createdOn: "2023-08-16T14:41:17-07:00"
+        createdBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+        modifiedOn: "2023-08-16T14:41:17-07:00"
+        modifiedBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.orgx/properties/fcb69fb2-189a-479e-8261-1985141737b3"
+          multiple: true
+          minItems: 1
+    configuration:
+      propertyIri: "https://schema.metadatacenter.orgx/properties/568d760d-1bd1-4143-8841-1891711368f9"

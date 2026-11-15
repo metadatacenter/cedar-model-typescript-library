@@ -1,0 +1,17 @@
+type: template
+name: "text field with constraints"
+id: "https://repo.metadatacenter.org/templates/d91ff34a-ef2f-4921-8d74-a1aa97ce7522"
+children:
+  - key: "Text Field"
+    type: text-field
+    name: "Text Field"
+    description: "Help Text"
+    altLabels:
+      - "alternate label 1"
+      - "alternate label 2"
+      - "alternate label 3"
+    default: "default"
+    minLength: 2
+    maxLength: 10
+    configuration:
+      required: true

@@ -1,0 +1,39 @@
+type: instance
+name: "cee-instance-044"
+isBasedOn: "https://repo.metadatacenter.org/templates/30f40c2b-0fe2-4ad5-a130-d7329d0e6b50"
+children:
+  Spatial Box and keyword:
+    children:
+      SpatialCoverage:
+        - children:
+            eastBoundLongitude:
+              datatype: xsd:decimal
+              value: "87"
+            westBoundLongitude:
+              datatype: xsd:decimal
+              value: "89"
+            southBoundLatitude:
+              datatype: xsd:decimal
+              value: "90"
+            northBoundLatitude:
+              datatype: xsd:decimal
+              value: "55"
+      PlaceName:
+        - value: "My Place"
+  Species Targeted:
+    value: "Species at Risk (SAR)"
+  Software:
+    value: "Softy"
+  eDNA Sampling:
+    children:
+      Sampling Depth:
+        datatype: xsd:decimal
+        value: "123"
+      Distance From Shore:
+        datatype: xsd:decimal
+        value: "456"
+      Preservation of Sample:
+        value: "Q"
+  Collection DateTime:
+    - datatype: xsd:dateTime
+      value: "2023-09-01T13:02:03+04:00"

@@ -1,0 +1,31 @@
+type: template
+name: "controlled - mixed"
+id: "https://repo.metadatacenter.org/templates/a2028e54-17b5-421e-99af-3c5492005a28"
+children:
+  - key: "Untitled"
+    type: controlled-term-field
+    name: "Untitled"
+    description: "Help Text"
+    datatype: iri
+    values:
+      - type: ontology
+        sourceAcronym: "OBI"
+        sourceName: "Ontology for Biomedical Investigations"
+        termCount: 3584
+      - type: class
+        sourceAcronym: "MEDDRA"
+        termIri: "http://purl.bioontology.org/ontology/MEDDRA/10007050"
+        termType: class
+        termLabel: "Cancer"
+      - type: branch
+        sourceAcronym: "DTO"
+        sourceName: "undefined (DTO)"
+        termBaseIri: "http://purl.obolibrary.org/obo/DOID_162"
+        termBaseLabel: "cancer"
+        termMaxDepth: 0
+      - type: branch
+        sourceAcronym: "LOINC"
+        sourceName: "Logical Observation Identifier Names and Codes (LOINC)"
+        termBaseIri: "http://purl.bioontology.org/ontology/LNC/LP248771-0"
+        termBaseLabel: "CLINICAL.NOTYETCATEG"
+        termMaxDepth: 0

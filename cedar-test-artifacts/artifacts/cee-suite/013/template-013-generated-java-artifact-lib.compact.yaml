@@ -1,0 +1,58 @@
+type: template
+name: "attribute value"
+id: "https://repo.metadatacenter.org/templates/521c0f77-ab6e-4c26-85ad-c289c02c09a9"
+children:
+  - key: "Attribute Value Field Root"
+    type: attribute-value-field
+    name: "Attribute Value Field Root"
+    description: "Help Text"
+    configuration:
+      minItems: 0
+  - key: "Attribute Value Element Multiple"
+    type: element
+    name: "Attribute Value Element Multiple"
+    children:
+      - key: "Attribute Value Field From Multiple"
+        type: attribute-value-field
+        name: "Attribute Value Field From Multiple"
+        description: "Help Text"
+        configuration:
+          minItems: 0
+      - key: "Checkbox Field in Attribute Value"
+        type: checkbox-field
+        name: "Checkbox Field in Attribute Value"
+        description: "Help Text"
+        values:
+          - label: "Option 1"
+          - label: "Option 2"
+            selected: true
+          - label: "Option 3"
+          - label: "Option 4"
+            selected: true
+          - label: "Option 5"
+        configuration:
+          minItems: 1
+    configuration:
+      multiple: true
+      minItems: 1
+  - key: "Attribute Value Element Single"
+    type: element
+    name: "Attribute Value Element Single"
+    children:
+      - key: "Text Box Multiple"
+        type: text-field
+        name: "Text Box Multiple"
+        description: "Help Text"
+        configuration:
+          multiple: true
+          minItems: 1
+      - key: "Attribute Value Field From Single"
+        type: attribute-value-field
+        name: "Attribute Value Field From Single"
+        description: "Help Text"
+        configuration:
+          minItems: 0
+  - key: "Page Break"
+    type: static-page-break
+    name: "Page Break"
+    description: "Help Text"

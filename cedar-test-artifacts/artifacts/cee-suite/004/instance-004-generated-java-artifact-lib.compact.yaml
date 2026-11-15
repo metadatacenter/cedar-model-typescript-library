@@ -1,0 +1,12 @@
+type: instance
+name: "cee-instance-004"
+isBasedOn: "https://repo.metadatacenter.org/templates/d5ec9ed6-9f8c-42ad-8af9-121bed68662f"
+children:
+  Number 1:
+    datatype: xsd:decimal
+    value: "123.456"
+  Number 2:
+    - datatype: xsd:long
+      value: "20000"
+    - datatype: xsd:long
+      value: "10000"

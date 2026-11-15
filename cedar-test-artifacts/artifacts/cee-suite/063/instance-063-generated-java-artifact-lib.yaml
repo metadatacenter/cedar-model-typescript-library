@@ -1,0 +1,9 @@
+type: instance
+name: "cee-instance-063"
+isBasedOn: "https://repo.metadatacenter.org/templates/fe8ddab9-e2da-4112-ab6c-140e20844ba8"
+children:
+  Controlled Element:
+    - children:
+        Controlled Field 1 in Element:
+          - id: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C131506"
+            label: "Childhood Melanoma"

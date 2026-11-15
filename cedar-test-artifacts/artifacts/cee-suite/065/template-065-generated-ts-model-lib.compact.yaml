@@ -1,0 +1,13 @@
+type: template
+name: "One select template"
+id: "https://repo.metadatacenter.org/templates/6719c7da-7418-4bb3-9fe3-fac14ba7bc0c"
+children:
+  - key: "Selection"
+    type: single-select-list-field
+    name: "Selection"
+    description: "Help Text"
+    values:
+      - label: "Option A"
+      - label: "Option B"
+        selected: true
+      - label: "Option C"

@@ -1,0 +1,10 @@
+type: template
+name: "Template with link field 0-N"
+id: "https://repo.metadatacenter.orgx/templates/a5267d6e-0422-4de2-a9c6-a67aa5887ffd"
+children:
+  - key: "Simple link"
+    type: link-field
+    name: "Simple link"
+    configuration:
+      multiple: true
+      minItems: 0

@@ -1,0 +1,42 @@
+type: template
+name: "checkbox"
+id: "https://repo.metadatacenter.org/templates/64de739b-6430-4a6b-8bfa-3a881be62031"
+children:
+  - key: "Checkbox Element"
+    type: element
+    name: "Checkbox Element"
+    children:
+      - key: "Checkbox in Element"
+        type: checkbox-field
+        name: "Checkbox in Element"
+        description: "Help Text"
+        values:
+          - label: "Option 1"
+            selected: true
+          - label: "Option 2"
+          - label: "Option 3"
+          - label: "Option 4"
+            selected: true
+          - label: "Option 5"
+            selected: true
+        configuration:
+          minItems: 1
+    configuration:
+      multiple: true
+      minItems: 1
+  - key: "Checkbox Standalone"
+    type: checkbox-field
+    name: "Checkbox Standalone"
+    description: "Help Text"
+    values:
+      - label: "Option 1"
+      - label: "Option 2"
+      - label: "Option 3"
+        selected: true
+      - label: "Option 4"
+        selected: true
+      - label: "Option 5"
+        selected: true
+    configuration:
+      required: true
+      minItems: 1

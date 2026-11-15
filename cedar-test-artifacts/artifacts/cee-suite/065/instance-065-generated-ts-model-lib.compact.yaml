@@ -1,0 +1,7 @@
+type: instance
+name: "One select template metadata"
+id: "https://repo.metadatacenter.org/template-instances/72a81c7d-302b-48b8-8f2d-39b2ad6dd9d6"
+isBasedOn: "https://repo.metadatacenter.org/templates/6719c7da-7418-4bb3-9fe3-fac14ba7bc0c"
+children:
+  Selection:
+    value: "Option C"

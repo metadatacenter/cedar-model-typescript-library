@@ -1,0 +1,24 @@
+type: template
+name: "multi element with several fields"
+id: "https://repo.metadatacenter.org/templates/e64c053f-116e-4c75-8dcf-0dc40f71e838"
+children:
+  - key: "Element with Several Fields"
+    type: element
+    name: "Element with Several Fields"
+    children:
+      - key: "Text Field"
+        type: text-field
+        name: "Text Field"
+        description: "Help Text"
+      - key: "Numeric Field"
+        type: numeric-field
+        name: "Numeric Field"
+        description: "Help Text"
+        datatype: xsd:decimal
+      - key: "Another text field"
+        type: text-field
+        name: "Another text field"
+        description: "Help Text"
+    configuration:
+      multiple: true
+      minItems: 0

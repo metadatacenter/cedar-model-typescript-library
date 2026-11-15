@@ -1,0 +1,11 @@
+type: template
+name: "multi text field"
+id: "https://repo.metadatacenter.org/templates/0829d5f1-303b-4fd8-be65-b40d2c8826f8"
+children:
+  - key: "Multi Text Field"
+    type: text-field
+    name: "Multi Text Field"
+    description: "Help Text"
+    configuration:
+      multiple: true
+      minItems: 10

@@ -1,0 +1,13 @@
+type: template
+name: "Mandatory multi field min 0"
+id: "https://repo.metadatacenter.org/templates/ad003fa3-bcba-4be3-815b-baae091d8a6b"
+children:
+  - key: "Text field"
+    type: text-field
+    name: "Text field"
+    description: "Help Text"
+    configuration:
+      required: true
+      multiple: true
+      minItems: 0
+      maxItems: 3

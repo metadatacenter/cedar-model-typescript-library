@@ -1,0 +1,16 @@
+type: template
+name: "single element"
+id: "https://repo.metadatacenter.org/templates/c4b44f19-69ea-429c-b20f-59c473c66e13"
+children:
+  - key: "Single Text Element"
+    type: element
+    name: "Single Text Element"
+    prefLabel: "Preferred label in template"
+    children:
+      - key: "Text Field in Element"
+        type: text-field
+        name: "Text Field in Element"
+        description: "Help Text"
+    configuration:
+      overrideLabel: "Single Text Element name in template"
+      overrideDescription: "Help text in template"

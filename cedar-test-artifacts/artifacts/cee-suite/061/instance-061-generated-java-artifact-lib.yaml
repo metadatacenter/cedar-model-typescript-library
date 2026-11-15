@@ -1,0 +1,12 @@
+type: instance
+name: "Multi-link metadata"
+id: "https://repo.metadatacenter.orgx/template-instances/24e9d7b9-b782-4a29-aa15-ef88b9b164d7"
+isBasedOn: "https://repo.metadatacenter.orgx/templates/95c3b74d-aab4-4867-9c02-84340039e1c2"
+createdOn: "2023-08-31T16:59:05-07:00"
+createdBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+modifiedOn: "2023-08-31T16:59:05-07:00"
+modifiedBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+children:
+  Link:
+    - id: "https://metadatacenter.org"
+    - id: "https://bioportal.bioontology.org/"

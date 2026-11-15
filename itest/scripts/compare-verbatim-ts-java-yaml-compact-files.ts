@@ -3,6 +3,7 @@
 import { elementTestNumbers, fieldTestNumbers, instanceTestNumbers, templateTestNumbers } from '../resources/generatedTestCases';
 import { CedarArtifactType } from '../../src';
 import { VerbatimComparator } from './VerbatimComparator';
+import { verifyCeeSuiteParity } from './ceeSuiteParity';
 import { CompareFileSource } from '../../src/org/metadatacenter/model/cedar/types/helper-types/CompareFileSource';
 import { CompareFileFormat } from '../../src/org/metadatacenter/model/cedar/types/helper-types/CompareFileFormat';
 
@@ -17,3 +18,5 @@ const kinds: Array<[number[], CedarArtifactType]> = [
 for (const [testNumbers, artifactType] of kinds) {
   comparator.compare(testNumbers, artifactType, CompareFileSource.TS_LIB, CompareFileSource.JAVA_LIB, CompareFileFormat.YAML, true);
 }
+
+verifyCeeSuiteParity('compact');

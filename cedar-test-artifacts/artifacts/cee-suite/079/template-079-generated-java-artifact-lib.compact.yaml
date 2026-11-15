@@ -1,0 +1,62 @@
+type: template
+name: "Mandatory template"
+id: "https://repo.metadatacenter.org/templates/80bd0fcd-8672-4b9f-8a80-1f7a1e56bd35"
+children:
+  - key: "Text field"
+    type: text-field
+    name: "Text field"
+    description: "Help Text"
+    configuration:
+      required: true
+  - key: "Multi text field"
+    type: text-field
+    name: "Multi text field"
+    description: "Help Text"
+    configuration:
+      required: true
+      multiple: true
+      minItems: 1
+      maxItems: 5
+  - key: "Numeric"
+    type: numeric-field
+    name: "Numeric"
+    description: "Help Text"
+    datatype: xsd:int
+    minValue: -100
+    maxValue: 100
+    configuration:
+      required: true
+  - key: "Link"
+    type: link-field
+    name: "Link"
+    description: "Help Text"
+    configuration:
+      required: true
+  - key: "Multi link"
+    type: link-field
+    name: "Multi link"
+    description: "Help Text"
+    configuration:
+      required: true
+      multiple: true
+      minItems: 2
+      maxItems: 4
+  - key: "Element with mandatory fields"
+    type: element
+    name: "Element with mandatory fields"
+    children:
+      - key: "Text field"
+        type: text-field
+        name: "Text field"
+        description: "Help Text"
+        configuration:
+          required: true
+      - key: "Multi text field"
+        type: text-field
+        name: "Multi text field"
+        description: "Help Text"
+        configuration:
+          required: true
+          multiple: true
+          minItems: 0
+          maxItems: 3

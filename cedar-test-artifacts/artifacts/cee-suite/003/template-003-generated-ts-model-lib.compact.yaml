@@ -1,0 +1,16 @@
+type: template
+name: "Multiple Required Field Template"
+id: "https://repo.metadatacenter.org/templates/5f6c22fa-d424-435d-9fb9-c9a84e23d712"
+children:
+  - key: "Multiple Required Field"
+    type: text-field
+    name: "Multiple Required Field"
+    description: "Help Text"
+    default: "Default Value"
+    minLength: 10
+    maxLength: 20
+    configuration:
+      required: true
+      multiple: true
+      minItems: 1
+      maxItems: 7

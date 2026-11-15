@@ -1,0 +1,10 @@
+type: template
+name: "13 - attribute value"
+id: "https://repo.metadatacenter.org/templates/8a25df11-7cf0-487e-a725-0f9f0e5ae858"
+children:
+  - key: "Attribute Value"
+    type: attribute-value-field
+    name: "Attribute Value"
+    description: "Help Text"
+    configuration:
+      minItems: 0

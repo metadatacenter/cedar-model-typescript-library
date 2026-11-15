@@ -1,0 +1,24 @@
+type: template
+name: "Mandatory link"
+id: "https://repo.metadatacenter.org/templates/7fd7f2d9-e8ce-4d9b-b04a-88d3be460998"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+createdOn: "2024-02-06T14:15:12-08:00"
+createdBy: "https://metadatacenter.org/users/30449a1f-80a8-4b54-a3fa-92d4d6157116"
+modifiedOn: "2024-02-06T14:15:12-08:00"
+modifiedBy: "https://metadatacenter.org/users/30449a1f-80a8-4b54-a3fa-92d4d6157116"
+children:
+  - key: "Link"
+    type: link-field
+    name: "Link"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/83f7a863-c6e3-48ef-b14a-a80743c29590"
+    modelVersion: 1.6.0
+    createdOn: "2024-02-06T14:15:12-08:00"
+    createdBy: "https://metadatacenter.org/users/30449a1f-80a8-4b54-a3fa-92d4d6157116"
+    modifiedOn: "2024-02-06T14:15:12-08:00"
+    modifiedBy: "https://metadatacenter.org/users/30449a1f-80a8-4b54-a3fa-92d4d6157116"
+    configuration:
+      required: true
+      propertyIri: "https://schema.metadatacenter.org/properties/3a3eed37-1447-460b-ba78-1bed59436a7e"

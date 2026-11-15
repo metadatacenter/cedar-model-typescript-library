@@ -1,0 +1,51 @@
+type: template
+name: "datetime template multiple"
+id: "https://repo.metadatacenter.org/templates/ac4d1764-133e-4451-ac61-0d46d63d6534"
+children:
+  - key: "Datetime Element"
+    type: element
+    name: "Datetime Element"
+    children:
+      - key: "Datetime in Element"
+        type: temporal-field
+        name: "Datetime in Element"
+        description: "Help Text"
+        datatype: xsd:date
+        granularity: day
+        configuration:
+          multiple: true
+          minItems: 1
+    configuration:
+      multiple: true
+      minItems: 1
+  - key: "Date Year Month"
+    type: temporal-field
+    name: "Date Year Month"
+    description: "Help Text"
+    datatype: xsd:date
+    granularity: month
+    configuration:
+      multiple: true
+      minItems: 1
+  - key: "Time Only"
+    type: temporal-field
+    name: "Time Only"
+    description: "Help Text"
+    datatype: xsd:time
+    granularity: minute
+    inputTimeFormat: 12h
+    inputTimeZone: true
+    configuration:
+      multiple: true
+      minItems: 1
+  - key: "Date and Time"
+    type: temporal-field
+    name: "Date and Time"
+    description: "Help Text"
+    datatype: xsd:dateTime
+    granularity: decimalSecond
+    inputTimeFormat: 12h
+    inputTimeZone: true
+    configuration:
+      multiple: true
+      minItems: 1

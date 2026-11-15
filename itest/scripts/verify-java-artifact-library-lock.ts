@@ -47,7 +47,11 @@ const collections = (javaRoot: string, corpusRoot: string): Record<string, { roo
     },
     ceeSuite: {
       root: corpusRoot,
-      files: corpusFiles.filter((file) => file.includes(`${path.sep}cee-suite${path.sep}`) && file.endsWith('.json')),
+      // The suite's own sources. Its Java renderings are locked with the other Java fixtures, and this
+      // library's renderings, like those of the numbered collections, are not locked at all.
+      files: corpusFiles.filter(
+        (file) => file.includes(`${path.sep}cee-suite${path.sep}`) && file.endsWith('.json') && !file.includes('-generated-'),
+      ),
     },
   };
 };

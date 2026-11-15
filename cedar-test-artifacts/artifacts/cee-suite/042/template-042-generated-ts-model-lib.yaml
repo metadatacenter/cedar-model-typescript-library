@@ -1,0 +1,40 @@
+type: template
+name: "controlled field"
+id: "https://repo.metadatacenter.org/templates/8013ab3d-5313-406f-81a9-f2ee14d27919"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+derivedFrom: "https://repo.metadatacenter.org/templates/98dab387-7192-442e-b0a9-69cd45fc9a6f"
+createdOn: "2020-12-03T11:59:00-08:00"
+createdBy: "https://metadatacenter.org/users/2fa8910d-96e7-4e2f-ae60-4dfa8ec9877d"
+modifiedOn: "2020-12-03T12:02:21-08:00"
+modifiedBy: "https://metadatacenter.org/users/2fa8910d-96e7-4e2f-ae60-4dfa8ec9877d"
+children:
+  - key: "Controlled Field"
+    type: controlled-term-field
+    name: "Controlled Field"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/87b3258f-140a-4d63-8adf-f71a135c1bed"
+    modelVersion: 1.6.0
+    datatype: iri
+    values:
+      - type: ontology
+        sourceAcronym: "CRISP"
+        sourceName: "Computer Retrieval of Information on Scientific Projects Thesaurus"
+        termCount: 9039
+      - type: class
+        sourceAcronym: "LOINC"
+        termIri: "http://purl.bioontology.org/ontology/LNC/MTHU010328"
+        termType: class
+        termLabel: "Cancer"
+      - type: class
+        sourceAcronym: "IOBC"
+        termIri: "http://purl.jp/bio/4/id/201006090702491769"
+        termType: class
+        termLabel: "pan"
+    createdOn: "2020-12-03T12:02:21-08:00"
+    createdBy: "https://metadatacenter.org/users/2fa8910d-96e7-4e2f-ae60-4dfa8ec9877d"
+    modifiedOn: "2020-12-03T12:02:21-08:00"
+    modifiedBy: "https://metadatacenter.org/users/2fa8910d-96e7-4e2f-ae60-4dfa8ec9877d"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/e7e4f062-e3cf-4606-882f-ec7688a52d23"

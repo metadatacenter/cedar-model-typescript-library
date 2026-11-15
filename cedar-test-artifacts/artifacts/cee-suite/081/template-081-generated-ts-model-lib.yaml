@@ -1,0 +1,27 @@
+type: template
+name: "Mandatory multi field min 0"
+id: "https://repo.metadatacenter.org/templates/ad003fa3-bcba-4be3-815b-baae091d8a6b"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+createdOn: "2024-02-06T14:25:35-08:00"
+createdBy: "https://metadatacenter.org/users/30449a1f-80a8-4b54-a3fa-92d4d6157116"
+modifiedOn: "2024-02-06T14:30:59-08:00"
+modifiedBy: "https://metadatacenter.org/users/30449a1f-80a8-4b54-a3fa-92d4d6157116"
+children:
+  - key: "Text field"
+    type: text-field
+    name: "Text field"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/47184c81-0603-473b-878a-146086fff997"
+    modelVersion: 1.6.0
+    createdOn: "2024-02-06T14:30:59-08:00"
+    createdBy: "https://metadatacenter.org/users/30449a1f-80a8-4b54-a3fa-92d4d6157116"
+    modifiedOn: "2024-02-06T14:30:59-08:00"
+    modifiedBy: "https://metadatacenter.org/users/30449a1f-80a8-4b54-a3fa-92d4d6157116"
+    configuration:
+      required: true
+      propertyIri: "https://schema.metadatacenter.org/properties/35605284-5795-4b42-9ae7-412d901ec49d"
+      multiple: true
+      minItems: 0
+      maxItems: 3

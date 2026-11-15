@@ -1,0 +1,9 @@
+type: instance
+name: "23 - multiple min 3 metadata"
+id: "https://repo.metadatacenter.org/template-instances/a8123233-c303-4767-bc19-fbdfa3a7c03d"
+isBasedOn: "https://repo.metadatacenter.org/templates/9b23f2d8-16ca-4472-8a37-6ddf223f43a1"
+children:
+  Text Field:
+    - value: "1a"
+    - value: "2a"
+    - value: "3a"

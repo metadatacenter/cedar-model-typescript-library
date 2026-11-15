@@ -1,0 +1,15 @@
+type: template
+name: "Template with Element 1-N"
+id: "https://repo.metadatacenter.orgx/templates/fbec8923-2582-4c19-8019-e27e9aa9d576"
+children:
+  - key: "Element card 1-N"
+    type: element
+    name: "Element card 1-N"
+    children:
+      - key: "Input1"
+        type: text-field
+        name: "Input1"
+        description: "Help Text"
+        configuration:
+          multiple: true
+          minItems: 1

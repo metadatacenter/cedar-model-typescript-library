@@ -1,0 +1,44 @@
+type: template
+name: "Multiple controlled field"
+id: "https://repo.metadatacenter.orgx/templates/2a06c576-bb48-4e87-b88c-ae40aa2b5a94"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+createdOn: "2023-08-30T14:52:38-07:00"
+createdBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+modifiedOn: "2023-08-30T14:52:38-07:00"
+modifiedBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+children:
+  - key: "Data acquisition technique"
+    type: controlled-term-field
+    name: "Data acquisition technique"
+    id: "https://repo.metadatacenter.orgx/template-fields/44bf8bba-8d7d-4aa8-9d93-93db14389d6d"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    datatype: iri
+    values:
+      - type: class
+        sourceAcronym: "NCIT"
+        termIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C16811"
+        termType: class
+        termLabel: "Magnetoencephalography"
+      - type: class
+        sourceAcronym: "NCIT"
+        termIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C116664"
+        termType: class
+        termLabel: "Electrocorticography"
+      - type: branch
+        sourceAcronym: "NCIT"
+        sourceName: "undefined (NCIT)"
+        termBaseIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C17958"
+        termBaseLabel: "Functional Magnetic Resonance Imaging"
+        termMaxDepth: 0
+    createdOn: "2023-08-30T14:52:38-07:00"
+    createdBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+    modifiedOn: "2023-08-30T14:52:38-07:00"
+    modifiedBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.orgx/properties/229b010e-5981-4d37-bff4-d615f2306dc7"
+      multiple: true
+      minItems: 1

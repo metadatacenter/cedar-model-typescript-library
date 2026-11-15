@@ -1,0 +1,23 @@
+type: template
+name: "One text field"
+id: "https://repo.metadatacenter.orgx/templates/26ac27cf-a494-4a8e-90ad-e0c17cff11bf"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+createdOn: "2023-10-24T13:41:40-07:00"
+createdBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+modifiedOn: "2023-10-24T13:41:40-07:00"
+modifiedBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+children:
+  - key: "Text field 1"
+    type: text-field
+    name: "Text field 1"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.orgx/template-fields/b05117d0-5713-4522-a5b2-7a1cb8232994"
+    modelVersion: 1.6.0
+    createdOn: "2023-10-24T13:41:40-07:00"
+    createdBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+    modifiedOn: "2023-10-24T13:41:40-07:00"
+    modifiedBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.orgx/properties/9536f592-4b6f-4619-81df-1af1200db3eb"

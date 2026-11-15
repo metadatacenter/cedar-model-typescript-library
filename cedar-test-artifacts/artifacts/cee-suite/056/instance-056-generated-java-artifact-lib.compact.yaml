@@ -1,0 +1,42 @@
+type: instance
+name: "Human Cognitive Neuroscience Data - Part 2 metadata"
+id: "https://repo.metadatacenter.orgx/template-instances/ceb1554f-b468-4ccb-bf42-086874c467fa"
+isBasedOn: "https://repo.metadatacenter.orgx/templates/5af7fae2-ec0c-4d64-b420-ae4ecda43f3b"
+children:
+  About the template:
+    value: "Click to read the instruction - I read the instructions"
+  Dataset:
+    children:
+      Dataset instruction:
+        value: "Click to read instructions - Read the dataset instructions as well"
+      Standard:
+        - children:
+            Data Standard:
+              - value: "Neuroimaging Data Model (NIDM)"
+              - value: "Neuroscience information exchange format  (NIX)"
+            Reference to Data Standard:
+              - id: "http://telecom.com"
+      Preprocessing:
+        - children:
+            Analysis Pipeline:
+              - id: "http://cedar.com"
+              - id: "https://metadatacenter.rog"
+            Preprocessing Script:
+              - id: "https://google.com"
+              - id: "https://aws.com"
+      Data acqusition technique:
+        - id: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C38054"
+          label: "Electroencephalography"
+      Data Modality:
+        id: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C17650"
+        label: "Physiologic"
+      Source dataset:
+        - children:
+            Identifier:
+              - id: "https://dataset.com"
+              - id: "https://dataset.com/2"
+              - id: "https://dataset.com/3"
+            Contact person:
+              - value: "manage@contact.info"
+            ORCID:
+              - value: "https://orcid.org/0000-0001-8743-5071"

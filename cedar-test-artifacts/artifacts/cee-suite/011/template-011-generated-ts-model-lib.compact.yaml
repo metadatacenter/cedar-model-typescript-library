@@ -1,0 +1,33 @@
+type: template
+name: "single select"
+id: "https://repo.metadatacenter.org/templates/e7e3c0ef-2b59-443c-816b-af72176d7aeb"
+children:
+  - key: "Single Select Element"
+    type: element
+    name: "Single Select Element"
+    children:
+      - key: "Single Select in Element"
+        type: single-select-list-field
+        name: "Single Select in Element"
+        description: "Help Text"
+        values:
+          - label: "Option 1"
+          - label: "Option 2"
+          - label: "Option 3"
+          - label: "Option 4"
+            selected: true
+          - label: "Option 5"
+    configuration:
+      multiple: true
+      minItems: 1
+  - key: "Single Select Standalone"
+    type: single-select-list-field
+    name: "Single Select Standalone"
+    description: "Help Text"
+    values:
+      - label: "Option 1"
+      - label: "Option 2"
+      - label: "Option 3"
+      - label: "Option 4"
+      - label: "Option 5"
+        selected: true

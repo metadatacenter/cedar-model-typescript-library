@@ -1,0 +1,68 @@
+type: template
+name: "multi select"
+id: "https://repo.metadatacenter.org/templates/f7c65a2a-4345-4e4e-8d6d-aee3fa906aa4"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+derivedFrom: "https://repo.metadatacenter.org/templates/e7e3c0ef-2b59-443c-816b-af72176d7aeb"
+createdOn: "2021-12-24T14:01:12-08:00"
+createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+modifiedOn: "2021-12-24T14:03:57-08:00"
+modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+children:
+  - key: "Multi Select Element"
+    type: element
+    name: "Multi Select Element"
+    id: "https://repo.metadatacenter.org/template-elements/e01035be-52b8-4add-a5e5-ed56afe3de21"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    createdOn: "2021-12-24T14:02:44-08:00"
+    createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    modifiedOn: "2021-12-26T10:01:38-08:00"
+    modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    children:
+      - key: "Multi Select in Element"
+        type: multi-select-list-field
+        name: "Multi Select in Element"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/4f24d179-8fdf-4431-b12b-7755bdd56612"
+        modelVersion: 1.6.0
+        values:
+          - label: "Option 1"
+          - label: "Option 2"
+            selected: true
+          - label: "Option 3"
+          - label: "Option 4"
+          - label: "Option 5"
+            selected: true
+        createdOn: "2021-12-26T10:01:38-08:00"
+        createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+        modifiedOn: "2021-12-26T10:01:38-08:00"
+        modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/1b810035-2fd8-40f0-92f4-f207c7f38261"
+          minItems: 1
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/40167116-75d9-4fcb-b310-77868a824fce"
+      multiple: true
+      minItems: 1
+  - key: "Multi Select Standalone"
+    type: multi-select-list-field
+    name: "Multi Select Standalone"
+    description: "Help Text"
+    id: "tmp-1640541717484-3551439"
+    modelVersion: 1.6.0
+    values:
+      - label: "Option 1"
+        selected: true
+      - label: "Option 2"
+      - label: "Option 3"
+      - label: "Option 4"
+      - label: "Option 5"
+      - label: "Option 6"
+        selected: true
+    configuration:
+      required: true
+      propertyIri: "https://schema.metadatacenter.org/properties/be3a4f4c-6ed7-4fc0-8d9a-997786e32427"
+      minItems: 1

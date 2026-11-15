@@ -1,0 +1,56 @@
+type: template
+name: "Template with multi link element"
+id: "https://repo.metadatacenter.orgx/templates/89f67526-f9b5-4177-9447-9ac6b6351d64"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+createdOn: "2023-11-17T15:45:49-08:00"
+createdBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+modifiedOn: "2023-11-17T15:45:49-08:00"
+modifiedBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+children:
+  - key: "Element with 2 Links 1-N"
+    type: element
+    name: "Element with 2 Links 1-N"
+    id: "https://repo.metadatacenter.orgx/template-elements/27ca67ff-f1f3-442f-931a-f2ffde154128"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    createdOn: "2023-11-17T15:45:49-08:00"
+    createdBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+    modifiedOn: "2023-11-17T15:45:49-08:00"
+    modifiedBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+    children:
+      - key: "Flat link"
+        type: link-field
+        name: "Flat link"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.orgx/template-fields/0877573b-bf43-40db-8dd8-dd2f07fd8197"
+        modelVersion: 1.6.0
+        createdOn: "2023-11-17T15:45:17-08:00"
+        createdBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+        modifiedOn: "2023-11-17T15:45:17-08:00"
+        modifiedBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.orgx/properties/2b20d143-5f6b-40f5-9e76-3fe11c3deada"
+          multiple: true
+          minItems: 1
+      - key: "Simple link"
+        type: link-field
+        name: "Simple link"
+        id: "https://repo.metadatacenter.orgx/template-fields/80486935-7dfa-46ff-bfde-a6f85fb7624d"
+        status: draft
+        version: 0.0.1
+        modelVersion: 1.6.0
+        createdOn: "2023-11-17T15:45:17-08:00"
+        createdBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+        modifiedOn: "2023-11-17T15:45:17-08:00"
+        modifiedBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.orgx/properties/f9d910c6-c781-466d-91fb-95cba82070c4"
+          multiple: true
+          minItems: 1
+    configuration:
+      propertyIri: "https://schema.metadatacenter.orgx/properties/c1c71ee9-aaf6-481e-b0d4-94367a6ba2ca"
+      multiple: true
+      minItems: 1

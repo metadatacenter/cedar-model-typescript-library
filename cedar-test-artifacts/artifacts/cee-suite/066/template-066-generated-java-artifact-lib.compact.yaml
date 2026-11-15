@@ -1,0 +1,1385 @@
+type: template
+name: "DataCite V4.4 Aug23"
+id: "https://repo.metadatacenter.orgx/templates/9378d41b-c557-4932-8c62-9976db822cbf"
+children:
+  - key: "prefix"
+    type: text-field
+    name: "prefix"
+    prefLabel: "Prefix of DOI"
+    default: "10.82658"
+    configuration:
+      required: true
+  - key: "url"
+    type: text-field
+    name: "url"
+    description: "The location of the landing page with more information about the resource."
+    prefLabel: "URL"
+    configuration:
+      required: true
+  - key: "creator"
+    type: element
+    name: "creator"
+    prefLabel: "Creators"
+    children:
+      - key: "creatorName"
+        type: text-field
+        name: "creatorName"
+        description: "May be a corporate/institutional or personal name."
+        prefLabel: "Creator Name"
+        configuration:
+          required: true
+      - key: "nameType"
+        type: controlled-term-field
+        name: "nameType"
+        description: "The type of name: Personal or Organizational"
+        prefLabel: "Name Type"
+        datatype: iri
+        values:
+          - type: class
+            sourceAcronym: "PATEL"
+            termIri: "http://www.semanticweb.org/ambrish/ontologies/2020/10/untitled-ontology-24#Personal"
+            termType: class
+            termLabel: "Personal"
+          - type: class
+            sourceAcronym: "VIVO"
+            termIri: "http://www.w3.org/2006/vcard/ns#Organizational"
+            termType: class
+            termLabel: "Organizational"
+      - key: "givenName"
+        type: text-field
+        name: "givenName"
+        description: "The personal or first name of the creator"
+        prefLabel: "First Name of Creator"
+      - key: "familyName"
+        type: text-field
+        name: "familyName"
+        description: "The surname or last name of the creator"
+        prefLabel: "Last Name of Creator"
+      - key: "affiliation"
+        type: element
+        name: "affiliation"
+        prefLabel: "Affiliations"
+        children:
+          - key: "name"
+            type: text-field
+            name: "name"
+            description: "The organizational or institutional affiliation of the creator"
+            prefLabel: "Name"
+          - key: "affiliationIdentifier"
+            type: text-field
+            name: "affiliationIdentifier"
+            description: "Uniquely identifies the organizational affiliation of the creator."
+            prefLabel: "Affiliation Identifier"
+          - key: "affiliationIdentifierScheme"
+            type: text-field
+            name: "affiliationIdentifierScheme"
+            description: "If Affiliation Identifier is used, Affiliation Identifier Scheme is mandatory."
+            prefLabel: "Affiliation Identifier Scheme"
+          - key: "affiliationIdentifierSchemeURI"
+            type: link-field
+            name: "schemeURI"
+            description: "The URI of the affiliation identifier scheme"
+            prefLabel: "Scheme URI"
+        configuration:
+          multiple: true
+          minItems: 0
+      - key: "nameIdentifier"
+        type: element
+        name: "nameIdentifier"
+        prefLabel: "Name Identifiers"
+        children:
+          - key: "name"
+            type: text-field
+            name: "name"
+            description: "Uniquely identifies an individual or legal entity, according to various schemes."
+            prefLabel: "Name"
+          - key: "nameIdentifierScheme"
+            type: text-field
+            name: "nameIdentifierScheme"
+            description: "If Name Identifier is used, Name Identifier Scheme is mandatory."
+            prefLabel: "Name Identifier Scheme"
+          - key: "schemeURI"
+            type: link-field
+            name: "schemeURI"
+            description: "The URI of the name identifier scheme"
+            prefLabel: "Scheme URI"
+        configuration:
+          multiple: true
+          minItems: 0
+    configuration:
+      multiple: true
+      minItems: 1
+  - key: "title"
+    type: element
+    name: "title"
+    prefLabel: "Titles"
+    children:
+      - key: "title"
+        type: text-field
+        name: "title"
+        description: "A name or title by which a resource is known."
+        prefLabel: "Title"
+        configuration:
+          required: true
+      - key: "titleType"
+        type: controlled-term-field
+        name: "titleType"
+        description: "The type of Title (other than the Main Title)"
+        prefLabel: "Title Type"
+        datatype: iri
+        values:
+          - type: branch
+            sourceAcronym: "DATACITE-VOCAB"
+            sourceName: "DATACITE V4.4 (DATACITE-VOCAB)"
+            termBaseIri: "http://purl.org/datacite/v4.4/TitleType"
+            termBaseLabel: "Title Type"
+            termMaxDepth: 0
+    configuration:
+      multiple: true
+      minItems: 1
+  - key: "publicationYear"
+    type: temporal-field
+    name: "publicationYear"
+    prefLabel: "Publication Year"
+    datatype: xsd:date
+    granularity: year
+    configuration:
+      required: true
+  - key: "publisher"
+    type: text-field
+    name: "publisher"
+    description: "The name of the entity that holds, archives, publishes prints, distributes, releases, issues, or produces the resource."
+    prefLabel: "Publisher"
+    default: "CEDAR"
+    configuration:
+      required: true
+  - key: "resourceType"
+    type: radio-field
+    name: "resourceType"
+    description: "A description of the resource"
+    prefLabel: "Resource Type"
+    values:
+      - label: "Template"
+      - label: "Instance"
+    configuration:
+      required: true
+  - key: "subject"
+    type: element
+    name: "subject"
+    prefLabel: "Subjects"
+    children:
+      - key: "subject"
+        type: text-field
+        name: "subject"
+        description: "Subject, keyword, classification code, or key phrase describing the resource"
+        prefLabel: "Subject"
+      - key: "subjectScheme"
+        type: text-field
+        name: "subjectScheme"
+        description: "The name of the subject scheme or classification code or authority if one is used"
+        prefLabel: "Subject Scheme"
+      - key: "schemeURI"
+        type: link-field
+        name: "schemeURI"
+        description: "The URI of the subject identifier scheme"
+        prefLabel: "Scheme URI"
+      - key: "valueURI"
+        type: link-field
+        name: "valueURI"
+        description: "The URI of the subject term"
+        prefLabel: "Value URI"
+      - key: "classificationCode"
+        type: text-field
+        name: "classificationCode"
+        description: "The classification code used for the subject term in the subject scheme"
+        prefLabel: "Classification Code"
+    configuration:
+      multiple: true
+      minItems: 0
+  - key: "contributor"
+    type: element
+    name: "contributor"
+    prefLabel: "Contributors"
+    children:
+      - key: "contributorName"
+        type: text-field
+        name: "contributorName"
+        description: "The full name of the contributor"
+        prefLabel: "Contributor Name"
+      - key: "nameType"
+        type: controlled-term-field
+        name: "nameType"
+        description: "Name Type"
+        prefLabel: "Name Type"
+        datatype: iri
+        values:
+          - type: class
+            sourceAcronym: "PATEL"
+            termIri: "http://www.semanticweb.org/ambrish/ontologies/2020/10/untitled-ontology-24#Personal"
+            termType: class
+            termLabel: "Personal"
+          - type: class
+            sourceAcronym: "VIVO"
+            termIri: "http://www.w3.org/2006/vcard/ns#Organizational"
+            termType: class
+            termLabel: "Organizational"
+      - key: "givenName"
+        type: text-field
+        name: "givenName"
+        prefLabel: "First Name of Contributor"
+      - key: "familyName"
+        type: text-field
+        name: "familyName"
+        prefLabel: "Last Name of Contributor"
+      - key: "contributorType"
+        type: controlled-term-field
+        name: "contributorType"
+        prefLabel: "Contributor Type"
+        datatype: iri
+        values:
+          - type: branch
+            sourceAcronym: "DATACITE-VOCAB"
+            sourceName: "undefined (DATACITE-VOCAB)"
+            termBaseIri: "http://purl.org/datacite/v4.4/ContributorType"
+            termBaseLabel: "Contributor Type"
+            termMaxDepth: 0
+      - key: "affiliation"
+        type: element
+        name: "affiliation"
+        prefLabel: "Affiliations"
+        children:
+          - key: "name"
+            type: text-field
+            name: "name"
+            description: "The organizational or institutional affiliation of the creator"
+            prefLabel: "Name"
+          - key: "affiliationIdentifier"
+            type: text-field
+            name: "affiliationIdentifier"
+            description: "Uniquely identifies the organizational affiliation of the creator."
+            prefLabel: "Affiliation Identifier"
+          - key: "affiliationIdentifierScheme"
+            type: text-field
+            name: "affiliationIdentifierScheme"
+            description: "If Affiliation Identifier is used, Affiliation Identifier Scheme is mandatory."
+            prefLabel: "Affiliation Identifier Scheme"
+          - key: "affiliationIdentifierSchemeURI"
+            type: link-field
+            name: "schemeURI"
+            description: "The URI of the affiliation identifier scheme"
+            prefLabel: "Scheme URI"
+        configuration:
+          multiple: true
+          minItems: 0
+      - key: "nameIdentifier"
+        type: element
+        name: "nameIdentifier"
+        prefLabel: "Name Identifiers"
+        children:
+          - key: "name"
+            type: text-field
+            name: "name"
+            description: "Uniquely identifies an individual or legal entity, according to various schemes."
+            prefLabel: "Name"
+          - key: "nameIdentifierScheme"
+            type: text-field
+            name: "nameIdentifierScheme"
+            description: "If Name Identifier is used, Name Identifier Scheme is mandatory."
+            prefLabel: "Name Identifier Scheme"
+          - key: "schemeURI"
+            type: link-field
+            name: "schemeURI"
+            description: "The URI of the name identifier scheme"
+            prefLabel: "Scheme URI"
+        configuration:
+          multiple: true
+          minItems: 0
+    configuration:
+      multiple: true
+      minItems: 0
+  - key: "date"
+    type: element
+    name: "date"
+    prefLabel: "Dates"
+    children:
+      - key: "date"
+        type: temporal-field
+        name: "date"
+        description: "Different dates relevant to the work"
+        prefLabel: "Date"
+        datatype: xsd:date
+        granularity: day
+      - key: "dateType"
+        type: controlled-term-field
+        name: "dateType"
+        description: "If Date is used, Date Type is mandatory."
+        prefLabel: "Date Type"
+        datatype: iri
+        values:
+          - type: branch
+            sourceAcronym: "DATACITE-VOCAB"
+            sourceName: "undefined (DATACITE-VOCAB)"
+            termBaseIri: "http://purl.org/datacite/v4.4/DateType"
+            termBaseLabel: "Date Type"
+            termMaxDepth: 0
+      - key: "dateInformation"
+        type: text-field
+        name: "dateInformation"
+        description: "Specific information about the date, if appropriate"
+        prefLabel: "Date Information"
+    configuration:
+      multiple: true
+      minItems: 0
+  - key: "language"
+    type: single-select-list-field
+    name: "language"
+    description: "Enter a language tag"
+    prefLabel: "Language"
+    values:
+      - label: "aa"
+        selected: false
+      - label: "ab"
+        selected: false
+      - label: "ae"
+        selected: false
+      - label: "af"
+        selected: false
+      - label: "ak"
+        selected: false
+      - label: "am"
+        selected: false
+      - label: "an"
+        selected: false
+      - label: "ar"
+        selected: false
+      - label: "ar-AE"
+        selected: false
+      - label: "ar-BH"
+        selected: false
+      - label: "ar-DZ"
+        selected: false
+      - label: "ar-EG"
+        selected: false
+      - label: "ar-IQ"
+        selected: false
+      - label: "ar-JO"
+        selected: false
+      - label: "ar-KW"
+        selected: false
+      - label: "ar-LB"
+        selected: false
+      - label: "ar-LY"
+        selected: false
+      - label: "ar-MA"
+        selected: false
+      - label: "ar-OM"
+        selected: false
+      - label: "ar-QA"
+        selected: false
+      - label: "ar-SA"
+        selected: false
+      - label: "ar-SY"
+        selected: false
+      - label: "ar-TN"
+        selected: false
+      - label: "ar-YE"
+        selected: false
+      - label: "as"
+        selected: false
+      - label: "av"
+        selected: false
+      - label: "ay"
+        selected: false
+      - label: "az"
+        selected: false
+      - label: "ba"
+        selected: false
+      - label: "be"
+        selected: false
+      - label: "bg"
+        selected: false
+      - label: "bh"
+        selected: false
+      - label: "bi"
+        selected: false
+      - label: "bm"
+        selected: false
+      - label: "bn"
+        selected: false
+      - label: "bo"
+        selected: false
+      - label: "br"
+        selected: false
+      - label: "bs"
+        selected: false
+      - label: "ca"
+        selected: false
+      - label: "ce"
+        selected: false
+      - label: "ch"
+        selected: false
+      - label: "co"
+        selected: false
+      - label: "cr"
+        selected: false
+      - label: "cs"
+        selected: false
+      - label: "cu"
+        selected: false
+      - label: "cv"
+        selected: false
+      - label: "cy"
+        selected: false
+      - label: "da"
+        selected: false
+      - label: "de"
+        selected: false
+      - label: "de-AT"
+        selected: false
+      - label: "de-CH"
+        selected: false
+      - label: "de-LI"
+        selected: false
+      - label: "de-LU"
+        selected: false
+      - label: "dv"
+        selected: false
+      - label: "dz"
+        selected: false
+      - label: "ee"
+        selected: false
+      - label: "el"
+        selected: false
+      - label: "en"
+        selected: true
+      - label: "en-AU"
+        selected: false
+      - label: "en-BZ"
+        selected: false
+      - label: "en-CA"
+        selected: false
+      - label: "en-GB"
+        selected: false
+      - label: "en-IE"
+        selected: false
+      - label: "en-JM"
+        selected: false
+      - label: "en-NZ"
+        selected: false
+      - label: "en-TT"
+        selected: false
+      - label: "en-US"
+        selected: false
+      - label: "en-ZA"
+        selected: false
+      - label: "eo"
+        selected: false
+      - label: "es"
+        selected: false
+      - label: "es-AR"
+        selected: false
+      - label: "es-BO"
+        selected: false
+      - label: "es-CL"
+        selected: false
+      - label: "es-CO"
+        selected: false
+      - label: "es-CR"
+        selected: false
+      - label: "es-DO"
+        selected: false
+      - label: "es-EC"
+        selected: false
+      - label: "es-GT"
+        selected: false
+      - label: "es-HN"
+        selected: false
+      - label: "es-MX"
+        selected: false
+      - label: "es-NI"
+        selected: false
+      - label: "es-PA"
+        selected: false
+      - label: "es-PE"
+        selected: false
+      - label: "es-PR"
+        selected: false
+      - label: "es-PY"
+        selected: false
+      - label: "es-SV"
+        selected: false
+      - label: "es-UY"
+        selected: false
+      - label: "es-VE"
+        selected: false
+      - label: "et"
+        selected: false
+      - label: "eu"
+        selected: false
+      - label: "fa"
+        selected: false
+      - label: "ff"
+        selected: false
+      - label: "fi"
+        selected: false
+      - label: "fj"
+        selected: false
+      - label: "fo"
+        selected: false
+      - label: "fr"
+        selected: false
+      - label: "fr-BE"
+        selected: false
+      - label: "fr-CA"
+        selected: false
+      - label: "fr-CH"
+        selected: false
+      - label: "fr-LU"
+        selected: false
+      - label: "fy"
+        selected: false
+      - label: "ga"
+        selected: false
+      - label: "gd"
+        selected: false
+      - label: "gl"
+        selected: false
+      - label: "gn"
+        selected: false
+      - label: "gu"
+        selected: false
+      - label: "gv"
+        selected: false
+      - label: "ha"
+        selected: false
+      - label: "he"
+        selected: false
+      - label: "hi"
+        selected: false
+      - label: "ho"
+        selected: false
+      - label: "hr"
+        selected: false
+      - label: "ht"
+        selected: false
+      - label: "hu"
+        selected: false
+      - label: "hy"
+        selected: false
+      - label: "hz"
+        selected: false
+      - label: "ia"
+        selected: false
+      - label: "id"
+        selected: false
+      - label: "ie"
+        selected: false
+      - label: "ig"
+        selected: false
+      - label: "ii"
+        selected: false
+      - label: "ik"
+        selected: false
+      - label: "io"
+        selected: false
+      - label: "is"
+        selected: false
+      - label: "it"
+        selected: false
+      - label: "it-CH"
+        selected: false
+      - label: "iu"
+        selected: false
+      - label: "ja"
+        selected: false
+      - label: "jv"
+        selected: false
+      - label: "ka"
+        selected: false
+      - label: "kg"
+        selected: false
+      - label: "ki"
+        selected: false
+      - label: "kj"
+        selected: false
+      - label: "kk"
+        selected: false
+      - label: "kl"
+        selected: false
+      - label: "km"
+        selected: false
+      - label: "kn"
+        selected: false
+      - label: "ko"
+        selected: false
+      - label: "kr"
+        selected: false
+      - label: "ks"
+        selected: false
+      - label: "ku"
+        selected: false
+      - label: "kv"
+        selected: false
+      - label: "kw"
+        selected: false
+      - label: "ky"
+        selected: false
+      - label: "la"
+        selected: false
+      - label: "lb"
+        selected: false
+      - label: "lg"
+        selected: false
+      - label: "li"
+        selected: false
+      - label: "ln"
+        selected: false
+      - label: "lo"
+        selected: false
+      - label: "lt"
+        selected: false
+      - label: "lu"
+        selected: false
+      - label: "lv"
+        selected: false
+      - label: "mg"
+        selected: false
+      - label: "mh"
+        selected: false
+      - label: "mi"
+        selected: false
+      - label: "mk"
+        selected: false
+      - label: "ml"
+        selected: false
+      - label: "mn"
+        selected: false
+      - label: "mr"
+        selected: false
+      - label: "ms"
+        selected: false
+      - label: "mt"
+        selected: false
+      - label: "my"
+        selected: false
+      - label: "na"
+        selected: false
+      - label: "nb"
+        selected: false
+      - label: "nd"
+        selected: false
+      - label: "ne"
+        selected: false
+      - label: "ng"
+        selected: false
+      - label: "nl"
+        selected: false
+      - label: "nl-BE"
+        selected: false
+      - label: "nn"
+        selected: false
+      - label: "no"
+        selected: false
+      - label: "nr"
+        selected: false
+      - label: "nv"
+        selected: false
+      - label: "ny"
+        selected: false
+      - label: "oc"
+        selected: false
+      - label: "oj"
+        selected: false
+      - label: "om"
+        selected: false
+      - label: "or"
+        selected: false
+      - label: "os"
+        selected: false
+      - label: "pa"
+        selected: false
+      - label: "pi"
+        selected: false
+      - label: "pl"
+        selected: false
+      - label: "ps"
+        selected: false
+      - label: "pt"
+        selected: false
+      - label: "pt-BR"
+        selected: false
+      - label: "qu"
+        selected: false
+      - label: "rm"
+        selected: false
+      - label: "rn"
+        selected: false
+      - label: "ro"
+        selected: false
+      - label: "ro-MD"
+        selected: false
+      - label: "ru"
+        selected: false
+      - label: "ru-MD"
+        selected: false
+      - label: "rw"
+        selected: false
+      - label: "sa"
+        selected: false
+      - label: "sc"
+        selected: false
+      - label: "sd"
+        selected: false
+      - label: "se"
+        selected: false
+      - label: "sg"
+        selected: false
+      - label: "si"
+        selected: false
+      - label: "sk"
+        selected: false
+      - label: "sl"
+        selected: false
+      - label: "sm"
+        selected: false
+      - label: "sn"
+        selected: false
+      - label: "so"
+        selected: false
+      - label: "sq"
+        selected: false
+      - label: "sr"
+        selected: false
+      - label: "ss"
+        selected: false
+      - label: "st"
+        selected: false
+      - label: "su"
+        selected: false
+      - label: "sv"
+        selected: false
+      - label: "sv-FI"
+        selected: false
+      - label: "sw"
+        selected: false
+      - label: "ta"
+        selected: false
+      - label: "te"
+        selected: false
+      - label: "tg"
+        selected: false
+      - label: "th"
+        selected: false
+      - label: "ti"
+        selected: false
+      - label: "tk"
+        selected: false
+      - label: "tl"
+        selected: false
+      - label: "tn"
+        selected: false
+      - label: "to"
+        selected: false
+      - label: "tr"
+        selected: false
+      - label: "ts"
+        selected: false
+      - label: "tt"
+        selected: false
+      - label: "tw"
+        selected: false
+      - label: "ty"
+        selected: false
+      - label: "ug"
+        selected: false
+      - label: "uk"
+        selected: false
+      - label: "ur"
+        selected: false
+      - label: "uz"
+        selected: false
+      - label: "ve"
+        selected: false
+      - label: "vi"
+        selected: false
+      - label: "vo"
+        selected: false
+      - label: "wa"
+        selected: false
+      - label: "wo"
+        selected: false
+      - label: "xh"
+        selected: false
+      - label: "yi"
+        selected: false
+      - label: "yo"
+        selected: false
+      - label: "za"
+        selected: false
+      - label: "zh"
+        selected: false
+      - label: "zh-CN"
+        selected: false
+      - label: "zh-HK"
+        selected: false
+      - label: "zh-SG"
+        selected: false
+      - label: "zh-TW"
+        selected: false
+      - label: "zu"
+        selected: false
+  - key: "alternateIdentifier"
+    type: element
+    name: "alternateIdentifier"
+    prefLabel: "Alternate Identifiers"
+    children:
+      - key: "alternateIdentifier"
+        type: text-field
+        name: "alternateIdentifier"
+        description: "An identifier other than the primary Identifier applied to the resource being registered."
+        prefLabel: "Alternate Identifier"
+      - key: "alternateIdentifierType"
+        type: text-field
+        name: "alternateIdentifierType"
+        description: "The type of the Alternate Identifier"
+        prefLabel: "Alternate Identifier Type"
+    configuration:
+      multiple: true
+      minItems: 0
+  - key: "relatedIdentifier"
+    type: element
+    name: "relatedIdentifier"
+    prefLabel: "Related Identifiers"
+    children:
+      - key: "relatedIdentifier"
+        type: text-field
+        name: "relatedIdentifier"
+        description: "Identifiers of related resources. These must be globally unique identifiers."
+        prefLabel: "Related Identifier"
+      - key: "relatedIdentifierType"
+        type: controlled-term-field
+        name: "relatedIdentifierType"
+        description: "The type of the RelatedIdentifier. If relatedIdentifier is used, relatedIdentifierType is mandatory."
+        prefLabel: "Related Identifier Type"
+        datatype: iri
+        values:
+          - type: branch
+            sourceAcronym: "DATACITE-VOCAB"
+            sourceName: "DATACITE V4.4 (DATACITE-VOCAB)"
+            termBaseIri: "http://purl.org/datacite/v4.4/RelatedIdentifierType"
+            termBaseLabel: "Related Identifier Type"
+            termMaxDepth: 0
+      - key: "relationType"
+        type: controlled-term-field
+        name: "relationType"
+        description: "Description of the relationship of the resource being registered (A) and the related resource (B)."
+        prefLabel: "Relation Type"
+        datatype: iri
+        values:
+          - type: branch
+            sourceAcronym: "DATACITE-VOCAB"
+            sourceName: "undefined (DATACITE-VOCAB)"
+            termBaseIri: "http://purl.org/datacite/v4.4/RelationType"
+            termBaseLabel: "Relation Type"
+            termMaxDepth: 0
+      - key: "relatedMetadataScheme"
+        type: text-field
+        name: "relatedMetadataScheme"
+        description: "The name of the scheme"
+        prefLabel: "Related Metadata Scheme"
+      - key: "schemeURI"
+        type: link-field
+        name: "schemeURI"
+        description: "The URI of the Related Metadata Scheme"
+        prefLabel: "Related Metadata Scheme URI"
+      - key: "schemeType"
+        type: text-field
+        name: "schemeType"
+        description: "The type of the Related Metadata Scheme, linked with the Scheme URI."
+        prefLabel: "Scheme Type"
+      - key: "resourceTypeGeneral"
+        type: controlled-term-field
+        name: "resourceTypeGeneral"
+        description: "The general type of the related resource"
+        prefLabel: "Resource Type General"
+        datatype: iri
+        values:
+          - type: branch
+            sourceAcronym: "DATACITE-VOCAB"
+            sourceName: "undefined (DATACITE-VOCAB)"
+            termBaseIri: "http://purl.org/datacite/v4.4/ResourceTypeGeneral"
+            termBaseLabel: "Resource Type General"
+            termMaxDepth: 0
+    configuration:
+      multiple: true
+      minItems: 0
+  - key: "size"
+    type: text-field
+    name: "size"
+    description: "Size (e.g., bytes, pages, inches, etc.) or duration (extent), e.g., hours, minutes, days, etc., of a resource."
+    prefLabel: "Sizes"
+    configuration:
+      multiple: true
+      minItems: 0
+  - key: "format"
+    type: text-field
+    name: "format"
+    description: "Technical format of the resource. Use file extension or MIME type where possible, e.g., PDF, XML, MPG or application/pdf, text/xml, video/mpeg."
+    prefLabel: "Formats"
+    configuration:
+      multiple: true
+      minItems: 0
+  - key: "version"
+    type: text-field
+    name: "version"
+    description: "The version number of the resource."
+    prefLabel: "Version"
+  - key: "rights"
+    type: element
+    name: "rights"
+    prefLabel: "Rights"
+    children:
+      - key: "rights"
+        type: text-field
+        name: "rights"
+        description: "Any rights information for this resource."
+        prefLabel: "Rights"
+      - key: "rightsURI"
+        type: link-field
+        name: "rightsURI"
+        description: "The URI of the license"
+        prefLabel: "Rights URI"
+      - key: "rightsIdentifier"
+        type: text-field
+        name: "rightsIdentifier"
+        description: "A short, standardized version of the license name. Example: CC-BY-3.0 A list of identifiers for commonly-used licenses may be found here: (https://spdx.org/licenses/)."
+        prefLabel: "Rights Identifier"
+      - key: "rightsIdentifierScheme"
+        type: text-field
+        name: "rightsIdentifierScheme"
+        description: "The name of the scheme."
+        prefLabel: "Rights Identifier Scheme"
+      - key: "schemeURI"
+        type: link-field
+        name: "schemeURI"
+        description: "The URI of the Rights Identifier Scheme"
+        prefLabel: "Rights Identifier Scheme URI"
+    configuration:
+      multiple: true
+      minItems: 0
+  - key: "description"
+    type: element
+    name: "description"
+    prefLabel: "Descriptions"
+    children:
+      - key: "description"
+        type: text-field
+        name: "description"
+        description: "All additional information that does not fit in any of the other categories. May be used for technical information."
+        prefLabel: "Description"
+      - key: "descriptionType"
+        type: controlled-term-field
+        name: "descriptionType"
+        description: "The type of the Description. If Description is used, descriptionType is mandatory."
+        prefLabel: "Description Type"
+        datatype: iri
+        values:
+          - type: branch
+            sourceAcronym: "DATACITE-VOCAB"
+            sourceName: "undefined (DATACITE-VOCAB)"
+            termBaseIri: "http://purl.org/datacite/v4.4/DescriptionType"
+            termBaseLabel: "Description Type"
+            termMaxDepth: 0
+    configuration:
+      multiple: true
+      minItems: 0
+  - key: "geoLocation"
+    type: element
+    name: "geoLocation"
+    prefLabel: "Geographic Location"
+    children:
+      - key: "geoLocationPlace"
+        type: text-field
+        name: "geoLocationPlace"
+        prefLabel: "Geographic Location Place"
+      - key: "geoLocationPoint"
+        type: element
+        name: "geoLocationPoint"
+        prefLabel: "Geographic Location Point"
+        children:
+          - key: "pointLongitude"
+            type: numeric-field
+            name: "pointLongitude"
+            description: "Latitudinal dimension of point. If In Polygon Point is used pointLongitude is mandatory. Longitude of the geographic point expressed in decimal degrees (positive east)."
+            prefLabel: "Point Longitude"
+            datatype: xsd:decimal
+            minValue: -180
+            maxValue: 180
+          - key: "pointLatitude"
+            type: numeric-field
+            name: "pointLatitude"
+            description: "Latitudinal dimension of point. If inPolygonPoint is used, pointLatitude is mandatory. Latitude of the geographic point expressed in decimal degrees (positive north)."
+            prefLabel: "Point Latitude"
+            datatype: xsd:decimal
+            minValue: -90
+            maxValue: 90
+      - key: "geoLocationBox"
+        type: element
+        name: "geoLocationBox"
+        prefLabel: "Geographic Location Box"
+        children:
+          - key: "westBoundLongitude"
+            type: numeric-field
+            name: "westBoundLongitude"
+            description: "Western longitudinal dimension of box. Longitude of the geographic point expressed in decimal degrees (positive east). Domain: -180.00 ≤ westBoundLongitude ≤ 180.00"
+            prefLabel: "West Bound Longitude"
+            datatype: xsd:decimal
+            minValue: -180
+            maxValue: 180
+          - key: "eastBoundLongitude"
+            type: numeric-field
+            name: "eastBoundLongitude"
+            description: "Eastern longitudinal dimension of box. Longitude of the geographic point expressed in decimal degrees (positive east) Domain: -180.00 ≤ eastBoundLongitude ≤ 180.00."
+            prefLabel: "East Bound Longitude"
+            datatype: xsd:decimal
+            minValue: -180
+            maxValue: 180
+          - key: "southBoundLatitude"
+            type: numeric-field
+            name: "southBoundLatitude"
+            description: "Southern latitudinal dimension of box. Latitude of the geographic point expressed in decimal degrees (positive north). Domain: -90.00 ≤ southBoundingLatitude ≤ 90.00"
+            prefLabel: "South Bound Latitude"
+            datatype: xsd:decimal
+            minValue: -90
+            maxValue: 90
+          - key: "northBoundLatitude"
+            type: numeric-field
+            name: "northBoundLatitude"
+            description: "Northern latitudinal dimension of box. Latitude of the geographic point expressed in decimal degrees (positive north). Domain: -90.00 ≤ northBoundingLatitude ≤ 90.00."
+            prefLabel: "North Bound Latitude"
+            datatype: xsd:decimal
+            minValue: -90
+            maxValue: 90
+    configuration:
+      multiple: true
+      minItems: 0
+  - key: "fundingReference"
+    type: element
+    name: "fundingReference"
+    prefLabel: "Funding References"
+    children:
+      - key: "funderName"
+        type: text-field
+        name: "funderName"
+        description: "Name of the funding provider"
+        prefLabel: "Funder Name"
+      - key: "funderIdentifier"
+        type: text-field
+        name: "funderIdentifier"
+        description: "Uniquely identifies a funding entity, according to various types. Example: https://doi.org/10.13039/100000936"
+        prefLabel: "Funder Identifier"
+      - key: "funderIdentifierType"
+        type: controlled-term-field
+        name: "funderIdentifierType"
+        description: "The type of the funderIdentifier"
+        prefLabel: "Funder Identifier Type"
+        datatype: iri
+        values:
+          - type: class
+            sourceAcronym: "FDC-GDMT"
+            termIri: "https://www.grid.ac/"
+            termType: class
+            termLabel: "GRID"
+          - type: class
+            sourceAcronym: "BIBFRAME"
+            termIri: "http://id.loc.gov/ontologies/bibframe/Isni"
+            termType: class
+            termLabel: "ISNI"
+          - type: class
+            sourceAcronym: "BE"
+            termIri: "http://purl.obolibrary.org/obo/BE_ROR"
+            termType: class
+            termLabel: "ROR"
+          - type: class
+            sourceAcronym: "NCIT"
+            termIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C17649"
+            termType: class
+            termLabel: "Other"
+      - key: "schemeURI"
+        type: link-field
+        name: "schemeURI"
+        description: "The URI of the funder identifier scheme"
+        prefLabel: "Scheme URI"
+      - key: "awardNumber"
+        type: text-field
+        name: "awardNumber"
+        description: "The code assigned by the funder to a sponsored award (grant)."
+        prefLabel: "Award Number"
+      - key: "awardURI"
+        type: link-field
+        name: "awardURI"
+        description: "The URI leading to a page provided by the funder for more information about the award (grant)."
+        prefLabel: "Award URI"
+      - key: "awardTitle"
+        type: text-field
+        name: "awardTitle"
+        description: "The human readable title or name of the award (grant)."
+        prefLabel: "Award Title"
+    configuration:
+      multiple: true
+      minItems: 0
+  - key: "relatedItem"
+    type: element
+    name: "relatedItem"
+    prefLabel: "Related Items"
+    children:
+      - key: "relatedItemType"
+        type: controlled-term-field
+        name: "relatedItemType"
+        description: "The type of the related item, e.g., journal article; book or chapter"
+        prefLabel: "Related Item Type"
+        datatype: iri
+        values:
+          - type: branch
+            sourceAcronym: "DATACITE-VOCAB"
+            sourceName: "DATACITE V4.4 (DATACITE-VOCAB)"
+            termBaseIri: "http://purl.org/datacite/v4.4/ResourceTypeGeneral"
+            termBaseLabel: "Resource Type General"
+            termMaxDepth: 0
+      - key: "relationType1"
+        type: controlled-term-field
+        name: "relationType"
+        description: "Description of the relationship of the resource being registered (A) and the related resource (B)."
+        prefLabel: "Relation Type"
+        datatype: iri
+        values:
+          - type: branch
+            sourceAcronym: "DATACITE-VOCAB"
+            sourceName: "undefined (DATACITE-VOCAB)"
+            termBaseIri: "http://purl.org/datacite/v4.4/RelationType"
+            termBaseLabel: "Relation Type"
+            termMaxDepth: 0
+      - key: "relatedIdentifier"
+        type: text-field
+        name: "relatedIdentifier"
+        description: "Identifiers of related resources. These must be globally unique identifiers."
+        prefLabel: "Related Identifier"
+      - key: "relatedIdentifierType"
+        type: controlled-term-field
+        name: "relatedIdentifierType"
+        description: "The type of the RelatedIdentifier. If relatedIdentifier is used, relatedIdentifierType is mandatory."
+        prefLabel: "Related Identifier Type"
+        datatype: iri
+        values:
+          - type: branch
+            sourceAcronym: "DATACITE-VOCAB"
+            sourceName: "DATACITE V4.4 (DATACITE-VOCAB)"
+            termBaseIri: "http://purl.org/datacite/v4.4/RelatedIdentifierType"
+            termBaseLabel: "Related Identifier Type"
+            termMaxDepth: 0
+      - key: "relatedMetadataScheme"
+        type: text-field
+        name: "relatedMetadataScheme"
+        description: "The name of the scheme"
+        prefLabel: "Related Metadata Scheme"
+      - key: "schemeURI1"
+        type: link-field
+        name: "schemeURI"
+        description: "The URI of the Related Metadata Scheme"
+        prefLabel: "Scheme URI"
+      - key: "schemeType1"
+        type: text-field
+        name: "schemeType"
+        description: "The type of the Related Metadata Scheme, linked with the Scheme URI."
+        prefLabel: "Scheme Type"
+      - key: "title"
+        type: element
+        name: "title"
+        prefLabel: "Titles"
+        children:
+          - key: "title"
+            type: text-field
+            name: "title"
+            description: "A name or title by which a resource is known."
+            prefLabel: "Title"
+            configuration:
+              required: true
+          - key: "titleType"
+            type: controlled-term-field
+            name: "titleType"
+            description: "The type of Title (other than the Main Title)"
+            prefLabel: "Title Type"
+            datatype: iri
+            values:
+              - type: branch
+                sourceAcronym: "DATACITE-VOCAB"
+                sourceName: "DATACITE V4.4 (DATACITE-VOCAB)"
+                termBaseIri: "http://purl.org/datacite/v4.4/TitleType"
+                termBaseLabel: "Title Type"
+                termMaxDepth: 0
+        configuration:
+          multiple: true
+          minItems: 0
+      - key: "relatedItemCreator"
+        type: element
+        name: "relatedItemCreator"
+        prefLabel: "Creators"
+        children:
+          - key: "creatorName"
+            type: text-field
+            name: "creatorName"
+            description: "The full name of the related item creator"
+            prefLabel: "Creator Name"
+          - key: "nameType"
+            type: controlled-term-field
+            name: "nameType"
+            description: "Name Type"
+            prefLabel: "Name Type"
+            datatype: iri
+            values:
+              - type: class
+                sourceAcronym: "PATEL"
+                termIri: "http://www.semanticweb.org/ambrish/ontologies/2020/10/untitled-ontology-24#Personal"
+                termType: class
+                termLabel: "Personal"
+              - type: class
+                sourceAcronym: "VIVO"
+                termIri: "http://www.w3.org/2006/vcard/ns#Organizational"
+                termType: class
+                termLabel: "Organizational"
+          - key: "givenName"
+            type: text-field
+            name: "givenName"
+            description: "The personal or first name of the creator"
+            prefLabel: "First Name of Creator"
+          - key: "familyName"
+            type: text-field
+            name: "familyName"
+            description: "The surname or last name of the creator"
+            prefLabel: "Last Name of Creator"
+        configuration:
+          multiple: true
+          minItems: 0
+      - key: "number"
+        type: text-field
+        name: "number"
+        description: "Type of the related item’s number, e.g., report number or article number."
+        prefLabel: "Number"
+      - key: "numberType"
+        type: controlled-term-field
+        name: "numberType"
+        description: "Type of the related item’s number, e.g., report number or article number"
+        prefLabel: "Number Type"
+        datatype: iri
+        values:
+          - type: class
+            sourceAcronym: "NCIT"
+            termIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C47902"
+            termType: class
+            termLabel: "Article"
+          - type: class
+            sourceAcronym: "G-PROV"
+            termIri: "http://purl.org/ontology/bibo/Chapter"
+            termType: class
+            termLabel: "Chapter"
+          - type: class
+            sourceAcronym: "SNOMEDCT"
+            termIri: "http://purl.bioontology.org/ontology/SNOMEDCT/229059009"
+            termType: class
+            termLabel: "Report"
+          - type: class
+            sourceAcronym: "NCIT"
+            termIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C17649"
+            termType: class
+            termLabel: "Other"
+      - key: "volume"
+        type: text-field
+        name: "volume"
+        description: "Volume of the related item."
+        prefLabel: "Volume"
+      - key: "issue"
+        type: text-field
+        name: "issue"
+        description: "Issue number or name of the related item"
+        prefLabel: "Issue"
+      - key: "firstPage"
+        type: text-field
+        name: "firstPage"
+        prefLabel: "First Page"
+      - key: "lastPage"
+        type: text-field
+        name: "lastPage"
+        description: "Last page of the related item, e.g., of the chapter, article, or conference paper in proceedings"
+        prefLabel: "Last Page"
+      - key: "publicationYear"
+        type: temporal-field
+        name: "publicationYear"
+        prefLabel: "Publication Year"
+        datatype: xsd:date
+        granularity: year
+      - key: "publisher"
+        type: text-field
+        name: "publisher"
+        description: "The name of the entity that holds, archives, publishes prints, distributes, releases, issues, or produces the resource."
+        prefLabel: "Publisher"
+        default: "CEDAR"
+      - key: "edition"
+        type: text-field
+        name: "edition"
+        prefLabel: "Edition"
+      - key: "relatedItemContributor"
+        type: element
+        name: "relatedItemContributor"
+        prefLabel: "Contributors"
+        children:
+          - key: "contributorType"
+            type: controlled-term-field
+            name: "contributorType"
+            description: "The type of contributor of the resource"
+            prefLabel: "Contributor Type"
+            datatype: iri
+            values:
+              - type: branch
+                sourceAcronym: "DATACITE-VOCAB"
+                sourceName: "undefined (DATACITE-VOCAB)"
+                termBaseIri: "http://purl.org/datacite/v4.4/ContributorType"
+                termBaseLabel: "Contributor Type"
+                termMaxDepth: 0
+          - key: "contributorName"
+            type: text-field
+            name: "contributorName"
+            description: "The full name of the contributor"
+            prefLabel: "Contributor Name"
+          - key: "nameType"
+            type: controlled-term-field
+            name: "nameType"
+            description: "Name Type"
+            prefLabel: "Name Type"
+            datatype: iri
+            values:
+              - type: class
+                sourceAcronym: "PATEL"
+                termIri: "http://www.semanticweb.org/ambrish/ontologies/2020/10/untitled-ontology-24#Personal"
+                termType: class
+                termLabel: "Personal"
+              - type: class
+                sourceAcronym: "VIVO"
+                termIri: "http://www.w3.org/2006/vcard/ns#Organizational"
+                termType: class
+                termLabel: "Organizational"
+          - key: "givenName"
+            type: text-field
+            name: "givenName"
+            description: "The personal or first name of the contributor"
+            prefLabel: "First Name of Contributor"
+          - key: "familyName"
+            type: text-field
+            name: "familyName"
+            description: "The surname or last name of the contributor"
+            prefLabel: "Last Name of Contributor"
+        configuration:
+          multiple: true
+          minItems: 0
+    configuration:
+      multiple: true
+      minItems: 0

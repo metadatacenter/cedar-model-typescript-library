@@ -1,0 +1,28 @@
+type: template
+name: "Multiple select"
+id: "https://repo.metadatacenter.orgx/templates/3b14c261-d8f6-48dc-a162-718f9acae800"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+createdOn: "2023-08-31T10:17:43-07:00"
+createdBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+modifiedOn: "2023-08-31T10:17:43-07:00"
+modifiedBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+children:
+  - key: "Favorite Bands"
+    type: multi-select-list-field
+    name: "Favorite Bands"
+    description: "Help Text"
+    id: "tmp-1693502284602-60874"
+    modelVersion: 1.6.0
+    values:
+      - label: "AC/DC"
+      - label: "Beatles"
+        selected: true
+      - label: "Rolling Stones"
+      - label: "ABBA"
+        selected: true
+      - label: "Taylor Swift"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.orgx/properties/95dd9c26-a0cf-451a-a3bb-6464d0050669"
+      minItems: 1

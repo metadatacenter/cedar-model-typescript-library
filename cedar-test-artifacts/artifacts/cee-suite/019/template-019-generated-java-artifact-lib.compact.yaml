@@ -1,0 +1,51 @@
+type: template
+name: "paragraph"
+description: "paragraph template"
+id: "https://repo.metadatacenter.org/templates/8ef9346f-08d1-4dd7-89ff-0a3cd6457b57"
+children:
+  - key: "Paragraph Element"
+    type: element
+    name: "Paragraph Element"
+    children:
+      - key: "Paragraph Field Multiple Inside Element"
+        type: text-area-field
+        name: "Paragraph Field Multiple Inside Element"
+        description: "Help Text"
+        configuration:
+          multiple: true
+          minItems: 1
+      - key: "Section Break"
+        type: static-section-break
+        name: "Section Break"
+        description: "Help Text"
+      - key: "Text Field in Paragraph Element"
+        type: text-field
+        name: "Text Field in Paragraph Element"
+        description: "Help Text"
+        configuration:
+          required: true
+          multiple: true
+          minItems: 1
+      - key: "Numeric Field Multiple Inside Paragraph Element"
+        type: numeric-field
+        name: "Numeric Field Multiple Inside Paragraph Element"
+        description: "Help Text"
+        datatype: xsd:double
+        configuration:
+          multiple: true
+          minItems: 1
+    configuration:
+      multiple: true
+      minItems: 1
+  - key: "Page Break"
+    type: static-page-break
+    name: "Page Break"
+    description: "Help Text"
+  - key: "Paragraph Standalone"
+    type: text-area-field
+    name: "Paragraph Standalone"
+    description: "Help Text"
+    configuration:
+      required: true
+      multiple: true
+      minItems: 1

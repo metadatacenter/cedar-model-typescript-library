@@ -586,6 +586,21 @@ describe("an instance's own @type and annotations", () => {
     expect(canSave({ ...complete(), '@type': [CLASS, CLASS] }, { asWritten: true })).toBe(false);
   });
 
+  it('refuses a stated pav:derivedFrom that is not an absolute IRI, as stored and as written', () => {
+    for (const options of [{}, { asWritten: true }]) {
+      expect(canSave({ ...complete(), 'pav:derivedFrom': 'Probe' }, options)).toBe(false);
+      expect(canSave({ ...complete(), 'pav:derivedFrom': CLASS }, options)).toBe(true);
+    }
+  });
+
+  it("refuses an element occurrence's relative pav:derivedFrom as stored, which the writer does not write", () => {
+    const document: any = { ...complete(), _addr: { ...(complete() as any)._addr, 'pav:derivedFrom': 'Probe' } };
+    expect(canSave(document)).toBe(false);
+    const written: any = CedarWriters.json().getFebruary2024().getTemplateInstanceWriter().getAsJsonNode(read(document));
+    expect(written._addr['pav:derivedFrom']).toBeUndefined();
+    expect(canSave(document, { asWritten: true })).toBe(true);
+  });
+
   it('takes an IRI or a literal annotation', () => {
     expect(canSave(annotated({ [CLASS]: { '@id': CLASS } }))).toBe(true);
     expect(canSave(annotated({ [CLASS]: { '@value': 'text' } }))).toBe(true);

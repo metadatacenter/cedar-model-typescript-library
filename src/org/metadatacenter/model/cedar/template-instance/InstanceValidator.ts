@@ -111,7 +111,26 @@ export class InstanceValidator {
     const annotations =
       members !== null ? members[CedarModel.annotations] : (JsonAnnotationsWriter.annotationsNode(instance.annotations) ?? undefined);
     InstanceValidator.validateOwnTerm(CedarModel.annotations, annotations, InstanceValidator.object(stored), new JsonPath(), result);
+    if (options.verbatim !== true || options.asWritten === true) {
+      const derivedFrom = members !== null ? members[JsonSchema.pavDerivedFrom] : instance.pav_derivedFrom.getValue();
+      InstanceValidator.validateIdentifier(JsonSchema.pavDerivedFrom, derivedFrom, new JsonPath(), result);
+    }
     return result;
+  }
+
+  /**
+   * An identifier the instance states for itself, such as its `pav:derivedFrom`, which neither the host
+   * nor the server writes: every save writes it as the instance holds it, and the server requires an
+   * absolute IRI where one is stated, which the schema's `format: uri` does not. It is judged as stored,
+   * or, with `asWritten` or for a model the reader did not build, as the writer writes the model's. A
+   * verbatim write judges it among the container's own keys.
+   */
+  private static validateIdentifier(name: string, value: unknown, path: JsonPath, result: JsonArtifactParsingResult): void {
+    if (typeof value === 'string' && !IdentifierPolicy.isValid(value)) {
+      result.addValidationFinding(
+        ValidationPolicy.finding('valueShape', path.add(name).toPointer(), 'The server requires an absolute IRI here.'),
+      );
+    }
   }
 
   /** Saveability and quality are different answers; semantic checks remain explicitly not checked. */
@@ -187,6 +206,11 @@ export class InstanceValidator {
 
     if (options.verbatim === true && options.asWritten !== true) {
       InstanceValidator.validateMembers(container, stored, path, result);
+    } else if (options.asWritten !== true && path.toPointer() !== '') {
+      // An element occurrence's provenance, as stored. The writer does not write one.
+      const members = StoredForm.membersOf(container);
+      if (members !== null)
+        InstanceValidator.validateIdentifier(JsonSchema.pavDerivedFrom, members[JsonSchema.pavDerivedFrom], path, result);
     }
     InstanceValidator.validateOwnTerm(JsonSchema.atType, InstanceValidator.statedTypes(container, options), stored, path, result);
 

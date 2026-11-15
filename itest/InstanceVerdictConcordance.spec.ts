@@ -37,10 +37,6 @@ test('pins the instance verdicts to the Java validator and the shared corpus', (
 // so fixing one fails this spec until its entry is removed, and every case not listed must agree.
 type Judgement = 'save' | 'verbatim' | 'asWritten' | 'write';
 const OPEN_DEFECTS: Record<string, { judgements: Judgement[]; reason: string }> = {
-  'cee-suite/008#derived-from-relative': {
-    judgements: ['save', 'asWritten'],
-    reason: 'An editor save does not judge a relative pav:derivedFrom, which the server refuses.',
-  },
   'cee-suite/017#label-null-required': {
     judgements: ['write'],
     reason: 'The writer drops the null rdfs:label the template requires, so the server refuses the written document.',

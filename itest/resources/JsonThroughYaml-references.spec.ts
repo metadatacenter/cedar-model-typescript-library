@@ -65,6 +65,7 @@ const instanceTrip = (source: string, template: Template) => {
   return compareInstanceTrip(
     written(jsonWriters().getTemplateInstanceWriter().getAsJsonString(instance)),
     written(jsonWriters().getTemplateInstanceWriter().getAsJsonString(back)),
+    template,
   );
 };
 

@@ -1,5 +1,6 @@
 import { isDeepStrictEqual } from 'node:util';
 import { YamlValues } from '../../src/org/metadatacenter/model/cedar/constants/YamlValues';
+import { AbstractContainerArtifact, TemplateElement } from '../../src';
 
 /**
  * Compares the JSON this library writes straight from an artifact with the JSON it writes after the
@@ -22,8 +23,12 @@ import { YamlValues } from '../../src/org/metadatacenter/model/cedar/constants/Y
  * - `instanceCompletion`: a YAML instance states neither an empty value nor a property IRI, and the
  *   instance is completed against its template on the way back. Empty content is dropped, or
  *   re-added where the stored instance omitted a child, an empty value takes its datatype from the
- *   template, and every `@context` property IRI is the template's. An element instance holding
- *   nothing but an identifier loses the identifier, since the element itself is dropped.
+ *   template, and every `@context` property IRI is the template's. A property IRI counts as completed
+ *   only where a child the template maps comes back with the template's IRI for it, or a key the
+ *   template does not map, such as an attribute, comes back with none, since YAML carries no IRI;
+ *   any other IRI, or a mapped child without its own, is a defect.
+ *   An element instance holding nothing but an identifier loses the identifier, since the element
+ *   itself is dropped.
  * - `numberSpelling`: YAML writes a number in its shortest spelling, so a number can come back with
  *   the same value written another way: a decimal bound stored as `5.0` comes back as `5`. The two
  *   are equal as decimals. A JavaScript number keeps no spelling, so this library writes `5.0` as
@@ -84,11 +89,22 @@ export function compareSchemaTrip(direct: unknown, viaYaml: unknown): TripDiffer
   return out;
 }
 
-export function compareInstanceTrip(direct: unknown, viaYaml: unknown): TripDifference[] {
+/** `template` supplies each child's property IRI; without one, no property IRI can count as completed. */
+export function compareInstanceTrip(
+  direct: unknown,
+  viaYaml: unknown,
+  template: AbstractContainerArtifact | null = null,
+): TripDifference[] {
   const out: TripDifference[] = [];
-  walkInstance(direct, viaYaml, [], out);
+  walkInstance(direct, viaYaml, [], out, template);
   return out;
 }
+
+// The container artifact whose children a value of this child holds: the element, for an element child.
+const childContainer = (container: AbstractContainerArtifact | null, name: string): AbstractContainerArtifact | null => {
+  const child = container?.getChild(name);
+  return child instanceof TemplateElement ? child : null;
+};
 
 function record(out: TripDifference[], at: Segment[], direct: unknown, viaYaml: unknown, family: TripFamily | null) {
   out.push({ path: pointer(at), direct, viaYaml, family });
@@ -133,7 +149,13 @@ function valueFamily(direct: unknown, viaYaml: unknown): TripFamily | null {
   return isNumber(direct) && isNumber(viaYaml) && direct === viaYaml ? 'numberSpelling' : null;
 }
 
-function walkInstance(direct: unknown, viaYaml: unknown, at: Segment[], out: TripDifference[]) {
+function walkInstance(
+  direct: unknown,
+  viaYaml: unknown,
+  at: Segment[],
+  out: TripDifference[],
+  container: AbstractContainerArtifact | null,
+) {
   if (isDeepStrictEqual(direct, viaYaml)) return;
   if (isObject(direct) && isObject(viaYaml)) {
     for (const key of keysOf(direct, viaYaml)) {
@@ -141,7 +163,7 @@ function walkInstance(direct: unknown, viaYaml: unknown, at: Segment[], out: Tri
       const [x, y] = [direct[key], viaYaml[key]];
       if (isDeepStrictEqual(x, y)) continue;
       if (key === '@context' && isObject(x) && isObject(y)) {
-        compareContext(direct, viaYaml, x, y, here, out);
+        compareContext(direct, viaYaml, x, y, here, out, container);
       } else if ((x === undefined || isEmptyContent(x)) && (y === undefined || isEmptyContent(y))) {
         record(out, here, x, y, 'instanceCompletion');
       } else if (key === '@id' && y === null && isElementInstance(direct) && holdsNothing(direct) && holdsNothing(viaYaml)) {
@@ -150,7 +172,7 @@ function walkInstance(direct: unknown, viaYaml: unknown, at: Segment[], out: Tri
       } else if (Array.isArray(x) && Array.isArray(y) && x.length > 0 && x.every(isString) && y.every(isString)) {
         compareAttributeNames(direct, x, y, here, out);
       } else {
-        walkInstance(x, y, here, out);
+        walkInstance(x, y, here, out, childContainer(container, key));
       }
     }
     return;
@@ -166,7 +188,7 @@ function walkInstance(direct: unknown, viaYaml: unknown, at: Segment[], out: Tri
       record(out, at, direct, viaYaml, null);
       return;
     }
-    kept.forEach((item, i) => walkInstance(item, keptViaYaml[i], [...at, i], out));
+    kept.forEach((item, i) => walkInstance(item, keptViaYaml[i], [...at, i], out, container));
     return;
   }
   record(out, at, direct, viaYaml, valueFamily(direct, viaYaml));
@@ -180,12 +202,17 @@ function compareContext(
   contextViaYaml: JsonObject,
   at: Segment[],
   out: TripDifference[],
+  artifact: AbstractContainerArtifact | null,
 ) {
+  const iris = artifact?.getChildrenInfo().getChildIriMap() ?? {};
   for (const key of keysOf(context, contextViaYaml)) {
     const [x, y] = [context[key], contextViaYaml[key]];
     if (isDeepStrictEqual(x, y)) continue;
-    const property = (key in container || key in containerViaYaml) && (x === undefined || isString(x)) && (y === undefined || isString(y));
-    record(out, [...at, key], x, y, property ? 'instanceCompletion' : null);
+    // Completion gives each child the template maps exactly the template's IRI, and drops the IRI of
+    // any other key, which YAML does not carry: an attribute's, or an attribute-value group's own.
+    const expected = Object.hasOwn(iris, key) ? iris[key] : undefined;
+    const completed = (key in container || key in containerViaYaml) && (x === undefined || isString(x)) && y === expected;
+    record(out, [...at, key], x, y, completed ? 'instanceCompletion' : null);
   }
 }
 

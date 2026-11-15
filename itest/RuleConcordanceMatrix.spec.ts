@@ -4,6 +4,8 @@ import { createHash } from 'node:crypto';
 import { isDeepStrictEqual } from 'node:util';
 import * as YAML from 'yaml';
 import { CedarReaders, CedarWriters, JsonNode } from '../src';
+import { SchemaArtifactValidator } from '../src/schema';
+import { editorCanSave } from './EditorSave';
 
 /**
  * Every name, version and IRI rule, at each position the rule governs, as the Java library's readers
@@ -122,6 +124,207 @@ function verdict(lane: Lane, document: JsonNode): Verdict {
  * fails on a difference no entry matches and on an entry that matches nothing.
  */
 const KNOWN: { name: string; matches: (position: Position, row: Case, lane: string, ours: Verdict) => boolean }[] = [];
+
+/**
+ * The validator's verdict on each case, where this library has a validator for the base: the schema
+ * artifact validator a designer's save follows, and the instance judgement an editor's save follows,
+ * on the document as it stands, as Java's validator judges it. An element instance has no validator
+ * here: the library judges an element only inside its template's instance.
+ */
+const validators: Record<string, ((document: JsonNode) => Verdict) | null> = {
+  template: (d) => (SchemaArtifactValidator.validate(d, 'template').canSave ? 'accepted' : 'refused'),
+  element: (d) => (SchemaArtifactValidator.validate(d, 'element').canSave ? 'accepted' : 'refused'),
+  field: (d) => (SchemaArtifactValidator.validate(d, 'field').canSave ? 'accepted' : 'refused'),
+  staticField: (d) => (SchemaArtifactValidator.validate(d, 'field').canSave ? 'accepted' : 'refused'),
+  templateInstance: (d) => (editorCanSave(d, fixture.bases.template.json, { verbatim: true }) ? 'accepted' : 'refused'),
+  elementInstance: null,
+};
+
+// Where this library's validators still accept what Java's validator refuses, by position and input.
+// Each is a defect here, not an accepted variation: a listed input must still differ, so fixing one
+// fails this spec until its entry is removed, and every case not listed must agree.
+const OPEN_VALIDATOR_DEFECTS: Record<string, { reason: string; inputs: string[] }> = {
+  'template child key': {
+    reason: "The schema artifact validator admits a reserved or ill-formed child name, which Java's validator refuses.",
+    inputs: ['@foo', '@value', '__proto__', 'constructor', 'prototype', ' ', '\u001c', '\u001d', '\u001e', '\u001f'],
+  },
+  'element child key': {
+    reason: "The schema artifact validator admits a reserved or ill-formed child name, which Java's validator refuses.",
+    inputs: [
+      '@foo',
+      '@value',
+      '@language',
+      'skos:prefLabel',
+      'skos:notation',
+      'skos:altLabel',
+      '_annotations',
+      '__proto__',
+      'constructor',
+      'prototype',
+      ' ',
+      '\u001c',
+      '\u001d',
+      '\u001e',
+      '\u001f',
+    ],
+  },
+  'attribute-value field key in a template': {
+    reason: 'The schema artifact validator admits a reserved or ill-formed attribute-value field name.',
+    inputs: [
+      '@foo',
+      '@value',
+      '@language',
+      'rdfs:label',
+      'skos:prefLabel',
+      'skos:notation',
+      'skos:altLabel',
+      '__proto__',
+      'constructor',
+      'prototype',
+      'name',
+      'description',
+      'id',
+      'type',
+      'children',
+      'isBasedOn',
+      'derivedFrom',
+      'annotations',
+      'createdOn',
+      ' ',
+      '\u001c',
+      '\u001d',
+      '\u001e',
+      '\u001f',
+    ],
+  },
+  'attribute-value field key in an element': {
+    reason: 'The schema artifact validator admits a reserved or ill-formed attribute-value field name.',
+    inputs: [
+      '@foo',
+      '@value',
+      '@language',
+      'skos:prefLabel',
+      'skos:notation',
+      'skos:altLabel',
+      '_annotations',
+      '__proto__',
+      'constructor',
+      'prototype',
+      'name',
+      'description',
+      'id',
+      'type',
+      'children',
+      'createdOn',
+      ' ',
+      '\u001c',
+      '\u001d',
+      '\u001e',
+      '\u001f',
+    ],
+  },
+  'attribute name in a template instance': {
+    reason: "The instance validator admits an attribute name Java's validator refuses.",
+    inputs: [
+      '@context',
+      'schema:description',
+      'schema:identifier',
+      'schema:isBasedOn',
+      'pav:createdOn',
+      'oslc:modifiedBy',
+      '',
+      ' ',
+      '\u001c',
+      '\u001d',
+      '\u001e',
+      '\u001f',
+      '<another attribute in the same field>',
+    ],
+  },
+  'attribute name in a nested element instance': {
+    reason: "The instance validator admits an attribute name Java's validator refuses.",
+    inputs: [
+      '@context',
+      'schema:name',
+      'schema:description',
+      'schema:identifier',
+      'schema:isBasedOn',
+      'pav:derivedFrom',
+      'pav:createdOn',
+      'oslc:modifiedBy',
+      '_annotations',
+      '',
+      ' ',
+      '\u001c',
+      '\u001d',
+      '\u001e',
+      '\u001f',
+    ],
+  },
+  'template version': {
+    reason: 'The schema artifact validator admits a version that is not a resource version.',
+    inputs: ['0.0.0', '2147483648.0.0', '99999999999.0.0'],
+  },
+  'element version': {
+    reason: 'The schema artifact validator admits a version that is not a resource version.',
+    inputs: ['0.0.0', '2147483648.0.0', '99999999999.0.0'],
+  },
+  'field version': {
+    reason: 'The schema artifact validator admits a version that is not a resource version.',
+    inputs: ['0.0.0', '2147483648.0.0', '99999999999.0.0'],
+  },
+  'static field version': {
+    reason: 'The schema artifact validator admits a version that is not a resource version.',
+    inputs: ['0.0.0', '2147483648.0.0', '99999999999.0.0'],
+  },
+  'template identifier': {
+    reason: 'The schema artifact validator admits an identifier that is not an absolute IRI.',
+    inputs: ['https://example.org/Niger\u00a0NER', 'https://example.org/\u2003term', 'urn:example:Niger\u00a0NER', '', 'relative/path'],
+  },
+  'derived from': {
+    reason: 'The schema artifact validator admits a pav:derivedFrom that is not an absolute IRI.',
+    inputs: ['https://example.org/Niger\u00a0NER', 'https://example.org/\u2003term', 'urn:example:Niger\u00a0NER', '', 'relative/path'],
+  },
+  'property IRI': {
+    reason: 'The schema artifact validator admits a property IRI that is not an absolute IRI.',
+    inputs: ['https://example.org/Niger\u00a0NER', 'https://example.org/\u2003term', 'urn:example:Niger\u00a0NER', '', 'relative/path'],
+  },
+  'ontology constraint': {
+    reason: 'The schema artifact validator admits an ontology that is not an absolute IRI.',
+    inputs: ['https://example.org/Niger\u00a0NER', 'https://example.org/\u2003term', 'urn:example:Niger\u00a0NER', '', 'relative/path'],
+  },
+  'class constraint': {
+    reason: 'The schema artifact validator admits a class that is not an absolute IRI.',
+    inputs: ['https://example.org/Niger\u00a0NER', 'https://example.org/\u2003term', 'urn:example:Niger\u00a0NER', '', 'relative/path'],
+  },
+  'default value': {
+    reason: "The schema artifact validator admits a default value Java's validator refuses.",
+    inputs: ['https://example.org/Niger\u00a0NER', 'https://example.org/\u2003term', 'urn:example:Niger\u00a0NER'],
+  },
+};
+
+it("gives every case the verdict Java's validator gives, where this library has one", () => {
+  expect(Object.keys(validators).sort()).toEqual(Object.keys(fixture.bases).sort());
+  const differences: string[] = [];
+  const stillOpen = new Set<string>();
+  for (const position of fixture.positions) {
+    const judge = validators[position.base];
+    if (judge === null) continue;
+    for (const row of position.cases) {
+      const java = row.java.validator;
+      if (java === undefined) continue;
+      const ours = judge(replace((fixture.bases[position.base] as any).json, position.slot, row.value ?? row.input) as JsonNode);
+      const open = OPEN_VALIDATOR_DEFECTS[position.name]?.inputs.includes(row.input) === true;
+      if (open && ours !== java) stillOpen.add(`${position.name} / ${JSON.stringify(row.input)}`);
+      else if (ours !== java || open) differences.push(`${position.name} / ${JSON.stringify(row.input)}: ${ours} where Java ${java}`);
+    }
+  }
+  expect(differences).toEqual([]);
+  const listed = Object.entries(OPEN_VALIDATOR_DEFECTS).flatMap(([name, entry]) =>
+    entry.inputs.map((input) => `${name} / ${JSON.stringify(input)}`),
+  );
+  expect(listed.filter((entry) => !stillOpen.has(entry))).toEqual([]);
+});
 
 it('pins Java fixture provenance', () => {
   expect(createHash('sha256').update(bytes).digest('hex')).toBe(lock.sha256);

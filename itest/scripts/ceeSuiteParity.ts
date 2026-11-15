@@ -11,6 +11,7 @@ export type CeeSuiteForm = 'json' | 'yaml' | 'compact';
  * library starts rendering fails the run, so the list cannot outlive its reason.
  */
 export const CEE_SUITE_REFUSED_BY_BOTH: Readonly<Record<string, string>> = {
+  'cee-template-004': "an integer field states two decimal places ('An integer datatype cannot have decimal places.')",
   'cee-template-086': 'deliberately malformed JSON, which both readers refuse',
 };
 
@@ -19,12 +20,7 @@ export const CEE_SUITE_REFUSED_BY_BOTH: Readonly<Record<string, string>> = {
  * that has to be fixed in the library that is wrong. A listed case that both libraries come to render
  * alike fails the run until it is removed, and so does an unlisted case rendered by one library only.
  */
-export const CEE_SUITE_OPEN_DEFECTS: Readonly<Record<string, string>> = {
-  'cee-template-004':
-    "an integer field states two decimal places. Java's reader applies the validator's structural rule " +
-    "('An integer datatype cannot have decimal places.') and refuses the template; this library's strict reader reads it " +
-    'and leaves the refusal to SchemaArtifactValidator.',
-};
+export const CEE_SUITE_OPEN_DEFECTS: Readonly<Record<string, string>> = {};
 
 const fileNames = (resource: TestResource, form: CeeSuiteForm): [string, string] =>
   form === 'json'

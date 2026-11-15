@@ -336,6 +336,11 @@ function generateForCeeSuiteTS(form: 'json' | 'yaml' | 'compact', parts: Array<'
       if (form === 'json') TestUtil.writeSerializedJson(resource, rendered + '\n');
       else TestUtil.writeSerializedYaml(resource, rendered, form === 'compact');
     } catch {
+      // A rendering left from before the reader refused the case would otherwise still be compared.
+      fs.rmSync(
+        form === 'json' ? TestUtil.getOwnGeneratedJsonFileName(resource) : TestUtil.getOwnGeneratedYamlFileName(resource, form === 'compact'),
+        { force: true },
+      );
       refused.push(resource.getCaseId());
     }
   };

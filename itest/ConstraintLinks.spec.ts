@@ -48,5 +48,10 @@ describe('links survive both core serializations', () => {
     expect(yaml.values[0].version).toEqual(version);
     expect(yaml.values[0].sourceIri).toBe(common.sourceIri);
     expect(SchemaArtifactValidator.structure(json).findings).toEqual([]);
+    // The Java library writes a constraint's links after its version, and so does this one.
+    const constraints = (json as Record<string, any>)._valueConstraints;
+    const written = Object.values(constraints).find((list) => Array.isArray(list) && list.length > 0) as Record<string, unknown>[];
+    const keys = Object.keys(written[0]);
+    expect(keys.slice(-2)).toEqual(['version', 'links']);
   });
 });

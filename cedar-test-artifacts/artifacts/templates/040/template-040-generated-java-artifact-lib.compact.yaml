@@ -1,0 +1,71 @@
+type: template
+name: "Versioned Constraints and Stated Keys"
+description: "Controlled-term constraints pinned to a version and carrying public links, and value schemas that require keys an instance may state as null"
+id: "https://repo.metadatacenter.org/templates/5d3a6b0e-91f4-4c2a-b7d8-2e6f0a1c9b54"
+children:
+  - key: "Disease"
+    type: controlled-term-field
+    name: "Disease"
+    description: "A disease, from a pinned release of the Human Disease Ontology"
+    datatype: iri
+    values:
+      - type: ontology
+        sourceSystem: "bioportal"
+        sourceAcronym: "DOID"
+        sourceName: "Human Disease Ontology"
+        sourceIri: "http://purl.obolibrary.org/obo/doid"
+        termCount: 19578
+        version:
+          id: "63ef56dff672b6a1d3f9f23201aae788bacac7f073b858e705b9a6624525dd8b"
+          effectiveDate: "2026-07-01"
+          declaredVersion: "2026-06-30"
+        links:
+          landingPage: "https://bioportal.bioontology.org/ontologies/DOID"
+          icon: "https://example.org/icons/doid.svg"
+      - type: branch
+        sourceAcronym: "NCBITAXON"
+        sourceName: "NCBITAXON"
+        termBaseIri: "http://purl.obolibrary.org/obo/NCBITaxon_9605"
+        termBaseLabel: "Homo"
+        termMaxDepth: 2
+        version:
+          id: "2025-12-01"
+          effectiveDate: "2025-12-01"
+        links:
+          landingPage: "https://www.ncbi.nlm.nih.gov/taxonomy"
+  - key: "Note"
+    type: text-field
+    name: "Note"
+    description: "A note that may state a null label and language"
+  - key: "Site"
+    type: element
+    name: "Site"
+    description: "A single site"
+    children:
+      - key: "Street"
+        type: text-field
+        name: "Street"
+  - key: "Visits"
+    type: element
+    name: "Visits"
+    description: "Repeated visits"
+    children:
+      - key: "Species"
+        type: controlled-term-field
+        name: "Species"
+        datatype: iri
+        values:
+          - type: branch
+            sourceAcronym: "NCBITAXON"
+            sourceName: "NCBITAXON"
+            termBaseIri: "http://purl.obolibrary.org/obo/NCBITaxon_9605"
+            termBaseLabel: "Homo"
+            termMaxDepth: 2
+            version:
+              id: "2025-12-01"
+              effectiveDate: "2025-12-01"
+            links:
+              landingPage: "https://www.ncbi.nlm.nih.gov/taxonomy"
+    configuration:
+      multiple: true
+      minItems: 1

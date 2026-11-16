@@ -1,0 +1,117 @@
+type: template
+name: "Versioned Constraints and Stated Keys"
+description: "Controlled-term constraints pinned to a version and carrying public links, and value schemas that require keys an instance may state as null"
+id: "https://repo.metadatacenter.org/templates/5d3a6b0e-91f4-4c2a-b7d8-2e6f0a1c9b54"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+createdOn: "2026-11-16T12:00:00-08:00"
+createdBy: "https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95"
+modifiedOn: "2026-11-16T12:00:00-08:00"
+modifiedBy: "https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95"
+children:
+  - key: "Disease"
+    type: controlled-term-field
+    name: "Disease"
+    description: "A disease, from a pinned release of the Human Disease Ontology"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    datatype: iri
+    values:
+      - type: ontology
+        sourceSystem: "bioportal"
+        sourceAcronym: "DOID"
+        sourceName: "Human Disease Ontology"
+        sourceIri: "http://purl.obolibrary.org/obo/doid"
+        termCount: 19578
+        version:
+          id: "63ef56dff672b6a1d3f9f23201aae788bacac7f073b858e705b9a6624525dd8b"
+          effectiveDate: "2026-07-01"
+          declaredVersion: "2026-06-30"
+        links:
+          landingPage: "https://bioportal.bioontology.org/ontologies/DOID"
+          icon: "https://example.org/icons/doid.svg"
+      - type: branch
+        sourceAcronym: "NCBITAXON"
+        sourceName: "NCBITAXON"
+        termBaseIri: "http://purl.obolibrary.org/obo/NCBITaxon_9605"
+        termBaseLabel: "Homo"
+        termMaxDepth: 2
+        version:
+          id: "2025-12-01"
+          effectiveDate: "2025-12-01"
+        links:
+          landingPage: "https://www.ncbi.nlm.nih.gov/taxonomy"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/disease"
+  - key: "Note"
+    type: text-field
+    name: "Note"
+    description: "A note that may state a null label and language"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/note"
+  - key: "Site"
+    type: element
+    name: "Site"
+    description: "A single site"
+    id: "https://repo.metadatacenter.org/template-elements/0b4e57a2-6d5e-4c47-9a42-3d1f0c7b6a10"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    createdOn: "2026-11-16T12:00:00-08:00"
+    createdBy: "https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95"
+    modifiedOn: "2026-11-16T12:00:00-08:00"
+    modifiedBy: "https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95"
+    children:
+      - key: "Street"
+        type: text-field
+        name: "Street"
+        status: draft
+        version: 0.0.1
+        modelVersion: 1.6.0
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/street"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/site"
+  - key: "Visits"
+    type: element
+    name: "Visits"
+    description: "Repeated visits"
+    id: "https://repo.metadatacenter.org/template-elements/7f2c1d9e-3a54-4b8e-8c61-5e2a9d0f4b37"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    createdOn: "2026-11-16T12:00:00-08:00"
+    createdBy: "https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95"
+    modifiedOn: "2026-11-16T12:00:00-08:00"
+    modifiedBy: "https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95"
+    children:
+      - key: "Species"
+        type: controlled-term-field
+        name: "Species"
+        status: draft
+        version: 0.0.1
+        modelVersion: 1.6.0
+        datatype: iri
+        values:
+          - type: branch
+            sourceAcronym: "NCBITAXON"
+            sourceName: "NCBITAXON"
+            termBaseIri: "http://purl.obolibrary.org/obo/NCBITaxon_9605"
+            termBaseLabel: "Homo"
+            termMaxDepth: 2
+            version:
+              id: "2025-12-01"
+              effectiveDate: "2025-12-01"
+            links:
+              landingPage: "https://www.ncbi.nlm.nih.gov/taxonomy"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/species"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/visits"
+      multiple: true
+      minItems: 1

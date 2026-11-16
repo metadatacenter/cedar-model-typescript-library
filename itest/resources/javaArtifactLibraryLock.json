@@ -2,12 +2,12 @@
   "schemaVersion": 1,
   "javaArtifactLibrary": {
     "repository": "https://github.com/metadatacenter/cedar-artifact-library.git",
-    "gitCommit": "a58a7756c2e9fad8e2e3babc42b5c53520fdde35",
+    "gitCommit": "be3e8865cde4e1c0136a11024de00fd351975dd3",
     "mavenCoordinate": "org.metadatacenter:cedar-artifact-library:2.9.37-SNAPSHOT"
   },
   "sharedCorpus": {
     "repository": "https://github.com/metadatacenter/cedar-test-artifacts.git",
-    "gitCommit": "351023004e8051eb4fb9215b0a3d696a15a3dc68"
+    "gitCommit": "07cc4bba59c27def0b3778f2f0afa785e4c13fba"
   },
   "collections": {
     "javaReferenceTemplates": {
@@ -15,16 +15,16 @@
       "sha256": "497189a8f5d52330385561c87d4bf883408fb45f63f1067ae566e7bdca9e7c89"
     },
     "sharedArtifactInputs": {
-      "fileCount": 229,
-      "sha256": "61496031815604dedab84ac9ef4c3cd0e4b3e3cec3917b5eb515f0a61f97dfa4"
+      "fileCount": 232,
+      "sha256": "9077fe17f9275d461cf47b888014897d83c4e6ed62bd87d5078a49ae4d7e1da0"
     },
     "sharedJavaJsonFixtures": {
-      "fileCount": 225,
-      "sha256": "e4615d87179da8bd34fc268dd0dbaf8036aab94f04fc982f536bdb282b3c9728"
+      "fileCount": 227,
+      "sha256": "a5a475e1533fdf1bfad0d1a3562f6191dffb664dfbd059c96d056242198d2510"
     },
     "sharedJavaYamlFixtures": {
-      "fileCount": 450,
-      "sha256": "311492ceae98fc47bd9646de41ecf8d1627793433ff5a9a45ad9926e3567744a"
+      "fileCount": 454,
+      "sha256": "33e3d03e1f0028b7d92a02cc5a88e226c33208a9d9796749c2778ea61bfdd7c9"
     },
     "ceeSuite": {
       "fileCount": 143,

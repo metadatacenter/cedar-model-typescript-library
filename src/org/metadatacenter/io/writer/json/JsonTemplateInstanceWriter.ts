@@ -138,6 +138,17 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
   }
 
   /**
+   * A standalone element instance's data, written as a nested element occurrence is: its `@id`, its
+   * `@type`, its children and its `@context`. `JsonElementInstanceWriter` writes the rest of the document.
+   */
+  public getElementInstanceDataNode(dataContainer: InstanceDataContainer): JsonNode {
+    AttributeValueNamePolicy.assertValid(dataContainer, 'element');
+    const into: JsonNode = JsonNode.getEmpty();
+    this.serializeDataLevelInto(dataContainer, into);
+    return into;
+  }
+
+  /**
    * One value atom as the JSON a CEDAR instance carries.
    *
    * The mirror of `JsonTemplateInstanceReader.readValueNode`, and public for

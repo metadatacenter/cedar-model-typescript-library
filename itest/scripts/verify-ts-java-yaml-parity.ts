@@ -5,7 +5,13 @@
 //
 // All corpus artifacts must match in both forms, the CEE suite's templates and instances among them.
 // A CEE suite case only one library renders is an open defect listed in ceeSuiteParity.ts.
-import { elementTestNumbers, fieldTestNumbers, instanceTestNumbers, templateTestNumbers } from '../resources/generatedTestCases';
+import {
+  elementInstanceTestNumbers,
+  elementTestNumbers,
+  fieldTestNumbers,
+  instanceTestNumbers,
+  templateTestNumbers,
+} from '../resources/generatedTestCases';
 import { CedarArtifactType } from '../../src';
 import { VerbatimComparator } from './VerbatimComparator';
 import { verifyCeeSuiteParity } from './ceeSuiteParity';
@@ -17,6 +23,7 @@ const kinds: Array<[number[], CedarArtifactType]> = [
   [elementTestNumbers, CedarArtifactType.TEMPLATE_ELEMENT],
   [templateTestNumbers, CedarArtifactType.TEMPLATE],
   [instanceTestNumbers, CedarArtifactType.TEMPLATE_INSTANCE],
+  [elementInstanceTestNumbers, CedarArtifactType.ELEMENT_INSTANCE],
 ];
 
 const comparator = new VerbatimComparator();

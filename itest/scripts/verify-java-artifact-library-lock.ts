@@ -28,7 +28,7 @@ const walk = (directory: string): string[] =>
     })
     .sort();
 
-const sourceJson = (file: string): boolean => /\/(?:field|element|template|instance)-\d+\.json$/.test(file);
+const sourceJson = (file: string): boolean => /\/(?:field|element|template|instance|element-instance)-\d+\.json$/.test(file);
 
 const collections = (javaRoot: string, corpusRoot: string): Record<string, { root: string; files: string[] }> => {
   const corpusFiles = walk(corpusRoot);

@@ -1,6 +1,12 @@
 import { isDeepStrictEqual } from 'node:util';
 import { CedarArtifactType } from '../../src';
-import { elementTestNumbers, fieldTestNumbers, instanceTestNumbers, templateTestNumbers } from '../resources/generatedTestCases';
+import {
+  elementInstanceTestNumbers,
+  elementTestNumbers,
+  fieldTestNumbers,
+  instanceTestNumbers,
+  templateTestNumbers,
+} from '../resources/generatedTestCases';
 import { TestResource } from '../TestResource';
 import { TestUtil } from '../TestUtil';
 import { verifyCeeSuiteParity } from './ceeSuiteParity';
@@ -10,6 +16,7 @@ const cohorts: Array<{ type: CedarArtifactType; numbers: number[] }> = [
   { type: CedarArtifactType.TEMPLATE_ELEMENT, numbers: elementTestNumbers },
   { type: CedarArtifactType.TEMPLATE, numbers: templateTestNumbers },
   { type: CedarArtifactType.TEMPLATE_INSTANCE, numbers: instanceTestNumbers },
+  { type: CedarArtifactType.ELEMENT_INSTANCE, numbers: elementInstanceTestNumbers },
 ];
 
 let failures = 0;

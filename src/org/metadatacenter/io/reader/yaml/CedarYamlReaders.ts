@@ -4,6 +4,7 @@ import { YamlAbstractArtifactReader } from './YamlAbstractArtifactReader';
 import { YamlTemplateReader } from './YamlTemplateReader';
 import { YamlTemplateElementReader } from './YamlTemplateElementReader';
 import { YamlTemplateFieldReader } from './YamlTemplateFieldReader';
+import { YamlElementInstanceReader } from './YamlElementInstanceReader';
 import { YamlTemplateInstanceReader } from './YamlTemplateInstanceReader';
 
 export class CedarYamlReaders {
@@ -52,7 +53,14 @@ export class CedarYamlReaders {
     return YamlTemplateInstanceReader.getForBehavior(this.behavior);
   }
 
-  public getReaderForArtifactType(cedarArtifactType: CedarArtifactType): YamlAbstractArtifactReader | YamlTemplateInstanceReader {
+  /** The reader of an element instance that stands on its own, outside a template instance. */
+  public getElementInstanceReader(): YamlElementInstanceReader {
+    return YamlElementInstanceReader.getForBehavior(this.behavior);
+  }
+
+  public getReaderForArtifactType(
+    cedarArtifactType: CedarArtifactType,
+  ): YamlAbstractArtifactReader | YamlTemplateInstanceReader | YamlElementInstanceReader {
     switch (cedarArtifactType) {
       case CedarArtifactType.TEMPLATE:
         return YamlTemplateReader.getForBehavior(this.behavior, this.isCompact);
@@ -64,6 +72,8 @@ export class CedarYamlReaders {
         return YamlTemplateFieldReader.getForBehavior(this.behavior, this.isCompact);
       case CedarArtifactType.TEMPLATE_INSTANCE:
         return YamlTemplateInstanceReader.getForBehavior(this.behavior);
+      case CedarArtifactType.ELEMENT_INSTANCE:
+        return YamlElementInstanceReader.getForBehavior(this.behavior);
       default:
         throw new Error(`No YAML reader available for CedarArtifactType: ${cedarArtifactType}`);
     }

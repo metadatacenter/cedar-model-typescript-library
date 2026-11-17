@@ -5,6 +5,7 @@ export const templateTestNumbers: number[] = [
   38, 39, 40,
 ];
 export const instanceTestNumbers: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
+export const elementInstanceTestNumbers: number[] = [1];
 export const ceeSuiteTestMap = {
   '1': {
     template: true,

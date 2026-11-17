@@ -63,6 +63,18 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
     return SimpleYamlSerializer.serialize(this.getYamlAsJsonNode(instance, isCompact));
   }
 
+  /**
+   * A standalone element instance's identifier, children and attribute-value fields, written as a
+   * template instance's root data is, except that the keys of the standalone envelope are reserved
+   * rather than a template instance's. `YamlElementInstanceWriter` writes the rest of the document.
+   */
+  public getElementInstanceDataTree(dataContainer: InstanceDataContainer, isCompact: boolean): JsonNode {
+    AttributeValueNamePolicy.assertValid(dataContainer, 'element');
+    const ret: JsonNode = JsonNode.getEmpty();
+    this.serializeDataLevelInto(dataContainer, ret, isCompact, true, ReservedNames.STANDALONE_ELEMENT_INSTANCE_YAML_KEYS);
+    return ret;
+  }
+
   private getDataTree(instance: TemplateInstance, isCompact: boolean): JsonNode {
     const ret: JsonNode = JsonNode.getEmpty();
     this.serializeDataLevelInto(instance.dataContainer, ret, isCompact, true);
@@ -74,6 +86,7 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
     into: JsonNode,
     isCompact: boolean,
     isDocumentRoot: boolean = false,
+    rootReservedKeys: ReadonlySet<string> = ReservedNames.TEMPLATE_INSTANCE_YAML_KEYS,
   ): void {
     const target = JsonNode.getEmpty();
     const unpackedAttributeValueGroups = this.getUnpackedAttributeValueGroups(dataContainer);
@@ -130,7 +143,12 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
       into[YamlKeys.children] = target;
     }
     const attributes = JsonNode.getEmpty();
-    this.serializeAttributeValueFields(dataContainer, attributes, unpackedAttributeValueGroups, isDocumentRoot);
+    this.serializeAttributeValueFields(
+      dataContainer,
+      attributes,
+      unpackedAttributeValueGroups,
+      isDocumentRoot ? rootReservedKeys : ReservedNames.yamlKeys('element'),
+    );
     // Emit element metadata before attribute groups, including elements with no ordinary children.
     if (!isDocumentRoot && (JsonNode.hasEntries(into) || JsonNode.hasEntries(attributes) || JsonNode.hasEntries(types))) {
       if (!Object.hasOwn(into, YamlKeys.children)) {
@@ -158,14 +176,11 @@ export class YamlTemplateInstanceWriter extends YamlAbstractArtifactWriter {
     dataContainer: InstanceDataContainer,
     into: JsonNode,
     unpackedGroups: ReadonlyMap<string, string[]>,
-    isDocumentRoot: boolean,
+    reservedKeys: ReadonlySet<string>,
   ) {
     Object.keys(dataContainer.values).forEach((key) => {
       const dataAtom: InstanceDataAtomType = dataContainer.values[key];
-      if (
-        (dataAtom instanceof InstanceDataAttributeValueField || unpackedGroups.has(key)) &&
-        ReservedNames.yamlKeys(isDocumentRoot ? 'template' : 'element').has(key)
-      ) {
+      if ((dataAtom instanceof InstanceDataAttributeValueField || unpackedGroups.has(key)) && reservedKeys.has(key)) {
         throw new Error(`Attribute-value field key "${key}" is reserved for CEDAR YAML metadata.`);
       }
       if (dataAtom instanceof InstanceDataAttributeValueField) {

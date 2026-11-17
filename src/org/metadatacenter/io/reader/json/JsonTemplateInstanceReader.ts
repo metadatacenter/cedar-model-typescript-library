@@ -159,6 +159,14 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     this.readAnnotations(instance, sourceObject);
   }
 
+  /**
+   * A standalone element instance's data, read as a nested element occurrence is read: Java reads both
+   * with the same method. `JsonElementInstanceReader` reads the rest of the document.
+   */
+  public readElementInstanceData(sourceObject: JsonNode, path: JsonPath, parsingResult: JsonArtifactParsingResult): InstanceDataContainer {
+    return this.parseContainer(sourceObject, path, parsingResult, 'element');
+  }
+
   private readInstanceContainer(sourceObject: JsonNode, path: JsonPath, parsingResult: JsonArtifactParsingResult): InstanceDataContainer {
     return this.parseContainer(sourceObject, path, parsingResult, 'template');
   }

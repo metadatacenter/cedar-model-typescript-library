@@ -19,6 +19,8 @@ export class TestResource {
       return this.field(num);
     } else if (type === CedarArtifactType.TEMPLATE_INSTANCE) {
       return this.instance(num);
+    } else if (type === CedarArtifactType.ELEMENT_INSTANCE) {
+      return this.elementInstance(num);
     } else {
       throw new Error(`Unknown artifact type:${type}`);
     }
@@ -38,6 +40,11 @@ export class TestResource {
 
   static instance(num: number): TestResource {
     return new TestResource('instance', num);
+  }
+
+  /** A standalone element instance, under `artifacts/element-instances`. */
+  static elementInstance(num: number): TestResource {
+    return new TestResource('element-instance', num);
   }
 
   public toString(): string {

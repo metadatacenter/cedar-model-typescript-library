@@ -40,6 +40,7 @@ import { Template } from '../../../model/cedar/template/Template';
 import { TemplateElement } from '../../../model/cedar/element/TemplateElement';
 import { AbstractArtifact } from '../../../model/cedar/AbstractArtifact';
 import { JsonTemplateInstanceWriter } from './JsonTemplateInstanceWriter';
+import { JsonElementInstanceWriter } from './JsonElementInstanceWriter';
 import { JsonFieldWriterExtRor } from '../../../model/cedar/field/dynamic/ext-ror/JsonFieldWriterExtRor';
 import { JsonFieldWriterExtOrcid } from '../../../model/cedar/field/dynamic/ext-orcid/JsonFieldWriterExtOrcid';
 import { JsonFieldWriterExtPfas } from '../../../model/cedar/field/dynamic/ext-pfas/JsonFieldWriterExtPfas';
@@ -58,6 +59,7 @@ export class CedarJsonWriters {
   private readonly jsonTemplateWriter: JsonTemplateWriter;
   private readonly jsonTemplateElementWriter: JsonTemplateElementWriter;
   private readonly jsonTemplateInstanceWriter: JsonTemplateInstanceWriter;
+  private readonly jsonElementInstanceWriter: JsonElementInstanceWriter;
 
   private constructor(behavior: JsonWriterBehavior) {
     this.behavior = behavior;
@@ -67,6 +69,7 @@ export class CedarJsonWriters {
     this.jsonTemplateWriter = JsonTemplateWriter.getFor(behavior, this);
     this.jsonTemplateElementWriter = JsonTemplateElementWriter.getFor(behavior, this);
     this.jsonTemplateInstanceWriter = JsonTemplateInstanceWriter.getFor(behavior, this);
+    this.jsonElementInstanceWriter = JsonElementInstanceWriter.getFor(behavior, this);
 
     this.jsonDynamicFieldWriters = new Map<CedarFieldType, JsonTemplateFieldWriterInternal>([
       [CedarFieldType.TEXT, new JsonFieldWriterTextField(behavior, this)],
@@ -130,6 +133,11 @@ export class CedarJsonWriters {
 
   public getTemplateInstanceWriter(): JsonTemplateInstanceWriter {
     return this.jsonTemplateInstanceWriter;
+  }
+
+  /** The writer of an element instance that stands on its own, outside a template instance. */
+  public getElementInstanceWriter(): JsonElementInstanceWriter {
+    return this.jsonElementInstanceWriter;
   }
 
   public getAtomicWriter() {

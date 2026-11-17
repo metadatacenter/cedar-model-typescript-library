@@ -1,0 +1,82 @@
+{
+  "@context": {
+    "Title": "https://schema.metadatacenter.org/properties/6f1c2a3e-0b1d-4c55-9a0e-2f4b8c7d1e01",
+    "Keywords": "https://schema.metadatacenter.org/properties/6f1c2a3e-0b1d-4c55-9a0e-2f4b8c7d1e02",
+    "Sample Count": "https://schema.metadatacenter.org/properties/6f1c2a3e-0b1d-4c55-9a0e-2f4b8c7d1e03",
+    "Homepage": "https://schema.metadatacenter.org/properties/6f1c2a3e-0b1d-4c55-9a0e-2f4b8c7d1e04",
+    "Disease": "https://schema.metadatacenter.org/properties/6f1c2a3e-0b1d-4c55-9a0e-2f4b8c7d1e05",
+    "Address": "https://schema.metadatacenter.org/properties/6f1c2a3e-0b1d-4c55-9a0e-2f4b8c7d1e06",
+    "Contributor": "https://schema.metadatacenter.org/properties/6f1c2a3e-0b1d-4c55-9a0e-2f4b8c7d1e07",
+    "Colour": "https://schema.metadatacenter.org/properties/6f1c2a3e-0b1d-4c55-9a0e-2f4b8c7d1e08",
+    "Size": "https://schema.metadatacenter.org/properties/6f1c2a3e-0b1d-4c55-9a0e-2f4b8c7d1e09"
+  },
+  "@id": "https://repo.metadatacenter.org/template-element-instances/4c9d3b7a-1e2f-4a6b-8c0d-5e7f9a1b2c01",
+  "@type": "https://example.org/classes/Study",
+  "schema:name": "Influenza study",
+  "schema:description": "The details of one study",
+  "Title": {
+    "@value": "Influenza vaccine response"
+  },
+  "Keywords": [
+    {
+      "@value": "influenza"
+    },
+    {
+      "@value": "vaccine"
+    }
+  ],
+  "Sample Count": {
+    "@value": "42",
+    "@type": "xsd:int"
+  },
+  "Homepage": {
+    "@id": "https://example.org/studies/influenza"
+  },
+  "Disease": {
+    "@id": "http://purl.obolibrary.org/obo/DOID_8469",
+    "rdfs:label": "influenza"
+  },
+  "Address": {
+    "@context": {
+      "City": "https://schema.metadatacenter.org/properties/6f1c2a3e-0b1d-4c55-9a0e-2f4b8c7d1e10"
+    },
+    "@id": "https://repo.metadatacenter.org/template-element-instances/4c9d3b7a-1e2f-4a6b-8c0d-5e7f9a1b2c02",
+    "City": {
+      "@value": "Stanford"
+    }
+  },
+  "Contributor": [
+    {
+      "@context": {
+        "Name": "https://schema.metadatacenter.org/properties/6f1c2a3e-0b1d-4c55-9a0e-2f4b8c7d1e11"
+      },
+      "@id": "https://repo.metadatacenter.org/template-element-instances/4c9d3b7a-1e2f-4a6b-8c0d-5e7f9a1b2c03",
+      "Name": {
+        "@value": "Ada Lovelace"
+      }
+    },
+    {
+      "@context": {
+        "Name": "https://schema.metadatacenter.org/properties/6f1c2a3e-0b1d-4c55-9a0e-2f4b8c7d1e11"
+      },
+      "@id": "https://repo.metadatacenter.org/template-element-instances/4c9d3b7a-1e2f-4a6b-8c0d-5e7f9a1b2c04",
+      "Name": {
+        "@value": "Grace Hopper"
+      }
+    }
+  ],
+  "Specimen Attributes": [
+    "Colour",
+    "Size"
+  ],
+  "Colour": {
+    "@value": "blue"
+  },
+  "Size": {
+    "@value": "large"
+  },
+  "pav:createdOn": "2026-11-17T09:30:00-08:00",
+  "pav:createdBy": "https://metadatacenter.org/users/6d8ba4a0-5b6c-4a6f-9d3b-2c7e1f0a9b01",
+  "pav:lastUpdatedOn": "2026-11-17T10:15:00-08:00",
+  "oslc:modifiedBy": "https://metadatacenter.org/users/6d8ba4a0-5b6c-4a6f-9d3b-2c7e1f0a9b01"
+}

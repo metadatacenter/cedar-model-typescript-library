@@ -112,7 +112,7 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
       instance.pav_lastUpdatedOn = IsoDate.forValue(ReaderUtil.getString(source, YamlKeys.modifiedOn));
       this.readAnnotations(instance, source, parsingResult, new JsonPath());
 
-      instance.dataContainer = this.parseContainer(source, '', true);
+      instance.dataContainer = this.parseContainer(source, '', YamlTemplateInstanceReader.RESERVED_KEYS);
       for (const conflict of AttributeValueNamePolicy.findConflicts(instance.dataContainer, 'template', true)) {
         parsingResult.addBlueprintComparisonError(
           new ComparisonError(
@@ -140,7 +140,20 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
 
   private static readonly ELEMENT_RESERVED_KEYS: ReadonlySet<string> = ReservedNames.NESTED_ELEMENT_INSTANCE_YAML_KEYS;
 
-  private parseContainer(node: JsonNode, path: string, isDocumentRoot: boolean = false): InstanceDataContainer {
+  /**
+   * A standalone element instance's data, read as a nested element occurrence is read, except that the
+   * keys of the standalone envelope are its own rather than attribute-value fields, as in Java's reader.
+   * `YamlElementInstanceReader` reads the envelope.
+   */
+  public readElementInstanceData(source: JsonNode): InstanceDataContainer {
+    return this.parseContainer(source, '', ReservedNames.STANDALONE_ELEMENT_INSTANCE_YAML_KEYS);
+  }
+
+  /**
+   * One container's children and attribute-value fields. `rootReservedKeys` are the envelope keys of a
+   * document root, which are not attribute-value fields; a nested element reserves fewer.
+   */
+  private parseContainer(node: JsonNode, path: string, rootReservedKeys: ReadonlySet<string> | null = null): InstanceDataContainer {
     const container = new InstanceDataContainer();
     container.types = YamlTemplateInstanceReader.readTypes(node, path);
 
@@ -185,7 +198,7 @@ export class YamlTemplateInstanceReader extends YamlAbstractArtifactReader {
     // mapping there is one and the template judges it. A scalar or a list there is not one, and is
     // left unread, so the document is refused for it, as Java's reader refuses it.
     YamlKeyTracking.untracked(() => Object.keys(node)).forEach((key) => {
-      const reserved = isDocumentRoot ? YamlTemplateInstanceReader.RESERVED_KEYS : YamlTemplateInstanceReader.ELEMENT_RESERVED_KEYS;
+      const reserved = rootReservedKeys ?? YamlTemplateInstanceReader.ELEMENT_RESERVED_KEYS;
       if (reserved.has(key)) {
         return;
       }

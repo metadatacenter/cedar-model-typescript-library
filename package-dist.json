@@ -1,6 +1,6 @@
 {
-  "name": "cedar-model-typescript-library",
-  "version": "1.0.29",
+  "name": "@org.metadatacenter/cedar-model-typescript-library",
+  "version": "1.0.30-dev.20261119.04c8d98",
   "description": "TypeScript models, builders, readers, writers, and validators for CEDAR metadata artifacts",
   "main": "index.js",
   "module": "esm/index-namespace.js",

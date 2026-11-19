@@ -4,6 +4,8 @@ import { createHash } from 'node:crypto';
 import { isDeepStrictEqual } from 'node:util';
 import * as YAML from 'yaml';
 import { CedarReaders, CedarWriters, JsonNode } from '../src';
+import { SchemaArtifactValidator } from '../src/schema';
+import { editorCanSave } from './EditorSave';
 
 /**
  * Every name, version and IRI rule, at each position the rule governs, as the Java library's readers
@@ -122,6 +124,37 @@ function verdict(lane: Lane, document: JsonNode): Verdict {
  * fails on a difference no entry matches and on an entry that matches nothing.
  */
 const KNOWN: { name: string; matches: (position: Position, row: Case, lane: string, ours: Verdict) => boolean }[] = [];
+
+/**
+ * The validator's verdict on each case, where this library has a validator for the base: the schema
+ * artifact validator a designer's save follows, and the instance judgement an editor's save follows,
+ * on the document as it stands, as Java's validator judges it. An element instance has no validator
+ * here: the library judges an element only inside its template's instance.
+ */
+const validators: Record<string, ((document: JsonNode) => Verdict) | null> = {
+  template: (d) => (SchemaArtifactValidator.validate(d, 'template').canSave ? 'accepted' : 'refused'),
+  element: (d) => (SchemaArtifactValidator.validate(d, 'element').canSave ? 'accepted' : 'refused'),
+  field: (d) => (SchemaArtifactValidator.validate(d, 'field').canSave ? 'accepted' : 'refused'),
+  staticField: (d) => (SchemaArtifactValidator.validate(d, 'field').canSave ? 'accepted' : 'refused'),
+  templateInstance: (d) => (editorCanSave(d, fixture.bases.template.json, { verbatim: true }) ? 'accepted' : 'refused'),
+  elementInstance: null,
+};
+
+it("gives every case the verdict Java's validator gives, where this library has one", () => {
+  expect(Object.keys(validators).sort()).toEqual(Object.keys(fixture.bases).sort());
+  const differences: string[] = [];
+  for (const position of fixture.positions) {
+    const judge = validators[position.base];
+    if (judge === null) continue;
+    for (const row of position.cases) {
+      const java = row.java.validator;
+      if (java === undefined) continue;
+      const ours = judge(replace((fixture.bases[position.base] as any).json, position.slot, row.value ?? row.input) as JsonNode);
+      if (ours !== java) differences.push(`${position.name} / ${JSON.stringify(row.input)}: ${ours} where Java ${java}`);
+    }
+  }
+  expect(differences).toEqual([]);
+});
 
 it('pins Java fixture provenance', () => {
   expect(createHash('sha256').update(bytes).digest('hex')).toBe(lock.sha256);

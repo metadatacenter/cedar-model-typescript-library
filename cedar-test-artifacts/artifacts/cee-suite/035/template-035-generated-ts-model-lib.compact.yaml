@@ -1,0 +1,13 @@
+type: template
+name: "numeric field - double-precision"
+id: "https://repo.metadatacenter.org/templates/77996898-e754-44de-a9fa-2c0d86a8ab75"
+children:
+  - key: "Double"
+    type: numeric-field
+    name: "Double"
+    description: "Help Text"
+    datatype: xsd:double
+    minValue: -102.5
+    maxValue: 10.67
+    decimalPlaces: 3
+    unit: "measure"

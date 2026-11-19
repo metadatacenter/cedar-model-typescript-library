@@ -1,0 +1,32 @@
+type: template
+name: "checkbox with defaults"
+id: "https://repo.metadatacenter.org/templates/86001474-adf0-4e2d-b6ce-1717d9128116"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+derivedFrom: "https://repo.metadatacenter.org/templates/849f23be-c604-487c-9727-2c7fec79156a"
+createdOn: "2020-07-17T15:57:45-07:00"
+createdBy: "https://metadatacenter.org/users/2fa8910d-96e7-4e2f-ae60-4dfa8ec9877d"
+modifiedOn: "2020-07-17T15:57:45-07:00"
+modifiedBy: "https://metadatacenter.org/users/2fa8910d-96e7-4e2f-ae60-4dfa8ec9877d"
+children:
+  - key: "Checkbox"
+    type: checkbox-field
+    name: "Checkbox"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/42f4b85e-ecee-44ff-a9cb-3d5694f6c0f9"
+    modelVersion: 1.6.0
+    values:
+      - label: "Option 1"
+        selected: true
+      - label: "Option 2"
+      - label: "Option 3"
+        selected: true
+    createdOn: "2020-07-17T15:57:45-07:00"
+    createdBy: "https://metadatacenter.org/users/2fa8910d-96e7-4e2f-ae60-4dfa8ec9877d"
+    modifiedOn: "2020-07-17T15:57:45-07:00"
+    modifiedBy: "https://metadatacenter.org/users/2fa8910d-96e7-4e2f-ae60-4dfa8ec9877d"
+    configuration:
+      required: true
+      propertyIri: "https://schema.metadatacenter.org/properties/b1986c02-7981-4af6-84fa-18b97b45cb7c"
+      minItems: 1

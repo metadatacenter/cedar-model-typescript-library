@@ -1,0 +1,11 @@
+type: instance
+name: "cee-instance-036"
+isBasedOn: "https://repo.metadatacenter.org/templates/a2386a85-e024-471d-b9e1-d06b41a5d431"
+children:
+  Optional:
+    value: "postmaster@post.com"
+  Required:
+    value: "postmaster@metadatacenter.org"
+  Multiple:
+    - value: "user1@metadatacenter.org"
+    - value: "user2@metadatacenter.org"

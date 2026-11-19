@@ -1,0 +1,128 @@
+type: template
+name: "Mandatory template"
+id: "https://repo.metadatacenter.org/templates/80bd0fcd-8672-4b9f-8a80-1f7a1e56bd35"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+createdOn: "2024-02-06T14:07:19-08:00"
+createdBy: "https://metadatacenter.org/users/30449a1f-80a8-4b54-a3fa-92d4d6157116"
+modifiedOn: "2024-02-06T14:09:18-08:00"
+modifiedBy: "https://metadatacenter.org/users/30449a1f-80a8-4b54-a3fa-92d4d6157116"
+children:
+  - key: "Text field"
+    type: text-field
+    name: "Text field"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/2676da8e-c932-436e-9a6e-f2f58ea580f0"
+    modelVersion: 1.6.0
+    createdOn: "2024-02-06T14:09:18-08:00"
+    createdBy: "https://metadatacenter.org/users/30449a1f-80a8-4b54-a3fa-92d4d6157116"
+    modifiedOn: "2024-02-06T14:09:18-08:00"
+    modifiedBy: "https://metadatacenter.org/users/30449a1f-80a8-4b54-a3fa-92d4d6157116"
+    configuration:
+      required: true
+      propertyIri: "https://schema.metadatacenter.org/properties/9458ca8a-5ad1-412d-9a81-b5a0382c21cc"
+  - key: "Multi text field"
+    type: text-field
+    name: "Multi text field"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/89949355-7a11-4911-9ed3-d86a0480303e"
+    modelVersion: 1.6.0
+    createdOn: "2024-02-06T14:09:18-08:00"
+    createdBy: "https://metadatacenter.org/users/30449a1f-80a8-4b54-a3fa-92d4d6157116"
+    modifiedOn: "2024-02-06T14:09:18-08:00"
+    modifiedBy: "https://metadatacenter.org/users/30449a1f-80a8-4b54-a3fa-92d4d6157116"
+    configuration:
+      required: true
+      propertyIri: "https://schema.metadatacenter.org/properties/89a56a91-1199-4716-b119-4f9250526a2c"
+      multiple: true
+      minItems: 1
+      maxItems: 5
+  - key: "Numeric"
+    type: numeric-field
+    name: "Numeric"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/5679ff2e-e7f8-45be-9077-b4dcc351bbb0"
+    modelVersion: 1.6.0
+    datatype: xsd:int
+    minValue: -100
+    maxValue: 100
+    createdOn: "2024-02-06T14:09:18-08:00"
+    createdBy: "https://metadatacenter.org/users/30449a1f-80a8-4b54-a3fa-92d4d6157116"
+    modifiedOn: "2024-02-06T14:09:18-08:00"
+    modifiedBy: "https://metadatacenter.org/users/30449a1f-80a8-4b54-a3fa-92d4d6157116"
+    configuration:
+      required: true
+      propertyIri: "https://schema.metadatacenter.org/properties/d4d7aadb-ed46-4263-8a29-1066a5df564e"
+  - key: "Link"
+    type: link-field
+    name: "Link"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/42ab2e3b-1b7a-4a9b-8d20-0fe8e06d9652"
+    modelVersion: 1.6.0
+    createdOn: "2024-02-06T14:09:18-08:00"
+    createdBy: "https://metadatacenter.org/users/30449a1f-80a8-4b54-a3fa-92d4d6157116"
+    modifiedOn: "2024-02-06T14:09:18-08:00"
+    modifiedBy: "https://metadatacenter.org/users/30449a1f-80a8-4b54-a3fa-92d4d6157116"
+    configuration:
+      required: true
+      propertyIri: "https://schema.metadatacenter.org/properties/1d01c546-d405-4cd5-8587-b0fce3cfba43"
+  - key: "Multi link"
+    type: link-field
+    name: "Multi link"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/10723a66-a6d2-4842-9a8c-6eb8e69f5f57"
+    modelVersion: 1.6.0
+    createdOn: "2024-02-06T14:09:18-08:00"
+    createdBy: "https://metadatacenter.org/users/30449a1f-80a8-4b54-a3fa-92d4d6157116"
+    modifiedOn: "2024-02-06T14:09:18-08:00"
+    modifiedBy: "https://metadatacenter.org/users/30449a1f-80a8-4b54-a3fa-92d4d6157116"
+    configuration:
+      required: true
+      propertyIri: "https://schema.metadatacenter.org/properties/cae7596a-439e-4577-9326-d4f16228c20e"
+      multiple: true
+      minItems: 2
+      maxItems: 4
+  - key: "Element with mandatory fields"
+    type: element
+    name: "Element with mandatory fields"
+    id: "https://repo.metadatacenter.org/template-elements/9e584af6-e331-4ac9-a9fc-b03c5a3a496d"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    createdOn: "2024-02-06T14:09:56-08:00"
+    createdBy: "https://metadatacenter.org/users/30449a1f-80a8-4b54-a3fa-92d4d6157116"
+    modifiedOn: "2024-02-06T14:10:15-08:00"
+    modifiedBy: "https://metadatacenter.org/users/30449a1f-80a8-4b54-a3fa-92d4d6157116"
+    children:
+      - key: "Text field"
+        type: text-field
+        name: "Text field"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/db1dfb56-79d0-4c40-9c87-45658d6b75ca"
+        modelVersion: 1.6.0
+        createdOn: "2024-02-06T14:10:15-08:00"
+        createdBy: "https://metadatacenter.org/users/30449a1f-80a8-4b54-a3fa-92d4d6157116"
+        modifiedOn: "2024-02-06T14:10:15-08:00"
+        modifiedBy: "https://metadatacenter.org/users/30449a1f-80a8-4b54-a3fa-92d4d6157116"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/241e627f-950c-4963-b4e5-4be57cba2d4b"
+      - key: "Multi text field"
+        type: text-field
+        name: "Multi text field"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/079a50cc-4f53-4193-b2b9-309e89999def"
+        modelVersion: 1.6.0
+        createdOn: "2024-02-06T14:10:15-08:00"
+        createdBy: "https://metadatacenter.org/users/30449a1f-80a8-4b54-a3fa-92d4d6157116"
+        modifiedOn: "2024-02-06T14:10:15-08:00"
+        modifiedBy: "https://metadatacenter.org/users/30449a1f-80a8-4b54-a3fa-92d4d6157116"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/18803b0a-9b3b-4bee-b244-2ea00e0a7957"
+          multiple: true
+          minItems: 0
+          maxItems: 3
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/e3b46188-7320-4c63-984e-bec753d85528"

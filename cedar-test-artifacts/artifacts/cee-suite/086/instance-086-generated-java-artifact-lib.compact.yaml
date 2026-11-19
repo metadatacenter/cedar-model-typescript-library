@@ -1,0 +1,20 @@
+type: instance
+name: "Metadata for file 20230202_project23_DATA_transformcopy.csv"
+isBasedOn: "https://repo.metadatacenter.org/templates/c691629c-1183-4425-9a12-26201eab1a10"
+children:
+  Data File Titles:
+    - children:
+        Title:
+          value: "The title of this data file 1"
+        Language:
+          value: "en-CA"
+    - children:
+        Title:
+          value: "The title of this data file 2"
+        Language:
+          value: "en-BZ"
+    - children:
+        Title:
+          value: "The title of this data file 3"
+        Language:
+          value: "en-AU"

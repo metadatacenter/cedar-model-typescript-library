@@ -1,0 +1,17 @@
+type: template
+name: "Multi-element with Attribute-Value"
+id: "https://repo.metadatacenter.orgx/templates/60976d38-b88d-4fed-b15f-f30794977b48"
+children:
+  - key: "Element with attribute-value"
+    type: element
+    name: "Element with attribute-value"
+    children:
+      - key: "Attribute-Value"
+        type: attribute-value-field
+        name: "Attribute-Value"
+        description: "Help Text"
+        configuration:
+          minItems: 0
+    configuration:
+      multiple: true
+      minItems: 0

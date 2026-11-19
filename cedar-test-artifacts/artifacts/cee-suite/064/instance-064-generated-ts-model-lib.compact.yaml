@@ -1,0 +1,7 @@
+type: instance
+name: "One text field metadata"
+id: "https://repo.metadatacenter.orgx/template-instances/5b572ec6-54eb-494a-9023-c0894a7ec7dd"
+isBasedOn: "https://repo.metadatacenter.orgx/templates/26ac27cf-a494-4a8e-90ad-e0c17cff11bf"
+children:
+  Text field 1:
+    value: "One text value"

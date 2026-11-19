@@ -1,0 +1,14 @@
+type: instance
+name: "cee-instance-011"
+isBasedOn: "https://repo.metadatacenter.org/templates/e7e3c0ef-2b59-443c-816b-af72176d7aeb"
+children:
+  Single Select Element:
+    - children:
+        Single Select in Element:
+          value: "Option 1"
+    - children:
+        Single Select in Element:
+          value: "Option 2"
+    - type: element-instance
+  Single Select Standalone:
+    value: "Option 4"

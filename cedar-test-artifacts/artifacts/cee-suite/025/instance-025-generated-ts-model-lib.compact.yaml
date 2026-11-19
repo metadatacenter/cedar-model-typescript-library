@@ -1,0 +1,24 @@
+type: instance
+name: "cee-instance-025"
+isBasedOn: "https://repo.metadatacenter.org/templates/db10d346-2c69-467b-8c1a-be151f37fc74"
+children:
+  Element of Element:
+    - children:
+        Texf Field 1:
+          value: "1st val"
+    - type: element-instance
+    - children:
+        Texf Field 1:
+          value: "3rd val"
+    - type: element-instance
+    - children:
+        Texf Field 1:
+          value: "5th val"
+        Single Text Element:
+          children:
+            Text Field in Element:
+              value: "text field"
+    - type: element-instance
+    - children:
+        Texf Field 1:
+          value: "7th val"

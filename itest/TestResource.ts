@@ -19,6 +19,8 @@ export class TestResource {
       return this.field(num);
     } else if (type === CedarArtifactType.TEMPLATE_INSTANCE) {
       return this.instance(num);
+    } else if (type === CedarArtifactType.ELEMENT_INSTANCE) {
+      return this.elementInstance(num);
     } else {
       throw new Error(`Unknown artifact type:${type}`);
     }
@@ -40,6 +42,11 @@ export class TestResource {
     return new TestResource('instance', num);
   }
 
+  /** A standalone element instance, under `artifacts/element-instances`. */
+  static elementInstance(num: number): TestResource {
+    return new TestResource('element-instance', num);
+  }
+
   public toString(): string {
     return ' - ' + this.type + '-' + this.num;
   }
@@ -49,7 +56,7 @@ export class TestResource {
   }
 
   public getDirectoryFromCedarHomeRoot() {
-    if (this.type == 'cee-suite') {
+    if (this.type == 'cee-suite' || this.type == 'cee-suite-instance') {
       return path.join('cedar-test-artifacts', 'artifacts', 'cee-suite', this.getPadNum());
     }
     return path.join('cedar-test-artifacts', 'artifacts', this.type + 's', this.getPadNum());
@@ -63,6 +70,9 @@ export class TestResource {
     if (this.type == 'cee-suite') {
       return 'template' + '-' + this.getPadNum() + suffix;
     }
+    if (this.type == 'cee-suite-instance') {
+      return 'instance' + '-' + this.getPadNum() + suffix;
+    }
     return this.type + '-' + this.getPadNum() + suffix;
   }
 
@@ -72,5 +82,17 @@ export class TestResource {
 
   static ceeSuite(num: number): TestResource {
     return new TestResource('cee-suite', num);
+  }
+
+  /** The instance of a CEE suite case, beside its template in the case's directory. */
+  static ceeSuiteInstance(num: number): TestResource {
+    return new TestResource('cee-suite-instance', num);
+  }
+
+  /** The case identifier the parity scripts and the Java corpus verifiers use: `cee-template-001`. */
+  public getCaseId(): string {
+    if (this.type == 'cee-suite') return `cee-template-${this.getPadNum()}`;
+    if (this.type == 'cee-suite-instance') return `cee-instance-${this.getPadNum()}`;
+    return `${this.type}-${this.getPadNum()}`;
   }
 }

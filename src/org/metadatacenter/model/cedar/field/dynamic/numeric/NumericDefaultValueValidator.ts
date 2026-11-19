@@ -1,7 +1,19 @@
 import { NumberType, NumberTypeValues } from '../../../types/wrapped-types/NumberType';
 import { NumericPolicy, NumericValue } from '../../../../../policy/NumericPolicy';
+import { FieldValuePolicy } from '../../../../../policy/FieldValuePolicy';
+import { ValueConstraintsNumericField } from './ValueConstraintsNumericField';
 
 export class NumericDefaultValueValidator {
+  /**
+   * Refuse an integer datatype that states decimal places, as Java's reader does, by the rule the validator applies.
+   * The strict readers call this; the compatibility reader opens such a field and leaves the verdict to the
+   * validator. `at` locates the decimal places in the document being read.
+   */
+  public static assertDecimalPlacesFitDatatype(valueConstraints: ValueConstraintsNumericField, at: string): void {
+    if (FieldValuePolicy.integerWithDecimalPlaces(valueConstraints.numberType.getValue(), valueConstraints.decimalPlaces))
+      throw new Error(`An integer datatype cannot have decimal places, at ${at}.`);
+  }
+
   public static assertValid(
     numberType: NumberType,
     defaultValue: NumericValue | null,

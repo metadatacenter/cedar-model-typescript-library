@@ -1,0 +1,26 @@
+type: template
+name: "Person with Top Zip"
+id: "https://repo.metadatacenter.orgx/templates/029c37ec-4bc5-4387-ab43-f8bc147aac4f"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+createdOn: "2023-08-23T13:18:57-07:00"
+createdBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+modifiedOn: "2023-08-23T13:18:57-07:00"
+modifiedBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+children:
+  - key: "Zip"
+    type: text-field
+    name: "Zip"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.orgx/template-fields/7cff23ad-0401-411f-9e40-07eb129f24e9"
+    modelVersion: 1.6.0
+    createdOn: "2023-08-23T13:18:57-07:00"
+    createdBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+    modifiedOn: "2023-08-23T13:18:57-07:00"
+    modifiedBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.orgx/properties/67a6735a-e141-4bab-851a-07cff6333304"
+      multiple: true
+      minItems: 0
+      maxItems: 3

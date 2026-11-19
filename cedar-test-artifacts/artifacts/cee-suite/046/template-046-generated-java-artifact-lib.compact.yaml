@@ -1,0 +1,94 @@
+type: template
+name: "Nested Elements Template"
+id: "https://repo.metadatacenter.org/templates/ccd36336-0a7e-4de7-a1ac-9b7904140494"
+children:
+  - key: "Element 1"
+    type: element
+    name: "Element 1"
+    children:
+      - key: "Element 2"
+        type: element
+        name: "Element 2"
+        children:
+          - key: "Element 3"
+            type: element
+            name: "Element 3"
+            children:
+              - key: "Sample Text"
+                type: controlled-term-field
+                name: "Sample Text"
+                description: "Help Text"
+                datatype: iri
+                values:
+                  - type: branch
+                    sourceAcronym: "NCIT"
+                    sourceName: "undefined (NCIT)"
+                    termBaseIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C3224"
+                    termBaseLabel: "Melanoma"
+                    termMaxDepth: 0
+                configuration:
+                  multiple: true
+                  minItems: 1
+              - key: "Sample Datetime"
+                type: temporal-field
+                name: "Sample Datetime"
+                description: "Help Text"
+                datatype: xsd:dateTime
+                granularity: second
+                inputTimeFormat: 12h
+                inputTimeZone: true
+                configuration:
+                  multiple: true
+                  minItems: 1
+              - key: "Sample Checkbox"
+                type: checkbox-field
+                name: "Sample Checkbox"
+                description: "Help Text"
+                values:
+                  - label: "Option 1"
+                  - label: "Option 2"
+                    selected: true
+                  - label: "Option 3"
+                configuration:
+                  required: true
+                  minItems: 1
+              - key: "Untitled"
+                type: static-youtube-video
+                name: "Untitled"
+                description: "Help Text"
+                content: "XjI8HyUqe4w"
+              - key: "Sample Attribute Value"
+                type: attribute-value-field
+                name: "Sample Attribute Value"
+                description: "Help Text"
+                configuration:
+                  minItems: 0
+            configuration:
+              multiple: true
+              minItems: 1
+          - key: "Paragraph Field in Element 2"
+            type: text-area-field
+            name: "Paragraph Field in Element 2"
+            description: "Help Text"
+          - key: "Text Field in Element 2"
+            type: text-field
+            name: "Text Field in Element 2"
+            description: "Help Text"
+            configuration:
+              multiple: true
+              minItems: 1
+        configuration:
+          multiple: true
+          minItems: 0
+      - key: "Multiple Text in Element 1"
+        type: text-field
+        name: "Multiple Text in Element 1"
+        description: "Help Text"
+        configuration:
+          multiple: true
+          minItems: 0
+  - key: "Numeric Field in Template"
+    type: numeric-field
+    name: "Numeric Field in Template"
+    description: "Help Text"
+    datatype: xsd:decimal

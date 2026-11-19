@@ -1,0 +1,11 @@
+type: template
+name: "multiple min none"
+id: "https://repo.metadatacenter.org/templates/b1f2d704-7782-4717-9197-af8ecb8c7295"
+children:
+  - key: "Text Field"
+    type: text-field
+    name: "Text Field"
+    description: "Help Text"
+    configuration:
+      multiple: true
+      minItems: 0

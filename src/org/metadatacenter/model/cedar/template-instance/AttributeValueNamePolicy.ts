@@ -54,8 +54,8 @@ export class AttributeValueNamePolicy {
       : [...conflict.path, conflict.groupName, conflict.name];
   }
 
-  public static assertValid(container: InstanceDataContainer): void {
-    const conflict = AttributeValueNamePolicy.findConflicts(container)[0];
+  public static assertValid(container: InstanceDataContainer, parent: AttributeValueFieldParent = 'template'): void {
+    const conflict = AttributeValueNamePolicy.findConflicts(container, parent)[0];
     if (conflict === undefined) {
       return;
     }

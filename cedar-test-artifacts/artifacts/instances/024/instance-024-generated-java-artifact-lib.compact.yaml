@@ -1,0 +1,24 @@
+type: instance
+name: "Versioned Constraints and Stated Keys metadata"
+id: "https://repo.metadatacenter.org/template-instances/3b8e1f6d-2a9c-4e70-8d15-7c4a0b9e2f61"
+isBasedOn: "https://repo.metadatacenter.org/templates/5d3a6b0e-91f4-4c2a-b7d8-2e6f0a1c9b54"
+children:
+  Disease:
+    id: "http://purl.obolibrary.org/obo/DOID_9352"
+    label: "type 2 diabetes mellitus"
+  Note:
+    value: "Observed at intake"
+  Site:
+    children:
+      Street:
+        value: "Main Street"
+  Visits:
+    - children:
+        Species:
+          id: "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+          label: "Homo sapiens"
+    - children:
+        Species:
+          id: "http://purl.obolibrary.org/obo/NCBITaxon_63221"
+          label: "Homo sapiens neanderthalensis"
+          notation: "NEAN"

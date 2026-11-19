@@ -5,6 +5,7 @@ const fieldsTestFolderPath = 'cedar-test-artifacts/artifacts/fields';
 const elementsTestFolderPath = 'cedar-test-artifacts/artifacts/elements';
 const templatesTestFolderPath = 'cedar-test-artifacts/artifacts/templates';
 const instancesTestFolderPath = 'cedar-test-artifacts/artifacts/instances';
+const elementInstancesTestFolderPath = 'cedar-test-artifacts/artifacts/element-instances';
 const ceeSuiteTestFolderPath = 'cedar-test-artifacts/artifacts/cee-suite';
 
 async function generateTestCases() {
@@ -12,6 +13,7 @@ async function generateTestCases() {
   let elementTestNumbers = [];
   let templateTestNumbers = [];
   let instanceTestNumbers = [];
+  let elementInstanceTestNumbers = [];
   let ceeSuiteTestMap = {};
 
   const subfoldersInFields = await fs.readdir(fieldsTestFolderPath, { withFileTypes: true });
@@ -39,6 +41,13 @@ async function generateTestCases() {
   for (const dirent of subfoldersInInstances) {
     if (dirent.isDirectory()) {
       instanceTestNumbers.push(parseInt(dirent.name, 10));
+    }
+  }
+
+  const subfoldersInElementInstances = await fs.readdir(elementInstancesTestFolderPath, { withFileTypes: true });
+  for (const dirent of subfoldersInElementInstances) {
+    if (dirent.isDirectory()) {
+      elementInstanceTestNumbers.push(parseInt(dirent.name, 10));
     }
   }
 
@@ -81,6 +90,7 @@ async function generateTestCases() {
     `export const elementTestNumbers: number[] = ${numberArrayToString(elementTestNumbers)};\n` +
     `export const templateTestNumbers: number[] = ${numberArrayToString(templateTestNumbers)};\n` +
     `export const instanceTestNumbers: number[] = ${numberArrayToString(instanceTestNumbers)};\n` +
+    `export const elementInstanceTestNumbers: number[] = ${numberArrayToString(elementInstanceTestNumbers)};\n` +
     `export const ceeSuiteTestMap = ${ceeJsonString};\n`;
   // The file is checked in, so it has to come out of here formatted the way the repository formats
   // everything else. Written raw, it differed from its committed self on every run — same numbers,

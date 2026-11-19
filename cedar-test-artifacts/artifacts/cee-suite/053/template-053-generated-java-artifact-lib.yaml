@@ -1,0 +1,40 @@
+type: template
+name: "Person"
+id: "https://repo.metadatacenter.orgx/templates/9b654582-2842-4446-b885-87c862321d0b"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+createdOn: "2023-08-23T13:16:40-07:00"
+createdBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+modifiedOn: "2023-08-23T13:16:40-07:00"
+modifiedBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+children:
+  - key: "Address"
+    type: element
+    name: "Address"
+    id: "https://repo.metadatacenter.orgx/template-elements/29e4494a-1703-49b6-b70e-756de781f08f"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    createdOn: "2023-08-23T13:16:40-07:00"
+    createdBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+    modifiedOn: "2023-08-23T13:16:40-07:00"
+    modifiedBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+    children:
+      - key: "Zip"
+        type: text-field
+        name: "Zip"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.orgx/template-fields/ff4c6448-8455-4bc6-acb8-3ca677409cd7"
+        modelVersion: 1.6.0
+        createdOn: "2023-08-23T13:16:25-07:00"
+        createdBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+        modifiedOn: "2023-08-23T13:16:25-07:00"
+        modifiedBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.orgx/properties/3c03baf2-f699-4a09-86c4-2ca7627c2f48"
+          multiple: true
+          minItems: 0
+          maxItems: 3
+    configuration:
+      propertyIri: "https://schema.metadatacenter.orgx/properties/46c147fc-abe7-4f36-af53-eaa4c5c1b993"

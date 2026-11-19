@@ -424,6 +424,28 @@ describe('judged against the stored template', () => {
     );
   });
 
+  it('judges a child the instance omits as the empty slot the write supplies, leaving the instance as it was', () => {
+    const omitting = (name: string) => {
+      const document: Record<string, unknown> = complete();
+      delete document[name];
+      return CedarReaders.json()
+        .getFebruary2024()
+        .getTemplateInstanceReader()
+        .readFromObject(document as any, undefined as never).instance;
+    };
+    for (const name of ['_note', '_addr']) {
+      const instance = omitting(name);
+      expect(InstanceValidator.validateReport(instance, template, written()).canSave).toBe(false);
+      expect(InstanceValidator.validateReport(instance, template, written(), { asWritten: true }).canSave).toBe(true);
+      expect(instance.dataContainer.hasValue(name)).toBe(false);
+    }
+    // A repeated child the instance omits is written as no occurrences: short of its lower bound of two,
+    // which the server stores with a completeness finding, as it stores any list that short.
+    const report = InstanceValidator.validateReport(omitting('_tags'), template, written(), { asWritten: true });
+    expect(report.canSave).toBe(true);
+    expect(report.findings).toContainEqual(expect.objectContaining({ code: 'minItems', path: '/_tags' }));
+  });
+
   it('tells a label stored as null from one left out, where the stored field requires it', () => {
     const stored = written();
     stored.properties._note.required = ['@value', 'rdfs:label'];
@@ -584,6 +606,21 @@ describe("an instance's own @type and annotations", () => {
     }
     expect(canSave({ ...complete(), '@type': [] }, { asWritten: true })).toBe(true);
     expect(canSave({ ...complete(), '@type': [CLASS, CLASS] }, { asWritten: true })).toBe(false);
+  });
+
+  it('refuses a stated pav:derivedFrom that is not an absolute IRI, as stored and as written', () => {
+    for (const options of [{}, { asWritten: true }]) {
+      expect(canSave({ ...complete(), 'pav:derivedFrom': 'Probe' }, options)).toBe(false);
+      expect(canSave({ ...complete(), 'pav:derivedFrom': CLASS }, options)).toBe(true);
+    }
+  });
+
+  it("refuses an element occurrence's relative pav:derivedFrom as stored, which the writer does not write", () => {
+    const document: any = { ...complete(), _addr: { ...(complete() as any)._addr, 'pav:derivedFrom': 'Probe' } };
+    expect(canSave(document)).toBe(false);
+    const written: any = CedarWriters.json().getFebruary2024().getTemplateInstanceWriter().getAsJsonNode(read(document));
+    expect(written._addr['pav:derivedFrom']).toBeUndefined();
+    expect(canSave(document, { asWritten: true })).toBe(true);
   });
 
   it('takes an IRI or a literal annotation', () => {

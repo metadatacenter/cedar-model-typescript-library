@@ -1,0 +1,12 @@
+type: template
+name: "numeric field - integer with u.m"
+id: "https://repo.metadatacenter.org/templates/86432620-0b56-4e27-8a4c-84dbf128f5fb"
+children:
+  - key: "Numeric"
+    type: numeric-field
+    name: "Numeric"
+    description: "Help Text"
+    datatype: xsd:int
+    minValue: -100
+    maxValue: 100
+    unit: "millimeter"

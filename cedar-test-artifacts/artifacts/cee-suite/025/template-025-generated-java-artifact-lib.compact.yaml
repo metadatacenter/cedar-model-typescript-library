@@ -1,0 +1,32 @@
+type: template
+name: "two level deep, multiple"
+id: "https://repo.metadatacenter.org/templates/db10d346-2c69-467b-8c1a-be151f37fc74"
+children:
+  - key: "Element of Element"
+    type: element
+    name: "Element of Element"
+    prefLabel: "Embedded 2 Preferred Label"
+    children:
+      - key: "Texf Field 1"
+        type: text-field
+        name: "Texf Field 1"
+        description: "Help text of text field"
+        prefLabel: "Preferred label of text field"
+      - key: "Single Text Element"
+        type: element
+        name: "Single Text Element"
+        prefLabel: "Embedded Element preferred name"
+        children:
+          - key: "Text Field in Element"
+            type: text-field
+            name: "Text Field in Element"
+            description: "Help Text"
+        configuration:
+          overrideLabel: "Embedded Element name"
+          overrideDescription: "Embedded Element Help text"
+    configuration:
+      overrideLabel: "Embedded 2 Element of Element"
+      overrideDescription: "Embedded 2 Help text"
+      multiple: true
+      minItems: 4
+      maxItems: 7

@@ -1,0 +1,1008 @@
+type: template
+name: "DataCite DOI Request Templete"
+children:
+  - key: "prefix"
+    type: text-field
+    name: "prefix"
+    prefLabel: "Prefix of DataCite Repository"
+    configuration:
+      required: true
+  - key: "CreatorElement"
+    type: element
+    name: "CreatorElement"
+    children:
+      - key: "creator"
+        type: element
+        name: "creator"
+        children:
+          - key: "creatorName"
+            type: text-field
+            name: "creatorName"
+            description: "May be a corporate/institutional or personal name."
+            prefLabel: "Creator Name"
+            configuration:
+              required: true
+          - key: "nameType"
+            type: controlled-term-field
+            name: "nameType"
+            description: "Name Type"
+            prefLabel: "Name Type"
+            datatype: iri
+            values:
+              - type: class
+                sourceAcronym: "PATEL"
+                termIri: "http://www.semanticweb.org/ambrish/ontologies/2020/10/untitled-ontology-24#Personal"
+                termType: class
+                termLabel: "Personal"
+              - type: class
+                sourceAcronym: "VIVO"
+                termIri: "http://www.w3.org/2006/vcard/ns#Organizational"
+                termType: class
+                termLabel: "Organizational"
+          - key: "givenName"
+            type: text-field
+            name: "givenName"
+            prefLabel: "First Name of Creator"
+          - key: "familyName"
+            type: text-field
+            name: "familyName"
+            description: "The surname or last name of the creator"
+            prefLabel: "Last Name of Creator"
+          - key: "Affiliation"
+            type: element
+            name: "Affiliation"
+            children:
+              - key: "affiliationIdentifier"
+                type: text-field
+                name: "affiliationIdentifier"
+                description: "Uniquely identifies the organizational affiliation of the creator."
+                prefLabel: "Affiliation Identifier"
+              - key: "affiliationIdentifierScheme"
+                type: text-field
+                name: "affiliationIdentifierScheme"
+                description: "If Affiliation Identifier is used, Affiliation Identifier Scheme is mandatory."
+                prefLabel: "Affiliation Identifier Scheme"
+              - key: "affiliationIdentifierSchemeURI"
+                type: link-field
+                name: "affiliationIdentifierSchemeURI"
+                description: "The URI of the affiliation identifier scheme"
+                prefLabel: "Affiliation Identifier Scheme URI"
+            configuration:
+              multiple: true
+              minItems: 0
+          - key: "nameIdentifier"
+            type: element
+            name: "nameIdentifier"
+            children:
+              - key: "nameIdentifier"
+                type: text-field
+                name: "nameIdentifierName"
+                description: "Uniquely identifies an individual or legal entity, according to various schemes."
+                prefLabel: "Name Identifier"
+              - key: "nameIdentifierScheme"
+                type: text-field
+                name: "nameIdentifierScheme"
+                description: "If Name Identifier is used, Name Identifier Scheme is mandatory."
+                prefLabel: "Name Identifier Scheme"
+              - key: "nameIdentifierSchemeURI"
+                type: link-field
+                name: "nameIdentifierSchemeURI"
+                description: "The URI of the name identifier scheme"
+                prefLabel: "Name Identifier Scheme URI"
+            configuration:
+              multiple: true
+              minItems: 0
+        configuration:
+          multiple: true
+          minItems: 1
+  - key: "TitleElement"
+    type: element
+    name: "TitleElement"
+    children:
+      - key: "Title"
+        type: element
+        name: "Title"
+        children:
+          - key: "titleName"
+            type: text-field
+            name: "titleName"
+            description: "A name or title by which a resource is known."
+            prefLabel: "Title"
+            configuration:
+              required: true
+          - key: "titleType"
+            type: controlled-term-field
+            name: "titleType"
+            prefLabel: "Title Type"
+            datatype: iri
+            values:
+              - type: branch
+                sourceAcronym: "DATACITE-VOCAB"
+                sourceName: "DATACITE V4.4 (DATACITE-VOCAB)"
+                termBaseIri: "http://purl.org/datacite/v4.4/TitleType"
+                termBaseLabel: "Title Type"
+                termMaxDepth: 0
+          - key: "language"
+            type: text-field
+            name: "language"
+            prefLabel: "Language"
+        configuration:
+          multiple: true
+          minItems: 1
+  - key: "PublisherElement"
+    type: element
+    name: "PublisherElement"
+    children:
+      - key: "Publisher"
+        type: text-field
+        name: "Publisher"
+        description: "The name of the entity that holds, archives, publishes prints, distributes, releases, issues, or produces the resource."
+        prefLabel: "Publisher"
+        configuration:
+          required: true
+  - key: "PublicationYearElement"
+    type: element
+    name: "PublicationYearElement"
+    children:
+      - key: "PublicationYear"
+        type: temporal-field
+        name: "PublicationYear"
+        description: "The year when the item was or will be made publicly available."
+        prefLabel: "Publication Year"
+        datatype: xsd:date
+        granularity: year
+        configuration:
+          required: true
+  - key: "ResourceTypeElement"
+    type: element
+    name: "ResourceTypeElement"
+    children:
+      - key: "ResourceType"
+        type: text-field
+        name: "ResourceType"
+        description: "A description of the resource. The recommended content is a single term of some detail so that a pair can be formed with the resourceTypeGeneral subproperty. For example, a resourceType of “Census Data” paired with a resourceTypeGeneral of “Dataset” yields “Dataset/Census Data”."
+        prefLabel: "Resource Type"
+        configuration:
+          required: true
+      - key: "resourceTypeGeneral"
+        type: controlled-term-field
+        name: "resourceTypeGeneral"
+        description: "The general type of a resource"
+        prefLabel: "Resource Type General"
+        datatype: iri
+        values:
+          - type: branch
+            sourceAcronym: "DATACITE-VOCAB"
+            sourceName: "undefined (DATACITE-VOCAB)"
+            termBaseIri: "http://purl.org/datacite/v4.4/ResourceTypeGeneral"
+            termBaseLabel: "Resource Type General"
+            termMaxDepth: 0
+        configuration:
+          required: true
+  - key: "SubjectElement"
+    type: element
+    name: "SubjectElement"
+    children:
+      - key: "Subject"
+        type: element
+        name: "Subject"
+        children:
+          - key: "subjectName"
+            type: text-field
+            name: "subjectName"
+            description: "Subject, keyword, classification code, or key phrase describing the resource"
+            prefLabel: "Subject"
+          - key: "subjectScheme"
+            type: text-field
+            name: "subjectScheme"
+            description: "The name of the subject scheme or classification code or authority if one is used"
+            prefLabel: "Subject Scheme"
+          - key: "subjectSchemeURI"
+            type: link-field
+            name: "subjectSchemeURI"
+            description: "The URI of the subject identifier scheme"
+            prefLabel: "Scheme URI"
+          - key: "valueURI"
+            type: link-field
+            name: "valueURI"
+            description: "The URI of the subject term"
+            prefLabel: "Value URI"
+          - key: "classificationCode"
+            type: text-field
+            name: "classificationCode"
+            description: "The classification code used for the subject term in the subject scheme"
+            prefLabel: "Classification Code"
+        configuration:
+          multiple: true
+          minItems: 0
+  - key: "ContributorElement"
+    type: element
+    name: "ContributorElement"
+    children:
+      - key: "Contributor"
+        type: element
+        name: "Contributor"
+        children:
+          - key: "contributorName"
+            type: text-field
+            name: "contributorName"
+            description: "The full name of the contributor"
+            prefLabel: "Contributor Name"
+          - key: "nameType"
+            type: controlled-term-field
+            name: "nameType"
+            description: "Name Type"
+            prefLabel: "Name Type"
+            datatype: iri
+            values:
+              - type: class
+                sourceAcronym: "PATEL"
+                termIri: "http://www.semanticweb.org/ambrish/ontologies/2020/10/untitled-ontology-24#Personal"
+                termType: class
+                termLabel: "Personal"
+              - type: class
+                sourceAcronym: "VIVO"
+                termIri: "http://www.w3.org/2006/vcard/ns#Organizational"
+                termType: class
+                termLabel: "Organizational"
+          - key: "givenName"
+            type: text-field
+            name: "givenName"
+            prefLabel: "First Name of Contributor"
+          - key: "familyName"
+            type: text-field
+            name: "familyName"
+            prefLabel: "Last Name of Contributor"
+          - key: "contributorType"
+            type: controlled-term-field
+            name: "contributorType"
+            prefLabel: "Contributor Type"
+            datatype: iri
+            values:
+              - type: branch
+                sourceAcronym: "DATACITE-VOCAB"
+                sourceName: "undefined (DATACITE-VOCAB)"
+                termBaseIri: "http://purl.org/datacite/v4.4/ContributorType"
+                termBaseLabel: "Contributor Type"
+                termMaxDepth: 0
+          - key: "Affiliation"
+            type: element
+            name: "Affiliation"
+            children:
+              - key: "affiliationIdentifier"
+                type: text-field
+                name: "affiliationIdentifier"
+                description: "Uniquely identifies the organizational affiliation of the creator."
+                prefLabel: "Affiliation Identifier"
+              - key: "affiliationIdentifierScheme"
+                type: text-field
+                name: "affiliationIdentifierScheme"
+                description: "If Affiliation Identifier is used, Affiliation Identifier Scheme is mandatory."
+                prefLabel: "Affiliation Identifier Scheme"
+              - key: "affiliationIdentifierSchemeURI"
+                type: link-field
+                name: "affiliationIdentifierSchemeURI"
+                description: "The URI of the affiliation identifier scheme"
+                prefLabel: "Affiliation Identifier Scheme URI"
+            configuration:
+              multiple: true
+              minItems: 0
+          - key: "nameIdentifier"
+            type: element
+            name: "nameIdentifier"
+            children:
+              - key: "nameIdentifier"
+                type: text-field
+                name: "nameIdentifierName"
+                description: "Uniquely identifies an individual or legal entity, according to various schemes."
+                prefLabel: "Name Identifier"
+              - key: "nameIdentifierScheme"
+                type: text-field
+                name: "nameIdentifierScheme"
+                description: "If Name Identifier is used, Name Identifier Scheme is mandatory."
+                prefLabel: "Name Identifier Scheme"
+              - key: "nameIdentifierSchemeURI"
+                type: link-field
+                name: "nameIdentifierSchemeURI"
+                description: "The URI of the name identifier scheme"
+                prefLabel: "Name Identifier Scheme URI"
+            configuration:
+              multiple: true
+              minItems: 0
+        configuration:
+          multiple: true
+          minItems: 0
+  - key: "DateElement"
+    type: element
+    name: "DateElement"
+    children:
+      - key: "Date"
+        type: element
+        name: "Date"
+        children:
+          - key: "date"
+            type: temporal-field
+            name: "date"
+            description: "Different dates relevant to the work"
+            prefLabel: "Date"
+            datatype: xsd:date
+            granularity: day
+          - key: "dateType"
+            type: controlled-term-field
+            name: "dateType"
+            description: "If Date is used, Date Type is mandatory."
+            prefLabel: "Date Type"
+            datatype: iri
+            values:
+              - type: branch
+                sourceAcronym: "DATACITE-VOCAB"
+                sourceName: "undefined (DATACITE-VOCAB)"
+                termBaseIri: "http://purl.org/datacite/v4.4/DateType"
+                termBaseLabel: "Date Type"
+                termMaxDepth: 0
+          - key: "dateInformation"
+            type: text-field
+            name: "dateInformation"
+            description: "Specific information about the date, if appropriate"
+            prefLabel: "Date Information"
+        configuration:
+          overrideLabel: "DateElement"
+          multiple: true
+          minItems: 0
+  - key: "Language"
+    type: controlled-term-field
+    name: "Language"
+    description: "Recommended values are taken from IETF BCP 47, ISO 639-1 language codes. Examples: en, de, fr"
+    prefLabel: "Language"
+    datatype: iri
+    values:
+      - type: ontology
+        sourceAcronym: "ISO639-1"
+        sourceName: "ISO 639-1: Codes for the Representation of Names of Languages - Part 1: Two-letter codes for languages"
+        termCount: 2
+  - key: "AlternateIdentifierElement"
+    type: element
+    name: "AlternateIdentifierElement"
+    children:
+      - key: "Alternate Identifier"
+        type: element
+        name: "Alternate Identifier"
+        children:
+          - key: "alternateIdentifier"
+            type: text-field
+            name: "alternateIdentifier"
+            description: "An identifier other than the primary Identifier applied to the resource being registered."
+            prefLabel: "Alternate Identifier"
+          - key: "alternateIdentifierType"
+            type: text-field
+            name: "alternateIdentifierType"
+            description: "The type of the Alternate Identifier"
+            prefLabel: "Alternate Identifier Type"
+        configuration:
+          multiple: true
+          minItems: 0
+  - key: "RelatedIdentifierElement"
+    type: element
+    name: "RelatedIdentifierElement"
+    children:
+      - key: "Related Identifier"
+        type: element
+        name: "Related Identifier"
+        children:
+          - key: "RelatedIdentifier"
+            type: text-field
+            name: "RelatedIdentifier"
+            description: "Identifiers of related resources. These must be globally unique identifiers."
+            prefLabel: "Related Identifier"
+          - key: "relatedIdentifierType"
+            type: controlled-term-field
+            name: "relatedIdentifierType"
+            description: "The type of the RelatedIdentifier. If relatedIdentifier is used, relatedIdentifierType is mandatory."
+            prefLabel: "Related Identifier Type"
+            datatype: iri
+            values:
+              - type: branch
+                sourceAcronym: "DATACITE-VOCAB"
+                sourceName: "DATACITE V4.4 (DATACITE-VOCAB)"
+                termBaseIri: "http://purl.org/datacite/v4.4/RelatedIdentifierType"
+                termBaseLabel: "Related Identifier Type"
+                termMaxDepth: 0
+          - key: "relationType"
+            type: controlled-term-field
+            name: "relationType"
+            description: "Description of the relationship of the resource being registered (A) and the related resource (B)."
+            prefLabel: "Relation Type"
+            datatype: iri
+            values:
+              - type: branch
+                sourceAcronym: "DATACITE-VOCAB"
+                sourceName: "undefined (DATACITE-VOCAB)"
+                termBaseIri: "http://purl.org/datacite/v4.4/RelationType"
+                termBaseLabel: "Relation Type"
+                termMaxDepth: 0
+          - key: "relatedMetadataScheme"
+            type: text-field
+            name: "relatedMetadataScheme"
+            description: "The name of the scheme"
+            prefLabel: "Related Metadata Scheme"
+          - key: "schemeURI"
+            type: link-field
+            name: "schemeURI"
+            description: "The URI of the Related Metadata Scheme"
+            prefLabel: "Related Metadata Scheme URI"
+          - key: "schemeType"
+            type: text-field
+            name: "schemeType"
+            description: "The type of the Related Metadata Scheme, linked with the Scheme URI."
+            prefLabel: "Scheme Type"
+          - key: "resourceTypeGeneral"
+            type: controlled-term-field
+            name: "resourceTypeGeneral"
+            description: "The general type of the related resource"
+            prefLabel: "Resource Type General"
+            datatype: iri
+            values:
+              - type: branch
+                sourceAcronym: "DATACITE-VOCAB"
+                sourceName: "undefined (DATACITE-VOCAB)"
+                termBaseIri: "http://purl.org/datacite/v4.4/ResourceTypeGeneral"
+                termBaseLabel: "Resource Type General"
+                termMaxDepth: 0
+        configuration:
+          multiple: true
+          minItems: 0
+  - key: "SizeElement"
+    type: element
+    name: "SizeElement"
+    children:
+      - key: "Size"
+        type: text-field
+        name: "size"
+        description: "Size (e.g., bytes, pages, inches, etc.) or duration (extent), e.g., hours, minutes, days, etc., of a resource."
+        prefLabel: "Size"
+        configuration:
+          multiple: true
+          minItems: 0
+  - key: "FormatElement"
+    type: element
+    name: "FormatElement"
+    children:
+      - key: "Format"
+        type: text-field
+        name: "Format"
+        description: "Technical format of the resource. Use file extension or MIME type where possible, e.g., PDF, XML, MPG or application/pdf, text/xml, video/mpeg."
+        prefLabel: "Format"
+        configuration:
+          multiple: true
+          minItems: 0
+  - key: "Version"
+    type: text-field
+    name: "Version"
+    description: "The version number of the resource."
+    prefLabel: "Version"
+  - key: "RightsElement"
+    type: element
+    name: "RightsElement"
+    children:
+      - key: "Rights"
+        type: element
+        name: "Rights"
+        children:
+          - key: "Rights"
+            type: text-field
+            name: "Rights"
+            description: "Any rights information for this resource."
+            prefLabel: "Rights"
+          - key: "rightsURI"
+            type: link-field
+            name: "rightsURI"
+            description: "The URI of the license"
+            prefLabel: "Rights URI"
+          - key: "rightsIdentifier"
+            type: text-field
+            name: "rightsIdentifier"
+            description: "A short, standardized version of the license name. Example: CC-BY-3.0 A list of identifiers for commonly-used licenses may be found here: (https://spdx.org/licenses/)."
+            prefLabel: "Rights Identifier"
+          - key: "rightsIdentifierScheme"
+            type: text-field
+            name: "rightsIdentifierScheme"
+            description: "The name of the scheme."
+            prefLabel: "Rights Identifier Scheme"
+          - key: "schemeURI"
+            type: link-field
+            name: "schemeURI"
+            description: "The URI of the Rights Identifier Scheme"
+            prefLabel: "Rights Identifier Scheme URI"
+        configuration:
+          multiple: true
+          minItems: 0
+  - key: "DescriptionElement"
+    type: element
+    name: "DescriptionElement"
+    children:
+      - key: "Description"
+        type: element
+        name: "Description"
+        children:
+          - key: "Description"
+            type: text-field
+            name: "Description"
+            description: "All additional information that does not fit in any of the other categories. May be used for technical information."
+            prefLabel: "Description"
+          - key: "descriptionType"
+            type: controlled-term-field
+            name: "descriptionType"
+            description: "The type of the Description. If Description is used, descriptionType is mandatory."
+            prefLabel: "Description Type"
+            datatype: iri
+            values:
+              - type: branch
+                sourceAcronym: "DATACITE-VOCAB"
+                sourceName: "undefined (DATACITE-VOCAB)"
+                termBaseIri: "http://purl.org/datacite/v4.4/DescriptionType"
+                termBaseLabel: "Description Type"
+                termMaxDepth: 0
+          - key: "Language"
+            type: text-field
+            name: "Language"
+            description: "Recommended values are taken from IETF BCP 47, ISO 639-1 language codes. Examples: en, de, fr"
+            prefLabel: "Language"
+        configuration:
+          multiple: true
+          minItems: 0
+  - key: "FundingReferenceElement"
+    type: element
+    name: "FundingReferenceElement"
+    children:
+      - key: "Funding Reference"
+        type: element
+        name: "Funding Reference"
+        children:
+          - key: "funderName"
+            type: text-field
+            name: "funderName"
+            description: "Name of the funding provider"
+            prefLabel: "Funder Name"
+          - key: "Funder Identifier"
+            type: element
+            name: "Funder Identifier"
+            children:
+              - key: "funderIdentifier"
+                type: text-field
+                name: "funderIdentifier"
+                description: "Uniquely identifies a funding entity, according to various types. Example: https://doi.org/10.13039/100000936"
+                prefLabel: "Funder Identifier"
+              - key: "funderIdentifierType"
+                type: controlled-term-field
+                name: "funderIdentifierType"
+                description: "The type of the funderIdentifier"
+                prefLabel: "Funder Identifier Type"
+                datatype: iri
+                values:
+                  - type: class
+                    sourceAcronym: "FDC-GDMT"
+                    termIri: "https://www.grid.ac/"
+                    termType: class
+                    termLabel: "GRID"
+                  - type: class
+                    sourceAcronym: "BIBFRAME"
+                    termIri: "http://id.loc.gov/ontologies/bibframe/Isni"
+                    termType: class
+                    termLabel: "ISNI"
+                  - type: class
+                    sourceAcronym: "BE"
+                    termIri: "http://purl.obolibrary.org/obo/BE_ROR"
+                    termType: class
+                    termLabel: "ROR"
+                  - type: class
+                    sourceAcronym: "NCIT"
+                    termIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C17649"
+                    termType: class
+                    termLabel: "Other"
+              - key: "SchemeURI"
+                type: link-field
+                name: "SchemeURI"
+                description: "The URI of the funder identifier scheme"
+                prefLabel: "Funder Identifier Scheme URI"
+          - key: "Award Number"
+            type: element
+            name: "Award Number"
+            children:
+              - key: "awardNumber"
+                type: text-field
+                name: "awardNumber"
+                description: "The code assigned by the funder to a sponsored award (grant)."
+                prefLabel: "Award Number"
+              - key: "awardURI"
+                type: link-field
+                name: "awardURI"
+                description: "The URI leading to a page provided by the funder for more information about the award (grant)."
+                prefLabel: "Award URI"
+          - key: "awardTitle"
+            type: text-field
+            name: "awardTitle"
+            description: "The human readable title or name of the award (grant)."
+            prefLabel: "Award Title"
+        configuration:
+          multiple: true
+          minItems: 0
+  - key: "GeoLocationElement"
+    type: element
+    name: "GeoLocationElement"
+    children:
+      - key: "GeoLocation"
+        type: element
+        name: "GeoLocation"
+        children:
+          - key: "geoLocationPlace"
+            type: text-field
+            name: "geoLocationPlace"
+            prefLabel: "Geo Location Place"
+          - key: "Geo Location Point"
+            type: element
+            name: "Geo Location Point"
+            children:
+              - key: "pointLongitude"
+                type: numeric-field
+                name: "pointLongitude"
+                description: "Latitudinal dimension of point. If In Polygon Point is used pointLongitude is mandatory. Longitude of the geographic point expressed in decimal degrees (positive east)."
+                prefLabel: "Point Longitude"
+                datatype: xsd:decimal
+                minValue: -180
+                maxValue: 180
+              - key: "pointLatitude"
+                type: numeric-field
+                name: "pointLatitude"
+                description: "Latitudinal dimension of point. If inPolygonPoint is used, pointLatitude is mandatory. Latitude of the geographic point expressed in decimal degrees (positive north)."
+                prefLabel: "Point Latitude"
+                datatype: xsd:decimal
+                minValue: -90
+                maxValue: 90
+          - key: "Geo Location Box"
+            type: element
+            name: "Geo Location Box"
+            children:
+              - key: "westBoundLongitude"
+                type: numeric-field
+                name: "westBoundLongitude"
+                description: "Western longitudinal dimension of box. Longitude of the geographic point expressed in decimal degrees (positive east). Domain: -180.00 ≤ westBoundLongitude ≤ 180.00"
+                prefLabel: "West Bound Longitude"
+                datatype: xsd:decimal
+                minValue: -180
+                maxValue: 180
+              - key: "eastBoundLongitude"
+                type: numeric-field
+                name: "eastBoundLongitude"
+                description: "Eastern longitudinal dimension of box. Longitude of the geographic point expressed in decimal degrees (positive east) Domain: -180.00 ≤ eastBoundLongitude ≤ 180.00."
+                prefLabel: "East Bound Longitude"
+                datatype: xsd:decimal
+                minValue: -180
+                maxValue: 180
+              - key: "southBoundLatitude"
+                type: numeric-field
+                name: "southBoundLatitude"
+                description: "Southern latitudinal dimension of box. Latitude of the geographic point expressed in decimal degrees (positive north). Domain: -90.00 ≤ southBoundingLatitude ≤ 90.00"
+                prefLabel: "South Bound Latitude"
+                datatype: xsd:decimal
+                minValue: -90
+                maxValue: 90
+              - key: "northBoundLatitude"
+                type: numeric-field
+                name: "northBoundLatitude"
+                description: "Northern latitudinal dimension of box. Latitude of the geographic point expressed in decimal degrees (positive north). Domain: -90.00 ≤ northBoundingLatitude ≤ 90.00."
+                prefLabel: "South Bound Latitude"
+                datatype: xsd:decimal
+                minValue: -90
+                maxValue: 90
+          - key: "geoLocationPolygon"
+            type: element
+            name: "geoLocationPolygon"
+            children:
+              - key: "polygonPoint"
+                type: element
+                name: "polygonPoint"
+                prefLabel: "Polygon Point"
+                children:
+                  - key: "pointLongitude"
+                    type: numeric-field
+                    name: "pointLongitude"
+                    description: "Latitudinal dimension of point. If In Polygon Point is used pointLongitude is mandatory. Longitude of the geographic point expressed in decimal degrees (positive east)."
+                    prefLabel: "Point Longitude"
+                    datatype: xsd:decimal
+                    minValue: -180
+                    maxValue: 180
+                  - key: "pointLatitude"
+                    type: numeric-field
+                    name: "pointLatitude"
+                    description: "Latitudinal dimension of point. If inPolygonPoint is used, pointLatitude is mandatory. Latitude of the geographic point expressed in decimal degrees (positive north)."
+                    prefLabel: "Point Latitude"
+                    datatype: xsd:decimal
+                    minValue: -90
+                    maxValue: 90
+                configuration:
+                  overrideDescription: "There must be at least 4 non-aligned points to make a closed curve, with the last point described the same as the first point"
+                  multiple: true
+                  minItems: 0
+              - key: "inPolygenPoint"
+                type: element
+                name: "inPolygenPoint"
+                prefLabel: "In Polygon Point"
+                children:
+                  - key: "pointLongitude"
+                    type: numeric-field
+                    name: "pointLongitude"
+                    description: "Latitudinal dimension of point. If In Polygon Point is used pointLongitude is mandatory. Longitude of the geographic point expressed in decimal degrees (positive east)."
+                    prefLabel: "Point Longitude"
+                    datatype: xsd:decimal
+                    minValue: -180
+                    maxValue: 180
+                  - key: "pointLatitude"
+                    type: numeric-field
+                    name: "pointLatitude"
+                    description: "Latitudinal dimension of point. If inPolygonPoint is used, pointLatitude is mandatory. Latitude of the geographic point expressed in decimal degrees (positive north)."
+                    prefLabel: "Point Latitude"
+                    datatype: xsd:decimal
+                    minValue: -90
+                    maxValue: 90
+                configuration:
+                  overrideLabel: "inPolygonPoint"
+            configuration:
+              multiple: true
+              minItems: 0
+        configuration:
+          multiple: true
+          minItems: 0
+  - key: "RelatedItemElement"
+    type: element
+    name: "RelatedItemElement"
+    children:
+      - key: "Related Item"
+        type: element
+        name: "Related Item"
+        children:
+          - key: "relatedItemType"
+            type: controlled-term-field
+            name: "relatedItemType"
+            description: "The type of the related item, e.g., journal article; book or chapter"
+            prefLabel: "Related Item Type"
+            datatype: iri
+            values:
+              - type: branch
+                sourceAcronym: "DATACITE-VOCAB"
+                sourceName: "DATACITE V4.4 (DATACITE-VOCAB)"
+                termBaseIri: "http://purl.org/datacite/v4.4/ResourceTypeGeneral"
+                termBaseLabel: "Resource Type General"
+                termMaxDepth: 0
+          - key: "relationType"
+            type: controlled-term-field
+            name: "relationType"
+            description: "Description of the relationship of the resource being registered (A) and the related resource (B)"
+            prefLabel: "Relation Type"
+            datatype: iri
+            values:
+              - type: branch
+                sourceAcronym: "DATACITE-VOCAB"
+                sourceName: "undefined (DATACITE-VOCAB)"
+                termBaseIri: "http://purl.org/datacite/v4.4/RelationType"
+                termBaseLabel: "Relation Type"
+                termMaxDepth: 0
+          - key: "Related Item Identifier Element"
+            type: element
+            name: "Related Item Identifier Element"
+            children:
+              - key: "RelatedIdentifier"
+                type: text-field
+                name: "relatedItemIdentifier"
+                description: "The identifier for the related item."
+                prefLabel: "Related Item Identifier"
+              - key: "relatedIdentifierType"
+                type: controlled-term-field
+                name: "relatedIdentifierType"
+                description: "The type of the RelatedIdentifier. If relatedIdentifier is used, relatedIdentifierType is mandatory."
+                prefLabel: "Related Identifier Type"
+                datatype: iri
+                values:
+                  - type: branch
+                    sourceAcronym: "DATACITE-VOCAB"
+                    sourceName: "DATACITE V4.4 (DATACITE-VOCAB)"
+                    termBaseIri: "http://purl.org/datacite/v4.4/RelatedIdentifierType"
+                    termBaseLabel: "Related Identifier Type"
+                    termMaxDepth: 0
+              - key: "relatedMetadataScheme"
+                type: text-field
+                name: "relatedMetadataScheme"
+                description: "The name of the scheme"
+                prefLabel: "Related Metadata Scheme"
+              - key: "schemeURI"
+                type: link-field
+                name: "schemeURI"
+                description: "The URI of the Related Metadata Scheme"
+                prefLabel: "Related Metadata Scheme URI"
+              - key: "schemeType"
+                type: text-field
+                name: "schemeType"
+                description: "The type of the Related Metadata Scheme, linked with the Scheme URI."
+                prefLabel: "Scheme Type"
+          - key: "Creator"
+            type: element
+            name: "Creator"
+            children:
+              - key: "creatorName"
+                type: text-field
+                name: "creatorName"
+                description: "The full name of the related item creator"
+                prefLabel: "Creator Name"
+              - key: "nameType"
+                type: controlled-term-field
+                name: "nameType"
+                description: "Name Type"
+                prefLabel: "Name Type"
+                datatype: iri
+                values:
+                  - type: class
+                    sourceAcronym: "PATEL"
+                    termIri: "http://www.semanticweb.org/ambrish/ontologies/2020/10/untitled-ontology-24#Personal"
+                    termType: class
+                    termLabel: "Personal"
+                  - type: class
+                    sourceAcronym: "VIVO"
+                    termIri: "http://www.w3.org/2006/vcard/ns#Organizational"
+                    termType: class
+                    termLabel: "Organizational"
+              - key: "givenName"
+                type: text-field
+                name: "givenName"
+                prefLabel: "First Name of Creator"
+              - key: "familyName"
+                type: text-field
+                name: "familyName"
+                description: "The surname or last name of the creator"
+                prefLabel: "Last Name of Creator"
+            configuration:
+              multiple: true
+              minItems: 0
+          - key: "Title"
+            type: element
+            name: "Title"
+            children:
+              - key: "titleName"
+                type: text-field
+                name: "titleName"
+                description: "A name or title by which a resource is known."
+                prefLabel: "Title"
+              - key: "titleType"
+                type: controlled-term-field
+                name: "titleType"
+                description: "Type of the related item title. Use this subproperty to add a subtitle, translation, or alternate title to the main title."
+                prefLabel: "Title Type"
+                datatype: iri
+                values:
+                  - type: branch
+                    sourceAcronym: "DATACITE-VOCAB"
+                    sourceName: "DATACITE V4.4 (DATACITE-VOCAB)"
+                    termBaseIri: "http://purl.org/datacite/v4.4/TitleType"
+                    termBaseLabel: "Title Type"
+                    termMaxDepth: 0
+            configuration:
+              multiple: true
+              minItems: 0
+          - key: "number"
+            type: text-field
+            name: "number"
+            description: "Type of the related item’s number, e.g., report number or article number."
+            prefLabel: "Number"
+          - key: "numberType"
+            type: controlled-term-field
+            name: "numberType"
+            description: "Type of the related item’s number, e.g., report number or article number"
+            prefLabel: "Number Type"
+            datatype: iri
+            values:
+              - type: class
+                sourceAcronym: "NCIT"
+                termIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C47902"
+                termType: class
+                termLabel: "Article"
+              - type: class
+                sourceAcronym: "G-PROV"
+                termIri: "http://purl.org/ontology/bibo/Chapter"
+                termType: class
+                termLabel: "Chapter"
+              - type: class
+                sourceAcronym: "SNOMEDCT"
+                termIri: "http://purl.bioontology.org/ontology/SNOMEDCT/229059009"
+                termType: class
+                termLabel: "Report"
+              - type: class
+                sourceAcronym: "NCIT"
+                termIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C17649"
+                termType: class
+                termLabel: "Other"
+          - key: "volume"
+            type: text-field
+            name: "volume"
+            description: "Volume of the related item."
+            prefLabel: "volume"
+          - key: "issue"
+            type: text-field
+            name: "issue"
+            description: "Issue number or name of the related item"
+            prefLabel: "Issue"
+          - key: "firstPage"
+            type: text-field
+            name: "firstPage"
+            prefLabel: "First Page"
+          - key: "lastPage"
+            type: text-field
+            name: "lastPage"
+            description: "Last page of the related item, e.g., of the chapter, article, or conference paper in proceedings"
+            prefLabel: "Last Page"
+          - key: "PublicationYear"
+            type: temporal-field
+            name: "PublicationYear"
+            description: "The year when the item was or will be made publicly available."
+            prefLabel: "Publication Year"
+            datatype: xsd:date
+            granularity: year
+          - key: "Publisher"
+            type: text-field
+            name: "Publisher"
+            description: "The name of the entity that holds, archives, publishes prints, distributes, releases, issues, or produces the resource"
+            prefLabel: "Publisher"
+          - key: "edition"
+            type: text-field
+            name: "edition"
+            prefLabel: "Edition"
+          - key: "Contributor"
+            type: element
+            name: "Contributor"
+            children:
+              - key: "contributorType"
+                type: controlled-term-field
+                name: "contributorType"
+                prefLabel: "Contributor Type"
+                datatype: iri
+                values:
+                  - type: branch
+                    sourceAcronym: "DATACITE-VOCAB"
+                    sourceName: "undefined (DATACITE-VOCAB)"
+                    termBaseIri: "http://purl.org/datacite/v4.4/ContributorType"
+                    termBaseLabel: "Contributor Type"
+                    termMaxDepth: 0
+              - key: "contributorName"
+                type: text-field
+                name: "contributorName"
+                description: "The full name of the contributor"
+                prefLabel: "Contributor Name"
+              - key: "nameType"
+                type: controlled-term-field
+                name: "nameType"
+                description: "Name Type"
+                prefLabel: "Name Type"
+                datatype: iri
+                values:
+                  - type: class
+                    sourceAcronym: "PATEL"
+                    termIri: "http://www.semanticweb.org/ambrish/ontologies/2020/10/untitled-ontology-24#Personal"
+                    termType: class
+                    termLabel: "Personal"
+                  - type: class
+                    sourceAcronym: "VIVO"
+                    termIri: "http://www.w3.org/2006/vcard/ns#Organizational"
+                    termType: class
+                    termLabel: "Organizational"
+              - key: "givenName"
+                type: text-field
+                name: "givenName"
+                prefLabel: "First Name of Contributor"
+              - key: "familyName"
+                type: text-field
+                name: "familyName"
+                description: "The surname or last name of the contributor"
+                prefLabel: "Last Name of Contributor"
+            configuration:
+              multiple: true
+              minItems: 0
+        configuration:
+          multiple: true
+          minItems: 0

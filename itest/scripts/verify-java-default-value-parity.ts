@@ -15,9 +15,11 @@
  * required to be total in both directions, so a field type added to either
  * library and not the other fails rather than passing unnoticed.
  *
- * Needs the sibling Java repository, in the way `verify:java-lock:source` does.
- * CI clones it beside the checkout at the commit the Java lock records. Run it
- * from the repository root:
+ * Needs the Java repository: the checkout under `CEDAR_HOME` where that is set,
+ * as in a local build, and otherwise the sibling, in the way
+ * `verify:java-lock:source` reads it. CI clones it beside the checkout at the
+ * commit the Java lock records. The test gate runs it. Run it from the
+ * repository root:
  *
  *   npm run verify:java-defaults
  */
@@ -97,11 +99,15 @@ const fail = (message: string): void => {
 };
 
 const javaCore = (): string => {
-  const root = path.resolve(__dirname, '../../..', 'cedar-artifact-library');
+  // A local build reads the checkout under CEDAR_HOME, wherever this repository's copy is built; CI,
+  // which sets no CEDAR_HOME, clones the locked commit beside its checkout.
+  const home = process.env.CEDAR_HOME;
+  const root =
+    home && home !== '.' ? path.join(home, 'cedar-artifact-library') : path.resolve(__dirname, '../../..', 'cedar-artifact-library');
   const core = path.join(root, 'src/main/java/org/metadatacenter/artifacts/model/core');
   if (!fs.existsSync(core)) {
-    console.error(`The Java artifact library is not beside this repository: expected ${core}`);
-    console.error('Clone metadatacenter/cedar-artifact-library as a sibling, then run this again.');
+    console.error(`The Java artifact library is not where this check reads it: expected ${core}`);
+    console.error('Clone metadatacenter/cedar-artifact-library under CEDAR_HOME or as a sibling, then run this again.');
     process.exit(2);
   }
   return core;

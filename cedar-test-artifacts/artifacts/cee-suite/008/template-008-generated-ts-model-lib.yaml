@@ -1,0 +1,62 @@
+type: template
+name: "multiple choice"
+id: "https://repo.metadatacenter.org/templates/a1bcf67e-b497-43ab-bebb-32f8cfb11a4a"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+derivedFrom: "https://repo.metadatacenter.org/templates/521c0f77-ab6e-4c26-85ad-c289c02c09a9"
+createdOn: "2021-12-24T13:49:23-08:00"
+createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+modifiedOn: "2021-12-24T13:51:43-08:00"
+modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+children:
+  - key: "Multiple Choice Element"
+    type: element
+    name: "Multiple Choice Element"
+    id: "https://repo.metadatacenter.org/template-elements/9f066dbb-0d5e-4d4a-9847-c54d759bcb35"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    createdOn: "2021-12-24T13:48:52-08:00"
+    createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    modifiedOn: "2021-12-26T09:57:23-08:00"
+    modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    children:
+      - key: "Multiple Choice in Element"
+        type: radio-field
+        name: "Multiple Choice in Element"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/a8d84963-9628-4107-9bb5-623b04848715"
+        modelVersion: 1.6.0
+        values:
+          - label: "Option 1"
+          - label: "Option 2"
+          - label: "Option 3"
+          - label: "Option 4"
+            selected: true
+          - label: "Option 5"
+        createdOn: "2021-12-26T09:57:23-08:00"
+        createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+        modifiedOn: "2021-12-26T09:57:23-08:00"
+        modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/fe6f601d-ae89-447b-a7c7-78f080c472af"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/7239ab8a-76c7-46f8-8a67-dd98ff3196bd"
+      multiple: true
+      minItems: 1
+  - key: "Multiple Choice Standalone"
+    type: radio-field
+    name: "Multiple Choice Standalone"
+    description: "Help Text"
+    id: "tmp-1640541469664-3303614"
+    modelVersion: 1.6.0
+    values:
+      - label: "Option 1"
+      - label: "Option 2"
+      - label: "Option 3"
+      - label: "Option 4"
+      - label: "Option 5"
+    configuration:
+      required: true
+      propertyIri: "https://schema.metadatacenter.org/properties/f20f5e4e-f65b-4ee9-9ee8-d332f17cbc43"

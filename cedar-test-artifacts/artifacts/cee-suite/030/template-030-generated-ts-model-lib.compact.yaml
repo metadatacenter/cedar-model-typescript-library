@@ -1,0 +1,18 @@
+type: template
+name: "element with multi-field, both min none"
+id: "https://repo.metadatacenter.org/templates/3ab21c73-8052-442d-a01a-f1ec5620a5f3"
+children:
+  - key: "Element with Multi-Field, min None"
+    type: element
+    name: "Element with Multi-Field, min None"
+    children:
+      - key: "Multi-Field"
+        type: text-field
+        name: "Multi-Field"
+        description: "Help Text"
+        configuration:
+          multiple: true
+          minItems: 0
+    configuration:
+      multiple: true
+      minItems: 0

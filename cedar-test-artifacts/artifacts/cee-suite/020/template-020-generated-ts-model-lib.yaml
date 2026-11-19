@@ -1,0 +1,167 @@
+type: template
+name: "page break"
+id: "https://repo.metadatacenter.org/templates/fcf8728b-57d6-49ef-9366-84f56c7a7ece"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+createdOn: "2022-01-12T12:07:30-08:00"
+createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+modifiedOn: "2022-01-17T16:22:07-08:00"
+modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+children:
+  - key: "Page Break 3 of 5"
+    type: static-page-break
+    name: "Page Break 3 of 5"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/6751d05b-5500-46b3-9009-e0591d4ae861"
+    modelVersion: 1.6.0
+    createdOn: "2022-01-17T16:22:07-08:00"
+    createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    modifiedOn: "2022-01-17T16:22:07-08:00"
+    modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+  - key: "Sample Standalone Text"
+    type: text-field
+    name: "Sample Standalone Text"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/1c865be4-cd92-47bb-82f9-1fb46ef75017"
+    modelVersion: 1.6.0
+    default: "My sample default value"
+    createdOn: "2022-01-17T16:22:07-08:00"
+    createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    modifiedOn: "2022-01-17T16:22:07-08:00"
+    modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/0475b8c4-c4e4-432c-9f49-60e13fe29d70"
+      multiple: true
+      minItems: 1
+  - key: "Sample Element"
+    type: element
+    name: "Sample Element"
+    id: "https://repo.metadatacenter.org/template-elements/f4c4e499-ad7b-4353-aa8d-56a1325360b4"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    createdOn: "2022-01-17T16:22:07-08:00"
+    createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    modifiedOn: "2022-01-17T16:22:07-08:00"
+    modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    children:
+      - key: "Sample Text"
+        type: controlled-term-field
+        name: "Sample Text"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/9c65b3d7-285e-4712-ab07-3d2b2a97205a"
+        modelVersion: 1.6.0
+        datatype: iri
+        values:
+          - type: branch
+            sourceAcronym: "NCIT"
+            sourceName: "undefined (NCIT)"
+            termBaseIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C3224"
+            termBaseLabel: "Melanoma"
+            termMaxDepth: 0
+        createdOn: "2022-01-12T12:06:51-08:00"
+        createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+        modifiedOn: "2022-01-12T12:06:51-08:00"
+        modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/90136184-431a-415e-bc97-ff541683f55e"
+          multiple: true
+          minItems: 1
+      - key: "Sample Datetime"
+        type: temporal-field
+        name: "Sample Datetime"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/dc99f196-deb6-41f6-8421-b7525f812635"
+        modelVersion: 1.6.0
+        datatype: xsd:dateTime
+        granularity: second
+        inputTimeFormat: 12h
+        inputTimeZone: true
+        createdOn: "2022-01-12T12:06:51-08:00"
+        createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+        modifiedOn: "2022-01-12T12:06:51-08:00"
+        modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/a6488127-223c-46c3-9684-210d0f1dff61"
+          multiple: true
+          minItems: 1
+      - key: "Sample Checkbox"
+        type: checkbox-field
+        name: "Sample Checkbox"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/0ed956d4-197a-4cf7-a806-d114fba0607e"
+        modelVersion: 1.6.0
+        values:
+          - label: "Option 1"
+          - label: "Option 2"
+            selected: true
+          - label: "Option 3"
+        createdOn: "2022-01-12T12:06:51-08:00"
+        createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+        modifiedOn: "2022-01-12T12:06:51-08:00"
+        modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/6467a2f6-c6d3-4775-a63c-54aa66e2a371"
+          minItems: 1
+      - key: "Sample Attribute Value"
+        type: attribute-value-field
+        name: "Sample Attribute Value"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/303949e5-7d99-4305-afdd-4ff6ba9ecc61"
+        modelVersion: 1.6.0
+        createdOn: "2022-01-12T12:06:51-08:00"
+        createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+        modifiedOn: "2022-01-12T12:06:51-08:00"
+        modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+        configuration:
+          minItems: 0
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/a9fb27b0-c198-41ed-800e-d98a99546f89"
+  - key: "Page Break 4 of 5"
+    type: static-page-break
+    name: "Page Break 4 of 5"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/d81f63ac-3ff7-42bf-b321-127c63150ad9"
+    modelVersion: 1.6.0
+    createdOn: "2022-01-17T16:22:07-08:00"
+    createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    modifiedOn: "2022-01-17T16:22:07-08:00"
+    modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+  - key: "Sample Email"
+    type: email-field
+    name: "Sample Email"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/77a4d8da-2cce-48fb-b56a-38492e6da4f5"
+    modelVersion: 1.6.0
+    createdOn: "2022-01-17T16:22:07-08:00"
+    createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    modifiedOn: "2022-01-17T16:22:07-08:00"
+    modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/2343581b-6074-451f-8fd8-0e06a31f95ba"
+  - key: "Link Field"
+    type: link-field
+    name: "Link Field"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/248eefb0-647a-48b2-9af3-c0ff3c2b1bb7"
+    modelVersion: 1.6.0
+    createdOn: "2022-01-17T16:22:07-08:00"
+    createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    modifiedOn: "2022-01-17T16:22:07-08:00"
+    modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/4607d58f-f7dc-4c79-afa0-249deb1ea651"
+      multiple: true
+      minItems: 1
+  - key: "Page Break 5 of 5"
+    type: static-page-break
+    name: "Page Break 5 of 5"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/c90e2512-130d-4597-b1a5-d7891fa3eb1c"
+    modelVersion: 1.6.0
+    createdOn: "2022-01-17T16:22:07-08:00"
+    createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    modifiedOn: "2022-01-17T16:22:07-08:00"
+    modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"

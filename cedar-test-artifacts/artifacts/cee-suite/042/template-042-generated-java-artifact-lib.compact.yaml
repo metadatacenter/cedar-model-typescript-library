@@ -1,0 +1,24 @@
+type: template
+name: "controlled field"
+id: "https://repo.metadatacenter.org/templates/8013ab3d-5313-406f-81a9-f2ee14d27919"
+children:
+  - key: "Controlled Field"
+    type: controlled-term-field
+    name: "Controlled Field"
+    description: "Help Text"
+    datatype: iri
+    values:
+      - type: ontology
+        sourceAcronym: "CRISP"
+        sourceName: "Computer Retrieval of Information on Scientific Projects Thesaurus"
+        termCount: 9039
+      - type: class
+        sourceAcronym: "LOINC"
+        termIri: "http://purl.bioontology.org/ontology/LNC/MTHU010328"
+        termType: class
+        termLabel: "Cancer"
+      - type: class
+        sourceAcronym: "IOBC"
+        termIri: "http://purl.jp/bio/4/id/201006090702491769"
+        termType: class
+        termLabel: "pan"

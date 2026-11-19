@@ -1,0 +1,41 @@
+type: template
+name: "multi select"
+id: "https://repo.metadatacenter.org/templates/f7c65a2a-4345-4e4e-8d6d-aee3fa906aa4"
+children:
+  - key: "Multi Select Element"
+    type: element
+    name: "Multi Select Element"
+    children:
+      - key: "Multi Select in Element"
+        type: multi-select-list-field
+        name: "Multi Select in Element"
+        description: "Help Text"
+        values:
+          - label: "Option 1"
+          - label: "Option 2"
+            selected: true
+          - label: "Option 3"
+          - label: "Option 4"
+          - label: "Option 5"
+            selected: true
+        configuration:
+          minItems: 1
+    configuration:
+      multiple: true
+      minItems: 1
+  - key: "Multi Select Standalone"
+    type: multi-select-list-field
+    name: "Multi Select Standalone"
+    description: "Help Text"
+    values:
+      - label: "Option 1"
+        selected: true
+      - label: "Option 2"
+      - label: "Option 3"
+      - label: "Option 4"
+      - label: "Option 5"
+      - label: "Option 6"
+        selected: true
+    configuration:
+      required: true
+      minItems: 1

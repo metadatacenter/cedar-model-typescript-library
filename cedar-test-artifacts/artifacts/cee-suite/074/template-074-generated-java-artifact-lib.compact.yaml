@@ -1,0 +1,39 @@
+type: template
+name: "Data Catalog"
+description: "DCAT v3 template for data catalog metadata"
+id: "https://repo.metadatacenter.org/templates/3900b140-a27c-4fca-8a00-c1ccb0f3647f"
+children:
+  - key: "catalogTitle"
+    type: text-field
+    name: "catalogTitle"
+    description: "The title of data catalog. A data catalog represents a curated collection of metadata about datasets."
+    prefLabel: "Catalog Title"
+    configuration:
+      required: true
+  - key: "catalogDescription"
+    type: text-field
+    name: "catalogDescription"
+    description: "A free-text description of the data catalog item."
+    prefLabel: "Catalog Description"
+  - key: "publisher"
+    type: link-field
+    name: "publisher"
+    description: "Globally unique, persistent and resolvable identifier of the entity that holds, archives, publishes prints, distributes, releases, issues, or produces the catalog being described."
+    prefLabel: "Publisher"
+  - key: "datasetIdentifier"
+    type: link-field
+    name: "datasetIdentifier"
+    description: "Globally unique, persistent and resolvable identifier that identifies datasets that are part of the data catalog being described."
+    prefLabel: "Dataset Identifier"
+    configuration:
+      multiple: true
+      minItems: 1
+  - key: "catalogIdentifier"
+    type: link-field
+    name: "catalogIdentifier"
+    description: "Globally unique, persistent and resolvable identifier that identifies data catalogs that are part of the data catalog being described."
+    prefLabel: "Catalog Identifier"
+    configuration:
+      required: true
+      multiple: true
+      minItems: 1

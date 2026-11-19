@@ -124,3 +124,28 @@ test('a literal field must declare a value slot, @value or the @id a controlled 
   delete nested.properties.Value.properties['@value'];
   expect(SchemaArtifactValidator.structure(nested).canSave).toBe(false);
 });
+
+// The Java validator's verdicts in ReaderRuleValidationTest: a static field's identifier is text, and its
+// alternative labels are a list of text, because the Java reader refuses any other value there.
+test.each([
+  ['schema:identifier', 'S-1', true],
+  ['schema:identifier', 3, false],
+  ['schema:identifier', 3.5, false],
+  ['schema:identifier', true, false],
+  ['skos:altLabel', [], true],
+  ['skos:altLabel', ['Part one', 'Opening'], true],
+  ['skos:altLabel', 3, false],
+  ['skos:altLabel', [3], false],
+  ['skos:altLabel', ['Part one', 3], false],
+])('a static field whose %s is %j can be saved: %s', (key, value, valid) => {
+  const model = CedarBuilders.sectionBreakFieldBuilder().withSchemaName('Part').withDescription('Schema').build();
+  const standalone: any = structuredClone(writers.getFieldWriterForField(model).getAsJsonNode(model));
+  standalone[key] = value;
+  expect(SchemaArtifactValidator.structure(standalone, 'field').canSave).toBe(valid);
+
+  const template = CedarBuilders.templateBuilder().withSchemaName('Study').withDescription('Schema').build();
+  template.addChild(model, model.createDeploymentBuilder('Part').build());
+  const nested: any = structuredClone(writers.getTemplateWriter().getAsJsonNode(template));
+  nested.properties.Part[key] = value;
+  expect(SchemaArtifactValidator.structure(nested).canSave).toBe(valid);
+});

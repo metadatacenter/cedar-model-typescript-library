@@ -1,0 +1,192 @@
+type: template
+name: "Nested Elements Template"
+id: "https://repo.metadatacenter.org/templates/ccd36336-0a7e-4de7-a1ac-9b7904140494"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+createdOn: "2022-04-19T11:12:02-07:00"
+createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+modifiedOn: "2022-04-19T11:12:17-07:00"
+modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+children:
+  - key: "Element 1"
+    type: element
+    name: "Element 1"
+    id: "https://repo.metadatacenter.org/template-elements/35208d0d-9b98-482f-bddb-05d8e96ed9a5"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    createdOn: "2022-04-19T11:11:22-07:00"
+    createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    modifiedOn: "2022-04-19T11:16:17-07:00"
+    modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    children:
+      - key: "Element 2"
+        type: element
+        name: "Element 2"
+        id: "https://repo.metadatacenter.org/template-elements/e7a4b826-9c30-4914-8c54-7f7de0328b77"
+        status: draft
+        version: 0.0.1
+        modelVersion: 1.6.0
+        createdOn: "2022-04-19T11:16:17-07:00"
+        createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+        modifiedOn: "2022-04-19T11:16:17-07:00"
+        modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+        children:
+          - key: "Element 3"
+            type: element
+            name: "Element 3"
+            id: "https://repo.metadatacenter.org/template-elements/2c8299ad-2e9d-4a3b-8d88-5eeccc3196da"
+            status: draft
+            version: 0.0.1
+            modelVersion: 1.6.0
+            createdOn: "2022-04-19T11:15:36-07:00"
+            createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+            modifiedOn: "2022-04-19T11:15:36-07:00"
+            modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+            children:
+              - key: "Sample Text"
+                type: controlled-term-field
+                name: "Sample Text"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/9c65b3d7-285e-4712-ab07-3d2b2a97205a"
+                modelVersion: 1.6.0
+                datatype: iri
+                values:
+                  - type: branch
+                    sourceAcronym: "NCIT"
+                    sourceName: "undefined (NCIT)"
+                    termBaseIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C3224"
+                    termBaseLabel: "Melanoma"
+                    termMaxDepth: 0
+                createdOn: "2022-04-19T11:13:52-07:00"
+                createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+                modifiedOn: "2022-04-19T11:13:52-07:00"
+                modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+                configuration:
+                  propertyIri: "https://schema.metadatacenter.org/properties/90136184-431a-415e-bc97-ff541683f55e"
+                  multiple: true
+                  minItems: 1
+              - key: "Sample Datetime"
+                type: temporal-field
+                name: "Sample Datetime"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/dc99f196-deb6-41f6-8421-b7525f812635"
+                modelVersion: 1.6.0
+                datatype: xsd:dateTime
+                granularity: second
+                inputTimeFormat: 12h
+                inputTimeZone: true
+                createdOn: "2022-04-19T11:13:52-07:00"
+                createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+                modifiedOn: "2022-04-19T11:13:52-07:00"
+                modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+                configuration:
+                  propertyIri: "https://schema.metadatacenter.org/properties/a6488127-223c-46c3-9684-210d0f1dff61"
+                  multiple: true
+                  minItems: 1
+              - key: "Sample Checkbox"
+                type: checkbox-field
+                name: "Sample Checkbox"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/0ed956d4-197a-4cf7-a806-d114fba0607e"
+                modelVersion: 1.6.0
+                values:
+                  - label: "Option 1"
+                  - label: "Option 2"
+                    selected: true
+                  - label: "Option 3"
+                createdOn: "2022-04-19T11:13:52-07:00"
+                createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+                modifiedOn: "2022-04-19T11:13:52-07:00"
+                modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+                configuration:
+                  required: true
+                  propertyIri: "https://schema.metadatacenter.org/properties/6467a2f6-c6d3-4775-a63c-54aa66e2a371"
+                  minItems: 1
+              - key: "Untitled"
+                type: static-youtube-video
+                name: "Untitled"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/8effd615-dcfa-4dbd-8e58-64f67402babd"
+                modelVersion: 1.6.0
+                content: "XjI8HyUqe4w"
+                createdOn: "2022-04-19T11:13:52-07:00"
+                createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+                modifiedOn: "2022-04-19T11:13:52-07:00"
+                modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+              - key: "Sample Attribute Value"
+                type: attribute-value-field
+                name: "Sample Attribute Value"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/303949e5-7d99-4305-afdd-4ff6ba9ecc61"
+                modelVersion: 1.6.0
+                createdOn: "2022-04-19T11:13:52-07:00"
+                createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+                modifiedOn: "2022-04-19T11:13:52-07:00"
+                modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+                configuration:
+                  minItems: 0
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/d273e47a-cfcd-4784-bee7-754e3a11ad47"
+              multiple: true
+              minItems: 1
+          - key: "Paragraph Field in Element 2"
+            type: text-area-field
+            name: "Paragraph Field in Element 2"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/de66f388-ab06-493b-b26c-207a7faf0c01"
+            modelVersion: 1.6.0
+            createdOn: "2022-04-19T11:15:36-07:00"
+            createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+            modifiedOn: "2022-04-19T11:15:36-07:00"
+            modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/df834378-d6fe-4c48-965e-49a20645cbb9"
+          - key: "Text Field in Element 2"
+            type: text-field
+            name: "Text Field in Element 2"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/9c6051d7-470d-44b5-9ccc-2b1fddbdb334"
+            modelVersion: 1.6.0
+            createdOn: "2022-04-19T11:15:36-07:00"
+            createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+            modifiedOn: "2022-04-19T11:15:36-07:00"
+            modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/6585f8b2-177f-4a38-87cf-d4007b2393f0"
+              multiple: true
+              minItems: 1
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/90ed824b-8a53-4422-ab5c-8373d04849af"
+          multiple: true
+          minItems: 0
+      - key: "Multiple Text in Element 1"
+        type: text-field
+        name: "Multiple Text in Element 1"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/165d5277-a603-4bfe-829a-3057c7d62a72"
+        modelVersion: 1.6.0
+        createdOn: "2022-04-19T11:16:17-07:00"
+        createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+        modifiedOn: "2022-04-19T11:16:17-07:00"
+        modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/d68978ff-e81f-4cc3-8c10-a4538ed99afa"
+          multiple: true
+          minItems: 0
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/fd55ba0e-4cb1-4c74-8ea5-1d64acac98d1"
+  - key: "Numeric Field in Template"
+    type: numeric-field
+    name: "Numeric Field in Template"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/03dc064a-0fd4-4144-944e-45f715489a71"
+    modelVersion: 1.6.0
+    datatype: xsd:decimal
+    createdOn: "2022-04-19T11:12:17-07:00"
+    createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    modifiedOn: "2022-04-19T11:12:17-07:00"
+    modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/f87b62e3-0807-4195-8727-206fa510e7be"

@@ -34,14 +34,11 @@ export const TRIP_FAMILIES: Readonly<Record<string, readonly TripFamily[]>> = {
     'instance-022',
     'instance-023',
     'cee-instance-002',
-    'cee-instance-004',
     'cee-instance-013',
     'cee-instance-016',
-    'cee-instance-020',
     'cee-instance-029',
     'cee-instance-046',
     'cee-instance-057',
-    'cee-instance-059',
     'cee-instance-060',
     'cee-instance-063',
     'cee-instance-071',
@@ -53,6 +50,8 @@ export const TRIP_FAMILIES: Readonly<Record<string, readonly TripFamily[]>> = {
 
 /** Cases the comparison cannot run on, and why. */
 export const TRIP_EXCLUSIONS: Readonly<Record<string, string>> = {
+  'cee-template-004': 'an integer field states decimal places, which the strict readers refuse, as Java does',
+  'cee-instance-004': 'its template is cee-template-004, which the strict readers refuse',
   'cee-template-086': 'deliberately malformed JSON, which the CEE reference test holds the reader to refusing',
   'instance-008': 'its template, https://repo.metadatacenter.org/templates/e26d7ff6-3a92-4445-85e4-fb2648c62500, is in no corpus case',
 };

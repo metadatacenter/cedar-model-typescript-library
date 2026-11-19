@@ -1,0 +1,64 @@
+{
+  "@id": null,
+  "schema:name": "Metadata for file 20230202_project23_DATA_transformcopy.csv",
+  "schema:description": "",
+  "Data File Titles": [
+    {
+      "@id": null,
+      "Title": {
+        "@value": "Developing Novel Strategies to Increase COVID-19 Testing Among Underserved and Vulnerable Populations in West Virginia Through Community and State Partnerships"
+      },
+      "Language": {
+        "@value": "de"
+      },
+      "@context": {
+        "Title": "http://purl.org/radx-terms/metadata-terms/title",
+        "Language": "http://purl.org/radx-terms/metadata-terms/language"
+      }
+    }
+  ],
+  "@context": {
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "pav": "http://purl.org/pav/",
+    "schema": "http://schema.org/",
+    "oslc": "http://open-services.net/ns/core#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "rdfs:label": {
+      "@type": "xsd:string"
+    },
+    "schema:isBasedOn": {
+      "@type": "@id"
+    },
+    "schema:name": {
+      "@type": "xsd:string"
+    },
+    "schema:description": {
+      "@type": "xsd:string"
+    },
+    "pav:derivedFrom": {
+      "@type": "@id"
+    },
+    "pav:createdOn": {
+      "@type": "xsd:dateTime"
+    },
+    "pav:createdBy": {
+      "@type": "@id"
+    },
+    "pav:lastUpdatedOn": {
+      "@type": "xsd:dateTime"
+    },
+    "oslc:modifiedBy": {
+      "@type": "@id"
+    },
+    "skos:notation": {
+      "@type": "xsd:string"
+    },
+    "Data File Titles": "http://purl.org/radx-terms/metadata-terms/titleDescriptor"
+  },
+  "schema:isBasedOn": "https://repo.metadatacenter.org/templates/c691629c-1183-4425-9a12-26201eab1a10",
+  "pav:createdOn": null,
+  "pav:createdBy": null,
+  "pav:lastUpdatedOn": null,
+  "oslc:modifiedBy": null
+}

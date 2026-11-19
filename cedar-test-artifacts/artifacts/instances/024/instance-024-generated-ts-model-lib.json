@@ -1,0 +1,91 @@
+{
+  "@id": "https://repo.metadatacenter.org/template-instances/3b8e1f6d-2a9c-4e70-8d15-7c4a0b9e2f61",
+  "schema:name": "Versioned Constraints and Stated Keys metadata",
+  "schema:description": "",
+  "Disease": {
+    "@id": "http://purl.obolibrary.org/obo/DOID_9352",
+    "rdfs:label": "type 2 diabetes mellitus"
+  },
+  "Note": {
+    "@value": "Observed at intake"
+  },
+  "Site": {
+    "@id": "https://repo.metadatacenter.org/template-element-instances/1c6f2e8a-7b3d-4e59-a0c4-9d8e2f1b6a73",
+    "Street": {
+      "@value": "Main Street"
+    },
+    "@context": {
+      "Street": "https://schema.metadatacenter.org/properties/street"
+    }
+  },
+  "Visits": [
+    {
+      "@id": "https://repo.metadatacenter.org/template-element-instances/4a9b3c2d-1e8f-4d67-b5a0-6c7e9f2d1b48",
+      "Species": {
+        "@id": "http://purl.obolibrary.org/obo/NCBITaxon_9606",
+        "rdfs:label": "Homo sapiens"
+      },
+      "@context": {
+        "Species": "https://schema.metadatacenter.org/properties/species"
+      }
+    },
+    {
+      "@id": "https://repo.metadatacenter.org/template-element-instances/8e2d7f1a-5c3b-4a96-9d04-2b6f8e1c7a95",
+      "Species": {
+        "@id": "http://purl.obolibrary.org/obo/NCBITaxon_63221",
+        "rdfs:label": "Homo sapiens neanderthalensis",
+        "skos:notation": "NEAN"
+      },
+      "@context": {
+        "Species": "https://schema.metadatacenter.org/properties/species"
+      }
+    }
+  ],
+  "@context": {
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "pav": "http://purl.org/pav/",
+    "schema": "http://schema.org/",
+    "oslc": "http://open-services.net/ns/core#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "rdfs:label": {
+      "@type": "xsd:string"
+    },
+    "schema:isBasedOn": {
+      "@type": "@id"
+    },
+    "schema:name": {
+      "@type": "xsd:string"
+    },
+    "schema:description": {
+      "@type": "xsd:string"
+    },
+    "pav:derivedFrom": {
+      "@type": "@id"
+    },
+    "pav:createdOn": {
+      "@type": "xsd:dateTime"
+    },
+    "pav:createdBy": {
+      "@type": "@id"
+    },
+    "pav:lastUpdatedOn": {
+      "@type": "xsd:dateTime"
+    },
+    "oslc:modifiedBy": {
+      "@type": "@id"
+    },
+    "skos:notation": {
+      "@type": "xsd:string"
+    },
+    "Disease": "https://schema.metadatacenter.org/properties/disease",
+    "Note": "https://schema.metadatacenter.org/properties/note",
+    "Site": "https://schema.metadatacenter.org/properties/site",
+    "Visits": "https://schema.metadatacenter.org/properties/visits"
+  },
+  "schema:isBasedOn": "https://repo.metadatacenter.org/templates/5d3a6b0e-91f4-4c2a-b7d8-2e6f0a1c9b54",
+  "pav:createdOn": "2026-11-16T12:30:00-08:00",
+  "pav:createdBy": "https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95",
+  "pav:lastUpdatedOn": "2026-11-16T12:30:00-08:00",
+  "oslc:modifiedBy": "https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95"
+}

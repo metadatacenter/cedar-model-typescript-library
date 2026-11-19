@@ -1,0 +1,21 @@
+type: template
+name: "email field"
+id: "https://repo.metadatacenter.org/templates/a2386a85-e024-471d-b9e1-d06b41a5d431"
+children:
+  - key: "Optional"
+    type: email-field
+    name: "Optional"
+    description: "Help Text"
+  - key: "Required"
+    type: email-field
+    name: "Required"
+    description: "Help Text"
+    configuration:
+      required: true
+  - key: "Multiple"
+    type: email-field
+    name: "Multiple"
+    description: "Help Text"
+    configuration:
+      multiple: true
+      minItems: 1

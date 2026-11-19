@@ -1,0 +1,31 @@
+type: template
+name: "text field with constraints"
+id: "https://repo.metadatacenter.org/templates/d91ff34a-ef2f-4921-8d74-a1aa97ce7522"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+createdOn: "2020-11-11T16:20:05-08:00"
+createdBy: "https://metadatacenter.org/users/2fa8910d-96e7-4e2f-ae60-4dfa8ec9877d"
+modifiedOn: "2020-11-11T16:20:05-08:00"
+modifiedBy: "https://metadatacenter.org/users/2fa8910d-96e7-4e2f-ae60-4dfa8ec9877d"
+children:
+  - key: "Text Field"
+    type: text-field
+    name: "Text Field"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/4f5e77bc-3563-47eb-81e8-4c54d1d9d635"
+    modelVersion: 1.6.0
+    altLabels:
+      - "alternate label 1"
+      - "alternate label 2"
+      - "alternate label 3"
+    default: "default"
+    minLength: 2
+    maxLength: 10
+    createdOn: "2020-11-11T16:20:05-08:00"
+    createdBy: "https://metadatacenter.org/users/2fa8910d-96e7-4e2f-ae60-4dfa8ec9877d"
+    modifiedOn: "2020-11-11T16:20:05-08:00"
+    modifiedBy: "https://metadatacenter.org/users/2fa8910d-96e7-4e2f-ae60-4dfa8ec9877d"
+    configuration:
+      required: true
+      propertyIri: "https://schema.metadatacenter.org/properties/b3ec7367-6bf4-4615-b87d-406a66e6806e"

@@ -1,0 +1,73 @@
+type: template
+name: "checkbox"
+id: "https://repo.metadatacenter.org/templates/64de739b-6430-4a6b-8bfa-3a881be62031"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+derivedFrom: "https://repo.metadatacenter.org/templates/a1bcf67e-b497-43ab-bebb-32f8cfb11a4a"
+createdOn: "2021-12-24T13:53:09-08:00"
+createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+modifiedOn: "2021-12-26T09:13:15-08:00"
+modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+children:
+  - key: "Checkbox Element"
+    type: element
+    name: "Checkbox Element"
+    id: "https://repo.metadatacenter.org/template-elements/bf92d45c-4141-4edf-86df-fa05591dedc8"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    createdOn: "2021-12-24T13:54:06-08:00"
+    createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    modifiedOn: "2021-12-26T09:14:37-08:00"
+    modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    children:
+      - key: "Checkbox in Element"
+        type: checkbox-field
+        name: "Checkbox in Element"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/8c54621f-17e3-4723-9bb9-0632b1db33ed"
+        modelVersion: 1.6.0
+        values:
+          - label: "Option 1"
+            selected: true
+          - label: "Option 2"
+          - label: "Option 3"
+          - label: "Option 4"
+            selected: true
+          - label: "Option 5"
+            selected: true
+        createdOn: "2021-12-26T09:14:37-08:00"
+        createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+        modifiedOn: "2021-12-26T09:14:37-08:00"
+        modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/97ff4997-8092-4230-8581-e26abf5d5ceb"
+          minItems: 1
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/8de74d7f-aa17-466f-a2b4-b19db6eb6a46"
+      multiple: true
+      minItems: 1
+  - key: "Checkbox Standalone"
+    type: checkbox-field
+    name: "Checkbox Standalone"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/c1e398cd-08aa-4f7c-8a9e-40abba0408ad"
+    modelVersion: 1.6.0
+    values:
+      - label: "Option 1"
+      - label: "Option 2"
+      - label: "Option 3"
+        selected: true
+      - label: "Option 4"
+        selected: true
+      - label: "Option 5"
+        selected: true
+    createdOn: "2021-12-26T09:13:15-08:00"
+    createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    modifiedOn: "2021-12-26T09:13:15-08:00"
+    modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    configuration:
+      required: true
+      propertyIri: "https://schema.metadatacenter.org/properties/70975964-ec7f-4d90-9a22-8afb74ab9963"
+      minItems: 1

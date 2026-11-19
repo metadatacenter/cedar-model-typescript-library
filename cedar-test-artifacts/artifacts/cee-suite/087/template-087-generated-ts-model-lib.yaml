@@ -1,0 +1,163 @@
+type: template
+name: "Testing Record"
+description: "unique demo template for testing on OSF"
+id: "https://repo.metadatacenter.org/templates/4af9bd9e-8d72-4699-88c9-f4ff3bb655e5"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+derivedFrom: "https://repo.metadatacenter.net/templates/5a7470be-6003-4d1d-b4cc-3af47494ae72"
+createdOn: "2024-02-05T09:07:50-08:00"
+createdBy: "https://metadatacenter.org/users/dc97235e-b510-4f0c-b416-c9e76b280f74"
+modifiedOn: "2024-02-05T09:11:35-08:00"
+modifiedBy: "https://metadatacenter.org/users/dc97235e-b510-4f0c-b416-c9e76b280f74"
+children:
+  - key: "bioCADDIEDatasetIsh"
+    type: element
+    name: "BioCADDIE Dataset Ish"
+    description: "Dataset components used by BioCADDIE"
+    id: "https://repo.metadatacenter.net/template-elements/2ddd6ffe-3db9-482c-aeb8-796767e9b0a1"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    createdOn: "2024-02-05T09:11:35-08:00"
+    createdBy: "https://metadatacenter.org/users/dc97235e-b510-4f0c-b416-c9e76b280f74"
+    modifiedOn: "2024-02-05T09:11:35-08:00"
+    modifiedBy: "https://metadatacenter.org/users/dc97235e-b510-4f0c-b416-c9e76b280f74"
+    prefLabel: "Dataset name"
+    children:
+      - key: "resolvableDatasetID"
+        type: text-field
+        name: "Resolvable Dataset Id"
+        id: "https://repo.metadatacenter.net/template-fields/71507660-0f94-4eca-88c2-7d4469f5f3a1"
+        modelVersion: 1.6.0
+        createdOn: "2016-09-14T22:00:46-07:00"
+        createdBy: "https://repo.metadatacenter.net/users/1adf5ee5-cee0-47d1-9769-efbe00cdebee"
+        modifiedOn: "2016-09-14T22:00:46-07:00"
+        modifiedBy: "https://repo.metadatacenter.net/users/1adf5ee5-cee0-47d1-9769-efbe00cdebee"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.net/properties/resolvableDatasetID"
+      - key: "datasetTitle"
+        type: text-field
+        name: "Dataset Title"
+        description: "Name of the data set"
+        id: "https://repo.metadatacenter.net/template-fields/10860e85-0156-4f6d-9b11-9af58f1692e9"
+        modelVersion: 1.6.0
+        createdOn: "2016-09-14T22:00:46-07:00"
+        createdBy: "https://repo.metadatacenter.net/users/1adf5ee5-cee0-47d1-9769-efbe00cdebee"
+        modifiedOn: "2016-09-14T22:00:46-07:00"
+        modifiedBy: "https://repo.metadatacenter.net/users/1adf5ee5-cee0-47d1-9769-efbe00cdebee"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.net/properties/datasetTitle"
+      - key: "dataType"
+        type: radio-field
+        name: "Data Type"
+        description: "What kind of data is represented in this dataset?"
+        id: "https://repo.metadatacenter.net/template-fields/ce7bd634-c22c-4d4c-9c34-44d97fa60ff1"
+        modelVersion: 1.6.0
+        values:
+          - label: "Protein Structure"
+          - label: "Physiological Signals"
+          - label: "Morphology"
+          - label: "Nucleotide Sequence"
+          - label: "Phenotype"
+          - label: "Clinical Trials"
+          - label: "Proteomics Data"
+          - label: "Gene Expression"
+          - label: "Imaging Data"
+          - label: "Unspecified"
+        createdOn: "2016-09-14T22:00:46-07:00"
+        createdBy: "https://repo.metadatacenter.net/users/1adf5ee5-cee0-47d1-9769-efbe00cdebee"
+        modifiedOn: "2016-09-14T22:00:46-07:00"
+        modifiedBy: "https://repo.metadatacenter.net/users/1adf5ee5-cee0-47d1-9769-efbe00cdebee"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.net/properties/dataType"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.net/properties/bioCADDIEDatasetIsh"
+      overrideLabel: "Dataset name"
+  - key: "Injury Type"
+    type: controlled-term-field
+    name: "Injury Type"
+    description: "Type of injury associated with the field"
+    id: "https://repo.metadatacenter.net/template-fields/06294f54-d1fa-440e-b014-7330f4644193"
+    modelVersion: 1.6.0
+    datatype: iri
+    values:
+      - type: branch
+        sourceAcronym: "NCIT"
+        sourceName: "National Cancer Institute Thesaurus (NCIT)"
+        termBaseIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C3671"
+        termBaseLabel: "Injury"
+        termMaxDepth: 0
+    createdOn: "2024-02-05T09:11:35-08:00"
+    createdBy: "https://metadatacenter.org/users/dc97235e-b510-4f0c-b416-c9e76b280f74"
+    modifiedOn: "2024-02-05T09:11:35-08:00"
+    modifiedBy: "https://metadatacenter.org/users/dc97235e-b510-4f0c-b416-c9e76b280f74"
+    configuration:
+      required: true
+      propertyIri: "https://schema.metadatacenter.net/properties/injuryType"
+  - key: "dataset"
+    type: element
+    name: "Dataset"
+    description: "Dataset description"
+    id: "https://repo.metadatacenter.net/template-elements/6e64fb01-2315-4887-8b55-dfc3d65b4df9"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    createdOn: "2024-02-05T09:11:35-08:00"
+    createdBy: "https://metadatacenter.org/users/dc97235e-b510-4f0c-b416-c9e76b280f74"
+    modifiedOn: "2024-02-05T09:11:35-08:00"
+    modifiedBy: "https://metadatacenter.org/users/dc97235e-b510-4f0c-b416-c9e76b280f74"
+    children:
+      - key: "datasetName"
+        type: text-field
+        name: "Dataset Name"
+        id: "https://repo.metadatacenter.net/template-fields/693cb0ee-1667-462c-94bf-50b430a609c9"
+        modelVersion: 1.6.0
+        createdOn: "2016-10-04T13:04:34-07:00"
+        createdBy: "https://repo.metadatacenter.net/users/1a2624ed-7d03-4aac-bf6c-fe57aed5498a"
+        modifiedOn: "2016-10-04T13:04:34-07:00"
+        modifiedBy: "https://repo.metadatacenter.net/users/1a2624ed-7d03-4aac-bf6c-fe57aed5498a"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.net/properties/datasetName"
+      - key: "dataLevel"
+        type: checkbox-field
+        name: "Data Level"
+        id: "https://repo.metadatacenter.net/template-fields/196af886-bb63-4be1-be20-50af3e55d023"
+        modelVersion: 1.6.0
+        values:
+          - label: "0"
+          - label: "1"
+          - label: "2"
+          - label: "3"
+          - label: "4"
+        createdOn: "2016-10-04T13:04:34-07:00"
+        createdBy: "https://repo.metadatacenter.net/users/1a2624ed-7d03-4aac-bf6c-fe57aed5498a"
+        modifiedOn: "2016-10-04T13:04:34-07:00"
+        modifiedBy: "https://repo.metadatacenter.net/users/1a2624ed-7d03-4aac-bf6c-fe57aed5498a"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.net/properties/dataLevel"
+          minItems: 1
+    configuration:
+      propertyIri: "https://schema.metadatacenter.net/properties/dataset"
+  - key: "Cell Type"
+    type: controlled-term-field
+    name: "Cell Type"
+    description: "Type of the cell"
+    id: "https://repo.metadatacenter.net/template-fields/d26e3210-fd34-42e9-9dd3-7e8afa831ead"
+    modelVersion: 1.6.0
+    datatype: iri
+    values:
+      - type: branch
+        sourceAcronym: "EFO"
+        sourceName: "Experimental Factor Ontology (EFO)"
+        termBaseIri: "http://www.ebi.ac.uk/efo/EFO_0000324"
+        termBaseLabel: "cell type"
+        termMaxDepth: 0
+    createdOn: "2024-02-05T09:11:35-08:00"
+    createdBy: "https://metadatacenter.org/users/dc97235e-b510-4f0c-b416-c9e76b280f74"
+    modifiedOn: "2024-02-05T09:11:35-08:00"
+    modifiedBy: "https://metadatacenter.org/users/dc97235e-b510-4f0c-b416-c9e76b280f74"
+    configuration:
+      required: true
+      propertyIri: "https://schema.metadatacenter.net/properties/cellType"

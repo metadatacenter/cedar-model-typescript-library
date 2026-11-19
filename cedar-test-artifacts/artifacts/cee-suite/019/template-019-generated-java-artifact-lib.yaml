@@ -1,0 +1,107 @@
+type: template
+name: "paragraph"
+description: "paragraph template"
+id: "https://repo.metadatacenter.org/templates/8ef9346f-08d1-4dd7-89ff-0a3cd6457b57"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+createdOn: "2022-01-10T15:03:26-08:00"
+createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+modifiedOn: "2022-01-11T07:09:40-08:00"
+modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+children:
+  - key: "Paragraph Element"
+    type: element
+    name: "Paragraph Element"
+    id: "https://repo.metadatacenter.org/template-elements/bbf7902d-4453-457b-ad58-64920ef97446"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    createdOn: "2022-01-11T07:09:40-08:00"
+    createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    modifiedOn: "2022-01-11T07:09:40-08:00"
+    modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    children:
+      - key: "Paragraph Field Multiple Inside Element"
+        type: text-area-field
+        name: "Paragraph Field Multiple Inside Element"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/a26a99d3-ebdc-4048-8b41-70b7eaf1a540"
+        modelVersion: 1.6.0
+        createdOn: "2022-01-11T07:09:15-08:00"
+        createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+        modifiedOn: "2022-01-11T07:09:15-08:00"
+        modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/d5c3a923-d727-46b8-a2b2-a7cf3620c1e4"
+          multiple: true
+          minItems: 1
+      - key: "Section Break"
+        type: static-section-break
+        name: "Section Break"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/88fec81a-8583-4d33-a3c0-5fefd1222ffb"
+        modelVersion: 1.6.0
+        createdOn: "2022-01-11T07:09:15-08:00"
+        createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+        modifiedOn: "2022-01-11T07:09:15-08:00"
+        modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+      - key: "Text Field in Paragraph Element"
+        type: text-field
+        name: "Text Field in Paragraph Element"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/22853354-62b6-4365-aa12-05f12c8f35e6"
+        modelVersion: 1.6.0
+        createdOn: "2022-01-11T07:09:15-08:00"
+        createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+        modifiedOn: "2022-01-11T07:09:15-08:00"
+        modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/c2984dad-126b-4857-ae1c-983d15d59f11"
+          multiple: true
+          minItems: 1
+      - key: "Numeric Field Multiple Inside Paragraph Element"
+        type: numeric-field
+        name: "Numeric Field Multiple Inside Paragraph Element"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/6d244a83-fa46-4723-adb5-6fc75c2fea2a"
+        modelVersion: 1.6.0
+        datatype: xsd:double
+        createdOn: "2022-01-11T07:09:15-08:00"
+        createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+        modifiedOn: "2022-01-11T07:09:15-08:00"
+        modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/255526ef-b5dd-48c7-9f21-df5718dcfe5b"
+          multiple: true
+          minItems: 1
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/f441b4d8-4761-4a38-a762-86a811fd6b8a"
+      multiple: true
+      minItems: 1
+  - key: "Page Break"
+    type: static-page-break
+    name: "Page Break"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/7e15a2b9-260a-4c35-add0-0599efc672ab"
+    modelVersion: 1.6.0
+    createdOn: "2022-01-11T07:09:40-08:00"
+    createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    modifiedOn: "2022-01-11T07:09:40-08:00"
+    modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+  - key: "Paragraph Standalone"
+    type: text-area-field
+    name: "Paragraph Standalone"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/bde97b7e-7ab9-4cd6-85f2-17738a3020c6"
+    modelVersion: 1.6.0
+    createdOn: "2022-01-11T07:09:40-08:00"
+    createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    modifiedOn: "2022-01-11T07:09:40-08:00"
+    modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    configuration:
+      required: true
+      propertyIri: "https://schema.metadatacenter.org/properties/fbb24fcd-ed7d-4d13-8eac-f69efde87922"
+      multiple: true
+      minItems: 1

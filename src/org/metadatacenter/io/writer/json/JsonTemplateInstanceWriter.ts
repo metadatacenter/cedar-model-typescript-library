@@ -7,6 +7,7 @@ import { ReaderUtil } from '../../reader/ReaderUtil';
 import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
 import { CedarModel } from '../../../model/cedar/constants/CedarModel';
 import { JsonNode } from '../../../model/cedar/types/basic-types/JsonNode';
+import { StoredForm } from '../../../model/cedar/template-instance/StoredForm';
 import { CedarJsonWriters } from './CedarJsonWriters';
 import { JsonAbstractArtifactWriter } from './JsonAbstractArtifactWriter';
 import { TemplateInstance } from '../../../model/cedar/template-instance/TemplateInstance';
@@ -137,6 +138,17 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
   }
 
   /**
+   * A standalone element instance's data, written as a nested element occurrence is: its `@id`, its
+   * `@type`, its children and its `@context`. `JsonElementInstanceWriter` writes the rest of the document.
+   */
+  public getElementInstanceDataNode(dataContainer: InstanceDataContainer): JsonNode {
+    AttributeValueNamePolicy.assertValid(dataContainer, 'element');
+    const into: JsonNode = JsonNode.getEmpty();
+    this.serializeDataLevelInto(dataContainer, into);
+    return into;
+  }
+
+  /**
    * One value atom as the JSON a CEDAR instance carries.
    *
    * The mirror of `JsonTemplateInstanceReader.readValueNode`, and public for
@@ -145,7 +157,35 @@ export class JsonTemplateInstanceWriter extends JsonAbstractArtifactWriter {
    * 'rdfs:label': …}` there — and the two ends drift. Values only; an element
    * is a container and needs a writer with the rest of the instance in hand.
    */
+  /** The order both libraries write a value's keys in. */
+  private static readonly VALUE_KEY_ORDER = [
+    JsonSchema.atId,
+    JsonSchema.atValue,
+    JsonSchema.rdfsLabel,
+    JsonSchema.atType,
+    JsonSchema.atLanguage,
+    JsonSchema.skosNotation,
+    CedarModel.skosPrefLabel,
+  ];
+
   public static writeValueNode(atom: InstanceDataAtomType): JsonNode | null {
+    const node = this.writeValueNodeWithKeys(atom);
+    if (node === null || atom === null || typeof atom !== 'object') return node;
+    // A stated null the stored template requires is kept, where the model holds no value for the key.
+    const kept = StoredForm.keptNullsOf(atom).filter((key) => !Object.hasOwn(node, key));
+    if (kept.length === 0) return node;
+    const ordered: JsonNode = JsonNode.getEmpty();
+    for (const key of JsonTemplateInstanceWriter.VALUE_KEY_ORDER) {
+      if (Object.hasOwn(node, key)) ordered[key] = node[key];
+      else if (kept.includes(key)) ordered[key] = null;
+    }
+    Object.keys(node).forEach((key) => {
+      if (!Object.hasOwn(ordered, key)) ordered[key] = node[key];
+    });
+    return ordered;
+  }
+
+  private static writeValueNodeWithKeys(atom: InstanceDataAtomType): JsonNode | null {
     const node = this.writeValueNodeWithoutNotation(atom);
     if (node !== null && 'language' in atom && atom.language !== null) {
       node[JsonSchema.atLanguage] = atom.language;

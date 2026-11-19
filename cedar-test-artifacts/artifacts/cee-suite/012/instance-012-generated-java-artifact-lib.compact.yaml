@@ -1,0 +1,19 @@
+type: instance
+name: "cee-instance-012"
+isBasedOn: "https://repo.metadatacenter.org/templates/f7c65a2a-4345-4e4e-8d6d-aee3fa906aa4"
+children:
+  Multi Select Element:
+    - children:
+        Multi Select in Element:
+          - value: "Option 1"
+          - value: "Option 2"
+          - value: "Option 3"
+    - children:
+        Multi Select in Element:
+          - value: "Option 3"
+          - value: "Option 4"
+          - value: "Option 5"
+  Multi Select Standalone:
+    - value: "Option 1"
+    - value: "Option 3"
+    - value: "Option 5"

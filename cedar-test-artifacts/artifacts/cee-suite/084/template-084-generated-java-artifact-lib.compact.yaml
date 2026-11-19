@@ -1,0 +1,28 @@
+type: template
+name: "Template four level deep"
+id: "https://repo.metadatacenter.org/templates/f18cda36-0827-412c-86f6-14f7232a076b"
+children:
+  - key: "Element 3"
+    type: element
+    name: "Element 3"
+    children:
+      - key: "Element 2"
+        type: element
+        name: "Element 2"
+        children:
+          - key: "Element 1"
+            type: element
+            name: "Element 1"
+            children:
+              - key: "Text 1"
+                type: text-field
+                name: "Text 1"
+                description: "Help Text"
+            configuration:
+              multiple: true
+              minItems: 1
+              maxItems: 3
+        configuration:
+          multiple: true
+          minItems: 0
+          maxItems: 4

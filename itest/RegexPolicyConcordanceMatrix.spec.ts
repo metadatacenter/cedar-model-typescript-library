@@ -27,7 +27,9 @@ function factory(source = REGEX_WORKER_SOURCE): RegexWorker {
 }
 let policy: RegexPolicy;
 beforeEach(() => {
-  policy = new RegexPolicy({ workerFactory: factory, workTimeoutMs: 50 });
+  // Corpus parity uses the production work budget. Its verdict must not depend
+  // on an artificially short deadline while coverage and other gates run.
+  policy = new RegexPolicy({ workerFactory: factory });
 });
 afterEach(() => policy.dispose());
 test('pins the normative regex corpus to Java', () => {
@@ -39,6 +41,8 @@ test.each(corpus.cases)('$id', async ({ pattern, value, expected }) => {
   expect(await policy.evaluate(pattern, value)).toBe(expected);
 });
 test('terminates catastrophic evaluation and recovers for a queued request', async () => {
+  policy.dispose();
+  policy = new RegexPolicy({ workerFactory: factory, workTimeoutMs: 50 });
   const slow = policy.evaluate('(a+)+', 'a'.repeat(40) + '!');
   const next = policy.evaluate('a+', 'aaa');
   expect(await slow).toBe('timeout');

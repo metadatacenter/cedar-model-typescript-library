@@ -1,0 +1,37 @@
+type: template
+name: "image before field"
+id: "https://repo.metadatacenter.org/templates/4117fb71-864d-46a1-b1fd-525c66d7fdda"
+children:
+  - key: "Image name"
+    type: static-image
+    name: "Image name"
+    description: "Image help text"
+    prefLabel: "Image preferred label"
+    content: "https://metadatacenter.org/wp-content/uploads/2019/03/mobile-fallback-background-1500x812.png"
+  - key: "text 1"
+    type: text-field
+    name: "text 1"
+    description: "Help Text"
+  - key: "smaller image"
+    type: static-image
+    name: "smaller image"
+    description: "Help Text"
+    content: "https://pbs.twimg.com/profile_images/778668902482006016/ciRrerq2_400x400.jpg"
+  - key: "smaller image 2"
+    type: static-image
+    name: "smaller image 2"
+    description: "Help Text"
+    content: "https://pbs.twimg.com/profile_images/778668902482006016/ciRrerq2_400x400.jpg"
+  - key: "text2"
+    type: text-field
+    name: "text2"
+    description: "Help Text"
+  - key: "huge image"
+    type: static-image
+    name: "huge image"
+    description: "Help Text"
+    content: "https://pbs.twimg.com/media/DRBiA9sUQAAlMFi.jpg:large"
+  - key: "Section 2"
+    type: static-section-break
+    name: "Section 2"
+    description: "Help Text"

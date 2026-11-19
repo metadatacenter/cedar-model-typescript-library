@@ -1,0 +1,655 @@
+type: template
+name: "MiAIRR V1.1.0"
+description: "AIRR-seq data submission to the NCBI via the CEDAR Workbench. Aligns with MiAIRR spec Version 1.1.0: May 3, 2018."
+id: "https://repo.metadatacenter.org/templates/ea716306-5263-4f7a-9155-b7958f566933"
+children:
+  - key: "Submissions Release Date"
+    type: temporal-field
+    name: "Submissions Release Date"
+    description: "The date (in yyyy-mm-dd format) upon which all the submissions in this metadata form will be made publicly visible by NCBI. If this field is empty, submissions will be released immediately. (Note that release of an SRA submission also forces the release of referenced BioSample submission entries, and in turn release of the referenced BioProject.)"
+    datatype: xsd:date
+    granularity: day
+  - key: "BioProject for AIRR NCBI"
+    type: element
+    name: "BioProject for AIRR NCBI"
+    description: "Project description based on AIRR NCBI BioProject"
+    children:
+      - key: "Study ID"
+        type: text-field
+        name: "Study ID"
+        description: "Permanent identifier for each study (Example: 'PRJNA349')"
+        configuration:
+          required: true
+      - key: "Study Title"
+        type: text-field
+        name: "Study Title"
+        description: "Descriptive study title (Example: 'Effects of sun light exposure of the Treg repertoire')"
+        configuration:
+          required: true
+      - key: "Study Type"
+        type: controlled-term-field
+        name: "Study Type"
+        description: "Generic study design (Example: 'Controlled clinical trial'"
+        datatype: iri
+        values:
+          - type: branch
+            sourceAcronym: "NCIT"
+            sourceName: "National Cancer Institute Thesaurus (NCIT)"
+            termBaseIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C15320"
+            termBaseLabel: "Study Design"
+            termMaxDepth: 0
+          - type: valueSet
+            sourceAcronym: "CEDARVS"
+            termBaseIri: "http://data.bioontology.org/provisional_classes/71d8deb0-3457-0136-2939-005056010074"
+            termBaseLabel: "Negative Values"
+            termCount: 3
+        configuration:
+          required: true
+      - key: "Study Criteria"
+        type: text-field
+        name: "Study Criteria"
+        description: "List of criteria for inclusion/exclusion for the study (Example: 'Include: Clinical P. falciparum infection; Exclude: Seropositive for HIV')"
+      - key: "Funding Agency"
+        type: text-field
+        name: "Funding Agency"
+        description: "Funding agencies and grant numbers (Example: 'NIH, award number R01GM987654')"
+        configuration:
+          required: true
+      - key: "Contact Information (data collection)"
+        type: text-field
+        name: "Contact Information (data collection)"
+        description: "Full contact information of the corresponding author for this dataâ\x80\x94that is, the person who is legally responsible for data collection and release. This should include an e-mail address, which will be used as the account name which has access to this data record in NCBI. (Example: 'Peter Stibbons, p.stibbons@unseenu.edu, +1-987-654-3210')"
+        configuration:
+          required: true
+      - key: "Lab Name"
+        type: text-field
+        name: "Lab Name"
+        description: "Department of corresponding author responsible for data collection (Example: 'Department of Planar Immunology')"
+        configuration:
+          required: true
+      - key: "Lab Address"
+        type: text-field
+        name: "Lab Address"
+        description: "Institutional address of corresponding author responsible for data collection (Example: 'School of Medicine, Unseen University, Ankh-Morpork, Disk World')"
+      - key: "Relevant Publications"
+        type: text-field
+        name: "Relevant Publications"
+        description: "Publications describing the rationale and/or outcome of the study, using PubMed or other persistent globally unique identifiers (Example: 'PMID85642')"
+  - key: "BioSample for AIRR NCBI"
+    type: element
+    name: "BioSample for AIRR NCBI"
+    description: "AIRR-specific BioSample attributes"
+    children:
+      - key: "Subject"
+        type: static-section-break
+        name: "Subject"
+        description: "Metadata about the individual being studied"
+      - key: "Subject ID"
+        type: text-field
+        name: "Subject ID"
+        description: "Submitter-assigned identifier for a subject in a study, unique within study (encoded as 'isolate' in NCBI) (Example: 'SUB856413')"
+        configuration:
+          required: true
+      - key: "Synthetic Library"
+        type: radio-field
+        name: "Synthetic Library"
+        description: "TRUE for libraries in which the diversity has been synthetically generated (for example, phage display) (Example: 'FALSE')"
+        values:
+          - label: "TRUE"
+          - label: "FALSE"
+        configuration:
+          required: true
+      - key: "Organism"
+        type: controlled-term-field
+        name: "Organism"
+        description: "Binomial designation of experimental subject's species (Example: 'Homo sapiens')"
+        datatype: iri
+        values:
+          - type: ontology
+            sourceAcronym: "NCBITAXON-GNA"
+            sourceName: "NCBITAXON Gnathostomata Module"
+            termCount: 68674
+        configuration:
+          required: true
+      - key: "Sex"
+        type: text-field
+        name: "Sex"
+        description: "Biological sex of subject (Example: 'Female')"
+        configuration:
+          required: true
+      - key: "Age"
+        type: text-field
+        name: "Age"
+        description: "Absolute age of subject at time of 'Age Event'. If available, provide the age with the abbreviated SI unit (Examples: '65 a' = 65 annum (years), '23 w' = 23 weeks, '15 d' = 15 days)"
+        configuration:
+          required: true
+      - key: "Age Event"
+        type: text-field
+        name: "Age Event"
+        description: "Event in the study schedule to which 'Age' refers. For NCBI BioSample this MUST be 'sampling'. For other implementations submitters need to be aware that there is currently no mechanism to encode to potential delta between 'Age event' and 'Sample collection time', hence the chosen events should be in temporal proximity. (Example: 'sampling', 'enrollment') Use 'missing', 'not applicable', or 'not available' if needed."
+        configuration:
+          required: true
+      - key: "Ancestry Population"
+        type: text-field
+        name: "Ancestry Population"
+        description: "Broad geographic origin of ancestry (continent) (Example: list of continents, 'mixed', or 'unknown')"
+        configuration:
+          required: true
+      - key: "Ethnicity"
+        type: text-field
+        name: "Ethnicity"
+        description: "Ethnic group of subject (defined as cultural/language-based membership) (Example: 'English, Kurds, Manchu, Yakuts' (and other fields from Wikipedia))"
+        configuration:
+          required: true
+      - key: "Race"
+        type: text-field
+        name: "Race"
+        description: "Racial group of subject (as defined by NIH) (Examples: 'White', 'American Indian or Alaska Native', 'Black', 'Asian', 'Native Hawaiian or Other Pacific Islander', 'Other')"
+        configuration:
+          required: true
+      - key: "Strain Name"
+        type: text-field
+        name: "Strain Name"
+        description: "Non-human: designation of the strain or breed of animal used (Example: 'C57BL/6J')"
+        configuration:
+          required: true
+      - key: "Relation to Other Subjects"
+        type: text-field
+        name: "Relation to Other Subjects"
+        description: "Subject IDs to which `Relation Type` refers (Example: 'SUB1355648')"
+        configuration:
+          required: true
+      - key: "Relation Type"
+        type: text-field
+        name: "Relation Type"
+        description: "Relation between subject and linked subjects (through 'Related Subjects' field); can be genetic or environmental (for example, exposure) (Examples: 'father', 'daughter', 'household', 'donor')"
+        configuration:
+          required: true
+      - key: "Estimated Release Date"
+        type: temporal-field
+        name: "Estimated Release Date"
+        description: "Advisory only. The actual release date used by NCBI is set by the template's Submissions Release Date field."
+        datatype: xsd:date
+        granularity: day
+      - key: "Diagnosis"
+        type: static-section-break
+        name: "Diagnosis"
+        description: "Diagnosis and intervention metadata"
+      - key: "Study Group Description"
+        type: text-field
+        name: "Study Group Description"
+        description: "Designation of study arm to which the subject is assigned to (Example: 'control')"
+        configuration:
+          required: true
+      - key: "Diagnosis1"
+        type: controlled-term-field
+        name: "Diagnosis"
+        description: "Diagnosis of subject (Example: 'Multiple myeloma')"
+        datatype: iri
+        values:
+          - type: branch
+            sourceAcronym: "DOID"
+            sourceName: "Human Disease Ontology (DOID)"
+            termBaseIri: "http://purl.obolibrary.org/obo/DOID_4"
+            termBaseLabel: "disease"
+            termMaxDepth: 0
+        configuration:
+          required: true
+      - key: "Length of Disease"
+        type: text-field
+        name: "Length of Disease"
+        description: "Time duration between initial diagnosis and current intervention (Example: '23 months')"
+        configuration:
+          required: true
+      - key: "Disease Stage"
+        type: text-field
+        name: "Disease Stage"
+        description: "Stage of disease at current intervention (Example: 'Stage II')"
+        configuration:
+          required: true
+      - key: "Prior Therapies for Primary Disease under Study"
+        type: text-field
+        name: "Prior Therapies for Primary Disease under Study"
+        description: "List of all relevant previous therapies applied to subject for treatment of `Diagnosis` (Example: 'melphalan/prednisone')"
+        configuration:
+          required: true
+      - key: "Immunogen"
+        type: text-field
+        name: "Immunogen"
+        description: "Antigen, vaccine or drug applied to subject at this intervention (Example: 'bortezomib')"
+        configuration:
+          required: true
+      - key: "Intervention Definition"
+        type: text-field
+        name: "Intervention Definition"
+        description: "Description of intervention (Example: 'systemic chemotherapy, 6 cycles, 1.25 mg/m2')"
+        configuration:
+          required: true
+      - key: "Other Relevant Medical History"
+        type: text-field
+        name: "Other Relevant Medical History"
+        description: "Medical history of subject that is relevant to assess the course of disease and/or treatment (Example: 'MGUS, first diagnosed 5 years prior')"
+        configuration:
+          required: true
+      - key: "Biological Sample"
+        type: static-section-break
+        name: "Biological Sample"
+        description: "Biological Sample Metadata"
+      - key: "Sample ID"
+        type: text-field
+        name: "Sample ID"
+        description: "Sample ID assigned by submitter, unique within study ('sample name' in NCBI) (Example: 'SUP52415')"
+        configuration:
+          required: true
+      - key: "Sample Type"
+        type: text-field
+        name: "Sample Type"
+        description: "The way the sample was obtained, e.g. fine-needle aspirate, organ harvest, peripheral venous puncture (Example: 'Biopsy')"
+        configuration:
+          required: true
+      - key: "Tissue"
+        type: controlled-term-field
+        name: "Tissue"
+        description: "The actual tissue sampled, e.g. lymph node, liver, peripheral blood (Example: 'Bone marrow')"
+        datatype: iri
+        values:
+          - type: branch
+            sourceAcronym: "BTO"
+            sourceName: "BRENDA Tissue and Enzyme Source Ontology (BTO)"
+            termBaseIri: "http://purl.obolibrary.org/obo/BTO_0000000"
+            termBaseLabel: "tissues, cell types and enzyme sources"
+            termMaxDepth: 0
+        configuration:
+          required: true
+      - key: "Anatomic Site"
+        type: text-field
+        name: "Anatomic Site"
+        description: "The anatomic location of the tissue, e.g. Inguinal, femur (Example: 'Iliac crest')"
+        configuration:
+          required: true
+      - key: "Disease State of Sample"
+        type: text-field
+        name: "Disease State of Sample"
+        description: "Histopathologic evaluation of the sample (Example: 'Tumor infiltration')"
+        configuration:
+          required: true
+      - key: "Sample Collection Time"
+        type: text-field
+        name: "Sample Collection Time"
+        description: "Time point at which sample was taken, relative to `Collection time event` (Example: '14 d')"
+        configuration:
+          required: true
+      - key: "Collection Time Event"
+        type: text-field
+        name: "Collection Time Event"
+        description: "Event in the study schedule to which `Sample collection time` relates to (Example: 'Primary vaccination')"
+        configuration:
+          required: true
+      - key: "Biomaterial Provider"
+        type: text-field
+        name: "Biomaterial Provider"
+        description: "Name and address of the entity providing the sample (Example: 'Tissues-R-Us, Tampa, FL, USA')"
+        configuration:
+          required: true
+      - key: "Processing"
+        type: static-section-break
+        name: "Processing"
+        description: "Cell Processing Metadata"
+      - key: "Tissue Processing"
+        type: text-field
+        name: "Tissue Processing"
+        description: "Enzymatic digestion and/or physical methods used to isolate cells from sample (Example: 'Collagenase A/Dnase I digested, followed by Percoll gradient')"
+        configuration:
+          required: true
+      - key: "Cell Subset"
+        type: controlled-term-field
+        name: "Cell Subset"
+        description: "Commonly-used designation of isolated cell population (Example: 'Class Switched Memory B Cells')"
+        datatype: iri
+        values:
+          - type: branch
+            sourceAcronym: "CL"
+            sourceName: "Cell Ontology (CL)"
+            termBaseIri: "http://purl.obolibrary.org/obo/CL_0000542"
+            termBaseLabel: "lymphocyte"
+            termMaxDepth: 0
+        configuration:
+          required: true
+      - key: "Cell Subset Phenotype"
+        type: text-field
+        name: "Cell Subset Phenotype"
+        description: "List of cellular markers and their expression levels used to isolate the cell population (Example: 'CD19+ CD38+ CD27+ IgM- IgD-')"
+        configuration:
+          required: true
+      - key: "Single-cell Sort"
+        type: radio-field
+        name: "Single-cell Sort"
+        description: "TRUE if single cells were isolated into separate compartments (Example: 'FALSE')"
+        values:
+          - label: "TRUE"
+          - label: "FALSE"
+        configuration:
+          required: true
+      - key: "Number of Cells in Experiment"
+        type: text-field
+        name: "Number of Cells in Experiment"
+        description: "Total number of cells that went into the experiment (Example: '1000000')"
+        configuration:
+          required: true
+      - key: "Number of Cells per Sequencing Reaction"
+        type: text-field
+        name: "Number of Cells per Sequencing Reaction"
+        description: "Number of cells for each biological replicate (Example: '50000')"
+        configuration:
+          required: true
+      - key: "Cell Storage"
+        type: radio-field
+        name: "Cell Storage"
+        description: "TRUE if cells were cryo-preserved between isolation and further processing (Example: 'TRUE')"
+        values:
+          - label: "YES"
+          - label: "NO"
+        configuration:
+          required: true
+      - key: "Cell Quality"
+        type: text-field
+        name: "Cell Quality"
+        description: "Relative amount of viable cells after preparation and (if applicable) thawing (Example: '90% viability as determined by 7-AAD')"
+        configuration:
+          required: true
+      - key: "Cell Isolation"
+        type: text-field
+        name: "Cell Isolation"
+        description: "Description of the procedure used for marker-based isolation or enrich cells (Example: 'Cells were stained with fluorochrome labeled antibodies and then sorted on a FlowMerlin (CE) cytometer')"
+        configuration:
+          required: true
+      - key: "Processing Protocol"
+        type: text-field
+        name: "Processing Protocol"
+        description: "Description of the methods applied to the sample including cell preparation/ isolation/enrichment and nucleic acid extraction. This should closely mirror the Materials and methods section in the manuscript (Example: 'Stimulated wih anti-CD3/anti-CD28')"
+        configuration:
+          required: true
+      - key: "Optional BioSample Attribute"
+        type: attribute-value-field
+        name: "Optional BioSample Attribute"
+        description: "Enter the name of the optional attribute, followed by the value of that attribute. Add additional attributes as needed."
+        configuration:
+          minItems: 0
+    configuration:
+      multiple: true
+      minItems: 1
+  - key: "Sequence Read Archive for AIRR NCBI"
+    type: element
+    name: "Sequence Read Archive for AIRR NCBI"
+    description: "AIRR-specific attributes for NCBI SRA"
+    children:
+      - key: "Sample ID"
+        type: text-field
+        name: "Sample ID"
+        description: "Sample ID assigned by submitter, unique within study ('sample name' in NCBI). This needs to match the Sample ID in the corresponding BioSample entry. (Example: 'SUP52415')"
+      - key: "Target Substrate"
+        type: radio-field
+        name: "Target Substrate"
+        description: "The class of nucleic acid that was used as primary starting material for the following procedures (Example: 'RNA'"
+        values:
+          - label: "DNA"
+          - label: "RNA"
+        configuration:
+          required: true
+      - key: "Target Substrate Quality"
+        type: text-field
+        name: "Target Substrate Quality"
+        description: "Description and results of the quality control performed on the template material (Example: 'RIN 9.2')"
+        configuration:
+          required: true
+      - key: "Template Amount"
+        type: text-field
+        name: "Template Amount"
+        description: "Amount of template that went into the process (Example: '1000 ng')"
+        configuration:
+          required: true
+      - key: "Nucleic Acid Processing ID"
+        type: text-field
+        name: "Nucleic Acid Processing ID"
+        description: "Maps to NCBI Library ID: Each experiment should have a unique Library_ID that is short and meaningful (like an ID you might use in lab). Each SRA entry represents a unique combination of sample + library + sequencing strategy + layout + instrument model. (Example: 'LIB52415')"
+        configuration:
+          required: true
+      - key: "Library Strategy"
+        type: single-select-list-field
+        name: "Library Strategy"
+        description: "Sequencing strategy used in the experiment (Example: 'RNA-Seq')"
+        values:
+          - label: "WGA"
+          - label: "WGS"
+          - label: "WXS"
+          - label: "RNA-Seq"
+          - label: "miRNA-Seq"
+          - label: "WCS"
+          - label: "CLONE"
+          - label: "POOLCLONE"
+          - label: "AMPLICON"
+          - label: "CLONEEND"
+          - label: "FINISHING"
+          - label: "ChIP-Seq"
+          - label: "MNase-Seq"
+          - label: "DNase-Hypersensitivity"
+          - label: "Bisulfite-Seq"
+          - label: "Tn-Seq"
+          - label: "EST"
+          - label: "FL-cDNA"
+          - label: "CTS"
+          - label: "MRE-Seq"
+          - label: "MeDIP-Seq"
+          - label: "MBD-Seq"
+          - label: "Synthetic-Long-Read"
+          - label: "ATAC-seq"
+          - label: "ChIA-PET"
+          - label: "FAIRE-seq"
+          - label: "Hi-C"
+          - label: "ncRNA-Seq"
+          - label: "RAD-Seq"
+          - label: "RIP-Seq"
+          - label: "SELEX"
+          - label: "ssRNA-seq"
+          - label: "Targeted-Capture"
+          - label: "Tethered Chromatin Conformation Capture"
+          - label: "OTHER"
+        configuration:
+          required: true
+      - key: "Library Source"
+        type: radio-field
+        name: "Library Source"
+        description: "Type of genetic source material sequenced in the experiment (Example: 'Metagenomic')"
+        values:
+          - label: "GENOMIC"
+          - label: "TRANSCRIPTOMIC"
+          - label: "METAGENOMIC"
+          - label: "METATRANSCRIPTOMIC"
+          - label: "SYNTHETIC"
+          - label: "VIRAL RNA"
+          - label: "GENOMIC SINGLE CELL"
+          - label: "TRANSCRIPTOMIC SINGLE CELL"
+          - label: "OTHER"
+        configuration:
+          required: true
+      - key: "Library Selection"
+        type: single-select-list-field
+        name: "Library Selection"
+        description: "Method of selection or enrichment used in the Experiment (Example: 'RANDOM-PCR')"
+        values:
+          - label: "RANDOM"
+          - label: "PCR"
+          - label: "RANDOM PCR"
+          - label: "RT-PCR"
+          - label: "HMPR"
+          - label: "MF"
+          - label: "CF-S"
+          - label: "CF-M"
+          - label: "CF-H"
+          - label: "CF-T"
+          - label: "MDA"
+          - label: "MSLL"
+          - label: "cDNA"
+          - label: "ChIP"
+          - label: "MNase"
+          - label: "DNAse"
+          - label: "Hybrid Selection"
+          - label: "Reduced Representation"
+          - label: "Restriction Digest"
+          - label: "5-methylcytidine antibody"
+          - label: "MBD2 protein methyl-CpG binding domain"
+          - label: "CAGE"
+          - label: "RACE"
+          - label: "size fractionation"
+          - label: "Padlock probes capture method"
+          - label: "other"
+          - label: "unspecified"
+          - label: "cDNA_oligo_dT"
+          - label: "cDNA_randomPriming"
+          - label: "Inverse rRNA"
+          - label: "Oligo-dT"
+          - label: "PolyA"
+          - label: "repeat fractionation"
+        configuration:
+          required: true
+      - key: "Library Layout"
+        type: text-field
+        name: "Library Layout"
+        description: "Number, order, orientation, and distance of associated reads (Example: '2 Kbp paired ends')"
+        configuration:
+          required: true
+      - key: "Library Generation Method"
+        type: radio-field
+        name: "Library Generation Method"
+        description: "Generic type of library generation (Example: 'RT(oligo-dT)+TS(UMI)+PCR')"
+        values:
+          - label: "PCR"
+          - label: "RT(RHP)+PCR"
+          - label: "RT(oligo-dT)+PCR"
+          - label: "RT(oligo-dT)+TS+PCR"
+          - label: "RT(oligo-dT)+TS(UMI)+PCR"
+          - label: "RT(specific)+PCR"
+          - label: "RT(specific)+TS+PCR"
+          - label: "RT(specific)+TS(UMI)+PCR"
+          - label: "RT(specific+UMI)+PCR"
+          - label: "RT(specific+UMI)+TS+PCR"
+          - label: "RT(specific)+TS"
+          - label: "other"
+        configuration:
+          required: true
+      - key: "Library Generation Protocol"
+        type: text-field
+        name: "Library Generation Protocol"
+        description: "Description of processes applied to substrate to obtain a library that is ready for sequencing (Example: 'cDNA was generated using...'; include DNA quality control method, library generation method (RACE or oligo (nested) amplification based), enzymes, cycles, etc.; RNA: amplification of polyA or other (define) to generate cDNA (specify the the technology for RT reaction); description of how barcodes and primers are organized (short description about the general set-up of the amplicon generation, cellular and sample barcode layout (if applicable), including a mapping between samples and barcodes); unique molecular identifier (UMI or UID), describing set-up of molecular identifiers, if they are used); sequence of the Forward PCR Primer Sequences; sequence of the Reverse PCR Primer Sequences; define PhiX, calibrators, and internal controls, if used.) May reference external documents, if persistent and openly available."
+        configuration:
+          required: true
+      - key: "Protocol IDs"
+        type: text-field
+        name: "Protocol IDs"
+        description: "When using a library generation protocol from a commercial provider, provide the protocol version number (Example: 'v2.1 (2016-09-15)')"
+        configuration:
+          required: true
+      - key: "Target Locus for PCR"
+        type: text-field
+        name: "Target Locus for PCR"
+        description: "Designation of the target locus according to standard gene nomenclature (Example: 'IGH')"
+        configuration:
+          required: true
+      - key: "Forward PCR Primer Target Location"
+        type: text-field
+        name: "Forward PCR Primer Target Location"
+        description: "Position of the most distal nucleotide templated by the forward primer or primer mix (Example: 'IGHV, +23')"
+        configuration:
+          required: true
+      - key: "Reverse PCR Primer Target Location"
+        type: text-field
+        name: "Reverse PCR Primer Target Location"
+        description: "Position of the most proximal nucleotide templated by the reverse primer or primer mix (Example: 'IGHG, +57')"
+        configuration:
+          required: true
+      - key: "Complete Sequences"
+        type: radio-field
+        name: "Complete Sequences"
+        description: "To be considered `complete`, the procedure used for library construction MUST generate sequences that 1) include the first V segment codon that encodes the mature polypeptide chain (i.e. after the leader sequence) and 2) include the last complete codon of the J segment (i.e. 1 bp 5' of the J->C splice site) and 3) provide sequence information for all positions between 1) and 2). To be considered `complete & untemplated`, the sections of the sequences defined in points 1) to 3) of the previous sentence MUST be untemplated, i.e. MUST NOT overlap with the primers used in library preparation. (Example: 'partial')"
+        values:
+          - label: "partial"
+          - label: "complete"
+          - label: "complete+untemplated"
+        configuration:
+          required: true
+      - key: "Physical Linkage of Different Loci"
+        type: radio-field
+        name: "Physical Linkage of Different Loci"
+        description: "Describes the mode of linkage if a method was used which physically links nucleic acids derived from distinct loci in a single-cell context (Example: 'hetero_head-head')"
+        values:
+          - label: "none"
+          - label: "hetero_head-head"
+        configuration:
+          required: true
+      - key: "Total Reads Passing QC Filter"
+        type: text-field
+        name: "Total Reads Passing QC Filter"
+        description: "Number of usable reads for analysis (Example: '10365118')"
+        configuration:
+          required: true
+      - key: "Sequencing Platform"
+        type: text-field
+        name: "Sequencing Platform"
+        description: "Designation of sequencing instrument used (Example: 'Alumina LoSeq 1000')"
+        configuration:
+          required: true
+      - key: "Read Lengths"
+        type: text-field
+        name: "Read Lengths"
+        description: "Read length in bases for each direction (Example: '[300,300]')"
+        configuration:
+          required: true
+      - key: "Sequencing Facility"
+        type: text-field
+        name: "Sequencing Facility"
+        description: "Name (company, core facility, and/or lab name) and address of sequencing facility (Example: 'Seqs-R-Us, Vancouver, BC, Canada')"
+        configuration:
+          required: true
+      - key: "Batch Number"
+        type: text-field
+        name: "Batch Number"
+        description: "ID of sequencing run assigned by the sequencing facility (Example: '160101_M01234_0201_000000000-D2T7V')"
+        configuration:
+          required: true
+      - key: "Date of Sequencing Run"
+        type: temporal-field
+        name: "Date of Sequencing Run"
+        description: "Date of sequencing run (Example: '2016-12-16')"
+        datatype: xsd:date
+        granularity: day
+        configuration:
+          required: true
+      - key: "Sequencing Kit"
+        type: text-field
+        name: "Sequencing Kit"
+        description: "Name, manufacturer, order and lot numbers of sequencing kit (Example: 'FullSeq 600, Alumina, #M123456C0, 789G1HK')"
+        configuration:
+          required: true
+      - key: "File Type"
+        type: radio-field
+        name: "File Type"
+        description: "Type of the raw data file. Must be either sra_run_fastq or sra-run-PacBio_HDF5 to be compatible with MiAIRR specification."
+        values:
+          - label: "sra_run_fastq"
+          - label: "sra-run-PacBio_HDF5"
+      - key: "filename"
+        type: attribute-value-field
+        name: "filename"
+        description: "Enter the name of the raw data file into the Value field of each attribute-value pair. Each name must match the name of a file selected for upload. (The attributes are automatically named as 'filename1', 'filename2', etc..)"
+        configuration:
+          minItems: 0
+    configuration:
+      multiple: true
+      minItems: 1
+  - key: "submission_pipeline"
+    type: text-field
+    name: "submission_pipeline"
+    description: "Specifies the CEDAR submission pipeline that will be used to process metadata created using this template."
+    default: "NCBI-MIAIRR"
+    configuration:
+      hidden: true

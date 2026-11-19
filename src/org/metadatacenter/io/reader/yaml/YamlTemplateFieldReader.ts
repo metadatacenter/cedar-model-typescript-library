@@ -41,6 +41,8 @@ import { YamlFieldReaderExtNihGrantId } from '../../../model/cedar/field/dynamic
 import { YamlFieldReaderExtDoi } from '../../../model/cedar/field/dynamic/ext-doi/YamlFieldReaderExtDoi';
 import { ControlledTermFieldImpl } from '../../../model/cedar/field/dynamic/controlled-term/ControlledTermFieldImpl';
 import { TextFieldImpl } from '../../../model/cedar/field/dynamic/textfield/TextFieldImpl';
+import { NumericFieldImpl } from '../../../model/cedar/field/dynamic/numeric/NumericFieldImpl';
+import { NumericDefaultValueValidator } from '../../../model/cedar/field/dynamic/numeric/NumericDefaultValueValidator';
 
 export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
   protected knownArtifactType: CedarArtifactType = CedarArtifactType.TEMPLATE_FIELD;
@@ -106,6 +108,10 @@ export class YamlTemplateFieldReader extends YamlAbstractArtifactReader {
       }
       const parsingResult: YamlArtifactParsingResult = new YamlArtifactParsingResult();
       const field: TemplateField = YamlTemplateFieldReader.readFieldSpecificAttributes(fieldSourceObject, childInfo, parsingResult, path);
+      // Java's reader refuses an integer datatype that states decimal places.
+      if (!this.behavior.useWarningForKnownIssues() && field instanceof NumericFieldImpl) {
+        NumericDefaultValueValidator.assertDecimalPlacesFitDatatype(field.valueConstraints, path.add(YamlKeys.decimalPlaces).toPointer());
+      }
       this.assertSchemaMetadata(fieldSourceObject, path);
       // A child's `id` may be a temporary one the server replaces on a write.
       if (path.getLastComponent() === null) {

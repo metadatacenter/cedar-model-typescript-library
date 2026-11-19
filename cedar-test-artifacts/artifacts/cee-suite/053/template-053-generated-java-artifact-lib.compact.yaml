@@ -1,0 +1,16 @@
+type: template
+name: "Person"
+id: "https://repo.metadatacenter.orgx/templates/9b654582-2842-4446-b885-87c862321d0b"
+children:
+  - key: "Address"
+    type: element
+    name: "Address"
+    children:
+      - key: "Zip"
+        type: text-field
+        name: "Zip"
+        description: "Help Text"
+        configuration:
+          multiple: true
+          minItems: 0
+          maxItems: 3

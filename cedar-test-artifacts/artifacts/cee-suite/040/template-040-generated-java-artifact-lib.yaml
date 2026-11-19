@@ -1,0 +1,35 @@
+type: template
+name: "youtube full custom"
+description: "Youtube Template Description"
+identifier: "Template ID"
+id: "https://repo.metadatacenter.org/templates/dc3816a9-c59b-4059-a6fc-dad4b824297d"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+createdOn: "2020-11-17T17:17:55-08:00"
+createdBy: "https://metadatacenter.org/users/2fa8910d-96e7-4e2f-ae60-4dfa8ec9877d"
+modifiedOn: "2020-11-17T17:20:36-08:00"
+modifiedBy: "https://metadatacenter.org/users/2fa8910d-96e7-4e2f-ae60-4dfa8ec9877d"
+children:
+  - key: "Untitled"
+    type: static-youtube-video
+    name: "Youtube Name"
+    description: "Youtube Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/a30f671a-5d2f-4f95-af44-88a972057b64"
+    modelVersion: 1.6.0
+    content: "mw816POGRrk"
+    createdOn: "2020-11-17T17:20:36-08:00"
+    createdBy: "https://metadatacenter.org/users/2fa8910d-96e7-4e2f-ae60-4dfa8ec9877d"
+    modifiedOn: "2020-11-17T17:20:36-08:00"
+    modifiedBy: "https://metadatacenter.org/users/2fa8910d-96e7-4e2f-ae60-4dfa8ec9877d"
+    configuration:
+      overrideLabel: "Untitled"
+      overrideDescription: "Help Text"
+  - key: "Input Field"
+    type: text-field
+    name: "Input Field"
+    description: "Help Text"
+    id: "tmp-1605662470074-412754"
+    modelVersion: 1.6.0
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/5acba3ce-e018-4a48-909d-039ceabef0a0"

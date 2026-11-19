@@ -137,6 +137,13 @@ export const JSON_TEMPLATE_ROUND_TRIP_DIVERGENCES: Readonly<Record<string, Round
     roundTripWarnings: 0,
     reason: 'writer supplies missing _content on a static field',
   },
+  '40': {
+    errors: 0,
+    warnings: 0,
+    roundTripErrors: 5,
+    roundTripWarnings: 0,
+    reason: 'the stored value schemas require keys an instance may state as null, which the writer derives from the field kind',
+  },
 };
 
 export const JSON_FIELD_ROUND_TRIP_DIVERGENCES: Readonly<Record<string, RoundTripExpectation>> = {

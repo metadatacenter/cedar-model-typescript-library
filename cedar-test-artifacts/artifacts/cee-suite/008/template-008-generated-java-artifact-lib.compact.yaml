@@ -1,0 +1,34 @@
+type: template
+name: "multiple choice"
+id: "https://repo.metadatacenter.org/templates/a1bcf67e-b497-43ab-bebb-32f8cfb11a4a"
+children:
+  - key: "Multiple Choice Element"
+    type: element
+    name: "Multiple Choice Element"
+    children:
+      - key: "Multiple Choice in Element"
+        type: radio-field
+        name: "Multiple Choice in Element"
+        description: "Help Text"
+        values:
+          - label: "Option 1"
+          - label: "Option 2"
+          - label: "Option 3"
+          - label: "Option 4"
+            selected: true
+          - label: "Option 5"
+    configuration:
+      multiple: true
+      minItems: 1
+  - key: "Multiple Choice Standalone"
+    type: radio-field
+    name: "Multiple Choice Standalone"
+    description: "Help Text"
+    values:
+      - label: "Option 1"
+      - label: "Option 2"
+      - label: "Option 3"
+      - label: "Option 4"
+      - label: "Option 5"
+    configuration:
+      required: true

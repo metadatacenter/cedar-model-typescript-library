@@ -1,0 +1,11 @@
+type: instance
+name: "One text field metadata"
+id: "https://repo.metadatacenter.orgx/template-instances/5b572ec6-54eb-494a-9023-c0894a7ec7dd"
+isBasedOn: "https://repo.metadatacenter.orgx/templates/26ac27cf-a494-4a8e-90ad-e0c17cff11bf"
+createdOn: "2023-10-24T14:12:26-07:00"
+createdBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+modifiedOn: "2023-10-24T14:12:26-07:00"
+modifiedBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+children:
+  Text field 1:
+    value: "One text value"

@@ -1,0 +1,24 @@
+type: template
+name: "Phone Template"
+id: "https://repo.metadatacenter.org/templates/d862f913-7bcc-4faa-b960-d00561944d9a"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+createdOn: "2021-10-12T11:42:48-07:00"
+createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+modifiedOn: "2021-10-12T11:42:54-07:00"
+modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+children:
+  - key: "Phone Field"
+    type: phone-number-field
+    name: "Phone Field"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/f9842a63-aca2-46d0-a4c8-6331a3393436"
+    modelVersion: 1.6.0
+    prefLabel: "Phone Field"
+    createdOn: "2021-10-12T11:42:54-07:00"
+    createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    modifiedOn: "2021-10-12T11:42:54-07:00"
+    modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/6983fe2c-d004-4144-86ea-7132026364bc"

@@ -1,0 +1,50 @@
+type: instance
+name: "Human Cognitive Neuroscience Data - Part 2 metadata"
+id: "https://repo.metadatacenter.orgx/template-instances/ceb1554f-b468-4ccb-bf42-086874c467fa"
+isBasedOn: "https://repo.metadatacenter.orgx/templates/5af7fae2-ec0c-4d64-b420-ae4ecda43f3b"
+createdOn: "2023-08-30T14:35:39-07:00"
+createdBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+modifiedOn: "2023-08-30T14:35:39-07:00"
+modifiedBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+children:
+  About the template:
+    value: "Click to read the instruction - I read the instructions"
+  Dataset:
+    id: "https://repo.metadatacenter.orgx/template-element-instances/217a67f0-7af2-4fdf-9701-5b85c636d41d"
+    children:
+      Dataset instruction:
+        value: "Click to read instructions - Read the dataset instructions as well"
+      Standard:
+        - id: "https://repo.metadatacenter.orgx/template-element-instances/6387ab40-4477-4315-9e51-1d6d6c0ab7ec"
+          children:
+            Data Standard:
+              - value: "Neuroimaging Data Model (NIDM)"
+              - value: "Neuroscience information exchange format  (NIX)"
+            Reference to Data Standard:
+              - id: "http://telecom.com"
+      Preprocessing:
+        - id: "https://repo.metadatacenter.orgx/template-element-instances/00cf15d8-295b-4d47-a45b-659ba3f92a80"
+          children:
+            Analysis Pipeline:
+              - id: "http://cedar.com"
+              - id: "https://metadatacenter.rog"
+            Preprocessing Script:
+              - id: "https://google.com"
+              - id: "https://aws.com"
+      Data acqusition technique:
+        - id: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C38054"
+          label: "Electroencephalography"
+      Data Modality:
+        id: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C17650"
+        label: "Physiologic"
+      Source dataset:
+        - id: "https://repo.metadatacenter.orgx/template-element-instances/cba3e0e2-132a-473e-955c-374daa1fcd01"
+          children:
+            Identifier:
+              - id: "https://dataset.com"
+              - id: "https://dataset.com/2"
+              - id: "https://dataset.com/3"
+            Contact person:
+              - value: "manage@contact.info"
+            ORCID:
+              - value: "https://orcid.org/0000-0001-8743-5071"

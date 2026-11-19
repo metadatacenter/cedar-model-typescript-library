@@ -1,0 +1,17 @@
+type: template
+name: "checkbox with defaults"
+id: "https://repo.metadatacenter.org/templates/86001474-adf0-4e2d-b6ce-1717d9128116"
+children:
+  - key: "Checkbox"
+    type: checkbox-field
+    name: "Checkbox"
+    description: "Help Text"
+    values:
+      - label: "Option 1"
+        selected: true
+      - label: "Option 2"
+      - label: "Option 3"
+        selected: true
+    configuration:
+      required: true
+      minItems: 1

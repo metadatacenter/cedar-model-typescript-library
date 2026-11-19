@@ -1,0 +1,9 @@
+type: template
+name: "Phone Template"
+id: "https://repo.metadatacenter.org/templates/d862f913-7bcc-4faa-b960-d00561944d9a"
+children:
+  - key: "Phone Field"
+    type: phone-number-field
+    name: "Phone Field"
+    description: "Help Text"
+    prefLabel: "Phone Field"

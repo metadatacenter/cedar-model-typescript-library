@@ -1,0 +1,13 @@
+type: template
+name: "email field"
+id: "https://repo.metadatacenter.org/templates/d9d52596-1a0e-464b-9207-b848faf2205d"
+children:
+  - key: "Email field name"
+    type: email-field
+    name: "Email field name"
+    description: "Email help text"
+    prefLabel: "Email preferred label"
+    configuration:
+      required: true
+      multiple: true
+      minItems: 1

@@ -1,0 +1,12 @@
+type: template
+name: "Person with Top Zip"
+id: "https://repo.metadatacenter.orgx/templates/029c37ec-4bc5-4387-ab43-f8bc147aac4f"
+children:
+  - key: "Zip"
+    type: text-field
+    name: "Zip"
+    description: "Help Text"
+    configuration:
+      multiple: true
+      minItems: 0
+      maxItems: 3

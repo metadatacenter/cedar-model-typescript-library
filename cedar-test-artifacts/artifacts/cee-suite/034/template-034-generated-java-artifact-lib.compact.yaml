@@ -1,0 +1,9 @@
+type: template
+name: "numeric field - single-precision"
+id: "https://repo.metadatacenter.org/templates/7a0dc8aa-9ab2-4981-9666-fcfe9f0b7f97"
+children:
+  - key: "Float"
+    type: numeric-field
+    name: "Float"
+    description: "Help Text"
+    datatype: xsd:float

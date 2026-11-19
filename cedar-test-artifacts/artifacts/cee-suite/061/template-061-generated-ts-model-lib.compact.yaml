@@ -1,0 +1,11 @@
+type: template
+name: "Multi-link"
+id: "https://repo.metadatacenter.orgx/templates/95c3b74d-aab4-4867-9c02-84340039e1c2"
+children:
+  - key: "Link"
+    type: link-field
+    name: "Link"
+    description: "Help Text"
+    configuration:
+      multiple: true
+      minItems: 0

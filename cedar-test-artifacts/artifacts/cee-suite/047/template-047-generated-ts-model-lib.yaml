@@ -1,0 +1,1988 @@
+type: template
+name: "Workflow"
+id: "https://repo.metadatacenter.org/templates/b701bd7f-dfb8-4320-abdb-effe9be1fd23"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+createdOn: "2022-04-24T15:02:39-07:00"
+createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+modifiedOn: "2022-04-27T11:22:45-07:00"
+modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+children:
+  - key: "Workflow Description and Documentation"
+    type: static-section-break
+    name: "Workflow Description and Documentation"
+    description: "this is help text"
+    id: "https://repo.metadatacenter.org/template-fields/f8c79f5f-6332-4796-bd8f-0922872a26a8"
+    modelVersion: 1.6.0
+    createdOn: "2022-04-27T11:22:45-07:00"
+    createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+    modifiedOn: "2022-04-27T11:22:45-07:00"
+    modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+  - key: "Statement Guidance"
+    type: static-rich-text
+    name: "Statement Guidance"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/e26ee124-bb0e-4447-8aa5-434b3b9a0bf0"
+    modelVersion: 1.6.0
+    content: "<p><b>Statement</b></p>\n\n<p>Lineage information can be provided as 1) structured descriptions of process steps, processing, inputs and outputs or 2) a descriptive statement.</p>\n\n<p>Detailed information about process steps with inputs, outputs, and processing are more useful for users that are trying to understand and reproduce results using the metadata or for those analyzing other data using the same or similar techniques. They are also useful for users trying to use software provided with the dataset(s).</p>\n\n<p>In some situations, a descriptive statement is all that is available. In those cases, provide a statement that is sufficient to help a reader of the high-level metadata understand what was done.</p>\n\n<p>Including a statement and detailed descriptions is most useful for a wide range of users and use cases.</p>\n"
+    createdOn: "2022-04-27T11:22:45-07:00"
+    createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+    modifiedOn: "2022-04-27T11:22:45-07:00"
+    modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+  - key: "Statement"
+    type: text-area-field
+    name: "Statement"
+    description: "A statement that is sufficient to provide understanding to a reader of the high-level metadata for the lineage."
+    id: "https://repo.metadatacenter.org/template-fields/73eea96e-30e7-41fe-9de9-0a99de3a46f4"
+    modelVersion: 1.6.0
+    createdOn: "2022-04-27T11:22:45-07:00"
+    createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+    modifiedOn: "2022-04-27T11:22:45-07:00"
+    modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/49a14e7b-b203-4bef-8908-06fffe1ca5c9"
+  - key: "Additional Documentation Guidance"
+    type: static-rich-text
+    name: "Additional Documentation Guidance"
+    description: "Please enter identifiers for related documentation. (could be URLs)"
+    id: "https://repo.metadatacenter.org/template-fields/aefe9a0b-e65a-4ae3-b1c1-4f9aca441342"
+    modelVersion: 1.6.0
+    content: "<p><b>Additional Documentation</b></p>\n<p>Many types of documentation can be used to describe the sources and processing steps that are used to create new data. Identifiers for that documentation can be used to 1) make connections and 2) help users understand details of the lineage and processes.</p>\n"
+    createdOn: "2022-04-27T11:22:45-07:00"
+    createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+    modifiedOn: "2022-04-27T11:22:45-07:00"
+    modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+  - key: "DataCite RelatedIdentifier"
+    type: element
+    name: "DataCite RelatedIdentifier"
+    description: "DataCite V4.4 relatedIdentifier"
+    id: "https://repo.metadatacenter.org/template-elements/fbc8b079-ae69-42c4-a12f-1ac56867318b"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    createdOn: "2022-04-27T11:22:45-07:00"
+    createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+    modifiedOn: "2022-04-27T11:22:45-07:00"
+    modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+    children:
+      - key: "DataCite Identifier"
+        type: element
+        name: "DataCite Identifier"
+        description: "An identifier from the DataCite Schema"
+        identifier: "DataCiteIdentifier"
+        id: "https://repo.metadatacenter.org/template-elements/95998a9e-dba1-4436-b53a-570962b5b3a6"
+        status: draft
+        version: 0.0.1
+        modelVersion: 1.6.0
+        createdOn: "2022-04-12T15:26:38-07:00"
+        createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        modifiedOn: "2022-04-12T15:26:38-07:00"
+        modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        children:
+          - key: "Identifier Guidance"
+            type: static-rich-text
+            name: "Identifier Guidance"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/00a55b34-482c-48f2-ac2b-83426a24c7b3"
+            modelVersion: 1.6.0
+            content: "<p>Related identifiers enable the connections that are critical to forming the PID Graph. They are used to connect resources of many kinds to the resource being described by these metadata.</p> \n<p>These identifiers are usually complete URLS. For example a DOI would be https://doi.org/DOI. The identifiers do not have to be DOIs or other standard identifiers. If the type of the identifier is not universally identifiable, provide it along with the URI of the identifier scheme.</p>\n"
+            createdOn: "2022-04-10T13:38:16-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-10T13:38:16-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+          - key: "Identifier"
+            type: text-field
+            name: "Identifier"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/19a539cb-9334-4195-9153-df90925650c6"
+            modelVersion: 1.6.0
+            prefLabel: "Identifier"
+            createdOn: "2022-04-10T13:38:16-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-10T13:38:16-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/dc6b30b1-b2f7-4ffc-8c7d-f818ef92b9c5"
+          - key: "Identifier Scheme"
+            type: text-field
+            name: "Identifier Scheme"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/4b8f48ba-d3e8-4718-8946-c5f77b3d8cac"
+            modelVersion: 1.6.0
+            createdOn: "2022-04-10T13:38:16-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-10T13:38:16-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/d7cf4f00-8e78-458e-8964-44174cde0316"
+          - key: "Identifier Scheme URI"
+            type: link-field
+            name: "Identifier Scheme URI"
+            description: "A Universal Resource Identifier for the Identifier Scheme (https://orcid.org, https://ror.org)"
+            id: "https://repo.metadatacenter.org/template-fields/c81eae8f-9b1b-4d72-bc33-884674515528"
+            modelVersion: 1.6.0
+            prefLabel: "Identifier Scheme URI"
+            createdOn: "2022-04-10T13:38:16-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-10T13:38:16-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/527f2d89-e439-428b-9b8d-f88f7efbb582"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/fc2a075a-7f33-4677-be47-dff4eee5e45b"
+      - key: "Related Identifier Type"
+        type: single-select-list-field
+        name: "Related Identifier Type"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/e8a71129-3e79-4d28-baa0-6cf18e1a2202"
+        modelVersion: 1.6.0
+        values:
+          - label: "ARK"
+          - label: "arXiv"
+          - label: "bibcode"
+          - label: "DOI"
+          - label: "EAN13"
+          - label: "EISSN"
+          - label: "Handle"
+          - label: "IGSN"
+          - label: "ISBN"
+          - label: "ISSN"
+          - label: "ISTC"
+          - label: "LISSN"
+          - label: "LSID"
+          - label: "PMID"
+          - label: "PURL"
+          - label: "UPC"
+          - label: "URL"
+          - label: "URN"
+          - label: "w3id"
+        createdOn: "2022-04-12T15:26:38-07:00"
+        createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        modifiedOn: "2022-04-12T15:26:38-07:00"
+        modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/bb549966-8f68-4631-9390-96a841ae3d88"
+      - key: "Relation Type"
+        type: single-select-list-field
+        name: "Relation Type"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/b85bf998-7a64-41dc-849f-6737f0de5b60"
+        modelVersion: 1.6.0
+        values:
+          - label: "IsCitedBy"
+          - label: "Cites"
+          - label: "IsSupplementTo"
+          - label: "IsSupplementedBy"
+          - label: "IsContinuedBy"
+          - label: "Continues"
+          - label: "IsDescribedBy"
+          - label: "Describes"
+          - label: "HasMetadata"
+          - label: "IsMetadataFor"
+          - label: "HasVersion"
+          - label: "IsVersionOf"
+          - label: "IsNewVersionOf"
+          - label: "IsPreviousVersionOf"
+          - label: "IsPartOf"
+          - label: "HasPart"
+          - label: "IsPublishedIn"
+          - label: "IsReferencedBy"
+          - label: "References"
+          - label: "IsDocumentedBy"
+          - label: "Documents"
+          - label: "IsCompiledBy"
+          - label: "Compiles"
+          - label: "IsVariantFormOf"
+          - label: "IsOriginalFormOf"
+          - label: "IsIdenticalTo"
+          - label: "IsReviewedBy"
+          - label: "Reviews"
+          - label: "IsDerivedFrom"
+          - label: "IsSourceOf"
+          - label: "IsRequiredBy"
+          - label: "Requires"
+          - label: "IsObsoletedBy"
+          - label: "Obsoletes"
+        createdOn: "2022-04-12T15:26:38-07:00"
+        createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        modifiedOn: "2022-04-12T15:26:38-07:00"
+        modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/e1b9d020-0c4b-4a2a-95f0-07bce9437285"
+      - key: "Related Resource Type"
+        type: single-select-list-field
+        name: "Related Resource Type"
+        description: "Enter a resource type from the DataCite Resource Type General list"
+        id: "https://repo.metadatacenter.org/template-fields/2a922fbb-7c29-470e-a1d4-14b0fe1d9f4c"
+        modelVersion: 1.6.0
+        values:
+          - label: "Audiovisual"
+          - label: "Book"
+          - label: "Book Chapter"
+          - label: "Collection"
+          - label: "ComputationalNotebook"
+          - label: "ConferencePaper"
+          - label: "ConferenceProceeding"
+          - label: "DataPaper"
+          - label: "Dataset"
+          - label: "Dissertation"
+          - label: "Event"
+          - label: "Image"
+          - label: "InteractiveResource"
+          - label: "Journal"
+          - label: "JournalArticle"
+          - label: "Model"
+          - label: "OutputManagementPlan"
+          - label: "PeerReview"
+          - label: "PhysicalObject"
+          - label: "Preprint"
+          - label: "Report"
+          - label: "Service"
+          - label: "Software"
+          - label: "Sound"
+          - label: "Standard"
+          - label: "Text"
+          - label: "Workflow"
+          - label: "Other"
+        createdOn: "2022-04-12T15:26:38-07:00"
+        createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        modifiedOn: "2022-04-12T15:26:38-07:00"
+        modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/ae64b230-7910-4eb6-b005-6bb675b602c7"
+      - key: "Related Metadata Scheme"
+        type: text-field
+        name: "Related Metadata Scheme"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/20720fea-93fd-4f37-bc65-2562705681bd"
+        modelVersion: 1.6.0
+        createdOn: "2022-04-12T15:26:38-07:00"
+        createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        modifiedOn: "2022-04-12T15:26:38-07:00"
+        modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/824ebc7d-74b2-4883-9789-7eeec9ffef0b"
+      - key: "Related Metadata Scheme URI"
+        type: text-field
+        name: "Related Metadata Scheme URI"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/6f68b044-bd98-4324-add5-8078a72c9ddf"
+        modelVersion: 1.6.0
+        createdOn: "2022-04-12T15:26:38-07:00"
+        createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        modifiedOn: "2022-04-12T15:26:38-07:00"
+        modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/1eed05ac-654e-42aa-b0bc-898f97597ec8"
+      - key: "Related Metadata Scheme Type"
+        type: text-field
+        name: "Related Metadata Scheme Type"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/d369cfc9-28ec-487b-bf0d-e86718a1c08a"
+        modelVersion: 1.6.0
+        createdOn: "2022-04-12T15:26:38-07:00"
+        createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        modifiedOn: "2022-04-12T15:26:38-07:00"
+        modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/2fbe19dc-86b3-496c-b716-9ed30409eeac"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/bf3526b0-a995-4d3c-b365-5ef5326ab12c"
+      overrideLabel: "Additional Documentation"
+      multiple: true
+      minItems: 1
+  - key: "Describe workflows steps"
+    type: static-section-break
+    name: "Describe workflows steps"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/a0187a64-b7e5-4f31-a798-679f230e32d0"
+    modelVersion: 1.6.0
+    createdOn: "2022-04-27T11:22:45-07:00"
+    createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+    modifiedOn: "2022-04-27T11:22:45-07:00"
+    modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+  - key: "Process Step"
+    type: element
+    name: "Process Step"
+    id: "https://repo.metadatacenter.org/template-elements/f89a7abc-e192-4835-ac5e-3f9d79d0d0c5"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    createdOn: "2022-04-27T11:22:45-07:00"
+    createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+    modifiedOn: "2022-04-27T11:22:45-07:00"
+    modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+    children:
+      - key: "Description and Rationale"
+        type: static-section-break
+        name: "Description and Rationale"
+        id: "https://repo.metadatacenter.org/template-fields/ac148b8d-ab3e-4861-b029-73472bb5edd5"
+        modelVersion: 1.6.0
+        createdOn: "2022-04-27T11:21:12-07:00"
+        createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        modifiedOn: "2022-04-27T11:21:12-07:00"
+        modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+      - key: "Description Guidance"
+        type: static-rich-text
+        name: "Description Guidance"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/f2dbdde0-cd64-4aaf-a136-cc8bd3db2ebf"
+        modelVersion: 1.6.0
+        content: "<p><b>Proces Step Description</b></p>\n\n<p>A description of the process step sufficient to provide understanding to a reader of the high-level metadata for the process.</p>\n"
+        createdOn: "2022-04-27T11:21:12-07:00"
+        createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        modifiedOn: "2022-04-27T11:21:12-07:00"
+        modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+      - key: "Description"
+        type: text-area-field
+        name: "Description"
+        description: "A description of the process step sufficient to provide understanding to a reader of the high-level metadata for the process."
+        id: "https://repo.metadatacenter.org/template-fields/816c4214-8f6b-41e8-a18a-4f32f364a6a6"
+        modelVersion: 1.6.0
+        createdOn: "2022-04-27T11:21:12-07:00"
+        createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        modifiedOn: "2022-04-27T11:21:12-07:00"
+        modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/8e347e84-61cb-437e-9f0a-4ae66c415ee0"
+      - key: "Rationale Guidance"
+        type: static-rich-text
+        name: "Rationale Guidance"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/6ecafade-8f72-4d06-b472-edea7bb3a032"
+        modelVersion: 1.6.0
+        content: "<p><b>Rationale</b></p>\n<p>A description of the rationale for the process step  sufficient to provide understanding to a reader of the high-level metadata for the process.</p>\n"
+        createdOn: "2022-04-27T11:21:12-07:00"
+        createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        modifiedOn: "2022-04-27T11:21:12-07:00"
+        modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+      - key: "Rationale"
+        type: text-area-field
+        name: "Rationale"
+        description: "A description of the rationale for the process step  sufficient to provide understanding to a reader of the high-level metadata for the process."
+        id: "https://repo.metadatacenter.org/template-fields/0e3c5609-4828-47ba-ab74-6b182e5e7923"
+        modelVersion: 1.6.0
+        createdOn: "2022-04-27T11:21:12-07:00"
+        createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        modifiedOn: "2022-04-27T11:21:12-07:00"
+        modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/6203208b-bcee-4687-991d-622c7528a073"
+      - key: "What people and organizations contributed to the processing?"
+        type: static-section-break
+        name: "What people and organizations contributed to the processing?"
+        id: "https://repo.metadatacenter.org/template-fields/8f121868-b6b8-4e18-817f-1b59218a8516"
+        modelVersion: 1.6.0
+        createdOn: "2022-04-27T11:21:12-07:00"
+        createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        modifiedOn: "2022-04-27T11:21:12-07:00"
+        modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+      - key: "DataCite Contributor"
+        type: element
+        name: "DataCite Contributor"
+        description: "Contributor with name, organization and role"
+        id: "https://repo.metadatacenter.org/template-elements/ea12fc12-3406-495d-98ec-b5f09060148c"
+        status: draft
+        version: 0.0.1
+        modelVersion: 1.6.0
+        createdOn: "2022-04-27T11:21:12-07:00"
+        createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        modifiedOn: "2022-04-27T11:21:12-07:00"
+        modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        children:
+          - key: "DataCite Name"
+            type: element
+            name: "DataCite Name"
+            description: "DataCite Name has a special type (Personal, Organizational)"
+            identifier: "DataCiteName"
+            id: "https://repo.metadatacenter.org/template-elements/78f604c5-0d61-41ce-abee-72eb526e7467"
+            status: draft
+            version: 0.0.1
+            modelVersion: 1.6.0
+            createdOn: "2022-04-14T13:31:24-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-14T13:31:24-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            prefLabel: "Contributor Name"
+            children:
+              - key: "Name Guidance"
+                type: static-rich-text
+                name: "Name Guidance"
+                description: "The complete name of an individual or organization"
+                id: "https://repo.metadatacenter.org/template-fields/b89d4b96-70df-4ca5-a4f0-fb5bb537c683"
+                modelVersion: 1.6.0
+                content: "<p>The complete name of the individual (format is family, given) or organization.</p>"
+                createdOn: "2022-04-14T13:30:17-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-14T13:30:17-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+              - key: "Name"
+                type: text-field
+                name: "Name"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/d1e965b0-9001-41d1-8ed0-c87b19eec75c"
+                modelVersion: 1.6.0
+                prefLabel: "Name"
+                createdOn: "2022-04-14T13:30:17-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-14T13:30:17-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  propertyIri: "https://schema.metadatacenter.org/properties/4783d40d-a9ab-43d1-924c-076c24212518"
+              - key: "Given Name"
+                type: text-field
+                name: "Given Name"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/aaef868b-23b4-441e-91c0-4acdf43b7831"
+                modelVersion: 1.6.0
+                prefLabel: "Given Name"
+                createdOn: "2022-04-14T13:30:17-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-14T13:30:17-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  propertyIri: "https://schema.metadatacenter.org/properties/cc24fc2b-2c3f-4a85-bc6b-a0aa888466b2"
+              - key: "Family Name"
+                type: text-field
+                name: "Family Name"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/a93b5a38-4c0b-4d89-adeb-b48dd1c659f5"
+                modelVersion: 1.6.0
+                prefLabel: "Family Name"
+                createdOn: "2022-04-14T13:30:17-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-14T13:30:17-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  propertyIri: "https://schema.metadatacenter.org/properties/b7dac02e-8f1f-4765-8a13-77873457f348"
+              - key: "Name Type"
+                type: radio-field
+                name: "Name Type"
+                description: "The type of the name (Personal, Organizational)"
+                id: "https://repo.metadatacenter.org/template-fields/63cd8a82-c3ef-4c68-bb10-3095beec7515"
+                modelVersion: 1.6.0
+                prefLabel: "Name Type"
+                values:
+                  - label: "Personal"
+                    selected: true
+                  - label: "Organizational"
+                createdOn: "2022-04-14T13:30:17-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-14T13:30:17-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  propertyIri: "https://schema.metadatacenter.org/properties/92ffce74-fdd9-4b73-8714-0219a8a47e55"
+              - key: "DataCite Identifier"
+                type: element
+                name: "DataCite Identifier"
+                description: "An identifier from the DataCite Schema"
+                identifier: "DataCiteIdentifier"
+                id: "https://repo.metadatacenter.org/template-elements/95998a9e-dba1-4436-b53a-570962b5b3a6"
+                status: draft
+                version: 0.0.1
+                modelVersion: 1.6.0
+                createdOn: "2022-04-14T13:30:17-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-14T13:30:17-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                children:
+                  - key: "Identifier Guidance"
+                    type: static-rich-text
+                    name: "Identifier Guidance"
+                    description: "Help Text"
+                    id: "https://repo.metadatacenter.org/template-fields/00a55b34-482c-48f2-ac2b-83426a24c7b3"
+                    modelVersion: 1.6.0
+                    content: "<p><span style=\"background-color: rgb(255, 255, 255);\">Persistent and unique identifiers (PIDs) are important for unambiguous references to resources. They also&nbsp;</span>enable the connections that are critical to forming the PID Graph. They are used to identify and cite resources and to connect other resources of many kinds to the resource being described by these metadata.</p>\n\n<p>These identifiers are usually complete URLS. For example a DOI would be https://doi.org/DOI and an ORCID would be https://orcid.org/ORCID. The identifiers do not have to be DOIs or other standard identifiers. If the type of the identifier is not easily identifiable, provide it along with a type and the URI of the identifier scheme.</p>\n"
+                    createdOn: "2022-04-14T13:09:58-07:00"
+                    createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    modifiedOn: "2022-04-14T13:09:58-07:00"
+                    modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                  - key: "Identifier"
+                    type: text-field
+                    name: "Identifier"
+                    description: "Help Text"
+                    id: "https://repo.metadatacenter.org/template-fields/19a539cb-9334-4195-9153-df90925650c6"
+                    modelVersion: 1.6.0
+                    prefLabel: "Identifier"
+                    createdOn: "2022-04-14T13:09:58-07:00"
+                    createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    modifiedOn: "2022-04-14T13:09:58-07:00"
+                    modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    configuration:
+                      required: true
+                      propertyIri: "https://schema.metadatacenter.org/properties/dc6b30b1-b2f7-4ffc-8c7d-f818ef92b9c5"
+                  - key: "Identifier Scheme"
+                    type: text-field
+                    name: "Identifier Scheme"
+                    description: "Help Text"
+                    id: "https://repo.metadatacenter.org/template-fields/4b8f48ba-d3e8-4718-8946-c5f77b3d8cac"
+                    modelVersion: 1.6.0
+                    createdOn: "2022-04-14T13:09:58-07:00"
+                    createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    modifiedOn: "2022-04-14T13:09:58-07:00"
+                    modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    configuration:
+                      propertyIri: "https://schema.metadatacenter.org/properties/d7cf4f00-8e78-458e-8964-44174cde0316"
+                  - key: "Identifier Scheme URI"
+                    type: link-field
+                    name: "Identifier Scheme URI"
+                    description: "A Universal Resource Identifier for the Identifier Scheme (https://orcid.org, https://ror.org)"
+                    id: "https://repo.metadatacenter.org/template-fields/c81eae8f-9b1b-4d72-bc33-884674515528"
+                    modelVersion: 1.6.0
+                    prefLabel: "Identifier Scheme URI"
+                    createdOn: "2022-04-14T13:09:58-07:00"
+                    createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    modifiedOn: "2022-04-14T13:09:58-07:00"
+                    modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    configuration:
+                      propertyIri: "https://schema.metadatacenter.org/properties/527f2d89-e439-428b-9b8d-f88f7efbb582"
+                configuration:
+                  propertyIri: "https://schema.metadatacenter.org/properties/3e28a085-711d-4611-8cdc-9fff019df325"
+                  overrideDescription: "Enter an identifier for the person or organization"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/42695edd-99a6-4971-93e7-de35c9882c4b"
+              overrideLabel: "Contributor Name"
+              overrideDescription: "Name and identifier for person or organization"
+          - key: "DataCite Organization"
+            type: element
+            name: "DataCite Organization"
+            description: "An affiliation with identifier"
+            id: "https://repo.metadatacenter.org/template-elements/81006492-d3a2-48d1-8285-fa7939e99251"
+            status: draft
+            version: 0.0.1
+            modelVersion: 1.6.0
+            createdOn: "2022-04-14T13:31:24-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-14T13:31:24-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            children:
+              - key: "Organization Name Guidance"
+                type: static-rich-text
+                name: "Organization Name Guidance"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/b4102bc7-5ab0-4823-8f98-402f5a70428f"
+                modelVersion: 1.6.0
+                content: "<p><b>Entering Organization Name and Identifier</b></p>\n<p>Unambiguously identifying organizations requires a name and a persistent identifier. \nFor organizations, the <a href=\"https:.//ror.org\">Research Organization Registry</a> is a \ncommunity-supported source of organizational identifiers. Check ROR to see if your \norganization has a ROR. If yes, enter the name of the organization and the ROR.</p>\n<p>Note: ROR is generally limited to high-level organization names, i.e. Universities rather \nthen Departments. Select the name closest to the organization you are naming.</p> "
+                createdOn: "2022-04-14T13:10:25-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-14T13:10:25-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+              - key: "Organization Name"
+                type: text-field
+                name: "Organization Name"
+                description: "The name of an organization (from ror.org if available)"
+                id: "https://repo.metadatacenter.org/template-fields/bea08ff3-e12c-49a8-995a-20068908594b"
+                modelVersion: 1.6.0
+                prefLabel: "Organization Name"
+                createdOn: "2022-04-14T13:10:25-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-14T13:10:25-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  required: true
+                  propertyIri: "https://schema.metadatacenter.org/properties/34928a67-b190-4a30-baad-00ab07d66e60"
+              - key: "DataCite Identifier"
+                type: element
+                name: "DataCite Identifier"
+                description: "An identifier from the DataCite Schema"
+                identifier: "DataCiteIdentifier"
+                id: "https://repo.metadatacenter.org/template-elements/95998a9e-dba1-4436-b53a-570962b5b3a6"
+                status: draft
+                version: 0.0.1
+                modelVersion: 1.6.0
+                createdOn: "2022-04-14T13:10:25-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-14T13:10:25-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                children:
+                  - key: "Identifier Guidance"
+                    type: static-rich-text
+                    name: "Identifier Guidance"
+                    description: "Help Text"
+                    id: "https://repo.metadatacenter.org/template-fields/00a55b34-482c-48f2-ac2b-83426a24c7b3"
+                    modelVersion: 1.6.0
+                    content: "<p><span style=\"background-color: rgb(255, 255, 255);\">Persistent and unique identifiers (PIDs) are important for unambiguous references to resources. They also&nbsp;</span>enable the connections that are critical to forming the PID Graph. They are used to identify and cite resources and to connect other resources of many kinds to the resource being described by these metadata.</p>\n\n<p>These identifiers are usually complete URLS. For example a DOI would be https://doi.org/DOI and an ORCID would be https://orcid.org/ORCID. The identifiers do not have to be DOIs or other standard identifiers. If the type of the identifier is not easily identifiable, provide it along with a type and the URI of the identifier scheme.</p>\n"
+                    createdOn: "2022-04-14T13:09:58-07:00"
+                    createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    modifiedOn: "2022-04-14T13:09:58-07:00"
+                    modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                  - key: "Identifier"
+                    type: text-field
+                    name: "Identifier"
+                    description: "Help Text"
+                    id: "https://repo.metadatacenter.org/template-fields/19a539cb-9334-4195-9153-df90925650c6"
+                    modelVersion: 1.6.0
+                    prefLabel: "Identifier"
+                    createdOn: "2022-04-14T13:09:58-07:00"
+                    createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    modifiedOn: "2022-04-14T13:09:58-07:00"
+                    modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    configuration:
+                      required: true
+                      propertyIri: "https://schema.metadatacenter.org/properties/dc6b30b1-b2f7-4ffc-8c7d-f818ef92b9c5"
+                  - key: "Identifier Scheme"
+                    type: text-field
+                    name: "Identifier Scheme"
+                    description: "Help Text"
+                    id: "https://repo.metadatacenter.org/template-fields/4b8f48ba-d3e8-4718-8946-c5f77b3d8cac"
+                    modelVersion: 1.6.0
+                    createdOn: "2022-04-14T13:09:58-07:00"
+                    createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    modifiedOn: "2022-04-14T13:09:58-07:00"
+                    modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    configuration:
+                      propertyIri: "https://schema.metadatacenter.org/properties/d7cf4f00-8e78-458e-8964-44174cde0316"
+                  - key: "Identifier Scheme URI"
+                    type: link-field
+                    name: "Identifier Scheme URI"
+                    description: "A Universal Resource Identifier for the Identifier Scheme (https://orcid.org, https://ror.org)"
+                    id: "https://repo.metadatacenter.org/template-fields/c81eae8f-9b1b-4d72-bc33-884674515528"
+                    modelVersion: 1.6.0
+                    prefLabel: "Identifier Scheme URI"
+                    createdOn: "2022-04-14T13:09:58-07:00"
+                    createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    modifiedOn: "2022-04-14T13:09:58-07:00"
+                    modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    configuration:
+                      propertyIri: "https://schema.metadatacenter.org/properties/527f2d89-e439-428b-9b8d-f88f7efbb582"
+                configuration:
+                  propertyIri: "https://schema.metadatacenter.org/properties/24730523-0a1f-4c4c-959a-9a831a9b61ae"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/875a4201-073a-4e27-b26b-d72d6994da01"
+              overrideLabel: "Affiliation"
+              overrideDescription: "Enter the name and identifier of an organization"
+              multiple: true
+              minItems: 1
+          - key: "Contributor Type"
+            type: single-select-list-field
+            name: "Contributor Type"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/2bfe6211-c8f7-4d38-94f2-c95cfb1f89db"
+            modelVersion: 1.6.0
+            values:
+              - label: "ContactPerson"
+              - label: "DataCollector"
+              - label: "DataCurator"
+              - label: "DataManager"
+              - label: "Distributor"
+              - label: "Editor"
+              - label: "HostingInstitution"
+              - label: "Producer"
+              - label: "ProjectLeader"
+              - label: "ProjectManager"
+              - label: "ProjectMember"
+              - label: "RegistrationAgency"
+              - label: "RegistrationAuthority"
+              - label: "RelatedPerson"
+              - label: "Researcher"
+              - label: "ResearchGroup"
+              - label: "RightsHolder"
+              - label: "Sponsor"
+              - label: "Supervisor"
+              - label: "WorkPackageLeader"
+              - label: "Other"
+            createdOn: "2022-04-14T13:31:24-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-14T13:31:24-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            configuration:
+              required: true
+              propertyIri: "https://schema.metadatacenter.org/properties/effe8c38-6213-4a60-8e1a-32eac04df979"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/6b0c9548-51e2-42dc-b1ac-4fb4bf969d8b"
+          overrideLabel: "Contributors"
+          overrideDescription: "Enter information about people or organizations the contributed to the processing."
+          multiple: true
+          minItems: 1
+      - key: "What were the processing inputs?"
+        type: static-section-break
+        name: "What were the processing inputs?"
+        id: "https://repo.metadatacenter.org/template-fields/33785d0c-4cb6-4d13-ba81-f15fd0853bdf"
+        modelVersion: 1.6.0
+        createdOn: "2022-04-27T11:21:12-07:00"
+        createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        modifiedOn: "2022-04-27T11:21:12-07:00"
+        modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+      - key: "Workflow Step Input"
+        type: element
+        name: "Workflow Step Input"
+        id: "https://repo.metadatacenter.org/template-elements/48add18b-f365-4185-a0ab-3ac03c7a58cc"
+        status: draft
+        version: 0.0.1
+        modelVersion: 1.6.0
+        createdOn: "2022-04-27T11:21:12-07:00"
+        createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        modifiedOn: "2022-04-27T11:21:12-07:00"
+        modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        children:
+          - key: "Workflow Inputs"
+            type: static-section-break
+            name: "Workflow Inputs"
+            id: "https://repo.metadatacenter.org/template-fields/f4758fe9-9616-4550-8c57-2fe58c7eb3da"
+            modelVersion: 1.6.0
+            createdOn: "2022-04-27T11:17:08-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-27T11:17:08-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+          - key: "Input Description Guidance"
+            type: static-rich-text
+            name: "Input Description Guidance"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/0cde6d47-324b-4fd6-8d1e-fd04cf59fcc0"
+            modelVersion: 1.6.0
+            content: "<p><b>Workflow Step Input</b></p>\n\n<p>Workflow inputs can be described with a brief description of the input sufficient to provide understanding to a reader of the high-level metadata for the process and/or with a related identifier typically with <i>Requires&nbsp;</i>as a relation type.</p>\n"
+            createdOn: "2022-04-27T11:17:08-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-27T11:17:08-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+          - key: "Input Description"
+            type: text-area-field
+            name: "Input Description"
+            description: "Please describe the workflow input(s)."
+            id: "https://repo.metadatacenter.org/template-fields/27d7c007-8eb5-435d-9dc7-3e361c6f9a46"
+            modelVersion: 1.6.0
+            createdOn: "2022-04-27T11:17:08-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-27T11:17:08-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/67d36e65-67bc-4840-bccf-6e5d4a1d1050"
+              multiple: true
+              minItems: 1
+          - key: "Identifier(s) of input(s) required by workflow step"
+            type: static-section-break
+            name: "Identifier(s) of input(s) required by workflow step"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/8b220741-9d5a-455b-941a-e32663a5cc9a"
+            modelVersion: 1.6.0
+            createdOn: "2022-04-27T11:17:08-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-27T11:17:08-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+          - key: "Related Identifier"
+            type: element
+            name: "Related Identifier"
+            description: "DataCite V4.4 relatedIdentifier"
+            id: "https://repo.metadatacenter.org/template-elements/fbc8b079-ae69-42c4-a12f-1ac56867318b"
+            status: draft
+            version: 0.0.1
+            modelVersion: 1.6.0
+            createdOn: "2022-04-27T11:17:08-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-27T11:17:08-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            children:
+              - key: "DataCite Identifier"
+                type: element
+                name: "DataCite Identifier"
+                description: "An identifier from the DataCite Schema"
+                identifier: "DataCiteIdentifier"
+                id: "https://repo.metadatacenter.org/template-elements/95998a9e-dba1-4436-b53a-570962b5b3a6"
+                status: draft
+                version: 0.0.1
+                modelVersion: 1.6.0
+                createdOn: "2022-04-25T10:40:44-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-25T10:40:44-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                prefLabel: "Resource Identifier"
+                children:
+                  - key: "Identifier Guidance"
+                    type: static-rich-text
+                    name: "Identifier Guidance"
+                    description: "Help Text"
+                    id: "https://repo.metadatacenter.org/template-fields/00a55b34-482c-48f2-ac2b-83426a24c7b3"
+                    modelVersion: 1.6.0
+                    content: "<p>Related identifiers enable the connections that are critical to forming the PID Graph. They are used to connect resources of many kinds to the resource being described by these metadata.</p> \n<p>These identifiers are usually complete URLS. For example a DOI would be https://doi.org/DOI. The identifiers do not have to be DOIs or other standard identifiers. If the type of the identifier is not universally identifiable, provide it along with the URI of the identifier scheme.</p>\n"
+                    createdOn: "2022-04-10T13:38:16-07:00"
+                    createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    modifiedOn: "2022-04-10T13:38:16-07:00"
+                    modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                  - key: "Identifier"
+                    type: text-field
+                    name: "Identifier"
+                    description: "Help Text"
+                    id: "https://repo.metadatacenter.org/template-fields/19a539cb-9334-4195-9153-df90925650c6"
+                    modelVersion: 1.6.0
+                    prefLabel: "Identifier"
+                    createdOn: "2022-04-10T13:38:16-07:00"
+                    createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    modifiedOn: "2022-04-10T13:38:16-07:00"
+                    modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    configuration:
+                      propertyIri: "https://schema.metadatacenter.org/properties/dc6b30b1-b2f7-4ffc-8c7d-f818ef92b9c5"
+                  - key: "Identifier Scheme"
+                    type: text-field
+                    name: "Identifier Scheme"
+                    description: "Help Text"
+                    id: "https://repo.metadatacenter.org/template-fields/4b8f48ba-d3e8-4718-8946-c5f77b3d8cac"
+                    modelVersion: 1.6.0
+                    createdOn: "2022-04-10T13:38:16-07:00"
+                    createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    modifiedOn: "2022-04-10T13:38:16-07:00"
+                    modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    configuration:
+                      propertyIri: "https://schema.metadatacenter.org/properties/d7cf4f00-8e78-458e-8964-44174cde0316"
+                  - key: "Identifier Scheme URI"
+                    type: link-field
+                    name: "Identifier Scheme URI"
+                    description: "A Universal Resource Identifier for the Identifier Scheme (https://orcid.org, https://ror.org)"
+                    id: "https://repo.metadatacenter.org/template-fields/c81eae8f-9b1b-4d72-bc33-884674515528"
+                    modelVersion: 1.6.0
+                    prefLabel: "Identifier Scheme URI"
+                    createdOn: "2022-04-10T13:38:16-07:00"
+                    createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    modifiedOn: "2022-04-10T13:38:16-07:00"
+                    modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    configuration:
+                      propertyIri: "https://schema.metadatacenter.org/properties/527f2d89-e439-428b-9b8d-f88f7efbb582"
+                configuration:
+                  propertyIri: "https://schema.metadatacenter.org/properties/fc2a075a-7f33-4677-be47-dff4eee5e45b"
+                  overrideLabel: "Resource Identifier"
+                  overrideDescription: "An identifier for a resource (e.g. DOI), person (e.g. ORCID), organization (e.g. ROR) or other item."
+              - key: "Related Identifier Type"
+                type: single-select-list-field
+                name: "Related Identifier Type"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/e8a71129-3e79-4d28-baa0-6cf18e1a2202"
+                modelVersion: 1.6.0
+                values:
+                  - label: "ARK"
+                  - label: "arXiv"
+                  - label: "bibcode"
+                  - label: "DOI"
+                  - label: "EAN13"
+                  - label: "EISSN"
+                  - label: "Handle"
+                  - label: "IGSN"
+                  - label: "ISBN"
+                  - label: "ISSN"
+                  - label: "ISTC"
+                  - label: "LISSN"
+                  - label: "LSID"
+                  - label: "PMID"
+                  - label: "PURL"
+                  - label: "UPC"
+                  - label: "URL"
+                  - label: "URN"
+                  - label: "w3id"
+                createdOn: "2022-04-25T10:40:44-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-25T10:40:44-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  required: true
+                  propertyIri: "https://schema.metadatacenter.org/properties/bb549966-8f68-4631-9390-96a841ae3d88"
+              - key: "Relation Type"
+                type: single-select-list-field
+                name: "Relation Type"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/b85bf998-7a64-41dc-849f-6737f0de5b60"
+                modelVersion: 1.6.0
+                values:
+                  - label: "IsCitedBy"
+                  - label: "Cites"
+                  - label: "IsSupplementTo"
+                  - label: "IsSupplementedBy"
+                  - label: "IsContinuedBy"
+                  - label: "Continues"
+                  - label: "IsDescribedBy"
+                  - label: "Describes"
+                  - label: "HasMetadata"
+                  - label: "IsMetadataFor"
+                  - label: "HasVersion"
+                  - label: "IsVersionOf"
+                  - label: "IsNewVersionOf"
+                  - label: "IsPreviousVersionOf"
+                  - label: "IsPartOf"
+                  - label: "HasPart"
+                  - label: "IsPublishedIn"
+                  - label: "IsReferencedBy"
+                  - label: "References"
+                  - label: "IsDocumentedBy"
+                  - label: "Documents"
+                  - label: "IsCompiledBy"
+                  - label: "Compiles"
+                  - label: "IsVariantFormOf"
+                  - label: "IsOriginalFormOf"
+                  - label: "IsIdenticalTo"
+                  - label: "IsReviewedBy"
+                  - label: "Reviews"
+                  - label: "IsDerivedFrom"
+                  - label: "IsSourceOf"
+                  - label: "IsRequiredBy"
+                  - label: "Requires"
+                  - label: "IsObsoletedBy"
+                  - label: "Obsoletes"
+                createdOn: "2022-04-25T10:40:44-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-25T10:40:44-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  required: true
+                  propertyIri: "https://schema.metadatacenter.org/properties/e1b9d020-0c4b-4a2a-95f0-07bce9437285"
+              - key: "Related Resource Type"
+                type: single-select-list-field
+                name: "Related Resource Type"
+                description: "Enter a resource type from the DataCite Resource Type General list"
+                id: "https://repo.metadatacenter.org/template-fields/2a922fbb-7c29-470e-a1d4-14b0fe1d9f4c"
+                modelVersion: 1.6.0
+                values:
+                  - label: "Audiovisual"
+                  - label: "Book"
+                  - label: "Book Chapter"
+                  - label: "Collection"
+                  - label: "ComputationalNotebook"
+                  - label: "ConferencePaper"
+                  - label: "ConferenceProceeding"
+                  - label: "DataPaper"
+                  - label: "Dataset"
+                  - label: "Dissertation"
+                  - label: "Event"
+                  - label: "Image"
+                  - label: "InteractiveResource"
+                  - label: "Journal"
+                  - label: "JournalArticle"
+                  - label: "Model"
+                  - label: "OutputManagementPlan"
+                  - label: "PeerReview"
+                  - label: "PhysicalObject"
+                  - label: "Preprint"
+                  - label: "Report"
+                  - label: "Service"
+                  - label: "Software"
+                  - label: "Sound"
+                  - label: "Standard"
+                  - label: "Text"
+                  - label: "Workflow"
+                  - label: "Other"
+                createdOn: "2022-04-25T10:40:44-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-25T10:40:44-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  propertyIri: "https://schema.metadatacenter.org/properties/ae64b230-7910-4eb6-b005-6bb675b602c7"
+              - key: "Related Metadata Scheme"
+                type: text-field
+                name: "Related Metadata Scheme"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/20720fea-93fd-4f37-bc65-2562705681bd"
+                modelVersion: 1.6.0
+                createdOn: "2022-04-25T10:40:44-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-25T10:40:44-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  propertyIri: "https://schema.metadatacenter.org/properties/824ebc7d-74b2-4883-9789-7eeec9ffef0b"
+              - key: "Related Metadata Scheme URI"
+                type: text-field
+                name: "Related Metadata Scheme URI"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/6f68b044-bd98-4324-add5-8078a72c9ddf"
+                modelVersion: 1.6.0
+                createdOn: "2022-04-25T10:40:44-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-25T10:40:44-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  propertyIri: "https://schema.metadatacenter.org/properties/1eed05ac-654e-42aa-b0bc-898f97597ec8"
+              - key: "Related Metadata Scheme Type"
+                type: text-field
+                name: "Related Metadata Scheme Type"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/d369cfc9-28ec-487b-bf0d-e86718a1c08a"
+                modelVersion: 1.6.0
+                createdOn: "2022-04-25T10:40:44-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-25T10:40:44-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  propertyIri: "https://schema.metadatacenter.org/properties/2fbe19dc-86b3-496c-b716-9ed30409eeac"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/a5327818-3f46-4106-b0e6-381039e03043"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/0307010b-db0f-4a28-9ba5-ca6636fa2b8a"
+          multiple: true
+          minItems: 1
+      - key: "What software was used in the processing?"
+        type: static-section-break
+        name: "What software was used in the processing?"
+        id: "https://repo.metadatacenter.org/template-fields/9692db3b-7bcc-4848-bbf7-d87dd2d806a2"
+        modelVersion: 1.6.0
+        createdOn: "2022-04-27T11:21:12-07:00"
+        createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        modifiedOn: "2022-04-27T11:21:12-07:00"
+        modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+      - key: "Processing"
+        type: element
+        name: "Processing"
+        description: "ISO 19115-1 LE_Processing Model"
+        id: "https://repo.metadatacenter.org/template-elements/d0614499-6786-4f09-8649-36c95e2f46fc"
+        status: draft
+        version: 0.0.1
+        modelVersion: 1.6.0
+        createdOn: "2022-04-27T11:21:12-07:00"
+        createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        modifiedOn: "2022-04-27T11:21:12-07:00"
+        modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        children:
+          - key: "DataCite Identifier1"
+            type: element
+            name: "DataCite Identifier"
+            description: "An identifier from the DataCite Schema"
+            identifier: "DataCiteIdentifier"
+            id: "https://repo.metadatacenter.org/template-elements/95998a9e-dba1-4436-b53a-570962b5b3a6"
+            status: draft
+            version: 0.0.1
+            modelVersion: 1.6.0
+            createdOn: "2022-04-25T12:55:23-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-25T12:55:23-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            prefLabel: "Processing Identifier"
+            children:
+              - key: "Identifier Guidance"
+                type: static-rich-text
+                name: "Identifier Guidance"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/00a55b34-482c-48f2-ac2b-83426a24c7b3"
+                modelVersion: 1.6.0
+                content: "<p><span style=\"background-color: rgb(255, 255, 255);\">Persistent and unique identifiers (PIDs) are important for unambiguous references to resources. They also&nbsp;</span>enable the connections that are critical to forming the PID Graph. They are used to identify and cite resources and to connect other resources of many kinds to the resource being described by these metadata.</p>\n\n<p>These identifiers are usually complete URLS. For example a DOI would be https://doi.org/DOI and an ORCID would be https://orcid.org/ORCID. The identifiers do not have to be DOIs or other standard identifiers. If the type of the identifier is not easily identifiable, provide it along with a type and the URI of the identifier scheme.</p>\n"
+                createdOn: "2022-04-14T13:09:58-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-14T13:09:58-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+              - key: "Identifier"
+                type: text-field
+                name: "Identifier"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/19a539cb-9334-4195-9153-df90925650c6"
+                modelVersion: 1.6.0
+                prefLabel: "Identifier"
+                createdOn: "2022-04-14T13:09:58-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-14T13:09:58-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  required: true
+                  propertyIri: "https://schema.metadatacenter.org/properties/dc6b30b1-b2f7-4ffc-8c7d-f818ef92b9c5"
+              - key: "Identifier Scheme"
+                type: text-field
+                name: "Identifier Scheme"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/4b8f48ba-d3e8-4718-8946-c5f77b3d8cac"
+                modelVersion: 1.6.0
+                createdOn: "2022-04-14T13:09:58-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-14T13:09:58-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  propertyIri: "https://schema.metadatacenter.org/properties/d7cf4f00-8e78-458e-8964-44174cde0316"
+              - key: "Identifier Scheme URI"
+                type: link-field
+                name: "Identifier Scheme URI"
+                description: "A Universal Resource Identifier for the Identifier Scheme (https://orcid.org, https://ror.org)"
+                id: "https://repo.metadatacenter.org/template-fields/c81eae8f-9b1b-4d72-bc33-884674515528"
+                modelVersion: 1.6.0
+                prefLabel: "Identifier Scheme URI"
+                createdOn: "2022-04-14T13:09:58-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-14T13:09:58-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  propertyIri: "https://schema.metadatacenter.org/properties/527f2d89-e439-428b-9b8d-f88f7efbb582"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/604c7c00-6229-48db-b486-1a2bc995abef"
+              overrideLabel: "Processing Identifier"
+          - key: "Procedure Description Guidance"
+            type: static-rich-text
+            name: "Procedure Description Guidance"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/d8d485e5-3a46-4daa-8889-358eabc54f23"
+            modelVersion: 1.6.0
+            prefLabel: "Procedure Description Guidance"
+            content: "<p><b>Procedure Description</b></p>\n\n<p>A description of the procedure sufficient to provide understanding to a reader of the high-level metadata for the process.</p>\n"
+            createdOn: "2022-04-25T12:55:23-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-25T12:55:23-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+          - key: "Procedure Description"
+            type: text-area-field
+            name: "Procedure Description"
+            description: "A description of the procedure (free-text)"
+            id: "https://repo.metadatacenter.org/template-fields/c68dea1d-9e0c-4b3e-b703-13ab63752047"
+            modelVersion: 1.6.0
+            createdOn: "2022-04-25T12:55:23-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-25T12:55:23-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/86ba0b8a-8a10-4c68-bc34-bb6332cf45de"
+          - key: "Processing Parameter"
+            type: element
+            name: "Processing Parameter"
+            id: "https://repo.metadatacenter.org/template-elements/090dfd30-b74b-4936-8531-ff5a0432bda3"
+            status: draft
+            version: 0.0.1
+            modelVersion: 1.6.0
+            createdOn: "2022-04-25T12:55:23-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-25T12:55:23-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            children:
+              - key: "Parameter Name Guidance"
+                type: static-rich-text
+                name: "Parameter Name Guidance"
+                description: "Provide name(s) for the parameter"
+                id: "https://repo.metadatacenter.org/template-fields/88a20e27-5846-42bf-8242-c7a2b82d426e"
+                modelVersion: 1.6.0
+                content: "Parameters can have multiple standard or local names. Please enter names with namespaces if available."
+                createdOn: "2022-04-25T12:34:45-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-25T12:34:45-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+              - key: "Parameter Name"
+                type: text-field
+                name: "Parameter Name"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/255f8894-c904-472d-9106-971d411cf72e"
+                modelVersion: 1.6.0
+                createdOn: "2022-04-25T12:34:45-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-25T12:34:45-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  required: true
+                  propertyIri: "https://schema.metadatacenter.org/properties/54d9c14a-206f-4358-8034-7b7514f8457d"
+                  multiple: true
+                  minItems: 1
+              - key: "Parameter Guidance"
+                type: static-rich-text
+                name: "Parameter Guidance"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/ce6f9b0b-ab04-43db-ad51-8b2ecc04cfd1"
+                modelVersion: 1.6.0
+                content: "<p><b>Parameter Direction</b></p>\n\n<p>Indicate whether this is an input or output parameter, or both.</p>"
+                createdOn: "2022-04-25T12:34:45-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-25T12:34:45-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+              - key: "Parameter Direction"
+                type: single-select-list-field
+                name: "Parameter Direction"
+                description: "Input or output parameter"
+                id: "https://repo.metadatacenter.org/template-fields/9a56c9c6-372b-4b47-b800-e1442186730a"
+                modelVersion: 1.6.0
+                values:
+                  - label: "in"
+                  - label: "out"
+                  - label: "in/out"
+                createdOn: "2022-04-25T12:34:45-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-25T12:34:45-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  required: true
+                  propertyIri: "https://schema.metadatacenter.org/properties/51563af2-b156-48b9-aa52-bc8c0f22d40b"
+              - key: "Parameter Description Guidance"
+                type: static-rich-text
+                name: "Parameter Description Guidance"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/bf222ee3-91bf-4c45-83cc-76df1c86e983"
+                modelVersion: 1.6.0
+                content: "<p><b>Parameter Description</b></p>\n\n<p>A description of the parameter sufficient to provide understanding to a reader of the high-level metadata for the process.</p>"
+                createdOn: "2022-04-25T12:34:45-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-25T12:34:45-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+              - key: "Parameter Description"
+                type: text-field
+                name: "Parameter Description"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/479439f8-b394-4e54-89bf-a2dc23ef0145"
+                modelVersion: 1.6.0
+                createdOn: "2022-04-25T12:34:45-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-25T12:34:45-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  required: true
+                  propertyIri: "https://schema.metadatacenter.org/properties/916a770c-3712-435f-99fc-80b818b84131"
+              - key: "Optionality Guidance"
+                type: static-rich-text
+                name: "Optionality Guidance"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/c7c62971-3ba8-4573-bf9c-2da842480bb5"
+                modelVersion: 1.6.0
+                content: "<p><b>Optionality</b></p>\n<p>Indicate whether the parameter is optional (True) or required (False).</p>\n"
+                createdOn: "2022-04-25T12:34:45-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-25T12:34:45-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+              - key: "Optionality"
+                type: radio-field
+                name: "Optionality"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/52220464-4ff3-4829-abcf-b2abceb73c7b"
+                modelVersion: 1.6.0
+                values:
+                  - label: "True"
+                  - label: "False"
+                createdOn: "2022-04-25T12:34:45-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-25T12:34:45-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  required: true
+                  propertyIri: "https://schema.metadatacenter.org/properties/ac5ae14c-785c-4650-8fd6-582f25e5567e"
+              - key: "Repeatability Guidance"
+                type: static-rich-text
+                name: "Repeatability Guidance"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/4d53b9b4-f511-43e4-b537-e22c3da734a7"
+                modelVersion: 1.6.0
+                content: "<p><b>Repeatability</b></p>\n<p>Indicate whether the parameter is repeatable (True) or not (False).</p>\n"
+                createdOn: "2022-04-25T12:34:45-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-25T12:34:45-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+              - key: "Repeatability"
+                type: radio-field
+                name: "Repeatability"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/80b655f1-6ef7-46d7-981b-2bdce643d127"
+                modelVersion: 1.6.0
+                values:
+                  - label: "True"
+                  - label: "False"
+                createdOn: "2022-04-25T12:34:45-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-25T12:34:45-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  propertyIri: "https://schema.metadatacenter.org/properties/c289e51b-0e79-4523-ae40-54ad4924ed71"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/ce795b78-2da7-456a-a421-173b16e4554c"
+              multiple: true
+              minItems: 1
+          - key: "DataCite RelatedIdentifier"
+            type: element
+            name: "DataCite RelatedIdentifier"
+            description: "DataCite V4.4 relatedIdentifier"
+            id: "https://repo.metadatacenter.org/template-elements/fbc8b079-ae69-42c4-a12f-1ac56867318b"
+            status: draft
+            version: 0.0.1
+            modelVersion: 1.6.0
+            createdOn: "2022-04-25T12:55:23-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-25T12:55:23-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            prefLabel: "Software Reference / Documentation"
+            children:
+              - key: "DataCite Identifier"
+                type: element
+                name: "DataCite Identifier"
+                description: "An identifier from the DataCite Schema"
+                identifier: "DataCiteIdentifier"
+                id: "https://repo.metadatacenter.org/template-elements/95998a9e-dba1-4436-b53a-570962b5b3a6"
+                status: draft
+                version: 0.0.1
+                modelVersion: 1.6.0
+                createdOn: "2022-04-12T15:26:38-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-12T15:26:38-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                children:
+                  - key: "Identifier Guidance"
+                    type: static-rich-text
+                    name: "Identifier Guidance"
+                    description: "Help Text"
+                    id: "https://repo.metadatacenter.org/template-fields/00a55b34-482c-48f2-ac2b-83426a24c7b3"
+                    modelVersion: 1.6.0
+                    content: "<p>Related identifiers enable the connections that are critical to forming the PID Graph. They are used to connect resources of many kinds to the resource being described by these metadata.</p> \n<p>These identifiers are usually complete URLS. For example a DOI would be https://doi.org/DOI. The identifiers do not have to be DOIs or other standard identifiers. If the type of the identifier is not universally identifiable, provide it along with the URI of the identifier scheme.</p>\n"
+                    createdOn: "2022-04-10T13:38:16-07:00"
+                    createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    modifiedOn: "2022-04-10T13:38:16-07:00"
+                    modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                  - key: "Identifier"
+                    type: text-field
+                    name: "Identifier"
+                    description: "Help Text"
+                    id: "https://repo.metadatacenter.org/template-fields/19a539cb-9334-4195-9153-df90925650c6"
+                    modelVersion: 1.6.0
+                    prefLabel: "Identifier"
+                    createdOn: "2022-04-10T13:38:16-07:00"
+                    createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    modifiedOn: "2022-04-10T13:38:16-07:00"
+                    modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    configuration:
+                      propertyIri: "https://schema.metadatacenter.org/properties/dc6b30b1-b2f7-4ffc-8c7d-f818ef92b9c5"
+                  - key: "Identifier Scheme"
+                    type: text-field
+                    name: "Identifier Scheme"
+                    description: "Help Text"
+                    id: "https://repo.metadatacenter.org/template-fields/4b8f48ba-d3e8-4718-8946-c5f77b3d8cac"
+                    modelVersion: 1.6.0
+                    createdOn: "2022-04-10T13:38:16-07:00"
+                    createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    modifiedOn: "2022-04-10T13:38:16-07:00"
+                    modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    configuration:
+                      propertyIri: "https://schema.metadatacenter.org/properties/d7cf4f00-8e78-458e-8964-44174cde0316"
+                  - key: "Identifier Scheme URI"
+                    type: link-field
+                    name: "Identifier Scheme URI"
+                    description: "A Universal Resource Identifier for the Identifier Scheme (https://orcid.org, https://ror.org)"
+                    id: "https://repo.metadatacenter.org/template-fields/c81eae8f-9b1b-4d72-bc33-884674515528"
+                    modelVersion: 1.6.0
+                    prefLabel: "Identifier Scheme URI"
+                    createdOn: "2022-04-10T13:38:16-07:00"
+                    createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    modifiedOn: "2022-04-10T13:38:16-07:00"
+                    modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    configuration:
+                      propertyIri: "https://schema.metadatacenter.org/properties/527f2d89-e439-428b-9b8d-f88f7efbb582"
+                configuration:
+                  propertyIri: "https://schema.metadatacenter.org/properties/fc2a075a-7f33-4677-be47-dff4eee5e45b"
+              - key: "Related Identifier Type"
+                type: single-select-list-field
+                name: "Related Identifier Type"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/e8a71129-3e79-4d28-baa0-6cf18e1a2202"
+                modelVersion: 1.6.0
+                values:
+                  - label: "ARK"
+                  - label: "arXiv"
+                  - label: "bibcode"
+                  - label: "DOI"
+                  - label: "EAN13"
+                  - label: "EISSN"
+                  - label: "Handle"
+                  - label: "IGSN"
+                  - label: "ISBN"
+                  - label: "ISSN"
+                  - label: "ISTC"
+                  - label: "LISSN"
+                  - label: "LSID"
+                  - label: "PMID"
+                  - label: "PURL"
+                  - label: "UPC"
+                  - label: "URL"
+                  - label: "URN"
+                  - label: "w3id"
+                createdOn: "2022-04-12T15:26:38-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-12T15:26:38-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  required: true
+                  propertyIri: "https://schema.metadatacenter.org/properties/bb549966-8f68-4631-9390-96a841ae3d88"
+              - key: "Relation Type"
+                type: single-select-list-field
+                name: "Relation Type"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/b85bf998-7a64-41dc-849f-6737f0de5b60"
+                modelVersion: 1.6.0
+                values:
+                  - label: "IsCitedBy"
+                  - label: "Cites"
+                  - label: "IsSupplementTo"
+                  - label: "IsSupplementedBy"
+                  - label: "IsContinuedBy"
+                  - label: "Continues"
+                  - label: "IsDescribedBy"
+                  - label: "Describes"
+                  - label: "HasMetadata"
+                  - label: "IsMetadataFor"
+                  - label: "HasVersion"
+                  - label: "IsVersionOf"
+                  - label: "IsNewVersionOf"
+                  - label: "IsPreviousVersionOf"
+                  - label: "IsPartOf"
+                  - label: "HasPart"
+                  - label: "IsPublishedIn"
+                  - label: "IsReferencedBy"
+                  - label: "References"
+                  - label: "IsDocumentedBy"
+                  - label: "Documents"
+                  - label: "IsCompiledBy"
+                  - label: "Compiles"
+                  - label: "IsVariantFormOf"
+                  - label: "IsOriginalFormOf"
+                  - label: "IsIdenticalTo"
+                  - label: "IsReviewedBy"
+                  - label: "Reviews"
+                  - label: "IsDerivedFrom"
+                  - label: "IsSourceOf"
+                  - label: "IsRequiredBy"
+                  - label: "Requires"
+                  - label: "IsObsoletedBy"
+                  - label: "Obsoletes"
+                createdOn: "2022-04-12T15:26:38-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-12T15:26:38-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  required: true
+                  propertyIri: "https://schema.metadatacenter.org/properties/e1b9d020-0c4b-4a2a-95f0-07bce9437285"
+              - key: "Related Resource Type"
+                type: single-select-list-field
+                name: "Related Resource Type"
+                description: "Enter a resource type from the DataCite Resource Type General list"
+                id: "https://repo.metadatacenter.org/template-fields/2a922fbb-7c29-470e-a1d4-14b0fe1d9f4c"
+                modelVersion: 1.6.0
+                values:
+                  - label: "Audiovisual"
+                  - label: "Book"
+                  - label: "Book Chapter"
+                  - label: "Collection"
+                  - label: "ComputationalNotebook"
+                  - label: "ConferencePaper"
+                  - label: "ConferenceProceeding"
+                  - label: "DataPaper"
+                  - label: "Dataset"
+                  - label: "Dissertation"
+                  - label: "Event"
+                  - label: "Image"
+                  - label: "InteractiveResource"
+                  - label: "Journal"
+                  - label: "JournalArticle"
+                  - label: "Model"
+                  - label: "OutputManagementPlan"
+                  - label: "PeerReview"
+                  - label: "PhysicalObject"
+                  - label: "Preprint"
+                  - label: "Report"
+                  - label: "Service"
+                  - label: "Software"
+                  - label: "Sound"
+                  - label: "Standard"
+                  - label: "Text"
+                  - label: "Workflow"
+                  - label: "Other"
+                createdOn: "2022-04-12T15:26:38-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-12T15:26:38-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  propertyIri: "https://schema.metadatacenter.org/properties/ae64b230-7910-4eb6-b005-6bb675b602c7"
+              - key: "Related Metadata Scheme"
+                type: text-field
+                name: "Related Metadata Scheme"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/20720fea-93fd-4f37-bc65-2562705681bd"
+                modelVersion: 1.6.0
+                createdOn: "2022-04-12T15:26:38-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-12T15:26:38-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  propertyIri: "https://schema.metadatacenter.org/properties/824ebc7d-74b2-4883-9789-7eeec9ffef0b"
+              - key: "Related Metadata Scheme URI"
+                type: text-field
+                name: "Related Metadata Scheme URI"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/6f68b044-bd98-4324-add5-8078a72c9ddf"
+                modelVersion: 1.6.0
+                createdOn: "2022-04-12T15:26:38-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-12T15:26:38-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  propertyIri: "https://schema.metadatacenter.org/properties/1eed05ac-654e-42aa-b0bc-898f97597ec8"
+              - key: "Related Metadata Scheme Type"
+                type: text-field
+                name: "Related Metadata Scheme Type"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/d369cfc9-28ec-487b-bf0d-e86718a1c08a"
+                modelVersion: 1.6.0
+                createdOn: "2022-04-12T15:26:38-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-12T15:26:38-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  propertyIri: "https://schema.metadatacenter.org/properties/2fbe19dc-86b3-496c-b716-9ed30409eeac"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/806684bd-6d4b-4461-8e76-36349a70ff87"
+              overrideLabel: "Software Reference / Documentation"
+          - key: "Algorithm Description Guidance"
+            type: static-rich-text
+            name: "Algorithm Description Guidance"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/6e6b5041-0cb5-4f71-8e97-20dd5b825a05"
+            modelVersion: 1.6.0
+            content: "<p><b>Algorithm Description</b></p>\n\n<p>If the processing implements a formal algorithm, provide a brief description of the algorithm along with a related identifier that provides a link to the full algorithm description.</p>\n"
+            createdOn: "2022-04-25T12:55:23-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-25T12:55:23-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+          - key: "Algorithm Description"
+            type: text-area-field
+            name: "Algorithm Description"
+            description: "Describe the algorithm(s) used in this processing"
+            id: "https://repo.metadatacenter.org/template-fields/d3400a6b-e28f-456b-a67d-717f428dfc32"
+            modelVersion: 1.6.0
+            createdOn: "2022-04-25T12:55:23-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-25T12:55:23-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/f38b9eea-edd4-4ab5-8a29-85668736d05b"
+              multiple: true
+              minItems: 1
+          - key: "RunTime Parameters Guidance"
+            type: static-rich-text
+            name: "RunTime Parameters Guidance"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/9b788e09-5a07-4d3d-a06b-b13657f331bc"
+            modelVersion: 1.6.0
+            content: "<p><b>runTime Parameters</b></p>\n\n<p>If the processing is controlled with simple runtime parameters given as a command line argument, provide those parameters here.</p>\n"
+            createdOn: "2022-04-25T12:55:23-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-25T12:55:23-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+          - key: "runTime Parameters"
+            type: text-field
+            name: "runTime Parameters"
+            description: "Enter the runtime parameters required for this step"
+            id: "https://repo.metadatacenter.org/template-fields/4233a85e-f402-4eb0-b9e1-42dff057283c"
+            modelVersion: 1.6.0
+            createdOn: "2022-04-25T12:55:23-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-25T12:55:23-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/58fc5548-f928-4796-b276-b76b264d766c"
+          - key: "Other Property Guidance"
+            type: static-rich-text
+            name: "Other Property Guidance"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/23c531e4-94fb-4c24-a1c0-f7c9923f155d"
+            modelVersion: 1.6.0
+            content: "<p><b>Other Properties</b></p>\n\n<p>If other specific metadata are needed to describe the processing, provide those here as key-value pairs.</p>\n"
+            createdOn: "2022-04-25T12:55:23-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-25T12:55:23-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+          - key: "Other Property"
+            type: attribute-value-field
+            name: "Other Property"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/b2492949-483a-4f11-8a88-3321969b00f5"
+            modelVersion: 1.6.0
+            createdOn: "2022-04-25T12:55:23-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-25T12:55:23-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            configuration:
+              minItems: 0
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/51c41f17-365d-4f82-9156-8141167f169e"
+      - key: "What were the processing outputs?"
+        type: static-section-break
+        name: "What were the processing outputs?"
+        id: "https://repo.metadatacenter.org/template-fields/b2884067-7426-48d7-9a87-21751b780045"
+        modelVersion: 1.6.0
+        createdOn: "2022-04-27T11:21:12-07:00"
+        createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        modifiedOn: "2022-04-27T11:21:12-07:00"
+        modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+      - key: "Workflow step output"
+        type: element
+        name: "Workflow step output"
+        id: "https://repo.metadatacenter.org/template-elements/3d37855d-9782-4460-8958-7bb3a696449f"
+        status: draft
+        version: 0.0.1
+        modelVersion: 1.6.0
+        createdOn: "2022-04-27T11:21:12-07:00"
+        createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        modifiedOn: "2022-04-27T11:21:12-07:00"
+        modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        children:
+          - key: "Workflow Outputs"
+            type: static-section-break
+            name: "Workflow Outputs"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/499dc4b7-951e-46bc-8533-6071c8a6bc2a"
+            modelVersion: 1.6.0
+            createdOn: "2022-04-27T11:17:14-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-27T11:17:14-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+          - key: "Output Description Guidance"
+            type: static-rich-text
+            name: "Output Description Guidance"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/ade57f4c-4eac-4ca8-bdae-c5a97762acf2"
+            modelVersion: 1.6.0
+            content: "<p><b>Workflow Step Output</b></p>\n\n<p>Workflow outputs can be described with a brief description of the output sufficient to provide understanding to a reader of the high-level metadata for the process and/or with a related identifier typically with <i>IsRequiredBy</i> as a relation type.</p>\n"
+            createdOn: "2022-04-27T11:17:14-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-27T11:17:14-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+          - key: "Output Description"
+            type: text-area-field
+            name: "Output Description"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/4ace4afa-45cb-45eb-8775-a10e532f90f2"
+            modelVersion: 1.6.0
+            createdOn: "2022-04-27T11:17:14-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-27T11:17:14-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/db40ae8d-fd46-4787-b1e2-1373ba21a1f2"
+          - key: "Identifier(s) of output(s) that require the workflow step"
+            type: static-section-break
+            name: "Identifier(s) of output(s) that require the workflow step"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/0cdb5b7d-f82c-4eff-ab82-46830278cd52"
+            modelVersion: 1.6.0
+            createdOn: "2022-04-27T11:17:14-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-27T11:17:14-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+          - key: "Related Identifier"
+            type: element
+            name: "Related Identifier"
+            description: "DataCite V4.4 relatedIdentifier"
+            id: "https://repo.metadatacenter.org/template-elements/fbc8b079-ae69-42c4-a12f-1ac56867318b"
+            status: draft
+            version: 0.0.1
+            modelVersion: 1.6.0
+            createdOn: "2022-04-27T11:17:14-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-27T11:17:14-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            children:
+              - key: "DataCite Identifier"
+                type: element
+                name: "DataCite Identifier"
+                description: "An identifier from the DataCite Schema"
+                identifier: "DataCiteIdentifier"
+                id: "https://repo.metadatacenter.org/template-elements/95998a9e-dba1-4436-b53a-570962b5b3a6"
+                status: draft
+                version: 0.0.1
+                modelVersion: 1.6.0
+                createdOn: "2022-04-25T10:40:44-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-25T10:40:44-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                prefLabel: "Resource Identifier"
+                children:
+                  - key: "Identifier Guidance"
+                    type: static-rich-text
+                    name: "Identifier Guidance"
+                    description: "Help Text"
+                    id: "https://repo.metadatacenter.org/template-fields/00a55b34-482c-48f2-ac2b-83426a24c7b3"
+                    modelVersion: 1.6.0
+                    content: "<p>Related identifiers enable the connections that are critical to forming the PID Graph. They are used to connect resources of many kinds to the resource being described by these metadata.</p> \n<p>These identifiers are usually complete URLS. For example a DOI would be https://doi.org/DOI. The identifiers do not have to be DOIs or other standard identifiers. If the type of the identifier is not universally identifiable, provide it along with the URI of the identifier scheme.</p>\n"
+                    createdOn: "2022-04-10T13:38:16-07:00"
+                    createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    modifiedOn: "2022-04-10T13:38:16-07:00"
+                    modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                  - key: "Identifier"
+                    type: text-field
+                    name: "Identifier"
+                    description: "Help Text"
+                    id: "https://repo.metadatacenter.org/template-fields/19a539cb-9334-4195-9153-df90925650c6"
+                    modelVersion: 1.6.0
+                    prefLabel: "Identifier"
+                    createdOn: "2022-04-10T13:38:16-07:00"
+                    createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    modifiedOn: "2022-04-10T13:38:16-07:00"
+                    modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    configuration:
+                      propertyIri: "https://schema.metadatacenter.org/properties/dc6b30b1-b2f7-4ffc-8c7d-f818ef92b9c5"
+                  - key: "Identifier Scheme"
+                    type: text-field
+                    name: "Identifier Scheme"
+                    description: "Help Text"
+                    id: "https://repo.metadatacenter.org/template-fields/4b8f48ba-d3e8-4718-8946-c5f77b3d8cac"
+                    modelVersion: 1.6.0
+                    createdOn: "2022-04-10T13:38:16-07:00"
+                    createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    modifiedOn: "2022-04-10T13:38:16-07:00"
+                    modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    configuration:
+                      propertyIri: "https://schema.metadatacenter.org/properties/d7cf4f00-8e78-458e-8964-44174cde0316"
+                  - key: "Identifier Scheme URI"
+                    type: link-field
+                    name: "Identifier Scheme URI"
+                    description: "A Universal Resource Identifier for the Identifier Scheme (https://orcid.org, https://ror.org)"
+                    id: "https://repo.metadatacenter.org/template-fields/c81eae8f-9b1b-4d72-bc33-884674515528"
+                    modelVersion: 1.6.0
+                    prefLabel: "Identifier Scheme URI"
+                    createdOn: "2022-04-10T13:38:16-07:00"
+                    createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    modifiedOn: "2022-04-10T13:38:16-07:00"
+                    modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                    configuration:
+                      propertyIri: "https://schema.metadatacenter.org/properties/527f2d89-e439-428b-9b8d-f88f7efbb582"
+                configuration:
+                  propertyIri: "https://schema.metadatacenter.org/properties/fc2a075a-7f33-4677-be47-dff4eee5e45b"
+                  overrideLabel: "Resource Identifier"
+                  overrideDescription: "An identifier for a resource (e.g. DOI), person (e.g. ORCID), organization (e.g. ROR) or other item."
+              - key: "Related Identifier Type"
+                type: single-select-list-field
+                name: "Related Identifier Type"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/e8a71129-3e79-4d28-baa0-6cf18e1a2202"
+                modelVersion: 1.6.0
+                values:
+                  - label: "ARK"
+                  - label: "arXiv"
+                  - label: "bibcode"
+                  - label: "DOI"
+                  - label: "EAN13"
+                  - label: "EISSN"
+                  - label: "Handle"
+                  - label: "IGSN"
+                  - label: "ISBN"
+                  - label: "ISSN"
+                  - label: "ISTC"
+                  - label: "LISSN"
+                  - label: "LSID"
+                  - label: "PMID"
+                  - label: "PURL"
+                  - label: "UPC"
+                  - label: "URL"
+                  - label: "URN"
+                  - label: "w3id"
+                createdOn: "2022-04-25T10:40:44-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-25T10:40:44-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  required: true
+                  propertyIri: "https://schema.metadatacenter.org/properties/bb549966-8f68-4631-9390-96a841ae3d88"
+              - key: "Relation Type"
+                type: single-select-list-field
+                name: "Relation Type"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/b85bf998-7a64-41dc-849f-6737f0de5b60"
+                modelVersion: 1.6.0
+                values:
+                  - label: "IsCitedBy"
+                  - label: "Cites"
+                  - label: "IsSupplementTo"
+                  - label: "IsSupplementedBy"
+                  - label: "IsContinuedBy"
+                  - label: "Continues"
+                  - label: "IsDescribedBy"
+                  - label: "Describes"
+                  - label: "HasMetadata"
+                  - label: "IsMetadataFor"
+                  - label: "HasVersion"
+                  - label: "IsVersionOf"
+                  - label: "IsNewVersionOf"
+                  - label: "IsPreviousVersionOf"
+                  - label: "IsPartOf"
+                  - label: "HasPart"
+                  - label: "IsPublishedIn"
+                  - label: "IsReferencedBy"
+                  - label: "References"
+                  - label: "IsDocumentedBy"
+                  - label: "Documents"
+                  - label: "IsCompiledBy"
+                  - label: "Compiles"
+                  - label: "IsVariantFormOf"
+                  - label: "IsOriginalFormOf"
+                  - label: "IsIdenticalTo"
+                  - label: "IsReviewedBy"
+                  - label: "Reviews"
+                  - label: "IsDerivedFrom"
+                  - label: "IsSourceOf"
+                  - label: "IsRequiredBy"
+                  - label: "Requires"
+                  - label: "IsObsoletedBy"
+                  - label: "Obsoletes"
+                createdOn: "2022-04-25T10:40:44-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-25T10:40:44-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  required: true
+                  propertyIri: "https://schema.metadatacenter.org/properties/e1b9d020-0c4b-4a2a-95f0-07bce9437285"
+              - key: "Related Resource Type"
+                type: single-select-list-field
+                name: "Related Resource Type"
+                description: "Enter a resource type from the DataCite Resource Type General list"
+                id: "https://repo.metadatacenter.org/template-fields/2a922fbb-7c29-470e-a1d4-14b0fe1d9f4c"
+                modelVersion: 1.6.0
+                values:
+                  - label: "Audiovisual"
+                  - label: "Book"
+                  - label: "Book Chapter"
+                  - label: "Collection"
+                  - label: "ComputationalNotebook"
+                  - label: "ConferencePaper"
+                  - label: "ConferenceProceeding"
+                  - label: "DataPaper"
+                  - label: "Dataset"
+                  - label: "Dissertation"
+                  - label: "Event"
+                  - label: "Image"
+                  - label: "InteractiveResource"
+                  - label: "Journal"
+                  - label: "JournalArticle"
+                  - label: "Model"
+                  - label: "OutputManagementPlan"
+                  - label: "PeerReview"
+                  - label: "PhysicalObject"
+                  - label: "Preprint"
+                  - label: "Report"
+                  - label: "Service"
+                  - label: "Software"
+                  - label: "Sound"
+                  - label: "Standard"
+                  - label: "Text"
+                  - label: "Workflow"
+                  - label: "Other"
+                createdOn: "2022-04-25T10:40:44-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-25T10:40:44-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  propertyIri: "https://schema.metadatacenter.org/properties/ae64b230-7910-4eb6-b005-6bb675b602c7"
+              - key: "Related Metadata Scheme"
+                type: text-field
+                name: "Related Metadata Scheme"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/20720fea-93fd-4f37-bc65-2562705681bd"
+                modelVersion: 1.6.0
+                createdOn: "2022-04-25T10:40:44-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-25T10:40:44-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  propertyIri: "https://schema.metadatacenter.org/properties/824ebc7d-74b2-4883-9789-7eeec9ffef0b"
+              - key: "Related Metadata Scheme URI"
+                type: text-field
+                name: "Related Metadata Scheme URI"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/6f68b044-bd98-4324-add5-8078a72c9ddf"
+                modelVersion: 1.6.0
+                createdOn: "2022-04-25T10:40:44-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-25T10:40:44-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  propertyIri: "https://schema.metadatacenter.org/properties/1eed05ac-654e-42aa-b0bc-898f97597ec8"
+              - key: "Related Metadata Scheme Type"
+                type: text-field
+                name: "Related Metadata Scheme Type"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/d369cfc9-28ec-487b-bf0d-e86718a1c08a"
+                modelVersion: 1.6.0
+                createdOn: "2022-04-25T10:40:44-07:00"
+                createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                modifiedOn: "2022-04-25T10:40:44-07:00"
+                modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+                configuration:
+                  propertyIri: "https://schema.metadatacenter.org/properties/2fbe19dc-86b3-496c-b716-9ed30409eeac"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/5c8312cf-5404-4fa3-8183-76bdad543441"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/c0be7a3e-b789-4003-9419-ab8a406d7859"
+          multiple: true
+          minItems: 1
+      - key: "Was there a report from the processing?"
+        type: static-section-break
+        name: "Was there a report from the processing?"
+        id: "https://repo.metadatacenter.org/template-fields/cca4ea98-bf31-47b7-a2ea-488ce08aebe7"
+        modelVersion: 1.6.0
+        createdOn: "2022-04-27T11:21:12-07:00"
+        createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        modifiedOn: "2022-04-27T11:21:12-07:00"
+        modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+      - key: "Processing Report"
+        type: element
+        name: "Processing Report"
+        id: "https://repo.metadatacenter.org/template-elements/eb105ba8-a1d3-4765-94b6-4fc35304b0b0"
+        status: draft
+        version: 0.0.1
+        modelVersion: 1.6.0
+        createdOn: "2022-04-27T11:21:12-07:00"
+        createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        modifiedOn: "2022-04-27T11:21:12-07:00"
+        modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+        children:
+          - key: "Report Name Guidance"
+            type: static-rich-text
+            name: "Report Name Guidance"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/07c27d82-55e9-4e37-8d1f-2d44dba63607"
+            modelVersion: 1.6.0
+            content: "<p><b>Report Name</b></p>\n\n<p>A name or identifier of the report that provides a summary of the \noutput, warnings, and errors encountered during the process step. \nCould be the name of a file or a file name pattern, or a URL or other identifier.</p>\n"
+            createdOn: "2022-04-25T09:02:12-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-25T09:02:12-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+          - key: "Report name"
+            type: text-field
+            name: "Report name"
+            description: "Enter the name ofthe report from the process step."
+            id: "https://repo.metadatacenter.org/template-fields/c37e20e8-f8b7-4aed-81ae-ec523c07c99a"
+            modelVersion: 1.6.0
+            createdOn: "2022-04-25T09:02:12-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-25T09:02:12-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            configuration:
+              required: true
+              propertyIri: "https://schema.metadatacenter.org/properties/ed9bb28e-3df3-4fce-8872-55b42c256bd0"
+          - key: "Report Description Guidance"
+            type: static-rich-text
+            name: "Report Description Guidance"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/ac363742-c52d-44da-9e0a-163b489dcb32"
+            modelVersion: 1.6.0
+            content: "<p><b>Report Description</b></p>\n<p>A description of the processing report sufficient to provide understanding to a reader of the high-level metadata for the process.</p>"
+            createdOn: "2022-04-25T09:02:12-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-25T09:02:12-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+          - key: "Report Description"
+            type: text-area-field
+            name: "Report Description"
+            description: "A description of the processing report sufficient to provide understanding to a reader of the high-level metadata for the process."
+            id: "https://repo.metadatacenter.org/template-fields/5cef402e-858a-494d-9a1b-52942d1d1e68"
+            modelVersion: 1.6.0
+            createdOn: "2022-04-25T09:02:12-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-25T09:02:12-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/a42cbac2-8796-4173-8fe6-9cae13e9ac31"
+          - key: "Report File Type"
+            type: static-rich-text
+            name: "Report File Type"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/2919508c-42ae-4081-aa1f-ef4ee849bd3f"
+            modelVersion: 1.6.0
+            content: "<p><b>Report fileType</b></p>\n<p>A description of the type of the file report (text, pdf, csv, ...)</p>\n"
+            createdOn: "2022-04-25T09:02:12-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-25T09:02:12-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+          - key: "Report File Type1"
+            type: text-field
+            name: "Report File Type"
+            description: "A description of the type of the file report (text, pdf, csv, ...)"
+            id: "https://repo.metadatacenter.org/template-fields/a1241e8f-e504-40ac-a12c-d607a0e1aa4d"
+            modelVersion: 1.6.0
+            createdOn: "2022-04-25T09:02:12-07:00"
+            createdBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            modifiedOn: "2022-04-25T09:02:12-07:00"
+            modifiedBy: "https://metadatacenter.org/users/e5cef076-e98c-4d60-b271-22f0fa509597"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/b7962fe2-d47c-4583-ad3a-8b4651aae2fc"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/959f863e-598c-4c90-b8c2-a186aabc7a8d"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/fb18c277-79c8-4c83-bdb8-1d0bd4e95e91"

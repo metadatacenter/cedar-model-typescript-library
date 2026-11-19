@@ -1,0 +1,84 @@
+type: template
+name: "Testing Record"
+description: "unique demo template for testing on OSF"
+id: "https://repo.metadatacenter.org/templates/4af9bd9e-8d72-4699-88c9-f4ff3bb655e5"
+children:
+  - key: "bioCADDIEDatasetIsh"
+    type: element
+    name: "BioCADDIE Dataset Ish"
+    description: "Dataset components used by BioCADDIE"
+    prefLabel: "Dataset name"
+    children:
+      - key: "resolvableDatasetID"
+        type: text-field
+        name: "Resolvable Dataset Id"
+        configuration:
+          required: true
+      - key: "datasetTitle"
+        type: text-field
+        name: "Dataset Title"
+        description: "Name of the data set"
+      - key: "dataType"
+        type: radio-field
+        name: "Data Type"
+        description: "What kind of data is represented in this dataset?"
+        values:
+          - label: "Protein Structure"
+          - label: "Physiological Signals"
+          - label: "Morphology"
+          - label: "Nucleotide Sequence"
+          - label: "Phenotype"
+          - label: "Clinical Trials"
+          - label: "Proteomics Data"
+          - label: "Gene Expression"
+          - label: "Imaging Data"
+          - label: "Unspecified"
+    configuration:
+      overrideLabel: "Dataset names"
+  - key: "Injury Type"
+    type: controlled-term-field
+    name: "Injury Type"
+    description: "Type of injury associated with the field"
+    datatype: iri
+    values:
+      - type: branch
+        sourceAcronym: "NCIT"
+        sourceName: "National Cancer Institute Thesaurus (NCIT)"
+        termBaseIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C3671"
+        termBaseLabel: "Injury"
+        termMaxDepth: 0
+    configuration:
+      required: true
+  - key: "dataset"
+    type: element
+    name: "Dataset"
+    description: "Dataset description"
+    children:
+      - key: "datasetName"
+        type: text-field
+        name: "Dataset Name"
+      - key: "dataLevel"
+        type: checkbox-field
+        name: "Data Level"
+        values:
+          - label: "0"
+          - label: "1"
+          - label: "2"
+          - label: "3"
+          - label: "4"
+        configuration:
+          minItems: 1
+  - key: "Cell Type"
+    type: controlled-term-field
+    name: "Cell Type"
+    description: "Type of the cell"
+    datatype: iri
+    values:
+      - type: branch
+        sourceAcronym: "EFO"
+        sourceName: "Experimental Factor Ontology (EFO)"
+        termBaseIri: "http://www.ebi.ac.uk/efo/EFO_0000324"
+        termBaseLabel: "cell type"
+        termMaxDepth: 0
+    configuration:
+      required: true

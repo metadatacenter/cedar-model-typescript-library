@@ -1,0 +1,71 @@
+type: template
+name: "Template four level deep"
+id: "https://repo.metadatacenter.org/templates/f18cda36-0827-412c-86f6-14f7232a076b"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+createdOn: "2024-02-07T15:57:26-08:00"
+createdBy: "https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95"
+modifiedOn: "2024-02-07T15:57:26-08:00"
+modifiedBy: "https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95"
+children:
+  - key: "Element 3"
+    type: element
+    name: "Element 3"
+    id: "https://repo.metadatacenter.org/template-elements/ddffd1f9-2e15-4b55-aed1-b3637684a4b5"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    createdOn: "2024-02-07T15:57:26-08:00"
+    createdBy: "https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95"
+    modifiedOn: "2024-02-07T15:57:26-08:00"
+    modifiedBy: "https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95"
+    children:
+      - key: "Element 2"
+        type: element
+        name: "Element 2"
+        id: "https://repo.metadatacenter.org/template-elements/46289b21-3388-4866-9c0f-d6b8c81d24a5"
+        status: draft
+        version: 0.0.1
+        modelVersion: 1.6.0
+        createdOn: "2024-02-07T15:57:01-08:00"
+        createdBy: "https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95"
+        modifiedOn: "2024-02-07T15:57:01-08:00"
+        modifiedBy: "https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95"
+        children:
+          - key: "Element 1"
+            type: element
+            name: "Element 1"
+            id: "https://repo.metadatacenter.org/template-elements/fd3dc7b9-438d-4187-b694-52af1a9ff498"
+            status: draft
+            version: 0.0.1
+            modelVersion: 1.6.0
+            createdOn: "2024-02-07T15:56:27-08:00"
+            createdBy: "https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95"
+            modifiedOn: "2024-02-07T15:56:27-08:00"
+            modifiedBy: "https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95"
+            children:
+              - key: "Text 1"
+                type: text-field
+                name: "Text 1"
+                description: "Help Text"
+                id: "https://repo.metadatacenter.org/template-fields/83eed1ec-ee22-424e-87d6-30922bf84b66"
+                modelVersion: 1.6.0
+                createdOn: "2024-02-07T15:55:43-08:00"
+                createdBy: "https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95"
+                modifiedOn: "2024-02-07T15:55:43-08:00"
+                modifiedBy: "https://metadatacenter.org/users/c7dcc3ca-55fe-4ca8-b448-ab110bfe4c95"
+                configuration:
+                  propertyIri: "https://schema.metadatacenter.org/properties/8c2de61a-23df-40fc-a684-275f459222d7"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/2d0c8610-be06-4ea4-8be3-f75b75b5ecd5"
+              multiple: true
+              minItems: 1
+              maxItems: 3
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/1be42ccb-b41e-4d13-9904-6d0d6f618061"
+          multiple: true
+          minItems: 0
+          maxItems: 4
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/99664030-c1b5-4299-9a6d-43a2a2b46805"

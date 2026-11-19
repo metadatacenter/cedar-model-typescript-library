@@ -1,0 +1,83 @@
+type: template
+name: "datetime template multiple"
+id: "https://repo.metadatacenter.org/templates/ac4d1764-133e-4451-ac61-0d46d63d6534"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+createdOn: "2021-12-04T14:47:11-08:00"
+createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+modifiedOn: "2022-01-01T15:09:34-08:00"
+modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+children:
+  - key: "Datetime Element"
+    type: element
+    name: "Datetime Element"
+    id: "https://repo.metadatacenter.org/template-elements/fadffeb9-68be-4460-8ddb-1f8154e7a96c"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    createdOn: "2022-01-01T15:09:34-08:00"
+    createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    modifiedOn: "2022-01-01T15:09:34-08:00"
+    modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    children:
+      - key: "Datetime in Element"
+        type: temporal-field
+        name: "Datetime in Element"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/2bda0c0a-e330-4eab-8923-de17a86f4380"
+        modelVersion: 1.6.0
+        datatype: xsd:date
+        granularity: day
+        createdOn: "2022-01-01T15:07:45-08:00"
+        createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+        modifiedOn: "2022-01-01T15:07:45-08:00"
+        modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/3bd67552-346c-4ed5-a66e-f62f28b2c7bb"
+          multiple: true
+          minItems: 1
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/c84d6e5d-c6ca-4539-ba6c-9b3fc747fb6f"
+      multiple: true
+      minItems: 1
+  - key: "Date Year Month"
+    type: temporal-field
+    name: "Date Year Month"
+    description: "Help Text"
+    id: "tmp-1641085600507-27285657"
+    modelVersion: 1.6.0
+    datatype: xsd:date
+    granularity: month
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/8cff0baf-29e0-4f57-9ce4-e360a6e32118"
+      multiple: true
+      minItems: 1
+  - key: "Time Only"
+    type: temporal-field
+    name: "Time Only"
+    description: "Help Text"
+    id: "tmp-1641085635333-27320484"
+    modelVersion: 1.6.0
+    datatype: xsd:time
+    granularity: minute
+    inputTimeFormat: 12h
+    inputTimeZone: true
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/5d77ca8e-e458-4fae-a598-8b5485805e52"
+      multiple: true
+      minItems: 1
+  - key: "Date and Time"
+    type: temporal-field
+    name: "Date and Time"
+    description: "Help Text"
+    id: "tmp-1641085676125-27361276"
+    modelVersion: 1.6.0
+    datatype: xsd:dateTime
+    granularity: decimalSecond
+    inputTimeFormat: 12h
+    inputTimeZone: true
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/e6ccdf27-4964-4109-a9ac-dd51301bac8c"
+      multiple: true
+      minItems: 1

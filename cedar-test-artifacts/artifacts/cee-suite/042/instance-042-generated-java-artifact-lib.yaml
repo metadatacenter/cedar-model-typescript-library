@@ -1,0 +1,7 @@
+type: instance
+name: "cee-instance-042"
+isBasedOn: "https://repo.metadatacenter.org/templates/8013ab3d-5313-406f-81a9-f2ee14d27919"
+children:
+  Controlled Field:
+    id: "http://purl.bioontology.org/ontology/CSP/0551-5561"
+    label: "hypoglycemia"

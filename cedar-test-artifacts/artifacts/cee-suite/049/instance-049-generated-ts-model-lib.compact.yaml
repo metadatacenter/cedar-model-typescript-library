@@ -1,0 +1,9 @@
+type: instance
+name: "Instance with 1 value"
+id: "https://repo.metadatacenter.orgx/template-instances/928829e9-fb1e-4c40-a203-329ebfe53df1"
+isBasedOn: "https://repo.metadatacenter.orgx/templates/070b506a-ef19-45b5-8337-7402978f09f4"
+children:
+  Element card 0-N:
+    children:
+      Untitled:
+        - value: "value one"

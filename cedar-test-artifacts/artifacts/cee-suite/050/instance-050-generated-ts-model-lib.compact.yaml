@@ -1,0 +1,10 @@
+type: instance
+name: "Instance with 2 values"
+id: "https://repo.metadatacenter.orgx/template-instances/823f06fc-10c0-4447-b47e-ab9dc058af85"
+isBasedOn: "https://repo.metadatacenter.orgx/templates/070b506a-ef19-45b5-8337-7402978f09f4"
+children:
+  Element card 0-N:
+    children:
+      Untitled:
+        - value: "value one"
+        - value: "value two"

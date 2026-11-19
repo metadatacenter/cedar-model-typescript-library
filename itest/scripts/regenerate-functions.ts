@@ -1,12 +1,23 @@
 import { promisify } from 'util';
 import { exec } from 'child_process';
-import { elementTestNumbers, fieldTestNumbers, instanceTestNumbers, templateTestNumbers } from '../resources/generatedTestCases';
+import * as fs from 'fs';
+import * as os from 'os';
+import * as path from 'path';
+import { ceeSuiteInstanceAsStored, ceeSuiteInstanceResources, ceeSuiteTemplateResources } from '../resources/ceeSuiteCases';
+import {
+  elementInstanceTestNumbers,
+  elementTestNumbers,
+  fieldTestNumbers,
+  instanceTestNumbers,
+  templateTestNumbers,
+} from '../resources/generatedTestCases';
 import { TestResource } from '../TestResource';
 import { TestUtil } from '../TestUtil';
 import {
   CedarJsonWriters,
   CedarWriters,
   CedarYamlWriters,
+  JsonElementInstanceReader,
   JsonTemplateElementReader,
   JsonTemplateElementReaderResult,
   JsonTemplateElementWriter,
@@ -46,6 +57,39 @@ export async function runJavaCommand(command: string) {
     console.error('Execution error:', error);
     throw error;
   }
+}
+
+/**
+ * Render every CEE suite template and instance with the Java library, in one of the three forms the
+ * numbered collections record. An instance is rendered as a host stores it (`ceeSuiteInstanceAsStored`).
+ * A case the Java library refuses gets no fixture, and the parity scripts hold it to its listed reason.
+ */
+async function generateForCeeSuiteJava(form: 'json' | 'yaml' | 'compact') {
+  const base = form === 'json' ? javaBaseCommandForJson : javaBaseCommandForYaml;
+  const output = (resource: TestResource) =>
+    form === 'json' ? TestUtil.getJavaGeneratedJsonFileName(resource) : TestUtil.getJavaGeneratedYamlFileName(resource, form === 'compact');
+  const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'cee-suite-'));
+  const jobs: Array<{ resource: TestResource; command: string }> = [];
+  for (const resource of ceeSuiteTemplateResources()) {
+    jobs.push({ resource, command: `${base} -tsf ${JSON.stringify(TestUtil.getReferenceJsonFileName(resource))}` });
+  }
+  for (const resource of ceeSuiteInstanceResources()) {
+    const input = path.join(scratch, `${resource.getCaseId()}.json`);
+    fs.writeFileSync(input, ceeSuiteInstanceAsStored(resource));
+    jobs.push({ resource, command: `${base} -tif ${JSON.stringify(input)}` });
+  }
+  const refused: string[] = [];
+  const run = async ({ resource, command }: { resource: TestResource; command: string }) => {
+    const full = `${command} -f ${JSON.stringify(output(resource))}${form === 'compact' ? ' -cy' : ''}`;
+    try {
+      await execPromise(full);
+    } catch {
+      refused.push(resource.getCaseId());
+    }
+  };
+  for (let i = 0; i < jobs.length; i += 6) await Promise.all(jobs.slice(i, i + 6).map(run));
+  fs.rmSync(scratch, { recursive: true, force: true });
+  console.log(`CEE suite (${form}): ${jobs.length - refused.length} rendered by Java, refused: ${refused.sort().join(', ') || 'none'}`);
 }
 
 async function generateForTemplatesJavaJson() {
@@ -95,11 +139,35 @@ async function generateForInstancesJavaJson(instanceNumbers: number[] = []) {
   }
 }
 
+/** Render every standalone element instance with the Java library, in one of the three forms. */
+async function generateForElementInstancesJava(form: 'json' | 'yaml' | 'compact') {
+  for (const number of elementInstanceTestNumbers) {
+    const resource = TestResource.elementInstance(number);
+    const output =
+      form === 'json'
+        ? TestUtil.getJavaGeneratedJsonFileName(resource)
+        : TestUtil.getJavaGeneratedYamlFileName(resource, form === 'compact');
+    const base = form === 'json' ? javaBaseCommandForJson : javaBaseCommandForYaml;
+    const command = `${base} -eif ${TestUtil.getReferenceJsonFileName(resource)} -f ${output}${form === 'compact' ? ' -cy' : ''}`;
+    console.log(command);
+    await runJavaCommand(command);
+  }
+}
+
 export async function generateAllJsonUsingJava() {
   await generateForFieldsJavaJson();
   await generateForElementsJavaJson();
   await generateForTemplatesJavaJson();
   await generateForInstancesJavaJson();
+  await generateForElementInstancesJava('json');
+  await generateForCeeSuiteJava('json');
+}
+
+/** The CEE suite's Java fixtures alone, in all three forms. */
+export async function generateCeeSuiteUsingJava() {
+  await generateForCeeSuiteJava('json');
+  await generateForCeeSuiteJava('yaml');
+  await generateForCeeSuiteJava('compact');
 }
 
 export async function generateInstanceJsonUsingJava(instanceNumbers: number[] = []) {
@@ -172,6 +240,8 @@ export async function generateAllYamlUsingJava() {
   await generateForElementsJavaYaml(false);
   await generateForTemplatesJavaYaml(false);
   await generateForInstancesJavaYaml([], false);
+  await generateForElementInstancesJava('yaml');
+  await generateForCeeSuiteJava('yaml');
 }
 
 export async function generateAllCompactYamlUsingJava() {
@@ -179,6 +249,8 @@ export async function generateAllCompactYamlUsingJava() {
   await generateForElementsJavaYaml(true);
   await generateForTemplatesJavaYaml(true);
   await generateForInstancesJavaYaml([], true);
+  await generateForElementInstancesJava('compact');
+  await generateForCeeSuiteJava('compact');
 }
 
 export async function generateInstanceYamlUsingJava(instanceNumbers: number[] = [], isCompact: boolean) {
@@ -276,11 +348,82 @@ function generateForInstancesTSJson(instanceNumbers: number[]) {
   }
 }
 
+/**
+ * Render every CEE suite template and instance with this library's strict readers and writers, in one
+ * of the three forms the numbered collections record, from the same input the Java side reads. A case
+ * the strict reader refuses gets no fixture, and the parity scripts hold it to its listed reason.
+ */
+function generateForCeeSuiteTS(form: 'json' | 'yaml' | 'compact', parts: Array<'template' | 'instance'> = ['template', 'instance']) {
+  const refused: string[] = [];
+  const write = (resource: TestResource, render: () => string) => {
+    try {
+      const rendered = render();
+      if (form === 'json') TestUtil.writeSerializedJson(resource, rendered + '\n');
+      else TestUtil.writeSerializedYaml(resource, rendered, form === 'compact');
+    } catch {
+      // A rendering left from before the reader refused the case would otherwise still be compared.
+      fs.rmSync(
+        form === 'json'
+          ? TestUtil.getOwnGeneratedJsonFileName(resource)
+          : TestUtil.getOwnGeneratedYamlFileName(resource, form === 'compact'),
+        { force: true },
+      );
+      refused.push(resource.getCaseId());
+    }
+  };
+  if (parts.includes('template')) {
+    for (const resource of ceeSuiteTemplateResources()) {
+      write(resource, () => {
+        const template = JsonTemplateReader.getStrict().readFromString(TestUtil.readReferenceJson(resource)).template;
+        return form === 'json'
+          ? CedarWriters.json().getStrict().getTemplateWriter().getAsJsonString(template)
+          : CedarWriters.yaml()
+              .getStrict()
+              .getTemplateWriter()
+              .getAsYamlString(template, form === 'compact');
+      });
+    }
+  }
+  if (parts.includes('instance')) {
+    for (const resource of ceeSuiteInstanceResources()) {
+      write(resource, () => {
+        const instance = JsonTemplateInstanceReader.getStrict().readFromString(ceeSuiteInstanceAsStored(resource)).instance;
+        return form === 'json'
+          ? CedarWriters.json().getStrict().getTemplateInstanceWriter().getAsJsonString(instance)
+          : CedarWriters.yaml()
+              .getStrict()
+              .getTemplateInstanceWriter()
+              .getAsYamlString(instance, form === 'compact');
+      });
+    }
+  }
+  if (refused.length > 0) console.log(`CEE suite (${form}): refused by the strict reader: ${refused.sort().join(', ')}`);
+}
+
+/** Render every standalone element instance with this library's strict reader and writers, in one of the three forms. */
+function generateForElementInstancesTS(form: 'json' | 'yaml' | 'compact') {
+  for (const number of elementInstanceTestNumbers) {
+    const resource = TestResource.elementInstance(number);
+    const instance = JsonElementInstanceReader.getStrict().readFromString(TestUtil.readReferenceJson(resource)).instance;
+    if (form === 'json') {
+      TestUtil.writeSerializedJson(resource, CedarWriters.json().getStrict().getElementInstanceWriter().getAsJsonString(instance) + '\n');
+    } else {
+      const yaml = CedarWriters.yaml()
+        .getStrict()
+        .getElementInstanceWriter()
+        .getAsYamlString(instance, form === 'compact');
+      TestUtil.writeSerializedYaml(resource, yaml, form === 'compact');
+    }
+  }
+}
+
 export function generateAllJsonUsingTypeScript() {
   generateForFieldsTSJson();
   generateForElementsTSJson();
   generateForTemplatesTSJson();
   generateForInstancesTSJson([]);
+  generateForElementInstancesTS('json');
+  generateForCeeSuiteTS('json');
 }
 
 export function generateInstanceJsonUsingTypeScript(instanceNumbers: number[] = []) {
@@ -381,6 +524,8 @@ export function generateAllYamlUsingTypeScript() {
   generateForElementsTSYaml(false);
   generateForTemplatesTSYaml(false);
   generateForInstancesTSYaml([], false);
+  generateForElementInstancesTS('yaml');
+  generateForCeeSuiteTS('yaml');
 }
 
 export function generateAllCompactYamlUsingTypeScript() {
@@ -388,8 +533,11 @@ export function generateAllCompactYamlUsingTypeScript() {
   generateForElementsTSYaml(true);
   generateForTemplatesTSYaml(true);
   generateForInstancesTSYaml([], true);
+  generateForElementInstancesTS('compact');
+  generateForCeeSuiteTS('compact');
 }
 
 export function generateInstanceYamlUsingTypeScript(instanceNumbers: number[] = [], isCompact: boolean) {
   generateForInstancesTSYaml(instanceNumbers, isCompact);
+  if (instanceNumbers.length === 0) generateForCeeSuiteTS(isCompact ? 'compact' : 'yaml', ['instance']);
 }

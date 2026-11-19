@@ -11,6 +11,7 @@ import { ChildDeploymentInfo } from '../../../model/cedar/deployment/ChildDeploy
 import { CedarArtifactType } from '../../../model/cedar/types/cedar-types/CedarArtifactType';
 import { ReaderUtil } from '../ReaderUtil';
 import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
+import { StoredValueRequirements } from '../../../model/cedar/StoredValueRequirements';
 import { CedarModel } from '../../../model/cedar/constants/CedarModel';
 import { UiInputType } from '../../../model/cedar/types/wrapped-types/UiInputType';
 import { ComparisonError } from '../../../model/cedar/util/compare/ComparisonError';
@@ -209,6 +210,12 @@ export abstract class JsonContainerArtifactReader extends JsonAbstractSchemaArti
         const finalChildInfo = finalChildInfoBuilder.build();
         // console.log('CHILD INFO2:', finalChildInfo);
         container.addChild(cedarFieldReaderResult.field, finalChildInfo);
+        const required: unknown = childDefinition[JsonSchema.required];
+        StoredValueRequirements.record(
+          container,
+          childInfo.name,
+          Array.isArray(required) ? required.filter((key): key is string => typeof key === 'string') : [],
+        );
         parsingResult.merge(cedarFieldReaderResult.parsingResult);
       } else if (childInfo.atType === CedarArtifactType.TEMPLATE_ELEMENT) {
         const cedarElementReaderResult = this.getElementReader().readFromObject(childDefinition, childPath);

@@ -1,0 +1,1038 @@
+type: template
+name: "Workflow"
+id: "https://repo.metadatacenter.org/templates/b701bd7f-dfb8-4320-abdb-effe9be1fd23"
+children:
+  - key: "Workflow Description and Documentation"
+    type: static-section-break
+    name: "Workflow Description and Documentation"
+    description: "this is help text"
+  - key: "Statement Guidance"
+    type: static-rich-text
+    name: "Statement Guidance"
+    description: "Help Text"
+    content: "<p><b>Statement</b></p>\n\n<p>Lineage information can be provided as 1) structured descriptions of process steps, processing, inputs and outputs or 2) a descriptive statement.</p>\n\n<p>Detailed information about process steps with inputs, outputs, and processing are more useful for users that are trying to understand and reproduce results using the metadata or for those analyzing other data using the same or similar techniques. They are also useful for users trying to use software provided with the dataset(s).</p>\n\n<p>In some situations, a descriptive statement is all that is available. In those cases, provide a statement that is sufficient to help a reader of the high-level metadata understand what was done.</p>\n\n<p>Including a statement and detailed descriptions is most useful for a wide range of users and use cases.</p>\n"
+  - key: "Statement"
+    type: text-area-field
+    name: "Statement"
+    description: "A statement that is sufficient to provide understanding to a reader of the high-level metadata for the lineage."
+  - key: "Additional Documentation Guidance"
+    type: static-rich-text
+    name: "Additional Documentation Guidance"
+    description: "Please enter identifiers for related documentation. (could be URLs)"
+    content: "<p><b>Additional Documentation</b></p>\n<p>Many types of documentation can be used to describe the sources and processing steps that are used to create new data. Identifiers for that documentation can be used to 1) make connections and 2) help users understand details of the lineage and processes.</p>\n"
+  - key: "DataCite RelatedIdentifier"
+    type: element
+    name: "DataCite RelatedIdentifier"
+    description: "DataCite V4.4 relatedIdentifier"
+    children:
+      - key: "DataCite Identifier"
+        type: element
+        name: "DataCite Identifier"
+        description: "An identifier from the DataCite Schema"
+        identifier: "DataCiteIdentifier"
+        children:
+          - key: "Identifier Guidance"
+            type: static-rich-text
+            name: "Identifier Guidance"
+            description: "Help Text"
+            content: "<p>Related identifiers enable the connections that are critical to forming the PID Graph. They are used to connect resources of many kinds to the resource being described by these metadata.</p> \n<p>These identifiers are usually complete URLS. For example a DOI would be https://doi.org/DOI. The identifiers do not have to be DOIs or other standard identifiers. If the type of the identifier is not universally identifiable, provide it along with the URI of the identifier scheme.</p>\n"
+          - key: "Identifier"
+            type: text-field
+            name: "Identifier"
+            description: "Help Text"
+            prefLabel: "Identifier"
+          - key: "Identifier Scheme"
+            type: text-field
+            name: "Identifier Scheme"
+            description: "Help Text"
+          - key: "Identifier Scheme URI"
+            type: link-field
+            name: "Identifier Scheme URI"
+            description: "A Universal Resource Identifier for the Identifier Scheme (https://orcid.org, https://ror.org)"
+            prefLabel: "Identifier Scheme URI"
+      - key: "Related Identifier Type"
+        type: single-select-list-field
+        name: "Related Identifier Type"
+        description: "Help Text"
+        values:
+          - label: "ARK"
+          - label: "arXiv"
+          - label: "bibcode"
+          - label: "DOI"
+          - label: "EAN13"
+          - label: "EISSN"
+          - label: "Handle"
+          - label: "IGSN"
+          - label: "ISBN"
+          - label: "ISSN"
+          - label: "ISTC"
+          - label: "LISSN"
+          - label: "LSID"
+          - label: "PMID"
+          - label: "PURL"
+          - label: "UPC"
+          - label: "URL"
+          - label: "URN"
+          - label: "w3id"
+        configuration:
+          required: true
+      - key: "Relation Type"
+        type: single-select-list-field
+        name: "Relation Type"
+        description: "Help Text"
+        values:
+          - label: "IsCitedBy"
+          - label: "Cites"
+          - label: "IsSupplementTo"
+          - label: "IsSupplementedBy"
+          - label: "IsContinuedBy"
+          - label: "Continues"
+          - label: "IsDescribedBy"
+          - label: "Describes"
+          - label: "HasMetadata"
+          - label: "IsMetadataFor"
+          - label: "HasVersion"
+          - label: "IsVersionOf"
+          - label: "IsNewVersionOf"
+          - label: "IsPreviousVersionOf"
+          - label: "IsPartOf"
+          - label: "HasPart"
+          - label: "IsPublishedIn"
+          - label: "IsReferencedBy"
+          - label: "References"
+          - label: "IsDocumentedBy"
+          - label: "Documents"
+          - label: "IsCompiledBy"
+          - label: "Compiles"
+          - label: "IsVariantFormOf"
+          - label: "IsOriginalFormOf"
+          - label: "IsIdenticalTo"
+          - label: "IsReviewedBy"
+          - label: "Reviews"
+          - label: "IsDerivedFrom"
+          - label: "IsSourceOf"
+          - label: "IsRequiredBy"
+          - label: "Requires"
+          - label: "IsObsoletedBy"
+          - label: "Obsoletes"
+        configuration:
+          required: true
+      - key: "Related Resource Type"
+        type: single-select-list-field
+        name: "Related Resource Type"
+        description: "Enter a resource type from the DataCite Resource Type General list"
+        values:
+          - label: "Audiovisual"
+          - label: "Book"
+          - label: "Book Chapter"
+          - label: "Collection"
+          - label: "ComputationalNotebook"
+          - label: "ConferencePaper"
+          - label: "ConferenceProceeding"
+          - label: "DataPaper"
+          - label: "Dataset"
+          - label: "Dissertation"
+          - label: "Event"
+          - label: "Image"
+          - label: "InteractiveResource"
+          - label: "Journal"
+          - label: "JournalArticle"
+          - label: "Model"
+          - label: "OutputManagementPlan"
+          - label: "PeerReview"
+          - label: "PhysicalObject"
+          - label: "Preprint"
+          - label: "Report"
+          - label: "Service"
+          - label: "Software"
+          - label: "Sound"
+          - label: "Standard"
+          - label: "Text"
+          - label: "Workflow"
+          - label: "Other"
+      - key: "Related Metadata Scheme"
+        type: text-field
+        name: "Related Metadata Scheme"
+        description: "Help Text"
+      - key: "Related Metadata Scheme URI"
+        type: text-field
+        name: "Related Metadata Scheme URI"
+        description: "Help Text"
+      - key: "Related Metadata Scheme Type"
+        type: text-field
+        name: "Related Metadata Scheme Type"
+        description: "Help Text"
+    configuration:
+      overrideLabel: "Additional Documentation"
+      multiple: true
+      minItems: 1
+  - key: "Describe workflows steps"
+    type: static-section-break
+    name: "Describe workflows steps"
+    description: "Help Text"
+  - key: "Process Step"
+    type: element
+    name: "Process Step"
+    children:
+      - key: "Description and Rationale"
+        type: static-section-break
+        name: "Description and Rationale"
+      - key: "Description Guidance"
+        type: static-rich-text
+        name: "Description Guidance"
+        description: "Help Text"
+        content: "<p><b>Proces Step Description</b></p>\n\n<p>A description of the process step sufficient to provide understanding to a reader of the high-level metadata for the process.</p>\n"
+      - key: "Description"
+        type: text-area-field
+        name: "Description"
+        description: "A description of the process step sufficient to provide understanding to a reader of the high-level metadata for the process."
+        configuration:
+          required: true
+      - key: "Rationale Guidance"
+        type: static-rich-text
+        name: "Rationale Guidance"
+        description: "Help Text"
+        content: "<p><b>Rationale</b></p>\n<p>A description of the rationale for the process step  sufficient to provide understanding to a reader of the high-level metadata for the process.</p>\n"
+      - key: "Rationale"
+        type: text-area-field
+        name: "Rationale"
+        description: "A description of the rationale for the process step  sufficient to provide understanding to a reader of the high-level metadata for the process."
+      - key: "What people and organizations contributed to the processing?"
+        type: static-section-break
+        name: "What people and organizations contributed to the processing?"
+      - key: "DataCite Contributor"
+        type: element
+        name: "DataCite Contributor"
+        description: "Contributor with name, organization and role"
+        children:
+          - key: "DataCite Name"
+            type: element
+            name: "DataCite Name"
+            description: "DataCite Name has a special type (Personal, Organizational)"
+            identifier: "DataCiteName"
+            prefLabel: "Contributor Name"
+            children:
+              - key: "Name Guidance"
+                type: static-rich-text
+                name: "Name Guidance"
+                description: "The complete name of an individual or organization"
+                content: "<p>The complete name of the individual (format is family, given) or organization.</p>"
+              - key: "Name"
+                type: text-field
+                name: "Name"
+                description: "Help Text"
+                prefLabel: "Name"
+              - key: "Given Name"
+                type: text-field
+                name: "Given Name"
+                description: "Help Text"
+                prefLabel: "Given Name"
+              - key: "Family Name"
+                type: text-field
+                name: "Family Name"
+                description: "Help Text"
+                prefLabel: "Family Name"
+              - key: "Name Type"
+                type: radio-field
+                name: "Name Type"
+                description: "The type of the name (Personal, Organizational)"
+                prefLabel: "Name Type"
+                values:
+                  - label: "Personal"
+                    selected: true
+                  - label: "Organizational"
+              - key: "DataCite Identifier"
+                type: element
+                name: "DataCite Identifier"
+                description: "An identifier from the DataCite Schema"
+                identifier: "DataCiteIdentifier"
+                children:
+                  - key: "Identifier Guidance"
+                    type: static-rich-text
+                    name: "Identifier Guidance"
+                    description: "Help Text"
+                    content: "<p><span style=\"background-color: rgb(255, 255, 255);\">Persistent and unique identifiers (PIDs) are important for unambiguous references to resources. They also&nbsp;</span>enable the connections that are critical to forming the PID Graph. They are used to identify and cite resources and to connect other resources of many kinds to the resource being described by these metadata.</p>\n\n<p>These identifiers are usually complete URLS. For example a DOI would be https://doi.org/DOI and an ORCID would be https://orcid.org/ORCID. The identifiers do not have to be DOIs or other standard identifiers. If the type of the identifier is not easily identifiable, provide it along with a type and the URI of the identifier scheme.</p>\n"
+                  - key: "Identifier"
+                    type: text-field
+                    name: "Identifier"
+                    description: "Help Text"
+                    prefLabel: "Identifier"
+                    configuration:
+                      required: true
+                  - key: "Identifier Scheme"
+                    type: text-field
+                    name: "Identifier Scheme"
+                    description: "Help Text"
+                  - key: "Identifier Scheme URI"
+                    type: link-field
+                    name: "Identifier Scheme URI"
+                    description: "A Universal Resource Identifier for the Identifier Scheme (https://orcid.org, https://ror.org)"
+                    prefLabel: "Identifier Scheme URI"
+                configuration:
+                  overrideDescription: "Enter an identifier for the person or organization"
+            configuration:
+              overrideLabel: "Contributor Name"
+              overrideDescription: "Name and identifier for person or organization"
+          - key: "DataCite Organization"
+            type: element
+            name: "DataCite Organization"
+            description: "An affiliation with identifier"
+            children:
+              - key: "Organization Name Guidance"
+                type: static-rich-text
+                name: "Organization Name Guidance"
+                description: "Help Text"
+                content: "<p><b>Entering Organization Name and Identifier</b></p>\n<p>Unambiguously identifying organizations requires a name and a persistent identifier. \nFor organizations, the <a href=\"https:.//ror.org\">Research Organization Registry</a> is a \ncommunity-supported source of organizational identifiers. Check ROR to see if your \norganization has a ROR. If yes, enter the name of the organization and the ROR.</p>\n<p>Note: ROR is generally limited to high-level organization names, i.e. Universities rather \nthen Departments. Select the name closest to the organization you are naming.</p> "
+              - key: "Organization Name"
+                type: text-field
+                name: "Organization Name"
+                description: "The name of an organization (from ror.org if available)"
+                prefLabel: "Organization Name"
+                configuration:
+                  required: true
+              - key: "DataCite Identifier"
+                type: element
+                name: "DataCite Identifier"
+                description: "An identifier from the DataCite Schema"
+                identifier: "DataCiteIdentifier"
+                children:
+                  - key: "Identifier Guidance"
+                    type: static-rich-text
+                    name: "Identifier Guidance"
+                    description: "Help Text"
+                    content: "<p><span style=\"background-color: rgb(255, 255, 255);\">Persistent and unique identifiers (PIDs) are important for unambiguous references to resources. They also&nbsp;</span>enable the connections that are critical to forming the PID Graph. They are used to identify and cite resources and to connect other resources of many kinds to the resource being described by these metadata.</p>\n\n<p>These identifiers are usually complete URLS. For example a DOI would be https://doi.org/DOI and an ORCID would be https://orcid.org/ORCID. The identifiers do not have to be DOIs or other standard identifiers. If the type of the identifier is not easily identifiable, provide it along with a type and the URI of the identifier scheme.</p>\n"
+                  - key: "Identifier"
+                    type: text-field
+                    name: "Identifier"
+                    description: "Help Text"
+                    prefLabel: "Identifier"
+                    configuration:
+                      required: true
+                  - key: "Identifier Scheme"
+                    type: text-field
+                    name: "Identifier Scheme"
+                    description: "Help Text"
+                  - key: "Identifier Scheme URI"
+                    type: link-field
+                    name: "Identifier Scheme URI"
+                    description: "A Universal Resource Identifier for the Identifier Scheme (https://orcid.org, https://ror.org)"
+                    prefLabel: "Identifier Scheme URI"
+            configuration:
+              overrideLabel: "Affiliation"
+              overrideDescription: "Enter the name and identifier of an organization"
+              multiple: true
+              minItems: 1
+          - key: "Contributor Type"
+            type: single-select-list-field
+            name: "Contributor Type"
+            description: "Help Text"
+            values:
+              - label: "ContactPerson"
+              - label: "DataCollector"
+              - label: "DataCurator"
+              - label: "DataManager"
+              - label: "Distributor"
+              - label: "Editor"
+              - label: "HostingInstitution"
+              - label: "Producer"
+              - label: "ProjectLeader"
+              - label: "ProjectManager"
+              - label: "ProjectMember"
+              - label: "RegistrationAgency"
+              - label: "RegistrationAuthority"
+              - label: "RelatedPerson"
+              - label: "Researcher"
+              - label: "ResearchGroup"
+              - label: "RightsHolder"
+              - label: "Sponsor"
+              - label: "Supervisor"
+              - label: "WorkPackageLeader"
+              - label: "Other"
+            configuration:
+              required: true
+        configuration:
+          overrideLabel: "Contributors"
+          overrideDescription: "Enter information about people or organizations the contributed to the processing."
+          multiple: true
+          minItems: 1
+      - key: "What were the processing inputs?"
+        type: static-section-break
+        name: "What were the processing inputs?"
+      - key: "Workflow Step Input"
+        type: element
+        name: "Workflow Step Input"
+        children:
+          - key: "Workflow Inputs"
+            type: static-section-break
+            name: "Workflow Inputs"
+          - key: "Input Description Guidance"
+            type: static-rich-text
+            name: "Input Description Guidance"
+            description: "Help Text"
+            content: "<p><b>Workflow Step Input</b></p>\n\n<p>Workflow inputs can be described with a brief description of the input sufficient to provide understanding to a reader of the high-level metadata for the process and/or with a related identifier typically with <i>Requires&nbsp;</i>as a relation type.</p>\n"
+          - key: "Input Description"
+            type: text-area-field
+            name: "Input Description"
+            description: "Please describe the workflow input(s)."
+            configuration:
+              multiple: true
+              minItems: 1
+          - key: "Identifier(s) of input(s) required by workflow step"
+            type: static-section-break
+            name: "Identifier(s) of input(s) required by workflow step"
+            description: "Help Text"
+          - key: "Related Identifier"
+            type: element
+            name: "Related Identifier"
+            description: "DataCite V4.4 relatedIdentifier"
+            children:
+              - key: "DataCite Identifier"
+                type: element
+                name: "DataCite Identifier"
+                description: "An identifier from the DataCite Schema"
+                identifier: "DataCiteIdentifier"
+                prefLabel: "Resource Identifier"
+                children:
+                  - key: "Identifier Guidance"
+                    type: static-rich-text
+                    name: "Identifier Guidance"
+                    description: "Help Text"
+                    content: "<p>Related identifiers enable the connections that are critical to forming the PID Graph. They are used to connect resources of many kinds to the resource being described by these metadata.</p> \n<p>These identifiers are usually complete URLS. For example a DOI would be https://doi.org/DOI. The identifiers do not have to be DOIs or other standard identifiers. If the type of the identifier is not universally identifiable, provide it along with the URI of the identifier scheme.</p>\n"
+                  - key: "Identifier"
+                    type: text-field
+                    name: "Identifier"
+                    description: "Help Text"
+                    prefLabel: "Identifier"
+                  - key: "Identifier Scheme"
+                    type: text-field
+                    name: "Identifier Scheme"
+                    description: "Help Text"
+                  - key: "Identifier Scheme URI"
+                    type: link-field
+                    name: "Identifier Scheme URI"
+                    description: "A Universal Resource Identifier for the Identifier Scheme (https://orcid.org, https://ror.org)"
+                    prefLabel: "Identifier Scheme URI"
+                configuration:
+                  overrideLabel: "Resource Identifier"
+                  overrideDescription: "An identifier for a resource (e.g. DOI), person (e.g. ORCID), organization (e.g. ROR) or other item."
+              - key: "Related Identifier Type"
+                type: single-select-list-field
+                name: "Related Identifier Type"
+                description: "Help Text"
+                values:
+                  - label: "ARK"
+                  - label: "arXiv"
+                  - label: "bibcode"
+                  - label: "DOI"
+                  - label: "EAN13"
+                  - label: "EISSN"
+                  - label: "Handle"
+                  - label: "IGSN"
+                  - label: "ISBN"
+                  - label: "ISSN"
+                  - label: "ISTC"
+                  - label: "LISSN"
+                  - label: "LSID"
+                  - label: "PMID"
+                  - label: "PURL"
+                  - label: "UPC"
+                  - label: "URL"
+                  - label: "URN"
+                  - label: "w3id"
+                configuration:
+                  required: true
+              - key: "Relation Type"
+                type: single-select-list-field
+                name: "Relation Type"
+                description: "Help Text"
+                values:
+                  - label: "IsCitedBy"
+                  - label: "Cites"
+                  - label: "IsSupplementTo"
+                  - label: "IsSupplementedBy"
+                  - label: "IsContinuedBy"
+                  - label: "Continues"
+                  - label: "IsDescribedBy"
+                  - label: "Describes"
+                  - label: "HasMetadata"
+                  - label: "IsMetadataFor"
+                  - label: "HasVersion"
+                  - label: "IsVersionOf"
+                  - label: "IsNewVersionOf"
+                  - label: "IsPreviousVersionOf"
+                  - label: "IsPartOf"
+                  - label: "HasPart"
+                  - label: "IsPublishedIn"
+                  - label: "IsReferencedBy"
+                  - label: "References"
+                  - label: "IsDocumentedBy"
+                  - label: "Documents"
+                  - label: "IsCompiledBy"
+                  - label: "Compiles"
+                  - label: "IsVariantFormOf"
+                  - label: "IsOriginalFormOf"
+                  - label: "IsIdenticalTo"
+                  - label: "IsReviewedBy"
+                  - label: "Reviews"
+                  - label: "IsDerivedFrom"
+                  - label: "IsSourceOf"
+                  - label: "IsRequiredBy"
+                  - label: "Requires"
+                  - label: "IsObsoletedBy"
+                  - label: "Obsoletes"
+                configuration:
+                  required: true
+              - key: "Related Resource Type"
+                type: single-select-list-field
+                name: "Related Resource Type"
+                description: "Enter a resource type from the DataCite Resource Type General list"
+                values:
+                  - label: "Audiovisual"
+                  - label: "Book"
+                  - label: "Book Chapter"
+                  - label: "Collection"
+                  - label: "ComputationalNotebook"
+                  - label: "ConferencePaper"
+                  - label: "ConferenceProceeding"
+                  - label: "DataPaper"
+                  - label: "Dataset"
+                  - label: "Dissertation"
+                  - label: "Event"
+                  - label: "Image"
+                  - label: "InteractiveResource"
+                  - label: "Journal"
+                  - label: "JournalArticle"
+                  - label: "Model"
+                  - label: "OutputManagementPlan"
+                  - label: "PeerReview"
+                  - label: "PhysicalObject"
+                  - label: "Preprint"
+                  - label: "Report"
+                  - label: "Service"
+                  - label: "Software"
+                  - label: "Sound"
+                  - label: "Standard"
+                  - label: "Text"
+                  - label: "Workflow"
+                  - label: "Other"
+              - key: "Related Metadata Scheme"
+                type: text-field
+                name: "Related Metadata Scheme"
+                description: "Help Text"
+              - key: "Related Metadata Scheme URI"
+                type: text-field
+                name: "Related Metadata Scheme URI"
+                description: "Help Text"
+              - key: "Related Metadata Scheme Type"
+                type: text-field
+                name: "Related Metadata Scheme Type"
+                description: "Help Text"
+        configuration:
+          multiple: true
+          minItems: 1
+      - key: "What software was used in the processing?"
+        type: static-section-break
+        name: "What software was used in the processing?"
+      - key: "Processing"
+        type: element
+        name: "Processing"
+        description: "ISO 19115-1 LE_Processing Model"
+        children:
+          - key: "DataCite Identifier1"
+            type: element
+            name: "DataCite Identifier"
+            description: "An identifier from the DataCite Schema"
+            identifier: "DataCiteIdentifier"
+            prefLabel: "Processing Identifier"
+            children:
+              - key: "Identifier Guidance"
+                type: static-rich-text
+                name: "Identifier Guidance"
+                description: "Help Text"
+                content: "<p><span style=\"background-color: rgb(255, 255, 255);\">Persistent and unique identifiers (PIDs) are important for unambiguous references to resources. They also&nbsp;</span>enable the connections that are critical to forming the PID Graph. They are used to identify and cite resources and to connect other resources of many kinds to the resource being described by these metadata.</p>\n\n<p>These identifiers are usually complete URLS. For example a DOI would be https://doi.org/DOI and an ORCID would be https://orcid.org/ORCID. The identifiers do not have to be DOIs or other standard identifiers. If the type of the identifier is not easily identifiable, provide it along with a type and the URI of the identifier scheme.</p>\n"
+              - key: "Identifier"
+                type: text-field
+                name: "Identifier"
+                description: "Help Text"
+                prefLabel: "Identifier"
+                configuration:
+                  required: true
+              - key: "Identifier Scheme"
+                type: text-field
+                name: "Identifier Scheme"
+                description: "Help Text"
+              - key: "Identifier Scheme URI"
+                type: link-field
+                name: "Identifier Scheme URI"
+                description: "A Universal Resource Identifier for the Identifier Scheme (https://orcid.org, https://ror.org)"
+                prefLabel: "Identifier Scheme URI"
+            configuration:
+              overrideLabel: "Processing Identifier"
+          - key: "Procedure Description Guidance"
+            type: static-rich-text
+            name: "Procedure Description Guidance"
+            description: "Help Text"
+            prefLabel: "Procedure Description Guidance"
+            content: "<p><b>Procedure Description</b></p>\n\n<p>A description of the procedure sufficient to provide understanding to a reader of the high-level metadata for the process.</p>\n"
+          - key: "Procedure Description"
+            type: text-area-field
+            name: "Procedure Description"
+            description: "A description of the procedure (free-text)"
+          - key: "Processing Parameter"
+            type: element
+            name: "Processing Parameter"
+            children:
+              - key: "Parameter Name Guidance"
+                type: static-rich-text
+                name: "Parameter Name Guidance"
+                description: "Provide name(s) for the parameter"
+                content: "Parameters can have multiple standard or local names. Please enter names with namespaces if available."
+              - key: "Parameter Name"
+                type: text-field
+                name: "Parameter Name"
+                description: "Help Text"
+                configuration:
+                  required: true
+                  multiple: true
+                  minItems: 1
+              - key: "Parameter Guidance"
+                type: static-rich-text
+                name: "Parameter Guidance"
+                description: "Help Text"
+                content: "<p><b>Parameter Direction</b></p>\n\n<p>Indicate whether this is an input or output parameter, or both.</p>"
+              - key: "Parameter Direction"
+                type: single-select-list-field
+                name: "Parameter Direction"
+                description: "Input or output parameter"
+                values:
+                  - label: "in"
+                  - label: "out"
+                  - label: "in/out"
+                configuration:
+                  required: true
+              - key: "Parameter Description Guidance"
+                type: static-rich-text
+                name: "Parameter Description Guidance"
+                description: "Help Text"
+                content: "<p><b>Parameter Description</b></p>\n\n<p>A description of the parameter sufficient to provide understanding to a reader of the high-level metadata for the process.</p>"
+              - key: "Parameter Description"
+                type: text-field
+                name: "Parameter Description"
+                description: "Help Text"
+                configuration:
+                  required: true
+              - key: "Optionality Guidance"
+                type: static-rich-text
+                name: "Optionality Guidance"
+                description: "Help Text"
+                content: "<p><b>Optionality</b></p>\n<p>Indicate whether the parameter is optional (True) or required (False).</p>\n"
+              - key: "Optionality"
+                type: radio-field
+                name: "Optionality"
+                description: "Help Text"
+                values:
+                  - label: "True"
+                  - label: "False"
+                configuration:
+                  required: true
+              - key: "Repeatability Guidance"
+                type: static-rich-text
+                name: "Repeatability Guidance"
+                description: "Help Text"
+                content: "<p><b>Repeatability</b></p>\n<p>Indicate whether the parameter is repeatable (True) or not (False).</p>\n"
+              - key: "Repeatability"
+                type: radio-field
+                name: "Repeatability"
+                description: "Help Text"
+                values:
+                  - label: "True"
+                  - label: "False"
+            configuration:
+              multiple: true
+              minItems: 1
+          - key: "DataCite RelatedIdentifier"
+            type: element
+            name: "DataCite RelatedIdentifier"
+            description: "DataCite V4.4 relatedIdentifier"
+            prefLabel: "Software Reference / Documentation"
+            children:
+              - key: "DataCite Identifier"
+                type: element
+                name: "DataCite Identifier"
+                description: "An identifier from the DataCite Schema"
+                identifier: "DataCiteIdentifier"
+                children:
+                  - key: "Identifier Guidance"
+                    type: static-rich-text
+                    name: "Identifier Guidance"
+                    description: "Help Text"
+                    content: "<p>Related identifiers enable the connections that are critical to forming the PID Graph. They are used to connect resources of many kinds to the resource being described by these metadata.</p> \n<p>These identifiers are usually complete URLS. For example a DOI would be https://doi.org/DOI. The identifiers do not have to be DOIs or other standard identifiers. If the type of the identifier is not universally identifiable, provide it along with the URI of the identifier scheme.</p>\n"
+                  - key: "Identifier"
+                    type: text-field
+                    name: "Identifier"
+                    description: "Help Text"
+                    prefLabel: "Identifier"
+                  - key: "Identifier Scheme"
+                    type: text-field
+                    name: "Identifier Scheme"
+                    description: "Help Text"
+                  - key: "Identifier Scheme URI"
+                    type: link-field
+                    name: "Identifier Scheme URI"
+                    description: "A Universal Resource Identifier for the Identifier Scheme (https://orcid.org, https://ror.org)"
+                    prefLabel: "Identifier Scheme URI"
+              - key: "Related Identifier Type"
+                type: single-select-list-field
+                name: "Related Identifier Type"
+                description: "Help Text"
+                values:
+                  - label: "ARK"
+                  - label: "arXiv"
+                  - label: "bibcode"
+                  - label: "DOI"
+                  - label: "EAN13"
+                  - label: "EISSN"
+                  - label: "Handle"
+                  - label: "IGSN"
+                  - label: "ISBN"
+                  - label: "ISSN"
+                  - label: "ISTC"
+                  - label: "LISSN"
+                  - label: "LSID"
+                  - label: "PMID"
+                  - label: "PURL"
+                  - label: "UPC"
+                  - label: "URL"
+                  - label: "URN"
+                  - label: "w3id"
+                configuration:
+                  required: true
+              - key: "Relation Type"
+                type: single-select-list-field
+                name: "Relation Type"
+                description: "Help Text"
+                values:
+                  - label: "IsCitedBy"
+                  - label: "Cites"
+                  - label: "IsSupplementTo"
+                  - label: "IsSupplementedBy"
+                  - label: "IsContinuedBy"
+                  - label: "Continues"
+                  - label: "IsDescribedBy"
+                  - label: "Describes"
+                  - label: "HasMetadata"
+                  - label: "IsMetadataFor"
+                  - label: "HasVersion"
+                  - label: "IsVersionOf"
+                  - label: "IsNewVersionOf"
+                  - label: "IsPreviousVersionOf"
+                  - label: "IsPartOf"
+                  - label: "HasPart"
+                  - label: "IsPublishedIn"
+                  - label: "IsReferencedBy"
+                  - label: "References"
+                  - label: "IsDocumentedBy"
+                  - label: "Documents"
+                  - label: "IsCompiledBy"
+                  - label: "Compiles"
+                  - label: "IsVariantFormOf"
+                  - label: "IsOriginalFormOf"
+                  - label: "IsIdenticalTo"
+                  - label: "IsReviewedBy"
+                  - label: "Reviews"
+                  - label: "IsDerivedFrom"
+                  - label: "IsSourceOf"
+                  - label: "IsRequiredBy"
+                  - label: "Requires"
+                  - label: "IsObsoletedBy"
+                  - label: "Obsoletes"
+                configuration:
+                  required: true
+              - key: "Related Resource Type"
+                type: single-select-list-field
+                name: "Related Resource Type"
+                description: "Enter a resource type from the DataCite Resource Type General list"
+                values:
+                  - label: "Audiovisual"
+                  - label: "Book"
+                  - label: "Book Chapter"
+                  - label: "Collection"
+                  - label: "ComputationalNotebook"
+                  - label: "ConferencePaper"
+                  - label: "ConferenceProceeding"
+                  - label: "DataPaper"
+                  - label: "Dataset"
+                  - label: "Dissertation"
+                  - label: "Event"
+                  - label: "Image"
+                  - label: "InteractiveResource"
+                  - label: "Journal"
+                  - label: "JournalArticle"
+                  - label: "Model"
+                  - label: "OutputManagementPlan"
+                  - label: "PeerReview"
+                  - label: "PhysicalObject"
+                  - label: "Preprint"
+                  - label: "Report"
+                  - label: "Service"
+                  - label: "Software"
+                  - label: "Sound"
+                  - label: "Standard"
+                  - label: "Text"
+                  - label: "Workflow"
+                  - label: "Other"
+              - key: "Related Metadata Scheme"
+                type: text-field
+                name: "Related Metadata Scheme"
+                description: "Help Text"
+              - key: "Related Metadata Scheme URI"
+                type: text-field
+                name: "Related Metadata Scheme URI"
+                description: "Help Text"
+              - key: "Related Metadata Scheme Type"
+                type: text-field
+                name: "Related Metadata Scheme Type"
+                description: "Help Text"
+            configuration:
+              overrideLabel: "Software Reference / Documentation"
+          - key: "Algorithm Description Guidance"
+            type: static-rich-text
+            name: "Algorithm Description Guidance"
+            description: "Help Text"
+            content: "<p><b>Algorithm Description</b></p>\n\n<p>If the processing implements a formal algorithm, provide a brief description of the algorithm along with a related identifier that provides a link to the full algorithm description.</p>\n"
+          - key: "Algorithm Description"
+            type: text-area-field
+            name: "Algorithm Description"
+            description: "Describe the algorithm(s) used in this processing"
+            configuration:
+              multiple: true
+              minItems: 1
+          - key: "RunTime Parameters Guidance"
+            type: static-rich-text
+            name: "RunTime Parameters Guidance"
+            description: "Help Text"
+            content: "<p><b>runTime Parameters</b></p>\n\n<p>If the processing is controlled with simple runtime parameters given as a command line argument, provide those parameters here.</p>\n"
+          - key: "runTime Parameters"
+            type: text-field
+            name: "runTime Parameters"
+            description: "Enter the runtime parameters required for this step"
+          - key: "Other Property Guidance"
+            type: static-rich-text
+            name: "Other Property Guidance"
+            description: "Help Text"
+            content: "<p><b>Other Properties</b></p>\n\n<p>If other specific metadata are needed to describe the processing, provide those here as key-value pairs.</p>\n"
+          - key: "Other Property"
+            type: attribute-value-field
+            name: "Other Property"
+            description: "Help Text"
+            configuration:
+              minItems: 0
+      - key: "What were the processing outputs?"
+        type: static-section-break
+        name: "What were the processing outputs?"
+      - key: "Workflow step output"
+        type: element
+        name: "Workflow step output"
+        children:
+          - key: "Workflow Outputs"
+            type: static-section-break
+            name: "Workflow Outputs"
+            description: "Help Text"
+          - key: "Output Description Guidance"
+            type: static-rich-text
+            name: "Output Description Guidance"
+            description: "Help Text"
+            content: "<p><b>Workflow Step Output</b></p>\n\n<p>Workflow outputs can be described with a brief description of the output sufficient to provide understanding to a reader of the high-level metadata for the process and/or with a related identifier typically with <i>IsRequiredBy</i> as a relation type.</p>\n"
+          - key: "Output Description"
+            type: text-area-field
+            name: "Output Description"
+            description: "Help Text"
+          - key: "Identifier(s) of output(s) that require the workflow step"
+            type: static-section-break
+            name: "Identifier(s) of output(s) that require the workflow step"
+            description: "Help Text"
+          - key: "Related Identifier"
+            type: element
+            name: "Related Identifier"
+            description: "DataCite V4.4 relatedIdentifier"
+            children:
+              - key: "DataCite Identifier"
+                type: element
+                name: "DataCite Identifier"
+                description: "An identifier from the DataCite Schema"
+                identifier: "DataCiteIdentifier"
+                prefLabel: "Resource Identifier"
+                children:
+                  - key: "Identifier Guidance"
+                    type: static-rich-text
+                    name: "Identifier Guidance"
+                    description: "Help Text"
+                    content: "<p>Related identifiers enable the connections that are critical to forming the PID Graph. They are used to connect resources of many kinds to the resource being described by these metadata.</p> \n<p>These identifiers are usually complete URLS. For example a DOI would be https://doi.org/DOI. The identifiers do not have to be DOIs or other standard identifiers. If the type of the identifier is not universally identifiable, provide it along with the URI of the identifier scheme.</p>\n"
+                  - key: "Identifier"
+                    type: text-field
+                    name: "Identifier"
+                    description: "Help Text"
+                    prefLabel: "Identifier"
+                  - key: "Identifier Scheme"
+                    type: text-field
+                    name: "Identifier Scheme"
+                    description: "Help Text"
+                  - key: "Identifier Scheme URI"
+                    type: link-field
+                    name: "Identifier Scheme URI"
+                    description: "A Universal Resource Identifier for the Identifier Scheme (https://orcid.org, https://ror.org)"
+                    prefLabel: "Identifier Scheme URI"
+                configuration:
+                  overrideLabel: "Resource Identifier"
+                  overrideDescription: "An identifier for a resource (e.g. DOI), person (e.g. ORCID), organization (e.g. ROR) or other item."
+              - key: "Related Identifier Type"
+                type: single-select-list-field
+                name: "Related Identifier Type"
+                description: "Help Text"
+                values:
+                  - label: "ARK"
+                  - label: "arXiv"
+                  - label: "bibcode"
+                  - label: "DOI"
+                  - label: "EAN13"
+                  - label: "EISSN"
+                  - label: "Handle"
+                  - label: "IGSN"
+                  - label: "ISBN"
+                  - label: "ISSN"
+                  - label: "ISTC"
+                  - label: "LISSN"
+                  - label: "LSID"
+                  - label: "PMID"
+                  - label: "PURL"
+                  - label: "UPC"
+                  - label: "URL"
+                  - label: "URN"
+                  - label: "w3id"
+                configuration:
+                  required: true
+              - key: "Relation Type"
+                type: single-select-list-field
+                name: "Relation Type"
+                description: "Help Text"
+                values:
+                  - label: "IsCitedBy"
+                  - label: "Cites"
+                  - label: "IsSupplementTo"
+                  - label: "IsSupplementedBy"
+                  - label: "IsContinuedBy"
+                  - label: "Continues"
+                  - label: "IsDescribedBy"
+                  - label: "Describes"
+                  - label: "HasMetadata"
+                  - label: "IsMetadataFor"
+                  - label: "HasVersion"
+                  - label: "IsVersionOf"
+                  - label: "IsNewVersionOf"
+                  - label: "IsPreviousVersionOf"
+                  - label: "IsPartOf"
+                  - label: "HasPart"
+                  - label: "IsPublishedIn"
+                  - label: "IsReferencedBy"
+                  - label: "References"
+                  - label: "IsDocumentedBy"
+                  - label: "Documents"
+                  - label: "IsCompiledBy"
+                  - label: "Compiles"
+                  - label: "IsVariantFormOf"
+                  - label: "IsOriginalFormOf"
+                  - label: "IsIdenticalTo"
+                  - label: "IsReviewedBy"
+                  - label: "Reviews"
+                  - label: "IsDerivedFrom"
+                  - label: "IsSourceOf"
+                  - label: "IsRequiredBy"
+                  - label: "Requires"
+                  - label: "IsObsoletedBy"
+                  - label: "Obsoletes"
+                configuration:
+                  required: true
+              - key: "Related Resource Type"
+                type: single-select-list-field
+                name: "Related Resource Type"
+                description: "Enter a resource type from the DataCite Resource Type General list"
+                values:
+                  - label: "Audiovisual"
+                  - label: "Book"
+                  - label: "Book Chapter"
+                  - label: "Collection"
+                  - label: "ComputationalNotebook"
+                  - label: "ConferencePaper"
+                  - label: "ConferenceProceeding"
+                  - label: "DataPaper"
+                  - label: "Dataset"
+                  - label: "Dissertation"
+                  - label: "Event"
+                  - label: "Image"
+                  - label: "InteractiveResource"
+                  - label: "Journal"
+                  - label: "JournalArticle"
+                  - label: "Model"
+                  - label: "OutputManagementPlan"
+                  - label: "PeerReview"
+                  - label: "PhysicalObject"
+                  - label: "Preprint"
+                  - label: "Report"
+                  - label: "Service"
+                  - label: "Software"
+                  - label: "Sound"
+                  - label: "Standard"
+                  - label: "Text"
+                  - label: "Workflow"
+                  - label: "Other"
+              - key: "Related Metadata Scheme"
+                type: text-field
+                name: "Related Metadata Scheme"
+                description: "Help Text"
+              - key: "Related Metadata Scheme URI"
+                type: text-field
+                name: "Related Metadata Scheme URI"
+                description: "Help Text"
+              - key: "Related Metadata Scheme Type"
+                type: text-field
+                name: "Related Metadata Scheme Type"
+                description: "Help Text"
+        configuration:
+          multiple: true
+          minItems: 1
+      - key: "Was there a report from the processing?"
+        type: static-section-break
+        name: "Was there a report from the processing?"
+      - key: "Processing Report"
+        type: element
+        name: "Processing Report"
+        children:
+          - key: "Report Name Guidance"
+            type: static-rich-text
+            name: "Report Name Guidance"
+            description: "Help Text"
+            content: "<p><b>Report Name</b></p>\n\n<p>A name or identifier of the report that provides a summary of the \noutput, warnings, and errors encountered during the process step. \nCould be the name of a file or a file name pattern, or a URL or other identifier.</p>\n"
+          - key: "Report name"
+            type: text-field
+            name: "Report name"
+            description: "Enter the name ofthe report from the process step."
+            configuration:
+              required: true
+          - key: "Report Description Guidance"
+            type: static-rich-text
+            name: "Report Description Guidance"
+            description: "Help Text"
+            content: "<p><b>Report Description</b></p>\n<p>A description of the processing report sufficient to provide understanding to a reader of the high-level metadata for the process.</p>"
+          - key: "Report Description"
+            type: text-area-field
+            name: "Report Description"
+            description: "A description of the processing report sufficient to provide understanding to a reader of the high-level metadata for the process."
+          - key: "Report File Type"
+            type: static-rich-text
+            name: "Report File Type"
+            description: "Help Text"
+            content: "<p><b>Report fileType</b></p>\n<p>A description of the type of the file report (text, pdf, csv, ...)</p>\n"
+          - key: "Report File Type1"
+            type: text-field
+            name: "Report File Type"
+            description: "A description of the type of the file report (text, pdf, csv, ...)"

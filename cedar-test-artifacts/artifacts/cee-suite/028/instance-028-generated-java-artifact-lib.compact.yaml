@@ -1,0 +1,30 @@
+type: instance
+name: "28 - multi element with several fields metadata"
+id: "https://repo.metadatacenter.org/template-instances/ad80b288-4d79-4bb4-82c3-0d9653ed4c46"
+isBasedOn: "https://repo.metadatacenter.org/templates/e64c053f-116e-4c75-8dcf-0dc40f71e838"
+children:
+  Element with Several Fields:
+    - children:
+        Text Field:
+          value: "Text 0"
+        Numeric Field:
+          datatype: xsd:decimal
+          value: "100"
+        Another text field:
+          value: "Another 0"
+    - children:
+        Text Field:
+          value: "Text 1"
+        Numeric Field:
+          datatype: xsd:decimal
+          value: "101"
+        Another text field:
+          value: "Another 1"
+    - children:
+        Text Field:
+          value: "Text 2"
+        Numeric Field:
+          datatype: xsd:decimal
+          value: "102"
+        Another text field:
+          value: "Another 2"

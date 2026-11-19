@@ -1,0 +1,18 @@
+type: template
+name: "youtube full custom"
+description: "Youtube Template Description"
+identifier: "Template ID"
+id: "https://repo.metadatacenter.org/templates/dc3816a9-c59b-4059-a6fc-dad4b824297d"
+children:
+  - key: "Untitled"
+    type: static-youtube-video
+    name: "Youtube Name"
+    description: "Youtube Help Text"
+    content: "mw816POGRrk"
+    configuration:
+      overrideLabel: "Untitled"
+      overrideDescription: "Help Text"
+  - key: "Input Field"
+    type: text-field
+    name: "Input Field"
+    description: "Help Text"

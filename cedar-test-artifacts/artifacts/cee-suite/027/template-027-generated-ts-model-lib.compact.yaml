@@ -1,0 +1,8 @@
+type: template
+name: "link"
+id: "https://repo.metadatacenter.org/templates/dc1090d9-9cbf-48c7-bb41-66254531d033"
+children:
+  - key: "Link here"
+    type: link-field
+    name: "Link here"
+    description: "Help Text"

@@ -1,0 +1,12 @@
+type: instance
+name: "Multiple select metadata"
+id: "https://repo.metadatacenter.orgx/template-instances/28f60f26-42cb-47e4-b4d2-648e771a1981"
+isBasedOn: "https://repo.metadatacenter.orgx/templates/3b14c261-d8f6-48dc-a162-718f9acae800"
+createdOn: "2023-08-31T10:20:33-07:00"
+createdBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+modifiedOn: "2023-08-31T10:20:33-07:00"
+modifiedBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+children:
+  Favorite Bands:
+    - value: "Taylor Swift"
+    - value: "AC/DC"

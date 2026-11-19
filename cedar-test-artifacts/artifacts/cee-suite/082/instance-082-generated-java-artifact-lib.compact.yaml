@@ -1,0 +1,4 @@
+type: instance
+name: "Mandatory multi field min 1 metadata"
+id: "https://repo.metadatacenter.org/template-instances/a02696a4-9522-46aa-aa16-cc4a97a1c077"
+isBasedOn: "https://repo.metadatacenter.org/templates/f8d2350a-ff41-49fc-9293-405d30c69c98"

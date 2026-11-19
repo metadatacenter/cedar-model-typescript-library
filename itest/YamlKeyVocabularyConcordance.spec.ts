@@ -8,6 +8,7 @@ import { YamlTemplateReader } from '../src/org/metadatacenter/io/reader/yaml/Yam
 import { YamlTemplateElementReader } from '../src/org/metadatacenter/io/reader/yaml/YamlTemplateElementReader';
 import { YamlTemplateFieldReader } from '../src/org/metadatacenter/io/reader/yaml/YamlTemplateFieldReader';
 import { YamlTemplateInstanceReader } from '../src/org/metadatacenter/io/reader/yaml/YamlTemplateInstanceReader';
+import { YamlElementInstanceReader } from '../src/org/metadatacenter/io/reader/yaml/YamlElementInstanceReader';
 
 /**
  * The keys the Java library's YAML reader reads in each mapping of every corpus document, recorded
@@ -40,6 +41,9 @@ function read(document: JsonNode, compact: boolean): void {
     );
   } else if (type === 'instance') {
     (compact ? YamlTemplateInstanceReader.getStrictForCompact() : YamlTemplateInstanceReader.getStrict()).readFromObject(document);
+  } else if (type === 'element-instance') {
+    // Java reads both forms of an element instance with the same reader, and so does this library.
+    YamlElementInstanceReader.getStrict().readFromObject(document);
   } else {
     (compact ? YamlTemplateFieldReader.getStrictForCompact() : YamlTemplateFieldReader.getStrict()).readFromObject(
       document,

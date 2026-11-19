@@ -1,0 +1,23 @@
+type: instance
+name: "cee-instance-008"
+isBasedOn: "https://repo.metadatacenter.org/templates/a1bcf67e-b497-43ab-bebb-32f8cfb11a4a"
+children:
+  Multiple Choice Element:
+    - children:
+        Multiple Choice in Element:
+          value: "Option 1"
+    - children:
+        Multiple Choice in Element:
+          value: "Option 2"
+    - children:
+        Multiple Choice in Element:
+          value: "Option 3"
+    - children:
+        Multiple Choice in Element:
+          value: "Option 4"
+    - children:
+        Multiple Choice in Element:
+          value: "Option 5"
+    - type: element-instance
+  Multiple Choice Standalone:
+    value: "Option 1"

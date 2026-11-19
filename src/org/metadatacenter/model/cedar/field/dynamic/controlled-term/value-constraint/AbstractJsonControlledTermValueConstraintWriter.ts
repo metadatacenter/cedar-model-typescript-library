@@ -17,7 +17,6 @@ export abstract class AbstractJsonControlledTermValueConstraintWriter extends Js
     if (constraint.sourceSystem !== null) {
       entry[CedarModel.ValueConstraints.sourceSystem] = constraint.sourceSystem;
     }
-    if (constraint.links !== null) entry.links = { ...constraint.links };
     const version = constraint.version;
     if (version !== null) {
       const rendering = JsonNode.getEmpty();
@@ -30,5 +29,6 @@ export abstract class AbstractJsonControlledTermValueConstraintWriter extends Js
       }
       entry[CedarModel.ValueConstraints.version] = rendering;
     }
+    if (constraint.links !== null) entry.links = { ...constraint.links };
   }
 }

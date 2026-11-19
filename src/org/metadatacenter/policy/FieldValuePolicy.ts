@@ -40,6 +40,22 @@ export class FieldValuePolicy {
     return type === 'link' || this.authorityTypes.has(type) || this.isControlled(field) || Object.hasOwn(field.properties ?? {}, '@id');
   }
 
+  /**
+   * Whether a numeric field states decimal places its datatype cannot have: an integer datatype with a valid number
+   * of decimal places other than zero. Java's validator refuses this shape as structural, and Java's reader refuses
+   * it by the same rule, so the strict readers here hold to it too.
+   */
+  static integerWithDecimalPlaces(numberType: unknown, decimalPlace: unknown): boolean {
+    return (
+      typeof numberType === 'string' &&
+      Object.hasOwn(this.integerRanges, numberType) &&
+      typeof decimalPlace === 'number' &&
+      Number.isInteger(decimalPlace) &&
+      decimalPlace > 0 &&
+      decimalPlace <= 2147483647
+    );
+  }
+
   static validateConfiguration(field: ValidationField, path = ''): ValidationFinding[] {
     const c = field._valueConstraints ?? {};
     const out: ValidationFinding[] = [];
@@ -69,7 +85,7 @@ export class FieldValuePolicy {
       if (!integral && !['xsd:float', 'xsd:double', 'xsd:decimal'].includes(type))
         bad('numberType', 'A numeric field requires a recognized datatype.');
       const validPrecision = Number.isInteger(c.decimalPlace) && c.decimalPlace >= 0 && c.decimalPlace <= 2147483647;
-      if (integral && validPrecision && c.decimalPlace !== 0)
+      if (this.integerWithDecimalPlaces(type, c.decimalPlace))
         bad('decimalPlace', 'Integer datatypes cannot declare fractional decimal places.');
       for (const key of validBounds) {
         if (!integral && !['xsd:float', 'xsd:double', 'xsd:decimal'].includes(type)) continue;

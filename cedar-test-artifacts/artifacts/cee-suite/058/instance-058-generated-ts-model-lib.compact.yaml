@@ -1,0 +1,8 @@
+type: instance
+name: "Multiple select metadata"
+id: "https://repo.metadatacenter.orgx/template-instances/28f60f26-42cb-47e4-b4d2-648e771a1981"
+isBasedOn: "https://repo.metadatacenter.orgx/templates/3b14c261-d8f6-48dc-a162-718f9acae800"
+children:
+  Favorite Bands:
+    - value: "Taylor Swift"
+    - value: "AC/DC"

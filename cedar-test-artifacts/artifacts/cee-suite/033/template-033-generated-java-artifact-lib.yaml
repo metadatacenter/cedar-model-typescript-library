@@ -1,0 +1,26 @@
+type: template
+name: "numeric field - long integer"
+id: "https://repo.metadatacenter.org/templates/fbfc7b93-d626-4526-9d2c-1cd05b4d3a41"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+createdOn: "2020-11-12T10:32:52-08:00"
+createdBy: "https://metadatacenter.org/users/2fa8910d-96e7-4e2f-ae60-4dfa8ec9877d"
+modifiedOn: "2020-11-12T10:32:52-08:00"
+modifiedBy: "https://metadatacenter.org/users/2fa8910d-96e7-4e2f-ae60-4dfa8ec9877d"
+children:
+  - key: "Numeric"
+    type: numeric-field
+    name: "Numeric"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/be19c95d-3a4b-45d3-80dd-62cba07c4c00"
+    modelVersion: 1.6.0
+    datatype: xsd:long
+    minValue: 10
+    maxValue: 25
+    createdOn: "2020-11-12T10:32:52-08:00"
+    createdBy: "https://metadatacenter.org/users/2fa8910d-96e7-4e2f-ae60-4dfa8ec9877d"
+    modifiedOn: "2020-11-12T10:32:52-08:00"
+    modifiedBy: "https://metadatacenter.org/users/2fa8910d-96e7-4e2f-ae60-4dfa8ec9877d"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/eaf9c6cf-ab64-4956-8977-ea5bfb5c09f4"

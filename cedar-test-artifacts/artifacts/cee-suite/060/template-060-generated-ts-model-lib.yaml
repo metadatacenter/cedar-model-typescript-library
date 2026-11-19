@@ -1,0 +1,39 @@
+type: template
+name: "Multi-element with Attribute-Value"
+id: "https://repo.metadatacenter.orgx/templates/60976d38-b88d-4fed-b15f-f30794977b48"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+createdOn: "2023-08-31T14:52:57-07:00"
+createdBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+modifiedOn: "2023-08-31T14:52:57-07:00"
+modifiedBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+children:
+  - key: "Element with attribute-value"
+    type: element
+    name: "Element with attribute-value"
+    id: "https://repo.metadatacenter.orgx/template-elements/984414d0-c6e3-4e4c-a9d7-e27bf88feb2d"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    createdOn: "2023-08-31T14:52:57-07:00"
+    createdBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+    modifiedOn: "2023-08-31T14:52:57-07:00"
+    modifiedBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+    children:
+      - key: "Attribute-Value"
+        type: attribute-value-field
+        name: "Attribute-Value"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.orgx/template-fields/1a09bcb3-4229-457f-a597-463d82922b93"
+        modelVersion: 1.6.0
+        createdOn: "2023-08-31T14:52:25-07:00"
+        createdBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+        modifiedOn: "2023-08-31T14:52:25-07:00"
+        modifiedBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+        configuration:
+          minItems: 0
+    configuration:
+      propertyIri: "https://schema.metadatacenter.orgx/properties/bbd2e7ca-88bb-4dbe-958c-06ec81b6ee2d"
+      multiple: true
+      minItems: 0

@@ -159,6 +159,14 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     this.readAnnotations(instance, sourceObject);
   }
 
+  /**
+   * A standalone element instance's data, read as a nested element occurrence is read: Java reads both
+   * with the same method. `JsonElementInstanceReader` reads the rest of the document.
+   */
+  public readElementInstanceData(sourceObject: JsonNode, path: JsonPath, parsingResult: JsonArtifactParsingResult): InstanceDataContainer {
+    return this.parseContainer(sourceObject, path, parsingResult, 'element');
+  }
+
   private readInstanceContainer(sourceObject: JsonNode, path: JsonPath, parsingResult: JsonArtifactParsingResult): InstanceDataContainer {
     return this.parseContainer(sourceObject, path, parsingResult, 'template');
   }
@@ -209,7 +217,9 @@ export class JsonTemplateInstanceReader extends JsonAbstractInstanceArtifactRead
     // Nested containers run through this method in their own right. Report
     // only this level here so a nested conflict is not repeated once for every
     // ancestor on the way back out of the recursive parse.
-    for (const conflict of AttributeValueNamePolicy.findConflicts(ret, parent, true).filter((candidate) => candidate.path.length === 0)) {
+    const conflicts = AttributeValueNamePolicy.findConflicts(ret, parent, true).filter((candidate) => candidate.path.length === 0);
+    StoredForm.recordAttributeNameConflicts(ret, conflicts);
+    for (const conflict of conflicts) {
       parsingResult.addBlueprintComparisonError(
         new ComparisonError(
           'JsonTemplateInstanceReader',

@@ -1,0 +1,17 @@
+type: template
+name: "multiple element, min 4"
+id: "https://repo.metadatacenter.org/templates/9e19835f-dada-41a2-9808-e40163b0eb5f"
+children:
+  - key: "Single Text Element"
+    type: element
+    name: "Single Text Element"
+    children:
+      - key: "Text Field in Element"
+        type: text-field
+        name: "Text Field in Element"
+        description: "Help Text"
+    configuration:
+      overrideLabel: "Single Text Element in template"
+      multiple: true
+      minItems: 4
+      maxItems: 7

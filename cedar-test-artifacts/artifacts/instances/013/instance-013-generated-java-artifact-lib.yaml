@@ -22,10 +22,14 @@ children:
     Attribute Value Field From Single:
       Attribute Value Field Single 1:
         value: "value 1"
+        propertyIri: "https://schema.metadatacenter.org/properties/4d7622f3-3ab4-498c-b327-d3364eddb07c"
       Attribute Value Field Single 2:
         value: "value 2"
+        propertyIri: "https://schema.metadatacenter.org/properties/bb26c067-dbda-43f1-ab40-ee1fe3b2ed13"
 Attribute Value Field Root:
   Attribute Value Field Root 1:
     value: "value 1"
+    propertyIri: "https://schema.metadatacenter.org/properties/fd35c168-c46b-4d93-be4b-21803a61922d"
   Attribute Value Field Root 2:
     value: "value 2"
+    propertyIri: "https://schema.metadatacenter.org/properties/9f9cc15a-98d5-4fca-a4cd-2190d9373644"

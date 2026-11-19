@@ -17,7 +17,7 @@ import { JsonPath } from '../util/path/JsonPath';
 import { UiInputType } from '../types/wrapped-types/UiInputType';
 import { InstanceDataAttributeValueField } from './InstanceDataAttributeValueField';
 import { InstanceDataAttributeValueFieldName } from './InstanceDataAttributeValueFieldName';
-import { AttributeValueNamePolicy } from './AttributeValueNamePolicy';
+import { AttributeValueNameConflict, AttributeValueNamePolicy } from './AttributeValueNamePolicy';
 import { CedarArtifactType } from '../types/cedar-types/CedarArtifactType';
 import { TemplateField } from '../field/TemplateField';
 import { JsonTemplateInstanceWriter } from '../../../io/writer/json/JsonTemplateInstanceWriter';
@@ -33,6 +33,7 @@ import { IdentifierPolicy } from '../../../policy/IdentifierPolicy';
 import { TimestampPolicy } from '../../../policy/TimestampPolicy';
 import { JsonAnnotationsWriter } from '../../../io/writer/json/JsonAnnotationsWriter';
 import { CedarModel } from '../constants/CedarModel';
+import { InstanceInflater } from './InstanceInflater';
 import { JsonSchema } from '../constants/JsonSchema';
 import { ValidationField } from '../../../policy/FieldValuePolicy';
 
@@ -47,8 +48,10 @@ export interface InstanceValidationOptions {
    * gives the root the standard `@context` terms, and leaves out an optional
    * property held as null, so those are judged as written rather than as the
    * instance holds them. A term the template does not declare is still judged,
-   * since the write keeps it. Without this the instance is judged as it was
-   * stored.
+   * since the write keeps it. The instance is completed as an editor completes
+   * it, with `InstanceInflater` and `'empty'`, so a child it omits is judged as
+   * the empty slot the write supplies, and a repeated child as the occurrences
+   * it holds. Without this the instance is judged as it was stored.
    */
   asWritten?: boolean;
 
@@ -99,19 +102,32 @@ export class InstanceValidator {
     options: InstanceValidationOptions = {},
   ): JsonArtifactParsingResult {
     const result = new JsonArtifactParsingResult();
-    InstanceValidator.validateContainer(
-      instance.dataContainer,
-      template,
-      new JsonPath(),
-      result,
-      InstanceValidator.object(stored),
-      options,
-    );
+    const judged = options.asWritten === true ? InstanceInflater.inflated(instance, template, 'empty') : instance;
+    InstanceValidator.validateContainer(judged.dataContainer, template, new JsonPath(), result, InstanceValidator.object(stored), options);
     const members = options.asWritten === true ? null : StoredForm.membersOf(instance.dataContainer);
     const annotations =
       members !== null ? members[CedarModel.annotations] : (JsonAnnotationsWriter.annotationsNode(instance.annotations) ?? undefined);
     InstanceValidator.validateOwnTerm(CedarModel.annotations, annotations, InstanceValidator.object(stored), new JsonPath(), result);
+    if (options.verbatim !== true || options.asWritten === true) {
+      const derivedFrom = members !== null ? members[JsonSchema.pavDerivedFrom] : instance.pav_derivedFrom.getValue();
+      InstanceValidator.validateIdentifier(JsonSchema.pavDerivedFrom, derivedFrom, new JsonPath(), result);
+    }
     return result;
+  }
+
+  /**
+   * An identifier the instance states for itself, such as its `pav:derivedFrom`, which neither the host
+   * nor the server writes: every save writes it as the instance holds it, and the server requires an
+   * absolute IRI where one is stated, which the schema's `format: uri` does not. It is judged as stored,
+   * or, with `asWritten` or for a model the reader did not build, as the writer writes the model's. A
+   * verbatim write judges it among the container's own keys.
+   */
+  private static validateIdentifier(name: string, value: unknown, path: JsonPath, result: JsonArtifactParsingResult): void {
+    if (typeof value === 'string' && !IdentifierPolicy.isValid(value)) {
+      result.addValidationFinding(
+        ValidationPolicy.finding('valueShape', path.add(name).toPointer(), 'The server requires an absolute IRI here.'),
+      );
+    }
   }
 
   /** Saveability and quality are different answers; semantic checks remain explicitly not checked. */
@@ -147,7 +163,14 @@ export class InstanceValidator {
     }
 
     const parent = template.cedarArtifactType === CedarArtifactType.TEMPLATE ? 'template' : 'element';
-    for (const conflict of AttributeValueNamePolicy.findConflicts(container, parent).filter((candidate) => candidate.path.length === 0)) {
+    // The model's own names, and, judged as stored, those the document gave that the model could not hold.
+    const conflicts = new Map<string, AttributeValueNameConflict>();
+    for (const conflict of [
+      ...AttributeValueNamePolicy.findConflicts(container, parent).filter((candidate) => candidate.path.length === 0),
+      ...(options.asWritten === true ? [] : StoredForm.attributeNameConflictsOf(container)),
+    ])
+      conflicts.set(ValidationPolicy.pointer(AttributeValueNamePolicy.locationOf(conflict)) + ' ' + conflict.kind, conflict);
+    for (const conflict of conflicts.values()) {
       result.addBlueprintComparisonError(
         new ComparisonError(
           LOCATION,
@@ -187,6 +210,11 @@ export class InstanceValidator {
 
     if (options.verbatim === true && options.asWritten !== true) {
       InstanceValidator.validateMembers(container, stored, path, result);
+    } else if (options.asWritten !== true && path.toPointer() !== '') {
+      // An element occurrence's provenance, as stored. The writer does not write one.
+      const members = StoredForm.membersOf(container);
+      if (members !== null)
+        InstanceValidator.validateIdentifier(JsonSchema.pavDerivedFrom, members[JsonSchema.pavDerivedFrom], path, result);
     }
     InstanceValidator.validateOwnTerm(JsonSchema.atType, InstanceValidator.statedTypes(container, options), stored, path, result);
 

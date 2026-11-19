@@ -36,6 +36,7 @@ import { YamlValueConstraintsValueSetWriter } from '../../../model/cedar/field/d
 import { YamlValueConstraintsActionWriter } from '../../../model/cedar/field/dynamic/controlled-term/value-constraint/action/YamlValueConstraintsActionWriter';
 import { YamlWriterBehavior } from '../../../behavior/YamlWriterBehavior';
 import { YamlTemplateInstanceWriter } from './YamlTemplateInstanceWriter';
+import { YamlElementInstanceWriter } from './YamlElementInstanceWriter';
 import { YamlFieldWriterExtRor } from '../../../model/cedar/field/dynamic/ext-ror/YamlFieldWriterExtRor';
 import { YamlFieldWriterExtOrcid } from '../../../model/cedar/field/dynamic/ext-orcid/YamlFieldWriterExtOrcid';
 import { YamlFieldWriterExtPfas } from '../../../model/cedar/field/dynamic/ext-pfas/YamlFieldWriterExtPfas';
@@ -54,6 +55,7 @@ export class CedarYamlWriters {
   private readonly yamlTemplateWriter: YamlTemplateWriter;
   private readonly yamlTemplateElementWriter: YamlTemplateElementWriter;
   private readonly yamlTemplateInstanceWriter: YamlTemplateInstanceWriter;
+  private readonly yamlElementInstanceWriter: YamlElementInstanceWriter;
 
   private constructor(behavior: YamlWriterBehavior) {
     this.behavior = behavior;
@@ -63,6 +65,7 @@ export class CedarYamlWriters {
     this.yamlTemplateWriter = YamlTemplateWriter.getFor(behavior, this);
     this.yamlTemplateElementWriter = YamlTemplateElementWriter.getFor(behavior, this);
     this.yamlTemplateInstanceWriter = YamlTemplateInstanceWriter.getFor(behavior, this);
+    this.yamlElementInstanceWriter = YamlElementInstanceWriter.getFor(behavior, this);
 
     this.yamlDynamicFieldWriters = new Map<CedarFieldType, YamlTemplateFieldWriterInternal>([
       [CedarFieldType.TEXT, new YamlFieldWriterTextField(behavior, this)],
@@ -147,6 +150,11 @@ export class CedarYamlWriters {
 
   getTemplateInstanceWriter(): YamlTemplateInstanceWriter {
     return this.yamlTemplateInstanceWriter;
+  }
+
+  /** The writer of an element instance that stands on its own, outside a template instance. */
+  getElementInstanceWriter(): YamlElementInstanceWriter {
+    return this.yamlElementInstanceWriter;
   }
 
   public getWriterForValueConstraint(object: ControlledTermAbstractValueConstraint): AbstractYamlControlledTermValueConstraintWriter {

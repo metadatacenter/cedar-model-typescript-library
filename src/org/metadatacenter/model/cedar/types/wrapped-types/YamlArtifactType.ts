@@ -33,6 +33,7 @@ export const YamlArtifactTypeValues = {
   YOUTUBE: 'static-youtube-video',
 
   TEMPLATE_INSTANCE: 'instance',
+  ELEMENT_INSTANCE: 'element-instance',
 } as const;
 
 export type YamlArtifactTypeValue = (typeof YamlArtifactTypeValues)[keyof typeof YamlArtifactTypeValues] | null;
@@ -81,6 +82,7 @@ export class YamlArtifactType {
   public static YOUTUBE = new YamlArtifactType(YamlArtifactTypeValues.YOUTUBE, CedarFieldCategory.STATIC);
 
   public static TEMPLATE_INSTANCE = new YamlArtifactType(YamlArtifactTypeValues.TEMPLATE_INSTANCE, CedarFieldCategory.NONE);
+  public static ELEMENT_INSTANCE = new YamlArtifactType(YamlArtifactTypeValues.ELEMENT_INSTANCE, CedarFieldCategory.NONE);
 
   public static NULL = new YamlArtifactType(null, CedarFieldCategory.NULL);
 
@@ -117,6 +119,7 @@ export class YamlArtifactType {
       YamlArtifactType.YOUTUBE,
 
       YamlArtifactType.TEMPLATE_INSTANCE,
+      YamlArtifactType.ELEMENT_INSTANCE,
 
       YamlArtifactType.NULL,
     ];
@@ -153,5 +156,9 @@ export class YamlArtifactType {
 
   isTemplateInstance() {
     return this.value === YamlArtifactTypeValues.TEMPLATE_INSTANCE;
+  }
+
+  isElementInstance() {
+    return this.value === YamlArtifactTypeValues.ELEMENT_INSTANCE;
   }
 }

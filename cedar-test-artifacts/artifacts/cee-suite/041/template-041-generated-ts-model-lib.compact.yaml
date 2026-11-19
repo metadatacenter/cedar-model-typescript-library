@@ -1,0 +1,94 @@
+type: template
+name: "controlled"
+id: "https://repo.metadatacenter.org/templates/fe8ddab9-e2da-4112-ab6c-140e20844ba8"
+children:
+  - key: "Another Controlled Element"
+    type: element
+    name: "Another Controlled Element"
+    children:
+      - key: "Controlled Field 1 in Element"
+        type: controlled-term-field
+        name: "Controlled Field 1 in Element"
+        description: "Help Text"
+        datatype: iri
+        values:
+          - type: ontology
+            sourceAcronym: "LOINC"
+            sourceName: "Logical Observation Identifier Names and Codes"
+            termCount: 275992
+          - type: branch
+            sourceAcronym: "MESH"
+            sourceName: "undefined (MESH)"
+            termBaseIri: "http://purl.bioontology.org/ontology/MESH/D009666"
+            termBaseLabel: "Nose"
+            termMaxDepth: 0
+    configuration:
+      overrideLabel: "Controlled Element 1"
+      multiple: true
+      minItems: 1
+  - key: "Controlled Element"
+    type: element
+    name: "Controlled Element"
+    children:
+      - key: "Controlled Field 1 in Element"
+        type: controlled-term-field
+        name: "Controlled Field 1 in Element"
+        description: "Help Text"
+        datatype: iri
+        default:
+          value: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C131506"
+          label: "Childhood Melanoma"
+        values:
+          - type: class
+            sourceAcronym: "NCIT"
+            termIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C3224"
+            termType: class
+            termLabel: "Melanoma"
+          - type: branch
+            sourceAcronym: "NCIT"
+            sourceName: "National Cancer Institute Thesaurus (NCIT)"
+            termBaseIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C3224"
+            termBaseLabel: "Melanoma"
+            termMaxDepth: 0
+        configuration:
+          multiple: true
+          minItems: 1
+      - key: "Controlled Field 2 in Element"
+        type: controlled-term-field
+        name: "Controlled Field 2 in Element"
+        description: "Help Text"
+        datatype: iri
+        values:
+          - type: branch
+            sourceAcronym: "FMA"
+            sourceName: "undefined (FMA)"
+            termBaseIri: "http://purl.org/sig/ont/fma/fma7195"
+            termBaseLabel: "Lung"
+            termMaxDepth: 0
+    configuration:
+      overrideLabel: "Controlled Element 2"
+      multiple: true
+      minItems: 1
+  - key: "Controlled Standalone"
+    type: controlled-term-field
+    name: "Controlled Standalone"
+    description: "Help Text"
+    datatype: iri
+    default:
+      value: "http://purl.bioontology.org/ontology/CSP/0603-8552"
+      label: "cell type"
+    values:
+      - type: class
+        sourceAcronym: "CRISP"
+        termIri: "http://purl.bioontology.org/ontology/CSP/0603-8552"
+        termType: class
+        termLabel: "cell type"
+      - type: branch
+        sourceAcronym: "CLO"
+        sourceName: "undefined (CLO)"
+        termBaseIri: "http://purl.obolibrary.org/obo/CL_0000000"
+        termBaseLabel: "cell type"
+        termMaxDepth: 0
+    configuration:
+      multiple: true
+      minItems: 1

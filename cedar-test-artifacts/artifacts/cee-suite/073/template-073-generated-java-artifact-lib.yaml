@@ -1,0 +1,1448 @@
+type: template
+name: "Human Cognitive Neuroscience Data"
+id: "https://repo.metadatacenter.org/templates/7479dcb2-2c2f-44c8-953d-507c8b52c06a"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+createdOn: "2022-12-13T09:06:07-08:00"
+createdBy: "https://metadatacenter.org/users/5eed13e5-437f-4e3a-a3a9-384be17074f1"
+modifiedOn: "2024-01-22T04:23:47-08:00"
+modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+children:
+  - key: "About"
+    type: static-rich-text
+    name: "About"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/afdbd1a2-d16e-47df-818c-0e1a95438d9b"
+    modelVersion: 1.6.0
+    prefLabel: "About"
+    content: "<h3 style=\"font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; color: rgb(51, 51, 51);\">About the metadata template</h3>\n\n<p>Are afraid nobody can find your opened dataset in cognitive neuroscience?</p>\n\n<p><span style=\"background-color: rgb(255, 255, 255);\">The template aims to generate and share standardized metadata of cognitive neuroscience research projects with human subjects, to enrich publicly accessible domain-specific metadata, and subsequently enhance the discoverability/searchability and reusability of the shared resource.&nbsp;</span></p>\n\n<p>This metadata template was developed by the research team at the&nbsp;<a href=\"https://www.aesthetics.mpg.de/en.html\">Max Planck Institute of Empirical Aesthetics</a>&nbsp;in collaboration with <a href=\"https://datacite.org/\">DataCite</a>. The template was built as part of the&nbsp;<a href=\"http://ttps://doi.org/10.54224/20568\">Implementing FAIR Workflows Project</a>&nbsp;(TWCF0568), funded by the&nbsp;<a href=\"https://www.templetonworldcharity.org/\">Templeton World Charity Foundation</a>.</p>\n\n<p>The template was built with the Center for Expanded Data Annotation and Retrieval (CEDAR) Workbench. Learn more about CEDAR metadata templates&nbsp;<a href=\"https://metadatacenter.github.io/cedar-manual/sections/c1/1_template_overview/\">here</a>.</p>\n\n<p>Feel free to contact Zefan Zheng per <a href=\"mailto:zefan.zheng@ae.mpg.de\">email</a> if you have any questions about the metadata template.</p>\n\n<h3><span style=\"color: inherit; font-family: inherit;\">Tips for completing this form</span></h3>\n\n<p>1. Hover the cursor on<img alt=\"\" src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAcCAYAAAAEN20fAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALESURBVEhL7ZY/aBNRHMc/ahEyHKVpCdKgEYwQSgtehkAz2EJsswSsUIfoIgXtYMeC3YpLweJYhw4WF1vBFDO4NJihDilkSIoJ5YYWPCVBQpOINwQk/nlJLpImTXJRSiv0M7x797vfj/d97/1+996ZXwJOAGf157FzKqSef8uR7wUKP/T+OROm83r/L+hcyE8NNbZJ+H0c5YumGytIFxzI1z2MOG1IHa51R0KKmSjBFwGi+5VBhwbtWCwWzOTIZDLsbkdQxDf6XEzem8Bl6aoEGsCwkOKnMMtLG6iSA++d24xckWgcpoi2t8nr1Q0UzYZ3ZhrPJWNijAnJx1lbWiPe42bq7gSOnopZ24uyGdsmTT/XnCO4hLgyeYXgyxUieRn/jB9Z92+FASEFlDdPWdmyMvloCldvyVZEfbfMs5Ba9qhiG3/I9A1bZaWyUVaeBEgNTzF7y4Gp7NGc9imVTRDZ0rCOe3CWRQjSEYJChOT0M7ewyOLCHH6nhBoKEknrPr1OPONWtK0Iiaxua0FbITlVQcGKPKDPVKB9/YbpqgvfmIy5ZOwyI495sZPiY6ZaSV3YBmQRKeI/H6yuw2grRMslRevA1l95LyEN+HhwfxK5ukKCkuBdMexli54nJfptIhKS+7nKewsMVnurzC+S2Q6y9iopcmQCd43gEsZqxrCQov5spLDzluXVCNQmag3NIw/SVoi5b1C0Cmo1CQ+gsfchgiZ58I42iiCtikgYNNdsVxPaCpEuOsQ+p4jvqIfMTsJx8zGPZz3YG1SIEt+Ji0gRbzPrtua035reIdzDEqlQmFhDGWok1ueZX0+IXh3ZGOFQCmnYzVBNUjfDQI6YcIz6kCWFwPMAybxu1jF127F31/2u8smyryLJ+Ebb/8xK/GdnjU7b0zeZqFwNjvL0/cNJuI80cKw3tCOiwwU8Ok6F1HNChMBvXQ4sbtDT0MAAAAAASUVORK5CYII=\" />&nbsp;to show the field description, and on<img alt=\"\" src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAbCAYAAAAdx42aAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIvSURBVEhL7Za/axNhGMc/alEyHCVJCdKgN5jhKMmQDIFmsEOgnQoZ4hAFEcG69M/pYgURQTvYodAuLQRShxQy5ISEckMcTpsioUmGG4ISf7xwp6TNJe8dWg7Bz3D3vM/dc/e993me970rPwQEyFXnHBj/BQQu4M+K8OuAwTfHvhYidN2xfeBfwHcLs35I+Z2O8dlynDbKTY303TxLGRXF49z6EjDs1Nh5uU3tzH5ZKpkgFosRoUen06H1voohrjGXpfioQDY2YwdOwbOA4ccyzzb2MRWNlfv3WLqjMP74IdaHQ96+2cewVFbWn5K/PV2ENwF9na2NLfRwjscPCmhhxz+JvsHO6xdU+2lK6yXSU+73kKkBRmUP3dIoli6+3MLY3WRz1xDWCGGNQqmIZunsVQzxhMnIBXQbVI8s4st5MlHH54VohvxyHOuoSqPr+FyQCuiZBgZx0guqS84VtNU11lY1YV1kBnUhLSJF/Kfz3TKKVIDVa4qjhjpvj88jiu6kRevEEpYL86qIhOZZzx674LFbJ1XygFZF1EClNTHPskb0KMD1+zwhi5QKiMwlxdHAPLXHvjg1RSQkI+MV8gupAOWWJvLYRj82fc7DEPNYF5EiXo04vnHkKYimyC0qtA/K1F3aKTSbIDEbckYjdOuUD9ooizlSU9rX30p4I8vDJ0WS0pWwyfbzV9S+yFfCf2QvcJDuhs2GvUVfxm74myD/B8YI5I/oL+Nxoi6PgAXAT690AgBhh9UjAAAAAElFTkSuQmCC\" />to show the&nbsp;<span style=\"background-color: rgb(255, 255, 255);\">ontological scope</span>&nbsp;assigned to the field.</p>\n\n<p>2. For fields assigned with ontological support, the drop-down menu may contain too many items making it hard to navigate. To ease navigation, enter the first letters of your desired value, the form will attempt to autocomplete your entry with standardized vocabulary.&nbsp;</p>\n\n<p>3. Some concepts have different expressions, enter several of them if the field does not respond with the correct terminology, i.e. try &quot;functional magnetic resonance imaging&quot; instead of &quot;fMRI&quot;.</p>\n\n<p>4. Fields or elements (multiple fields under one heading) that are repeatable are indicated by&nbsp;<img alt=\"\" src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKMAAAAmCAYAAACoESvrAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAYYSURBVHhe7Zt/SBtnGMe/alYN2XU1Mgd1oEKldcVAZcxOOkahDhRNoUX2h7CUreu6IULqRv6YlFDcQDaXUkbrNhlm1BU3KkzFSldYpavTsqbgEO0irIV2P9I1tgZ700a79728rjHmcpd4mWd8P/DGe59L3uTe+77P+zyv96b5/f5H4HB0QDr7y+GsOlyMHN3AxcjRDVyMHN3AxcjRDVyMHN3AxcjRDarWGefm5qQyPz+PhYUFZtUHpZ91saPE8bz1KjtKjLS0NDx6pN1ybUZGBtLT07FhwwaprBcUxUhFODs7K3WQwWBgVm2YmZmByWRitcTY+smX7Chxrh95nR0lhhbXEUkwGJQGf2Zm5roRpOI0TcWYDCFyYkP7m/Y77f/1gqJnnJ6eRlZWFqtpC/eMytBZSRAEVotNYHIQPQPD8PpFZiFsLEXdO1YUaeJcRYx/340bm62o3K7uN8WDomekUwVn9aDTtRoC19xoOdUDz0IRrDVWVnajcHoQQ9fZm1aIb+AE2s97MPp7mNg1hGfTKYAkxK9v4dlC4q02bUHpjlJWipGXyd6kAbkVDtSVsArF74XnmkdluYkA+5gcXIxrnEUhlrxxBPu2Gpk1glkRgUBgaRHVedwlZJBYlh1SfFe70Xm6U2W5iN/Y5+TgYlzDiL8QIZ72omD/m6jKC+L+g+gCGz3TBOeHrWh1sdLaDOfRLoyz82rxX2pD9w0B4k8n0XbJD6OQA+EpQXV5grUjh2ICMzU1lbTgnCcwytC2s7OzWS0cL7qa2nAlInwzljegeX++dBy8fQ4njl+G3yhCeMkBR0WuZIfvAlpabqOy1QZLyKILUt8z1h7CvXerWCWVEPGPmItKB/V0j0ukEDfWkul7i2RaMT7iGZ3vNcJxjHjVJKw4aSZG/7Abrj4vqz1Gzq4eP0Y6XOibZNU4qD9kx73nc1gtXrzocyX2vf8xNQK3y42RKVZnSH3SMUKuLDmEC/HgC+Ylcd5KMBfXoOGDwygLXoGH3NLAcDucx5wqS7diWLBCMYZumIuUXtTAXl2kYI+DyT7p8y5XL7DXjuq4R3cVXsEQNv18l9XjpQjVdju2ToSuI6EBlV0Gm70G+C7Uhns4JD/zThvse4Fe6fqWi3VFzHnQcfwCbuMhbg2ckITwzRiZvrNkkps4MJimcdHVjtFiG/ZtJ745cBeB+yQZUlkesnbkSDxmpKO+4w7K7dXktoUhZ4+CXKxFPYf773JVIlaMGek0nX8Lmz7uZ4blqIoZ6eD48WnYDpTBzEyLqI0Zo18X9fxu3NkVfcDJx4yjcDeeQ57DgT0sFJQY60Tj2SCsNSV4vCwtoMBSBDPJhiUSihkDuHzKiYsmK3ZlXsX45gM4vP0uPDeVFmwWyUHRjvyw37ScFSYw1AP2kVfiR2rCO1POvpSYN5He/F6pBeKh5IWdbDF6+8hULf2MatnBEVuMIbENEe9nftEG204mZWnQDpGzZpQfsKEsmt4IcYuRZNiN/XlwOPYg3LyEBMU43t8Dz/1QzWzR/r8wmmXT0k3D8hsmZ6eo8yghYUNG1MkTY+zvDUf2OiTBTWBbhNgkDzmxLaqXjSS2GHuR/XYDdj/DTJSxLjgHC5IgRhKLigEsLk8ajAKMJIlSv15pgFEwxoxfU39pR6tpOgZaXIcc8mL0YfDTk/ghMgsKEoGYKpIixtGvmnBhNhfTEz5Y6puxa7IFLQM+dlYJC2wK35f6Szvffh5TiGuXXLxcT7LUoxGl9jl2XnssrzlR+aQP4jYrKgqJr0tXWsaOD77oTVibnlGGpMWMIYJ/juKs241gdSvqSEatJVyMhJQS469daPrCAwOJz2RZIFP5jAUHP6pDMTMpE8T4mWZ0/UXa/SOIsob3UZnHTmkEFyMhpcRIRCMGRPKqgMEIwRjncvg8afuBCGSS5CUJD5/zByVSDpq1CtIDuTFLvEKkZITaToYQKVyMHN2gKEa6D4Ozeqyn/lcUI90yqfbRd4620H6n/b9eULxSuk2S7oPhe2H+Xxa3qvJ90xEsbuKnG/j1JspU3MRPt6nSNvkmfg5nleDZNEc3cDFydAMXI0cnAP8CpJVu1BgYCoUAAAAASUVORK5CYII=\" />at the top right corner,&nbsp;use the &quot;Copy&quot; button<img alt=\"\" src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAXCAYAAAARIY8tAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAHsSURBVEhL1ZU/SEJBHMe//aN4CYa0CGFDNTwiiyJyaXFpsTWXhmxo0UWiglwkeEtLS0URSENLRArZkNCfLRSqoQaXlhySyKEHdWCPskt+8kxf3qNo6AP37u73O35f7t79fldX4OAPqaf+z6ixAw258yh2jpO4U8nEkTrGEQi6Yae5iG8ENGRiCsLxDKyDXniHrWS/xclmGv2KAo9JBYMjouBnrZB5EKnTCdeIi5qMNlpllgoBPfjkwhzcHWSu4DXPoKrql8by5Kygkfoi2TgPfqRhLODDkEXFtUaOL2RxuBRAwmKF1EQmjQvaxrEc9qCdTCV0AfUUkVimOEyszCNRHAFyn0QjviSVRLpegtTCIE+twD9Ijqs1TO9/7r8aXYAxMAzBH/HzbzVqag2hrUeMLgTRuq3gjuwiTOWBHnwe3h59R2YQC2R2oWxegjXkkNwIITi7jPgDP6Zm8gsQCuRu0sh1uTEzPQnvBM8J3nwBvpNeWiBAKKC9819nk8tygbcBB8weVFUesIr7/fRieFdNo98imwPd9hNEl8KIkqkI44XISeOf8FmLanF/sFjwrV/Q7BsuVwu+xXjhnqblmLqmv0H44KjHCoJ7WVgtpbpgQI1SIX7R3viPf2aGZaCcphZemwxy4/8/mf9dAPgAByQUO4kxRWwAAAAASUVORK5CYII=\" />&nbsp;to duplicate the field or element, or use the &quot;Toggle View&quot;<img alt=\"\" src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAXCAYAAAD+4+QTAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAG9SURBVEhL3ZM9SCNBGIYfPdIswvgThbXximssRNDuyiBWsdHCxiqFKTwEEasFFSEggSONchBEC3/AxuYscoXBn+aOw8IckiYHZ0AWwb8FWcRV4ixME2/E6EYEHxh2vxmYl3fe76spSXhlatX3VdGL3NnsLafJ/lN1QDQiHvvpaZZ2fpI/V1sB0WcinWxMWtgDi4x0gVvMkbNddfgERhvdHSYhVfo8ErzNpmVxpET2v8WY/62OnsLsJ5GIYqrSR5tJbjnJ1rWgsDrGyh+obzIRDaKy1WiUufB5qxZ2pROLeCxGPPFDPlxwtE6cY3m1kWdufJfO2Wnaty3mflUYfGsf1niEsCp9tJkI8qRn1vEG4kRb4PLMxrlwKlvnrhyCcjRO/rIymuTo8xDt9gZuT4p+UfUWLpJdyFBQ1aeeYSIfVfFCtJl4Vw7unf8XwqiTLXnr4lw/fIRH+GAg6sqbWCPiD2KKg3CI4mE9g18nEGtVH0aTaGKMTsdG9A4SEdLPw+l6Lr6T/7kpXRYypdTIVOn7idoKgMbJKZszX0iu7pL3mglLJ0HRBo8ng3Y9QobACPpUEr1IldFOfLV5LyJwD1y/KQuUTnAMAAAAAElFTkSuQmCC\" />&nbsp;button to call a table view for metadata entry.</p>\n\n<p>5. Leave the field blank if the information is unavailable or not applicable.&nbsp;</p>\n"
+    createdOn: "2024-01-22T04:23:47-08:00"
+    createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+    modifiedOn: "2024-01-22T04:23:47-08:00"
+    modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+  - key: "Dataset"
+    type: element
+    name: "Dataset"
+    description: "Use this section to capture domain-specific information about the dataset, including data modality, acquisition technique, processing stage, domain standards used to arrange and annotate the data, and access information about source data, if available."
+    id: "https://repo.metadatacenter.org/template-elements/2362dd1b-153f-4b9c-9934-6d19c73dc22a"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    createdOn: "2024-01-22T04:23:47-08:00"
+    createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+    modifiedOn: "2024-01-22T04:23:47-08:00"
+    modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+    children:
+      - key: "Dataset instruction text"
+        type: static-rich-text
+        name: "Dataset instruction text"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/8d5db36b-f257-409d-a67a-471018124ea4"
+        modelVersion: 1.6.0
+        prefLabel: "Dataset instruction text"
+        content: "<p>Use this section to capture domain-specific information about the dataset, including data modality, acquisition technique, processing stage, domain standards used to arrange and annotate the data, and access information about source data, if available.</p>\n\n<p>&nbsp;</p>\n"
+        createdOn: "2024-01-22T04:17:56-08:00"
+        createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        modifiedOn: "2024-01-22T04:17:56-08:00"
+        modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+      - key: "data modality instruction"
+        type: static-rich-text
+        name: "data modality instruction"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/4ecd6420-ca45-49e8-a95a-427b6359a80a"
+        modelVersion: 1.6.0
+        prefLabel: "data modality instruction"
+        content: "<p>Select the type of data collected associated with a particular technique/device. Four options including behavioural, neural, genetic, and physiologic.</p>\n"
+        createdOn: "2024-01-22T04:17:56-08:00"
+        createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        modifiedOn: "2024-01-22T04:17:56-08:00"
+        modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+      - key: "Data Modality"
+        type: controlled-term-field
+        name: "Data Modality"
+        description: "type of data collected associated with a particular technique/device. including behavioural, neuroimaging, genetic, other)."
+        id: "https://repo.metadatacenter.org/template-fields/6d46f9a3-7961-4867-a9fe-a35469990db0"
+        status: draft
+        version: 0.0.1
+        modelVersion: 1.6.0
+        prefLabel: "Data Modality"
+        datatype: iri
+        values:
+          - type: class
+            sourceAcronym: "NCIT"
+            termIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C17938"
+            termType: class
+            termLabel: "Genetic"
+          - type: class
+            sourceAcronym: "NCIT"
+            termIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C17650"
+            termType: class
+            termLabel: "Physiologic"
+          - type: class
+            sourceAcronym: "NCIT"
+            termIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C16326"
+            termType: class
+            termLabel: "Behavior"
+          - type: class
+            sourceAcronym: "NCIT"
+            termIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C25363"
+            termType: class
+            termLabel: "Neural"
+        createdOn: "2024-01-22T04:17:56-08:00"
+        createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        modifiedOn: "2024-01-22T04:17:56-08:00"
+        modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        configuration:
+          required: true
+          propertyIri: "https://schema.metadatacenter.org/properties/f97893ad-c52e-45f3-9734-f03be7081e40"
+          valueRecommendation: true
+          multiple: true
+          minItems: 1
+      - key: "data acqusition technique instruction"
+        type: static-rich-text
+        name: "data acqusition technique instruction"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/a7a14224-50fb-443b-bbf1-233c12851552"
+        modelVersion: 1.6.0
+        prefLabel: "data acqusition technique instruction"
+        content: "<p>If the dataset includes neuroimaging data, please indicate the procedure or technology used to collect the data. Leave this field blank if dataset does not include any neuroimaging data.</p>\n"
+        createdOn: "2024-01-22T04:17:56-08:00"
+        createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        modifiedOn: "2024-01-22T04:17:56-08:00"
+        modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+      - key: "Data acqusition technique"
+        type: controlled-term-field
+        name: "Data acqusition technique (neural data)"
+        description: "Procedure or technology used to generate the dataset."
+        id: "https://repo.metadatacenter.org/template-fields/dab76e15-32b1-446a-8d4c-67175fee17e7"
+        status: draft
+        version: 0.0.1
+        modelVersion: 1.6.0
+        prefLabel: "Data acqusition technique (neural data)"
+        datatype: iri
+        values:
+          - type: class
+            sourceAcronym: "NCIT"
+            termIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C16811"
+            termType: class
+            termLabel: "Magnetoencephalography"
+          - type: class
+            sourceAcronym: "NCIT"
+            termIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C116664"
+            termType: class
+            termLabel: "Electrocorticography"
+          - type: class
+            sourceAcronym: "NCIT"
+            termIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C17958"
+            termType: class
+            termLabel: "Functional Magnetic Resonance Imaging"
+          - type: class
+            sourceAcronym: "NCIT"
+            termIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C38054"
+            termType: class
+            termLabel: "Electroencephalography"
+          - type: class
+            sourceAcronym: "NCIT"
+            termIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C17007"
+            termType: class
+            termLabel: "Positron Emission Tomography"
+          - type: class
+            sourceAcronym: "NCIT"
+            termIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C175235"
+            termType: class
+            termLabel: "Functional Near-Infrared Spectroscopy"
+          - type: class
+            sourceAcronym: "NCIT"
+            termIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C175525"
+            termType: class
+            termLabel: "Conventional Magnetic Resonance Imaging"
+          - type: class
+            sourceAcronym: "SNOMEDCT"
+            termIri: "http://purl.bioontology.org/ontology/SNOMEDCT/870257001"
+            termType: class
+            termLabel: "Stereoelectroencephalography"
+        createdOn: "2024-01-22T04:17:56-08:00"
+        createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        modifiedOn: "2024-01-22T04:17:56-08:00"
+        modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/2e446e04-d805-4089-a496-f5b3f33c96f8"
+          multiple: true
+          minItems: 1
+      - key: "Preprocessing"
+        type: element
+        name: "Preprocessing"
+        id: "https://repo.metadatacenter.org/template-elements/7cd5ff49-c1f3-43fa-aecf-9f5efb3ddbdb"
+        status: draft
+        version: 0.0.1
+        modelVersion: 1.6.0
+        createdOn: "2024-01-22T04:17:56-08:00"
+        createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        modifiedOn: "2024-01-22T04:17:56-08:00"
+        modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        children:
+          - key: "Preprocessing status"
+            type: checkbox-field
+            name: "Preprocessing status"
+            description: "Indicate the preprocessing status of the dataset."
+            id: "https://repo.metadatacenter.org/template-fields/57d9576d-278a-45ff-a494-e609e2184cff"
+            modelVersion: 1.6.0
+            prefLabel: "Preprocessing status"
+            values:
+              - label: "Preprocessed"
+              - label: "Raw"
+            createdOn: "2024-01-22T04:06:28-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:06:28-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            configuration:
+              required: true
+              propertyIri: "https://schema.metadatacenter.org/properties/9e91191c-6d33-40d8-a6c9-ddc881afda22"
+              minItems: 1
+          - key: "Preprocessing Pipeline instruction"
+            type: static-rich-text
+            name: "Preprocessing Pipeline instruction"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/1feabeb9-4d95-4ed8-9bf0-9b5b93fde61f"
+            modelVersion: 1.6.0
+            prefLabel: "Preprocessing Pipeline instruction"
+            content: "<p>Information about the preprocess used to produce the dataset. Please provide the link to the documentation or publication describing the analysis process, using DOI when possible. (e.g. <a href=\"https://brainlife.io/pubs\">Brainlife</a> workflow publication).&nbsp;</p>\n\n<p><span style=\"background-color: rgb(255, 255, 255);\">Leave the field blank if not applicable.</span></p>\n"
+            createdOn: "2024-01-22T04:06:28-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:06:28-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+          - key: "Analysis Pipeline"
+            type: link-field
+            name: "Preprocessing Pipeline"
+            description: "Information about the preprocess used to produce the dataset. Please provide the link to the documentation or publication describing the analysis process, using DOI when possible. (e.g. Brainlife workflow publication).   Leave the field blank if not applicable."
+            id: "https://repo.metadatacenter.org/template-fields/e941f87e-6b41-4004-80c1-ca0b3d011221"
+            status: draft
+            version: 0.0.1
+            modelVersion: 1.6.0
+            prefLabel: "Preprocessing Pipeline"
+            createdOn: "2024-01-22T04:06:28-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:06:28-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/4f611c44-1a64-454a-89c9-c84247375b0f"
+              multiple: true
+              minItems: 1
+          - key: "Preprocessing script instruction"
+            type: static-rich-text
+            name: "Preprocessing script instruction"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/a4e98dbb-379b-43b0-9784-a1b6b1fcf2f9"
+            modelVersion: 1.6.0
+            prefLabel: "Preprocessing script instruction"
+            content: "<p>Provide a link to the location where the preprocessing code is hosted, i.e.&nbsp;<span style=\"background-color: rgb(255, 255, 255);\">GitHub repository.&nbsp;</span></p>\n\n<p>To ensure the accessibility and compatibility of the code, consider depositing a copy of the code together with the dataset following the <a href=\"https://datadryad.org/stash/submission_process\">Dryad submission process</a>.&nbsp; Leave the field blank if not applicable.</p>\n"
+            createdOn: "2024-01-22T04:06:28-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:06:28-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+          - key: "Preprocessing Script"
+            type: link-field
+            name: "Preprocessing Script"
+            description: "Provide a link to the location where the preprocessing code is hosted, i.e. GitHub repository.   To ensure the accessibility and compatibility of the code, consider depositing a copy of the code together with the dataset following the Dryad submission process.  Leave the field blank if not applicable."
+            id: "https://repo.metadatacenter.org/template-fields/df64633d-0136-427c-880e-4d252b82e844"
+            modelVersion: 1.6.0
+            prefLabel: "Preprocessing Script"
+            createdOn: "2024-01-22T04:06:28-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:06:28-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/5f95ec2a-ac1b-48d6-9f4f-cc00a44e4cae"
+              multiple: true
+              minItems: 1
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/a8f1d7da-872d-4bd4-8bd0-bc18f32a997c"
+      - key: "Standard"
+        type: element
+        name: "Standard"
+        id: "https://repo.metadatacenter.org/template-elements/454c1c3e-da6d-4012-895e-944bcde6a9ee"
+        status: draft
+        version: 0.0.1
+        modelVersion: 1.6.0
+        createdOn: "2024-01-22T04:17:56-08:00"
+        createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        modifiedOn: "2024-01-22T04:17:56-08:00"
+        modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        children:
+          - key: "data standard instruction"
+            type: static-rich-text
+            name: "data standard instruction"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/0ab00e97-4d0c-4a1f-8d6a-6cf2d551326a"
+            modelVersion: 1.6.0
+            prefLabel: "data standard instruction"
+            content: "<p>Community data standard according to which the dataset is organized. i.e. the standardized structure of data formatting and storing. Select all that&#39;s applicable,&nbsp;If choose &quot;Other&quot;, provide link to standard specification in the following field.</p>\n"
+            createdOn: "2024-01-22T04:07:07-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:07:07-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+          - key: "Data Standard"
+            type: multi-select-list-field
+            name: "Data Standard"
+            description: "Community data standard according to which the dataset is organized. i.e. the standardized structure of data formatting and storing. Select all that's applicable, If choose \"Other\", provide link to standard specification in the following field."
+            id: "https://repo.metadatacenter.org/template-fields/3089275d-6113-4b4b-9c6f-7efa1dd61c2e"
+            status: draft
+            version: 0.0.1
+            modelVersion: 1.6.0
+            prefLabel: "Data Standard"
+            values:
+              - label: "Brain Imaging Data Structure (BIDS)"
+              - label: "Neuroimaging Data Model (NIDM)"
+              - label: "Neuroscience information exchange format  (NIX)"
+              - label: "Other"
+            createdOn: "2024-01-22T04:07:07-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:07:07-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/0e55b1c1-82be-4abd-8bc9-8a2c56285a22"
+              minItems: 1
+          - key: "Reference to Data Standard instruction"
+            type: static-rich-text
+            name: "Reference to Data Standard instruction"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/ff169c41-50b9-43d3-9710-433b01bc27cc"
+            modelVersion: 1.6.0
+            prefLabel: "Reference to Data Standard instruction"
+            content: "<p>Provide link to authoritative documentation on the data standard used for the dataset. Use a persistent identifier (i.e. DOI) when possible.</p>\n"
+            createdOn: "2024-01-22T04:07:07-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:07:07-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+          - key: "Reference to Data Standard"
+            type: link-field
+            name: "Reference to Data Standard"
+            description: "Provide link to authoritative documentation on the data standard used for the dataset. Use a persistent identifier (i.e. DOI) when possible."
+            id: "https://repo.metadatacenter.org/template-fields/d2eae8f9-2098-4caf-a8a3-31ad58e4f732"
+            modelVersion: 1.6.0
+            prefLabel: "Reference to Data Standard"
+            createdOn: "2024-01-22T04:07:07-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:07:07-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/1ae506d9-87cc-4b01-a751-ec20d073d5d1"
+              multiple: true
+              minItems: 1
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/7372fc6c-5afd-487f-be02-389b5f7882b5"
+      - key: "Source dataset"
+        type: element
+        name: "Source dataset"
+        id: "https://repo.metadatacenter.org/template-elements/172093a1-9d40-4845-96ac-aa362f7ea435"
+        status: draft
+        version: 0.0.1
+        modelVersion: 1.6.0
+        createdOn: "2024-01-22T04:17:56-08:00"
+        createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        modifiedOn: "2024-01-22T04:17:56-08:00"
+        modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        children:
+          - key: "Source Dataset Identifier instruction"
+            type: static-rich-text
+            name: "Source Dataset Identifier instruction"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/d2a0173b-5004-4a14-b9f5-1718ab8637c5"
+            modelVersion: 1.6.0
+            prefLabel: "Source Dataset Identifier instruction"
+            content: "<p><strong>Only relevant when uploading preprocessed or higher-level data</strong> - If the source dataset is publicly available, please provide the link here (use persistent identifier, i.e. DOI when possible).</p>\n"
+            createdOn: "2024-01-22T04:07:55-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:07:55-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+          - key: "Identifier"
+            type: link-field
+            name: "Source Dataset Identifier"
+            description: "Only relevant when uploading preprocessed or higher-level data - If the source dataset is publicly available, please provide the link here (use persistent identifier, i.e. DOI when possible)."
+            id: "https://repo.metadatacenter.org/template-fields/1f1f6ac5-c555-4b15-bbd2-637ba120ecef"
+            status: draft
+            version: 0.0.1
+            modelVersion: 1.6.0
+            prefLabel: "Source Dataset Identifier"
+            createdOn: "2024-01-22T04:07:55-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:07:55-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/57ee4763-c60b-4ded-a9da-387d24435929"
+              multiple: true
+              minItems: 1
+          - key: "Contact person instruction"
+            type: static-rich-text
+            name: "Contact person instruction"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/04ce141c-0dbf-4e6e-8675-04ea49e4d2b3"
+            modelVersion: 1.6.0
+            prefLabel: "Contact person instruction"
+            content: "<p>If the source dataset is not openly accessible, please provide contact information to the responsible person or team who can provide further information. Leave blank if not applicable.</p>\n"
+            createdOn: "2024-01-22T04:07:55-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:07:55-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+          - key: "Contact person"
+            type: email-field
+            name: "Contact person"
+            description: "If the source dataset is not openly accessible, please provide contact information to the responsible person or team who can provide further information. Leave blank if not applicable."
+            id: "https://repo.metadatacenter.org/template-fields/0fdc729c-597d-40c8-a093-4a756892e29a"
+            modelVersion: 1.6.0
+            prefLabel: "Contact information of data manager"
+            createdOn: "2024-01-22T04:07:55-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:07:55-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/836a975b-bb90-47b4-a0c2-8033a96a65cd"
+              multiple: true
+              minItems: 1
+          - key: "ORCID of data manager instruction"
+            type: static-rich-text
+            name: "ORCID of data manager instruction"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/771d14f7-53cd-476e-8f9f-8b6f7e50742c"
+            modelVersion: 1.6.0
+            prefLabel: "ORCID of data manager instruction"
+            content: "<p>Indicate the ORCID account of the data manager: e.g.,&nbsp;https://orcid.org/0000-0001-8743-5071.</p>\n"
+            createdOn: "2024-01-22T04:07:55-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:07:55-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+          - key: "ORCID"
+            type: text-field
+            name: "ORCID"
+            description: "Please provide the ORCID of the manager of the raw data. Repeat the field to enter multiple persons."
+            id: "https://repo.metadatacenter.org/template-fields/59672bef-a3c5-48b9-b6c3-c4cce0ae0204"
+            modelVersion: 1.6.0
+            prefLabel: "ORCID of data manager"
+            createdOn: "2024-01-22T04:07:55-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:07:55-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/11927461-4f53-45e4-b6d9-0aedd0beafa4"
+              multiple: true
+              minItems: 1
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/c3002fb4-1813-4220-af9e-874cea2e7b09"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/2caca220-27b9-4d76-a4ce-21391065a398"
+  - key: "Experiment"
+    type: element
+    name: "Experiment"
+    id: "https://repo.metadatacenter.org/template-elements/4c2df053-0c5d-4410-b7db-5dffd2f0fc61"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    createdOn: "2024-01-22T04:23:47-08:00"
+    createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+    modifiedOn: "2024-01-22T04:23:47-08:00"
+    modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+    children:
+      - key: "Experimental Instruction text"
+        type: static-rich-text
+        name: "Experimental Instruction text"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/b129eba2-820f-4151-8616-dc381890d6ac"
+        modelVersion: 1.6.0
+        prefLabel: "Experimental Instruction text"
+        content: "<p>This section captures experiment related information, including general area of research, links to clinical trial registration, experimental protocol, ethics approval, as well as research design, experimental paradigm used, and information about participants in the experiment.&nbsp;</p>\n\n<p>Please leave the fields blank if the information is unavailable.</p>\n"
+        createdOn: "2024-01-22T04:16:42-08:00"
+        createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        modifiedOn: "2024-01-22T04:16:42-08:00"
+        modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+      - key: "Area of Research instruction"
+        type: static-rich-text
+        name: "Area of Research instruction"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/823639ca-160c-4aec-93a0-555a3e2f1dc2"
+        modelVersion: 1.6.0
+        prefLabel: "Area of Research instruction"
+        content: "<p>The field of research that is intended for study, based on this collected dataset (e.g. memory, decision-making, consciousness, etc). The field is supported by ontological terms in the <a href=\"https://www.cognitiveatlas.org/concepts/a/\">Concept category of Cognitive Atlas Ontology</a>.&nbsp;</p>\n\n<p>This entry is supported by an auto-fill function. It is recommended to type in the most relevant word and wait for matching ontologies to show up below, among which you choose the most relevant ones. If no direct matching, try other keywords and pick one that is closest to your field.</p>\n\n<p>If no relevant matching at all, you can either forward to <a href=\"https://www.cognitiveatlas.org/\">Cognitive Atlas</a> to add your area of research to the <a href=\"https://www.cognitiveatlas.org/concepts/a/\">Concept category</a> or leave this field blank. But contribution to experimental ontology&nbsp;<span style=\"background-color: rgb(255, 255, 255);\">building will make your research significantly more discoverable.</span></p>\n"
+        createdOn: "2024-01-22T04:16:42-08:00"
+        createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        modifiedOn: "2024-01-22T04:16:42-08:00"
+        modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+      - key: "Area of Research"
+        type: controlled-term-field
+        name: "Area of Research"
+        description: "The field of research that is intended for study, based on this collected dataset (e.g. memory, decision-making, consciousness, etc). The field is supported by ontological terms in the Concept category of Cognitive Atlas Ontology.   This entry is supported by an auto-fill function. It is recommended to type in the most relevant word and wait for matching ontologies to show up below, among which you choose the most relevant ones. If no direct matching, try other keywords and pick one that is closest to your field.  If no relevant matching at all, you can either forward to Cognitive Atlas to add your area of research to the Concept category or leave this field blank. But contribution to experimental ontology building will make your research significantly more discoverable."
+        id: "https://repo.metadatacenter.org/template-fields/273937c7-cb74-4f42-93c0-0b0a2bff997c"
+        modelVersion: 1.6.0
+        prefLabel: "Area of Research"
+        datatype: iri
+        values:
+          - type: branch
+            sourceAcronym: "NIFSTD"
+            sourceName: "undefined (NIFSTD)"
+            termBaseIri: "http://www.cognitiveatlas.org/ontology/cogat.owl#CAO_00001"
+            termBaseLabel: "Cognitive Atlas Concept"
+            termMaxDepth: 0
+        createdOn: "2024-01-22T04:16:42-08:00"
+        createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        modifiedOn: "2024-01-22T04:16:42-08:00"
+        modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/67887ece-77bf-4d5b-8759-9e1be135bbcf"
+          multiple: true
+          minItems: 1
+      - key: "Clinical Trial instruction"
+        type: static-rich-text
+        name: "Clinical Trial instruction"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/09b8d727-6bb6-4221-ac18-bbec2d001e02"
+        modelVersion: 1.6.0
+        prefLabel: "Clinical Trial instruction"
+        content: "<p>A clinical trial is a research study that prospectively assigns human participants or groups of humans to one or more health-related interventions to evaluate the effects on health outcomes. If the dataset is produced during a clinical trial experiment, please provide the link to the trial registration. (Use persistent identifier i.e. DOI when possible.) Leave blank if does not apply.</p>\n"
+        createdOn: "2024-01-22T04:16:42-08:00"
+        createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        modifiedOn: "2024-01-22T04:16:42-08:00"
+        modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+      - key: "Clinical Trial"
+        type: link-field
+        name: "Clinical Trial"
+        description: "A clinical trial is a research study that prospectively assigns human participants or groups of humans to one or more health-related interventions to evaluate the effects on health outcomes. If the dataset is produced during a clinical trial experiment, please provide the link to the trial registration. (Use persistent identifier i.e. DOI when possible.) Leave blank if does not apply."
+        id: "https://repo.metadatacenter.org/template-fields/4fa1c71e-bd68-4fc1-8a6e-f1f06ecdfd34"
+        status: draft
+        version: 0.0.1
+        modelVersion: 1.6.0
+        prefLabel: "Clinical Trial"
+        createdOn: "2024-01-22T04:16:42-08:00"
+        createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        modifiedOn: "2024-01-22T04:16:42-08:00"
+        modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/4774df49-9598-40f9-95b7-51c2b90ab8db"
+          multiple: true
+          minItems: 1
+      - key: "protocol instruction"
+        type: static-rich-text
+        name: "protocol instruction"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/8eb8db97-d28f-4820-a964-150da2afe5b6"
+        modelVersion: 1.6.0
+        prefLabel: "protocol instruction"
+        content: "<p>An experimental protocol is a description of procedure or list of procedures performed (see <a href=\"https://www.protocols.io/\">protocol.io</a> as reference). Provide a link to the publicly accessible record of the protocol. Use a persistent identifier i.e. DOI if possible. Leave blank if does not apply.</p>\n"
+        createdOn: "2024-01-22T04:16:42-08:00"
+        createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        modifiedOn: "2024-01-22T04:16:42-08:00"
+        modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+      - key: "Protocol"
+        type: link-field
+        name: "Protocol"
+        description: "An experimental protocol is a description of procedure or list of procedures performed (see protocol.io as reference). Provide a link to the publicly accessible record of the protocol. Use a persistent identifier i.e. DOI if possible. Leave blank if does not apply."
+        id: "https://repo.metadatacenter.org/template-fields/d526472f-3dc2-4f6d-af37-5cf969dc3cb6"
+        status: draft
+        version: 0.0.1
+        modelVersion: 1.6.0
+        prefLabel: "Protocol"
+        createdOn: "2024-01-22T04:16:42-08:00"
+        createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        modifiedOn: "2024-01-22T04:16:42-08:00"
+        modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/077aa16e-a373-4d6e-96ea-7b1c4a5e78b2"
+          multiple: true
+          minItems: 1
+      - key: "Preregistration instruction"
+        type: static-rich-text
+        name: "Preregistration instruction"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/644283ed-b5e9-4082-b4a0-f8ff662e6b86"
+        modelVersion: 1.6.0
+        prefLabel: "Preregistration instruction"
+        content: "<p>Preregistration is a practice of documenting your research plan at the beginning of your study and storing that plan in a read-only public repository such as <a href=\"https://osf.io/registries\">OSF Registries</a> or the National Library of Medicine&#39;s Clinical Trials Registry. Provide a link to the publicly accessible record of the preregistration. Use a persistent identifier i.e. DOI if possible. Leave blank if does not apply.</p>\n"
+        createdOn: "2024-01-22T04:16:42-08:00"
+        createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        modifiedOn: "2024-01-22T04:16:42-08:00"
+        modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+      - key: "Preregistration"
+        type: link-field
+        name: "Preregistration"
+        description: "Preregistration is a practice of documenting your research plan at the beginning of your study and storing that plan in a read-only public repository such as OSF Registries or the National Library of Medicine's Clinical Trials Registry. Provide a link to the publicly accessible record of the preregistration. Use a persistent identifier i.e. DOI if possible. Leave blank if does not apply."
+        id: "https://repo.metadatacenter.org/template-fields/692b9592-679a-41f4-afe1-36b30b40e84c"
+        modelVersion: 1.6.0
+        prefLabel: "Preregistration"
+        createdOn: "2024-01-22T04:16:42-08:00"
+        createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        modifiedOn: "2024-01-22T04:16:42-08:00"
+        modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/7ae56bde-66ec-4890-968e-c9fd8abd620b"
+          multiple: true
+          minItems: 1
+      - key: "Paradigm"
+        type: element
+        name: "Paradigm"
+        id: "https://repo.metadatacenter.org/template-elements/7ab2b78d-dbfa-4802-8846-124b4ec16a01"
+        status: draft
+        version: 0.0.1
+        modelVersion: 1.6.0
+        createdOn: "2024-01-22T04:16:42-08:00"
+        createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        modifiedOn: "2024-01-22T04:16:42-08:00"
+        modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        children:
+          - key: "Experimental Paradigm instruction"
+            type: static-rich-text
+            name: "Experimental Paradigm instruction"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/06fbc97a-3dc7-42be-90ef-5771e2e324d3"
+            modelVersion: 1.6.0
+            prefLabel: "Experimental Paradigm instruction"
+            content: "<p>The experimental paradigms employed in the experiment to collect the dataset&nbsp;<span style=\"background-color: rgb(255, 255, 255);\">(e.g., n-back task, attentional blink)</span>.</p>\n\n<p>This entry is supported by an auto-fill function. It is recommended to type in the most relevant word and wait for matching ontologies to show up below, among which you choose the most relevant ones. If no direct matching, try other keywords and pick one that is closest to your field.</p>\n\n<p>If no relevant matching at all, you can either forward to&nbsp;<a href=\"https://www.cognitiveatlas.org/\">Cognitive Atlas</a>&nbsp;to add your area of research to the&nbsp;<span style=\"background-color: rgb(255, 255, 255);\">&nbsp;</span><a href=\"https://www.cognitiveatlas.org/tasks/a/\" style=\"background-color: rgb(255, 255, 255);\">Task category </a>or leave this field blank. But contribution to experimental ontology&nbsp;<span style=\"background-color: rgb(255, 255, 255);\">building will make your research significantly more discoverable.</span></p>\n"
+            createdOn: "2024-01-22T04:11:21-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:11:21-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+          - key: "Experimental Paradigm"
+            type: controlled-term-field
+            name: "Experimental Paradigm"
+            description: "The experimental paradigms employed in the experiment to collect the dataset (e.g., n-back task, attentional blink).  This entry is supported by an auto-fill function. It is recommended to type in the most relevant word and wait for matching ontologies to show up below, among which you choose the most relevant ones. If no direct matching, try other keywords and pick one that is closest to your field.  If no relevant matching at all, you can either forward to Cognitive Atlas to add your area of research to the  Task category or leave this field blank. But contribution to experimental ontology building will make your research significantly more discoverable."
+            id: "https://repo.metadatacenter.org/template-fields/7136ea80-cd39-44d1-a4ef-a62d0faeb84e"
+            modelVersion: 1.6.0
+            prefLabel: "Experimental Paradigm"
+            datatype: iri
+            values:
+              - type: ontology
+                sourceAcronym: "COGAT"
+                sourceName: "Cognitive Atlas Ontology"
+                termCount: 4053
+              - type: branch
+                sourceAcronym: "COGPO"
+                sourceName: "Cognitive Paradigm Ontology (COGPO)"
+                termBaseIri: "http://purl.obolibrary.org/obo/OBI_0000011"
+                termBaseLabel: "planned process"
+                termMaxDepth: 0
+            createdOn: "2024-01-22T04:11:21-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:11:21-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/6120bc35-976d-4a5f-be01-4a42d3d4a0fd"
+              multiple: true
+              minItems: 1
+          - key: "Experimental Instruction instruction"
+            type: static-rich-text
+            name: "Experimental Instruction instruction"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/717abb9a-bf03-4d18-9183-efa2c4123ab2"
+            modelVersion: 1.6.0
+            prefLabel: "Experimental Instruction instruction"
+            content: "<p>The primary experimental instructions given to participants to collect the dataset.&nbsp;</p>\n\n<p>Options include: attend, count, detect, discriminate, encode, fixate, generate, imagine, move, name, read, recall, repeat, rest, sing, smile instructions, track.</p>\n\n<p>This entry is supported by an auto-fill function. Please type in the most relevant option mentioned above and wait for the matching ontology to show up below.&nbsp;</p>\n\n<p>If no relevant matching at all, please&nbsp;leave this field blank.&nbsp;</p>\n"
+            createdOn: "2024-01-22T04:11:21-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:11:21-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+          - key: "Experimental Instruction"
+            type: controlled-term-field
+            name: "Experimental Instruction"
+            description: "The primary experimental instructions given to participants to collect the dataset.   Options include: attend, count, detect, discriminate, encode, fixate, generate, imagine, move, name, read, recall, repeat, rest, sing, smile instructions, track.  This entry is supported by an auto-fill function. Please type in the most relevant option mentioned above and wait for the matching ontology to show up below.   If no relevant matching at all, please leave this field blank."
+            id: "https://repo.metadatacenter.org/template-fields/3b507ea5-5162-4bb8-a02e-ebc65e8f4814"
+            modelVersion: 1.6.0
+            prefLabel: "Experimental Instruction"
+            datatype: iri
+            values:
+              - type: branch
+                sourceAcronym: "COGPO"
+                sourceName: "Cognitive Paradigm Ontology (COGPO)"
+                termBaseIri: "http://www.cogpo.org/ontologies/CogPOver1.owl#COGPO_00028"
+                termBaseLabel: "Instructions"
+                termMaxDepth: 0
+            createdOn: "2024-01-22T04:11:21-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:11:21-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/d950fcdf-595a-41d9-82ea-c83e951c830e"
+              multiple: true
+              minItems: 1
+          - key: "Sensory Modality instruction"
+            type: static-rich-text
+            name: "Sensory Modality instruction"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/a3358883-5ce7-4b84-a605-10575d4495bb"
+            modelVersion: 1.6.0
+            prefLabel: "Sensory Modality instruction"
+            content: "<p>If external sensory stimuli are presented during the experiment, please specify the sensory modality of the stimuli.</p>\n"
+            createdOn: "2024-01-22T04:11:21-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:11:21-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+          - key: "Sensory Type"
+            type: controlled-term-field
+            name: "Sensory Modality"
+            description: "If external sensory stimuli are presented during the experiment, please specify the sensory modality of the stimuli."
+            id: "https://repo.metadatacenter.org/template-fields/17a41bcc-a5f8-4a8b-9bcf-87cd067f07f6"
+            status: draft
+            version: 0.0.1
+            modelVersion: 1.6.0
+            prefLabel: "Sensory Modality"
+            datatype: iri
+            values:
+              - type: branch
+                sourceAcronym: "COGPO"
+                sourceName: "undefined (COGPO)"
+                termBaseIri: "http://www.cogpo.org/ontologies/CogPOver1.owl#COGPO_00124"
+                termBaseLabel: "Stimulus Modality"
+                termMaxDepth: 0
+            createdOn: "2024-01-22T04:11:21-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:11:21-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/07dd66e4-5c06-43e7-a076-f325ce773c96"
+              multiple: true
+              minItems: 1
+          - key: "Stimulus instruction"
+            type: static-rich-text
+            name: "Stimulus instruction"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/710f9c53-59bf-40ea-a367-c2860a889714"
+            modelVersion: 1.6.0
+            prefLabel: "Stimulus instruction"
+            content: "<p>The generic stimulus type presented to participants to collect the dataset (e.g., words, faces, breathable gas).&nbsp;</p>\n\n<p>This entry is supported by an auto-fill function. Please type in the most relevant option mentioned above and wait for the matching ontology to show up below.&nbsp;</p>\n\n<p>If no relevant matching at all, please&nbsp;leave this field blank.&nbsp;</p>\n"
+            createdOn: "2024-01-22T04:11:21-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:11:21-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+          - key: "Stimulus"
+            type: controlled-term-field
+            name: "Stimulus"
+            description: "The generic stimulus type presented to participants to collect the dataset (e.g., words, faces, breathable gas).   This entry is supported by an auto-fill function. Please type in the most relevant option mentioned above and wait for the matching ontology to show up below.   If no relevant matching at all, please leave this field blank."
+            id: "https://repo.metadatacenter.org/template-fields/331f34ea-3534-498e-812c-c8239a8f0505"
+            modelVersion: 1.6.0
+            prefLabel: "Stimulus"
+            datatype: iri
+            values:
+              - type: branch
+                sourceAcronym: "COGPO"
+                sourceName: "Cognitive Paradigm Ontology (COGPO)"
+                termBaseIri: "http://www.cogpo.org/ontologies/CogPOver1.owl#COGPO_00122"
+                termBaseLabel: "Stimulus"
+                termMaxDepth: 0
+            createdOn: "2024-01-22T04:11:21-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:11:21-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/c2646d43-f1a3-411e-9f80-bd1230c1d389"
+              multiple: true
+              minItems: 1
+          - key: "Response instruction"
+            type: static-rich-text
+            name: "Response instruction"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/c4023987-db83-4731-be3f-3f9abf8e9ee2"
+            modelVersion: 1.6.0
+            prefLabel: "Response instruction"
+            content: "<p>The primary response types participants have made to create the dataset.&nbsp;</p>\n\n<p>Options include: blink, breath-hold, button press, draw, drink, extension, finger tapping, grasp, manipulate, micturate, point, saccades, smile response, speech, swallow, whistle, write, and implicit response.</p>\n\n<p>This entry is supported by a multiple-choice auto-fill function. Please type in the most relevant option mentioned above and wait for the matching ontology to show up below.&nbsp;</p>\n\n<p>If no relevant matching at all, please&nbsp;leave this field blank.&nbsp;</p>\n"
+            createdOn: "2024-01-22T04:11:21-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:11:21-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+          - key: "Response"
+            type: controlled-term-field
+            name: "Response"
+            description: "The primary response types participants have made to create the dataset.   Options include: blink, breath-hold, button press, draw, drink, extension, finger tapping, grasp, manipulate, micturate, point, saccades, smile response, speech, swallow, whistle, write, and implicit response.  This entry is supported by a multiple-choice auto-fill function. Please type in the most relevant option mentioned above and wait for the matching ontology to show up below.   If no relevant matching at all, please leave this field blank."
+            id: "https://repo.metadatacenter.org/template-fields/b27c3232-7d94-447d-9dff-33aff03bc3b0"
+            modelVersion: 1.6.0
+            prefLabel: "Response"
+            datatype: iri
+            values:
+              - type: branch
+                sourceAcronym: "COGPO"
+                sourceName: "Cognitive Paradigm Ontology (COGPO)"
+                termBaseIri: "http://www.cogpo.org/ontologies/CogPOver2010.owl#COGPO_00175"
+                termBaseLabel: "Response"
+                termMaxDepth: 0
+            createdOn: "2024-01-22T04:11:21-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:11:21-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/70b8b237-7524-4516-a735-ef89930f5378"
+              multiple: true
+              minItems: 1
+          - key: "Area of Interest instruction"
+            type: static-rich-text
+            name: "Area of Interest instruction"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/ae27643c-6554-4a20-b8d6-3dc67bb3f7b4"
+            modelVersion: 1.6.0
+            prefLabel: "Area of Interest instruction"
+            content: "<p>Indicate which anatomical area is of interests in this study if neural data is recorded.&nbsp;</p>\n\n<p><span style=\"background-color: rgb(255, 255, 255);\">This entry is supported by an auto-fill function. It is recommended to type in the most relevant word and wait for matching ontologies to show up below, among which you choose the most relevant ones. If no direct matching, try other keywords and pick one that is closest to your answer.&nbsp;</span>If no relevant matching at all, please&nbsp;leave this field blank.&nbsp;</p>\n"
+            createdOn: "2024-01-22T04:11:21-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:11:21-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+          - key: "Area of Interest"
+            type: controlled-term-field
+            name: "Area of Interest"
+            description: "Indicate which anatomical area is of interests in this study if neural data is recorded.   This entry is supported by an auto-fill function. It is recommended to type in the most relevant word and wait for matching ontologies to show up below, among which you choose the most relevant ones. If no direct matching, try other keywords and pick one that is closest to your answer. If no relevant matching at all, please leave this field blank."
+            id: "https://repo.metadatacenter.org/template-fields/3ca3446e-c4f6-4367-b45f-df60956fa93d"
+            modelVersion: 1.6.0
+            prefLabel: "Area of Interest"
+            datatype: iri
+            values:
+              - type: branch
+                sourceAcronym: "BRCT"
+                sourceName: "Brain Region & Cell Type terminology (BRCT)"
+                termBaseIri: "http://www.semanticweb.org/ontologies/2009/9/Ontology1255357986125.owl#central_nervous_system"
+                termBaseLabel: "Central nervous system"
+                termMaxDepth: 0
+            createdOn: "2024-01-22T04:11:21-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:11:21-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/bd5a2edd-943b-4529-9455-859631705446"
+              multiple: true
+              minItems: 1
+          - key: "Publication instruction"
+            type: static-rich-text
+            name: "Publication instruction"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/a8321ed4-2d65-4137-a4ab-c5157ea16ce5"
+            modelVersion: 1.6.0
+            prefLabel: "Publication instruction"
+            content: "<p>If a scientific article has been published using the current dataset, please provide the DOI of the pre-print or the article in peer-reviewed journals.</p>\n"
+            createdOn: "2024-01-22T04:11:21-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:11:21-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+          - key: "Publication"
+            type: link-field
+            name: "Publication"
+            description: "If a scientific article has been published using the current dataset, please provide the DOI of the pre-print or the article in peer-reviewed journals."
+            id: "https://repo.metadatacenter.org/template-fields/cd8a8eea-9c39-41b9-a41b-a1ec462c2a67"
+            modelVersion: 1.6.0
+            prefLabel: "Publication"
+            createdOn: "2024-01-22T04:11:21-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:11:21-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/1b6000c2-90c6-4d01-840b-c594dc7af4cf"
+              multiple: true
+              minItems: 1
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/ffa5a7f8-8dec-412f-91ce-9866a0fd4f26"
+      - key: "Subject"
+        type: element
+        name: "Subject"
+        id: "https://repo.metadatacenter.org/template-elements/76891307-5c74-4402-bd4c-66e89c5201ee"
+        status: draft
+        version: 0.0.1
+        modelVersion: 1.6.0
+        createdOn: "2024-01-22T04:16:42-08:00"
+        createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        modifiedOn: "2024-01-22T04:16:42-08:00"
+        modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        children:
+          - key: "Number of Subjects instruction"
+            type: static-rich-text
+            name: "Number of Subjects instruction"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/1498f540-0c88-4534-953f-cb0a7ad73a35"
+            modelVersion: 1.6.0
+            prefLabel: "Number of Subjects instruction"
+            content: "<p>Please specify the number of human participants whose data is included in this dataset.&nbsp;</p>\n"
+            createdOn: "2024-01-22T04:12:16-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:12:16-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+          - key: "Number of subjects"
+            type: numeric-field
+            name: "Number of subjects"
+            description: "Please specify the number of human participants whose data is included in this dataset."
+            id: "https://repo.metadatacenter.org/template-fields/c9e88ff1-0ae0-4467-967d-2043db0eb03c"
+            status: draft
+            version: 0.0.1
+            modelVersion: 1.6.0
+            prefLabel: "Number of subjects"
+            datatype: xsd:int
+            minValue: 0
+            createdOn: "2024-01-22T04:12:16-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:12:16-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            configuration:
+              required: true
+              propertyIri: "https://schema.metadatacenter.org/properties/98d4aeaf-ca14-47ed-9a8b-f1138890469f"
+          - key: "Attributes measured (demo) instruction"
+            type: static-rich-text
+            name: "Attributes measured (demo) instruction"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/5b8f9874-3635-45c6-943b-e3a46a695022"
+            modelVersion: 1.6.0
+            prefLabel: "Attributes measured (demo) instruction"
+            content: "<p>Demographic qualities related to participants collected in the dataset e.g. age, sex, ethnicity, etc.</p>\n\n<p><span style=\"background-color: rgb(255, 255, 255);\">This entry is supported by an auto-fill function. It is recommended to type in the most relevant word and wait for matching ontologies to show up below, among which you choose the most relevant ones. If no direct matching, try other keywords and pick one that is closest to your answer. If no matching at all, please leave this field blank.</span></p>\n"
+            createdOn: "2024-01-22T04:12:16-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:12:16-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+          - key: "Attributes measured (demo)"
+            type: controlled-term-field
+            name: "Attributes measured (demo)"
+            description: "Demographic qualities related to participants collected in the dataset e.g. age, sex, ethnicity, etc.  This entry is supported by an auto-fill function. It is recommended to type in the most relevant word and wait for matching ontologies to show up below, among which you choose the most relevant ones. If no direct matching, try other keywords and pick one that is closest to your answer. If no matching at all, please leave this field blank."
+            id: "https://repo.metadatacenter.org/template-fields/3c7fff58-4c0e-4f53-b349-c0ce0c0e7622"
+            status: draft
+            version: 0.0.1
+            modelVersion: 1.6.0
+            prefLabel: "Attributes measured (demo)"
+            datatype: iri
+            values:
+              - type: ontology
+                sourceAcronym: "RCD"
+                sourceName: "Read Codes, Clinical Terms Version 3 (CTV3) "
+                termCount: 140065
+            createdOn: "2024-01-22T04:12:16-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:12:16-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/ca8943cc-817a-4430-8289-d6d748be80d2"
+              multiple: true
+              minItems: 1
+          - key: "Attributes measured (medical) instruction"
+            type: static-rich-text
+            name: "Attributes measured (medical) instruction"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/a56e5db7-8d75-48fe-95c7-e1cd6e56e54e"
+            modelVersion: 1.6.0
+            prefLabel: "Attributes measured (medical) instruction"
+            content: "<p>Clinical condition information related to participants collected in the dataset e.g. autism spectrum disorder, cardiovascular system disease, etc.</p>\n\n<p>This entry is supported by an auto-fill function. It is recommended to type in the most relevant word and wait for matching ontologies to show up below, among which you choose the most relevant ones. If no direct matching, try other keywords and pick one that is closest to your answer. If no matching at all, please leave this field blank.</p>\n"
+            createdOn: "2024-01-22T04:12:16-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:12:16-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+          - key: "Attributes measured (medical)"
+            type: controlled-term-field
+            name: "Attributes Measured (medical)"
+            description: "Clinical condition information related to participants collected in the dataset e.g. autism spectrum disorder, cardiovascular system disease, etc.  This entry is supported by an auto-fill function. It is recommended to type in the most relevant word and wait for matching ontologies to show up below, among which you choose the most relevant ones. If no direct matching, try other keywords and pick one that is closest to your answer. If no matching at all, please leave this field blank."
+            id: "https://repo.metadatacenter.org/template-fields/3d622f32-c4b2-4ca6-bc44-3182aa2d54b4"
+            status: draft
+            version: 0.0.1
+            modelVersion: 1.6.0
+            prefLabel: "Attributes Measured (medical)"
+            datatype: iri
+            values:
+              - type: branch
+                sourceAcronym: "NIFSTD"
+                sourceName: "undefined (NIFSTD)"
+                termBaseIri: "http://purl.obolibrary.org/obo/BFO_0000016"
+                termBaseLabel: "disposition"
+                termMaxDepth: 0
+            createdOn: "2024-01-22T04:12:16-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:12:16-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/ba0d18bf-3600-4d4f-83ac-b1794003b239"
+              multiple: true
+              minItems: 1
+          - key: "Attributes Measured (occupation) instruction"
+            type: static-rich-text
+            name: "Attributes Measured (occupation) instruction"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/d8b54ddf-b343-4b4d-ad1b-ac5316f6f550"
+            modelVersion: 1.6.0
+            prefLabel: "Attributes Measured (occupation) instruction"
+            content: "<p>If the dataset is collected from populations of some specific occupations, please specify their occupation area.</p>\n\n<p>This entry is supported by an auto-fill function. It is recommended to type in the most relevant word and wait for matching ontologies to show up below, among which you choose the most relevant ones. If no direct matching, try other keywords and pick one that is closest to your answer. If no matching at all, please leave this field blank.</p>\n"
+            createdOn: "2024-01-22T04:12:16-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:12:16-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+          - key: "Attributes Measured (occupation)"
+            type: controlled-term-field
+            name: "Attributes Measured (occupation)"
+            description: "If the dataset is collected from populations of some specific occupations, please specify their occupation area.  This entry is supported by an auto-fill function. It is recommended to type in the most relevant word and wait for matching ontologies to show up below, among which you choose the most relevant ones. If no direct matching, try other keywords and pick one that is closest to your answer. If no matching at all, please leave this field blank."
+            id: "https://repo.metadatacenter.org/template-fields/a9fb3ec9-c680-4ca8-9d77-abdbcc8700b1"
+            modelVersion: 1.6.0
+            prefLabel: "Attributes Measured (occupation)"
+            datatype: iri
+            values:
+              - type: branch
+                sourceAcronym: "APAOCUEMPLOY"
+                sourceName: "APA Occupational and Employment cluster (APAOCUEMPLOY)"
+                termBaseIri: "http://www.semanticweb.org/ontologies/2015/0/ocupationalemploymentcluster.owl#OccupationalGroups"
+                termBaseLabel: "OccupationalGroups"
+                termMaxDepth: 0
+            createdOn: "2024-01-22T04:12:16-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:12:16-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/e1c80751-bddc-408c-bfe2-d7620dec43e4"
+              multiple: true
+              minItems: 1
+          - key: "Attributes Measured (psychological) instructions"
+            type: static-rich-text
+            name: "Attributes Measured (psychological) instructions"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/1d477cdc-8d93-4ee6-8f64-74fb597e7eaf"
+            modelVersion: 1.6.0
+            prefLabel: "Attributes Measured (psychological) instructions"
+            content: "<p>If some psychological attributes of the participants were measured, please indicate these attributes here.</p>\n\n<p>This entry is supported by an auto-fill function. It is recommended to type in the most relevant word and wait for matching ontologies to show up below, among which you choose the most relevant ones. If no direct matching, try other keywords and pick one that is closest to your answer. If no matching at all, please leave this field blank.</p>\n"
+            createdOn: "2024-01-22T04:12:16-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:12:16-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+          - key: "Attributes Measured (psychological)"
+            type: controlled-term-field
+            name: "Attributes Measured (psychological)"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/883d0fbf-e4ef-4f02-a172-1d0ce3208d93"
+            modelVersion: 1.6.0
+            prefLabel: "Attributes Measured (psychological)"
+            datatype: iri
+            values:
+              - type: ontology
+                sourceAcronym: "APAONTO"
+                sourceName: "Psychology Ontology"
+                termCount: 6037
+              - type: branch
+                sourceAcronym: "ONL-TASKS"
+                sourceName: "Cognitive Reserves Assessment Tasks (ONL-TASKS)"
+                termBaseIri: "http://www.semanticweb.org/bakaev/ontologies/2020/3/untitled-ontology-25#subject_data_acquisition_instrument"
+                termBaseLabel: "subject_data_acquisition_instrument"
+                termMaxDepth: 0
+            createdOn: "2024-01-22T04:12:16-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:12:16-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/693d391e-7bcf-4543-9105-514b78599306"
+              multiple: true
+              minItems: 1
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/b20e9126-8223-4608-9cd1-fcb8ca6192ea"
+      - key: "Ethics approval"
+        type: element
+        name: "Ethics approval"
+        id: "https://repo.metadatacenter.org/template-elements/c54397ff-43dd-41e2-825b-be0cf3bf29cd"
+        status: draft
+        version: 0.0.1
+        modelVersion: 1.6.0
+        createdOn: "2024-01-22T04:16:42-08:00"
+        createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        modifiedOn: "2024-01-22T04:16:42-08:00"
+        modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        children:
+          - key: "Ethics approval number instruction"
+            type: static-rich-text
+            name: "Ethics approval number instruction"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/7650aefe-dccd-4d4c-8190-456f9acbc5e7"
+            modelVersion: 1.6.0
+            prefLabel: "Ethics approval number instruction"
+            content: "<p>Provide unique number or identifier of the ethnics approval issued by your local ethic committee.</p>\n"
+            createdOn: "2024-01-22T04:10:07-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:10:07-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+          - key: "Ethics approval number"
+            type: text-field
+            name: "Ethics approval number"
+            description: "Provide unique number or identifier of the ethnics approval issued by your local ethic committee."
+            id: "https://repo.metadatacenter.org/template-fields/a5925ef3-31f4-4c53-9c4e-a03f9c2c0ea5"
+            modelVersion: 1.6.0
+            prefLabel: "Ethics approval number"
+            createdOn: "2024-01-22T04:10:07-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:10:07-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/3d42611e-532a-4bc2-9d35-41b1cbaa6d9b"
+              multiple: true
+              minItems: 1
+          - key: "start date instricution"
+            type: static-rich-text
+            name: "start date instricution"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/2adbe5f2-1a9c-4813-b579-1b6c49571a64"
+            modelVersion: 1.6.0
+            prefLabel: "start date instricution"
+            content: "<p>Specify the start date of the data being publicly available, based on the ethics document.&nbsp;</p>\n"
+            createdOn: "2024-01-22T04:10:07-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:10:07-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+          - key: "Start Date"
+            type: temporal-field
+            name: "Start Date"
+            description: "Specify the start date of the data being publicly available, based on the ethics document."
+            id: "https://repo.metadatacenter.org/template-fields/b8b9fd5b-6626-42ec-99c7-b3bdcac2fb3b"
+            status: draft
+            version: 0.0.1
+            modelVersion: 1.6.0
+            prefLabel: "Start Date"
+            datatype: xsd:date
+            granularity: day
+            createdOn: "2024-01-22T04:10:07-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:10:07-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/a31fe81a-d28a-4189-80dc-ef38122aff6c"
+          - key: "end date instruction"
+            type: static-rich-text
+            name: "end date instruction"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/27a4a638-7e18-49d2-a899-7b95e83339b6"
+            modelVersion: 1.6.0
+            prefLabel: "end date instruction"
+            content: "<p><span style=\"background-color: rgb(255, 255, 255);\">Specify the end date of the data being publicly available, based on the ethics document. If no end date is assigned, leave the field blank.</span></p>\n"
+            createdOn: "2024-01-22T04:10:07-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:10:07-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+          - key: "End Date"
+            type: temporal-field
+            name: "End Date"
+            description: "Specify the end date of the data being publicly available, based on the ethics document. If no end date is assigned, leave the field blank."
+            id: "https://repo.metadatacenter.org/template-fields/fe3c00a4-1cb7-482d-83ac-950d7c3cfe17"
+            status: draft
+            version: 0.0.1
+            modelVersion: 1.6.0
+            prefLabel: "End Date"
+            datatype: xsd:date
+            granularity: day
+            createdOn: "2024-01-22T04:10:07-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:10:07-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/ea696134-c267-40ed-95a7-d3111b441d6f"
+          - key: "Approval authority instruction"
+            type: static-rich-text
+            name: "Approval authority instruction"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/0784c9eb-5208-4302-86f6-b94fe891edc9"
+            modelVersion: 1.6.0
+            prefLabel: "Approval authority instruction"
+            content: "<p>Organization that reviewed the project and provided the ethics approval.</p>\n"
+            createdOn: "2024-01-22T04:10:07-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:10:07-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+          - key: "Approval Authority"
+            type: text-field
+            name: "Approval Authority"
+            description: "Organization that reviewed the project and provided the ethics approval."
+            id: "https://repo.metadatacenter.org/template-fields/d238b7d8-d812-4db6-ad5a-54c90b76e29a"
+            modelVersion: 1.6.0
+            prefLabel: "Approval Authority"
+            createdOn: "2024-01-22T04:10:07-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:10:07-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/df14f9d1-dbc2-4bb9-be7b-efa4483f29ec"
+          - key: "approval document instruction"
+            type: static-rich-text
+            name: "approval document instruction"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/1ac3209e-e45f-4443-bf47-f665759376bb"
+            modelVersion: 1.6.0
+            prefLabel: "approval document instruction"
+            content: "<p>If publicly available, provide link (persistent identifier when possible) to the ethics approval document.</p>\n"
+            createdOn: "2024-01-22T04:10:07-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:10:07-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+          - key: "Approval Document"
+            type: link-field
+            name: "Approval Document"
+            description: "If publicly available, provide the link (persistent identifier when possible) to the ethics approval document."
+            id: "https://repo.metadatacenter.org/template-fields/e812688d-9b09-4110-997d-45466c55d2af"
+            modelVersion: 1.6.0
+            prefLabel: "Approval Document"
+            createdOn: "2024-01-22T04:10:07-08:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2024-01-22T04:10:07-08:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/fbeee5e0-7a88-4410-9785-7e33a6740456"
+              multiple: true
+              minItems: 1
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/bd83f0eb-d8f3-4410-8080-5c30426c2ab6"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/21e5ab32-9ecb-4917-a0d1-5408865e1a75"
+  - key: "Analysis"
+    type: element
+    name: "Analysis"
+    id: "https://repo.metadatacenter.org/template-elements/02716d3b-51e2-4429-bdbf-c5852bb6329f"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    createdOn: "2024-01-22T04:23:47-08:00"
+    createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+    modifiedOn: "2024-01-22T04:23:47-08:00"
+    modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+    children:
+      - key: "analysis instruction text"
+        type: static-rich-text
+        name: "analysis instruction text"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/600ff459-a6ed-482a-9f3a-6ca424bd9bc5"
+        modelVersion: 1.6.0
+        prefLabel: "analysis instruction text"
+        content: "<p>If you have also uploaded analysis scripts used to process the uploaded dataset, this section captures information about analysis pipeline and statistic models used in the analysis scripts, as well as the scripting language of the analysis code.&nbsp;</p>\n\n<p>In the analysis pipeline field, provide the link/DOI to the workflow resources that document the analysis process. An example is a DOI to a <a href=\"http://brainlife.io/about/\">Brainlife</a> workflow publication</p>\n"
+        createdOn: "2024-01-22T04:05:00-08:00"
+        createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        modifiedOn: "2024-01-22T04:05:00-08:00"
+        modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+      - key: "Analysis Pipeline instruction"
+        type: static-rich-text
+        name: "Analysis Pipeline instruction"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/dc14037a-3f00-4d3a-9833-83e8e4d7089c"
+        modelVersion: 1.6.0
+        prefLabel: "Analysis Pipeline instruction"
+        content: "<p>If the given analysis scripts have employed existing standardised analysis pipeline, please provide the link to the documentation describing the analysis pipeline, using a DOI when possible. (e.g. <a href=\"https://brainlife.io/pubs\">Brainlife</a> workflow publication)</p>\n"
+        createdOn: "2024-01-22T04:05:00-08:00"
+        createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        modifiedOn: "2024-01-22T04:05:00-08:00"
+        modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+      - key: "Analysis Pipeline"
+        type: link-field
+        name: "Analysis Pipeline"
+        description: "If the given analysis scripts have employed existing standardised analysis pipeline, please provide the link to the documentation describing the analysis pipeline, using a DOI when possible. (e.g. Brainlife workflow publication)"
+        id: "https://repo.metadatacenter.org/template-fields/e941f87e-6b41-4004-80c1-ca0b3d011221"
+        status: draft
+        version: 0.0.1
+        modelVersion: 1.6.0
+        prefLabel: "Analysis Pipeline"
+        createdOn: "2024-01-22T04:05:00-08:00"
+        createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        modifiedOn: "2024-01-22T04:05:00-08:00"
+        modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/0df7e5de-e644-4559-9c38-69ef513c62b6"
+          multiple: true
+          minItems: 1
+      - key: "statistics instruction"
+        type: static-rich-text
+        name: "statistics instruction"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/338efd51-0e0a-49cf-b2b3-11fc5229ee44"
+        modelVersion: 1.6.0
+        prefLabel: "statistics instruction"
+        content: "<p>Statistic tests used in the analysis scripts.</p>\n\n<p>This entry is supported by an auto-fill function. It is recommended to type in the most relevant word and wait for matching ontologies to show up below, among which you choose the most relevant ones. If no direct matching, try other keywords and pick one that is closest to your answer. If no matching at all, please leave this field blank.</p>\n"
+        createdOn: "2024-01-22T04:05:00-08:00"
+        createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        modifiedOn: "2024-01-22T04:05:00-08:00"
+        modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+      - key: "Statistic Model"
+        type: controlled-term-field
+        name: "Statistic Model"
+        description: "Statistic tests used in the analysis scripts.  This entry is supported by an auto-fill function. It is recommended to type in the most relevant word and wait for matching ontologies to show up below, among which you choose the most relevant ones. If no direct matching, try other keywords and pick one that is closest to your answer. If no matching at all, please leave this field blank."
+        id: "https://repo.metadatacenter.org/template-fields/1e30a598-a31d-435d-af12-957f9eb70101"
+        status: draft
+        version: 0.0.1
+        modelVersion: 1.6.0
+        prefLabel: "Statistic Model"
+        datatype: iri
+        values:
+          - type: ontology
+            sourceAcronym: "STATO"
+            sourceName: "Statistics Ontology"
+            termCount: 889
+          - type: branch
+            sourceAcronym: "NIDM-RESULTS"
+            sourceName: "undefined (NIDM-RESULTS)"
+            termBaseIri: "http://purl.obolibrary.org/obo/STATO_0000039"
+            termBaseLabel: "statistic"
+            termMaxDepth: 0
+        createdOn: "2024-01-22T04:05:00-08:00"
+        createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        modifiedOn: "2024-01-22T04:05:00-08:00"
+        modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/7237e863-64f8-450f-a273-70b88a30e017"
+          multiple: true
+          minItems: 1
+      - key: "Programming Language instruction"
+        type: static-rich-text
+        name: "Programming Language instruction"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/ffef111e-5e4a-4fec-a8ae-c5cdc1695bed"
+        modelVersion: 1.6.0
+        prefLabel: "Programming Language instruction"
+        content: "<p>The language in which analysis code is written, intended to be executed/ran by a software interpreter. Please enter&nbsp;the language of the code that is uploaded along with the dataset.</p>\n\n<p>The field is supported by the <a href=\"https://obofoundry.org/ontology/swo\">Software Ontology</a>, If the language you used is not listed, please leave this field blank and use the following field (Programming Language (Other)) to indicate the name of the language.&nbsp;</p>\n"
+        createdOn: "2024-01-22T04:05:00-08:00"
+        createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        modifiedOn: "2024-01-22T04:05:00-08:00"
+        modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+      - key: "Programming Language"
+        type: controlled-term-field
+        name: "Programming Language"
+        description: "The language in which analysis code is written, intended to be executed/ran by a software interpreter. Please enter the language of the code that is uploaded along with the dataset.  The field is supported by the Software Ontology, If the language you used is not listed, please leave this field blank and use the following field (Programming Language (Other)) to indicate the name of the language."
+        id: "https://repo.metadatacenter.org/template-fields/69c52452-2372-40b1-874a-15368097a3c9"
+        status: draft
+        version: 0.0.1
+        modelVersion: 1.6.0
+        prefLabel: "Programming Language"
+        datatype: iri
+        values:
+          - type: branch
+            sourceAcronym: "SWO"
+            sourceName: "undefined (SWO)"
+            termBaseIri: "http://purl.obolibrary.org/obo/IAO_0000025"
+            termBaseLabel: "programming language"
+            termMaxDepth: 0
+        createdOn: "2024-01-22T04:05:00-08:00"
+        createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        modifiedOn: "2024-01-22T04:05:00-08:00"
+        modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/1820f8fe-1f56-4e2e-bf41-6a93d5fdfad4"
+          multiple: true
+          minItems: 1
+      - key: "Programming Language (Other)"
+        type: text-field
+        name: "Programming Language (Other)"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/80ccfbd0-8dd4-4059-b6cc-2a3bcd98559f"
+        modelVersion: 1.6.0
+        prefLabel: "Programming Language (Other)"
+        createdOn: "2024-01-22T04:05:00-08:00"
+        createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        modifiedOn: "2024-01-22T04:05:00-08:00"
+        modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/a4211b5b-cd38-433a-bb8f-bbee7de2ddbf"
+          multiple: true
+          minItems: 1
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/156bfa1d-08c5-483e-a9eb-6eca101c0698"
+  - key: "Related project and others"
+    type: element
+    name: "Related project and others"
+    id: "https://repo.metadatacenter.org/template-elements/0213537d-a9ef-40a2-b518-d42608ffcb00"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    createdOn: "2024-01-22T04:23:47-08:00"
+    createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+    modifiedOn: "2024-01-22T04:23:47-08:00"
+    modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+    children:
+      - key: "Related project"
+        type: element
+        name: "Related project"
+        id: "https://repo.metadatacenter.org/template-elements/6556e8b9-4101-4679-8469-dfee1b79bbfd"
+        status: draft
+        version: 0.0.1
+        modelVersion: 1.6.0
+        createdOn: "2023-11-22T06:23:28-08:00"
+        createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        modifiedOn: "2023-11-22T06:23:28-08:00"
+        modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        children:
+          - key: "related project text"
+            type: static-rich-text
+            name: "related project text"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/dcd7775d-e53d-4045-a8ec-b8e9480244e4"
+            modelVersion: 1.6.0
+            prefLabel: "related project text"
+            content: "<p>If this dataset was produced under the scope of a larger scientific project or a specific data management plan (DMP), please provide the name of the project or the name of the DMP.</p>\n"
+            createdOn: "2023-08-16T06:31:35-07:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2023-08-16T06:31:35-07:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+          - key: "Name"
+            type: text-field
+            name: "Name"
+            description: "If this dataset was produced under the scope of a larger scientific projects or a specific data management plan (DMP), please provide the name of the project or the name of the DMP."
+            id: "https://repo.metadatacenter.org/template-fields/bc8431d6-62a8-4d12-9ddb-32a090df7946"
+            status: draft
+            version: 0.0.1
+            modelVersion: 1.6.0
+            prefLabel: "Name"
+            createdOn: "2023-08-16T06:31:35-07:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2023-08-16T06:31:35-07:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/a2e509ed-7f67-4927-b5ef-6bb9638a122a"
+          - key: "project id"
+            type: static-rich-text
+            name: "project id"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/5b346f3b-634a-473f-95a4-dccc7b52c04e"
+            modelVersion: 1.6.0
+            prefLabel: "project id"
+            content: "<p>Provide the link to the public record of the project or the link to the data management plan corresponding to the dataset. Use a persistent identifier (e.g. DOI, RAiD) when possible.</p>\n\n<p><span style=\"background-color: rgb(255, 255, 255);\">R</span><span style=\"background-color: rgb(255, 255, 255);\">epeat the element (name and identifier) if multiple projects were involved and should be associated with the dataset.&nbsp;</span></p>\n"
+            createdOn: "2023-08-16T06:31:35-07:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2023-08-16T06:31:35-07:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+          - key: "Identifier"
+            type: link-field
+            name: "Identifier"
+            description: "Provide link to the public record of the project. Use persistent identifier (e.g. DOI, RAiD) when possible."
+            id: "https://repo.metadatacenter.org/template-fields/1f1f6ac5-c555-4b15-bbd2-637ba120ecef"
+            status: draft
+            version: 0.0.1
+            modelVersion: 1.6.0
+            prefLabel: "Project Identifier"
+            createdOn: "2023-08-16T06:31:35-07:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2023-08-16T06:31:35-07:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/5f35c2a7-85c5-4135-9adb-adeae10601a3"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/7dcd25a0-47f5-40c1-882f-5d70f7268f6c"
+      - key: "Further information"
+        type: element
+        name: "Further information"
+        id: "https://repo.metadatacenter.org/template-elements/8b3553b3-426a-45d9-83b6-1bac22e9c18c"
+        status: draft
+        version: 0.0.1
+        modelVersion: 1.6.0
+        createdOn: "2023-11-22T06:23:28-08:00"
+        createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        modifiedOn: "2023-11-22T06:23:28-08:00"
+        modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+        children:
+          - key: "full metadata instruction"
+            type: static-rich-text
+            name: "full metadata instruction"
+            description: "Help Text"
+            id: "https://repo.metadatacenter.org/template-fields/a71cdd7c-b4d3-45b6-843e-c6920dd17be1"
+            modelVersion: 1.6.0
+            prefLabel: "full metadata instruction"
+            content: "<p>If other metadata schema was used (e.g. <a href=\"http://genemede.github.io\">GENEMEDE</a>) during the research process and additional metadata are available for reference, please provide a link to the resource. Use a persistent identifier (e.g. DOI) when possible.</p>\n"
+            createdOn: "2023-08-16T06:41:41-07:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2023-08-16T06:41:41-07:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+          - key: "Link to full metadata (if available)"
+            type: link-field
+            name: "Link to full metadata (if available)"
+            description: "If other metadata scheme was used during the research process and additional metadata exist, please provide a link to the resource. Use persistent identifier (e.g. DOI) when possible."
+            id: "https://repo.metadatacenter.org/template-fields/68e59c69-04a0-42b6-aedf-1630813fe96b"
+            modelVersion: 1.6.0
+            prefLabel: "Link to full metadata (if available)"
+            createdOn: "2023-08-16T06:41:41-07:00"
+            createdBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            modifiedOn: "2023-08-16T06:41:41-07:00"
+            modifiedBy: "https://metadatacenter.org/users/25812a28-7019-4f23-8a16-23bf249e4f66"
+            configuration:
+              propertyIri: "https://schema.metadatacenter.org/properties/fbdbaf1f-bcdb-4437-bc77-5db890e450f3"
+              multiple: true
+              minItems: 1
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/3625931a-a367-4124-ae36-d985d0140ed8"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/60d0e894-b85f-452f-b0eb-721e3d5c148f"

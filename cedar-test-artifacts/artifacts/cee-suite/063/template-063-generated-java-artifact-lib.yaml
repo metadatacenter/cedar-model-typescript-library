@@ -1,0 +1,59 @@
+type: template
+name: "controlled"
+id: "https://repo.metadatacenter.org/templates/fe8ddab9-e2da-4112-ab6c-140e20844ba8"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+derivedFrom: "https://repo.metadatacenter.org/templates/521c0f77-ab6e-4c26-85ad-c289c02c09a9"
+createdOn: "2022-01-05T12:11:03-08:00"
+createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+modifiedOn: "2022-01-05T19:58:21-08:00"
+modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+children:
+  - key: "Controlled Element"
+    type: element
+    name: "Controlled Element"
+    id: "https://repo.metadatacenter.org/template-elements/ed1f6d1d-4e77-49e3-8829-19330e37e63a"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    createdOn: "2022-01-05T12:12:27-08:00"
+    createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    modifiedOn: "2022-01-05T19:56:45-08:00"
+    modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    children:
+      - key: "Controlled Field 1 in Element"
+        type: controlled-term-field
+        name: "Controlled Field 1 in Element"
+        description: "Help Text"
+        id: "https://repo.metadatacenter.org/template-fields/9ca5e7bc-4f13-46f7-b3e8-dbfed1e11627"
+        modelVersion: 1.6.0
+        datatype: iri
+        default:
+          value: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C131506"
+          label: "Childhood Melanoma"
+        values:
+          - type: class
+            sourceAcronym: "NCIT"
+            termIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C3224"
+            termType: class
+            termLabel: "Melanoma"
+          - type: branch
+            sourceAcronym: "NCIT"
+            sourceName: "National Cancer Institute Thesaurus (NCIT)"
+            termBaseIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C3224"
+            termBaseLabel: "Melanoma"
+            termMaxDepth: 0
+        createdOn: "2022-01-05T19:56:45-08:00"
+        createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+        modifiedOn: "2022-01-05T19:56:45-08:00"
+        modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+        configuration:
+          propertyIri: "https://schema.metadatacenter.org/properties/0626ae90-2e1f-47b5-b638-6fa51975bfca"
+          multiple: true
+          minItems: 1
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/3b5d0ad4-f279-489e-96e8-0dd523c662b0"
+      overrideLabel: "Controlled Element 2"
+      multiple: true
+      minItems: 1

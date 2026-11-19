@@ -1,0 +1,20 @@
+type: template
+name: "multiple element multiple field"
+id: "https://repo.metadatacenter.org/templates/aa54d587-38c0-40de-9aa6-406eb90be214"
+children:
+  - key: "Multiple Text Field"
+    type: element
+    name: "Multiple Text Field"
+    children:
+      - key: "Text Field"
+        type: text-field
+        name: "Text Field"
+        description: "Help Text"
+        configuration:
+          multiple: true
+          minItems: 3
+          maxItems: 7
+    configuration:
+      multiple: true
+      minItems: 4
+      maxItems: 6

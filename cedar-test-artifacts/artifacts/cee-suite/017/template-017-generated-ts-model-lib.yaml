@@ -1,0 +1,72 @@
+type: template
+name: "datetime template"
+id: "https://repo.metadatacenter.org/templates/3f78868d-76f4-4c12-adc6-c508308736a1"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+derivedFrom: "https://repo.metadatacenter.org/templates/ac4d1764-133e-4451-ac61-0d46d63d6534"
+createdOn: "2021-12-07T10:58:23-08:00"
+createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+modifiedOn: "2021-12-09T10:57:29-08:00"
+modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+children:
+  - key: "Datetime Field 1 (month/year)"
+    type: temporal-field
+    name: "Datetime Field 1 (month/year)"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/336bd9a1-a227-49d3-8b96-75033c0b598d"
+    modelVersion: 1.6.0
+    datatype: xsd:date
+    granularity: month
+    createdOn: "2021-12-09T10:57:29-08:00"
+    createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    modifiedOn: "2021-12-09T10:57:29-08:00"
+    modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/8a8ece1e-4328-46df-84c8-c92f1bf0a071"
+  - key: "Datetime Field 2 (time)"
+    type: temporal-field
+    name: "Datetime Field 2 (time)"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/3db1ac22-a0af-4357-b81c-2307070a84e2"
+    modelVersion: 1.6.0
+    datatype: xsd:time
+    granularity: decimalSecond
+    inputTimeFormat: 12h
+    inputTimeZone: true
+    createdOn: "2021-12-09T10:57:29-08:00"
+    createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    modifiedOn: "2021-12-09T10:57:29-08:00"
+    modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/2047eba8-6958-47de-b168-dfb8f6faf861"
+  - key: "Datetime Field 3 (datetime no timezone)"
+    type: temporal-field
+    name: "Datetime Field 3 (datetime no timezone)"
+    description: "Help Text"
+    id: "tmp-1639259284568-69791929"
+    modelVersion: 1.6.0
+    datatype: xsd:dateTime
+    granularity: decimalSecond
+    inputTimeFormat: 12h
+    inputTimeZone: false
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/b9625bd5-a9ab-4360-a1f1-5eaaf81695ba"
+  - key: "Datetime Field 4 (datetime multiple)"
+    type: temporal-field
+    name: "Datetime Field 4 (datetime multiple)"
+    description: "Help Text"
+    id: "https://repo.metadatacenter.org/template-fields/f69df60b-3374-4abc-9786-da6e72059f7a"
+    modelVersion: 1.6.0
+    datatype: xsd:dateTime
+    granularity: second
+    inputTimeFormat: 12h
+    inputTimeZone: true
+    createdOn: "2021-12-09T10:57:29-08:00"
+    createdBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    modifiedOn: "2021-12-09T10:57:29-08:00"
+    modifiedBy: "https://metadatacenter.org/users/5db4afaf-aef3-476c-ae29-01676e1ceb15"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.org/properties/eb3c0942-3dba-4464-91ab-d7221f342de0"
+      multiple: true
+      minItems: 1

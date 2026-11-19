@@ -1,0 +1,10 @@
+type: template
+name: "single field"
+description: "description"
+identifier: "identifier"
+id: "https://repo.metadatacenter.org/templates/ec3f500f-ddca-4ec1-9196-29932f9304fd"
+children:
+  - key: "Single Text Field"
+    type: text-field
+    name: "Single Text Field"
+    description: "Help Text"

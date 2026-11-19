@@ -53,6 +53,8 @@ import { JsonFieldReaderExtDoi } from '../../../model/cedar/field/dynamic/ext-do
 import { TextFieldImpl } from '../../../model/cedar/field/dynamic/textfield/TextFieldImpl';
 import { ControlledTermFieldImpl } from '../../../model/cedar/field/dynamic/controlled-term/ControlledTermFieldImpl';
 import { JsonTermConstraintChecks } from './JsonTermConstraintChecks';
+import { NumericFieldImpl } from '../../../model/cedar/field/dynamic/numeric/NumericFieldImpl';
+import { NumericDefaultValueValidator } from '../../../model/cedar/field/dynamic/numeric/NumericDefaultValueValidator';
 
 export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
   protected artifactTypeWord(): SchemaArtifactKind {
@@ -154,6 +156,13 @@ export class JsonTemplateFieldReader extends JsonAbstractSchemaArtifactReader {
     JsonArtifactShape.assertModelVersion(fieldSourceObject, path, this.lenient);
     const parsingResult: JsonArtifactParsingResult = new JsonArtifactParsingResult();
     const field: TemplateField = JsonTemplateFieldReader.readFieldSpecificAttributes(fieldSourceObject, childInfo, parsingResult, path);
+    // Java's reader refuses an integer datatype that states decimal places. The compatibility reader opens it.
+    if (!this.lenient && field instanceof NumericFieldImpl) {
+      NumericDefaultValueValidator.assertDecimalPlacesFitDatatype(
+        field.valueConstraints,
+        path.add(CedarModel.valueConstraints, CedarModel.decimalPlace).toPointer(),
+      );
+    }
     // Standalone reads have no container to retain the deployment info. Keep the setting on the
     // field, where both standalone writers read it; children retain their container's setting.
     if (

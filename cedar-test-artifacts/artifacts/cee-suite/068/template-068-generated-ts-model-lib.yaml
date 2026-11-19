@@ -1,0 +1,26 @@
+type: template
+name: "Template with link field 1-N"
+id: "https://repo.metadatacenter.orgx/templates/1bb65007-ac02-4a04-bf36-b6b9edb4f164"
+status: draft
+version: 0.0.1
+modelVersion: 1.6.0
+createdOn: "2023-11-17T15:43:49-08:00"
+createdBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+modifiedOn: "2023-11-17T15:43:49-08:00"
+modifiedBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+children:
+  - key: "Simple link"
+    type: link-field
+    name: "Simple link"
+    id: "https://repo.metadatacenter.orgx/template-fields/80486935-7dfa-46ff-bfde-a6f85fb7624d"
+    status: draft
+    version: 0.0.1
+    modelVersion: 1.6.0
+    createdOn: "2023-11-17T15:43:49-08:00"
+    createdBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+    modifiedOn: "2023-11-17T15:43:49-08:00"
+    modifiedBy: "https://metadatacenter.org/users/68d898fd-2b81-492c-b68c-a80c8283fd8a"
+    configuration:
+      propertyIri: "https://schema.metadatacenter.orgx/properties/b6d88464-1857-4256-967f-263c140949dd"
+      multiple: true
+      minItems: 1

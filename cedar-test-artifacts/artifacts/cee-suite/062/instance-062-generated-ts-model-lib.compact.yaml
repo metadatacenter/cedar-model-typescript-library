@@ -1,0 +1,11 @@
+type: instance
+name: "Multi-page metadata"
+id: "https://repo.metadatacenter.orgx/template-instances/16be755f-aa71-40c3-9766-d0bce2bcb76c"
+isBasedOn: "https://repo.metadatacenter.orgx/templates/c40f4e75-962b-4d58-b94e-8061dacd8c9a"
+children:
+  Text 1:
+    value: "Text value 1"
+  Text 2:
+    value: "Text value 2"
+  Text 3:
+    value: "Text value 3"

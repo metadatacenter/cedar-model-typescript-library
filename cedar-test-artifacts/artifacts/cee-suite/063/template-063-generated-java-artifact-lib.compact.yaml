@@ -1,0 +1,35 @@
+type: template
+name: "controlled"
+id: "https://repo.metadatacenter.org/templates/fe8ddab9-e2da-4112-ab6c-140e20844ba8"
+children:
+  - key: "Controlled Element"
+    type: element
+    name: "Controlled Element"
+    children:
+      - key: "Controlled Field 1 in Element"
+        type: controlled-term-field
+        name: "Controlled Field 1 in Element"
+        description: "Help Text"
+        datatype: iri
+        default:
+          value: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C131506"
+          label: "Childhood Melanoma"
+        values:
+          - type: class
+            sourceAcronym: "NCIT"
+            termIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C3224"
+            termType: class
+            termLabel: "Melanoma"
+          - type: branch
+            sourceAcronym: "NCIT"
+            sourceName: "National Cancer Institute Thesaurus (NCIT)"
+            termBaseIri: "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C3224"
+            termBaseLabel: "Melanoma"
+            termMaxDepth: 0
+        configuration:
+          multiple: true
+          minItems: 1
+    configuration:
+      overrideLabel: "Controlled Element 2"
+      multiple: true
+      minItems: 1

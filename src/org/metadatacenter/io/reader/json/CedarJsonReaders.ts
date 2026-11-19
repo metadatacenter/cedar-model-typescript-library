@@ -5,6 +5,7 @@ import { JsonSchema } from '../../../model/cedar/constants/JsonSchema';
 import { JsonTemplateReader } from './JsonTemplateReader';
 import { JsonTemplateElementReader } from './JsonTemplateElementReader';
 import { JsonReaderBehavior } from '../../../behavior/JsonReaderBehavior';
+import { JsonElementInstanceReader } from './JsonElementInstanceReader';
 import { JsonTemplateInstanceReader } from './JsonTemplateInstanceReader';
 import { JsonAbstractArtifactReader } from './JsonAbstractArtifactReader';
 import { JsonTemplateFieldReader } from './JsonTemplateFieldReader';
@@ -52,6 +53,8 @@ export class CedarJsonReaders {
         return JsonTemplateFieldReader.getStrict();
       case CedarArtifactType.TEMPLATE_INSTANCE:
         return JsonTemplateInstanceReader.getStrict();
+      case CedarArtifactType.ELEMENT_INSTANCE:
+        return JsonElementInstanceReader.getStrict();
       default:
         throw new Error(`No JSON reader available for CedarArtifactType: ${cedarArtifactType}`);
     }
@@ -71,5 +74,10 @@ export class CedarJsonReaders {
 
   public getTemplateInstanceReader(): JsonTemplateInstanceReader {
     return JsonTemplateInstanceReader.getForBehavior(this.behavior);
+  }
+
+  /** The reader of an element instance that stands on its own, outside a template instance. */
+  public getElementInstanceReader(): JsonElementInstanceReader {
+    return JsonElementInstanceReader.getForBehavior(this.behavior);
   }
 }

@@ -1,0 +1,21 @@
+type: template
+name: "section break"
+id: "https://repo.metadatacenter.org/templates/191ed0c9-734a-49ea-9417-47df913adbee"
+children:
+  - key: "Text Field 1"
+    type: text-field
+    name: "Text Field 1"
+    description: "Help Text"
+  - key: "Section Break Here"
+    type: static-section-break
+    name: "Section Break Here"
+    description: "This is SectionBreak Help Text"
+    prefLabel: "Section Break Preferred Label"
+  - key: "Text Field 2"
+    type: text-field
+    name: "Text Field 2"
+    description: "Help Text"
+  - key: "Section Break, no other data"
+    type: static-section-break
+    name: "Section Break, no other data"
+    description: "Help Text"
